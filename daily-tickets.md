@@ -24,8 +24,11 @@ Agent được lệnh *"continue with the next ticket in daily-tickets.md"* → 
 
 ---
 
-## [ ] Ticket #1 — NEW ARTICLE
+## [DONE 2026-08-07 https://wellnessnest.co/blogs/news/creatine-gummies-vs-powder-which-should-you-actually-take] Ticket #1 — NEW ARTICLE
 
+- **Status:** DRAFT trên Shopify (article id `621836861755`, chưa public — Kevin bấm publish trong
+  admin: https://admin.shopify.com/store/wellnessnest1/content/articles/621836861755). Gate PASS,
+  Gate 2 Admin-API PASS (3 inline <80KB + hero + 3 JSON-LD). Byline Dr. Marcus Hale.
 - **Primary keyword:** `creatine gummies vs powder`
 - **Secondary:** do creatine gummies work, creatine gummies absorption, 5000mg creatine gummies, creatine for beginners
 - **Search intent:** comparison, buyer deciding a format
