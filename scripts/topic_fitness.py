@@ -174,18 +174,18 @@ def self_check():
     # (topic, sg_imp, articles, want). PASS cases use [] to test the winner-shape logic in isolation
     # (with the real catalog they'd correctly be 'covered' — we already have Atlas/Myprotein pages).
     cases = [
-        ("Atlas Whey Review: Is It Worth It in the US? (2026)", None, [], 'PASS'),   # winner shape
-        ("Myprotein vs Optimum Nutrition: Which is Best?", None, [], 'PASS'),           # winner shape
+        ("FusiForce Creatine Gummies Review: Worth It? (2026)", None, [], 'PASS'),  # winner shape, house brand
+        ("Turkesterone vs Ecdysterone: Which is Best?", None, [], 'PASS'),          # winner shape
         ("coffee protein shakes us", None, arts, 'FAIL'),
         ("banana protein powder us", None, arts, 'FAIL'),
         ("best protein powder us", None, arts, 'FAIL'),        # collection head-term
         ("supplements us", None, arts, 'FAIL'),
         ("some niche topic", 5, arts, 'FAIL'),                        # demand floor
         ("KSM-66 Ashwagandha US: Benefits & Dosage", None, arts, 'REVIEW'),  # ingredient gap, no brand
-        ("mutant whey isolate", None, arts, 'FAIL'),                  # brand+product we already cover
+        ("shilajit benefits for health and vitality", None, arts, 'FAIL'),   # brand+topic we already cover
         ("meiji high protein milk nutrition facts", None, arts, 'REVIEW'),  # not a stocked brand -> human decides
-        ("Owala Outlet US", None, [], 'FAIL', 2.6),            # we already rank pos 2.6 -> cannibalise
-        ("Amazing Grass Green Superfood Review", None, [], 'PASS', 17.1),  # weak rank + stocked brand -> genuine
+        ("FloraFresh Vaginal Probiotics US", None, [], 'FAIL', 2.6),  # we already rank pos 2.6 -> cannibalise
+        ("MenoMate Menopause Probiotic Review", None, [], 'PASS', 17.1),  # weak rank + stocked brand -> genuine
     ]
     ok = True
     for topic, imp, a, want, *rest in cases:

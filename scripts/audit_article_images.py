@@ -20,7 +20,7 @@ Usage:
 import json, urllib.request, sys, datetime
 
 from genseo_config import SHOP, TOKEN, API
-BLOGS={"news4008483131}
+BLOGS={"news":104008483131}
 import re
 
 def api(url):

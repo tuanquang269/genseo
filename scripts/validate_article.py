@@ -142,7 +142,7 @@ def _author_fails(md):
     """The author-gate rules only, so the self-check does not need a whole valid article."""
     fails=[]
     for name in FAKE_AUTHORS:
-        if re.search(rf"\b{re.escape(name)}\b", md, re.I): fails.append(f"fabricated byline: {name}")
+        if re.search(rf"\b{re.escape(name)}\b", md): fails.append(f"fabricated byline: {name}")
     bio=BIO_RE.search(md)
     if bio:
         bio=bio.group(1)
@@ -173,9 +173,11 @@ def main():
         html=re.sub(r'!\[([^\]]*)\]\(([^)]+)\)', r'<img alt="\1" src="\2">', html)
         # markdown tables -> mark presence
         if re.search(r'^\|.*\|\s*$', html, flags=re.M) and re.search(r'^\|[-: |]+\|\s*$', html, flags=re.M):
-            html+="\n<table><th>md-table</th></table>"
-        # first non-heading paragraph as answer block
-        html=re.sub(r'^(?!<h|<a|<img|\s*$)(.+)$', r'<p>\1</p>', html, count=1, flags=re.M)
+            html+="\n<table><th>markdown-table</th></table>"
+        # first PLAIN-TEXT paragraph as answer block — skip any line already starting
+        # with a tag or comment (the skill's mandatory line-2 `<!-- meta_description -->`
+        # otherwise becomes the "first paragraph" and every correct draft fails)
+        html=re.sub(r'^(?!<|\s*$)(.+)$', r'<p>\1</p>', html, count=1, flags=re.M)
     else:
         html=raw
     text=re.sub(r'<script[^>]*>.*?</script>','',html,flags=re.S)  # exclude schema from word count
@@ -260,12 +262,15 @@ def main():
         fails.append("author roster EMPTY — fill /Users/kevinkreative/genseo/roster.json (real people only)")
     elif not (author_pages & ROSTER_PAGES): fails.append("no roster author /pages/ link")
     if author_pages & ROSTER_PAGES and not re.search(r'"@type"\s*:\s*"Person"', html):
-        fails.append("staff author must use Person schema")
+        # publisher injects Person JSON-LD after md->html, so a draft can't have it yet
+        (warns if draft_mode else fails).append("staff author must use Person schema (publisher adds it post-conversion)")
     # A real name with an invented credential is the same YMYL fabrication as a fake doctor, and
     # instructions in SKILL.md have not held before, so it is enforced here as code. Only the
     # vetted bio sentence per author is allowed; anything the model adds about them fails.
     for name in FAKE_AUTHORS:
-        if re.search(rf"\b{re.escape(name)}\b", html, re.I):
+        # case-sensitive: the Title Case placeholder names can't collide with prose
+        # like "the author one might expect"
+        if re.search(rf"\b{re.escape(name)}\b", html):
             fails.append(f"fabricated author byline: {name}")
     bio=BIO_RE.search(html)
     bio=bio.group(1) if bio else ""

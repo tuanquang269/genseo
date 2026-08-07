@@ -8,7 +8,7 @@ Logged to backups/<date>/thin_redirect_log.json.
 import json, urllib.request, csv, sys, os, datetime
 
 from genseo_config import SHOP, TOKEN, API
-BLOG_IDS={"news4008483131}
+BLOG_IDS={"news":104008483131}
 ROOT="/Users/kevinkreative/genseo"
 LOG=f"{ROOT}/backups/{datetime.date.today().strftime('%Y%m%d')}/thin_redirect_log.json"
 

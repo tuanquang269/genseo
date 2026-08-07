@@ -47,7 +47,13 @@ def _ensure_serve(env):
     subprocess.Popen([IMA2, "serve"], env=env,
                      stdout=open("/tmp/ima2-serve-genseo.log", "a"),
                      stderr=subprocess.STDOUT, start_new_session=True)
-    time.sleep(8)
+    for _ in range(15):  # re-probe up to 30s instead of hoping a fixed sleep is enough
+        time.sleep(2)
+        with socket.socket() as s:
+            s.settimeout(2)
+            if s.connect_ex(("127.0.0.1", 3333)) == 0:
+                return
+    sys.exit("✗ ima2 serve did not come up within 30s — check /tmp/ima2-serve-genseo.log (OAuth session may need re-login)")
 
 
 def gen_png(prompt, size, out_png, refs, timeout=360):

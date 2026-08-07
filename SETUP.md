@@ -1,5 +1,11 @@
 # Cài đặt
 
+> ## ✅ LOCALIZATION COMPLETED 2026-08-07 — wellnessnest.co
+> Mọi giá trị trong repo này ĐÃ là giá trị THẬT của store (blog `news`=104008483131,
+> theme 183190880571, domain wellnessnest.co, US/$). File này giữ lại làm tài liệu
+> lịch sử. **TUYỆT ĐỐI KHÔNG chạy lại các lệnh sed/replace bên dưới** — chạy lại sẽ
+> phá giá trị thật. Roster tác giả = `/Users/kevinkreative/genseo/roster.json` (nguồn duy nhất).
+
 > Làm xong file này rồi đọc **`LOCALIZE.md`** để thay hết placeholder
 > (thị trường, roster tác giả, priority brands). Bỏ bước đó thì gate sẽ chặn publish.
 

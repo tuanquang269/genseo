@@ -11,7 +11,7 @@ Bạn đang ở trong một pipeline SEO tự động ghi **trực tiếp lên s
    không "hầu như đạt", không tự nới tiêu chuẩn. Sửa bài rồi chạy lại.
 2. **Chỉ publish bằng `scripts/shopify_publisher.py`.** Không dùng Shopify MCP,
    GraphQL, hay REST tay — các đường đó không gắn JSON-LD, bài sẽ mất schema.
-3. **Không bịa tác giả.** Chỉ dùng tên trong roster (`skills/genseo-auto-publish/SKILL.md`).
+3. **Không bịa tác giả.** Chỉ dùng tên trong roster (`/Users/kevinkreative/genseo/roster.json` — nguồn duy nhất).
    Không gắn `Dr./MD/PhD/RD/CISSN` cho ai không có. Bịa tác giả có bằng y khoa trên
    nội dung sức khoẻ là lỗi nặng nhất pipeline này có thể tạo ra.
 4. **Không link tới sản phẩm/collection không tồn tại.** Verify URL live trước khi
@@ -24,16 +24,15 @@ Bạn đang ở trong một pipeline SEO tự động ghi **trực tiếp lên s
 ## Lần đầu tiên (chỉ làm 1 lần)
 
 ```bash
-# 1. credentials + blog id + domain  →  làm theo SETUP.md
-# 2. thay hết placeholder            →  làm theo LOCALIZE.md
-# 3. tự kiểm tra: 3 lệnh này phải xanh trước khi làm gì khác
-python3 scripts/validate_article.py --self-check-author   # roster khớp nhau?
-python3 scripts/fetch_all_articles.py                     # API + token ok?
-grep -rn "{{[A-Z_]*}}\|1000000000\|your-store\|yourdomain\|REPLACE ME" . \
-  | grep -v -e LOCALIZE.md -e AGENTS.md                   # phải ra 0 dòng
+# ✅ SETUP + LOCALIZE đã hoàn tất 2026-08-07 (wellnessnest.co) — KHÔNG làm lại.
+# Tự kiểm tra trước khi chạy ticket:
+python3 scripts/validate_article.py --self-check-author   # exit 1 + "roster EMPTY" = Kevin chưa điền roster.json (blocker thật)
+python3 scripts/fetch_all_articles.py                     # API + token ok? (GSC skip = bình thường)
+grep -rn "{{[A-Z_]*}}\|1000000000" scripts/ skills/ knowledge_base/ docs/ \
+  | grep -v _DONOR_BRANDS_REMOVED                          # phải ra 0 dòng
 ```
 
-Nếu lệnh 3 còn ra kết quả → **chưa được publish**, quay lại `LOCALIZE.md`.
+Lệnh 3 còn ra kết quả → có placeholder mới lọt vào — sửa file đó (KHÔNG chạy sed hàng loạt của SETUP.md cũ).
 
 ## Playbook theo việc
 
@@ -121,8 +120,8 @@ không ai kiểm chứng giả thuyết trước.
 |---|---|
 | `missing config ~/.genseo/shopify_token.json` | `SETUP.md` bước 1 |
 | 401/403 từ Shopify | token thiếu scope (`write_content`, `write_products`, `write_themes`, `read/write_files`) |
-| 404 khi thao tác article | blog ID vẫn là placeholder `104008483131` → `LOCALIZE.md` |
-| Gate FAIL ở phần author | roster chưa đồng bộ 3 chỗ, hoặc `/pages/<handle>` chưa tồn tại trên site |
+| 404 khi thao tác article | sai blog ID (blog thật duy nhất: `news`=104008483131) hoặc article ID không tồn tại |
+| Gate FAIL ở phần author | `roster.json` rỗng/thiếu người đó, hoặc `/pages/<handle>` chưa live trên site |
 | Bài live nhưng không có schema | publish sai đường (luật #2). Chữa: `repair_schema.py <ID>` |
 | Bài tên "Generated Article" | model ghi metadata dạng HTML comment thay vì `# H1`. Chữa: `fix_untitled.py --apply`. **Đừng xoá** — đó là bài thật bị lỗi title |
 | `FileNotFoundError` một file csv/md | thiếu data đầu vào; xem `LOCALIZE.md` mục 5 để sinh |

@@ -1,5 +1,11 @@
 # LOCALIZE.md — đọc file này TRƯỚC KHI chạy bất cứ thứ gì
 
+> ## ✅ LOCALIZATION COMPLETED 2026-08-07 — wellnessnest.co
+> Mọi giá trị trong repo này ĐÃ là giá trị THẬT của store (blog `news`=104008483131,
+> theme 183190880571, domain wellnessnest.co, US/$). File này giữ lại làm tài liệu
+> lịch sử. **TUYỆT ĐỐI KHÔNG chạy lại các lệnh sed/replace bên dưới** — chạy lại sẽ
+> phá giá trị thật. Roster tác giả = `/Users/kevinkreative/genseo/roster.json` (nguồn duy nhất).
+
 > **Dành cho AI agent:** đây là checklist bắt buộc (quy trình vận hành ở `AGENTS.md`). Hệ thống này được bóc ra từ một
 > store thật, mọi thứ mang tính riêng của store đó đã bị thay bằng **placeholder**.
 > Nhiệm vụ của bạn: thay hết placeholder theo store của người dùng, rồi báo lại

@@ -39,7 +39,7 @@ UA = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
 AUTH = json.load(open(CONFIG))
 SHOP, TOKEN = AUTH["shop"], AUTH["access_token"]
 HDR = {"X-Shopify-Access-Token": TOKEN, "Content-Type": "application/json"}
-BLOG_ID = {"news4008483131}
+BLOG_ID = {"news": 104008483131}
 LDJSON = re.compile(r'<script type="application/ld\+json">(.*?)</script>', re.S)
 
 

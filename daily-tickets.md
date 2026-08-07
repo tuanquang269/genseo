@@ -5,6 +5,8 @@ Agent được lệnh *"continue with the next ticket in daily-tickets.md"* → 
 
 ## Quy tắc chung (đọc trước mỗi ticket)
 
+0. **BLOG_ID cho MỌI ticket = `104008483131`** (blog duy nhất của store, handle `news`).
+
 1. Mọi internal link phải trỏ tới URL đang LIVE. Link 404 sẽ bị gate chặn.
 2. Không tạo bài mới cho keyword đã có bài — STEP 0 check trước, trùng thì refresh.
 3. Byline lấy từ `/Users/kevinkreative/genseo/roster.json`. Roster rỗng = STOP, báo Kevin.

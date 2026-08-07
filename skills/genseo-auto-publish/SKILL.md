@@ -13,8 +13,9 @@ You are the Master Orchestrator. When the user invokes this skill, you must exec
 Before diving into Step 1, verify you have:
 1. The Target Topic or Keyword(s).
 2. The Mode: `[NEW ARTICLE]` or `[REFRESH EXISTING]`. (If Refresh, require the `ARTICLE_ID`).
-3. The Target `BLOG_ID`.
-*(If the user gives you a Prompt from the Orchestrator Tickets, it generally implies the context. If Blog ID is missing, politely ask them to provide it, then proceed automatically).*
+3. The Target `BLOG_ID`. **Default for wellnessnest.co = `104008483131` (the store's only
+   blog, handle `news`) — use it whenever a ticket doesn't say otherwise; never stop to ask
+   in an unattended run.**
 
 ---
 
@@ -85,8 +86,8 @@ wasted image-generation + writing cost of a doomed article.)
 ### STEP 2: Keyword Expansion & Research
 - **Active Keyword Expansion:** Use the web-search tool (WebSearch) with the primary keyword to discover:
   - 3–5 **long-tail and question keywords** (e.g., "is pre workout safe for beginners", "how to take pre workout")
-  - **AEO-friendly question variants**: "how", "what", "is it safe", "vs", "near me"
-  - **Location variants**: "the US", neighbourhood names, "near me", "delivery", "online"
+  - **AEO-friendly question variants**: "how", "what", "is it safe", "vs"
+  - **US-context variants**: "in the US", "delivery", "online" (nationwide DTC — no city/neighbourhood/near-me angles, see STEP 5)
 - **Product Handle Sourcing:** Run in the shell (Bash): `curl -s "https://wellnessnest.co/search/suggest.json?q=YOUR_KEYWORD&resources[type]=product"` to find the exact product handlers for internal links. Do not guess handles!
 - **Internal Linking Strategy (Power & Target Pages):** Run in the shell (Bash): `python3 ~/genseo/scripts/get_internal_links.py` to retrieve the current Top Power Pages (high traffic) and Target Pages (striking distance). Record these URLs and their target keywords to be naturally embedded into the article body in Step 5.
 - Record the expanded keyword list and internal links mentally — you will weave ALL of them naturally into the article body and FAQ section.
@@ -146,7 +147,7 @@ and in AI Overviews. Treat this step as writing an ad, not a label.
   ```
   It prints the LOCAL absolute path to use in the draft. One call per image.
   - **Hero Banner Rule:** The FIRST generated image MUST be the Hero Banner and it MUST depict the real products discussed. Pass 1–3 REAL product pack-shot paths via `--ref` so the banner shows real products, never AI-hallucinated tubs. Always append to every hero prompt: **"NO watermark. NO blog name text. NO caption. NO attribution text in any corner. Clean image only. Product label must remain legible."**
-  - **⚠️ MANDATORY — 1 Lifestyle Image Per Product (NON-NEGOTIABLE):** Every distinct product mentioned by name MUST have its own lifestyle image embedded in its section. A single hero is NEVER sufficient. Count the products → generate that many images + 1 hero.
+  - **⚠️ MANDATORY — ≥3 INLINE BODY IMAGES per article (the gate hard-fails below 3; hero does NOT count):** every distinct product mentioned by name gets its own lifestyle image in its section, and when the article features fewer than 3 products, add concept images to reach 3 — a mechanism/how-it-works visual, a usage-moment scene, or a comparison visual for the table section. So a single-product article = 1 hero (article cover, NOT in body) + 1 product lifestyle + 2 concept images minimum.
   - **REAL PACK REFERENCE (PATI hard rule):** download the real product image first:
     `curl -o /Users/kevinkreative/genseo/tmp_images/ref_<product>.png "https://wellnessnest.co/cdn/shop/files/..."`
     (get the URL from `https://wellnessnest.co/products/<handle>.json` → `product.images[0].src`)
@@ -204,10 +205,10 @@ and in AI Overviews. Treat this step as writing an ad, not a label.
 
   **Pick the byline whose scope genuinely fits the topic.**
 
-  **⛔ NEVER invent a byline.** A name that is not a real person on the roster
-  above is a fabricated identity on YMYL health content — the single most
-  damaging thing this pipeline can do. Keep a banned-name list here of any
-  fabricated authors you have had to remove, so they are never recreated.
+  **⛔ NEVER invent a byline.** A name that is not in `roster.json` is a
+  fabricated identity on YMYL health content — the single most damaging thing
+  this pipeline can do. The banned-name list (donor placeholders + anything
+  ever removed) is `FAKE_AUTHORS` in `scripts/validate_article.py`.
 
   **⛔ Never write "Dr.", "MD", "PhD", "RD", "Registered Dietitian", "CISSN", or any certification next to any byline.** Never attach a credential to a byline unless that person actually holds it.
 
@@ -310,32 +311,30 @@ EOF
 - Replace `TICKET_NUM`, `primary keyword`, and `HANDLE` with actual values. Always set `Has Indexed=No`, `Has Tried Request To Index=No`, `Last Request Index Date=''` on first publish.
 
 ### STEP 9b: Mark the Ticket DONE in the schedule file (MANDATORY — keeps the cron's place)
-The daily cron says "continue with the next N tickets" and decides which are "next" by reading
-the `[ ] PENDING` / `[DONE]` markers in the schedule file. **If you do not mark the ticket
-DONE, the cron will re-run it tomorrow and create duplicates.** So immediately after the CSV
-update, flip this ticket's Action line in its schedule file (e.g. `daily-tickets.md` — whichever file the run came from):
-- Change that ticket's `- **Action**: [ ] PENDING`  →  `- **Action**: [DONE <YYYY-MM-DD>] <published_url>`
-- Do this with a precise, single-ticket replacement (match the exact ticket heading so you don't
-  touch other tickets). Example (run in the shell):
+The daily cron says "continue with the next ticket" and decides which is "next" by reading
+the `[ ]` / `[DONE]` markers in the ticket headings of the schedule file. **If you do not mark
+the ticket DONE, the cron re-runs it tomorrow and creates a duplicate DRAFT** (STEP 0's live
+dedup check cannot catch drafts — `search/suggest.json` only sees published articles).
+Ticket headings in `daily-tickets.md` look like `## [ ] Ticket #1 — NEW ARTICLE`; flip the
+`[ ]` inside the heading:
 ```
 python3 << 'EOF'
-import re
+import datetime
 f="/Users/kevinkreative/genseo/daily-tickets.md"   # <-- the file this run came from
-ticket="### 📝 Ticket #N"                               # <-- exact heading of THIS ticket
+n=1                                                 # <-- number of THIS ticket
 url="https://wellnessnest.co/blogs/news/HANDLE"
-import datetime; today=datetime.date.today().isoformat()
+today=datetime.date.today().isoformat()
 t=open(f).read()
-# replace the FIRST '[ ] PENDING' that appears after this ticket's heading
-i=t.index(ticket)
-seg=t[i:]
-seg=seg.replace("- **Action**: [ ] PENDING", f"- **Action**: [DONE {today}] {url}", 1)
-t=t[:i]+seg
+old=f"## [ ] Ticket #{n} "
+assert old in t, f"heading not found: {old!r}"
+t=t.replace(old, f"## [DONE {today} {url}] Ticket #{n} ", 1)
 open(f,"w").write(t)
-print("marked DONE:", ticket)
+print("marked DONE: Ticket #", n)
 EOF
 ```
-- If STEP 0 found a duplicate and you SKIPPED, instead mark it `[SKIPPED-DUPLICATE <date>] <existing_url>` so the cron also moves past it.
-- After this, the next cron run will correctly pick the following still-`PENDING` ticket.
+- If STEP 0 found a duplicate and you SKIPPED, use `[SKIPPED-DUPLICATE {today} <existing_url>]`
+  instead of `[DONE ...]`; if STEP 0.5 failed fitness, use `[SKIPPED-UNFIT <reason>]`.
+- The next cron run picks the first heading still containing `[ ]`.
 
 ### STEP 10: Reporting & Refresh Flag
 - Report the success of the sequence to the user. Present:
