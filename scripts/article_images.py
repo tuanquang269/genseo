@@ -41,6 +41,55 @@ PROMPT_SUFFIX = (" NO watermark. NO blog name text. NO caption. NO attribution t
 PACK_FIDELITY = (" The product package must EXACTLY match the reference image: same package "
                  "format, same shape, same colors, same label layout and text. Do not invent, "
                  "restyle, or substitute the packaging.")
+# i5.2 UGC lane (see skills/genseo-auto-publish/references/ugc-image-framework.md).
+# The agent writes the 10-section prompt; these are the MECHANICAL backstops.
+UGC_SUFFIX = (" Shot on a phone, handheld, casual snapshot framing, slightly imperfect angle, "
+              "natural depth of field, available light only, subtle grain, amateur photo energy, "
+              "muted phone-JPEG colours, no HDR gloss, unretouched surfaces.")
+UGC_NEG = (" NO beaming model staring at camera. NO sterile marble hero countertop. NO floating "
+           "ingredients. NO studio softbox lighting. NO teal-orange colour grade. NO plastic "
+           "skin, NO glassy eyes, NO waxy symmetric face. NOT a stock photo.")
+CAMERA_MATCH = (" Match the persona reference photo's camera exactly: available light (not "
+                "studio), real skin texture with visible pores and slight imperfections, same "
+                "focal length class and depth of field, subtle grain, no cosmetic smoothing.")
+GEM9 = "/Users/kevinkreative/.local/bin/gem9"
+
+
+def degrade_grain(png_path):
+    """Light film-grain + micro quality degrade — raw ima2 is too HD-clean for UGC
+    (same rationale as the degrade-start-frame video rule). Applied BEFORE webp.
+    Pure PIL (no numpy on system python): zero-centered noise via ImageChops."""
+    from PIL import Image, ImageChops
+    im = Image.open(png_path).convert("RGB")
+    noise = Image.effect_noise(im.size, 8).convert("L")  # sigma≈8 around 128 = subtle grain
+    im = ImageChops.add(im, Image.merge("RGB", [noise] * 3), scale=1.0, offset=-128)
+    im.save(png_path)
+
+
+def qc_gem9(webp_path, refs, is_ugc, has_persona):
+    """Vision QC via gem9 (9router subscription — per PATI rule, never per-token).
+    Returns (passed, reason)."""
+    rubric = ["You are a strict image QC gate for a DTC supplement blog. Compare the FIRST image "
+              "(the generated candidate) against the other image(s) (references). Answer each check, "
+              "then end with exactly 'VERDICT: PASS' or 'VERDICT: FAIL - <short reason>'.",
+              "1. If a product package is visible: does its format/shape/colors/label layout match "
+              "the reference pack shot? Invented or restyled packaging = FAIL."]
+    if is_ugc:
+        rubric.append("2. Does it read as a casual real-phone UGC snapshot (imperfect framing, "
+                      "available light, lived-in scene) and NOT a studio/stock photo? Glossy "
+                      "stock look = FAIL.")
+    rubric.append("3. Any rendered text/watermark/caption that is not on the product label = FAIL.")
+    if has_persona:
+        rubric.append("4. Does the person look like a natural real human matching the persona "
+                      "reference (no plastic skin, no dead eyes, no warped hands)? = FAIL if not.")
+    res = subprocess.run([GEM9, "-p", "\n".join(rubric), webp_path, *refs],
+                         capture_output=True, text=True, timeout=180)
+    out = (res.stdout or "") + (res.stderr or "")
+    m = re.search(r"VERDICT:\s*(PASS|FAIL[^\n]*)", out)
+    if not m:
+        return True, f"qc-inconclusive ({out.strip()[-120:]})"  # never hard-block on QC infra failure
+    v = m.group(1)
+    return v.startswith("PASS"), v
 
 
 def fetch_product_ref(handle_spec):
@@ -123,6 +172,15 @@ def main():
     ap.add_argument("--product-ref", action="append", default=[],
                     help="<handle>[:index] — auto-download the live PDP pack shot as ref and lock "
                          "the prompt to that packaging (REQUIRED whenever the image shows a product)")
+    ap.add_argument("--ugc", action="store_true",
+                    help="i5.2 UGC lane: phone-snapshot suffix + anti-stock NEG bank + grain degrade "
+                         "(see references/ugc-image-framework.md — inline article images use this)")
+    ap.add_argument("--persona-ref", default=None,
+                    help="absolute path to the APPROVED persona ref photo (~/genseo/personas/<handle>/ref.jpg). "
+                         "Only personas Kevin approved through the one-time Pinterest gate — never a fresh face.")
+    ap.add_argument("--qc", action="store_true",
+                    help="vision QC via gem9 (9router): packaging/UGC/no-text/persona rubric; "
+                         "FAIL prints the reason and exits 2 so the caller can re-roll")
     ap.add_argument("--square", action="store_true", help="1024x1024 instead of 1536x1024 landscape")
     a = ap.parse_args()
 
@@ -130,6 +188,13 @@ def main():
         a.ref.append(fetch_product_ref(spec))
     if a.product_ref:
         a.prompt += PACK_FIDELITY
+    if a.persona_ref:
+        if not os.path.exists(a.persona_ref):
+            sys.exit(f"✗ persona ref not found: {a.persona_ref} — persona bank lives in ~/genseo/personas/")
+        a.ref.append(a.persona_ref)
+        a.prompt += CAMERA_MATCH
+    if a.ugc:
+        a.prompt += UGC_SUFFIX + UGC_NEG
 
     slug = re.sub(r"[^a-z0-9-]", "-", a.slug.lower())
     name = re.sub(r"[^a-z0-9-]", "-", a.name.lower())
@@ -139,10 +204,17 @@ def main():
     webp = os.path.join(out_dir, f"{name}.webp")
 
     size = "1024x1024" if a.square else "1536x1024"
-    print(f"⏳ ima2 gen {name} ({size}, {len(a.ref)} ref)...", flush=True)
+    print(f"⏳ ima2 gen {name} ({size}, {len(a.ref)} ref{', UGC' if a.ugc else ''})...", flush=True)
     gen_png(a.prompt, size, png, a.ref)
+    if a.ugc:
+        degrade_grain(png)
     nbytes, q, width = compress_webp(png, webp)
     os.unlink(png)  # keep only the deliverable; the PNG is 10-20x the size
+    if a.qc:
+        passed, verdict = qc_gem9(webp, a.ref, a.ugc, bool(a.persona_ref))
+        print(f"QC → {verdict}")
+        if not passed:
+            sys.exit(2)  # caller re-rolls with the FAIL reason folded into the prompt (max 2)
     print(f"✓ {nbytes//1024}KB webp (q{q}, {width}px)")
     print(webp)
 
