@@ -294,6 +294,15 @@ Even if Gate 1 shows ✅, verify the rendered article body.
 - **LIVE article (only after Kevin flips it):** open `https://wellnessnest.co/blogs/news/<HANDLE>`
   in the in-app Browser pane, scroll the full article, confirm ALL images (hero + every product
   lifestyle image) load — not broken, not placeholder. PASS/FAIL with counts.
+  (If the pane blocks the domain by policy, fall back to `curl` + HTML checks — that is the
+  approved fallback, do not open an outside browser.)
+- **LIVE article + widget check:** every `/products/` link in the body becomes a card in the
+  theme's **Shop-This-Article widget** (section `sections/shop-this-article.liquid`, wired into
+  `templates/article.json`). For live articles confirm: (1) the HTML contains a
+  `shopify-section-template--*__shop-this-article` section, and (2) `data-liquid-handles`
+  holds ≥1 clean product handle. Full-page cache can lag theme edits — force a fresh render via
+  `?section_id=<that section id>` before declaring FAIL. Repo copy of the section (for diffing
+  theme drift): `/Users/kevinkreative/genseo/theme/shop-this-article.liquid`.
 - If Gate 2 **FAILS** → images are broken despite Gate 1: fix the draft's image paths and
   re-run `update`, then re-run Gate 2 until PASS.
 
@@ -346,3 +355,13 @@ EOF
   - Brief summary of the semantic strategy (keywords targeted, SERP gaps filled, GEO signals used)
   - Meta description that was set
 - **Refresh Flag:** Note the publish date. Flag this article for content refresh review in 90 days via the `genseo-refresh-planner` skill.
+
+### TICKET REFILL: when the queue runs low (< 3 pending `[ ]` tickets)
+
+Mine the Google Ads account for the next batch — the recipe (GAQL slices, term-pattern →
+article-type map, ticket checklist, hard rules incl. verbatim `campaign.name`) is codified in
+`references/ads-article-mining.md`. Its two goldmine classes: paid-but-not-converting terms
+(organic arbitrage) and converting query patterns (compound proven intent). Append the new
+batch to `daily-tickets.md` as `# Batch N` with the evidence header; never overwrite old
+batches. Second pass when angle depth is needed: the GATC competitor-scrape lane described in
+the same file.

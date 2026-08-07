@@ -1,0 +1,833 @@
+{%- liquid
+  assign sta_id = 'ShopThisArticle-' | append: section.id
+  assign content_selector = '[id^="BlogContent-"]'
+-%}
+
+{%- liquid
+  assign sta_handles = ''
+  assign article_product_parts = article.content | split: '/products/'
+-%}
+{%- for part in article_product_parts offset: 1 -%}
+  {%- liquid
+    assign handle = part | split: '"' | first | split: "'" | first | split: '?' | first | split: '#' | first | split: '/' | first | remove: '\' | strip
+    assign handle_token = '|' | append: handle | append: '|'
+  -%}
+  {%- unless handle == blank or sta_handles contains handle_token -%}
+    {%- assign sta_handles = sta_handles | append: handle_token -%}
+  {%- endunless -%}
+{%- endfor -%}
+
+<div id="{{ sta_id }}" class="shop-this-article sta" data-content-selector="{{ content_selector }}" data-liquid-handles="{{ sta_handles | escape }}" hidden>
+  <button class="sta__trigger" type="button" aria-haspopup="dialog" aria-controls="{{ sta_id }}-modal" aria-expanded="false">
+    <span class="sta__trigger-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+    </span>
+    <span class="sta__trigger-label">Shop this article</span>
+    <span class="sta__count" data-sta-count></span>
+  </button>
+
+  <div class="sta__overlay" data-sta-close hidden></div>
+  <aside id="{{ sta_id }}-modal" class="sta__modal" role="dialog" aria-modal="true" aria-labelledby="{{ sta_id }}-title" hidden>
+    <div class="sta__header">
+      <h2 id="{{ sta_id }}-title">Shop This Article</h2>
+      <button class="sta__close" type="button" data-sta-close aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+    <div class="sta__body" data-sta-products></div>
+  </aside>
+
+  <section class="sta__inline" data-sta-inline hidden>
+    <h2>Shop This Article</h2>
+    <ul class="sta__theme-grid grid product-grid grid--2-col-tablet-down grid--4-col-desktop" role="list">
+      {%- assign sta_handle_list = sta_handles | split: '|' -%}
+      {%- for handle in sta_handle_list -%}
+        {%- if handle != blank -%}
+          {%- assign sta_product = all_products[handle] -%}
+          {%- if sta_product != blank -%}
+            <li class="grid__item">
+              {% render 'card-product',
+                card_product: sta_product,
+                media_aspect_ratio: 'square',
+                show_secondary_image: settings.show_secondary_image,
+                badges: 'sale',
+                show_vendor: false,
+                show_rating: false,
+                lazy_load: true,
+                show_quick_add: false,
+                button_funcionality: 'link-to-product-page',
+                quick_add_as_link_label: 'View product',
+                section_id: section.id
+              %}
+            </li>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+    <div class="sta__inline-grid" data-sta-inline-products hidden></div>
+  </section>
+</div>
+
+<style>
+  #{{ sta_id }} {
+    --sta-ink: #111111;
+    --sta-muted: #606060;
+    --sta-line: #e7e7e7;
+    --sta-soft: #f7f7f4;
+    --sta-yellow: #54b94a;
+    font-family: inherit;
+    isolation: isolate;
+  }
+
+  #{{ sta_id }},
+  #{{ sta_id }} * {
+    box-sizing: border-box;
+  }
+
+  #{{ sta_id }}[hidden],
+  #{{ sta_id }} [hidden] { display: none !important; }
+
+  #{{ sta_id }} .sta__trigger {
+    position: fixed !important;
+    right: 18px !important;
+    bottom: 34px !important;
+    z-index: 2147483000;
+    min-height: 50px;
+    border: 1px solid #000;
+    border-radius: 999px;
+    display: inline-flex !important;
+    align-items: center;
+    gap: 9px;
+    padding: 0 18px 0 14px;
+    background: #000;
+    color: var(--sta-yellow);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, .22);
+    font-size: 13px;
+    font-weight: 950;
+    letter-spacing: 0;
+    line-height: 1;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  #{{ sta_id }} .sta__trigger-icon,
+  #{{ sta_id }} .sta__trigger-label,
+  #{{ sta_id }} .sta__count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #{{ sta_id }} .sta__trigger-label {
+    color: var(--sta-yellow);
+    font-size: 13px;
+    font-weight: 950;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  #{{ sta_id }} .sta__trigger-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  #{{ sta_id }} .sta__count {
+    min-width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    background: var(--sta-yellow);
+    color: #000;
+    font-size: 12px;
+  }
+
+  #{{ sta_id }} .sta__overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    background: rgba(0, 0, 0, .52);
+  }
+
+  #{{ sta_id }} .sta__modal {
+    position: fixed;
+    right: 18px;
+    bottom: 88px;
+    z-index: 91;
+    width: min(430px, calc(100vw - 36px));
+    max-height: min(760px, calc(100vh - 100px));
+    border: 1px solid var(--sta-line);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: #fff;
+    color: var(--sta-ink);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, .28);
+  }
+
+  #{{ sta_id }} .sta__header {
+    min-height: 60px;
+    border-bottom: 1px solid var(--sta-line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 0 16px 0 18px;
+    background: #fff;
+  }
+
+  #{{ sta_id }} .sta__header h2 {
+    margin: 0;
+    color: var(--sta-ink);
+    font-size: 20px;
+    font-weight: 950;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  #{{ sta_id }} .sta__close {
+    width: 40px;
+    height: 40px;
+    border: 0;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--sta-soft);
+    color: var(--sta-ink);
+    cursor: pointer;
+  }
+
+  #{{ sta_id }} .sta__close svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  #{{ sta_id }} .sta__body {
+    display: grid;
+    gap: 0;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  #{{ sta_id }} .sta__card {
+    display: grid;
+    grid-template-columns: 86px minmax(0, 1fr);
+    gap: 13px;
+    padding: 16px;
+    border-bottom: 1px solid var(--sta-line);
+  }
+
+  #{{ sta_id }} .sta__card:last-child { border-bottom: 0; }
+
+  #{{ sta_id }} .sta__image-wrap {
+    width: 86px;
+    height: 86px;
+    border: 1px solid var(--sta-line);
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: #fff;
+  }
+
+  #{{ sta_id }} .sta__image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  #{{ sta_id }} .sta__info {
+    min-width: 0;
+    display: grid;
+    gap: 8px;
+  }
+
+  #{{ sta_id }} .sta__vendor {
+    margin: 0;
+    color: #2f7d28;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: .06em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  #{{ sta_id }} .sta__title {
+    color: var(--sta-ink);
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    font-size: 14px;
+    font-weight: 850;
+    line-height: 1.32;
+    text-decoration: none;
+  }
+
+  #{{ sta_id }} .sta__title:hover { color: #2f7d28; }
+
+  #{{ sta_id }} .sta__price-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    align-items: center;
+  }
+
+  #{{ sta_id }} .sta__price {
+    color: var(--sta-ink);
+    font-size: 14px;
+    font-weight: 950;
+    line-height: 1;
+  }
+
+  #{{ sta_id }} .sta__compare {
+    color: #8a8a8a;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+    text-decoration: line-through;
+  }
+
+  #{{ sta_id }} .sta__variant {
+    width: 100%;
+    min-height: 36px;
+    border: 1px solid var(--sta-line);
+    border-radius: 6px;
+    padding: 0 10px;
+    background: #fff;
+    color: var(--sta-ink);
+    font: inherit;
+    font-size: 12px;
+    font-weight: 750;
+  }
+
+  #{{ sta_id }} .sta__actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+    align-items: center;
+  }
+
+  #{{ sta_id }} .sta__view,
+  #{{ sta_id }} .sta__add {
+    min-height: 38px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 12px;
+    font-size: 12px;
+    font-weight: 950;
+    line-height: 1;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  #{{ sta_id }} .sta__view {
+    border: 1px solid var(--sta-line);
+    color: var(--sta-ink);
+    background: #fff;
+  }
+
+  #{{ sta_id }} .sta__add {
+    min-width: 42px;
+    border: 1px solid var(--sta-yellow);
+    background: var(--sta-yellow);
+    color: #fff;
+    cursor: pointer;
+  }
+
+  #{{ sta_id }} .sta__add[disabled] {
+    opacity: .5;
+    cursor: not-allowed;
+  }
+
+  #{{ sta_id }} .sta__add svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  #{{ sta_id }} .sta__inline {
+    margin: 3.2rem 0 1rem;
+    padding: 2.2rem 0 0;
+    border-top: 1px solid var(--sta-line);
+  }
+
+  #{{ sta_id }} .sta__inline h2 {
+    margin: 0 0 1.6rem;
+    color: var(--sta-ink);
+    font-size: 20px;
+    font-weight: 950;
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  #{{ sta_id }} .sta__inline-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  #{{ sta_id }} .sta__inline-card {
+    min-width: 0;
+    border: 1px solid #f0f0f0;
+    border-radius: 8px;
+    display: grid;
+    gap: 8px;
+    padding: 14px;
+    background: #fff;
+    color: var(--sta-ink);
+    text-decoration: none;
+  }
+
+  #{{ sta_id }} .sta__inline-image {
+    width: 100%;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: #fff;
+  }
+
+  #{{ sta_id }} .sta__inline-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  #{{ sta_id }} .sta__inline-title {
+    min-height: 3.5em;
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    color: var(--sta-ink);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.18;
+  }
+
+  #{{ sta_id }} .sta__inline-price-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: baseline;
+  }
+
+  #{{ sta_id }} .sta__inline-price {
+    color: var(--sta-ink);
+    font-size: 16px;
+    font-weight: 950;
+    line-height: 1;
+  }
+
+  #{{ sta_id }} .sta__inline-compare {
+    color: #8a8a8a;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: line-through;
+  }
+
+  @media screen and (min-width: 750px) {
+    #{{ sta_id }} .sta__trigger {
+      top: auto !important;
+      left: var(--sta-desktop-left, auto) !important;
+      right: var(--sta-desktop-right, 22px) !important;
+      bottom: 120px !important;
+      transform: none;
+      display: inline-flex !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+
+    #{{ sta_id }} .sta__modal {
+      left: var(--sta-desktop-left, auto) !important;
+      right: var(--sta-desktop-right, 22px) !important;
+      bottom: 180px !important;
+    }
+
+    #{{ sta_id }} .sta__inline-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #{{ sta_id }} .sta__trigger {
+      left: 12px;
+      right: 12px;
+      bottom: 24px;
+      justify-content: center;
+      width: auto;
+    }
+
+    #{{ sta_id }} .sta__modal {
+      left: 0;
+      right: 0;
+      bottom: calc(72px + env(safe-area-inset-bottom));
+      width: 100%;
+      max-height: min(76vh, 680px);
+      border-radius: 12px;
+      border-left: 0;
+      border-right: 0;
+    }
+
+    #{{ sta_id }} .sta__card {
+      grid-template-columns: 76px minmax(0, 1fr);
+      padding: 14px 12px;
+    }
+
+    #{{ sta_id }} .sta__image-wrap {
+      width: 76px;
+      height: 76px;
+    }
+  }
+</style>
+
+<script>
+  (() => {
+    const root = document.getElementById({{ sta_id | json }});
+    if (!root || root.dataset.initialized === 'true') return;
+    root.dataset.initialized = 'true';
+
+    const content = document.querySelector(root.dataset.contentSelector);
+
+    const trigger = root.querySelector('.sta__trigger');
+    const overlay = root.querySelector('.sta__overlay');
+    const modal = root.querySelector('.sta__modal');
+    const body = root.querySelector('[data-sta-products]');
+    const inline = root.querySelector('[data-sta-inline]');
+    const inlineBody = root.querySelector('[data-sta-inline-products]');
+    const count = root.querySelector('[data-sta-count]');
+    const moneyFormat = {{ shop.money_format | json }};
+    const currency = {{ cart.currency.iso_code | default: shop.currency | json }};
+    const cartAddUrl = {{ routes.cart_add_url | json }};
+
+    const formatMoney = (cents) => {
+      if (window.Shopify && typeof window.Shopify.formatMoney === 'function') {
+        return window.Shopify.formatMoney(cents, moneyFormat);
+      }
+      return new Intl.NumberFormat(undefined, { style: 'currency', currency }).format((Number(cents) || 0) / 100);
+    };
+
+    const getHandle = (href) => {
+      try {
+        const url = new URL(href, window.location.origin);
+        const match = url.pathname.match(/\/products\/([^/?#]+)/);
+        return match ? decodeURIComponent(match[1]) : null;
+      } catch (error) {
+        return null;
+      }
+    };
+
+    const liquidHandles = (root.dataset.liquidHandles || '').split('|').filter(Boolean);
+    const domHandles = content ? [...content.querySelectorAll('a[href*="/products/"]')]
+      .map((link) => getHandle(link.getAttribute('href')))
+      .filter(Boolean) : [];
+    const handles = [...new Set([...liquidHandles, ...domHandles])].slice(0, 12);
+
+    if (!handles.length) return;
+
+    const fetchProduct = (handle) => fetch(`/products/${encodeURIComponent(handle)}.js`, {
+      headers: { Accept: 'application/json' }
+    }).then((response) => response.ok ? response.json() : null).catch(() => null);
+
+    const getImage = (product) => {
+      if (product.featured_image) return product.featured_image;
+      if (Array.isArray(product.images) && product.images.length) return product.images[0];
+      return '';
+    };
+
+    const getVariant = (product) => {
+      if (!Array.isArray(product.variants)) return null;
+      return product.variants.find((variant) => variant.available) || product.variants[0] || null;
+    };
+
+    const variantOptionsMarkup = (product, selectedVariant) => {
+      if (!Array.isArray(product.variants) || product.variants.length < 2) return '';
+
+      const options = product.variants.map((variant) => {
+        const compareAt = Number(variant.compare_at_price || 0);
+        const image = variant.featured_image && variant.featured_image.src ? variant.featured_image.src : '';
+
+        return `
+          <option
+            value="${variant.id}"
+            data-price="${Number(variant.price || 0)}"
+            data-compare="${compareAt}"
+            data-available="${variant.available ? 'true' : 'false'}"
+            data-image="${escapeHtml(image)}"
+            ${variant.id === selectedVariant.id ? 'selected' : ''}
+            ${variant.available ? '' : 'disabled'}
+          >
+            ${escapeHtml(variant.title)}${variant.available ? '' : ' - Sold out'}
+          </option>
+        `;
+      }).join('');
+
+      return `<select class="sta__variant" aria-label="Choose variant">${options}</select>`;
+    };
+
+    const cardMarkup = (product) => {
+      const variant = getVariant(product);
+      if (!variant) return '';
+
+      const available = Boolean(variant.available);
+      const image = getImage(product);
+      const compareAt = Number(variant.compare_at_price || product.compare_at_price || 0);
+      const price = Number(variant.price || product.price || 0);
+      const variants = variantOptionsMarkup(product, variant);
+
+      return `
+        <article class="sta__card">
+          <a class="sta__image-wrap" href="${product.url}" aria-label="${escapeHtml(product.title)}">
+            ${image ? `<img class="sta__image" src="${image}" alt="${escapeHtml(product.title)}" loading="lazy">` : ''}
+          </a>
+          <div class="sta__info">
+            ${product.vendor ? `<p class="sta__vendor">${escapeHtml(product.vendor)}</p>` : ''}
+            <a class="sta__title" href="${product.url}">${escapeHtml(product.title)}</a>
+            <div class="sta__price-row">
+              <span class="sta__price">${formatMoney(price)}</span>
+              <span class="sta__compare" ${compareAt > price ? '' : 'hidden'}>${compareAt > price ? formatMoney(compareAt) : ''}</span>
+            </div>
+            ${variants}
+            <div class="sta__actions">
+              <a class="sta__view" href="${product.url}">View product</a>
+              <button class="sta__add" type="button" data-variant-id="${variant.id}" ${available ? '' : 'disabled'} aria-label="${available ? 'Add to cart' : 'Sold out'}">
+                ${available ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6h15l-1.5 9h-12z"/><path d="M6 6 5 2H2"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg>' : 'Sold out'}
+              </button>
+            </div>
+          </div>
+        </article>
+      `;
+    };
+
+    const inlineCardMarkup = (product) => {
+      const variant = getVariant(product);
+      if (!variant) return '';
+
+      const image = getImage(product);
+      const compareAt = Number(variant.compare_at_price || product.compare_at_price || 0);
+      const price = Number(variant.price || product.price || 0);
+
+      return `
+        <a class="sta__inline-card" href="${product.url}" aria-label="${escapeHtml(product.title)}">
+          <span class="sta__inline-image">
+            ${image ? `<img src="${image}" alt="${escapeHtml(product.title)}" loading="lazy">` : ''}
+          </span>
+          <span class="sta__inline-title">${escapeHtml(product.title)}</span>
+          <span class="sta__inline-price-row">
+            <span class="sta__inline-price">${formatMoney(price)}</span>
+            ${compareAt > price ? `<span class="sta__inline-compare">${formatMoney(compareAt)}</span>` : ''}
+          </span>
+        </a>
+      `;
+    };
+
+    function escapeHtml(value) {
+      return String(value || '').replace(/[&<>'"]/g, (char) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        "'": '&#39;',
+        '"': '&quot;'
+      }[char]));
+    }
+
+    const open = () => {
+      overlay.hidden = false;
+      modal.hidden = false;
+      trigger.setAttribute('aria-expanded', 'true');
+      modal.querySelector('.sta__close').focus();
+    };
+
+    const close = () => {
+      overlay.hidden = true;
+      modal.hidden = true;
+      trigger.setAttribute('aria-expanded', 'false');
+      trigger.focus();
+    };
+
+    const getCartSections = () => {
+      const sections = ['cart-icon-bubble'];
+      if (document.querySelector('cart-drawer')) sections.push('cart-drawer');
+      return sections;
+    };
+
+    const refreshCartBubble = (sections) => {
+      const html = sections && sections['cart-icon-bubble'];
+      const bubble = document.getElementById('cart-icon-bubble');
+      if (!html || !bubble) return;
+
+      const replacement = new DOMParser()
+        .parseFromString(html, 'text/html')
+        .getElementById('cart-icon-bubble');
+
+      if (replacement) bubble.innerHTML = replacement.innerHTML;
+    };
+
+    const refreshCartDrawer = (sections) => {
+      const html = sections && sections['cart-drawer'];
+      const drawer = document.querySelector('cart-drawer');
+      if (!html || !drawer) return;
+
+      const replacement = new DOMParser()
+        .parseFromString(html, 'text/html')
+        .querySelector('cart-drawer');
+
+      if (!replacement) return;
+      drawer.innerHTML = replacement.innerHTML;
+      drawer.className = replacement.className;
+    };
+
+    const updateCartUi = (state) => {
+      refreshCartBubble(state.sections);
+      refreshCartDrawer(state.sections);
+    };
+
+    const updateVariant = (select) => {
+      const card = select.closest('.sta__card');
+      const option = select.selectedOptions[0];
+      if (!card || !option) return;
+
+      const price = Number(option.dataset.price || 0);
+      const compareAt = Number(option.dataset.compare || 0);
+      const available = option.dataset.available === 'true';
+      const addButton = card.querySelector('.sta__add');
+      const priceEl = card.querySelector('.sta__price');
+      const compareEl = card.querySelector('.sta__compare');
+      const imageEl = card.querySelector('.sta__image');
+
+      if (priceEl) priceEl.textContent = formatMoney(price);
+      if (compareEl) {
+        compareEl.hidden = compareAt <= price;
+        compareEl.textContent = compareAt > price ? formatMoney(compareAt) : '';
+      }
+      if (addButton) {
+        addButton.dataset.variantId = option.value;
+        addButton.disabled = !available;
+        addButton.setAttribute('aria-label', available ? 'Add to cart' : 'Sold out');
+        if (!available) addButton.textContent = 'Sold out';
+      }
+      if (imageEl && option.dataset.image) imageEl.src = option.dataset.image;
+    };
+
+    const alignToStickyPromotion = () => {
+      if (!window.matchMedia('(min-width: 750px)').matches) {
+        root.style.removeProperty('--sta-desktop-left');
+        root.style.removeProperty('--sta-desktop-right');
+        return;
+      }
+
+      const sticky = document.querySelector('.sticky-promotion');
+      if (!sticky) return;
+
+      const rect = sticky.getBoundingClientRect();
+      const buttonWidth = trigger ? trigger.offsetWidth : 0;
+      const left = Math.max(12, rect.left + ((rect.width - buttonWidth) / 2));
+
+      root.style.setProperty('--sta-desktop-left', `${left}px`);
+      root.style.setProperty('--sta-desktop-right', 'auto');
+    };
+
+    window.addEventListener('resize', alignToStickyPromotion, { passive: true });
+    window.addEventListener('scroll', alignToStickyPromotion, { passive: true });
+
+    Promise.all(handles.map(fetchProduct)).then((products) => {
+      const validProducts = products.filter(Boolean).filter(getVariant);
+      if (!validProducts.length) return;
+
+      body.innerHTML = validProducts.map(cardMarkup).join('');
+      if (inlineBody && !root.querySelector('.sta__theme-grid .grid__item')) {
+        inlineBody.hidden = false;
+        inlineBody.innerHTML = validProducts.map(inlineCardMarkup).join('');
+      }
+      count.textContent = validProducts.length;
+      root.hidden = false;
+      if (inline) inline.hidden = false;
+      alignToStickyPromotion();
+
+      trigger.addEventListener('click', open);
+      root.querySelectorAll('[data-sta-close]').forEach((button) => button.addEventListener('click', close));
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && !modal.hidden) close();
+      });
+
+      body.addEventListener('change', (event) => {
+        const select = event.target.closest('.sta__variant');
+        if (select) updateVariant(select);
+      });
+
+      body.addEventListener('click', async (event) => {
+        const button = event.target.closest('.sta__add');
+        if (!button || button.disabled) return;
+
+        const original = button.innerHTML;
+        button.disabled = true;
+        button.textContent = 'Adding';
+
+        try {
+          const variantId = Number(button.dataset.variantId);
+          const cartBefore = await fetch('/cart.js', {
+            headers: { Accept: 'application/json' },
+            credentials: 'same-origin',
+            cache: 'no-store'
+          }).then((response) => response.ok ? response.json() : { items: [] });
+          const quantityBefore = (cartBefore.items || [])
+            .filter((item) => Number(item.variant_id) === variantId)
+            .reduce((sum, item) => sum + Number(item.quantity || 0), 0);
+
+          const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            credentials: 'same-origin',
+            cache: 'no-store',
+            body: JSON.stringify({
+              items: [{ id: variantId, quantity: 1 }],
+              sections: getCartSections(),
+              sections_url: window.location.pathname
+            })
+          });
+
+          const state = await response.json().catch(() => ({}));
+          if (!response.ok) throw new Error(state.description || state.message || 'Add to cart failed');
+
+          const cartAfter = await fetch('/cart.js', {
+            headers: { Accept: 'application/json' },
+            credentials: 'same-origin',
+            cache: 'no-store'
+          }).then((cartResponse) => cartResponse.ok ? cartResponse.json() : { items: [] });
+          const quantityAfter = (cartAfter.items || [])
+            .filter((item) => Number(item.variant_id) === variantId)
+            .reduce((sum, item) => sum + Number(item.quantity || 0), 0);
+
+          if (quantityAfter <= quantityBefore) throw new Error('Cart did not persist the added item');
+
+          updateCartUi(state);
+          button.textContent = 'Added';
+          document.dispatchEvent(new CustomEvent('shop-this-article:added'));
+          setTimeout(() => {
+            button.innerHTML = original;
+            button.disabled = false;
+          }, 1600);
+        } catch (error) {
+          button.textContent = 'Error';
+          setTimeout(() => {
+            button.innerHTML = original;
+            button.disabled = false;
+          }, 1600);
+        }
+      });
+    });
+  })();
+</script>
+
+
+{% schema %}
+{
+  "name": "Shop This Article",
+  "settings": []
+}
+{% endschema %}
