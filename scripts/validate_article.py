@@ -10,26 +10,23 @@ Also verifies that every linked product/collection/author URL returns 200.
 """
 import sys, os, re, glob, json, subprocess, tempfile, urllib.request, urllib.error
 
-ROSTER_PAGES={"/pages/author-two","/pages/author-one","/pages/author-three",
-              "/pages/author-four","/pages/author-five","/pages/author-six","/pages/author-seven"}
-# Removed 2026-07-29: fabricated identities, several with fake medical credentials, on YMYL
-# supplement content. Their /pages/ handles now 301 to /pages/authors.
-FAKE_AUTHORS=()   # TODO: add any fabricated byline you have had to remove,
-                  # so a model can never resurrect it. Empty = check disabled.
-# The single source of truth is scripts/reset-author-trust.py's PROFILES; kept in sync by
-# test_author_gate() below, which fails if the two drift apart.
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import genseo_roster
+
+# Single source of truth: roster.json (see scripts/genseo_roster.py). Empty roster
+# blocks publishing by design — fill roster.json with real, consenting people.
+ROSTER_PAGES=genseo_roster.PAGES
+APPROVED_BIOS=genseo_roster.BIOS
+FAKE_AUTHORS=("Author One","Author Two","Author Three","Author Four",
+              "Author Five","Author Six","Author Seven")
+              # Donor package's sanitized placeholder bylines — a model must never
+              # resurrect them. Add any byline you ever have to remove.
+# US-market anchor: the answer block must place the reader geographically the way the
+# donor system anchored on its market. Case-sensitive so the pronoun "us" can't pass.
+MARKET_RE=re.compile(r'\bU\.?S\.?A?\.?\b|\bUnited States\b|\bAmericans?\b')
 # Draft mode converts `### About the Author` to `<h3>…</h3>` before the checks run, so the bio
 # must be found in BOTH forms — a markdown-only pattern silently passes every real draft.
 BIO_RE=re.compile(r'(?is)(?:#{2,3}\s*|<h[23][^>]*>\s*)About the Author\s*(?:</h[23]>)?\s*(.{0,600})')
-APPROVED_BIOS=(
- "Author One is the founder and CEO of Your Brand.",
- "Author Two contributes product research and buyer-guide editing for Your Brand,",
- "Author Three contributes commercial and e-commerce experience to Your Brand content,",
- "Author Four is a nutritionist and staff contributor at Your Brand.",
- "Author Five is a nutritionist and staff contributor at Your Brand.",
- "Author Six is a nutritionist and staff contributor at Your Brand.",
- "Author Seven is a nutritionist and staff contributor at Your Brand.",
-)
 MIN_INLINE_IMAGES=3   # every review/product article must have >=3 in-body images (1 per product; hero excluded)
 
 # ---------------------------------------------------------------------------
@@ -121,22 +118,24 @@ def http_ok(url):
 
 def test_author_gate():
     """python3 scripts/validate_article.py --self-check-author"""
-    # The original also cross-checked the roster against the script that rewrites
-    # the live author pages. That script is store-specific and is not shipped, so
-    # keep ROSTER_PAGES / APPROVED_BIOS above in sync with your skill roster by hand.
-    good=("## Frequently Asked Questions\n### Q?\nA.\n\n### About the Author\n"
-          "[Author Seven](/pages/author-seven) — Author Seven is a nutritionist and staff contributor at Your Brand. "
-          "Author Seven contributes product comparisons and supplement buying guidance for {{MARKET}} readers.")
+    if not genseo_roster.ROSTER:
+        print("✗ roster.json is EMPTY — fill /Users/kevinkreative/genseo/roster.json with real people")
+        print("  (see scripts/genseo_roster.py for the format). Publishing is blocked until then.")
+        sys.exit(1)
+    handle, entry = next(iter(genseo_roster.ROSTER.items()))
+    name, bio = entry["name"], entry["bio"]
+    good=(f"## Frequently Asked Questions\n### Q?\nA.\n\n### About the Author\n"
+          f"[{name}](/pages/{handle}) — {bio} "
+          f"{name} contributes product comparisons and supplement buying guidance for US readers.")
     assert not _author_fails(good), _author_fails(good)
-    assert _author_fails(good.replace("Author Seven is a nutritionist and staff contributor at Your Brand.",
-                                      "Author Seven is a Strength Coach with over 8 years of experience."))
-    assert _author_fails(good.replace("Author Seven](/pages/author-seven", "Dr. Not On Roster](/pages/not-on-roster"))
+    assert _author_fails(good.replace(bio, f"{name} is a Strength Coach with over 8 years of experience."))
+    assert _author_fails(good.replace(f"{name}](/pages/{handle}", "Author Four](/pages/author-four"))
     # the real --draft path sees HTML headings, not markdown ones
     as_html=good.replace("### About the Author", "<h3>About the Author</h3>")
     assert not _author_fails(as_html), _author_fails(as_html)
-    assert _author_fails(as_html.replace("Author Seven is a nutritionist and staff contributor at Your Brand.",
-                                         "Author Seven is a Strength Coach & Fitness Specialist."))
-    print("author gate self-check OK — roster in sync, invented credential and fake byline both fail")
+    assert _author_fails(as_html.replace(bio, f"{name} is a Strength Coach & Fitness Specialist."))
+    print(f"author gate self-check OK — roster has {len(genseo_roster.ROSTER)} author(s), "
+          "invented credential and resurrected placeholder byline both fail")
 
 
 def _author_fails(md):
@@ -233,18 +232,18 @@ def main():
     if answer is not None:
         aw=len(answer.split())
         if not (30<=aw<=90): warns.append(f"answer block {aw} words (target 40–60)")
-        if '{{market}}' not in answer.lower(): fails.append("answer block missing '{{MARKET}}'")
+        if not MARKET_RE.search(answer): fails.append("answer block missing US-market anchor (US / United States / American)")
     else:
         fails.append("no opening <p> answer block (>=20 words)")
     # h2 count + locality
     h2s=re.findall(r'<h2[^>]*>(.*?)</h2>', html, re.S|re.I)
     if len(h2s)<3: fails.append(f"need ≥3 <h2>, found {len(h2s)}")
-    loc_h2=sum(1 for h in h2s if '{{market}}' in re.sub(r'<[^>]*>','',h).lower())
-    if loc_h2<1: warns.append("no <h2> contains '{{MARKET}}'")
+    loc_h2=sum(1 for h in h2s if MARKET_RE.search(re.sub(r'<[^>]*>','',h)))
+    if loc_h2<1: warns.append("no <h2> contains a US-market anchor")
     # table
     if '<table' not in html: fails.append("no comparison <table>")
-    # {{CURRENCY}} price
-    if '{{CURRENCY}}' not in html.lower() and not re.search(r'\$\s?\d', html): fails.append("no {{CURRENCY}} price range")
+    # USD price presence (donor's {{CURRENCY}} check was dead code; the working check is $-digits)
+    if not re.search(r'\$\s?\d', html): fails.append("no USD price range (e.g. $25–$40)")
     # collection links >=2
     colls=re.findall(r'https://wellnessnest\.co(/collections/[a-z0-9-]+)', html)
     if len(colls)<2: fails.append(f"need ≥2 /collections/ links, found {len(colls)}")
@@ -257,7 +256,9 @@ def main():
     if len(faq_qs)<3: warns.append(f"only {len(faq_qs)} visible FAQ questions")
     # author: named staff member + live page
     author_pages=set(re.findall(r'(/pages/[a-z-]+)', html))
-    if not (author_pages & ROSTER_PAGES): fails.append("no roster author /pages/ link")
+    if not ROSTER_PAGES:
+        fails.append("author roster EMPTY — fill /Users/kevinkreative/genseo/roster.json (real people only)")
+    elif not (author_pages & ROSTER_PAGES): fails.append("no roster author /pages/ link")
     if author_pages & ROSTER_PAGES and not re.search(r'"@type"\s*:\s*"Person"', html):
         fails.append("staff author must use Person schema")
     # A real name with an invented credential is the same YMYL fabrication as a fake doctor, and
@@ -275,7 +276,7 @@ def main():
         if not any(s[:60].lower() in bio.lower() for s in APPROVED_BIOS):
             fails.append("author bio is not the approved sentence for that staff member")
     # brand mentions
-    if html.count('Your Brand')<2: warns.append("brand 'Your Brand' used <2 times")
+    if html.count('Wellness Nest')<2: warns.append("brand 'Wellness Nest' used <2 times")
     # images alt
     imgs=re.findall(r'<img[^>]*>', html)
     noalt=[i for i in imgs if 'alt=' not in i or re.search(r'alt=["\']\s*["\']',i)]

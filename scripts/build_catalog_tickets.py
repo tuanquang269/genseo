@@ -32,7 +32,11 @@ SHOP, TOKEN = cfg['shop'], cfg['access_token']
 API = f"https://{SHOP}/admin/api/2026-04"
 
 # brands that are our own house label / not a real third-party brand to review
-SKIP_VENDORS = {'your brand', 'your brand', 'unknown', ''}
+# NOTE: this builder was designed for a multi-brand RETAILER (review tickets for
+# stocked third-party brands). wellnessnest.co sells only house brands, so with
+# vendors correctly skipped it will emit ~nothing — that is honest, not broken.
+# Re-design (own-brand angles from GSC demand) before relying on it for daily refill.
+SKIP_VENDORS = {'wellness nest', 'ageaura', 'unknown', ''}
 MIN_SKU = 3   # need real range depth — a 1-2 SKU brand isn't worth a dedicated review page
 
 # Shopify productType is a noisy taxonomy, so DON'T use it in the title — brands are searched by
@@ -124,7 +128,7 @@ def collection_handle(brand):
 
 
 ANGLE = ("Brand review / where-to-buy — direct verdict up top (who it's for, is it worth it), "
-         "then a comparison table of this brand's range we stock, then where to buy in SG with {{CURRENCY}} price.")
+         "then a comparison table of this brand's range we stock, then where to buy in the US with $ price.")
 
 
 def render_ticket(c, num):

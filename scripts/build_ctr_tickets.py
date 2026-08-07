@@ -19,10 +19,10 @@ BLOGS = {104008483131: 'news'}
 EXPECT = {1:0.25,2:0.15,3:0.10,4:0.065,5:0.05,6:0.04,7:0.03,8:0.025,9:0.02,10:0.018,11:0.015,12:0.012}
 # brand-navigation pages: their "impressions" are mostly sitelinks on the brand query —
 # a title rewrite would hurt navigation and win nothing.
-EXCLUDE_PATHS = {'/', '/pages/about-us', '/pages/contact-us', '/pages/shopbycategory',
-                 '/pages/warehouse-sale', '/collections/frontpage', '/collections/ultimate-sup',
-                 '/collections'}
-BRAND_QUERY_WORDS = ('your brand', 'your brand')
+EXCLUDE_PATHS = {'/', '/pages/about-us', '/pages/about', '/pages/contact-us',
+                 '/collections/frontpage', '/collections/best-seller', '/collections'}
+BRAND_QUERY_WORDS = ('wellness nest', 'wellnessnest', 'ageaura', 'shilasource',
+                     'fusiforce', 'florafresh', 'menomate')
 
 
 def shopify(path):
@@ -132,11 +132,11 @@ SERP title + meta description. **Nothing else.**
 2. `update_title_meta.py` changes only the SERP title/meta (SEO metafields) — the on-page H1 and
    content stay untouched. It is the gate: if it prints ✗, fix the title/meta and re-run.
 3. TITLE rules (WIN THE CLICK): ≤60 chars · primary keyword at the front · ONE concrete hook
-   (an S$ price, a number, "(2026)", or a question) · NEVER "Ultimate Guide"/"Complete Guide"/
+   (a $ price, a number, "(2026)", or a question) · NEVER "Ultimate Guide"/"Complete Guide"/
    "Everything You Need" boilerplate · must clearly beat the current title, not reword it.
 4. META rules: 120–165 chars · first sentence answers the query · add one differentiator
-   ({{CURRENCY}} price, "100% authentic", "next-day SG delivery").
-5. Never mention Bronson or Transparent Labs (not in stock).
+   (a $ price, a concrete benefit, or a question — never invent shipping/authenticity claims).
+5. Never mention brands Wellness Nest does not sell (MuscleMax is a competitor — never link or promote).
 6. After ✓, mark the ticket `[DONE YYYY-MM-DD]` and record the new title in the ticket.
 
 > 💡 **How to run:** operator says *"continue with the next 3 tickets in jul27-ctr-sprint-tickets.md"*.

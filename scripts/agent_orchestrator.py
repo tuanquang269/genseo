@@ -89,14 +89,10 @@ def check_rankings(site_url, threshold=5.0):
     tickets.sort(key=lambda x: x['clicks'], reverse=True)
                 
     if not tickets:
-        print("No organic drops found over threshold. Injecting a mock drop for test validation...")
-        tickets.append({
-            "keyword": "test mock mutant whey review",
-            "url": "https://wellnessnest.co/products/mutant-whey",
-            "previous_rank": 2.1,
-            "current_rank": 10.4,
-            "drop": 8.3
-        })
+        # A quiet day is a real result. The donor version injected a fabricated
+        # "URGENT RANKING DROP" here, which a cron-fed agent would act on daily.
+        print("No organic drops found over threshold. Nothing to do — not writing any tickets.")
+        return
 
     generate_tickets_markdown(tickets)
 

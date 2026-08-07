@@ -1,0 +1,3 @@
+{
+  "_TODO": "KEVIN: fill with 2-3 REAL team members who consent to byline supplement content. Format per entry: \"handle\": {\"name\": \"Full Name\", \"bio\": \"Full Name is <the exact approved one-sentence bio — no invented credentials>.\"}. Then create the live bio page at https://wellnessnest.co/pages/<handle> (the agent can create pages via API once names+bios are approved). Publishing stays BLOCKED by validate_article.py until this file has at least one real entry."
+}

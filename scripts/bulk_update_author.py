@@ -5,6 +5,12 @@ import urllib.request
 import urllib.parse
 import time
 
+import sys as _sys
+from genseo_roster import NAMES as _RN
+if len(_sys.argv) < 2 or _sys.argv[1] not in _RN.values():
+    _sys.exit("usage: bulk_update_author.py \"<Name from roster.json>\" — refusing to stamp a hardcoded person")
+TARGET_AUTHOR = _sys.argv[1]
+
 CONFIG_PATH = os.path.expanduser("~/.genseo/shopify_token.json")
 
 def bulk_update_author(blog_id):
@@ -32,14 +38,14 @@ def bulk_update_author(blog_id):
             article_id = article['id']
             current_author = article.get('author', '')
             
-            if current_author != 'Author One':
+            if current_author != TARGET_AUTHOR:
                 print(f"Updating '{article['title']}'...")
                 
                 update_url = f"https://{shop}/admin/api/2026-04/blogs/{blog_id}/articles/{article_id}.json"
                 payload = {
                     "article": {
                         "id": article_id,
-                        "author": "Author One"
+                        "author": TARGET_AUTHOR
                     }
                 }
                 
@@ -53,7 +59,7 @@ def bulk_update_author(blog_id):
                 updated_count += 1
                 time.sleep(0.5) # prevent API rate limits
                 
-        print(f"Done! Successfully updated author to 'Author One' for {updated_count} articles.")
+        print(f"Done! Successfully updated author to '{TARGET_AUTHOR}' for {updated_count} articles.")
         
     except Exception as e:
         print(f"Failed: {e}")

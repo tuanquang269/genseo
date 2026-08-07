@@ -8,18 +8,30 @@ import re
 import base64
 import time
 
-CONFIG_PATH = os.path.expanduser("~/.genseo/shopify_token.json")
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import genseo_config as _gcfg
+import genseo_roster
+
+CONFIG_PATH = _gcfg.CONFIG_PATH
+API = _gcfg.API
+
+ORG_NAME = "Wellness Nest"
+ORG_LOGO = "https://wellnessnest.co/cdn/shop/files/WNN_Main_Logo_eb77747f-0bd5-4316-a9ba-92349ddbe5cc.png"
+FALLBACK_AUTHOR = "Wellness Nest Editorial Team"
 
 def ping_indexnow(shop, token, blog_id, article_handle):
     try:
-        req = urllib.request.Request(f"https://{shop}/admin/api/2026-04/blogs/{blog_id}.json", headers={"X-Shopify-Access-Token": token})
+        req = urllib.request.Request(f"https://{shop}/admin/api/{API}/blogs/{blog_id}.json", headers={"X-Shopify-Access-Token": token})
         res = urllib.request.urlopen(req)
         blog_data = json.loads(res.read())
         blog_handle = blog_data['blog']['handle']
         
         url_to_index = f"https://wellnessnest.co/blogs/{blog_handle}/{article_handle}"
-        
+
         key = "YOUR_INDEXNOW_KEY"
+        if key.startswith("YOUR_"):
+            print("IndexNow Auto-Ping: SKIPPED (no key configured — run setup_indexnow.py, paste the key here AND set keyLocation to the hosted key page URL)")
+            return
         ping_payload = {
             "host": "wellnessnest.co",
             "key": key,
@@ -105,7 +117,7 @@ def upload_image_to_shopify_files(shop, token, local_path):
     ext       = os.path.splitext(filename)[1].lower()
     mime_type = {"png": "image/png", "jpg": "image/jpeg", "jpeg": "image/jpeg", "webp": "image/webp"}.get(ext.lstrip("."), "image/png")
 
-    gql_url = f"https://{shop}/admin/api/2026-04/graphql.json"
+    gql_url = f"https://{shop}/admin/api/{API}/graphql.json"
     headers = {"X-Shopify-Access-Token": token, "Content-Type": "application/json"}
 
     # Step 1: stagedUploadsCreate
@@ -238,7 +250,7 @@ def discover_images(md_text):
 # Returns: (image_count, list_of_img_srcs)
 # ---------------------------------------------------------------------------
 def verify_article_images(shop, token, blog_id, article_id):
-    url = f"https://{shop}/admin/api/2026-04/blogs/{blog_id}/articles/{article_id}.json?fields=id,handle,body_html,image"
+    url = f"https://{shop}/admin/api/{API}/blogs/{blog_id}/articles/{article_id}.json?fields=id,handle,body_html,image"
     req = urllib.request.Request(url, headers={"X-Shopify-Access-Token": token})
     try:
         res     = json.loads(urllib.request.urlopen(req).read())
@@ -370,7 +382,7 @@ def _faq_main_entity(md_text):
     return out
 
 
-def do_publish(file_path, blog_id):
+def do_publish(file_path, blog_id, live=False):
     if not os.path.exists(CONFIG_PATH):
         print("Error: Not authenticated. Please run the auth flow first.")
         sys.exit(1)
@@ -435,22 +447,15 @@ def do_publish(file_path, blog_id):
 
     if fail_count > 0:
         print(f"\n  ⚠  {fail_count} image(s) failed to upload. The article will be published but images will be broken.")
-        print(f"     Run: python3 /Users/kevinkreative/genseo/scripts/patch_images.py to fix them later.")
+        print(f"     Fix the local image paths in the draft and re-run `update` (patch_images.py is not in this package).")
 
     import datetime
 
     # --- Extract the NAMED author from the body byline so schema + author field match what
     # readers see (E-E-A-T). The draft credits an author as [Name](/pages/handle) in the
     # "About the Author" section. Fall back to the org name only if none is found. ---
-    # TODO: map every author-page handle on your site to that person's display
-    # name. A byline whose handle is not here falls back to the org name.
-    ROSTER = {
-        "author-one":"Author One", "author-two":"Author Two",
-        "author-three":"Author Three", "author-four":"Author Four",
-        "author-five":"Author Five", "author-six":"Author Six",
-        "author-seven":"Author Seven",
-    }
-    author_name = "Your Brand Research Team"
+    ROSTER = genseo_roster.NAMES  # single source: roster.json
+    author_name = FALLBACK_AUTHOR
     author_handle = None
     _am = re.search(r'\[([^\]]+)\]\(/pages/([a-z-]+)\)', md_text)
     if _am:
@@ -466,8 +471,8 @@ def do_publish(file_path, blog_id):
         "author": article_author,
         "publisher": {
             "@type": "Organization",
-            "name": "Your Brand",
-            "logo": {"@type": "ImageObject", "url": "https://wellnessnest.co/cdn/shop/files/Ultimate_Sup_Logo_2_small.png"}
+            "name": ORG_NAME,
+            "logo": {"@type": "ImageObject", "url": ORG_LOGO}
         },
         "datePublished": datetime.datetime.utcnow().isoformat() + "Z"
     }
@@ -483,16 +488,19 @@ def do_publish(file_path, blog_id):
     if faq_schema:
         html_content += _ldjson_block(faq_schema)
     
-    api_url = f"https://{shop}/admin/api/2026-04/blogs/{blog_id}/articles.json"
+    api_url = f"https://{shop}/admin/api/{API}/blogs/{blog_id}/articles.json"
     headers = {"X-Shopify-Access-Token": token, "Content-Type": "application/json"}
     
+    # Review posture (Kevin, 2026-08-07): articles land as DRAFTS until the operator
+    # passes --live. Kevin reviews the first batch in Shopify admin; flip the default
+    # only after he releases the training wheels.
     payload = {
         "article": {
             "title": title,
             "body_html": html_content,
             "author": author_name,
-            "tags": "Guide, Supplements, Your Brand",
-            "published": True
+            "tags": "Guide, Supplements, Wellness Nest",
+            "published": bool(live)
         }
     }
     if meta_description:
@@ -507,10 +515,15 @@ def do_publish(file_path, blog_id):
         res_data = json.loads(response.read())
         article_id = res_data['article']['id']
         handle     = res_data['article']['handle']
-        print(f"\nSUCCESS! Article published.")
+        if live:
+            print(f"\nSUCCESS! Article published LIVE.")
+        else:
+            print(f"\nSUCCESS! Article created as DRAFT (unpublished).")
+            print(f"  Review it in Shopify admin, then publish there — or re-run with --live.")
+            print(f"  Admin      : https://admin.shopify.com/store/wellnessnest1/content/articles/{article_id}")
         print(f"  Article ID : {article_id}")
         print(f"  Handle     : {handle}")
-        print(f"  URL        : https://wellnessnest.co/blogs/news/{handle}")
+        print(f"  URL        : https://wellnessnest.co/blogs/news/{handle}" + ("" if live else "  (404 until published)"))
 
         # ── Post-Publish Image Verification ─────────────────────────────────
         print(f"\n🔍 Verifying images on live article...")
@@ -520,7 +533,7 @@ def do_publish(file_path, blog_id):
 
         if img_count == 0:
             print(f"  ✗ IMAGE VERIFICATION FAILED — 0 CDN images found on live article!")
-            print(f"     Run: python3 /Users/kevinkreative/genseo/scripts/patch_images.py to fix.")
+            print(f"     Audit with scripts/audit_article_images.py, fix the draft, then re-run `update`.")
         elif img_count < expected:
             print(f"  ⚠  PARTIAL: {img_count}/{expected} images confirmed on CDN.")
             for s in img_srcs:
@@ -534,7 +547,10 @@ def do_publish(file_path, blog_id):
         with open(file_path, 'w', encoding='utf-8') as f:
             f.write(md_text)
 
-        ping_indexnow(shop, token, blog_id, handle)
+        if live:
+            ping_indexnow(shop, token, blog_id, handle)
+        else:
+            print("IndexNow: skipped (draft is not publicly reachable yet)")
     except Exception as e:
         print(f"Failed to publish article: {e}")
         if hasattr(e, 'read'):
@@ -596,7 +612,7 @@ def do_update(file_path, blog_id, article_id):
     # Otherwise the LIVE title is kept and the body update still goes through.
     try:
         _gr = urllib.request.Request(
-            f"https://{shop}/admin/api/2026-04/blogs/{blog_id}/articles/{article_id}.json?fields=title",
+            f"https://{shop}/admin/api/{API}/blogs/{blog_id}/articles/{article_id}.json?fields=title",
             headers={"X-Shopify-Access-Token": token})
         live_title = json.loads(urllib.request.urlopen(_gr).read())['article']['title']
     except Exception:
@@ -637,15 +653,8 @@ def do_update(file_path, blog_id, article_id):
 
     # ── Named author (E-E-A-T): match do_publish so refresh keeps the named author + schema ──
     import datetime
-    # TODO: map every author-page handle on your site to that person's display
-    # name. A byline whose handle is not here falls back to the org name.
-    ROSTER = {
-        "author-one":"Author One", "author-two":"Author Two",
-        "author-three":"Author Three", "author-four":"Author Four",
-        "author-five":"Author Five", "author-six":"Author Six",
-        "author-seven":"Author Seven",
-    }
-    author_name = "Your Brand Research Team"; author_handle = None
+    ROSTER = genseo_roster.NAMES  # single source: roster.json
+    author_name = FALLBACK_AUTHOR; author_handle = None
     _am = re.search(r'\[([^\]]+)\]\(/pages/([a-z-]+)\)', md_text) \
           or re.search(r'<!--\s*author url:\s*/pages/([a-z-]+)\s*-->', md_text, re.I)
     if _am:
@@ -658,8 +667,8 @@ def do_update(file_path, blog_id, article_id):
                       if author_handle else {"@type":"Organization","name":author_name})
     article_schema = {"@context":"https://schema.org","@type":"Article","headline":title,
         "author":article_author,
-        "publisher":{"@type":"Organization","name":"Your Brand",
-            "logo":{"@type":"ImageObject","url":"https://wellnessnest.co/cdn/shop/files/Ultimate_Sup_Logo_2_small.png"}},
+        "publisher":{"@type":"Organization","name":ORG_NAME,
+            "logo":{"@type":"ImageObject","url":ORG_LOGO}},
         "dateModified": datetime.datetime.utcnow().isoformat()+"Z"}
     if hero_cdn_url: article_schema["image"]=hero_cdn_url
     # FAQ schema (same parse as do_publish)
@@ -671,7 +680,7 @@ def do_update(file_path, blog_id, article_id):
     if faq_schema:
         html_content += _ldjson_block(faq_schema)
 
-    api_url = f"https://{shop}/admin/api/2026-04/blogs/{blog_id}/articles/{article_id}.json"
+    api_url = f"https://{shop}/admin/api/{API}/blogs/{blog_id}/articles/{article_id}.json"
     headers = {"X-Shopify-Access-Token": token, "Content-Type": "application/json"}
 
     payload = {"article": {"title": title, "body_html": html_content, "author": author_name}}
@@ -728,6 +737,8 @@ if __name__ == "__main__":
     pub_parser = subparsers.add_parser('publish')
     pub_parser.add_argument('file_path')
     pub_parser.add_argument('blog_id')
+    pub_parser.add_argument('--live', action='store_true',
+                            help='publish immediately; default creates an unpublished DRAFT for review')
 
     upd_parser = subparsers.add_parser('update')
     upd_parser.add_argument('file_path')
@@ -739,7 +750,7 @@ if __name__ == "__main__":
     if args.command == 'auth':
         run_oauth(args.shop, args.client_id, args.client_secret)
     elif args.command == 'publish':
-        do_publish(args.file_path, args.blog_id)
+        do_publish(args.file_path, args.blog_id, live=args.live)
     elif args.command == 'update':
         do_update(args.file_path, args.blog_id, args.article_id)
     else:

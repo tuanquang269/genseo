@@ -15,8 +15,7 @@ Idempotent: re-running a healthy article changes nothing.
 import sys, json, re, urllib.request, urllib.error, datetime, time
 
 from genseo_config import SHOP, TOKEN, API
-ROSTER={"author-two":"Author Two","author-one":"Author One","author-three":"Author Three",
- "author-four":"Author Four","author-five":"Author Five","author-six":"Author Six","author-seven":"Author Seven"}
+from genseo_roster import NAMES as ROSTER  # single source: roster.json
 
 def api(url, data=None, method="GET"):
     req=urllib.request.Request(url, data=(json.dumps(data).encode() if data else None), method=method,
@@ -69,7 +68,13 @@ def repair(aid, blog="104008483131"):
     author_name=ROSTER.get(handle)
     if not author_name:
         current=(a.get("author") or "").strip()
-        author_name=current if current in ROSTER.values() else "Author Four"
+        if current in ROSTER.values():
+            author_name=current
+        else:
+            # Never stamp a default person onto someone else's article — the donor
+            # system silently attributed unknown articles to one staffer. Skip instead.
+            print(f"  [{aid}] ⚠ SKIP author repair — byline '{current or '(empty)'}' not in roster.json | {a.get('handle')}")
+            author_name=None
 
     # Clean up old invalid Article schema to force a rebuild if it was Organization but we resolved a Person handle
     for m_json in re.finditer(r'<script type="application/ld\+json">(.*?)</script>', body, re.S):
@@ -86,9 +91,9 @@ def repair(aid, blog="104008483131"):
     add=""
     if "application/ld+json" not in body or '"@type": "Article"' not in body:
         art={"@context":"https://schema.org","@type":"Article","headline":title,
-             "author":({"@type":"Person","name":author_name,"url":f"https://wellnessnest.co/pages/{handle}"} if handle else {"@type":"Person","name":author_name,"url":"https://wellnessnest.co/pages/author-four"}),
-             "publisher":{"@type":"Organization","name":"Your Brand","logo":{"@type":"ImageObject","url":"https://wellnessnest.co/cdn/shop/files/Ultimate_Sup_Logo_2_small.png"}},
-             "dateModified":"2026-06-13"}
+             "author":({"@type":"Person","name":author_name,"url":f"https://wellnessnest.co/pages/{handle}"} if handle and author_name else {"@type":"Organization","name":"Wellness Nest"}),
+             "publisher":{"@type":"Organization","name":"Wellness Nest","logo":{"@type":"ImageObject","url":"https://wellnessnest.co/cdn/shop/files/WNN_Main_Logo_eb77747f-0bd5-4316-a9ba-92349ddbe5cc.png"}},
+             "dateModified":datetime.date.today().isoformat()}
         add+=f'\n<script type="application/ld+json">\n{json.dumps(art,indent=2)}\n</script>\n'
         changed.append("Article")
     if "FAQPage" not in body:
@@ -105,7 +110,7 @@ def repair(aid, blog="104008483131"):
     do_put=False
     if add:
         payload["article"]["body_html"]=body+add; do_put=True
-    if (a.get("author") or "").strip() in ("","Your Brand Research Team", "Your Brand Staff") and handle:
+    if (a.get("author") or "").strip() in ("","Wellness Nest Editorial Team","Your Brand Research Team","Your Brand Staff") and handle and author_name:
         payload["article"]["author"]=author_name; do_put=True; changed.append(f"author→{author_name}")
     if do_put:
         api(f"https://{SHOP}/admin/api/{API}/blogs/{blog}/articles/{aid}.json", payload, "PUT")

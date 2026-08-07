@@ -28,15 +28,15 @@ BRANDS_NOT_LIVE=["Bronson","Transparent Labs"]
 
 # ---- theme -> primary collection + author (by expertise) ----
 # author roster (live /pages/) assigned by editorial coverage
-AUTHORS={
- "clinical":"Author Four (/pages/author-four)",
- "sports":"Author Six (/pages/author-six)",
- "dietetics":"Author Five (/pages/author-five)",
- "training":"Author Six (/pages/author-six)",
- "fitness":"Author Seven (/pages/author-seven)",
- "medical":"Author Four (/pages/author-four)",
- "founder":"Author One (/pages/author-one)",
-}
+# Derived from roster.json (small team: every expertise key maps to the first
+# roster author until Kevin assigns per-topic owners). Empty roster -> empty dict,
+# and ticket generation fails loudly instead of inventing a byline.
+import genseo_roster
+AUTHORS={}
+if genseo_roster.NAMES:
+    _h, _n = next(iter(genseo_roster.NAMES.items()))
+    AUTHORS={k: f"{_n} (/pages/{_h})" for k in
+             ("clinical","sports","dietetics","training","fitness","medical","founder")}
 
 # theme rules: (match keywords) -> (collections[], author-key, table-subject)
 THEME_RULES=[

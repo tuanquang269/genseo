@@ -22,8 +22,7 @@ import sys, json, re, urllib.request, urllib.parse, subprocess, os, datetime
 
 from genseo_config import SHOP, TOKEN, API
 BLOGS={104008483131:"news"}
-ROSTER={"author-two":"Author Two","author-one":"Author One","author-three":"Author Three",
- "author-four":"Author Four","author-five":"Author Five","author-six":"Author Six","author-seven":"Author Seven"}
+from genseo_roster import NAMES as ROSTER  # single source: roster.json
 
 def api(url,data=None,method="GET"):
     req=urllib.request.Request(url,data=(json.dumps(data).encode() if data else None),method=method,
@@ -36,7 +35,7 @@ def recover_title(body, handle):
     # slug fallback: turn handle into a title
     return handle.replace('-',' ').title(), "slug"
 
-STOP=set("the a an to in of for is are and or vs best guide ultimate complete review {{market}} sg 2024 2025 2026 2027 your you what how do does top".split())
+STOP=set("the a an to in of for is are and or vs best guide ultimate complete review us usa american 2024 2025 2026 2027 your you what how do does top".split())
 def toks(s): return set(w for w in re.sub(r'[^a-z0-9 ]',' ',s.lower()).split() if w not in STOP and len(w)>2)
 
 def best_duplicate(title, self_handle):
@@ -96,7 +95,8 @@ def main():
                     author=ROSTER.get(am.group(1) if am else None)
                     if not author:
                         author=(a.get('author') or '').strip()
-                        author=author if author in ROSTER.values() else "Author Four"
+                        # never stamp a default person; the org byline is the honest fallback
+                        author=author if author in ROSTER.values() else "Wellness Nest Editorial Team"
                     if apply:
                         clean_body=re.sub(r'<!--\s*(title|author|author url|meta description|seo_title|seo_description|tags|status):.*?-->\s*','',body,flags=re.I)
                         api(f"https://{SHOP}/admin/api/{API}/blogs/{bid}/articles/{a['id']}.json",

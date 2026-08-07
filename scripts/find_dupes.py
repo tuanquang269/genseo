@@ -20,7 +20,7 @@ sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 
 from genseo_config import SHOP, TOKEN, API
 BLOGS={104008483131:"news"}
-STOP=set("the a an to in of for is are and or vs best guide ultimate complete review {{market}} sg "
+STOP=set("the a an to in of for is are and or vs best guide ultimate complete review us usa american "
          "your you what how do does top picks 2024 2025 2026 2027 2028".split())
 
 def api(url,data=None,method="GET"):
