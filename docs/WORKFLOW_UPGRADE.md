@@ -18,7 +18,7 @@ writing). The fix is a hard quality gate, not slowing down. Daily *deep* > weekl
 
 ## What changed (the enforcement)
 **1. New mechanical gate: `scripts/validate_article.py`** — runs as code, cannot be faked.
-Checks: word count ≥900, answer block w/ "{{MARKET}}", a comparison table, {{CURRENCY}} price range,
+Checks: word count ≥900, answer block w/ "the US", a comparison table, $price range,
 ≥2 `/collections/` links, named roster author with a LIVE `/pages/` link, 4 FAQs, brand
 mentions, image alt text, AND every product/collection/author URL returns 200 (no 404s).
 - `--draft` mode for the markdown draft (FAQPage schema added post-conversion → warn only).
@@ -35,13 +35,13 @@ and the identical `skills/` copy — both updated, backup in
 to the same standard for reference/consistency.
 
 ## The quality bar every article must now clear
-900–1400 words · answer-first block · 1 comparison table · "Where to buy in {{MARKET_ABBR}}" w/ {{CURRENCY}} price ·
-≥2 collection links · 4 FAQs (≥1 {{MARKET_ABBR}}-specific) · named author (real /pages/ link) · Article +
+900–1400 words · answer-first block · 1 comparison table · "Where to buy in US" w/ $price ·
+≥2 collection links · 4 FAQs (≥1 US-specific) · named author (real /pages/ link) · Article +
 FAQPage schema (author = named Person) · real product links (no 404s) · not a duplicate.
 
 ## What this does NOT fix (be honest)
 - It enforces *structure & depth*, not *brilliance*. A cheap model can pass the gate with
-  competent-but-not-genius content. That's fine — competent + deep + {{MARKET_ABBR}}-specific beats thin.
+  competent-but-not-genius content. That's fine — competent + deep + US-specific beats thin.
 - Off-site **Brand Authority (32/100)** is untouched — still the biggest remaining GEO gap.
 - The 26 remaining tickets in `2ndRound_120_tickets.md` still carry the old trigger prompt;
   they'll route through the upgraded orchestrator, but their `[DONE]` flags are out of sync
@@ -50,5 +50,5 @@ FAQPage schema (author = named Person) · real product links (no 404s) · not a 
 ## How to test it caught on (next cron run)
 After the next 09:00/16:00 run, check the new article with:
 `python3 scripts/validate_article.py <new_article_url_or_draft>` — it should PASS.
-Track {{MARKET_ABBR}} hit-rate weekly with `python3 scripts/sg_report.py 14`. The success metric:
-% of new articles reaching ≥10 {{MARKET_ABBR}} impressions should climb substantially.
+Track US hit-rate weekly with `python3 scripts/sg_report.py 14`. The success metric:
+% of new articles reaching ≥10 US impressions should climb substantially.

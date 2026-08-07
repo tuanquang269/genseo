@@ -1,4 +1,4 @@
-# GenSeo & Your Brand - Autonomous SEO Agent Ecosystem
+# GenSeo & Wellness Nest - Autonomous SEO Agent Ecosystem
 
 ## Vission & Current Board
 The goal is to build an autonomous "SEO Agent Team" that operates on a continuous feedback loop: `THINK -> ACT -> OBSERVE` mimicking the top-tier SEO architectural frameworks.
@@ -34,8 +34,8 @@ To complete the Autonomous Agent Orchestrator loop, we need to implement the fol
 
 ### Phase 4: AEO (AI Engine Optimization) Tracker
 - [x] Create a skill: `genseo-aeo-tracker`.
-- [x] Automatically simulate prompts on external LLM APIs (OpenAI/Perplexity/Anthropic): "Where to buy Creatine in {{MARKET}}?"
-- [x] Calculate a probabilistic "Brand Mention Score" for Your Brand.
+- [x] Automatically simulate prompts on external LLM APIs (OpenAI/Perplexity/Anthropic): "Where to buy Creatine in the US?"
+- [x] Calculate a probabilistic "Brand Mention Score" for Wellness Nest.
 - [x] If the score is low, instruct `genseo-content-writer` to generate PR-style entity content targeting AI models.
 
 ---

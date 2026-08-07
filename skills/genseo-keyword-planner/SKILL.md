@@ -20,7 +20,7 @@ Turns a raw list of keywords (e.g. from Google Ads, GSC, Ahrefs) into structured
 
 1. **Understand Input (CRITICAL):**
    - **Data Source:** Check if the user provided a local file. If NOT, ask for their GSC Site URL and run `python3 ~/genseo/scripts/gsc_fetcher.py fetch_top_keywords <SITE_URL>` to download the top 4000 queries. If `credentials.json` is missing, inform the user to place it in `~/genseo/scripts/credentials.json`.
-   - **MUST VALIDATE Target Language and Target Geography (Geo):** Ask the user or deduce from the website (e.g. "{{MARKET}}" -> English). All output MUST strictly follow this Target Language.
+   - **MUST VALIDATE Target Language and Target Geography (Geo):** Ask the user or deduce from the website (e.g. "the US" -> English). All output MUST strictly follow this Target Language.
    - **MANDATORY CLEANING:** When reading exported files (like Google Ads `.xlsx`), you MUST strip out any platform-generated summary footer rows (e.g. words starting with "Total: Account", "Total: Search terms", or missing search terms) before beginning any clustering. Never include "Total:" as a keyword.
 
 2. **Run Analysis & Clustering:**

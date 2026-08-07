@@ -42,59 +42,67 @@ writing anything, run the gate:
 python3 ~/genseo/scripts/topic_fitness.py "PRIMARY_KEYWORD_OR_TITLE"
 ```
 - **FAIL** → **STOP. Do NOT write.** Mark the ticket `[SKIPPED-UNFIT: <reason>]`:
-  - *flavour/recipe variant, no stocked brand* → dead pattern, ~0 {{MARKET_ABBR}} clicks. Skip.
-  - *category head-term a collection owns* (e.g. "best protein powder {{market}}") → the COLLECTION
+  - *flavour/recipe variant, no stocked product* → dead pattern, ~0 US clicks. Skip.
+  - *category head-term a collection owns* (e.g. "best probiotics for women") → the COLLECTION
     must win it; a new article cannibalises it. Skip (flag it for a collection-SEO pass instead).
   - *near-duplicate of an existing article* → switch to `[REFRESH EXISTING]` on that URL, don't recreate.
-  - *{{MARKET_ABBR}} demand below floor* → no audience. Skip.
+  - *US demand below floor* → no audience. Skip.
 - **REVIEW** → proceed ONLY if the ticket brief explicitly greenlit this exact topic (i.e. it came
   from a vetted PASS queue). Otherwise mark `[SKIPPED-UNFIT: needs human vetting]` and move on.
-- **PASS** → proceed. This is the proven winner: a **specific stocked brand/product** + **review /
-  comparison / where-to-buy / is-it-worth-it** intent.
+- **PASS** → proceed. For an own-brand DTC store the proven winners are **ingredient/benefit
+  long-tail with buyer intent** that funnels to a product we actually sell.
 
-| ✅ WRITE (earns {{MARKET_ABBR}} clicks) | ❌ NEVER (dead / cannibalising) |
+| ✅ WRITE (earns US clicks) | ❌ NEVER (dead / cannibalising) |
 |---|---|
-| Brand review: "Mutant Whey Review (2026)" | Flavour variant: "Coffee / Banana / Fruity Pebbles protein shake" |
-| Brand comparison: "Myprotein vs Optimum Nutrition" | Bare head-term: "best protein powder {{market}}" (→ collection) |
-| Where-to-buy a brand: "Where to Buy Ghost in {{MARKET}}" | A page we already have (→ refresh it, don't duplicate) |
+| Ingredient buyer question: "Shilajit Resin vs Gummies: Which Works Better?" | Flavour/recipe variant: "shilajit smoothie recipes" |
+| Audience-specific benefit: "Creatine for Women Over 40: What Changes" | Bare head-term a collection owns: "best probiotics" (→ collection) |
+| Comparison that ends at our SKU: "NMN vs NR: What the Dose Panels Say" | A page we already have (→ refresh it, don't duplicate) |
+| Problem→mechanism: "Menopause Joint Pain: Why It Starts at 45" | Third-party brand reviews for brands we don't sell |
 
 (The STEP 6 validator also enforces this mechanically as a backstop — but running it here saves the
 wasted image-generation + writing cost of a doomed article.)
 
 ### STEP 1: Define Goal & Primary Question
-- **⚠️ CHECK CURRENT YEAR FIRST:** Run `date +%Y` to get the current year. Use this year throughout ALL article content, FAQ headings ("best X in {{MARKET}} in [YEAR]"), and image generation prompts ("Best Fat Burners {{MARKET}} [YEAR]"). NEVER hardcode a year without checking. The current year baked into images is permanent — regenerating is expensive.
-- **⭐ PRIORITY BRANDS (business rule — apply NATURALLY, never forced):** List
-  your own priority vendors here in order, plus any vendor you do not carry
-  and must never link (a link to a product you do not carry 404s and fails
-  the gate). "Naturally" means a creatine article leads with a priority brand
-  that actually makes creatine — never shoehorn an irrelevant brand into a topic.
-  If the ticket brief names specific brands, use exactly those.
+- **⚠️ CHECK CURRENT YEAR FIRST:** Run `date +%Y` to get the current year. Use this year throughout ALL article content, FAQ headings ("best X in the US in [YEAR]"), and image generation prompts ("Best Fat Burners US [YEAR]"). NEVER hardcode a year without checking. The current year baked into images is permanent — regenerating is expensive.
+- **⭐ PRIORITY BRANDS (business rule — apply NATURALLY, never forced):**
+  Every brand below is a HOUSE brand sold on wellnessnest.co. Priority order:
+  1. **ShilaSource** — Himalayan shilajit resin + gummies + gold resin + energy drops
+  2. **FusiForce** — creatine monohydrate gummies 5,000mg
+  3. **FloraFresh** — vaginal/feminine probiotics (gummies + prebiotic+probiotic)
+  4. **MenoMate** — menopause probiotics & herbal blend
+  5. **Turkesterone** Advanced Formula
+  6. **AgeAura** — longevity line on the same store (NMN+TMG · Urolithin A · Longevity Peptides)
+  ⛔ **NEVER mention or link MuscleMax** (competitor, not ours). ⛔ Never link any
+  product/brand not sold on wellnessnest.co (404 links fail the gate). "Naturally"
+  means a creatine article leads with FusiForce because FusiForce IS creatine —
+  never shoehorn an irrelevant house brand into a topic. If the ticket brief names
+  specific products, use exactly those.
 
 - Decide the **business goal** of the article (educate, capture leads, sell a product, rank for a key phrase).
-- Turn the target keyword into **one main user question**, phrased how a real person would ask it (e.g., "What is the best pre workout for beginners in {{MARKET}}?").
+- Turn the target keyword into **one main user question**, phrased how a real person would ask it (e.g., "What is the best pre workout for beginners in the US?").
 - List 3–6 supporting questions (e.g., side effects, dosage, price range) that will become subheadings and FAQ entries — these are what answer engines love to extract.
 
 ### STEP 2: Keyword Expansion & Research
-- **Active Keyword Expansion:** Use `search_web` with the primary keyword to discover:
+- **Active Keyword Expansion:** Use the web-search tool (WebSearch) with the primary keyword to discover:
   - 3–5 **long-tail and question keywords** (e.g., "is pre workout safe for beginners", "how to take pre workout")
   - **AEO-friendly question variants**: "how", "what", "is it safe", "vs", "near me"
-  - **Location variants**: "{{MARKET}}", neighbourhood names, "near me", "delivery", "online"
-- **Product Handle Sourcing:** Use `run_command` with `curl -s "https://wellnessnest.co/search/suggest.json?q=YOUR_KEYWORD&resources[type]=product"` to find the exact product handlers for internal links. Do not guess handles!
-- **Internal Linking Strategy (Power & Target Pages):** Run `run_command` with `python3 ~/genseo/scripts/get_internal_links.py` to retrieve the current Top Power Pages (high traffic) and Target Pages (striking distance). Record these URLs and their target keywords to be naturally embedded into the article body in Step 5.
+  - **Location variants**: "the US", neighbourhood names, "near me", "delivery", "online"
+- **Product Handle Sourcing:** Run in the shell (Bash): `curl -s "https://wellnessnest.co/search/suggest.json?q=YOUR_KEYWORD&resources[type]=product"` to find the exact product handlers for internal links. Do not guess handles!
+- **Internal Linking Strategy (Power & Target Pages):** Run in the shell (Bash): `python3 ~/genseo/scripts/get_internal_links.py` to retrieve the current Top Power Pages (high traffic) and Target Pages (striking distance). Record these URLs and their target keywords to be naturally embedded into the article body in Step 5.
 - Record the expanded keyword list and internal links mentally — you will weave ALL of them naturally into the article body and FAQ section.
 
 ### STEP 3: SERP Analysis & Outline Mapping
-- **Competitor SERP Analysis:** Use `search_web` to search the primary keyword and examine:
+- **Competitor SERP Analysis:** Use the web-search tool (WebSearch) to search the primary keyword and examine:
   1. What the **top 3 ranking articles** cover (angle, structure, depth)
   2. **"People Also Ask" questions** — harvest these to seed your FAQ section
   3. **Content gaps** the competitors missed that you can fill better
 - **Read Knowledge Base:** Read `~/genseo/knowledge_base/SEO_EEAT_GUIDELINES.md` and `AEO_GEO_GUIDELINES.md`.
 - **Build an Outline** that covers what the SERP shows plus gaps, following this skeleton:
-  - H1: Main benefit + keyword + "{{MARKET}}"
+  - H1: Main benefit + keyword + "the US"
   - H2: Direct answer / short definition (the AEO answer block)
   - H2: Benefits / pros & cons
   - H2: Step-by-step "how to" or detailed breakdown
-  - H2: Local angle ("Where to buy in {{MARKET}}", delivery, comparison)
+  - H2: Local angle ("Where to buy in the US", delivery, comparison)
   - H2: Product comparisons (with tables where applicable)
   - H2: FAQs (seeded from PAA + local questions)
   - H3: About the Author
@@ -108,35 +116,44 @@ and in AI Overviews. Treat this step as writing an ad, not a label.
 - **≤ 60 characters** (longer gets truncated in Google → looks broken → fewer clicks). Hard limit.
 - **Front-load the primary keyword** (first 1–4 words) so it's bold in the SERP.
 - **Add ONE click trigger** — a number, a specific benefit, a year, or a curiosity/contrarian angle.
-- **Include "{{MARKET}}"** but do NOT stack 3 generic descriptors. One angle, not five.
+- **Include "the US"** but do NOT stack 3 generic descriptors. One angle, not five.
 - **Kill the boilerplate.** Every competitor writes "The Ultimate Guide to X" / "Complete 2026
   Review & Sourcing Guide." Those are invisible. Be specific and human.
 
 | ❌ Weak (ranks, low CTR) | ✅ Strong (earns the click) |
 |---|---|
-| The Ultimate Guide to Atlas Whey Protein in {{MARKET}} | Atlas Whey Review: Is It Worth It in {{MARKET}}? (2026) |
-| Combat XL Mass Gainer {{MARKET}}: Complete 2026 Review & Sourcing Guide | Combat XL Mass Gainer: 1,270 Calories Per Serve — {{MARKET_ABBR}} Review |
-| Gym Supplements {{MARKET}}: Ultimate 2026 Buying Guide & Store Review | 7 Gym Supplements Worth Buying in {{MARKET}} (2026) |
-| The Ultimate Guide to Creatine Monohydrate Supplement | Creatine Monohydrate: Which to Buy in {{MARKET}} (2026)? |
+| The Ultimate Guide to Atlas Whey Protein in the US | Atlas Whey Review: Is It Worth It in the US? (2026) |
+| Combat XL Mass Gainer US: Complete 2026 Review & Sourcing Guide | Combat XL Mass Gainer: 1,270 Calories Per Serve — US Review |
+| Gym Supplements US: Ultimate 2026 Buying Guide & Store Review | 7 Gym Supplements Worth Buying in the US (2026) |
+| The Ultimate Guide to Creatine Monohydrate Supplement | Creatine Monohydrate: Which to Buy in the US (2026)? |
 
 **META DESCRIPTION RULES (`<!-- meta_description: ... -->`, line 2):**
 - **140–155 characters.** Front-load the answer/benefit, end with a concrete differentiator + soft CTA.
-- Must include the primary keyword + "{{MARKET}}".
-- Use a SPECIFIC hook the competitor can't copy: an {{CURRENCY}} price ("from {{CURRENCY}} $49"), a number, "100% authentic", "next-day {{MARKET_ABBR}} delivery".
-- ❌ "Discover the best X in {{MARKET}}. Expert picks with fast delivery." (generic, every page says this)
-- ✅ "Compared 6 mass gainers sold in {{MARKET}} — Combat XL gives the most calories per dollar. See picks, {{CURRENCY}} prices & where to buy authentic."
+- Must include the primary keyword + "the US".
+- Use a SPECIFIC hook the competitor can't copy: a $ price ("from $49"), a number, a concrete number or benefit (never invent shipping or authenticity claims).
+- ❌ "Discover the best X in the US. Expert picks with fast delivery." (generic, every page says this)
+- ✅ "Compared 6 mass gainers sold in the US — Combat XL gives the most calories per dollar. See picks, $ prices & where to buy authentic."
 
 **URL handle:** publisher auto-generates from the title; confirm it produces a clean keyword slug.
 
 ### STEP 5: Content Writing & Asset Generation (The Muscle Phase)
-- **Image Generation (MANDATORY Image-to-Image!):**
-  - **Hero Banner Rule:** The FIRST generated image MUST be the Hero Banner and it MUST depict the real products discussed. Pass up to 3 real product image paths into `ImagePaths` so the banner shows real products, never purely AI-hallucinated tubs. Always append to every hero image prompt: **"NO watermark. NO blog name text. NO caption. NO attribution text in any corner. Clean image only."**
-  - **⚠️ MANDATORY — 1 Lifestyle Image Per Product (NON-NEGOTIABLE):** Every distinct product mentioned by name in the article MUST have its own dedicated generated lifestyle image embedded in the section where it is featured. Do NOT write a product section without a corresponding image. A single hero image is NEVER sufficient. Count the products → generate that many images + 1 hero. This rule exists because: (1) it dramatically improves user engagement and conversion, (2) it signals comprehensive E-E-A-T coverage to AI search systems, and (3) it prevents the article from looking thin or unfinished.
-  - **⚠️ COMPETITOR PRODUCT IMAGES (MANDATORY for review/comparison articles):** If the article reviews or compares a brand we do NOT carry (e.g. EHP Labs, Myprotein, etc.), you MUST also generate a lifestyle image for that competitor product. Fetch their product image as reference using: `curl -sL "https://<brand>.sg/products/<handle>.json" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d['product']['images'][0]['src'])"`. Download it to `tmp_images/`, then pass it into `generate_image` ImagePaths. Place the image in the section that describes the competitor product. Do NOT leave the competitor product section image-free.
-  - To prevent "AI Spam" looks, download real product images first: `curl -o ~/genseo/tmp_images/ref_product.png https://cdn.shopify.com/s/files/...`. Save to `tmp_images/` not `/tmp/`.
-  - Pass the downloaded absolute path into the `ImagePaths` argument of `generate_image` so the AI uses the real product brand and shape as a reference.
-  - **CRITICAL FAILURE SAFEGUARD:** If `generate_image` fails (e.g. 503 Capacity Exhausted), abort the entire operation immediately. DO NOT write a draft with missing images. Report to the user and ask them to retry.
-  - **⛔ NEVER USE PRE-BAKED CDN URLS FOR IMAGES IN THE MARKDOWN DRAFT.** After `generate_image` runs, it returns a local absolute path (e.g. `~/.gemini/antigravity/brain/<conv-id>/filename_<hash>.png`). You MUST use that exact local path in your `![alt](LOCAL_PATH)` image tags. The publisher script reads local paths, uploads them to Shopify Files CDN, and rewrites them to real CDN URLs. If you write a CDN URL that doesn't exist yet (e.g. `https://cdn.shopify.com/s/files/.../t64_mutant_whey_lifestyle.png`), the publisher will see 0 images to upload and the article will have no images. The symptom is the publisher outputting `📸 Uploading 0 image(s)` — if you ever see that on an article that should have images, STOP and fix the image paths in the draft before proceeding.
+- **Image Generation — via `article_images.py` (ima2 / ChatGPT Image 2.0 OAuth ONLY):**
+  All article images are generated with the repo wrapper, which enforces the PATI hard rules
+  (ima2 OAuth generator, ≤1K resolution, webp compressed <80KB before upload):
+  ```
+  python3 /Users/kevinkreative/genseo/scripts/article_images.py \
+      --slug <article_name> --prompt "..." [--ref /abs/path/real_product.png] [--wide]
+  ```
+  It prints the LOCAL absolute path to use in the draft. One call per image.
+  - **Hero Banner Rule:** The FIRST generated image MUST be the Hero Banner and it MUST depict the real products discussed. Pass 1–3 REAL product pack-shot paths via `--ref` so the banner shows real products, never AI-hallucinated tubs. Always append to every hero prompt: **"NO watermark. NO blog name text. NO caption. NO attribution text in any corner. Clean image only. Product label must remain legible."**
+  - **⚠️ MANDATORY — 1 Lifestyle Image Per Product (NON-NEGOTIABLE):** Every distinct product mentioned by name MUST have its own lifestyle image embedded in its section. A single hero is NEVER sufficient. Count the products → generate that many images + 1 hero.
+  - **REAL PACK REFERENCE (PATI hard rule):** download the real product image first:
+    `curl -o /Users/kevinkreative/genseo/tmp_images/ref_<product>.png "https://wellnessnest.co/cdn/shop/files/..."`
+    (get the URL from `https://wellnessnest.co/products/<handle>.json` → `product.images[0].src`)
+    and pass it via `--ref`. The ad package shown must match the real website package.
+  - **⛔ NO RECOGNIZABLE HUMAN FACES in article images** (faces trigger a separate approval gate — lifestyle shots use hands, silhouettes, back-of-head, or product-only scenes).
+  - **CRITICAL FAILURE SAFEGUARD:** If image generation fails, abort the entire run. DO NOT write a draft with missing images — the gate hard-fails under 3 inline images anyway.
+  - **⛔ NEVER USE PRE-BAKED CDN URLS FOR IMAGES IN THE MARKDOWN DRAFT.** Use the exact LOCAL absolute path the wrapper prints in your `![alt](LOCAL_PATH)` tags. The publisher uploads local paths to Shopify Files CDN and rewrites them. If the publisher prints `📸 Uploading 0 image(s)` on an article that should have images, STOP and fix the image paths in the draft.
 
 - **Drafting — Answer-First Structure:** Write the article in Markdown following these critical rules:
   - **CRITICAL FORMATTING RULE:** DO NOT include any YAML frontmatter (e.g., no `---`). The very first line of the markdown file MUST be the H1 Title (e.g., `# Your Title Here`). The second line MUST be the meta description comment (e.g., `<!-- meta_description: ... -->`). The publisher reads the H1 to set the Shopify article `title` field, then **automatically strips it from the rendered body HTML** — so it will NOT appear twice. Do NOT remove it from the draft.
@@ -146,7 +163,7 @@ and in AI Overviews. Treat this step as writing an ad, not a label.
   - **Body Structure for AEO:** Under each heading, start with a direct 1–2 sentence answer, then expand with details (examples, data, pros/cons). Use scannable formatting: short paragraphs, bullet/numbered lists, and comparison tables.
   - **MANDATORY LENGTH:** Determine the Search Intent and write to these exact target lengths:
     - *Quick Guide & FAQs:* 1,000 – 1,500 words. No fluff, direct answers.
-    - *Buying Guides / Comparisons:* 1,500 – 2,500 words. Deep analysis, pros/cons. (Most common for Your Brand).
+    - *Buying Guides / Comparisons:* 1,500 – 2,500 words. Deep analysis, pros/cons. (Most common for Wellness Nest).
     - *Pillar Posts/Ultimate Guides:* 2,500+ words. Comprehensive A-Z coverage.
   - **NO META-LANGUAGE:** NEVER explicitly state the word count or strategy type in the text itself (e.g., NEVER write "In this 2,500 word pillar post").
   - **⛔ BANNED PHRASES (the validator now hard-fails on these).** Google's Sept 2025 Quality Rater Guidelines treat filler and generic AI phrasing as scaled-content-abuse signals (§4.6, §4.6.5, §4.6.6), which is what the May 2026 core update punished us for. On 2026-07-30 all 534 of our own drafts were scored and these are the phrases we actually produce, with real counts. Do not write any of them:
@@ -165,34 +182,27 @@ and in AI Overviews. Treat this step as writing an ad, not a label.
   - MUST format the FAQ precisely using `## Frequently Asked Questions` > `### Question`.
   - **⛔ DO NOT embed `<script type="application/ld+json">` tags in the markdown file.** The markdown renderer outputs them as visible raw text in the article body. FAQ schema and other JSON-LD must be passed as raw HTML appended to `body_html` AFTER the markdown-to-HTML conversion step, never inside the `.md` draft file.
 
-- **GEO / Local Signals (MANDATORY for {{MARKET}} articles):**
-  - Include "{{MARKET}}" in the H1 and first paragraph.
-  - Add at least **2 neighbourhood or locality references** beyond just "{{MARKET}}" (e.g., {{LOCALITY}}, {{LOCALITY}}, {{LOCALITY}}, {{LOCALITY}}).
-  - Include at least **1 local FAQ question** (e.g., "Where can I buy [product] in {{MARKET}}?", "Does Your Brand offer same-day delivery?").
-  - Weave local context naturally: delivery coverage, store pickup, gym culture, climate references.
+- **US-Market Signals (nationwide DTC store — NOT local SEO):**
+  - Include a US anchor ("US", "United States", "American") in the first paragraph
+    and at least one H2 — the validator checks both.
+  - Ground the article in US buyer context naturally: FDA supplement labeling
+    (structure/function, not drug claims), third-party testing expectations,
+    US shipping from wellnessnest.co, seasonal/climate context, US price anchors in $.
+  - Include at least **1 buying-context FAQ** (e.g., "Where can I buy [product] in the US?",
+    "How long does Wellness Nest shipping take in the US?" — answer honestly from store policy;
+    NEVER invent shipping speeds or authenticity claims).
+  - Do NOT fake a local angle (no invented cities, stores, or pickup points — we ship nationwide).
 
-- **E-E-A-T Named Author Bio (CRITICAL/YMYL):** You MUST conclude every article (after the FAQs) with an `### About the Author` section attributing the article to ONE of the **real, named employees on your roster** below. DO NOT use generic bylines like "Your Brand Team".
+- **E-E-A-T Named Author Bio (CRITICAL/YMYL):** You MUST conclude every article (after the FAQs) with an `### About the Author` section attributing the article to ONE of the **real, named people in `/Users/kevinkreative/genseo/roster.json`**. DO NOT use generic bylines like "Wellness Nest Team".
 
-  **⛔ THE BIO SENTENCE IS FIXED TEXT. Copy it VERBATIM. Do not paraphrase, extend, or add credentials, job titles, years of experience, certifications, or specialisms of any kind.** These are real people; anything you add about them is a fabricated claim about a real person's professional qualifications on health content, and it is the single most damaging thing this pipeline can do. If a topic seems to call for a credential nobody on this list has, that is not a licence to invent one — write the article without the claim.
+  **⛔ THE BIO SENTENCE IS FIXED TEXT — read it from roster.json and copy it VERBATIM. Do not paraphrase, extend, or add credentials, job titles, years of experience, certifications, or specialisms of any kind.** These are real people; anything you add about them is a fabricated claim about a real person's professional qualifications on health content, and it is the single most damaging thing this pipeline can do. If a topic seems to call for a credential nobody on the roster has, that is not a licence to invent one — write the article without the claim.
 
-  | Byline | Link | Bio sentence — copy exactly |
-  |---|---|---|
-  | **Author One** | `/pages/author-one` | REPLACE ME: one factual sentence about a real person on your team. |
-  | **Author Two** | `/pages/author-two` | REPLACE ME: one factual sentence about a real person on your team. |
-  | **Author Three** | `/pages/author-three` | REPLACE ME: one factual sentence about a real person on your team. |
-  | **Author Four** | `/pages/author-four` | REPLACE ME. |
-  | **Author Five** | `/pages/author-five` | REPLACE ME. |
-  | **Author Six** | `/pages/author-six` | REPLACE ME. |
-  | **Author Seven** | `/pages/author-seven` | REPLACE ME. |
+  **The roster lives in ONE place: `roster.json`.** The validator, the publisher and the
+  repair scripts all read it (`scripts/genseo_roster.py`), so there is nothing to keep in
+  sync by hand. If `roster.json` is empty, the gate blocks publishing — that means Kevin
+  has not approved the roster yet; STOP and tell him, never fill it yourself.
 
-  **Fill this table with YOUR OWN real staff before running the pipeline**, and
-  create a live `/pages/<handle>` for each. Delete the rows you do not need, but
-  keep the handles in sync with `ROSTER_PAGES` in `scripts/validate_article.py`
-  and `ROSTER` in `scripts/shopify_publisher.py` — the gate rejects any byline
-  that is not on all three lists, so a stale roster blocks publishing.
-
-  **Pick the byline whose scope genuinely fits the topic.** Set one default
-  for product reviews / comparisons / buying guides.
+  **Pick the byline whose scope genuinely fits the topic.**
 
   **⛔ NEVER invent a byline.** A name that is not a real person on the roster
   above is a fabricated identity on YMYL health content — the single most
@@ -203,7 +213,7 @@ and in AI Overviews. Treat this step as writing an ad, not a label.
 
   Format the bio as `[Name](/pages/handle)` followed by the exact sentence. DO NOT write "Connect with them on LinkedIn" and DO NOT put their LinkedIn URL in the visible markdown text. Store the LinkedIn URL only in the JSON-LD schema.
 
-- **Save it:** Use `write_to_file` to save the final Markdown content to `~/genseo/published_drafts/<article_name>.md`.
+- **Save it:** Write (with the file-write tool)  the final Markdown content to `~/genseo/published_drafts/<article_name>.md`.
 
 ### STEP 6: Pre-Publish Quality Gate (MECHANICALLY ENFORCED — NOT OPTIONAL)
 A self-checklist can be faked by a fast model. So after saving the draft, you MUST run the
@@ -214,7 +224,7 @@ python3 ~/genseo/scripts/validate_article.py ~/genseo/published_drafts/<article_
 ```
 
 The validator checks, as code: word count ≥900, exactly the right heading structure, an
-answer block containing "{{MARKET}}", a comparison `<table>`, an {{CURRENCY}} price range, ≥2
+answer block containing "the US", a comparison `<table>`, a $ price range, ≥2
 `/collections/` links, a named roster author with a LIVE `/pages/` link, 4 FAQs, brand
 mentions, image alt text, **topic fitness** (hard-fails dead flavour/recipe titles + collection-
 owned head-terms — see STEP 0.5) — AND that every product/collection/author URL returns HTTP 200
@@ -250,11 +260,15 @@ publisher step adds it.)
 **Publish ONLY with this python script. Do NOT use the Shopify MCP, GraphQL, `create-product`/
 `update-product`, or curl — only this publisher adds the Article + FAQPage JSON-LD schema and the
 named author. Any other path silently drops the schema.**
+
+**⚠️ REVIEW POSTURE (Kevin, 2026-08-07): `publish` creates an UNPUBLISHED DRAFT by default.**
+Kevin reviews drafts in Shopify admin and publishes them there. Do NOT pass `--live`
+unless Kevin has explicitly ended the review period in writing.
 - If the instruction was `[NEW ARTICLE]`:
-  Run `run_command`: `python3 ~/genseo/scripts/shopify_publisher.py publish ~/genseo/published_drafts/<article_name>.md <BLOG_ID>`
+  `python3 /Users/kevinkreative/genseo/scripts/shopify_publisher.py publish /Users/kevinkreative/genseo/published_drafts/<article_name>.md <BLOG_ID>`
 - If the instruction was `[REFRESH EXISTING]`:
-  Run `run_command`: `python3 ~/genseo/scripts/shopify_publisher.py update ~/genseo/published_drafts/<article_name>.md <BLOG_ID> <ARTICLE_ID>`
-- **Then VERIFY the live result:** `python3 ~/genseo/scripts/verify_published.py <ARTICLE_ID> <BLOG_ID>` — if it prints `✗` (schema/author missing), you published the wrong way; re-run the command above and re-verify before continuing.
+  `python3 /Users/kevinkreative/genseo/scripts/shopify_publisher.py update /Users/kevinkreative/genseo/published_drafts/<article_name>.md <BLOG_ID> <ARTICLE_ID>`
+- **Then VERIFY the result:** `python3 /Users/kevinkreative/genseo/scripts/verify_published.py <ARTICLE_ID> <BLOG_ID>` — if it prints `✗` (schema/author missing), you published the wrong way; re-run the command above and re-verify before continuing.
 
 ### STEP 8: Post-Publish Verification (MANDATORY TWO-GATE CHECK — DO NOT SKIP)
 
@@ -263,33 +277,33 @@ This step has **two gates that BOTH must pass** before you may proceed to Step 9
 #### Gate 1 — CDN Script Check (Terminal)
 Read the publisher script terminal output:
 - `✅ IMAGE VERIFICATION PASSED` → Gate 1 passed. Continue to Gate 2.
-- `⚠  PARTIAL` or `✗ IMAGE VERIFICATION FAILED` → Run the patch script first, then re-check:
-  `python3 ~/genseo/scripts/patch_images.py <ARTICLE_ID>`
+- `⚠  PARTIAL` or `✗ IMAGE VERIFICATION FAILED` → audit and fix, then re-check:
+  `python3 /Users/kevinkreative/genseo/scripts/audit_article_images.py`, fix the draft's
+  image paths, re-run `update` for this article.
 
-#### Gate 2 — Browser Visual Check (MANDATORY — the real source of truth)
-Even if Gate 1 shows ✅, you MUST use `browser_subagent` to open the live article URL and visually confirm every image is rendering correctly. The CDN script can pass even when images appear broken in the browser (e.g. wrong URL pre-filled before upload, as happened in Ticket #91).
+#### Gate 2 — Rendered-Body Check (MANDATORY — the real source of truth)
+Even if Gate 1 shows ✅, verify the rendered article body.
+- **DRAFT article (the default posture):** the public URL 404s until Kevin publishes it, so
+  verify via the Admin API: fetch the article `body_html`
+  (`verify_published.py <ARTICLE_ID> <BLOG_ID>` does this) and confirm every `<img src>` is a
+  `cdn.shopify.com` URL that returns HTTP 200 with image bytes (`curl -sI` each one).
+- **LIVE article (only after Kevin flips it):** open `https://wellnessnest.co/blogs/news/<HANDLE>`
+  in the in-app Browser pane, scroll the full article, confirm ALL images (hero + every product
+  lifestyle image) load — not broken, not placeholder. PASS/FAIL with counts.
+- If Gate 2 **FAILS** → images are broken despite Gate 1: fix the draft's image paths and
+  re-run `update`, then re-run Gate 2 until PASS.
 
-**Browser check task to run:**
-> "Navigate to `https://wellnessnest.co/blogs/news/<HANDLE>`. Scroll through the entire article from top to bottom. Check that ALL images (hero banner and every product lifestyle image) are visible and fully loaded — not broken, not missing, not showing a placeholder. Count the total number of images displayed. Return: PASS if all images visible and loaded, FAIL if any image is broken or missing, along with the count of visible vs broken images."
-
-- If the browser returns **PASS** → Both gates passed. Proceed to Step 9.
-- If the browser returns **FAIL** → Images are broken despite CDN script passing. Run the patch script:
-  `python3 ~/genseo/scripts/patch_images.py <ARTICLE_ID>`
-  Then re-run Gate 2 until PASS is confirmed.
-
-**CRITICAL RULE: You MUST NOT proceed to Step 9 or tell the user the article is complete until BOTH gates pass.** Never report "done" based on the terminal output alone.
-
-**⛔ GATE 2 MUST FULLY RETURN BEFORE YOU PROCEED — NO ASSUMPTIONS ALLOWED.** You MUST wait for the `browser_subagent` call to complete and return an explicit PASS or FAIL result. Do NOT assume PASS while the subagent is still running (`Step is still running`). Do NOT declare the article complete based on Gate 1 alone. If you are running multiple articles in sequence, complete ALL gates for article N before starting article N+1. Declaring Gate 2 PASS without a returned browser result is a critical failure.
+**CRITICAL RULE: You MUST NOT proceed to Step 9 or tell the user the article is complete until BOTH gates pass.** Never report "done" based on the terminal output alone. If you are running multiple articles in sequence, complete ALL gates for article N before starting article N+1.
 
 ### STEP 9: Update CSV Tracker
-- You MUST append the new article's metadata to `~/genseo/PUBLISHED_ARTICLES_TRACKER.csv`.
+- You MUST append the new article's metadata to `/Users/kevinkreative/genseo/PUBLISHED_ARTICLES_TRACKER.csv`.
 - The CSV has exactly **8 columns**: `Ticket,Keyword,Article Link,Posted Date,Has Indexed,Last Check Index Date,Has Tried Request To Index,Last Request Index Date`
-- **CRITICAL**: Use the `csv` module (NOT raw `open().write()`) to guarantee correct CRLF line endings and proper column quoting. Run this via `run_command`:
+- **CRITICAL**: Use the `csv` module (NOT raw `open().write()`) to guarantee correct CRLF line endings and proper column quoting. Run this in the shell (Bash):
 ```
 python3 << 'EOF'
 import csv, datetime
 row = ['TICKET_NUM', 'primary keyword', 'https://wellnessnest.co/blogs/news/HANDLE', datetime.date.today().isoformat(), 'No', datetime.date.today().isoformat(), 'No', '']
-with open('~/genseo/PUBLISHED_ARTICLES_TRACKER.csv', 'a', newline='') as f:
+with open('/Users/kevinkreative/genseo/PUBLISHED_ARTICLES_TRACKER.csv', 'a', newline='') as f:
     csv.writer(f).writerow(row)
 EOF
 ```
@@ -299,15 +313,14 @@ EOF
 The daily cron says "continue with the next N tickets" and decides which are "next" by reading
 the `[ ] PENDING` / `[DONE]` markers in the schedule file. **If you do not mark the ticket
 DONE, the cron will re-run it tomorrow and create duplicates.** So immediately after the CSV
-update, flip this ticket's Action line in its schedule file (e.g. `Jun26-120-tickets.md` or
-`2ndRound_120_tickets.md` — whichever the run came from):
+update, flip this ticket's Action line in its schedule file (e.g. `daily-tickets.md` — whichever file the run came from):
 - Change that ticket's `- **Action**: [ ] PENDING`  →  `- **Action**: [DONE <YYYY-MM-DD>] <published_url>`
 - Do this with a precise, single-ticket replacement (match the exact ticket heading so you don't
-  touch other tickets). Example via run_command:
+  touch other tickets). Example (run in the shell):
 ```
 python3 << 'EOF'
 import re
-f="~/genseo/Jun26-120-tickets.md"   # <-- the file this run came from
+f="/Users/kevinkreative/genseo/daily-tickets.md"   # <-- the file this run came from
 ticket="### 📝 Ticket #N"                               # <-- exact heading of THIS ticket
 url="https://wellnessnest.co/blogs/news/HANDLE"
 import datetime; today=datetime.date.today().isoformat()

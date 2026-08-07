@@ -4,14 +4,14 @@ To write an article that’s optimized for SEO (search), AEO (answer engines/AI)
 
 - **SEO**: optimizing pages so search engines rank them and users click through (keywords, on-page, links, technical).
 - **AEO**: structuring content so AI/answer engines (Google’s AI Overviews, ChatGPT, voice assistants) can easily extract short, direct, trustworthy answers. [rellify](https://rellify.com/blog/aeo-implementation)
-- **GEO / local SEO**: making content clearly about a place so it surfaces for local and “near me” searches (Google Maps, local packs, location-rich queries). [script.com](https://script.com.sg/local-seo-services-{{market}}/)
+- **GEO / local SEO**: making content clearly about a place so it surfaces for local and “near me” searches (Google Maps, local packs, location-rich queries). 
 
 ---
 
 ## Step 1: Define goal and primary question
 
 1. Decide the **business goal** of the article (educate, capture leads, sell a product, rank for a key phrase).
-2. Turn that into **one main user question**, phrased how a real person would ask it (e.g., “What is the best pre workout for beginners in {{MARKET}}?”).
+2. Turn that into **one main user question**, phrased how a real person would ask it (e.g., “What is the best pre workout for beginners in the US?”).
 3. List 3–6 supporting questions (e.g., side effects, dosage, price range) that you’ll answer in separate sections – these become subheadings and FAQ entries, which answer engines love. [contentstack](https://www.contentstack.com/blog/ai/how-to-optimize-content-for-ai-answer-engines-aeo)
 
 ---
@@ -19,10 +19,10 @@ To write an article that’s optimized for SEO (search), AEO (answer engines/AI)
 ## Step 2: Research keywords and real phrases
 
 1. Use keyword tools and SERP research to find:
-   - Main keyword (e.g., “pre workout {{MARKET}}”),
+   - Main keyword (e.g., “pre workout US”),
    - Long‑tail and question keywords (e.g., “is pre workout safe for beginners”, “how to take pre workout”). [outrank](https://www.outrank.so/blog/how-to-get-featured-snippets)
 2. For AEO, focus on **question-style and conversational queries** (“how”, “what”, “is it safe”, “near me”), which answer engines and featured snippets heavily use. [outrank](https://www.outrank.so/blog/how-to-get-featured-snippets)
-3. For GEO, collect **location variants** (city, neighbourhoods, landmarks – “{{MARKET}}”, “{{LOCALITY}}”, “{{LOCALITY}}”, “near me”) and intent phrases (“open now”, “delivery”, “online in {{MARKET}}”). [script.com](https://script.com.sg/local-seo-services-{{market}}/)
+3. Wellness Nest is a nationwide US DTC store: skip local-pack tactics. Collect US-context variants (“in the US”, “delivery”, “online”) and audience qualifiers (“for women over 40”) instead of city/neighbourhood angles. 
 
 ---
 
@@ -38,7 +38,7 @@ Example outline:
 - H2: Short definition or direct answer.
 - H2: Benefits / pros & cons.
 - H2: Step‑by‑step “how to”.
-- H2: Local angle (“Where to buy in {{MARKET}}”).
+- H2: Local angle (“Where to buy in the US”).
 - H2: FAQs.
 
 This mirrors how answer engines and Google slice content into self‑contained sections. [contentstack](https://www.contentstack.com/blog/ai/how-to-optimize-content-for-ai-answer-engines-aeo)
@@ -63,7 +63,7 @@ That “answer block” is exactly what answer engines and featured snippets loo
 1. Use **descriptive, natural-language headings** that mirror questions:
    - “What is pre workout?”
    - “How to use pre workout safely?”
-   - “Best pre workout options in {{MARKET}} for beginners”. [hubspot](https://www.hubspot.com/products/marketing/aeo-guide)
+   - “Best pre workout options in the US for beginners”. [hubspot](https://www.hubspot.com/products/marketing/aeo-guide)
 2. Under each heading, **start with a direct 1–2 sentence answer**, then expand with details (examples, data, pros/cons). [rellify](https://rellify.com/blog/aeo-implementation)
 3. Use scannable formatting that AI and users both parse easily:
    - Short paragraphs,
@@ -77,12 +77,12 @@ This structure increases chances of being reused as snippets or AI answer passag
 ## Step 6: Add local (GEO) signals naturally
 
 1. Mention **location clearly in key places**:
-   - H1/H2 (e.g., “Best Pre Workout in {{MARKET}} for Busy Professionals”),
+   - H1/H2 (e.g., “Best Pre Workout in the US for Busy Professionals”),
    - First paragraph,
-   - Throughout content where natural (“in {{MARKET}} gyms”, “for {{MARKET_ADJ}} runners”). [script.com](https://script.com.sg/local-seo-services-{{market}}/)
-2. Include **neighbourhood and landmark references** where it helps users (“delivery across {{MARKET}} including {{LOCALITY}}, {{LOCALITY}}, and {{LOCALITY}}”). [linkedin](https://www.linkedin.com/pulse/local-seo-{{market}}-businesses-get-found-customers-near-you-wtanc)
-3. Align with your **Google Business Profile / NAP** (Name, Address, Phone) on your site’s footer/contact page – consistency helps local rankings. [script.com](https://script.com.sg/local-seo-services-{{market}}/)
-4. Answer **local-specific questions** in FAQs, like “Can you deliver pre workout same‑day in {{MARKET}}?” or “Where can I pick up in person?”. [linkedin](https://www.linkedin.com/pulse/local-seo-{{market}}-businesses-get-found-customers-near-you-wtanc)
+   - Throughout content where natural (“in the US gyms”, “for American runners”). 
+2. Include **neighbourhood and landmark references** where it helps users (“delivery across US including a real US context reference (no fake local angles — nationwide DTC), a real US context reference (no fake local angles — nationwide DTC), and a real US context reference (no fake local angles — nationwide DTC)”). [linkedin](https://www.linkedin.com/pulse/local-seo-us-businesses-get-found-customers-near-you-wtanc)
+3. Align with your **Google Business Profile / NAP** (Name, Address, Phone) on your site’s footer/contact page – consistency helps local rankings. 
+4. Answer **local-specific questions** in FAQs, like “Can you deliver pre workout same‑day in the US?” or “Where can I pick up in person?”. [linkedin](https://www.linkedin.com/pulse/local-seo-us-businesses-get-found-customers-near-you-wtanc)
 
 ---
 
@@ -90,7 +90,7 @@ This structure increases chances of being reused as snippets or AI answer passag
 
 1. **SEO title & H1**:
    - Include main keyword + location + benefit.
-   - Example: “Best Pre Workout in {{MARKET}}: Safe Options for Beginners”. [outrank](https://www.outrank.so/blog/how-to-get-featured-snippets)
+   - Example: “Best Pre Workout in the US: Safe Options for Beginners”. [outrank](https://www.outrank.so/blog/how-to-get-featured-snippets)
 2. **Meta description**: 1–2 sentences summarizing the benefit, including main keyword and a call‑to‑action; write it like an ad that matches searcher intent. [outrank](https://www.outrank.so/blog/how-to-get-featured-snippets)
 3. **Schema markup** (JSON‑LD):
    - Article / BlogPosting.
@@ -119,7 +119,7 @@ These are strong E‑E‑A‑T signals, which both Google and AI systems use as 
 Before publishing, ensure:
 
 - **Mobile‑friendly layout** and fast loading (especially on mobile), since most local and voice searches happen on phones. [outrank](https://www.outrank.so/blog/how-to-get-featured-snippets)
-- Clean URL (short, keyword‑rich, e.g., `/best-pre-workout-{{market}}`). [outrank](https://www.outrank.so/blog/how-to-get-featured-snippets)
+- Clean URL (short, keyword‑rich, e.g., `/best-pre-workout-us`). [outrank](https://www.outrank.so/blog/how-to-get-featured-snippets)
 - Internal links to and from relevant pages (category pages, related guides, local landing pages). [outrank](https://www.outrank.so/blog/how-to-get-featured-snippets)
 
 Strong technical health makes it easier for both search engines and answer engines to discover, crawl, and reuse your content. [rellify](https://rellify.com/blog/aeo-implementation)

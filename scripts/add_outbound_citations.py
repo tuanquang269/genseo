@@ -46,9 +46,9 @@ MAX_LINKS = 4
 
 # key -> (url, anchor text, publisher, substring that must appear in the live page)
 SOURCES = {
-    "hsa": ("https://www.hsa.gov.sg/health-supplements",
-            "Health supplements: regulatory guidance",
-            "Health Sciences Authority, {{MARKET}}", "health supplement"),
+    "fda": ("https://www.fda.gov/food/dietary-supplements",
+            "Dietary Supplements — FDA guidance",
+            "U.S. Food and Drug Administration", "dietary supplement"),
     "issn_protein": ("https://jissn.biomedcentral.com/articles/10.1186/s12970-017-0177-8",
                      "ISSN Position Stand: Protein and Exercise",
                      "Journal of the International Society of Sports Nutrition", "protein"),

@@ -18,8 +18,8 @@ This agent acts as a specialized AI architect for Shopify Collection Pages. It c
 
 1. **SEO:** Title tag under 60 chars, meta description under 155 chars, primary keyword front-loaded in H1, unique content (50–150 words above grid + 300–500 words below grid), internal hub-spoke links, comparison tables for multi-type categories.
 2. **AEO (Answer Engine Optimization):** FAQPage schema with 3–5 Q&As derived from real search queries. Buying guide opens with a "definition-first" paragraph — a concise, cite-ready answer (40–60 words) that AI engines can extract verbatim. Comparison tables for AI-extractable structured data. Problem-solution framing ("If you need X → choose Y because Z").
-3. **GEO (Generative Engine Optimization):** Nested `@graph` schema architecture — `CollectionPage` (with `dateModified`) → `ItemList` → `Product` data + `BreadcrumbList` + `FAQPage` (all JSON-LD). E-E-A-T Curator's Note with photo and credentials link. "Last reviewed" freshness signal. {{MARKET}}-specific localisation for hyper-local authority signals.
-4. **Mobile-First (MANDATORY):** Your Brand is a mobile-first store. All collection HTML must render cleanly at 375px width. Two components require specific mobile handling:
+3. **GEO (Generative Engine Optimization):** Nested `@graph` schema architecture — `CollectionPage` (with `dateModified`) → `ItemList` → `Product` data + `BreadcrumbList` + `FAQPage` (all JSON-LD). E-E-A-T Curator's Note with photo and credentials link. "Last reviewed" freshness signal. US-specific localisation for hyper-local authority signals.
+4. **Mobile-First (MANDATORY):** Wellness Nest is a mobile-first store. All collection HTML must render cleanly at 375px width. Two components require specific mobile handling:
    - **Curator's Note** must use `class="usup-curator"` on the outer flex div and `class="usup-curator-body"` on the inner text div, so the media query can stack them vertically on small screens.
    - **Related Guides** list items must use `class="usup-guide-item"` on each `<li>`, `class="usup-guide-arrow"` on the `→` span, and `class="usup-guide-link"` on each `<a>`, so links never centre-wrap with a detached arrow on mobile.
    - A **responsive `<style>` block** (see Step 6.6) MUST be prepended to every HTML file.
@@ -29,7 +29,7 @@ This agent acts as a specialized AI architect for Shopify Collection Pages. It c
 ### 1. Ingest Search Console Data
 - Use the `run_command` tool to execute the GSC fetcher script:
   `python3 ~/genseo/scripts/gsc_fetcher.py fetch_url_data "https://wellnessnest.co" "[COLLECTION_URL]"`
-- Analyze the output to identify keywords with high impressions but low clicks, or highly local terms with good CTR (e.g., strong CTR for queries with "{{MARKET}}").
+- Analyze the output to identify keywords with high impressions but low clicks, or highly local terms with good CTR (e.g., strong CTR for queries with "the US").
 
 ### 2. Web Content & Technical Audit
 - Fetch the live HTML of the `[COLLECTION_URL]` to check its current state:
@@ -45,18 +45,18 @@ This agent acts as a specialized AI architect for Shopify Collection Pages. It c
 ### 3. Keyword Cluster Analysis
 - Group the GSC keywords into **intent clusters**:
   - **Core Category** (e.g., "fat burner", "protein bar")
-  - **Local Intent** (e.g., "best fat burner {{market}}", "protein bar {{market}}")
+  - **Local Intent** (e.g., "best fat burner us", "protein bar us")
   - **Comparison / Informational** (e.g., "thermogenic vs non-stimulant", "protein bar vs meal replacement")
   - **Year-Tagged** (e.g., "best fat burner 2026")
   - **Gender / Demographic** (e.g., "best fat burner for women")
-  - **Long-Tail / Niche** (e.g., "appetite suppressant {{market}}", "cheap protein bars")
+  - **Long-Tail / Niche** (e.g., "appetite suppressant us", "cheap protein bars")
 - Present clusters in a table in the SEO brief. Ensure all high-value clusters are addressed in the content.
 
 ### 4. Synthesis & Strategy
 - Ensure the recommended strategy adheres to the **"Dual-Zone Content"** methodology:
   - **Zone 1 (Above Grid):** 50–150 words. Concise intro hook that establishes what the collection is, who it's for, and includes the primary keyword naturally.
   - **Zone 2 (Below Grid):** 300–500 words buying guide + FAQ + Curator's Note + Related Guides + Comparison Table.
-- **Definition-First Opening (AEO mandate):** The first paragraph of the buying guide MUST be a concise (40–60 words), factual, "citation-ready" definition that AI engines can extract verbatim. Example format: "[Category] supplements are [definition]. The most effective [category] in {{MARKET}} in [year] use [key ingredients] to [benefit]. Here's how they work and how to choose the right one."
+- **Definition-First Opening (AEO mandate):** The first paragraph of the buying guide MUST be a concise (40–60 words), factual, "citation-ready" definition that AI engines can extract verbatim. Example format: "[Category] supplements are [definition]. The most effective [category] in the US in [year] use [key ingredients] to [benefit]. Here's how they work and how to choose the right one."
 - **Comparison Table (AEO/GEO mandate):** For categories with multiple sub-types (e.g., thermogenic vs non-stimulant, whey isolate vs concentrate), include an HTML comparison table. Tables are highly extractable by AI engines and rank well in featured snippets. Use `<table>` with clear `<thead>` and `<tbody>`.
 - **Internal Links (Hub-Spoke mandate) — REQUIRED:** Include a "📚 Related Guides" section with 3–5 links to published blog articles on the store that relate to this collection. This section is **mandatory**, not optional.
   - First, check the `published_drafts/` directory for relevant articles.
@@ -171,11 +171,11 @@ Prepend this `<style>` block to **every** collection HTML file, before all other
 ```html
 <div class="usup-curator" style="background-color: #ffffff; border-left: 5px solid #fbdc00; border-radius: 6px; padding: 24px; margin: 30px 0; display: flex; align-items: flex-start; gap: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border-right: 1px solid #eaeaea; border-top: 1px solid #eaeaea; border-bottom: 1px solid #eaeaea; text-align: left;">
   <img src="https://cdn.shopify.com/s/files/1/0284/6094/1452/files/20200902_200930.jpg?v=1776287716"
-      alt="Author One - Sports Nutritionist & Supplement Expert"
+      alt="<name from roster.json> - Sports Nutritionist & Supplement Expert"
       style="width: 80px; height: 80px; min-width: 80px; min-height: 80px; flex-shrink: 0; border-radius: 50%; object-fit: cover; object-position: top; border: 3px solid #ffffff; box-shadow: 0 3px 8px rgba(0,0,0,0.12);">
   <div class="usup-curator-body" style="flex-grow: 1; min-width: 0;">
     <h4 style="margin: 0 0 6px 0; font-size: 16px; font-weight: 700; color: #111; text-transform: uppercase; letter-spacing: 0.5px;">
-      Curator's Note <span style="color: #666; font-weight: 400; text-transform: none; letter-spacing: 0px; font-size: 14px;">by Author One</span>
+      Curator's Note <span style="color: #666; font-weight: 400; text-transform: none; letter-spacing: 0px; font-size: 14px;">by <name from roster.json></span>
     </h4>
     <p style="margin: 0; font-size: 15px; color: #333; line-height: 1.6; font-style: italic;">
       "[CURATOR QUOTE]"
@@ -221,7 +221,7 @@ Prepend this `<style>` block to **every** collection HTML file, before all other
       "isPartOf": {
         "@type": "WebSite",
         "@id": "https://wellnessnest.co/#website",
-        "name": "Your Brand",
+        "name": "Wellness Nest",
         "url": "https://wellnessnest.co"
       },
       "breadcrumb": {
@@ -246,7 +246,7 @@ Prepend this `<style>` block to **every** collection HTML file, before all other
               "offers": {
                 "@type": "Offer",
                 "price": "[Price]",
-                "priceCurrency": "{{CURRENCY}}",
+                "priceCurrency": "$",
                 "availability": "https://schema.org/InStock"
               }
             }

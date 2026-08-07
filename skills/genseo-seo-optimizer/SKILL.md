@@ -12,7 +12,7 @@ This skill acts as the Technical Audit triage. It no longer audits single pages 
 
 ## When to Use
 - The `sitemap_crawler.py` has finished running and produced a CSV and an `OPTIMIZER_ACTION.md` ticket.
-- You need to clean up broken internal links across the entire Your Brand site.
+- You need to clean up broken internal links across the entire Wellness Nest site.
 
 ## The Process
 

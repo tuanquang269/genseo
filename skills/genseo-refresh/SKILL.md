@@ -1,7 +1,7 @@
 ---
 name: genseo-refresh
 description: >
-  Autonomously REFRESH an EXISTING published {{MARKET}} article to recover rankings/clicks —
+  Autonomously REFRESH an EXISTING published US article to recover rankings/clicks —
   WITHOUT creating a new URL. Diagnoses whether the page needs to CLIMB (more depth, stuck on
   page 2) or needs CTR (ranks well but no clicks), then upgrades it and re-publishes IN PLACE
   via the Shopify UPDATE path. Built for a cheap model: follow every step literally and pass
@@ -11,8 +11,8 @@ metadata: {"clawdbot":{"emoji":"♻️","requires":{"commands":["python3","curl"
 
 # GenSeo Refresh — Recover Existing Articles (UPDATE in place, never recreate)
 
-You improve ONE existing {{MARKET}} article so it ranks higher and/or earns more clicks. The
-market is **{{MARKET}} only**. You are a cheap model: **follow this literally**, do not improvise.
+You improve ONE existing US article so it ranks higher and/or earns more clicks. The
+market is **US only**. You are a cheap model: **follow this literally**, do not improvise.
 
 ## ⛔ THE GOLDEN RULES OF REFRESH (breaking these destroys rankings)
 1. **NEVER change the URL/handle.** You publish via the UPDATE path with the existing ARTICLE_ID.
@@ -31,14 +31,14 @@ market is **{{MARKET}} only**. You are a cheap model: **follow this literally**,
 1. Fetch the live article (title + body) you are about to improve:
    `curl -s "https://wellnessnest.co/admin/api/2026-04/blogs/BLOG_ID/articles/ARTICLE_ID.json" -H "X-Shopify-Access-Token: <token>"`
    (or read it from `published_drafts/` if the draft exists). Save the current body — you will build ON it.
-2. Pull what queries it ranks for and its position/CTR ({{MARKET}} only):
+2. Pull what queries it ranks for and its position/CTR (US only):
    `python3 ~/genseo/scripts/gsc_fetcher.py fetch_url_data https://wellnessnest.co/ <full_article_url>`
 
 ## STEP 1 — DIAGNOSE (this decides what you do)
 Look at the page's current average position for its primary keyword:
 
 - **CLIMB problem — position 13+ (stuck on page 2):** the page isn't deep/relevant enough to reach
-  page 1. → Your job is mostly CONTENT: add depth, a comparison table, more specific {{MARKET_ABBR}} detail,
+  page 1. → Your job is mostly CONTENT: add depth, a comparison table, more specific US detail,
   internal links, and fully cover the sub-questions competitors answer that this page misses.
 - **CTR problem — position 4–12 but low/zero clicks:** the page already ranks; it just isn't
   earning the click. → Your job is mostly TITLE + META + ANSWER BLOCK. Do NOT bloat the content.
@@ -59,17 +59,17 @@ that adds value wins. Adding a table is safe; rewriting the title or the body is
 The existing body is WHY the page ranks. Preserve it. Your edit = existing body kept VERBATIM,
 with new blocks APPENDED. Do NOT regenerate, reword, reorder, or trim existing paragraphs/headings.
 Append only the blocks the page is missing:
-- **Answer-first block** — first paragraph (40–60 words) directly answers the primary question, contains "{{MARKET}}".
+- **Answer-first block** — first paragraph (40–60 words) directly answers the primary question, contains "the US".
 - **≥1 comparison `<table>`** with clear headers (AI Overviews extract these).
-- **"Where to Buy in {{MARKET}}"** section with an {{CURRENCY}} price range, fast local delivery, authenticity.
+- **"Where to Buy in the US"** section with an $price range, fast local delivery, authenticity.
 - **≥2 internal links to the matching `/collections/` page**, plus 1–2 links to related existing articles.
 - **PRIORITY BRANDS FIRST (feature naturally where relevant):** your priority
   vendor list goes here. Never mention or link a vendor you do not stock.
-- **4 FAQs**, ≥1 {{MARKET}}-specific.
+- **4 FAQs**, ≥1 US-specific.
 - **Named author** from the roster with a live `/pages/` link (see auto-publish roster). Schema author = that Person.
 - **Self-contained H2 sections**; no "as mentioned above".
 - Target depth: most refreshes should end up **1,200–1,800 words** (deeper than the thin original), but
-  never pad — every added sentence must add real value (specs, {{CURRENCY}} prices, comparisons, genuine use cases).
+  never pad — every added sentence must add real value (specs, $prices, comparisons, genuine use cases).
 - Images: if the article lacks product lifestyle images, generate them (image-to-image off real product photos).
 
 ## STEP 3 — TITLE: depends on diagnosis (changing a ranking title is what sank the last batch)
@@ -81,7 +81,7 @@ Append only the blocks the page is missing:
   at most). The depth additions are your fix; improve only the meta description for CTR.
 - **CTR pages (diagnosis = CTR, pos ≤12 with low clicks): rewrite the title + meta** — that IS the fix
   for these. Title ≤60 chars, keyword front-loaded, one click trigger; kill boilerplate. Meta 140–155
-  chars, answer-first + a differentiator ({{CURRENCY}} price, "100% authentic", "next-day {{MARKET_ABBR}} delivery").
+  chars, answer-first + a differentiator ($price, "100% authentic", "next-day US delivery").
   For a CTR title rewrite you MUST put `<!-- title-change-approved -->` on its own line in the draft —
   the publisher mechanically refuses any title change without it (it keeps the live title instead).
 - Meta description (`<!-- meta_description: ... -->`) may be improved on any page — it doesn't affect ranking,
