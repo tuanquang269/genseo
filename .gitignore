@@ -1,0 +1,10 @@
+# never commit credentials or fetched store data
+shopify_token.json
+credentials.json
+gsc_token.json
+*.log
+__pycache__/
+tmp_images/
+published_drafts/
+existing_articles.json
+shopify_products_all.json

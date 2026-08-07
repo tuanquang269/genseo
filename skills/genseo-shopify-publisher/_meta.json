@@ -1,0 +1,5 @@
+{
+  "name": "genseo-shopify-publisher",
+  "version": "1.0.0",
+  "description": "Publish SEO generated markdown articles directly to the Shopify store. Handles automated HTML conversion and uploads to the specified Blog ID."
+}
