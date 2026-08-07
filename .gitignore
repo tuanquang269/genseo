@@ -1,10 +1,20 @@
-# never commit credentials or fetched store data
-shopify_token.json
+# credentials + tokens
 credentials.json
 gsc_token.json
-*.log
-__pycache__/
-tmp_images/
-published_drafts/
+scripts/credentials.json
+scripts/gsc_token.json
+# store data caches (regenerate with fetch_all_articles.py / refresh_article_cache.py)
 existing_articles.json
+existing_collections.json
 shopify_products_all.json
+ALL_ARTICLES.csv
+PUBLISHED_ARTICLES_TRACKER.csv
+# working dirs
+published_drafts/
+tmp_images/
+backups/
+logs/
+validate_runs.log
+*.pyc
+__pycache__/
+.DS_Store

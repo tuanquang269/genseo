@@ -32,7 +32,7 @@ req = {
     "startDate": t_start,
     "endDate": t_end,
     "dimensions": ["query", "page"],
-    "dimensionFilterGroups": [{"filters": [{"dimension": "country", "operator": "equals", "expression": "{{COUNTRY_CODE}}"}]}],
+    "dimensionFilterGroups": [{"filters": [{"dimension": "country", "operator": "equals", "expression": "usa"}]}],
     "rowLimit": 5000
 }
 res = service.searchanalytics().query(siteUrl="https://wellnessnest.co/", body=req).execute()
@@ -53,7 +53,7 @@ req_gsc = {
     "startDate": t_start,
     "endDate": t_end,
     "dimensions": ["query"],
-    "dimensionFilterGroups": [{"filters": [{"dimension": "country", "operator": "equals", "expression": "{{COUNTRY_CODE}}"}]}],
+    "dimensionFilterGroups": [{"filters": [{"dimension": "country", "operator": "equals", "expression": "usa"}]}],
     "rowLimit": 3000
 }
 res_gsc = service.searchanalytics().query(siteUrl="https://wellnessnest.co/", body=req_gsc).execute()
@@ -112,7 +112,7 @@ for topic_cat, kws in clusters.items():
     if len(articles) >= 90: break
 
 out_lines = ["# 🗓️ 30-Day Automated SEO Content Schedule (3 Articles / Day)\n"]
-out_lines.append("*Target Geo: {{MARKET}}. Goal: Dominate the local SERP with 90 high-value contextual topics.*")
+out_lines.append("*Target Geo: US. Goal: Dominate the local SERP with 90 high-value contextual topics.*")
 out_lines.append("> 💡 **How to run this:** Copy the Trigger Prompt for the specific ticket and paste it to the AI. It will auto-execute the entire pipeline.\n\n")
 
 day = 1
@@ -133,7 +133,7 @@ for i, art in enumerate(articles[:90]):
     out_lines.append(f"- **Action**: {action}")
     out_lines.append(f"**🤖 Auto-Publish Trigger Prompt:**")
     out_lines.append("```markdown")
-    out_lines.append(f"/genseo-auto-publish CREATE A [NEW ARTICLE]. Title Focus: \"The Ultimate Guide to {main_kw} in {{MARKET}}\". Target Keywords: {all_kws_str}. Default BLOG_ID is 104008483131.")
+    out_lines.append(f"/genseo-auto-publish CREATE A [NEW ARTICLE]. Title Focus: \"The Ultimate Guide to {main_kw} in the US\". Target Keywords: {all_kws_str}. Default BLOG_ID is 104008483131.")
     out_lines.append("```\n")
 
 with open("/Users/kevinkreative/genseo/GENSEO_30_DAY_SCHEDULE.md", "w") as f:

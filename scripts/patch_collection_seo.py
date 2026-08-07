@@ -28,43 +28,43 @@ API="2026-04"
 TARGETS = {
   "protein-powder": {
     "title": "Protein Powder",  # already fine
-    "title_tag": "Best Whey Protein Powder {{MARKET}} (2026) — Isolate, Blend & Plant",
-    "description": "Shop the best whey protein powder in {{MARKET}} — Mutant Whey, PVL Iso Gold, Basic Whey Blend & more. 100% authentic, fast local delivery. From {{CURRENCY}} $53.",
+    "title_tag": "Best Whey Protein Powder US (2026) — Isolate, Blend & Plant",
+    "description": "Shop the best whey protein powder in the US — Mutant Whey, PVL Iso Gold, Basic Whey Blend & more. 100% authentic, fast local delivery. From $$53.",
   },
-  "optimum-nutrition-{{market}}": {
+  "optimum-nutrition-us": {
     "title": "Optimum Nutrition",  # was ALL CAPS
-    "title_tag": "Optimum Nutrition {{MARKET}} (2026) — Gold Standard Whey & More",
-    "description": "Buy authentic Optimum Nutrition in {{MARKET}} — Gold Standard 100% Whey, Isolate, Serious Mass & Creatine. Authorised retailer, fast local delivery.",
+    "title_tag": "Optimum Nutrition US (2026) — Gold Standard Whey & More",
+    "description": "Buy authentic Optimum Nutrition in the US — Gold Standard 100% Whey, Isolate, Serious Mass & Creatine. Authorised retailer, fast local delivery.",
   },
   "creatine": {
     "title": "Creatine",
-    "title_tag": "Best Creatine Monohydrate {{MARKET}} (2026)",
-    "description": "Shop the best creatine monohydrate supplements in {{MARKET}} (2026). Powder, capsules & gummies from top brands. 100% authentic, fast delivery.",
+    "title_tag": "Best Creatine Monohydrate US (2026)",
+    "description": "Shop the best creatine monohydrate supplements in the US (2026). Powder, capsules & gummies from top brands. 100% authentic, fast delivery.",
   },
   "mass-gainer": {
     "title": "Mass Gainer",  # was 'Mass gainer'
-    "title_tag": "Best Mass Gainer Supplements {{MARKET}} (2026)",
-    "description": "Shop {{MARKET}}'s best mass gainers in 2026 — high-calorie protein powders for hardgainers & bulking. 100% authentic, fast local delivery.",
+    "title_tag": "Best Mass Gainer Supplements US (2026)",
+    "description": "Shop US's best mass gainers in 2026 — high-calorie protein powders for hardgainers & bulking. 100% authentic, fast local delivery.",
   },
   "pre-workout": {
     "title": "Pre-Workout",
-    "title_tag": "Best Pre-Workout Supplements {{MARKET}} (2026)",
-    "description": "Shop {{MARKET}}'s best pre-workout supplements in 2026. Stimulant & stim-free options. 100% authentic, fast local delivery.",
+    "title_tag": "Best Pre-Workout Supplements US (2026)",
+    "description": "Shop US's best pre-workout supplements in 2026. Stimulant & stim-free options. 100% authentic, fast local delivery.",
   },
   "dymatize-nutrition": {
     "title": "Dymatize Nutrition",  # was ALL CAPS
-    "title_tag": "Dymatize Nutrition {{MARKET}} — ISO 100 & Whey Protein (2026)",
-    "description": "Shop Dymatize Nutrition in {{MARKET}} — ISO 100 Hydrolyzed, Elite Whey, Casein & more. Authorised retailer. 100% authentic, fast local delivery.",
+    "title_tag": "Dymatize Nutrition US — ISO 100 & Whey Protein (2026)",
+    "description": "Shop Dymatize Nutrition in the US — ISO 100 Hydrolyzed, Elite Whey, Casein & more. Authorised retailer. 100% authentic, fast local delivery.",
   },
   "ghost": {
     "title": "Ghost",  # was ALL CAPS
-    "title_tag": "Ghost Protein {{MARKET}} — Whey, Pre-Workout & Supplements (2026)",
-    "description": "Buy Ghost protein powder & supplements in {{MARKET}} — Ghost Whey, Legend Pre-Workout, BCAA & more. Authorised retailer. Fast local delivery.",
+    "title_tag": "Ghost Protein the US — Whey, Pre-Workout & Supplements (2026)",
+    "description": "Buy Ghost protein powder & supplements in the US — Ghost Whey, Legend Pre-Workout, BCAA & more. Authorised retailer. Fast local delivery.",
   },
-  "myprotein-{{market}}": {
+  "myprotein-us": {
     "title": "Myprotein",  # was ALL CAPS 'MYPROTEIN'
-    "title_tag": "Buy Myprotein {{MARKET}} (2026) — Authorised Retailer",
-    "description": "Shop authentic Myprotein supplements in {{MARKET}} — Impact Whey, creatine, multivitamins & more. Fast local delivery from our SG warehouse.",
+    "title_tag": "Buy Myprotein the US (2026) — Authorised Retailer",
+    "description": "Shop authentic Myprotein supplements in the US — Impact Whey, creatine, multivitamins & more. Fast local delivery from our SG warehouse.",
   },
 }
 

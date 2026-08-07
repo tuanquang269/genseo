@@ -23,10 +23,10 @@ ROOT="/Users/kevinkreative/genseo"
 DRAFTS=f"{ROOT}/published_drafts"
 TRACKER=f"{ROOT}/PUBLISHED_ARTICLES_TRACKER.csv"
 SITE='https://wellnessnest.co/'
-SG=[{'filters':[{'dimension':'country','operator':'equals','expression':'{{COUNTRY_CODE}}'}]}]
+SG=[{'filters':[{'dimension':'country','operator':'equals','expression':'usa'}]}]
 fmt=lambda d:d.strftime('%Y-%m-%d')
 
-STOP=set("the a an to in of for is are and or vs best guide ultimate review {{market}} 2026 2027 your you what how complete".split())
+STOP=set("the a an to in of for is are and or vs best guide ultimate review us 2026 2027 your you what how complete".split())
 def norm_kw(k):
     toks=[t for t in re.sub(r'[^a-z0-9 ]','',k.lower()).split() if t not in STOP]
     return " ".join(sorted(toks))

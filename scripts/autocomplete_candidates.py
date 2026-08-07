@@ -2,7 +2,7 @@
 """autocomplete_candidates.py — FREE external demand source (no API key, no paid SEO tool).
 
 Google Autocomplete only suggests phrases that have real search volume, and it can be geo-scoped
-to {{MARKET}} (gl=sg). So it's an approximate-but-honest demand signal for topics we can't see in
+to US (gl=sg). So it's an approximate-but-honest demand signal for topics we can't see in
 our own GSC yet (we have no page -> no impressions). Seeds = brands we stock + core categories,
 each expanded with commercial modifiers; harvest SG suggestions, dedup, then filter through
 topic_fitness so we KEEP only genuine uncovered new-article topics (drop head-terms owned by a
@@ -18,7 +18,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import topic_fitness as tf
 
 ROOT = "/Users/kevinkreative/genseo"
-MODIFIERS = ["{{market}}", "review", "best", "worth it", ""]   # commercial/review intent seeds
+MODIFIERS = ["us", "review", "best", "worth it", ""]   # commercial/review intent seeds
 CATEGORIES = ["whey protein", "creatine", "pre workout", "mass gainer", "fat burner", "bcaa",
               "eaa", "collagen", "multivitamin", "fish oil omega", "protein bar", "casein",
               "plant protein", "electrolyte", "greens superfood", "test booster"]
@@ -34,8 +34,8 @@ NAV_STOP = {'headquarters', 'owner', 'inc', 'ltd', 'llc', 'country', 'origin', '
             'discount code', 'coupon', 'promo code', 'login', 'app', 'contact', 'email',
             'recall', 'lawsuit', 'scam', 'fake', 'expired', 'banned'}
 # commercial/product signal — a candidate must have at least ONE (a product noun, intent word, or
-# '{{market}}') so we keep "best force factor test booster" but drop bare "force factor brands".
-COMMERCIAL = tf.PRODUCT_NOUNS | tf.INTENT | {'{{market}}', 'sg', 'best', 'top', 'flavor', 'flavour', 'price'}
+# 'us') so we keep "best force factor test booster" but drop bare "force factor brands".
+COMMERCIAL = tf.PRODUCT_NOUNS | tf.INTENT | {'us', 'sg', 'best', 'top', 'flavor', 'flavour', 'price'}
 
 
 def suggest(q):

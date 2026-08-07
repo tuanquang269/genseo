@@ -173,7 +173,7 @@ def load_previous_data():
             if link:
                 prev[link] = {
                     "previous_checked": row.get("Previous Checked Date", ""),
-                    "last_avg_position": row.get("Current Avg Position ({{MARKET}})", ""),
+                    "last_avg_position": row.get("Current Avg Position (US)", ""),
                 }
     return prev
 
@@ -256,14 +256,14 @@ def main():
             "Keywords It Ranks For": top_keywords,
             "Last Updated": last_updated,
             "Previous Checked Date": previous_checked,
-            "Last Avg Position ({{MARKET}})": last_avg_position,
-            "Current Avg Position ({{MARKET}})": avg_position,
+            "Last Avg Position (US)": last_avg_position,
+            "Current Avg Position (US)": avg_position,
             "Checked Date": CHECKED_DATE,
         })
 
     # Sort by Current Avg Position (ascending = best rank first), empty last
     def sort_key(r):
-        val = r["Current Avg Position ({{MARKET}})"]
+        val = r["Current Avg Position (US)"]
         try:
             return float(val)
         except:
@@ -278,8 +278,8 @@ def main():
         "Keywords It Ranks For",
         "Last Updated",
         "Previous Checked Date",
-        "Last Avg Position ({{MARKET}})",
-        "Current Avg Position ({{MARKET}})",
+        "Last Avg Position (US)",
+        "Current Avg Position (US)",
         "Checked Date",
     ]
 
@@ -296,7 +296,7 @@ def main():
     print(f"{'Collection':<35} {'Avg Pos':>8}  Link")
     print("-" * 80)
     for r in results[:10]:
-        pos = r["Current Avg Position ({{MARKET}})"] or "N/A"
+        pos = r["Current Avg Position (US)"] or "N/A"
         name = r["Collection Name"][:33]
         print(f"  {name:<33} {pos:>8}  {r['Link']}")
 

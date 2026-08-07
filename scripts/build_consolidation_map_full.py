@@ -15,7 +15,7 @@ Outputs SG_CONSOLIDATION_FULL.csv. Read-only.
 """
 import csv, re, os
 ROOT="/Users/kevinkreative/genseo"
-STOP=set("the a an to in of for is are and or vs best guide ultimate complete review {{market}} sg 2025 2026 2027 your you what how do does in-{{market}} everything-you-need know about all things need".split())
+STOP=set("the a an to in of for is are and or vs best guide ultimate complete review us sg 2025 2026 2027 your you what how do does in-us everything-you-need know about all things need".split())
 
 def norm(title):
     t=re.sub(r'[^a-z0-9 ]',' ',title.lower())

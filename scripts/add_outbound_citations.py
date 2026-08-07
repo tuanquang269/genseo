@@ -92,7 +92,7 @@ SOURCES = {
 }
 
 # ordered: first match wins the top slots. HSA is appended to every article because
-# every one of these pages sells into {{MARKET}}.
+# every one of these pages sells into US.
 TOPICS = [
     (r"\bcreatine\b|creakong|crea-8", ["issn_creatine"]),
     (r"beta[- ]?alanine|carnosine", ["issn_betaalanine"]),
@@ -147,7 +147,7 @@ def top_articles(limit):
     rows = svc.searchanalytics().query(siteUrl="https://wellnessnest.co/", body={
         "startDate": str(start), "endDate": str(end), "dimensions": ["page"],
         "dimensionFilterGroups": [{"filters": [
-            {"dimension": "country", "operator": "equals", "expression": "{{COUNTRY_CODE}}"}]}],
+            {"dimension": "country", "operator": "equals", "expression": "usa"}]}],
         "rowLimit": 25000}).execute().get("rows", [])
     scored = {}
     for row in rows:
@@ -256,7 +256,7 @@ def selftest():
 
     # A shaker guide whose prose is full of "protein" must NOT be cited as protein science.
     bottle = "<p>Shakers and bottles for your protein shake. Protein powder fits. Protein.</p>"
-    got = pick("The Ultimate Owala {{MARKET}} Store Guide 2026", bottle + linkbox, live)
+    got = pick("The Ultimate Owala US Store Guide 2026", bottle + linkbox, live)
     assert got == ["medline_supp", "hsa"], f"body words leaked into a bottle guide: {got}"
 
     got = pick("1 Scoop of Whey: How Many Calories and Protein?",
@@ -264,10 +264,10 @@ def selftest():
     assert "issn_protein" in got, f"protein article missed protein sources: {got}"
     assert "nccih_melatonin" not in got and "issn_caffeine" not in got, f"junk topics: {got}"
 
-    got = pick("7 Best Creatine Supplements {{MARKET}}", "<p>creatine monohydrate creatine loading</p>", live)
+    got = pick("7 Best Creatine Supplements US", "<p>creatine monohydrate creatine loading</p>", live)
     assert got[0] == "issn_creatine", f"creatine article ranked wrong: {got}"
 
-    got = pick("Best Sleeping Supplement in {{MARKET}}", "<p>sleep quality, melatonin dosage</p>", live)
+    got = pick("Best Sleeping Supplement in the US", "<p>sleep quality, melatonin dosage</p>", live)
     assert "nccih_melatonin" in got, f"sleep article missed melatonin: {got}"
 
     assert all(g[-1] == "hsa" for g in [got]), "HSA must always be last"

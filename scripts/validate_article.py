@@ -187,7 +187,7 @@ def main():
     if words<900: fails.append(f"word count {words} below 900 (too thin)")
     elif words>2800: warns.append(f"word count {words} >2800 — confirm it's depth, not padding")
     # H1: Shopify renders the ARTICLE TITLE as the page H1, so body_html should NOT
-    # contain its own <h1> (that would create a duplicate H1). Title keyword/{{MARKET}}
+    # contain its own <h1> (that would create a duplicate H1). Title keyword/US
     # is enforced at the title level, not here. Just flag accidental in-body <h1>.
     h1s=re.findall(r'<h1[^>]*>(.*?)</h1>', html, re.S|re.I)
     if len(h1s)>1: fails.append(f"{len(h1s)} <h1> in body — Shopify already renders the title as H1; remove in-body H1s")
@@ -242,7 +242,7 @@ def main():
     if loc_h2<1: warns.append("no <h2> contains a US-market anchor")
     # table
     if '<table' not in html: fails.append("no comparison <table>")
-    # USD price presence (donor's {{CURRENCY}} check was dead code; the working check is $-digits)
+    # USD price presence (donor's $check was dead code; the working check is $-digits)
     if not re.search(r'\$\s?\d', html): fails.append("no USD price range (e.g. $25–$40)")
     # collection links >=2
     colls=re.findall(r'https://wellnessnest\.co(/collections/[a-z0-9-]+)', html)

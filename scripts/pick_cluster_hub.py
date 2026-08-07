@@ -66,7 +66,7 @@ def fetch(svc, days):
         body = {"startDate": str(start), "endDate": str(end), "dimensions": ["query", "page"],
                 "rowLimit": 25000, "startRow": sr,
                 "dimensionFilterGroups": [{"filters": [
-                    {"dimension": "country", "operator": "equals", "expression": "{{COUNTRY_CODE}}"}]}]}
+                    {"dimension": "country", "operator": "equals", "expression": "usa"}]}]}
         got = svc.searchanalytics().query(siteUrl=SITE, body=body).execute().get("rows", [])
         rows += got
         if len(got) < 25000:

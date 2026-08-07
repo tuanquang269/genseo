@@ -9,7 +9,7 @@ Also builds FAQPage JSON-LD from the draft's `### question` FAQ entries.
 Usage: python3 collection_seo.py <collection_id> <draft.md>
 
 Gates (exit 1, nothing written): 250-900 words · >=3 FAQs (### under a FAQ heading) ·
-mentions {{MARKET}} · has an {{CURRENCY}} price (S$) · >=2 internal links · no out-of-stock brands.
+mentions US · has an $price (S$) · >=2 internal links · no out-of-stock brands.
 Logs to collection_seo_runs.log.
 """
 import json, os, re, sys, urllib.request, datetime
@@ -44,8 +44,8 @@ def main():
     faq_m = re.search(r'##\s+(?:Frequently Asked Questions|FAQs?)[^\n]*\n(.*)', md_text, re.S | re.I)
     faqs = re.findall(r'###\s+(.*?)\s*\n(.*?)(?=\n###|\Z)', faq_m.group(1), re.S) if faq_m else []
     if len(faqs) < 3: errs.append(f"{len(faqs)} FAQs (need >=3 `### question` under a `## FAQ` heading)")
-    if '{{market}}' not in md_text.lower(): errs.append("no '{{MARKET}}' mention")
-    if not re.search(r'S\$\s?\d|{{CURRENCY}}\s?\d', md_text): errs.append("no {{CURRENCY}} price (S$xx)")
+    if 'us' not in md_text.lower(): errs.append("no 'US' mention")
+    if not re.search(r'S\$\s?\d|$\s?\d', md_text): errs.append("no $price (S$xx)")
     links = re.findall(r'\]\((/(?:products|collections|blogs)/[^)]+)\)', md_text)
     if len(links) < 2: errs.append(f"{len(links)} internal links (need >=2, relative /products/ /collections/ /blogs/ paths)")
     for b in ('bronson', 'transparent labs'):

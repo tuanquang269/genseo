@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 expand_article.py — Surgically enrich ONE article: insert a hand-written enrichment
-HTML block (comparison table + {{CURRENCY}} pricing + internal links) before the
+HTML block (comparison table + $pricing + internal links) before the
 'About the Author' section, append FAQPage schema, and align the Article schema
 author from the generic Org to the named Person.
 

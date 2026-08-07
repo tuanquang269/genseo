@@ -7,7 +7,7 @@ sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 from gsc_fetcher import get_service
 
 SITE='https://wellnessnest.co/'
-SG=[{'filters':[{'dimension':'country','operator':'equals','expression':'{{COUNTRY_CODE}}'}]}]
+SG=[{'filters':[{'dimension':'country','operator':'equals','expression':'usa'}]}]
 fmt=lambda d:d.strftime('%Y-%m-%d')
 
 def query(svc,s,e,dims,limit=25000):
@@ -35,8 +35,8 @@ def main():
         return {k:max(v,key=lambda x:x[1]) for k,v in m.items()}
     qp1=qpmap(p1s,p1e); qp2=qpmap(p2s,p2e)
 
-    # Commercial intent signal: contains a brand, category, or '{{market}}'/'buy'/'shop'/'price'/'near me'
-    COMM=['{{market}}','sg','buy','shop','price','near me','cheap','best','where','store',
+    # Commercial intent signal: contains a brand, category, or 'us'/'buy'/'shop'/'price'/'near me'
+    COMM=['us','sg','buy','shop','price','near me','cheap','best','where','store',
           'optimum','myprotein','my protein','dymatize','mutant','ghost','quest','musclepharm',
           'muscletech','nutricost','natrol','california gold','sports research','isopure',
           'mass gainer','pre workout','preworkout','creatine','fat burner','protein powder',

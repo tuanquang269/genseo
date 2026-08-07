@@ -35,7 +35,7 @@ def pull():
     return svc.searchanalytics().query(siteUrl=SITE, body={
         'startDate': start, 'endDate': end, 'dimensions': ['page', 'query'], 'rowLimit': 25000,
         'dimensionFilterGroups': [{'filters': [
-            {'dimension': 'country', 'operator': 'equals', 'expression': '{{COUNTRY_CODE}}'},
+            {'dimension': 'country', 'operator': 'equals', 'expression': 'usa'},
             {'dimension': 'page', 'operator': 'contains', 'expression': '/blogs/'}]}]}).execute().get('rows', [])
 
 

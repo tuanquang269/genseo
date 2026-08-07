@@ -16,7 +16,7 @@ storefront, the perks from the rendered loyalty page:
     Platinum  9,000 pts   $50 OFF + anniversary gifts + exclusive training plan
     Diamond   30,000 pts  $100 OFF + the above + special discounts & free shipping
 
-Members earn 3 points per {{CURRENCY}} 1 spent, so `TierBenefitLoyaltyPoints` is true of
+Members earn 3 points per $1 spent, so `TierBenefitLoyaltyPoints` is true of
 every tier. `TierBenefitLoyaltyShipping` is added to Diamond only, which is the
 one tier whose published perks include free shipping.
 

@@ -10,19 +10,19 @@ token = auth['access_token']
 blog_id = 104008483131
 
 targets = {
-    "everything-you-need-to-know-about-meiji-protein-in-{{market}}": {
+    "everything-you-need-to-know-about-meiji-protein-in-us": {
         "title": "🌱 Dairy-Free? Explore Our Plant-Based Protein Guides"
     },
-    "5-best-vegan-protein-powders-in-{{market}}-2026-ranked-by-our-nutrition-team": {
+    "5-best-vegan-protein-powders-in-us-2026-ranked-by-our-nutrition-team": {
         "title": "🌱 Explore More Plant-Based Protein Guides"
     }
 }
 
 links_html = """
   <ul style="list-style-type: none; padding-left: 0;">
-    <li style="margin-bottom: 10px;">👉 <strong><a href="https://wellnessnest.co/blogs/news/the-ultimate-guide-to-soy-protein-in-{{market}}-the-comprehensive-plant-based-masterclass">The Comprehensive Guide to Soy Protein in {{MARKET}}</a></strong></li>
-    <li style="margin-bottom: 10px;">👉 <strong><a href="https://wellnessnest.co/blogs/news/the-ultimate-guide-to-plant-protein-powder-in-{{market}}">{{MARKET}}'s Ultimate Guide to Plant Protein Powders</a></strong></li>
-    <li style="margin-bottom: 0;">👉 <strong><a href="https://wellnessnest.co/blogs/news/the-ultimate-guide-to-myprotein-soy-protein-isolate-in-{{market}}">Myprotein Soy Protein Isolate: In-Depth Review</a></strong></li>
+    <li style="margin-bottom: 10px;">👉 <strong><a href="https://wellnessnest.co/blogs/news/the-ultimate-guide-to-soy-protein-in-us-the-comprehensive-plant-based-masterclass">The Comprehensive Guide to Soy Protein in the US</a></strong></li>
+    <li style="margin-bottom: 10px;">👉 <strong><a href="https://wellnessnest.co/blogs/news/the-ultimate-guide-to-plant-protein-powder-in-us">US's Ultimate Guide to Plant Protein Powders</a></strong></li>
+    <li style="margin-bottom: 0;">👉 <strong><a href="https://wellnessnest.co/blogs/news/the-ultimate-guide-to-myprotein-soy-protein-isolate-in-us">Myprotein Soy Protein Isolate: In-Depth Review</a></strong></li>
   </ul>
 </div>
 """

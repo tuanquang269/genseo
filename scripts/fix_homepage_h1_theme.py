@@ -47,7 +47,7 @@ OTHER_PAGES = (
     "https://wellnessnest.co/collections/protein-powder",
 )
 
-H1_TEXT = "Supplement Store in {{MARKET}}"
+H1_TEXT = "Supplement Store in the US"
 
 OPEN_BEFORE = """{%- if request.page_type == 'index' -%}
     <h1 class="header__heading">

@@ -81,7 +81,7 @@ def word_pat(name):
 
 
 def selftest():
-    assert not word_pat("LAC").search("meal replacement {{market}}")
+    assert not word_pat("LAC").search("meal replacement us")
     assert word_pat("LAC").search("lac taut collagen")
     assert not word_pat("ABE").search("rosabella beetroot")
     # the bug this script exists to fix: brand is a PREFIX of the collection name
@@ -140,7 +140,7 @@ def main():
         body = {"startDate": start.isoformat(), "endDate": end.isoformat(),
                 "dimensions": ["query", "page"], "rowLimit": 25000, "startRow": sr,
                 "dimensionFilterGroups": [{"filters": [
-                    {"dimension": "country", "operator": "equals", "expression": "{{COUNTRY_CODE}}"}]}]}
+                    {"dimension": "country", "operator": "equals", "expression": "usa"}]}]}
         got = svc.searchanalytics().query(siteUrl=SITE, body=body).execute().get("rows", [])
         rows += got
         if len(got) < 25000:

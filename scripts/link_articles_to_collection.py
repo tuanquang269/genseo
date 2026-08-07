@@ -48,7 +48,7 @@ def main():
         frozen = {l.split('#')[0].strip() for l in open(ff) if l.split('#')[0].strip()}
 
     box = (f'\n<p class="genseo-collection-link">🛒 <strong>Ready to buy? '
-           f'<a href="{col_url}">Shop the full {col_title} range in {{MARKET}}</a></strong> — '
+           f'<a href="{col_url}">Shop the full {col_title} range in the US</a></strong> — '
            f'100% authentic, fast local delivery.</p>\n')
 
     pat = re.compile(a.pattern, re.I)

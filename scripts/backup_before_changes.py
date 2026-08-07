@@ -11,9 +11,9 @@ BK=f"{ROOT}/backups/{STAMP}"
 os.makedirs(BK, exist_ok=True)
 
 COLLECTION_IDS={
-  "protein-powder":186319929484,"optimum-nutrition-{{market}}":236628312246,
+  "protein-powder":186319929484,"optimum-nutrition-us":236628312246,
   "creatine":344726306998,"mass-gainer":268057280694,"pre-workout":345002574006,
-  "dymatize-nutrition":236626935990,"ghost":344548573366,"myprotein-{{market}}":236627493046}
+  "dymatize-nutrition":236626935990,"ghost":344548573366,"myprotein-us":236627493046}
 
 def api(url):
     req=urllib.request.Request(url, headers={"X-Shopify-Access-Token":TOKEN})

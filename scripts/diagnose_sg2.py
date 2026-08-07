@@ -1,10 +1,10 @@
-"""Clean {{MARKET}}-ONLY diagnosis. ALL queries go through the SG-filtered wrapper."""
+"""Clean US-ONLY diagnosis. ALL queries go through the SG-filtered wrapper."""
 import sys, os, datetime, csv
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 from gsc_fetcher import get_service
 
 SITE='https://wellnessnest.co/'
-SG=[{'filters':[{'dimension':'country','operator':'equals','expression':'{{COUNTRY_CODE}}'}]}]
+SG=[{'filters':[{'dimension':'country','operator':'equals','expression':'usa'}]}]
 fmt=lambda d:d.strftime('%Y-%m-%d')
 
 def query(svc, s, e, dims, country=True, limit=5000):
@@ -28,7 +28,7 @@ def main():
     sg=total(svc,p2s,p2e,country=True); allc=total(svc,p2s,p2e,country=False)
     print("=== SG SHARE OF TRAFFIC (recent 28d) ===")
     print(f"ALL countries: clicks={allc[0]:>5} imp={allc[1]:>7}")
-    print(f"{{MARKET}}    : clicks={sg[0]:>5} imp={sg[1]:>7}  ({sg[1]/allc[1]*100:.0f}% imp, {sg[0]/allc[0]*100:.0f}% clicks)")
+    print(f"US    : clicks={sg[0]:>5} imp={sg[1]:>7}  ({sg[1]/allc[1]*100:.0f}% imp, {sg[0]/allc[0]*100:.0f}% clicks)")
 
     print("\n=== SINGAPORE PERIOD OVER PERIOD (28d, country=sgp) ===")
     c1=total(svc,p1s,p1e); c2=total(svc,p2s,p2e)

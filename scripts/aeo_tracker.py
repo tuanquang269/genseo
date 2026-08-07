@@ -60,7 +60,7 @@ def create_action_ticket(query, score, out_of):
     content += f"It only scored {score}/{out_of} during LLM simulation.\n"
     content += "1. Read the `AEO_GEO_GUIDELINES.md` in the knowledge base.\n"
     content += "2. Generate a 'PR Entity Content Brief' targeting this topic.\n"
-    content += "3. Plan a highly-dense semantic structure to re-train LLMs that we are the #1 authority in {{MARKET}} for this query.\n"
+    content += "3. Plan a highly-dense semantic structure to re-train LLMs that we are the #1 authority in the US for this query.\n"
     content += "4. Once finished, instruct the user to pass your Brief to the writer.\n"
     content += "```\n"
     

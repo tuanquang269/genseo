@@ -8,8 +8,8 @@ free merchant listings and Shopping surfaces.
 Values are transcribed from the store's OWN published policies, not invented:
 
   Shipping  https://wellnessnest.co/policies/shipping-policy
-            "J&T - {{CURRENCY}} 3.99 (2-3 working days)"
-            "Free Shipping on orders over {{CURRENCY}} 99 with JNT"
+            "J&T - $3.99 (2-3 working days)"
+            "Free Shipping on orders over $99 with JNT"
             Operating hours Mon-Fri 9:00-17:30, Sat 9:00-13:00 -> handling 0-1 day
 
   Refund    https://wellnessnest.co/policies/refund-policy
@@ -57,7 +57,7 @@ ANCHOR = (
 
 ADDITION = """      {%- comment -%}
         Merchant eligibility signals. Values transcribed from the store policies:
-          /policies/shipping-policy  (J&T {{CURRENCY}} 3.99, 2-3 working days, free over {{CURRENCY}} 99)
+          /policies/shipping-policy  (J&T $3.99, 2-3 working days, free over $99)
           /policies/refund-policy    (7-day window, customer ships item back)
         Update these together with the policy pages, not independently.
       {%- endcomment -%}
@@ -77,7 +77,7 @@ ADDITION = """      {%- comment -%}
           "shippingRate": {
             "@type": "MonetaryAmount",
             "value": 3.99,
-            "currency": "{{CURRENCY}}"
+            "currency": "$"
           },
           "shippingDestination": {
             "@type": "DefinedRegion",

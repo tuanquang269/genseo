@@ -61,7 +61,7 @@ req = {
     "startDate": t_start,
     "endDate": t_end,
     "dimensions": ["query", "page"],
-    "dimensionFilterGroups": [{"filters": [{"dimension": "country", "operator": "equals", "expression": "{{COUNTRY_CODE}}"}]}],
+    "dimensionFilterGroups": [{"filters": [{"dimension": "country", "operator": "equals", "expression": "usa"}]}],
     "rowLimit": 5000
 }
 res = service.searchanalytics().query(siteUrl="https://wellnessnest.co/", body=req).execute()
@@ -84,7 +84,7 @@ req_gsc = {
     "startDate": t_start,
     "endDate": t_end,
     "dimensions": ["query"],
-    "dimensionFilterGroups": [{"filters": [{"dimension": "country", "operator": "equals", "expression": "{{COUNTRY_CODE}}"}]}],
+    "dimensionFilterGroups": [{"filters": [{"dimension": "country", "operator": "equals", "expression": "usa"}]}],
     "rowLimit": 5000
 }
 res_gsc = service.searchanalytics().query(siteUrl="https://wellnessnest.co/", body=req_gsc).execute()
@@ -142,7 +142,7 @@ for topic_cat, kws in clusters.items():
     if len(articles) >= 120: break
 
 out_lines = ["# 🗓️ 2nd Round: 120 Automated SEO Content Schedule (3 Articles / Day)\n"]
-out_lines.append(f"*Target Geo: {{MARKET}}. Goal: Dominate the local SERP with 120 new high-value contextual topics.*")
+out_lines.append(f"*Target Geo: US. Goal: Dominate the local SERP with 120 new high-value contextual topics.*")
 out_lines.append("> 💡 **How to run this:** Copy the Trigger Prompt for the specific ticket and paste it to the AI. It will auto-execute the entire pipeline.\n\n")
 
 day = 1
@@ -162,7 +162,7 @@ for i, art in enumerate(articles[:120]):
     out_lines.append(f"- **Action**: {action}")
     out_lines.append(f"**🤖 Auto-Publish Trigger Prompt:**")
     out_lines.append("```markdown")
-    out_lines.append(f"/genseo-auto-publish CREATE A [NEW ARTICLE]. Title Focus: \"The Ultimate Guide to {main_kw} in {{MARKET}}\". Target Keywords: {all_kws_str}. Default BLOG_ID is 104008483131.")
+    out_lines.append(f"/genseo-auto-publish CREATE A [NEW ARTICLE]. Title Focus: \"The Ultimate Guide to {main_kw} in the US\". Target Keywords: {all_kws_str}. Default BLOG_ID is 104008483131.")
     out_lines.append("```\n")
 
 output_path = "/Users/kevinkreative/genseo/2ndRound_120_tickets.md"

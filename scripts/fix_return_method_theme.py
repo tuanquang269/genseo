@@ -13,7 +13,7 @@ theme was the wrong one, and this aligns it with both reality and Tapita.
 Not changed: `returnFees` stays ReturnFeesCustomerResponsibility, matching
 Tapita's "Customer responsibility".
 
-ponytail: "Free shipping above {{CURRENCY}} 99" is deliberately NOT in this JSON-LD.
+ponytail: "Free shipping above $99" is deliberately NOT in this JSON-LD.
 Google's merchant-listing docs type `shippingDetails.shippingRate` as a plain
 MonetaryAmount with no documented threshold field, and a bare 0-rate entry would
 tell Google shipping is unconditionally free — the exact false signal we are

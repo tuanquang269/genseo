@@ -40,7 +40,7 @@ SKIP_VENDORS = {'wellness nest', 'ageaura', 'unknown', ''}
 MIN_SKU = 3   # need real range depth — a 1-2 SKU brand isn't worth a dedicated review page
 
 # Shopify productType is a noisy taxonomy, so DON'T use it in the title — brands are searched by
-# NAME ("Force Factor review {{market}}"), not by category noun. Use it ONLY to pick the right
+# NAME ("Force Factor review us"), not by category noun. Use it ONLY to pick the right
 # collection / author / comparison-table. First keyword that matches the dominant productType wins.
 # (collection must exist in brt.COLLECTIONS; author-key must exist in brt.AUTHORS)
 CATEGORY_MAP = [
@@ -149,7 +149,7 @@ def render_ticket(c, num):
              or "no specific priority brand fits — use the best products you stock"
     author = brt.AUTHORS[c['author_key']]
     return [
-        f"### 📝 Ticket #{num} — Brand Review: {tc(c['brand'])} {{MARKET}}",
+        f"### 📝 Ticket #{num} — Brand Review: {tc(c['brand'])} US",
         f"- **Brand focus**: `{c['brand']}`  ({c['instock']} in-stock SKU; latent brand-search demand — we have no page yet)",
         f"- **Angle**: {ANGLE}",
         f"- **MUST link these collections (≥2)**: `{coll_links}`",
@@ -162,7 +162,7 @@ def render_ticket(c, num):
         "**🤖 Auto-Publish Trigger Prompt:**",
         "```markdown",
         (f"/genseo-auto-publish CREATE A [NEW ARTICLE]. Title Focus: \"A Creative and Engaging SEO "
-         f"Title for '{tc(c['brand'])} Review' in {{MARKET}}\". ANGLE: {ANGLE} MUST link collections: "
+         f"Title for '{tc(c['brand'])} Review' in the US\". ANGLE: {ANGLE} MUST link collections: "
          f"{coll_links}. Anchor product (in-stock, real): /products/{c['handle']}. Feature priority "
          f"brands naturally for cross-sell: {pb_str}. Comparison table: {c['table']}. Author: {author}. "
          f"Default BLOG_ID is 104008483131."),
@@ -195,7 +195,7 @@ def build_candidates():
         dtype = max(rec['types'].items(), key=lambda x: x[1])[0] if rec['types'] else ''
         # gate on brand-review intent. Brand NAME is what people search — productType only picks
         # the collection/author (via category_for), never the title.
-        v, code, why = tf.assess(f"{ven} review {{market}}", articles=arts, collections=colls)
+        v, code, why = tf.assess(f"{ven} review us", articles=arts, collections=colls)
         if v == 'FAIL':          # head-term / dup
             skipped_covered += 1
             continue
@@ -223,7 +223,7 @@ def main():
         if not os.path.isabs(queue):
             queue = f"{ROOT}/{queue}"
         content = open(queue).read()
-        have = {tf._norm(m) for m in re.findall(r'Brand Review: (.+?) {{MARKET}}', content)}
+        have = {tf._norm(m) for m in re.findall(r'Brand Review: (.+?) US', content)}
         passed, _, _, _ = build_candidates()
         fresh = [c for c in passed if tf._norm(c['brand']) not in have]
         if not fresh:

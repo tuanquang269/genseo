@@ -28,7 +28,7 @@ def check_rankings(site_url, threshold=5.0):
                 'filters': [{
                     'dimension': 'country',
                     'operator': 'equals',
-                    'expression': '{{COUNTRY_CODE}}'
+                    'expression': 'usa'
                 }]
             }],
             'rowLimit': 500
@@ -69,7 +69,7 @@ def check_rankings(site_url, threshold=5.0):
         'startDate': t_start,
         'endDate': t_end,
         'dimensions': ['query', 'page'],
-        'dimensionFilterGroups': [{'filters': [{'dimension': 'country', 'operator': 'equals', 'expression': '{{COUNTRY_CODE}}'}]}],
+        'dimensionFilterGroups': [{'filters': [{'dimension': 'country', 'operator': 'equals', 'expression': 'usa'}]}],
         'rowLimit': 5000
     }
     

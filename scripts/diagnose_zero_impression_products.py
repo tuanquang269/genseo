@@ -78,7 +78,7 @@ def gsc_product_rows(svc, days=28):
             "startDate": start.isoformat(), "endDate": end.isoformat(),
             "dimensions": ["page"], "rowLimit": 25000, "startRow": start_row,
             "dimensionFilterGroups": [{"filters": [
-                {"dimension": "country", "operator": "equals", "expression": "{{COUNTRY_CODE}}"},
+                {"dimension": "country", "operator": "equals", "expression": "usa"},
                 {"dimension": "page", "operator": "contains", "expression": "/products/"}]}],
         }
         r = svc.searchanalytics().query(siteUrl=SITE, body=body).execute()

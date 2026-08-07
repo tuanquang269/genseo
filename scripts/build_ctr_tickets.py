@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate a CTR-sprint ticket list from GSC {{MARKET}} data.
+"""Generate a CTR-sprint ticket list from GSC US data.
 
 Selects pages ranking pos 4-12 with >=100 SG impressions (28d) whose CTR is under
 half the expected CTR for their position — i.e. pages that rank but don't win the
@@ -57,7 +57,7 @@ def main():
     rows = svc.searchanalytics().query(siteUrl=SITE, body={
         'startDate': str(start), 'endDate': str(end),
         'dimensions': ['page', 'query'],
-        'dimensionFilterGroups': [{'filters': [{'dimension':'country','operator':'equals','expression':'{{COUNTRY_CODE}}'}]}],
+        'dimensionFilterGroups': [{'filters': [{'dimension':'country','operator':'equals','expression':'usa'}]}],
         'rowLimit': 25000}).execute().get('rows', [])
 
     pages = collections.defaultdict(list)
@@ -123,7 +123,7 @@ def main():
     with open(out_path, 'w') as f:
         f.write(f"""# 🎯 CTR Sprint Tickets — generated {datetime.date.today()} (GSC SG {start} → {end})
 
-**Goal:** these pages already rank pos 4–12 in {{MARKET}} but lose the click. Fix = a better
+**Goal:** these pages already rank pos 4–12 in the US but lose the click. Fix = a better
 SERP title + meta description. **Nothing else.**
 
 ## ⛔ HARD RULES (read before every ticket)

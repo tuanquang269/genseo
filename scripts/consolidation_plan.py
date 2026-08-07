@@ -28,7 +28,7 @@ def pull(dimensions):
     start = (datetime.date.today() - datetime.timedelta(days=90)).strftime('%Y-%m-%d')
     body = {'startDate': start, 'endDate': end, 'dimensions': dimensions, 'rowLimit': 25000,
             'dimensionFilterGroups': [{'filters': [
-                {'dimension': 'country', 'operator': 'equals', 'expression': '{{COUNTRY_CODE}}'},
+                {'dimension': 'country', 'operator': 'equals', 'expression': 'usa'},
                 {'dimension': 'page', 'operator': 'contains', 'expression': '/blogs/'}]}]}
     return svc.searchanalytics().query(siteUrl=SITE, body=body).execute().get('rows', [])
 

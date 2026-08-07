@@ -10,9 +10,9 @@ from gsc_fetcher import get_service
 
 SHOP= __import__("genseo_config").SHOP
 TOKEN= __import__("genseo_config").TOKEN
-API="2026-04"
+API= __import__("genseo_config").API
 SITE='https://wellnessnest.co/'
-SG=[{'filters':[{'dimension':'country','operator':'equals','expression':'{{COUNTRY_CODE}}'}]}]
+SG=[{'filters':[{'dimension':'country','operator':'equals','expression':'usa'}]}]
 fmt=lambda d:d.strftime('%Y-%m-%d')
 ROOT="/Users/kevinkreative/genseo"
 
@@ -51,12 +51,19 @@ def main():
                 'url':url,'created':(a.get('published_at') or a.get('created_at') or '')[:10],'words':wc})
     print(f"Total articles pulled from Shopify: {len(articles)}")
 
-    # SG perf per page
-    svc=get_service()
-    end=datetime.date.today()-datetime.timedelta(days=3); start=end-datetime.timedelta(days=27)
-    rows=svc.searchanalytics().query(siteUrl=SITE,body={'startDate':fmt(start),'endDate':fmt(end),
-        'dimensions':['page'],'rowLimit':25000,'dimensionFilterGroups':SG}).execute().get('rows',[])
-    perf={r['keys'][0]:(r['clicks'],r['impressions'],r['position']) for r in rows}
+    # US perf per page — OPTIONAL: without GSC credentials the Shopify corpus
+    # still exports (all perf columns 0), so day-1 setup doesn't need Google Cloud.
+    perf={}
+    try:
+        svc=get_service()
+        end=datetime.date.today()-datetime.timedelta(days=3); start=end-datetime.timedelta(days=27)
+        rows=svc.searchanalytics().query(siteUrl=SITE,body={'startDate':fmt(start),'endDate':fmt(end),
+            'dimensions':['page'],'rowLimit':25000,'dimensionFilterGroups':SG}).execute().get('rows',[])
+        perf={r['keys'][0]:(r['clicks'],r['impressions'],r['position']) for r in rows}
+    except SystemExit as e:
+        print(f"⚠ GSC skipped ({e}) — perf columns will be 0. Set up scripts/credentials.json for real data.")
+    except Exception as e:
+        print(f"⚠ GSC skipped ({type(e).__name__}: {e}) — perf columns will be 0.")
 
     for a in articles:
         c,i,p=perf.get(a['url'],(0,0,0))

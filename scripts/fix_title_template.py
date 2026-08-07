@@ -46,7 +46,7 @@ VERIFY_URLS = (
     "https://wellnessnest.co/",
     "https://wellnessnest.co/products/dymatize-nutrition-iso-100-hydrolyzed-1-3-5-lb",
     "https://wellnessnest.co/collections/protein-powder",
-    "https://wellnessnest.co/blogs/news/the-ultimate-guide-to-protein-powders-in-{{market}}",
+    "https://wellnessnest.co/blogs/news/the-ultimate-guide-to-protein-powders-in-us",
 )
 
 BEFORE = """    <title>

@@ -10,7 +10,7 @@ import csv, re
 ROOT="/Users/kevinkreative/genseo"
 
 # ---- live collections (verified present on store) ----
-COLLECTIONS=set("all allmax-nutrition amazing-grass antioxidant-support applied-nutrition barebells blenderbottle bsn california-gold-nutrition casein-protein cellucor childrens-health collagen creatine digestive-support doctors-best dymatize-nutrition evlution-nutrition fat-burner garden-of-life general-health ghost glutamine goli gym-accessories herbal-plant-supplements hydroxycut immune-support intra-workout jnx-sports kaged-muscle l-carnitine labrada mass-gainer mens-health mrm musclepharm muscletech mutant myprotein-{{market}} natrol naturade natural-factors natures-way neocell now-foods nutrex-research nutricost omega-3-fish-oils optimum-nutrition-{{market}} orgain owala perfect-sports plant-based-protein post-workout pre-workout protein-bar-meal-replacement pvl-nutrition quest-protein-bar rainbow-light rsp-nutrition science-in-sport shakers-bottle sleep-improvement sports-research vitamin-wellness whey-protein womens-health xtend youtheory yumearth".split())
+COLLECTIONS=set("all allmax-nutrition amazing-grass antioxidant-support applied-nutrition barebells blenderbottle bsn california-gold-nutrition casein-protein cellucor childrens-health collagen creatine digestive-support doctors-best dymatize-nutrition evlution-nutrition fat-burner garden-of-life general-health ghost glutamine goli gym-accessories herbal-plant-supplements hydroxycut immune-support intra-workout jnx-sports kaged-muscle l-carnitine labrada mass-gainer mens-health mrm musclepharm muscletech mutant myprotein-us natrol naturade natural-factors natures-way neocell now-foods nutrex-research nutricost omega-3-fish-oils optimum-nutrition-us orgain owala perfect-sports plant-based-protein post-workout pre-workout protein-bar-meal-replacement pvl-nutrition quest-protein-bar rainbow-light rsp-nutrition science-in-sport shakers-bottle sleep-improvement sports-research vitamin-wellness whey-protein womens-health xtend youtheory yumearth".split())
 
 # ---- PRIORITY BRANDS (verified live). Ordered by business priority. ----
 # brand -> (collection-or-None, product-keywords-for-context, relevant-topic-keywords)
@@ -70,8 +70,8 @@ THEME_RULES=[
     ["casein-protein"], "sports", "casein options (slow-release, dose, price)"),
  ("Plant Protein",["plant protein","vegan","pea protein","soy protein","rice protein"],
     ["plant-based-protein"], "dietetics", "plant proteins (source blend, complete profile, taste)"),
- ("Store & Brand Intent",["supplement store","supplement shop","online supplement","gym supplement","sports supplement","shop nutrition","purchase vitamins","trusted","premium","science backed","brand {{market}}","nutrition supplements","health supplement"],
-    ["protein-powder","creatine","vitamin-wellness"], "founder", "top categories & priority brands we carry (with {{CURRENCY}} price ranges)"),
+ ("Store & Brand Intent",["supplement store","supplement shop","online supplement","gym supplement","sports supplement","shop nutrition","purchase vitamins","trusted","premium","science backed","brand us","nutrition supplements","health supplement"],
+    ["protein-powder","creatine","vitamin-wellness"], "founder", "top categories & priority brands we carry (with $price ranges)"),
  ("Amino & BCAA",["bcaa","eaa","amino","glutamine","intra workout","xtend"],
     ["best-amino-acids","intra-workout"], "sports", "amino/BCAA products (ratio, EAAs, dose)"),
 ]
@@ -107,7 +107,7 @@ def brands_for(q, theme_table):
 def angle_for(q, pos):
     ql=q.lower()
     pos=float(pos)
-    if any(w in ql for w in ["store","shop","online","buy","where","purchase","brand {{market}}","trusted","premium"]):
+    if any(w in ql for w in ["store","shop","online","buy","where","purchase","brand us","trusted","premium"]):
         return "Commercial/transactional — position Your Brand as the answer; lead with authenticity, range, fast SG delivery, price."
     if any(w in ql for w in ["review","best","vs","compare","top"]):
         return "Comparison/buying-guide — direct verdict up top, then a comparison table of the options we stock."
@@ -164,7 +164,7 @@ def main():
     L=[]
     L.append("# 🗓️ Jun 2026: 120 SG-Demand Content Schedule — RICH BRIEFS")
     L.append("")
-    L.append("*Target Geo: {{MARKET}}. Source: GSC SG under-served demand (imp≥20, pos>8, 90d), deduped vs 632 existing articles. Each ticket is a pre-decided brief so the model executes instead of guessing.*")
+    L.append("*Target Geo: US. Source: GSC SG under-served demand (imp≥20, pos>8, 90d), deduped vs 632 existing articles. Each ticket is a pre-decided brief so the model executes instead of guessing.*")
     L.append("")
     L.append("> **How the cron runs this:** \"continue with next N tickets in Jun26-120-tickets.md\". Each invokes `/genseo-auto-publish`, which enforces STEP 0 (live duplicate-check) and STEP 6 (validate_article.py must print ✓ PASS).")
     L.append("")
@@ -174,7 +174,7 @@ def main():
     L.append("")
     L.append("⛔ **NOT yet in stock — do NOT mention or link (would 404):** Bronson, Transparent Labs. Revisit when they land. (Nutrabio is now IN STOCK — OK to feature.)")
     L.append("")
-    L.append("**Quality bar (auto-enforced):** 900–1400 words · answer-first block w/ '{{MARKET}}' · 1 comparison table · 'Where to Buy in {{MARKET}}' + {{CURRENCY}} price · ≥2 collection links · 4 FAQs (≥1 SG) · named author w/ live /pages/ · Article+FAQPage schema · real product links (no 404s) · not a duplicate.")
+    L.append("**Quality bar (auto-enforced):** 900–1400 words · answer-first block w/ 'US' · 1 comparison table · 'Where to Buy in the US' + $price · ≥2 collection links · 4 FAQs (≥1 SG) · named author w/ live /pages/ · Article+FAQPage schema · real product links (no 404s) · not a duplicate.")
     L.append("")
 
     day=0
@@ -203,7 +203,7 @@ def main():
         L.append(f"- **Action**: [ ] PENDING")
         L.append("**🤖 Auto-Publish Trigger Prompt:**")
         L.append("```markdown")
-        L.append(f"/genseo-auto-publish CREATE A [NEW ARTICLE]. Title Focus: \"A Creative and Engaging SEO Title for '{tc(q)}' in {{MARKET}}\". Target Keywords: {sec_str}. ANGLE: {angle} MUST link collections: {coll_links}. Feature priority brands first if relevant: {pb_str}. Comparison table: {r['table']}. Author: {author}. Default BLOG_ID is 104008483131.")
+        L.append(f"/genseo-auto-publish CREATE A [NEW ARTICLE]. Title Focus: \"A Creative and Engaging SEO Title for '{tc(q)}' in the US\". Target Keywords: {sec_str}. ANGLE: {angle} MUST link collections: {coll_links}. Feature priority brands first if relevant: {pb_str}. Comparison table: {r['table']}. Author: {author}. Default BLOG_ID is 104008483131.")
         L.append("```")
         L.append("")
 

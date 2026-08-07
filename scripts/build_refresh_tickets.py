@@ -41,7 +41,7 @@ def fetch_gsc_slice(service, start_days_ago, end_days_ago):
         'endDate': end_date,
         'dimensions': ['page', 'query'],
         'dimensionFilterGroups': [{
-            'filters': [{'dimension': 'country', 'operator': 'equals', 'expression': '{{COUNTRY_CODE}}'}]
+            'filters': [{'dimension': 'country', 'operator': 'equals', 'expression': 'usa'}]
         }],
         'rowLimit': 10000
     }

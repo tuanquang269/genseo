@@ -13,7 +13,7 @@ Verdicts: PASS (exit 0), REVIEW (exit 2 — allowed but flagged), FAIL (exit 1 �
 
 Rules (a heuristic gate — tune the lists as data grows):
   FAIL  near-duplicate of an existing live article (we already have the page)
-  FAIL  bare category head-term a COLLECTION owns ("best protein powder {{market}}") -> the
+  FAIL  bare category head-term a COLLECTION owns ("best protein powder us") -> the
         collection page should win it, a new article would cannibalise it
   FAIL  flavour/recipe variant with no stocked brand + no purchase intent (the dead pattern)
   FAIL  explicit SG demand floor breached (--sg-imp below MIN_IMP)
@@ -21,8 +21,8 @@ Rules (a heuristic gate — tune the lists as data grows):
   REVIEW everything else (genuine ingredient/how-to gap, or ambiguous — a human/Claude decides)
 
 Usage:
-  topic_fitness.py "Atlas Whey Review {{MARKET}}" [--sg-imp 140]
-  topic_fitness.py "coffee protein shake {{market}}"
+  topic_fitness.py "Atlas Whey Review US" [--sg-imp 140]
+  topic_fitness.py "coffee protein shake us"
   topic_fitness.py --self-check
 """
 import json, re, sys
@@ -33,7 +33,14 @@ DUP_JACCARD = 0.72    # significant-word overlap with an existing title = duplic
 RANK_FLOOR = 8        # if we already rank SG pos <= this, a NEW page cannibalises the winner (refresh instead)
 
 # brands we actually stock (lowercase substrings). Names a specific entity => winner-shaped.
+# wellnessnest.co is an OWN-BRAND store: only house brands + their hero ingredients count
+# as stocked entities. (Donor retailer's 60-brand list removed 2026-08-07.)
 STOCKED_BRANDS = {
+ 'shilasource','shilajit','fusiforce','florafresh','menomate','turkesterone',
+ 'ageaura','wellness nest','wellnessnest','nmn','tmg','urolithin','longevity peptides',
+ 'creatine gummies','vaginal probiotic','feminine probiotic','menopause probiotic',
+}
+_DONOR_BRANDS_REMOVED = {
  'mutant','pvl','pure vita labs','ghost','jnx','pure protein','dymatize','pb2','optimum nutrition','myprotein',
  'muscletech','musclepharm','cellucor','kaged','labrada','allmax','applied nutrition','isopure',
  'quest','barebells','bsn','nutrex','rsp','evlution','evl','science in sport','amazing grass',
@@ -65,15 +72,15 @@ PRODUCT_NOUNS = {'whey','isolate','creatine','preworkout','pre-workout','mass','
  'store','outlet','freesip','test','supplements','powder','nutrition','isogold'}
 # category head-terms a COLLECTION owns — a new article cannibalises them
 COLLECTION_HEADTERMS = [
- 'best protein powder','protein powder {{market}}','buy protein powder','best whey','whey protein powder',
- 'best creatine','creatine {{market}}','best pre workout','best pre-workout','best fat burner',
- 'best collagen','best multivitamin','best mass gainer','mass gainer {{market}}','supplements {{market}}',
+ 'best protein powder','protein powder us','buy protein powder','best whey','whey protein powder',
+ 'best creatine','creatine us','best pre workout','best pre-workout','best fat burner',
+ 'best collagen','best multivitamin','best mass gainer','mass gainer us','supplements us',
  'best supplement brand','best supplement store','best protein brand','best amino','best bcaa',
- 'protein bars {{market}}','best protein bar',
+ 'protein bars us','best protein bar',
 ]
 
 def sig_words(s):
-    stop = {'in','of','the','for','a','to','vs','and','with','is','it','{{market}}','best','review','2026','2025','sg','guide','ultimate'}
+    stop = {'in','of','the','for','a','to','vs','and','with','is','it','us','best','review','2026','2025','sg','guide','ultimate'}
     return {w for w in re.findall(r'[a-z0-9]+', s.lower()) if len(w) > 2 and w not in stop}
 
 def has_any(text, needles):
@@ -141,7 +148,7 @@ def assess(topic, sg_imp=None, articles=None, collections=None, pos=None):
     # dead flavour/recipe variant with no brand + no strong intent
     flav = next((f for f in DEAD_FLAVOUR if re.search(r'\b'+re.escape(f), t)), None)
     if flav and not brand_hit:
-        return 'FAIL', 'flavour', f'flavour/recipe variant "{flav}" with no stocked brand — this pattern earns ~0 SG clicks (dead content)'
+        return 'FAIL', 'flavour', f'flavour/recipe variant "{flav}" with no stocked brand — this pattern earns ~0 US clicks (dead content)'
 
     # winning shape: specific stocked brand + review/buy intent
     if brand_hit and has_any(t, INTENT):
@@ -167,17 +174,17 @@ def self_check():
     # (topic, sg_imp, articles, want). PASS cases use [] to test the winner-shape logic in isolation
     # (with the real catalog they'd correctly be 'covered' — we already have Atlas/Myprotein pages).
     cases = [
-        ("Atlas Whey Review: Is It Worth It in {{MARKET}}? (2026)", None, [], 'PASS'),   # winner shape
+        ("Atlas Whey Review: Is It Worth It in the US? (2026)", None, [], 'PASS'),   # winner shape
         ("Myprotein vs Optimum Nutrition: Which is Best?", None, [], 'PASS'),           # winner shape
-        ("coffee protein shakes {{market}}", None, arts, 'FAIL'),
-        ("banana protein powder {{market}}", None, arts, 'FAIL'),
-        ("best protein powder {{market}}", None, arts, 'FAIL'),        # collection head-term
-        ("supplements {{market}}", None, arts, 'FAIL'),
+        ("coffee protein shakes us", None, arts, 'FAIL'),
+        ("banana protein powder us", None, arts, 'FAIL'),
+        ("best protein powder us", None, arts, 'FAIL'),        # collection head-term
+        ("supplements us", None, arts, 'FAIL'),
         ("some niche topic", 5, arts, 'FAIL'),                        # demand floor
-        ("KSM-66 Ashwagandha {{MARKET}}: Benefits & Dosage", None, arts, 'REVIEW'),  # ingredient gap, no brand
+        ("KSM-66 Ashwagandha US: Benefits & Dosage", None, arts, 'REVIEW'),  # ingredient gap, no brand
         ("mutant whey isolate", None, arts, 'FAIL'),                  # brand+product we already cover
         ("meiji high protein milk nutrition facts", None, arts, 'REVIEW'),  # not a stocked brand -> human decides
-        ("Owala Outlet {{MARKET}}", None, [], 'FAIL', 2.6),            # we already rank pos 2.6 -> cannibalise
+        ("Owala Outlet US", None, [], 'FAIL', 2.6),            # we already rank pos 2.6 -> cannibalise
         ("Amazing Grass Green Superfood Review", None, [], 'PASS', 17.1),  # weak rank + stocked brand -> genuine
     ]
     ok = True

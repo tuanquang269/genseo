@@ -5,8 +5,8 @@ import json, urllib.request
 shop= __import__("genseo_config").SHOP
 token= __import__("genseo_config").TOKEN
 API="2026-04"
-HANDLES=["protein-powder","optimum-nutrition-{{market}}","creatine","mass-gainer",
-         "pre-workout","dymatize-nutrition","ghost","myprotein-{{market}}"]
+HANDLES=["protein-powder","optimum-nutrition-us","creatine","mass-gainer",
+         "pre-workout","dymatize-nutrition","ghost","myprotein-us"]
 
 def get(url):
     req=urllib.request.Request(url, headers={"X-Shopify-Access-Token":token})

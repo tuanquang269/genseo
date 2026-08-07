@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Find blog pages CANNIBALIZING each other by GSC query-overlap ({{MARKET}}, 90d).
+"""Find blog pages CANNIBALIZING each other by GSC query-overlap (US, 90d).
 
 Title matching misses intent-level dupes (e.g. the 7-article vitamin-store cluster).
 This detects them from behavior: two pages both earning impressions on the same
@@ -61,7 +61,7 @@ def main():
     start = end - datetime.timedelta(days=90)
     rows = svc.searchanalytics().query(siteUrl='https://wellnessnest.co/', body={
         'startDate': str(start), 'endDate': str(end), 'dimensions': ['query', 'page'],
-        'dimensionFilterGroups': [{'filters': [{'dimension': 'country', 'operator': 'equals', 'expression': '{{COUNTRY_CODE}}'}]}],
+        'dimensionFilterGroups': [{'filters': [{'dimension': 'country', 'operator': 'equals', 'expression': 'usa'}]}],
         'rowLimit': 25000}).execute().get('rows', [])
 
     # per-query page shares (blog pages only) + per-page totals

@@ -40,7 +40,7 @@ def sg_pagemap():
     try:
         from gsc_fetcher import get_service
         svc=get_service(); SITE='https://wellnessnest.co/'
-        SG=[{'filters':[{'dimension':'country','operator':'equals','expression':'{{COUNTRY_CODE}}'}]}]
+        SG=[{'filters':[{'dimension':'country','operator':'equals','expression':'usa'}]}]
         end=datetime.date.today()-datetime.timedelta(days=2); start=end-datetime.timedelta(days=89)
         fmt=lambda d:d.strftime('%Y-%m-%d')
         rows=svc.searchanalytics().query(siteUrl=SITE,body={'startDate':fmt(start),'endDate':fmt(end),

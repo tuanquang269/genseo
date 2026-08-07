@@ -60,7 +60,7 @@ def main():
     if a.keyword.lower() not in a.title.lower(): errs.append(f'keyword "{a.keyword}" not in title')
     # No prices in the TITLE: at 60 chars an exact price gets truncated to junk ("from S$54")
     # and prices go stale. Prices belong in the meta description only.
-    if re.search(r'(S\$|{{CURRENCY}}|\$)\s?\d', a.title): errs.append("price in title — move the S$ price to the meta; titles must be evergreen (they truncate at 60 chars)")
+    if re.search(r'(S\$|$|\$)\s?\d', a.title): errs.append("price in title — move the S$ price to the meta; titles must be evergreen (they truncate at 60 chars)")
     if not (120 <= len(a.meta) <= 165): errs.append(f"meta is {len(a.meta)} chars (need 120-165)")
     for b in ('bronson', 'transparent labs'):
         if b in (a.title + a.meta).lower(): errs.append(f'out-of-stock brand "{b}" mentioned')

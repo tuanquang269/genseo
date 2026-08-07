@@ -2,7 +2,7 @@
 """refresh_targets.py — build a PAGE-LEVEL-ACCURATE refresh queue.
 
 Why: the old jul27-refresh-tickets.md ranked targets by query-level aggregates, which misattribute
-impressions. Verified failures: "owala {{market}}" (9.5k imp) credited to the Bottle Boot article is
+impressions. Verified failures: "owala us" (9.5k imp) credited to the Bottle Boot article is
 actually won by /collections/owala; "myprotein vs optimum nutrition" flagged pos 13.8 CLIMB is
 actually pos 1.9 on the real article. Refreshing a page that already ranks (or the wrong URL) wastes
 effort and risks the title-reset damage. This finder attributes every SG query to the ACTUAL page
@@ -41,7 +41,7 @@ def main():
     min_imp = int(sys.argv[sys.argv.index('--min-imp') + 1]) if '--min-imp' in sys.argv else 150
 
     rows = pull(['page', 'query'],
-                [{'dimension': 'country', 'operator': 'equals', 'expression': '{{COUNTRY_CODE}}'},
+                [{'dimension': 'country', 'operator': 'equals', 'expression': 'usa'},
                  {'dimension': 'page', 'operator': 'contains', 'expression': '/blogs/'}])
     # aggregate per canonical page (strip #fragment)
     pages = {}

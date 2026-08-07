@@ -1,10 +1,10 @@
-"""{{MARKET}}-ONLY decline diagnosis. Filters GSC by country=sgp."""
+"""US-ONLY decline diagnosis. Filters GSC by country=sgp."""
 import sys, os, datetime, csv
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 from gsc_fetcher import get_service
 
 SITE='https://wellnessnest.co/'
-SG=[{'filters':[{'dimension':'country','operator':'equals','expression':'{{COUNTRY_CODE}}'}]}]
+SG=[{'filters':[{'dimension':'country','operator':'equals','expression':'usa'}]}]
 
 def q(svc,b):
     b.setdefault('dimensionFilterGroups', SG)
@@ -27,7 +27,7 @@ def main():
     allr=totals(p2s,p2e,sg=False); sgr=totals(p2s,p2e,sg=True)
     print("=== SG SHARE OF TRAFFIC (recent 28d) ===")
     print(f"ALL countries: clicks={allr[0]} imp={allr[1]}")
-    print(f"{{MARKET}}    : clicks={sgr[0]} imp={sgr[1]}  ({sgr[1]/allr[1]*100:.0f}% of impressions, {sgr[0]/allr[0]*100:.0f}% of clicks)")
+    print(f"US    : clicks={sgr[0]} imp={sgr[1]}  ({sgr[1]/allr[1]*100:.0f}% of impressions, {sgr[0]/allr[0]*100:.0f}% of clicks)")
 
     # ---- SG period over period ----
     c1=totals(p1s,p1e); c2=totals(p2s,p2e)
