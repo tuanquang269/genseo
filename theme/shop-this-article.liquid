@@ -1,6 +1,6 @@
 {%- liquid
   assign sta_id = 'ShopThisArticle-' | append: section.id
-  assign content_selector = '[id^="BlogContent-"]'
+  assign content_selector = "[id^='BlogContent-']"
 -%}
 
 {%- liquid
@@ -17,7 +17,7 @@
   {%- endunless -%}
 {%- endfor -%}
 
-<div id="{{ sta_id }}" class="shop-this-article sta" data-content-selector="{{ content_selector }}" data-liquid-handles="{{ sta_handles | escape }}" hidden>
+<div id="{{ sta_id }}" class="shop-this-article sta" data-content-selector="{{ content_selector | escape }}" data-liquid-handles="{{ sta_handles | escape }}" hidden>
   <button class="sta__trigger" type="button" aria-haspopup="dialog" aria-controls="{{ sta_id }}-modal" aria-expanded="false">
     <span class="sta__trigger-icon" aria-hidden="true">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
@@ -492,7 +492,12 @@
     if (!root || root.dataset.initialized === 'true') return;
     root.dataset.initialized = 'true';
 
-    const content = document.querySelector(root.dataset.contentSelector);
+    let content = null;
+    try {
+      content = document.querySelector(root.dataset.contentSelector);
+    } catch (error) {
+      content = null;
+    }
 
     const trigger = root.querySelector('.sta__trigger');
     const overlay = root.querySelector('.sta__overlay');
