@@ -20,7 +20,7 @@ Usage:
 import json, urllib.request, sys, datetime
 
 from genseo_config import SHOP, TOKEN, API
-BLOGS={"nutrition":100000000001, "training":100000000002}
+BLOGS={"news4008483131}
 import re
 
 def api(url):
@@ -71,11 +71,11 @@ def main():
            "#      (image-to-image from the real product photo; NO hero — the cover already exists).",
            "#   3. Insert each as `![alt](/ABSOLUTE/local/path.png)` in that product's section. LOCAL paths only",
            "#      — never pre-baked CDN URLs (publisher uploads local files and rewrites them).",
-           "#   4. Re-publish with:  python3 ~/genseo/scripts/shopify_publisher.py \\",
-           "#         update <draft.md> 100000000001 <ARTICLE_ID>",
+           "#   4. Re-publish with:  python3 /Users/kevinkreative/genseo/scripts/shopify_publisher.py \\",
+           "#         update <draft.md> 104008483131 <ARTICLE_ID>",
            "#      (NOT patch_images.py — that only handles its own hardcoded ticket map, not arbitrary IDs.)",
            "# Keep title, body copy, schema and author UNCHANGED — this is IMAGES-ONLY (insert), append-only.",
-           "# Verify after each: python3 ~/genseo/scripts/verify_published.py <ARTICLE_ID> 100000000001",
+           "# Verify after each: python3 /Users/kevinkreative/genseo/scripts/verify_published.py <ARTICLE_ID> 104008483131",
            "# Re-run `audit_article_images.py --since 2026-07-22` at the end; the count must drop to 0.", ""]
         for f in flagged:
             L.append(f"- [ ] `{f['id']}` ({f['blog']}, {f['date']}, {f['imgs']} imgs) — {f['title']}")

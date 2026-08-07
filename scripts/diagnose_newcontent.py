@@ -3,7 +3,7 @@ import sys, os, datetime, csv
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 from gsc_fetcher import get_service
 
-SITE = 'https://yourdomain.com/'
+SITE = 'https://wellnessnest.co/'
 
 def q(service, body):
     return service.searchanalytics().query(siteUrl=SITE, body=body).execute().get('rows', [])
@@ -15,7 +15,7 @@ def main():
     s = start.strftime('%Y-%m-%d'); e = end.strftime('%Y-%m-%d')
 
     # 1) New articles (tickets posted 2026-05-05 onward) - do they have impressions?
-    tracker = '~/genseo/PUBLISHED_ARTICLES_TRACKER.csv'
+    tracker = '/Users/kevinkreative/genseo/PUBLISHED_ARTICLES_TRACKER.csv'
     new_urls = []
     with open(tracker) as f:
         r = csv.DictReader(f)
@@ -43,7 +43,7 @@ def main():
     print(f"  (whole site has {total_pages_with_imp} pages with impressions)")
 
     # 2) The big loser - query level, last 28d vs prior 28d
-    loser = 'https://yourdomain.com/blogs/nutrition/1-scoop-of-whey-how-many-calories-protein-nutritional-value-of-whey'
+    loser = 'https://wellnessnest.co/blogs/news/1-scoop-of-whey-how-many-calories-protein-nutritional-value-of-whey'
     def qbypage(s,e):
         rows = q(service, {'startDate':s,'endDate':e,'dimensions':['query'],
             'dimensionFilterGroups':[{'filters':[{'dimension':'page','expression':loser,'operator':'equals'}]}],

@@ -13,9 +13,9 @@ import json, os, sys, urllib.request, collections, datetime
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from gsc_fetcher import get_service
 
-SITE = 'https://yourdomain.com/'
+SITE = 'https://wellnessnest.co/'
 CONFIG_PATH = os.path.expanduser('~/.genseo/shopify_token.json')
-BLOGS = {100000000001: 'nutrition', 100000000002: 'training'}
+BLOGS = {104008483131: 'news'}
 EXPECT = {1:0.25,2:0.15,3:0.10,4:0.065,5:0.05,6:0.04,7:0.03,8:0.025,9:0.02,10:0.018,11:0.015,12:0.012}
 # brand-navigation pages: their "impressions" are mostly sitelinks on the brand query —
 # a title rewrite would hurt navigation and win nothing.
@@ -73,7 +73,7 @@ def main():
     art_idx = article_index()
     candidates = []
     for url, qrows in pages.items():
-        path = url.replace('https://yourdomain.com', '') or '/'
+        path = url.replace('https://wellnessnest.co', '') or '/'
         if path in EXCLUDE_PATHS:
             continue
         # drop brand-navigation queries before judging the page
@@ -158,7 +158,7 @@ SERP title + meta description. **Nothing else.**
 {qlines}
 - **RUN** (fill in your new title + meta):
 ```
-python3 ~/genseo/scripts/update_title_meta.py --type {t['rtype']} --id {t['rid']} {t['extra']}--keyword "{kw}" --title "NEW TITLE HERE" --meta "NEW META HERE"
+python3 /Users/kevinkreative/genseo/scripts/update_title_meta.py --type {t['rtype']} --id {t['rid']} {t['extra']}--keyword "{kw}" --title "NEW TITLE HERE" --meta "NEW META HERE"
 ```
 - **Result**: (record new title after ✓)
 

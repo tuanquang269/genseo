@@ -7,7 +7,7 @@ brands to feature, dedup note. Sourced from sg_demand_runway.csv, deduped vs ALL
 """
 import csv, re
 
-ROOT="~/genseo"
+ROOT="/Users/kevinkreative/genseo"
 
 # ---- live collections (verified present on store) ----
 COLLECTIONS=set("all allmax-nutrition amazing-grass antioxidant-support applied-nutrition barebells blenderbottle bsn california-gold-nutrition casein-protein cellucor childrens-health collagen creatine digestive-support doctors-best dymatize-nutrition evlution-nutrition fat-burner garden-of-life general-health ghost glutamine goli gym-accessories herbal-plant-supplements hydroxycut immune-support intra-workout jnx-sports kaged-muscle l-carnitine labrada mass-gainer mens-health mrm musclepharm muscletech mutant myprotein-{{market}} natrol naturade natural-factors natures-way neocell now-foods nutrex-research nutricost omega-3-fish-oils optimum-nutrition-{{market}} orgain owala perfect-sports plant-based-protein post-workout pre-workout protein-bar-meal-replacement pvl-nutrition quest-protein-bar rainbow-light rsp-nutrition science-in-sport shakers-bottle sleep-improvement sports-research vitamin-wellness whey-protein womens-health xtend youtheory yumearth".split())
@@ -203,7 +203,7 @@ def main():
         L.append(f"- **Action**: [ ] PENDING")
         L.append("**🤖 Auto-Publish Trigger Prompt:**")
         L.append("```markdown")
-        L.append(f"/genseo-auto-publish CREATE A [NEW ARTICLE]. Title Focus: \"A Creative and Engaging SEO Title for '{tc(q)}' in {{MARKET}}\". Target Keywords: {sec_str}. ANGLE: {angle} MUST link collections: {coll_links}. Feature priority brands first if relevant: {pb_str}. Comparison table: {r['table']}. Author: {author}. Default BLOG_ID is 100000000001.")
+        L.append(f"/genseo-auto-publish CREATE A [NEW ARTICLE]. Title Focus: \"A Creative and Engaging SEO Title for '{tc(q)}' in {{MARKET}}\". Target Keywords: {sec_str}. ANGLE: {angle} MUST link collections: {coll_links}. Feature priority brands first if relevant: {pb_str}. Comparison table: {r['table']}. Author: {author}. Default BLOG_ID is 104008483131.")
         L.append("```")
         L.append("")
 

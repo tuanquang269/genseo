@@ -9,9 +9,9 @@ from google.auth.transport.requests import Request
 from collections import defaultdict
 
 # --- Configuration ---
-GSC_SITE_URL = "https://yourdomain.com/" 
-BLOG_ID = "100000000001"
-SKILL_DIR = os.path.expanduser("~/genseo/scripts/")
+GSC_SITE_URL = "https://wellnessnest.co/" 
+BLOG_ID = "104008483131"
+SKILL_DIR = os.path.expanduser("/Users/kevinkreative/genseo/scripts/")
 GSC_TOKEN_PATH = os.path.join(SKILL_DIR, 'gsc_token.json')
 GSC_CREDS_PATH = os.path.join(SKILL_DIR, 'credentials.json')
 SHOPIFY_TOKEN_PATH = os.path.join(SKILL_DIR, 'shopify_token.json')
@@ -71,11 +71,11 @@ def analyze_and_build(t1_rows, t2_rows, shopify_map):
     t2_map = defaultdict(lambda: defaultdict(dict))
     
     for row in t1_rows:
-        if "/blogs/nutrition/" in row['keys'][0]:
+        if "/blogs/news/" in row['keys'][0]:
             t1_map[row['keys'][0]][row['keys'][1]] = row
             
     for row in t2_rows:
-        if "/blogs/nutrition/" in row['keys'][0]:
+        if "/blogs/news/" in row['keys'][0]:
             t2_map[row['keys'][0]][row['keys'][1]] = row
 
     tier1_decay = []

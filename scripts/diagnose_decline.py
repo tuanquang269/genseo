@@ -4,7 +4,7 @@ import sys, os, datetime, json
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 from gsc_fetcher import get_service
 
-SITE = 'https://yourdomain.com/'
+SITE = 'https://wellnessnest.co/'
 
 def q(service, body):
     return service.searchanalytics().query(siteUrl=SITE, body=body).execute().get('rows', [])
@@ -79,10 +79,10 @@ def main():
     deltas.sort()
     print("\n--- TOP 15 IMPRESSION LOSERS (page) ---")
     for d, url, i1, i2, p1, p2 in deltas[:15]:
-        print(f"  {d:+6} | {i1:>5}->{i2:<5} pos {p1:4.0f}->{p2:<4.0f} | {url.replace('https://yourdomain.com','')}")
+        print(f"  {d:+6} | {i1:>5}->{i2:<5} pos {p1:4.0f}->{p2:<4.0f} | {url.replace('https://wellnessnest.co','')}")
     print("\n--- TOP 10 IMPRESSION GAINERS (page) ---")
     for d, url, i1, i2, p1, p2 in deltas[-10:][::-1]:
-        print(f"  {d:+6} | {i1:>5}->{i2:<5} pos {p1:4.0f}->{p2:<4.0f} | {url.replace('https://yourdomain.com','')}")
+        print(f"  {d:+6} | {i1:>5}->{i2:<5} pos {p1:4.0f}->{p2:<4.0f} | {url.replace('https://wellnessnest.co','')}")
 
 if __name__ == '__main__':
     main()

@@ -105,7 +105,7 @@ def crawl_site(base_url, max_urls=50):
         except Exception as e:
             print(f"Failed to scan {url}: {e}")
             
-    csv_path = os.path.expanduser("~/genseo/CRAWL_REPORT.csv")
+    csv_path = os.path.expanduser("/Users/kevinkreative/genseo/CRAWL_REPORT.csv")
     with open(csv_path, 'w', newline='', encoding='utf-8') as f:
         writer = csv.DictWriter(f, fieldnames=["url", "h1_status", "missing_alts", "broken_links"])
         writer.writeheader()
@@ -117,7 +117,7 @@ def crawl_site(base_url, max_urls=50):
     create_optimizer_ticket(issues_count, csv_path)
 
 def create_optimizer_ticket(issues_count, csv_path):
-    ticket_path = os.path.expanduser("~/genseo/OPTIMIZER_ACTION.md")
+    ticket_path = os.path.expanduser("/Users/kevinkreative/genseo/OPTIMIZER_ACTION.md")
     content = f"# 🛠️ Optimizer Protocol Triggered\n\n"
     content += f"Crawler found anomalies in {issues_count} pages.\n"
     content += f"Run `/genseo-seo-optimizer` and pass it this CSV: `{csv_path}`\n\n"
@@ -126,7 +126,7 @@ def create_optimizer_ticket(issues_count, csv_path):
         f.write(content)
         
 if __name__ == '__main__':
-    domain = "https://yourdomain.com"
+    domain = "https://wellnessnest.co"
     if len(sys.argv) > 1:
         domain = sys.argv[1]
     crawl_site(domain, max_urls=10) # 10 urls limit for testing

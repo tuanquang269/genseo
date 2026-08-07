@@ -3,15 +3,15 @@ import sys, os, datetime
 import re
 from collections import defaultdict
 
-sys.path.append(os.path.expanduser("~/genseo/scripts/"))
+sys.path.append(os.path.expanduser("/Users/kevinkreative/genseo/scripts/"))
 import gsc_fetcher
 
 def get_used_keywords():
     used = set()
     schedules = [
-        "~/genseo/GENSEO_30_DAY_SCHEDULE.md",
-        "~/genseo/EHPLabs_Schedule.md",
-        "~/genseo/EHPLabs_Phase2_Schedule.md"
+        "/Users/kevinkreative/genseo/GENSEO_30_DAY_SCHEDULE.md",
+        "/Users/kevinkreative/genseo/EHPLabs_Schedule.md",
+        "/Users/kevinkreative/genseo/EHPLabs_Phase2_Schedule.md"
     ]
     for path in schedules:
         if os.path.exists(path):
@@ -64,7 +64,7 @@ req = {
     "dimensionFilterGroups": [{"filters": [{"dimension": "country", "operator": "equals", "expression": "{{COUNTRY_CODE}}"}]}],
     "rowLimit": 5000
 }
-res = service.searchanalytics().query(siteUrl="https://yourdomain.com/", body=req).execute()
+res = service.searchanalytics().query(siteUrl="https://wellnessnest.co/", body=req).execute()
 
 cannibal_map = {}
 for row in res.get("rows", []):
@@ -87,7 +87,7 @@ req_gsc = {
     "dimensionFilterGroups": [{"filters": [{"dimension": "country", "operator": "equals", "expression": "{{COUNTRY_CODE}}"}]}],
     "rowLimit": 5000
 }
-res_gsc = service.searchanalytics().query(siteUrl="https://yourdomain.com/", body=req_gsc).execute()
+res_gsc = service.searchanalytics().query(siteUrl="https://wellnessnest.co/", body=req_gsc).execute()
 for row in res_gsc.get("rows", []):
     q = str(row["keys"][0]).lower().strip()
     impr = row["impressions"]
@@ -162,10 +162,10 @@ for i, art in enumerate(articles[:120]):
     out_lines.append(f"- **Action**: {action}")
     out_lines.append(f"**🤖 Auto-Publish Trigger Prompt:**")
     out_lines.append("```markdown")
-    out_lines.append(f"/genseo-auto-publish CREATE A [NEW ARTICLE]. Title Focus: \"The Ultimate Guide to {main_kw} in {{MARKET}}\". Target Keywords: {all_kws_str}. Default BLOG_ID is 100000000001.")
+    out_lines.append(f"/genseo-auto-publish CREATE A [NEW ARTICLE]. Title Focus: \"The Ultimate Guide to {main_kw} in {{MARKET}}\". Target Keywords: {all_kws_str}. Default BLOG_ID is 104008483131.")
     out_lines.append("```\n")
 
-output_path = "~/genseo/2ndRound_120_tickets.md"
+output_path = "/Users/kevinkreative/genseo/2ndRound_120_tickets.md"
 with open(output_path, "w") as f:
     f.write("\n".join(out_lines))
 

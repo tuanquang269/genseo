@@ -11,10 +11,10 @@ from gsc_fetcher import get_service
 SHOP= __import__("genseo_config").SHOP
 TOKEN= __import__("genseo_config").TOKEN
 API="2026-04"
-SITE='https://yourdomain.com/'
+SITE='https://wellnessnest.co/'
 SG=[{'filters':[{'dimension':'country','operator':'equals','expression':'{{COUNTRY_CODE}}'}]}]
 fmt=lambda d:d.strftime('%Y-%m-%d')
-ROOT="~/genseo"
+ROOT="/Users/kevinkreative/genseo"
 
 def api(url):
     req=urllib.request.Request(url, headers={"X-Shopify-Access-Token":TOKEN})
@@ -45,7 +45,7 @@ def main():
         arts=paginate(f"blogs/{b['id']}/articles.json?limit=250&fields=id,title,handle,created_at,published_at,body_html")
         for a in arts:
             handle=a.get('handle','')
-            url=f"https://yourdomain.com/blogs/{b['handle']}/{handle}"
+            url=f"https://wellnessnest.co/blogs/{b['handle']}/{handle}"
             wc=len(re.sub(r'<[^>]*>',' ', a.get('body_html') or '').split())
             articles.append({'blog':b['handle'],'id':a['id'],'title':a.get('title',''),
                 'url':url,'created':(a.get('published_at') or a.get('created_at') or '')[:10],'words':wc})

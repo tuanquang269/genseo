@@ -60,7 +60,7 @@ Every article MUST include at least ONE locally-flavoured FAQ question, such as:
 
 ### 4.4 NAP & Business Consistency
 - Always refer to the store as **"Your Brand"** (not "Your Brand" or "Your Brandplements")
-- Store URL: `https://yourdomain.com`
+- Store URL: `https://wellnessnest.co`
 - Reference the store's fast local shipping and authentic import guarantees as trust signals
 
 ### 4.5 Local Intent Phrases to Weave In

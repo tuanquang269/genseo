@@ -246,7 +246,7 @@ def main():
     # {{CURRENCY}} price
     if '{{CURRENCY}}' not in html.lower() and not re.search(r'\$\s?\d', html): fails.append("no {{CURRENCY}} price range")
     # collection links >=2
-    colls=re.findall(r'https://yourdomain\.com(/collections/[a-z0-9-]+)', html)
+    colls=re.findall(r'https://wellnessnest\.co(/collections/[a-z0-9-]+)', html)
     if len(colls)<2: fails.append(f"need ≥2 /collections/ links, found {len(colls)}")
     # FAQ + FAQPage schema (in draft mode, schema is added post-conversion -> warn only)
     if 'FAQPage' not in html:
@@ -291,13 +291,13 @@ def main():
                      f"(1 lifestyle image per product; hero/cover doesn't count). Generate product images (SKILL STEP 5).")
 
     # link liveness (products, collections, author pages)
-    urls=set(re.findall(r'https://yourdomain\.com/(?:products|collections|blogs)/[a-z0-9-]+', html))
+    urls=set(re.findall(r'https://wellnessnest\.co/(?:products|collections|blogs)/[a-z0-9-]+', html))
     dead=[u for u in urls if not http_ok(u)]
     # author pages
     for ap in (author_pages & ROSTER_PAGES):
-        if not http_ok("https://yourdomain.com"+ap): dead.append("https://yourdomain.com"+ap)
+        if not http_ok("https://wellnessnest.co"+ap): dead.append("https://wellnessnest.co"+ap)
     if dead:
-        fails.append("dead/404 links: "+", ".join(d.replace('https://yourdomain.com','') for d in dead[:6]))
+        fails.append("dead/404 links: "+", ".join(d.replace('https://wellnessnest.co','') for d in dead[:6]))
 
     # ---- QRG prose-quality gate -------------------------------------------
     # Score the VISIBLE PROSE only. Do not hand a whole rendered page to the
@@ -343,7 +343,7 @@ def main():
     # run-log: ground-truth that the gate fired (read by the operator to confirm the skill loaded)
     try:
         import datetime
-        with open("~/genseo/validate_runs.log","a") as lg:
+        with open("/Users/kevinkreative/genseo/validate_runs.log","a") as lg:
             verdict="FAIL" if fails else "PASS"
             qcol=f"qrg={qrg['quality']['overall_quality']}/{qrg['quality']['filler_score']}/{qrg['quality']['ai_pattern_score']}" if qrg else "qrg=skip"
             lg.write(f"{datetime.datetime.now().isoformat(timespec='seconds')}\t{verdict}\twords={words}\t{qcol}\t{path}\t{';'.join(fails)[:200]}\n")

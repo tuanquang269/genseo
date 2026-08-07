@@ -11,7 +11,7 @@ import urllib.request
 import time
 
 CONFIG_PATH = os.path.expanduser("~/.genseo/shopify_token.json")
-BLOG_ID = sys.argv[1] if len(sys.argv) > 1 else "100000000001"
+BLOG_ID = sys.argv[1] if len(sys.argv) > 1 else "104008483131"
 
 def load_config():
     with open(CONFIG_PATH, 'r') as f:

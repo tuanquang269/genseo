@@ -37,7 +37,7 @@ from pathlib import Path
 BASE = Path(__file__).resolve().parent.parent
 CONFIG = os.path.expanduser("~/.genseo/shopify_token.json")
 API_VERSION = "2026-04"
-BLOGS = {100000000001: "nutrition", 100000000002: "training"}
+BLOGS = {104008483131: "news"}
 
 with open(CONFIG) as handle:
     CFG = json.load(handle)

@@ -3,9 +3,9 @@ import os, sys, json, re, urllib.request
 SHOP = __import__("genseo_config").SHOP
 TOKEN = __import__("genseo_config").TOKEN
 API = "2026-04"
-BLOG = "100000000001"
-DRAFT_DIR = "~/genseo/published_drafts"
-TMP_DIR = "~/genseo/tmp_images"
+BLOG = "104008483131"
+DRAFT_DIR = "/Users/kevinkreative/genseo/published_drafts"
+TMP_DIR = "/Users/kevinkreative/genseo/tmp_images"
 CATALOG_PATH = os.path.join(TMP_DIR, "product_catalog.json")
 
 os.makedirs(DRAFT_DIR, exist_ok=True)

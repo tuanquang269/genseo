@@ -13,7 +13,7 @@ from genseo_config import SHOP, TOKEN, API
 
 def main():
     aid=sys.argv[1]
-    blog=sys.argv[2] if len(sys.argv)>2 else "100000000001"
+    blog=sys.argv[2] if len(sys.argv)>2 else "104008483131"
     req=urllib.request.Request(f"https://{SHOP}/admin/api/{API}/blogs/{blog}/articles/{aid}.json",
         headers={"X-Shopify-Access-Token":TOKEN})
     a=json.loads(urllib.request.urlopen(req).read())["article"]
@@ -35,7 +35,7 @@ def main():
     print(f"  FAQPage:{('FAQPage' in b)}  ld+json:{('application/ld+json' in b)}  table:{('<table' in b)}")
     if fails:
         print("FAILED:"); [print("  ✗ "+f) for f in fails]
-        print("\nRESULT: ✗ Re-publish with: python3 ~/genseo/scripts/shopify_publisher.py update <draft.md> "+blog+" "+aid)
+        print("\nRESULT: ✗ Re-publish with: python3 /Users/kevinkreative/genseo/scripts/shopify_publisher.py update <draft.md> "+blog+" "+aid)
         sys.exit(1)
     print("\nRESULT: ✓ Live article verified — schema, author, table all present.")
     sys.exit(0)

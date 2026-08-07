@@ -6,7 +6,7 @@ existing_collections.json. Stale caches = the duplicate check misses newly-publi
 this must run periodically (wired into the daily cleaning task). Idempotent, read-only on Shopify."""
 import json, os, re, urllib.request
 
-ROOT = "~/genseo"
+ROOT = "/Users/kevinkreative/genseo"
 cfg = json.load(open(os.path.expanduser('~/.genseo/shopify_token.json')))
 shop, token = cfg['shop'], cfg['access_token']
 API = f"https://{shop}/admin/api/2026-04"
@@ -28,7 +28,7 @@ def get(url):
 
 def main():
     arts = []
-    for blog in ('100000000001', '100000000002'):
+    for blog in ('104008483131', '104008483131'):
         url = f"{API}/blogs/{blog}/articles.json?limit=250&fields=id,title,handle"
         while url:
             d, link = get(url)

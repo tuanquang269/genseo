@@ -7,12 +7,12 @@ free merchant listings and Shopping surfaces.
 
 Values are transcribed from the store's OWN published policies, not invented:
 
-  Shipping  https://yourdomain.com/policies/shipping-policy
+  Shipping  https://wellnessnest.co/policies/shipping-policy
             "J&T - {{CURRENCY}} 3.99 (2-3 working days)"
             "Free Shipping on orders over {{CURRENCY}} 99 with JNT"
             Operating hours Mon-Fri 9:00-17:30, Sat 9:00-13:00 -> handling 0-1 day
 
-  Refund    https://yourdomain.com/policies/refund-policy
+  Refund    https://wellnessnest.co/policies/refund-policy
             "We have a 7-day return policy"
             Customer ships the item back after requesting a return.
 
@@ -43,10 +43,10 @@ from pathlib import Path
 
 SHOP = __import__("genseo_config").SHOP
 TOKEN = __import__("genseo_config").TOKEN
-THEME = "100000000010"
+THEME = "183190880571"
 ASSET = "sections/main-product.liquid"
 BACKUP = Path("backups/2026-07-30-theme/sections__main-product.liquid")
-VERIFY_URL = "https://yourdomain.com/products/nutrabio-intra-blast"
+VERIFY_URL = "https://wellnessnest.co/products/nutrabio-intra-blast"
 
 ANCHOR = (
     '      "brand": {\n'

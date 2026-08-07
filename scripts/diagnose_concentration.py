@@ -2,7 +2,7 @@
 import sys, os, datetime
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 from gsc_fetcher import get_service
-SITE='https://yourdomain.com/'
+SITE='https://wellnessnest.co/'
 def q(svc,b): return svc.searchanalytics().query(siteUrl=SITE,body=b).execute().get('rows',[])
 def main():
     svc=get_service()

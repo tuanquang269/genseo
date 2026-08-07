@@ -25,14 +25,14 @@ market is **{{MARKET}} only**. You are a cheap model: **follow this literally**,
 ## INPUT (from the refresh ticket)
 - ARTICLE_ID (required — the existing Shopify article to update)
 - PRIMARY_KEYWORD (the query this page should win)
-- BLOG_ID (default 100000000001)
+- BLOG_ID (default 104008483131)
 
 ## STEP 0 — PULL THE CURRENT ARTICLE + ITS PERFORMANCE
 1. Fetch the live article (title + body) you are about to improve:
-   `curl -s "https://yourdomain.com/admin/api/2026-04/blogs/BLOG_ID/articles/ARTICLE_ID.json" -H "X-Shopify-Access-Token: <token>"`
+   `curl -s "https://wellnessnest.co/admin/api/2026-04/blogs/BLOG_ID/articles/ARTICLE_ID.json" -H "X-Shopify-Access-Token: <token>"`
    (or read it from `published_drafts/` if the draft exists). Save the current body — you will build ON it.
 2. Pull what queries it ranks for and its position/CTR ({{MARKET}} only):
-   `python3 ~/genseo/scripts/gsc_fetcher.py fetch_url_data https://yourdomain.com/ <full_article_url>`
+   `python3 ~/genseo/scripts/gsc_fetcher.py fetch_url_data https://wellnessnest.co/ <full_article_url>`
 
 ## STEP 1 — DIAGNOSE (this decides what you do)
 Look at the page's current average position for its primary keyword:

@@ -4,8 +4,8 @@ Lets us revert any change. Read-only against Shopify."""
 import json, urllib.request, urllib.parse, os, datetime
 
 from genseo_config import SHOP, TOKEN, API
-MAIN_THEME="100000000010"
-ROOT="~/genseo"
+MAIN_THEME="183190880571"
+ROOT="/Users/kevinkreative/genseo"
 STAMP=datetime.date.today().strftime("%Y%m%d")
 BK=f"{ROOT}/backups/{STAMP}"
 os.makedirs(BK, exist_ok=True)

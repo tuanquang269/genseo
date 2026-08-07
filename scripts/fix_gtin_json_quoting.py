@@ -39,16 +39,16 @@ from pathlib import Path
 
 CONFIG = os.path.expanduser("~/.genseo/shopify_token.json")
 API_VERSION = "2026-04"
-THEME = "100000000010"
+THEME = "183190880571"
 ASSETS = ("sections/main-product.liquid", "sections/featured-product.liquid")
 BACKUP_DIR = Path("backups/20260802")
 UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
 
 # leading-zero barcode: the block is unparseable BEFORE the fix, must be a string after
-LEADING_ZERO = ("https://yourdomain.com/products/natures-way-alive-once-daily-mens-multi-vitamin-60-tablets",
+LEADING_ZERO = ("https://wellnessnest.co/products/natures-way-alive-once-daily-mens-multi-vitamin-60-tablets",
                 "033674156858")
 # ordinary barcode: parses before the fix but as a number, must be a string after
-ORDINARY = ("https://yourdomain.com/products/allmax-nutrition-caffeine-200-mg-100-tablets",
+ORDINARY = ("https://wellnessnest.co/products/allmax-nutrition-caffeine-200-mg-100-tablets",
             "665553126227")
 # Both probes are SINGLE-variant on purpose. Tapita only takes over multi-variant
 # products, so a multi-variant page would verify Tapita's schema, not the theme's.

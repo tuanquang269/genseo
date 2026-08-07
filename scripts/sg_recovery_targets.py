@@ -6,7 +6,7 @@ import sys, os, datetime, csv
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 from gsc_fetcher import get_service
 
-SITE='https://yourdomain.com/'
+SITE='https://wellnessnest.co/'
 SG=[{'filters':[{'dimension':'country','operator':'equals','expression':'{{COUNTRY_CODE}}'}]}]
 fmt=lambda d:d.strftime('%Y-%m-%d')
 
@@ -59,11 +59,11 @@ def main():
                 'prior_imp':prior_imp,'recent_imp':recent_imp,
                 'prior_pos':round(prior_pos,1),'recent_pos':round(recent_pos,1),
                 'prior_clicks':a[0],'recent_clicks':b[0],
-                'imp_delta':imp_delta,'ranking_page':pg.replace('https://yourdomain.com','')
+                'imp_delta':imp_delta,'ranking_page':pg.replace('https://wellnessnest.co','')
             })
     rows.sort(key=lambda r:(r['status']!='LOST_VISIBILITY', -r['prior_imp']))
 
-    out='~/genseo/SG_RECOVERY_TARGETS.csv'
+    out='/Users/kevinkreative/genseo/SG_RECOVERY_TARGETS.csv'
     with open(out,'w',newline='') as f:
         w=csv.DictWriter(f,fieldnames=['query','status','prior_pos','recent_pos','prior_imp','recent_imp','prior_clicks','recent_clicks','imp_delta','ranking_page'])
         w.writeheader(); w.writerows(rows)
@@ -77,10 +77,10 @@ def main():
     opp=[]
     for k,(c,i,ct,p) in q2.items():
         if 5<=p<=15 and i>=50 and is_comm(k):
-            pg=qp2.get(k,('?',0,0))[0].replace('https://yourdomain.com','')
+            pg=qp2.get(k,('?',0,0))[0].replace('https://wellnessnest.co','')
             opp.append((i,p,c,k,pg))
     opp.sort(reverse=True)
-    out2='~/genseo/SG_OPPORTUNITIES.csv'
+    out2='/Users/kevinkreative/genseo/SG_OPPORTUNITIES.csv'
     with open(out2,'w',newline='') as f:
         w=csv.writer(f); w.writerow(['query','position','impressions','clicks','ranking_page'])
         for i,p,c,k,pg in opp: w.writerow([k,round(p,1),i,c,pg])

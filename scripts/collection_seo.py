@@ -83,7 +83,7 @@ def main():
     with open(LOG_FILE, 'a') as f:
         f.write(f"{stamp} | collection {cid} ({cur['handle']}) | +{words}w block, {len(faqs)} FAQs, {len(links)} links\n")
     print(f"✓ collection {cid} ({cur['handle']}) updated: {words}-word SEO block, {len(faqs)} FAQs + FAQPage schema")
-    print(f"  live: https://yourdomain.com/collections/{cur['handle']}")
+    print(f"  live: https://wellnessnest.co/collections/{cur['handle']}")
 
 
 if __name__ == '__main__':

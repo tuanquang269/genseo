@@ -1,4 +1,4 @@
-"""SG-ONLY weekly reporting standard for yourdomain.com.
+"""SG-ONLY weekly reporting standard for wellnessnest.co.
 Run this instead of trusting the global GSC dashboard.
 Usage: python3 sg_report.py            # default 28d vs prior 28d
        python3 sg_report.py 14          # 14d vs prior 14d
@@ -7,7 +7,7 @@ import sys, os, datetime
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 from gsc_fetcher import get_service
 
-SITE='https://yourdomain.com/'
+SITE='https://wellnessnest.co/'
 SG=[{'filters':[{'dimension':'country','operator':'equals','expression':'{{COUNTRY_CODE}}'}]}]
 fmt=lambda d:d.strftime('%Y-%m-%d')
 

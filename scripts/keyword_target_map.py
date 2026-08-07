@@ -21,7 +21,7 @@ from collections import defaultdict
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from gsc_fetcher import get_service
 
-SITE = "https://yourdomain.com/"
+SITE = "https://wellnessnest.co/"
 MIN_PUSH_IMP = 30    # a target kw needs this much 90d SG demand to be worth pushing
 ZOMBIE_IMP   = 10    # page total imp below this = ranks ~nothing
 CANNIB_IMP   = 15    # two pages each >= this on the same query = real competition on it

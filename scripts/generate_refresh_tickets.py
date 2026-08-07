@@ -116,13 +116,13 @@ def generate_tickets(csv_path, output_path):
             f.write("```markdown\n")
             
             if c['action'] == "[HEADLINE REWRITE]":
-                f.write(f"/genseo-auto-publish [REFRESH EXISTING]. The article {c['link']} suffers terrible CTR. Execute a {c['action']} targeting \"{c['keyword']}\" to aggressively match search intent and drive clicks. Default BLOG_ID is 100000000001.\n")
+                f.write(f"/genseo-auto-publish [REFRESH EXISTING]. The article {c['link']} suffers terrible CTR. Execute a {c['action']} targeting \"{c['keyword']}\" to aggressively match search intent and drive clicks. Default BLOG_ID is 104008483131.\n")
             else:
-                f.write(f"/genseo-auto-publish [REFRESH EXISTING]. The article {c['link']} suffers decay or is stuck. Execute a {c['action']} targeting \"{c['keyword']}\". Restructure headings, add updated tables, and ensure strong internal linking. Default BLOG_ID is 100000000001.\n")
+                f.write(f"/genseo-auto-publish [REFRESH EXISTING]. The article {c['link']} suffers decay or is stuck. Execute a {c['action']} targeting \"{c['keyword']}\". Restructure headings, add updated tables, and ensure strong internal linking. Default BLOG_ID is 104008483131.\n")
                 
             f.write("```\n\n")
             ticket_num += 1
 
 if __name__ == "__main__":
-    generate_tickets('~/genseo/PUBLISHED_ARTICLES_TRACKER.csv', '~/genseo/2ndRound_30_tickets_refresh.md')
-    print("Successfully generated ~/genseo/2ndRound_30_tickets_refresh.md")
+    generate_tickets('/Users/kevinkreative/genseo/PUBLISHED_ARTICLES_TRACKER.csv', '/Users/kevinkreative/genseo/2ndRound_30_tickets_refresh.md')
+    print("Successfully generated /Users/kevinkreative/genseo/2ndRound_30_tickets_refresh.md")

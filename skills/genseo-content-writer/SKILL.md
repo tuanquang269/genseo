@@ -22,8 +22,8 @@ You are the Execution Layer for the GenSeo system. Your job is to take a "Strate
 1. **Active Link Sourcing (CRITICAL SEO):**
    - Based on the Brief's target products, you **NEVER** guess product URLs or use `/search?q=` links.
    - You MUST query the Shopify Search API for each target product to find its exact `handle`:
-     `curl -s "https://yourdomain.com/search/suggest.json?q=YOUR_KEYWORD&resources[type]=product"`
-   - Construct and use the exact `https://yourdomain.com/products/[handle]` links in the article.
+     `curl -s "https://wellnessnest.co/search/suggest.json?q=YOUR_KEYWORD&resources[type]=product"`
+   - Construct and use the exact `https://wellnessnest.co/products/[handle]` links in the article.
 
 2. **Image Sourcing & Generation (MANDATORY & STRICT):**
    - **CRITICAL**: You MUST use a `run_command` tool (e.g. `curl -o` or `wget`) to download the actual product images (PNGs/JPGs) locally to your workspace FIRST. Do not skip this step.
@@ -64,7 +64,7 @@ You are the Execution Layer for the GenSeo system. Your job is to take a "Strate
    - [ ] **Hero image present?** — A lifestyle/combo hero image embedding all key products is at the top of the article.
    - [ ] **1 image per product?** — Every product reviewed or mentioned by name has its own dedicated lifestyle image in its dedicated section. Count the products. Count the images. They must match.
    - [ ] **All images use real product references?** — Every `generate_image` call used a real downloaded CDN image in `ImagePaths`. Zero text-only image generations for product shots.
-   - [ ] **All image paths are absolute local paths?** — Every `![alt](PATH)` in the markdown MUST use the absolute local filesystem path returned by `generate_image` (e.g. `~/.gemini/...`). **NEVER write relative paths like `/blogs/nutrition/filename.png` or `/cdn/shop/files/filename.jpg` directly into the draft.** These are phantom references that do not exist on Shopify and will cause broken images. The publisher script handles uploading and replacing paths with real CDN URLs automatically.
+   - [ ] **All image paths are absolute local paths?** — Every `![alt](PATH)` in the markdown MUST use the absolute local filesystem path returned by `generate_image` (e.g. `~/.gemini/...`). **NEVER write relative paths like `/blogs/news/filename.png` or `/cdn/shop/files/filename.jpg` directly into the draft.** These are phantom references that do not exist on Shopify and will cause broken images. The publisher script handles uploading and replacing paths with real CDN URLs automatically.
    - [ ] **generate_image returned a real path?** — Confirm each `generate_image` call produced an artifact at a real local path. If a call failed (e.g. capacity error), do NOT proceed — abort and tell the user to retry.
    - [ ] **All product URLs are real Shopify handles?** — Verified via the Search API, not guessed.
    - [ ] **FAQ block present?** — Uses exact `## Frequently Asked Questions` > `### Question` format.

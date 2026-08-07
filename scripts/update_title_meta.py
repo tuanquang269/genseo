@@ -5,7 +5,7 @@ resource (article / product / collection / page) via the standard `global.title_
 so a cheap model literally cannot damage the page content with it.
 
 Usage:
-  python3 update_title_meta.py --type article --id 123 --blog 100000000001 \
+  python3 update_title_meta.py --type article --id 123 --blog 104008483131 \
       --keyword "meiji protein milk" --title "New SERP Title" --meta "New meta description."
 
 Mechanical gates (exit 1, nothing written):
@@ -43,7 +43,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--type', required=True, choices=PATHS)
     ap.add_argument('--id', required=True)
-    ap.add_argument('--blog', default='100000000001')
+    ap.add_argument('--blog', default='104008483131')
     ap.add_argument('--keyword', required=True, help='primary keyword — must appear in the new title')
     ap.add_argument('--title', required=True, help='new SEO title (<=60 chars)')
     ap.add_argument('--meta', required=True, help='new meta description (120-165 chars)')

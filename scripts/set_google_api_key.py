@@ -24,7 +24,7 @@ import urllib.parse
 import urllib.request
 
 CONFIG = os.path.expanduser("~/.config/claude-seo/google-api.json")
-PROBE_URL = "https://yourdomain.com/"
+PROBE_URL = "https://wellnessnest.co/"
 
 
 def verify(key):
@@ -38,7 +38,7 @@ def verify(key):
     try:
         with urllib.request.urlopen(req, timeout=30) as res:
             json.load(res)
-        return True, "CrUX returned field data for yourdomain.com"
+        return True, "CrUX returned field data for wellnessnest.co"
     except urllib.error.HTTPError as e:
         detail = e.read().decode("utf-8", "replace")[:300]
         if e.code == 404:

@@ -44,7 +44,7 @@ from pathlib import Path
 
 CONFIG = os.path.expanduser("~/.genseo/shopify_token.json")
 API_VERSION = "2026-04"
-THEME = "100000000010"
+THEME = "183190880571"
 ASSET = "sections/main-product.liquid"
 POPUP_ASSET = "blocks/product_popup.liquid"
 BACKUP_DIR = Path("backups/20260802")
@@ -52,8 +52,8 @@ BACKUP = BACKUP_DIR / "sections__main-product.liquid"
 POPUP_BACKUP = BACKUP_DIR / "blocks__product_popup.liquid"
 
 # a product that has reviews, and one that does not — both must stay valid
-VERIFY_RATED = "https://yourdomain.com/products/dymatize-nutrition-iso-100-hydrolyzed-1-3-5-lb"
-VERIFY_UNRATED = "https://yourdomain.com/products/mutant-whey-whey-protein"
+VERIFY_RATED = "https://wellnessnest.co/products/dymatize-nutrition-iso-100-hydrolyzed-1-3-5-lb"
+VERIFY_UNRATED = "https://wellnessnest.co/products/mutant-whey-whey-protein"
 UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
 
 # the shippingDetails array closes on the `],` line — the insert goes between that

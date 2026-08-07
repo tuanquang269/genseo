@@ -21,12 +21,12 @@ import re
 import sys
 import urllib.request
 
-sys.path.append(os.path.expanduser("~/genseo/scripts/"))
+sys.path.append(os.path.expanduser("/Users/kevinkreative/genseo/scripts/"))
 from gsc_fetcher import get_service  # noqa: E402
 
-SITE = "https://yourdomain.com/"
+SITE = "https://wellnessnest.co/"
 CONFIG = os.path.expanduser("~/.genseo/shopify_token.json")
-BLOGS = {100000000001: "nutrition", 100000000002: "training"}
+BLOGS = {104008483131: "news"}
 BASE = pathlib.Path(__file__).resolve().parent.parent
 
 
@@ -67,7 +67,7 @@ def selftest():
 
 
 def short(url):
-    return url.replace("https://yourdomain.com", "")
+    return url.replace("https://wellnessnest.co", "")
 
 
 def main(brands):

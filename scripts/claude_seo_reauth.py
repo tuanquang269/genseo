@@ -40,15 +40,15 @@ SCOPES = [
     "https://www.googleapis.com/auth/webmasters.readonly",
     "https://www.googleapis.com/auth/analytics.readonly",
 ]
-CLIENT = "~/genseo/scripts/credentials.json"
-PIPELINE_TOKEN = "~/genseo/scripts/gsc_token.json"
+CLIENT = "/Users/kevinkreative/genseo/scripts/credentials.json"
+PIPELINE_TOKEN = "/Users/kevinkreative/genseo/scripts/gsc_token.json"
 CS_TOKEN = os.path.expanduser("~/.config/claude-seo/oauth-token.json")
 CS_CONFIG = os.path.expanduser("~/.config/claude-seo/google-api.json")
 
 
 def backup():
     stamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-    outdir = f"~/genseo/backups/{stamp}-oauth"
+    outdir = f"/Users/kevinkreative/genseo/backups/{stamp}-oauth"
     os.makedirs(outdir, exist_ok=True)
     for src in (PIPELINE_TOKEN, CS_TOKEN, CS_CONFIG):
         if os.path.isfile(src):

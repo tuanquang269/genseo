@@ -31,7 +31,7 @@ thì model rẻ càng ít phải đoán. Đây là lý do chất lượng ổn �
 ## [ ] Ticket #2 — REFRESH EXISTING
 
 - **Article ID:** `<id-lấy-từ-fetch_all_articles.py>`
-- **URL:** `https://yourdomain.com/blogs/nutrition/<handle>`
+- **URL:** `https://wellnessnest.co/blogs/news/<handle>`
 - **Diagnosis:** CTR (đang top 5 nhưng gần như không có click) → sửa title/meta, **giữ nguyên body**
 - **Queries cần chiếm:** liệt kê query GSC thật kèm impressions
 - **Rule:** append-only. Trang đang rank thì KHÔNG đổi title trừ khi chẩn đoán là CTR.

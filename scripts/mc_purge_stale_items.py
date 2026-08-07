@@ -34,7 +34,7 @@ import time
 import urllib.request
 
 MERCHANT_ID = "YOUR_MERCHANT_ID"
-SHARED = pathlib.Path("~/genseo/scripts/").expanduser()
+SHARED = pathlib.Path("/Users/kevinkreative/genseo/scripts/").expanduser()
 TOKEN = SHARED / "mc_token.json"
 SCOPES = ["https://www.googleapis.com/auth/content", "openid",
           "https://www.googleapis.com/auth/userinfo.email"]

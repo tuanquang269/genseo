@@ -14,8 +14,8 @@ Usage:
 import json, urllib.request, urllib.parse, sys, os, datetime
 
 from genseo_config import SHOP, TOKEN, API
-THEME="100000000010"; KEY="sections/main-collection-banner.liquid"
-ROOT="~/genseo"
+THEME="183190880571"; KEY="sections/main-collection-banner.liquid"
+ROOT="/Users/kevinkreative/genseo"
 BK=f"{ROOT}/backups/{datetime.date.today().strftime('%Y%m%d')}/theme__sections__main-collection-banner.liquid"
 
 def get_asset():

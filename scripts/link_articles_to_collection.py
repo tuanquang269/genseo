@@ -15,7 +15,7 @@ import argparse, json, os, re, sys, urllib.request, datetime
 
 CONFIG_PATH = os.path.expanduser('~/.genseo/shopify_token.json')
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BLOGS = {100000000001: 'nutrition', 100000000002: 'training'}
+BLOGS = {104008483131: 'news'}
 
 
 def main():

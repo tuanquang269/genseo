@@ -29,7 +29,7 @@ import os
 import pathlib
 import sys
 
-SHARED = pathlib.Path("~/genseo/scripts/").expanduser()
+SHARED = pathlib.Path("/Users/kevinkreative/genseo/scripts/").expanduser()
 CREDS = SHARED / "credentials.json"
 TOKEN = SHARED / "mc_token.json"
 # `content` alone is enough to call the API, but then a wrong-account consent is undiagnosable:

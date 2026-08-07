@@ -17,13 +17,13 @@ def ping_indexnow(shop, token, blog_id, article_handle):
         blog_data = json.loads(res.read())
         blog_handle = blog_data['blog']['handle']
         
-        url_to_index = f"https://yourdomain.com/blogs/{blog_handle}/{article_handle}"
+        url_to_index = f"https://wellnessnest.co/blogs/{blog_handle}/{article_handle}"
         
         key = "YOUR_INDEXNOW_KEY"
         ping_payload = {
-            "host": "yourdomain.com",
+            "host": "wellnessnest.co",
             "key": key,
-            "keyLocation": f"https://yourdomain.com/{key}.txt",
+            "keyLocation": f"https://wellnessnest.co/{key}.txt",
             "urlList": [url_to_index]
         }
         
@@ -276,7 +276,7 @@ def _process_images_for_publish(shop, token, md_text, strip_hero=True):
     local_paths, phantom_paths = discover_images(md_text)
 
     if phantom_paths and not local_paths:
-        print(f"  ⚠  WARNING: Draft contains {len(phantom_paths)} relative image paths (e.g. /blogs/nutrition/...) that don't exist on disk.")
+        print(f"  ⚠  WARNING: Draft contains {len(phantom_paths)} relative image paths (e.g. /blogs/news/...) that don't exist on disk.")
         print(f"     These images will appear BROKEN on the live site.")
         print(f"     Phantom paths: {phantom_paths[:3]}")
 
@@ -435,7 +435,7 @@ def do_publish(file_path, blog_id):
 
     if fail_count > 0:
         print(f"\n  ⚠  {fail_count} image(s) failed to upload. The article will be published but images will be broken.")
-        print(f"     Run: python3 ~/genseo/scripts/patch_images.py to fix them later.")
+        print(f"     Run: python3 /Users/kevinkreative/genseo/scripts/patch_images.py to fix them later.")
 
     import datetime
 
@@ -456,7 +456,7 @@ def do_publish(file_path, blog_id):
     if _am:
         author_handle = _am.group(2)
         author_name = ROSTER.get(author_handle, _am.group(1).strip())
-    article_author = ({"@type":"Person","name":author_name,"url":f"https://yourdomain.com/pages/{author_handle}"}
+    article_author = ({"@type":"Person","name":author_name,"url":f"https://wellnessnest.co/pages/{author_handle}"}
                       if author_handle else {"@type":"Organization","name":author_name})
 
     article_schema = {
@@ -467,7 +467,7 @@ def do_publish(file_path, blog_id):
         "publisher": {
             "@type": "Organization",
             "name": "Your Brand",
-            "logo": {"@type": "ImageObject", "url": "https://yourdomain.com/cdn/shop/files/Ultimate_Sup_Logo_2_small.png"}
+            "logo": {"@type": "ImageObject", "url": "https://wellnessnest.co/cdn/shop/files/Ultimate_Sup_Logo_2_small.png"}
         },
         "datePublished": datetime.datetime.utcnow().isoformat() + "Z"
     }
@@ -510,7 +510,7 @@ def do_publish(file_path, blog_id):
         print(f"\nSUCCESS! Article published.")
         print(f"  Article ID : {article_id}")
         print(f"  Handle     : {handle}")
-        print(f"  URL        : https://yourdomain.com/blogs/nutrition/{handle}")
+        print(f"  URL        : https://wellnessnest.co/blogs/news/{handle}")
 
         # ── Post-Publish Image Verification ─────────────────────────────────
         print(f"\n🔍 Verifying images on live article...")
@@ -520,7 +520,7 @@ def do_publish(file_path, blog_id):
 
         if img_count == 0:
             print(f"  ✗ IMAGE VERIFICATION FAILED — 0 CDN images found on live article!")
-            print(f"     Run: python3 ~/genseo/scripts/patch_images.py to fix.")
+            print(f"     Run: python3 /Users/kevinkreative/genseo/scripts/patch_images.py to fix.")
         elif img_count < expected:
             print(f"  ⚠  PARTIAL: {img_count}/{expected} images confirmed on CDN.")
             for s in img_srcs:
@@ -544,7 +544,7 @@ def do_publish(file_path, blog_id):
 
 def do_update(file_path, blog_id, article_id):
     # ── FREEZE LIST: articles under ranking stabilization must not be touched at all ──
-    FREEZE_FILE = "~/genseo/frozen_articles.txt"
+    FREEZE_FILE = "/Users/kevinkreative/genseo/frozen_articles.txt"
     if os.path.exists(FREEZE_FILE):
         with open(FREEZE_FILE) as f:
             frozen = {l.split('#')[0].strip() for l in f if l.split('#')[0].strip()}
@@ -654,12 +654,12 @@ def do_update(file_path, blog_id, article_id):
             author_handle = _am.group(2); author_name = ROSTER.get(author_handle, _am.group(1).strip())
         else:
             author_handle = _am.group(1); author_name = ROSTER.get(author_handle, author_name)
-    article_author = ({"@type":"Person","name":author_name,"url":f"https://yourdomain.com/pages/{author_handle}"}
+    article_author = ({"@type":"Person","name":author_name,"url":f"https://wellnessnest.co/pages/{author_handle}"}
                       if author_handle else {"@type":"Organization","name":author_name})
     article_schema = {"@context":"https://schema.org","@type":"Article","headline":title,
         "author":article_author,
         "publisher":{"@type":"Organization","name":"Your Brand",
-            "logo":{"@type":"ImageObject","url":"https://yourdomain.com/cdn/shop/files/Ultimate_Sup_Logo_2_small.png"}},
+            "logo":{"@type":"ImageObject","url":"https://wellnessnest.co/cdn/shop/files/Ultimate_Sup_Logo_2_small.png"}},
         "dateModified": datetime.datetime.utcnow().isoformat()+"Z"}
     if hero_cdn_url: article_schema["image"]=hero_cdn_url
     # FAQ schema (same parse as do_publish)
@@ -686,7 +686,7 @@ def do_update(file_path, blog_id, article_id):
         handle   = res_data['article']['handle']
         print(f"\nSUCCESS! Article {article_id} updated.")
         print(f"  Handle: {handle}")
-        print(f"  URL   : https://yourdomain.com/blogs/nutrition/{handle}")
+        print(f"  URL   : https://wellnessnest.co/blogs/news/{handle}")
 
         # ── Post-Update Image Verification ──────────────────────────────────
         print(f"\n🔍 Verifying images on live article...")

@@ -4,7 +4,7 @@ import datetime
 import json
 
 # Add shared skills to path so we can reuse gsc_fetcher authentication
-sys.path.append(os.path.expanduser("~/genseo/scripts/"))
+sys.path.append(os.path.expanduser("/Users/kevinkreative/genseo/scripts/"))
 import gsc_fetcher
 
 def check_rankings(site_url, threshold=5.0):
@@ -92,7 +92,7 @@ def check_rankings(site_url, threshold=5.0):
         print("No organic drops found over threshold. Injecting a mock drop for test validation...")
         tickets.append({
             "keyword": "test mock mutant whey review",
-            "url": "https://yourdomain.com/products/mutant-whey",
+            "url": "https://wellnessnest.co/products/mutant-whey",
             "previous_rank": 2.1,
             "current_rank": 10.4,
             "drop": 8.3
@@ -101,12 +101,12 @@ def check_rankings(site_url, threshold=5.0):
     generate_tickets_markdown(tickets)
 
 def generate_tickets_markdown(tickets):
-    file_path = os.path.expanduser("~/genseo/SEO_ACTION_TICKETS.md")
+    file_path = os.path.expanduser("/Users/kevinkreative/genseo/SEO_ACTION_TICKETS.md")
     
     content = "# 🚨 SEO Agent Action Tickets\n\n"
     content += "*The Orchestrator has detected significant ranking drops. Please copy the prompt below and feed it to the Strategist Agent.* \n\n"
     for t in tickets:
-        url_path = t['url'].replace("https://yourdomain.com", "").strip()
+        url_path = t['url'].replace("https://wellnessnest.co", "").strip()
         
         if url_path == "" or url_path == "/":
             page_type = "Homepage"
@@ -143,7 +143,7 @@ def generate_tickets_markdown(tickets):
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("site_url", help="GSC Site URL (e.g., sc-domain:yourdomain.com)")
+    parser.add_argument("site_url", help="GSC Site URL (e.g., sc-domain:wellnessnest.co)")
     parser.add_argument("--threshold", type=float, default=5.0, help="Drop threshold to trigger action")
     args = parser.parse_args()
     

@@ -35,10 +35,10 @@ from pathlib import Path
 
 CONFIG = os.path.expanduser("~/.genseo/shopify_token.json")
 API_VERSION = "2026-04"
-THEME = "100000000010"
+THEME = "183190880571"
 ASSET = "sections/main-product.liquid"
 BACKUP = Path("backups/20260802/sections__main-product.liquid.pre-returnmethod")
-VERIFY_URL = "https://yourdomain.com/products/dymatize-nutrition-iso-100-hydrolyzed-1-3-5-lb"
+VERIFY_URL = "https://wellnessnest.co/products/dymatize-nutrition-iso-100-hydrolyzed-1-3-5-lb"
 UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
 
 BEFORE = '"returnMethod": "https://schema.org/ReturnByMail",'

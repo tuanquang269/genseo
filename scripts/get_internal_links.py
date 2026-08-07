@@ -66,4 +66,4 @@ def get_links(csv_path):
         print(f"- Keyword: {t['keyword']}\n  URL: {t['link']}")
 
 if __name__ == "__main__":
-    get_links('~/genseo/PUBLISHED_ARTICLES_TRACKER.csv')
+    get_links('/Users/kevinkreative/genseo/PUBLISHED_ARTICLES_TRACKER.csv')

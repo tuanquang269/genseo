@@ -5,7 +5,7 @@ import sys
 import os
 
 CONFIG_PATH = os.path.expanduser('~/.genseo/shopify_token.json')
-BLOG_ID = "100000000001"
+BLOG_ID = "104008483131"
 
 def main():
     if not os.path.exists(CONFIG_PATH):

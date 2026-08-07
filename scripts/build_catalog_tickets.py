@@ -22,7 +22,7 @@ Usage: build_catalog_tickets.py [out.md] [--min-sku 3]
 import json, os, re, sys, urllib.request
 from collections import defaultdict
 
-ROOT = "~/genseo"
+ROOT = "/Users/kevinkreative/genseo"
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import topic_fitness as tf
 import build_rich_tickets as brt   # reuse theme_for / brands_for / angle_for / AUTHORS / tc
@@ -161,7 +161,7 @@ def render_ticket(c, num):
          f"Title for '{tc(c['brand'])} Review' in {{MARKET}}\". ANGLE: {ANGLE} MUST link collections: "
          f"{coll_links}. Anchor product (in-stock, real): /products/{c['handle']}. Feature priority "
          f"brands naturally for cross-sell: {pb_str}. Comparison table: {c['table']}. Author: {author}. "
-         f"Default BLOG_ID is 100000000001."),
+         f"Default BLOG_ID is 104008483131."),
         "```",
         "",
     ]

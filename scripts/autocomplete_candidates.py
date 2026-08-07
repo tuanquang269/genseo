@@ -17,7 +17,7 @@ import json, os, re, sys, time, urllib.parse, urllib.request
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import topic_fitness as tf
 
-ROOT = "~/genseo"
+ROOT = "/Users/kevinkreative/genseo"
 MODIFIERS = ["{{market}}", "review", "best", "worth it", ""]   # commercial/review intent seeds
 CATEGORIES = ["whey protein", "creatine", "pre workout", "mass gainer", "fat burner", "bcaa",
               "eaa", "collagen", "multivitamin", "fish oil omega", "protein bar", "casein",

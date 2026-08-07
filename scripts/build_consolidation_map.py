@@ -19,10 +19,10 @@ import os, csv, re, datetime, sys
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 from gsc_fetcher import get_service
 
-ROOT="~/genseo"
+ROOT="/Users/kevinkreative/genseo"
 DRAFTS=f"{ROOT}/published_drafts"
 TRACKER=f"{ROOT}/PUBLISHED_ARTICLES_TRACKER.csv"
-SITE='https://yourdomain.com/'
+SITE='https://wellnessnest.co/'
 SG=[{'filters':[{'dimension':'country','operator':'equals','expression':'{{COUNTRY_CODE}}'}]}]
 fmt=lambda d:d.strftime('%Y-%m-%d')
 
@@ -101,8 +101,8 @@ def main():
                 'words':wcval if wcval is not None else '?',
                 'cluster_size':len(members),
                 'is_cluster_winner':'yes' if (is_dup and a['url']==winner) else '',
-                'url':a['url'].replace('https://yourdomain.com',''),
-                'merge_into':winner.replace('https://yourdomain.com','') if (is_dup and a['url']!=winner) else ''
+                'url':a['url'].replace('https://wellnessnest.co',''),
+                'merge_into':winner.replace('https://wellnessnest.co','') if (is_dup and a['url']!=winner) else ''
             })
 
     # sort: actionable first (REDIRECT, MERGE), then by low traffic
@@ -129,7 +129,7 @@ def main():
         print(f"  '{m[0]['kw']}' x{len(m)}:")
         for a in sorted(m,key=lambda a:-perf.get(a['url'],(0,0,0))[1]):
             c,i,p=perf.get(a['url'],(0,0,0))
-            print(f"      SGimp={i:>4} clk={c} | {a['url'].replace('https://yourdomain.com','')[:70]}")
+            print(f"      SGimp={i:>4} clk={c} | {a['url'].replace('https://wellnessnest.co','')[:70]}")
     print("\n=== TOP REDIRECT CANDIDATES (thin + no SG traffic) ===")
     for r in [r for r in out if r['verdict']=='REDIRECT'][:20]:
         print(f"  w={r['words']!s:>4} imp={r['sg_imp']:>3} | {r['url'][:72]}")

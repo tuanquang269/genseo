@@ -24,7 +24,7 @@ Before diving into Step 1, verify you have:
 Publishing a second article for a keyword you already rank for splits your ranking signal
 (this is what cost us the atlas/agym/cbum traffic). So before writing:
 ```
-curl -s "https://yourdomain.com/search/suggest.json?q=PRIMARY_KEYWORD&resources[type]=article&resources[limit]=5"
+curl -s "https://wellnessnest.co/search/suggest.json?q=PRIMARY_KEYWORD&resources[type]=article&resources[limit]=5"
 ```
 - If an existing article already targets this exact PRIMARY_KEYWORD, **STOP. Do not create a new article.**
   Mark the ticket `[SKIPPED-DUPLICATE: <existing_url>]` and, if the existing one is thin
@@ -79,7 +79,7 @@ wasted image-generation + writing cost of a doomed article.)
   - 3–5 **long-tail and question keywords** (e.g., "is pre workout safe for beginners", "how to take pre workout")
   - **AEO-friendly question variants**: "how", "what", "is it safe", "vs", "near me"
   - **Location variants**: "{{MARKET}}", neighbourhood names, "near me", "delivery", "online"
-- **Product Handle Sourcing:** Use `run_command` with `curl -s "https://yourdomain.com/search/suggest.json?q=YOUR_KEYWORD&resources[type]=product"` to find the exact product handlers for internal links. Do not guess handles!
+- **Product Handle Sourcing:** Use `run_command` with `curl -s "https://wellnessnest.co/search/suggest.json?q=YOUR_KEYWORD&resources[type]=product"` to find the exact product handlers for internal links. Do not guess handles!
 - **Internal Linking Strategy (Power & Target Pages):** Run `run_command` with `python3 ~/genseo/scripts/get_internal_links.py` to retrieve the current Top Power Pages (high traffic) and Target Pages (striking distance). Record these URLs and their target keywords to be naturally embedded into the article body in Step 5.
 - Record the expanded keyword list and internal links mentally — you will weave ALL of them naturally into the article body and FAQ section.
 
@@ -161,7 +161,7 @@ and in AI Overviews. Treat this step as writing an ad, not a label.
     Write the sentence directly instead of reaching for a connector. If a paragraph only exists to introduce the next paragraph, delete the paragraph.
   - **CITE OR DROP NUMBERS:** if you write a statistic, a percentage, a study reference, or a "X times more effective" comparison, put a real source link next to it. If there is no source, do not write the number. The validator flags articles that make 3+ factual claims with zero citations.
   - MUST follow all EEAT and AEO/GEO guidelines from the knowledge base.
-  - MUST embed the `curl`-fetched Internal Links absolutely (e.g. `https://yourdomain.com/products/handle`).
+  - MUST embed the `curl`-fetched Internal Links absolutely (e.g. `https://wellnessnest.co/products/handle`).
   - MUST format the FAQ precisely using `## Frequently Asked Questions` > `### Question`.
   - **⛔ DO NOT embed `<script type="application/ld+json">` tags in the markdown file.** The markdown renderer outputs them as visible raw text in the article body. FAQ schema and other JSON-LD must be passed as raw HTML appended to `body_html` AFTER the markdown-to-HTML conversion step, never inside the `.md` draft file.
 
@@ -270,7 +270,7 @@ Read the publisher script terminal output:
 Even if Gate 1 shows ✅, you MUST use `browser_subagent` to open the live article URL and visually confirm every image is rendering correctly. The CDN script can pass even when images appear broken in the browser (e.g. wrong URL pre-filled before upload, as happened in Ticket #91).
 
 **Browser check task to run:**
-> "Navigate to `https://yourdomain.com/blogs/nutrition/<HANDLE>`. Scroll through the entire article from top to bottom. Check that ALL images (hero banner and every product lifestyle image) are visible and fully loaded — not broken, not missing, not showing a placeholder. Count the total number of images displayed. Return: PASS if all images visible and loaded, FAIL if any image is broken or missing, along with the count of visible vs broken images."
+> "Navigate to `https://wellnessnest.co/blogs/news/<HANDLE>`. Scroll through the entire article from top to bottom. Check that ALL images (hero banner and every product lifestyle image) are visible and fully loaded — not broken, not missing, not showing a placeholder. Count the total number of images displayed. Return: PASS if all images visible and loaded, FAIL if any image is broken or missing, along with the count of visible vs broken images."
 
 - If the browser returns **PASS** → Both gates passed. Proceed to Step 9.
 - If the browser returns **FAIL** → Images are broken despite CDN script passing. Run the patch script:
@@ -288,7 +288,7 @@ Even if Gate 1 shows ✅, you MUST use `browser_subagent` to open the live artic
 ```
 python3 << 'EOF'
 import csv, datetime
-row = ['TICKET_NUM', 'primary keyword', 'https://yourdomain.com/blogs/nutrition/HANDLE', datetime.date.today().isoformat(), 'No', datetime.date.today().isoformat(), 'No', '']
+row = ['TICKET_NUM', 'primary keyword', 'https://wellnessnest.co/blogs/news/HANDLE', datetime.date.today().isoformat(), 'No', datetime.date.today().isoformat(), 'No', '']
 with open('~/genseo/PUBLISHED_ARTICLES_TRACKER.csv', 'a', newline='') as f:
     csv.writer(f).writerow(row)
 EOF
@@ -309,7 +309,7 @@ python3 << 'EOF'
 import re
 f="~/genseo/Jun26-120-tickets.md"   # <-- the file this run came from
 ticket="### 📝 Ticket #N"                               # <-- exact heading of THIS ticket
-url="https://yourdomain.com/blogs/nutrition/HANDLE"
+url="https://wellnessnest.co/blogs/news/HANDLE"
 import datetime; today=datetime.date.today().isoformat()
 t=open(f).read()
 # replace the FIRST '[ ] PENDING' that appears after this ticket's heading

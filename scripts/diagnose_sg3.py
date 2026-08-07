@@ -2,7 +2,7 @@
 import sys, os, datetime
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 from gsc_fetcher import get_service
-SITE='https://yourdomain.com/'
+SITE='https://wellnessnest.co/'
 SG=[{'filters':[{'dimension':'country','operator':'equals','expression':'{{COUNTRY_CODE}}'}]}]
 fmt=lambda d:d.strftime('%Y-%m-%d')
 def query(svc,s,e,dims,limit=5000):

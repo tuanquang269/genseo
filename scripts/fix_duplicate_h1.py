@@ -8,7 +8,7 @@ Shopify theme renders the title separately — having <h1> in body causes duplic
 import json, os, re, requests, time
 
 TOKEN_FILE = os.path.expanduser('~/.genseo/shopify_token.json')
-BLOG_ID = 100000000001
+BLOG_ID = 104008483131
 
 with open(TOKEN_FILE) as f:
     creds = json.load(f)

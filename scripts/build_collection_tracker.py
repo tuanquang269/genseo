@@ -11,7 +11,7 @@ Columns:
 Usage:
   python3 scripts/build_collection_tracker.py
 Output:
-  ~/genseo/COLLECTION_TRACKER.csv
+  /Users/kevinkreative/genseo/COLLECTION_TRACKER.csv
 """
 
 import sys, subprocess, os, csv, json, datetime, urllib.request
@@ -38,13 +38,13 @@ except ImportError:
 # ---------------------------------------------------------------------------
 # 2. Config
 # ---------------------------------------------------------------------------
-SITE_URL     = "https://yourdomain.com"
+SITE_URL     = "https://wellnessnest.co"
 SHOP         = __import__("genseo_config").SHOP
 SHOPIFY_TOKEN = __import__("genseo_config").TOKEN
 SCRIPT_DIR   = os.path.dirname(os.path.realpath(__file__))
 TOKEN_PATH   = os.path.join(SCRIPT_DIR, "gsc_token.json")
 CREDS_PATH   = os.path.join(SCRIPT_DIR, "credentials.json")
-OUTPUT_CSV   = "~/genseo/COLLECTION_TRACKER.csv"
+OUTPUT_CSV   = "/Users/kevinkreative/genseo/COLLECTION_TRACKER.csv"
 
 # GSC date range: last 90 days
 TODAY      = datetime.date.today()

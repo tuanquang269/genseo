@@ -1,6 +1,6 @@
 import re
 
-with open('~/genseo/2ndRound_120_tickets.md', 'r') as f:
+with open('/Users/kevinkreative/genseo/2ndRound_120_tickets.md', 'r') as f:
     content = f.read()
 
 def get_ticket(text, t_num):
@@ -30,6 +30,6 @@ if t3 and t40: content = swap(content, 3, t3, 40, t40)
 if t4 and t63: content = swap(content, 4, t4, 63, t63)
 if t5 and t47: content = swap(content, 5, t5, 47, t47)
 
-with open('~/genseo/2ndRound_120_tickets.md', 'w') as f:
+with open('/Users/kevinkreative/genseo/2ndRound_120_tickets.md', 'w') as f:
     f.write(content)
 print("Swapped 3<->40, 4<->63, 5<->47")

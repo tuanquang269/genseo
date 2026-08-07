@@ -7,7 +7,7 @@ with open(CONFIG_PATH, 'r') as f:
     auth = json.load(f)
 shop = auth['shop']
 token = auth['access_token']
-blog_id = 100000000001
+blog_id = 104008483131
 
 targets = {
     "everything-you-need-to-know-about-meiji-protein-in-{{market}}": {
@@ -20,9 +20,9 @@ targets = {
 
 links_html = """
   <ul style="list-style-type: none; padding-left: 0;">
-    <li style="margin-bottom: 10px;">👉 <strong><a href="https://yourdomain.com/blogs/nutrition/the-ultimate-guide-to-soy-protein-in-{{market}}-the-comprehensive-plant-based-masterclass">The Comprehensive Guide to Soy Protein in {{MARKET}}</a></strong></li>
-    <li style="margin-bottom: 10px;">👉 <strong><a href="https://yourdomain.com/blogs/nutrition/the-ultimate-guide-to-plant-protein-powder-in-{{market}}">{{MARKET}}'s Ultimate Guide to Plant Protein Powders</a></strong></li>
-    <li style="margin-bottom: 0;">👉 <strong><a href="https://yourdomain.com/blogs/nutrition/the-ultimate-guide-to-myprotein-soy-protein-isolate-in-{{market}}">Myprotein Soy Protein Isolate: In-Depth Review</a></strong></li>
+    <li style="margin-bottom: 10px;">👉 <strong><a href="https://wellnessnest.co/blogs/news/the-ultimate-guide-to-soy-protein-in-{{market}}-the-comprehensive-plant-based-masterclass">The Comprehensive Guide to Soy Protein in {{MARKET}}</a></strong></li>
+    <li style="margin-bottom: 10px;">👉 <strong><a href="https://wellnessnest.co/blogs/news/the-ultimate-guide-to-plant-protein-powder-in-{{market}}">{{MARKET}}'s Ultimate Guide to Plant Protein Powders</a></strong></li>
+    <li style="margin-bottom: 0;">👉 <strong><a href="https://wellnessnest.co/blogs/news/the-ultimate-guide-to-myprotein-soy-protein-isolate-in-{{market}}">Myprotein Soy Protein Isolate: In-Depth Review</a></strong></li>
   </ul>
 </div>
 """

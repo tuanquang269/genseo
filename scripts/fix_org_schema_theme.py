@@ -28,10 +28,10 @@ from pathlib import Path
 
 SHOP = __import__("genseo_config").SHOP
 TOKEN = __import__("genseo_config").TOKEN
-THEME = "100000000010"
+THEME = "183190880571"
 ASSET = "sections/header.liquid"
 BACKUP = Path("backups/2026-07-30-theme/sections__header.liquid")
-VERIFY_URL = "https://yourdomain.com/products/nutrabio-intra-blast"
+VERIFY_URL = "https://wellnessnest.co/products/nutrabio-intra-blast"
 
 OLD = (
     '    "sameAs": [\n'
@@ -129,7 +129,7 @@ def verify_live():
     same_as = org.get("sameAs", [])
     if any(not str(u).strip() for u in same_as):
         return False, f"sameAs still has blank entries: {same_as}"
-    if org.get("url", "").rstrip("/") != "https://yourdomain.com":
+    if org.get("url", "").rstrip("/") != "https://wellnessnest.co":
         return False, f"Organization url wrong: {org.get('url')!r}"
     return True, org
 

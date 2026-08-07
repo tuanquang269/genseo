@@ -7,7 +7,7 @@ Usage: python3 patch_mobile.py
 """
 import os, re, subprocess
 
-GENSEO_DIR = "~/genseo"
+GENSEO_DIR = "/Users/kevinkreative/genseo"
 PUSH_SCRIPT = f"{GENSEO_DIR}/scripts/push_collection.py"
 
 COLLECTIONS = [

@@ -69,7 +69,7 @@ def setup_indexnow():
         "key": key,
         "keyLocation": f"https://{shop}/pages/{page_data['handle']}",
         "urlList": [
-            f"https://{shop}/blogs/nutrition/7-best-creatine-supplements-{{market}}"
+            f"https://{shop}/blogs/news/7-best-creatine-supplements-{{market}}"
         ]
     }
     ping_url = "https://api.indexnow.org/indexnow"

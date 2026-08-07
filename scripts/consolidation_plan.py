@@ -18,7 +18,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from gsc_fetcher import get_service
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SITE = "https://yourdomain.com/"
+SITE = "https://wellnessnest.co/"
 MIN_Q_IMP = 25   # an article must get >= this imp on a query to count as "competing" for it
 
 

@@ -37,10 +37,10 @@ print(json.load(urllib.request.urlopen(urllib.request.Request(f'https://{c.SHOP}
 headers={'X-Shopify-Access-Token': c.TOKEN})))['blogs'])"
 ```
 
-Rồi thay placeholder (blog chính = `100000000001`, blog thứ hai = `100000000002`):
+Rồi thay placeholder (blog chính = `104008483131`, blog thứ hai = `104008483131`):
 
 ```bash
-grep -rl 100000000001 scripts/ | xargs sed -i '' 's/100000000001/<BLOG_ID_THAT>/g'
+grep -rl 104008483131 scripts/ | xargs sed -i '' 's/104008483131/<BLOG_ID_THAT>/g'
 ```
 
 ## 2b. Domain và theme ID
@@ -48,8 +48,8 @@ grep -rl 100000000001 scripts/ | xargs sed -i '' 's/100000000001/<BLOG_ID_THAT>/
 Vài script kiểm tra internal link theo domain, và các script patch theme dùng theme ID:
 
 ```bash
-grep -rl yourdomain.com scripts/ | xargs sed -i '' 's/yourdomain\.com/<domain-cua-ban>/g'
-grep -rn 100000000010 scripts/    # theme ID placeholder — lấy ID thật:
+grep -rl wellnessnest.co scripts/ | xargs sed -i '' 's/yourdomain\.com/<domain-cua-ban>/g'
+grep -rn 183190880571 scripts/    # theme ID placeholder — lấy ID thật:
 # python3 -c "..."  → GET /admin/api/<ver>/themes.json, lấy theme role=main
 ```
 

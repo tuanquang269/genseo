@@ -4,9 +4,9 @@ import glob, os, re, json, shutil, urllib.request
 SHOP = __import__("genseo_config").SHOP
 TOKEN = __import__("genseo_config").TOKEN
 API = "2026-04"
-artifact_dir = "~/genseo/tmp_images/"
+artifact_dir = "/Users/kevinkreative/genseo/tmp_images/"
 
-ticket_file = "~/genseo/image-regeneration-tickets.md"
+ticket_file = "/Users/kevinkreative/genseo/image-regeneration-tickets.md"
 with open(ticket_file, "r", encoding="utf-8") as f:
     text = f.read()
 
@@ -23,13 +23,13 @@ for idx, art_id in enumerate(art_ids, 1):
     shutil.copyfile(pngs[0], hero_cover_png)
 
     req = urllib.request.Request(
-        f"https://{SHOP}/admin/api/{API}/blogs/100000000001/articles/{art_id}.json",
+        f"https://{SHOP}/admin/api/{API}/blogs/104008483131/articles/{art_id}.json",
         headers={"X-Shopify-Access-Token": TOKEN}
     )
     art = json.loads(urllib.request.urlopen(req).read())["article"]
     live_title = art["title"].strip()
 
-    draft_path = f"~/genseo/published_drafts/draft_{art_id}.md"
+    draft_path = f"/Users/kevinkreative/genseo/published_drafts/draft_{art_id}.md"
     with open(draft_path, "r", encoding="utf-8") as f:
         draft_text = f.read()
 

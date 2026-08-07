@@ -9,7 +9,7 @@ Also fixes a generic author field/schema when a named /pages/ byline exists in t
 
 Usage:
   python3 repair_schema.py <ARTICLE_ID> [BLOG_ID]      # one article
-  python3 repair_schema.py --sweep <id1,id2,...>        # many (comma-sep), blog 100000000001
+  python3 repair_schema.py --sweep <id1,id2,...>        # many (comma-sep), blog 104008483131
 Idempotent: re-running a healthy article changes nothing.
 """
 import sys, json, re, urllib.request, urllib.error, datetime, time
@@ -46,7 +46,7 @@ def extract_faqs(body):
             pairs.append((q,ans))
     return pairs[:8]
 
-def repair(aid, blog="100000000001"):
+def repair(aid, blog="104008483131"):
     a=api(f"https://{SHOP}/admin/api/{API}/blogs/{blog}/articles/{aid}.json")["article"]
     body=a.get("body_html") or ""; title=a.get("title","")
     changed=[]
@@ -86,8 +86,8 @@ def repair(aid, blog="100000000001"):
     add=""
     if "application/ld+json" not in body or '"@type": "Article"' not in body:
         art={"@context":"https://schema.org","@type":"Article","headline":title,
-             "author":({"@type":"Person","name":author_name,"url":f"https://yourdomain.com/pages/{handle}"} if handle else {"@type":"Person","name":author_name,"url":"https://yourdomain.com/pages/author-four"}),
-             "publisher":{"@type":"Organization","name":"Your Brand","logo":{"@type":"ImageObject","url":"https://yourdomain.com/cdn/shop/files/Ultimate_Sup_Logo_2_small.png"}},
+             "author":({"@type":"Person","name":author_name,"url":f"https://wellnessnest.co/pages/{handle}"} if handle else {"@type":"Person","name":author_name,"url":"https://wellnessnest.co/pages/author-four"}),
+             "publisher":{"@type":"Organization","name":"Your Brand","logo":{"@type":"ImageObject","url":"https://wellnessnest.co/cdn/shop/files/Ultimate_Sup_Logo_2_small.png"}},
              "dateModified":"2026-06-13"}
         add+=f'\n<script type="application/ld+json">\n{json.dumps(art,indent=2)}\n</script>\n'
         changed.append("Article")
@@ -113,7 +113,7 @@ def repair(aid, blog="100000000001"):
     else:
         print(f"  [{aid}] healthy (schema+author present) | {a.get('handle')}")
 
-def recent_article_ids(hours, blogs=("100000000001","100000000002")):
+def recent_article_ids(hours, blogs=("104008483131","104008483131")):
     """Article IDs updated within the last `hours`, across the given blogs."""
     since=(datetime.datetime.now(datetime.timezone.utc)-datetime.timedelta(hours=hours)).strftime('%Y-%m-%dT%H:%M:%SZ')
     out=[]
@@ -146,7 +146,7 @@ def main():
         # GROUND-TRUTH LOG so the daily run is auditable (who/when/what)
         try:
             ts=datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
-            with open("~/genseo/repair_runs.log","a") as lg:
+            with open("/Users/kevinkreative/genseo/repair_runs.log","a") as lg:
                 lg.write(f"{ts}\t--recent {hours}h\tchecked={len(ids)}\trepaired={repaired}\tuntitled={untitled}\thealthy={healthy}\n")
         except Exception: pass
         print(f"Done. checked={len(ids)} repaired={repaired} untitled={untitled} healthy={healthy} (logged to repair_runs.log)")
@@ -154,6 +154,6 @@ def main():
         ids=[x.strip() for x in sys.argv[2].split(",") if x.strip()]
         for i in ids: repair(i)
     else:
-        repair(sys.argv[1], sys.argv[2] if len(sys.argv)>2 else "100000000001")
+        repair(sys.argv[1], sys.argv[2] if len(sys.argv)>2 else "104008483131")
 
 if __name__=="__main__": main()

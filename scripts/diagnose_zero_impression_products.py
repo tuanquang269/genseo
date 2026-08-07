@@ -25,11 +25,11 @@ import sys
 import time
 import urllib.request
 
-sys.path.append(os.path.expanduser("~/genseo/scripts/"))
+sys.path.append(os.path.expanduser("/Users/kevinkreative/genseo/scripts/"))
 from gsc_fetcher import get_service  # noqa: E402
 
 CONFIG = os.path.expanduser("~/.genseo/shopify_token.json")
-SITE = "https://yourdomain.com/"
+SITE = "https://wellnessnest.co/"
 API = "2026-04"
 BASE = pathlib.Path(__file__).resolve().parent.parent
 

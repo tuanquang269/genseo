@@ -49,7 +49,7 @@ def run_aeo_scan(query, brand_name="Your Brand", iterations=5, threshold=3):
         print("Brand health is strong in AI memory. No action needed.")
 
 def create_action_ticket(query, score, out_of):
-    ticket_path = os.path.expanduser("~/genseo/AEO_ACTION_TICKETS.md")
+    ticket_path = os.path.expanduser("/Users/kevinkreative/genseo/AEO_ACTION_TICKETS.md")
     content = f"# 🧠 AEO Protocol Triggered\n\n"
     content += f"LLM Brand Recognition for the query: `{query}` is critically low.\n"
     content += f"Score: **{score}/{out_of}** mentions.\n\n"

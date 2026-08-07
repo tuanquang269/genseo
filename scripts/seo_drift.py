@@ -95,7 +95,7 @@ def run_script(script, args, env, binary, timeout=240):
 
 
 def short(url):
-    return re.sub(r"^https?://yourdomain\.com", "", url) or "/"
+    return re.sub(r"^https?://wellnessnest\.co", "", url) or "/"
 
 
 def cmd_baseline(args):

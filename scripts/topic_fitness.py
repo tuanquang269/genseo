@@ -27,7 +27,7 @@ Usage:
 """
 import json, re, sys
 
-ROOT = "~/genseo"
+ROOT = "/Users/kevinkreative/genseo"
 MIN_IMP = 20          # below this SG demand, not worth a dedicated page
 DUP_JACCARD = 0.72    # significant-word overlap with an existing title = duplicate
 RANK_FLOOR = 8        # if we already rank SG pos <= this, a NEW page cannibalises the winner (refresh instead)

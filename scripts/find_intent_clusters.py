@@ -26,7 +26,7 @@ from gsc_fetcher import get_service
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CONFIG_PATH = os.path.expanduser('~/.genseo/shopify_token.json')
-BLOGS = {100000000001: 'nutrition', 100000000002: 'training'}
+BLOGS = {104008483131: 'news'}
 
 
 def shopify_articles():
@@ -59,7 +59,7 @@ def main():
     svc = get_service()
     end = datetime.date.today() - datetime.timedelta(days=2)
     start = end - datetime.timedelta(days=90)
-    rows = svc.searchanalytics().query(siteUrl='https://yourdomain.com/', body={
+    rows = svc.searchanalytics().query(siteUrl='https://wellnessnest.co/', body={
         'startDate': str(start), 'endDate': str(end), 'dimensions': ['query', 'page'],
         'dimensionFilterGroups': [{'filters': [{'dimension': 'country', 'operator': 'equals', 'expression': '{{COUNTRY_CODE}}'}]}],
         'rowLimit': 25000}).execute().get('rows', [])

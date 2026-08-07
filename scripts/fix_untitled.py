@@ -21,7 +21,7 @@ Usage: python3 fix_untitled.py [--apply]
 import sys, json, re, urllib.request, urllib.parse, subprocess, os, datetime
 
 from genseo_config import SHOP, TOKEN, API
-BLOGS={100000000001:"nutrition",100000000002:"training"}
+BLOGS={104008483131:"news"}
 ROSTER={"author-two":"Author Two","author-one":"Author One","author-three":"Author Three",
  "author-four":"Author Four","author-five":"Author Five","author-six":"Author Six","author-seven":"Author Seven"}
 
@@ -43,7 +43,7 @@ def best_duplicate(title, self_handle):
     """Return (url, overlap) of the strongest LIVE non-self article matching `title`, else (None,0)."""
     q=urllib.parse.quote(" ".join(title.split()[:6]))
     try:
-        d=json.loads(urllib.request.urlopen(f"https://yourdomain.com/search/suggest.json?q={q}&resources[type]=article&resources[limit]=5").read())
+        d=json.loads(urllib.request.urlopen(f"https://wellnessnest.co/search/suggest.json?q={q}&resources[type]=article&resources[limit]=5").read())
         arts=d.get('resources',{}).get('results',{}).get('articles',[])
     except Exception: return (None,0.0)
     tt=toks(title); best=(None,0.0)
@@ -84,7 +84,7 @@ def main():
                     if apply:
                         path=f"/blogs/{bname}/{a['handle']}"
                         api(f"https://{SHOP}/admin/api/{API}/blogs/{bid}/articles/{a['id']}.json",{"article":{"id":a['id'],"published":False}},"PUT")
-                        api(f"https://{SHOP}/admin/api/{API}/redirects.json",{"redirect":{"path":path,"target":dup_url.replace('https://yourdomain.com','')}},"POST")
+                        api(f"https://{SHOP}/admin/api/{API}/redirects.json",{"redirect":{"path":path,"target":dup_url.replace('https://wellnessnest.co','')}},"POST")
                         redirected+=1
                         log.append({"action":"redirect","id":a['id'],"path":path,"target":dup_url,"overlap":overlap})
                         print(f"   ✓ {action}")
@@ -114,8 +114,8 @@ def main():
     # log + summary
     if apply and log:
         stamp=datetime.datetime.now(datetime.timezone.utc).strftime("%Y%m%d")
-        os.makedirs(f"~/genseo/backups/{stamp}",exist_ok=True)
-        p=f"~/genseo/backups/{stamp}/untitled_autofix_log.json"
+        os.makedirs(f"/Users/kevinkreative/genseo/backups/{stamp}",exist_ok=True)
+        p=f"/Users/kevinkreative/genseo/backups/{stamp}/untitled_autofix_log.json"
         prev=json.load(open(p)) if os.path.exists(p) else []
         json.dump(prev+log, open(p,"w"), indent=2)
         print(f"Logged {len(log)} actions -> {p}")

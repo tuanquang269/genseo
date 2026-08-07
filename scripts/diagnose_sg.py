@@ -3,7 +3,7 @@ import sys, os, datetime, csv
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 from gsc_fetcher import get_service
 
-SITE='https://yourdomain.com/'
+SITE='https://wellnessnest.co/'
 SG=[{'filters':[{'dimension':'country','operator':'equals','expression':'{{COUNTRY_CODE}}'}]}]
 
 def q(svc,b):
@@ -57,13 +57,13 @@ def main():
     print(f"gross SG loss={gross_loss}  top1={sum(x[0] for x in deltas[:1])} top5={sum(x[0] for x in deltas[:5])} top10={sum(x[0] for x in deltas[:10])}")
     print("\n--- TOP 15 SG IMPRESSION LOSERS ---")
     for d,u,a,b in deltas[:15]:
-        print(f"  {d:+6} | imp {a[1]:>5}->{b[1]:<5} clk {a[0]:>3}->{b[0]:<3} pos {a[2]:4.0f}->{b[2]:<4.0f} | {u.replace('https://yourdomain.com','')[:60]}")
+        print(f"  {d:+6} | imp {a[1]:>5}->{b[1]:<5} clk {a[0]:>3}->{b[0]:<3} pos {a[2]:4.0f}->{b[2]:<4.0f} | {u.replace('https://wellnessnest.co','')[:60]}")
     print("\n--- TOP 10 SG GAINERS ---")
     for d,u,a,b in deltas[-10:][::-1]:
-        print(f"  {d:+6} | imp {a[1]:>5}->{b[1]:<5} clk {a[0]:>3}->{b[0]:<3} pos {a[2]:4.0f}->{b[2]:<4.0f} | {u.replace('https://yourdomain.com','')[:60]}")
+        print(f"  {d:+6} | imp {a[1]:>5}->{b[1]:<5} clk {a[0]:>3}->{b[0]:<3} pos {a[2]:4.0f}->{b[2]:<4.0f} | {u.replace('https://wellnessnest.co','')[:60]}")
 
     # ---- Do new articles get SG traffic? ----
-    tracker='~/genseo/PUBLISHED_ARTICLES_TRACKER.csv'
+    tracker='/Users/kevinkreative/genseo/PUBLISHED_ARTICLES_TRACKER.csv'
     new=[]
     with open(tracker) as f:
         for row in csv.DictReader(f):

@@ -43,4 +43,4 @@ def analyze_tracker(csv_path):
         print(f"- {p['keyword']} (Pos: {p['pos']}, Clicks: {p['clicks']}) -> {p['link']}")
 
 if __name__ == "__main__":
-    analyze_tracker('~/genseo/PUBLISHED_ARTICLES_TRACKER.csv')
+    analyze_tracker('/Users/kevinkreative/genseo/PUBLISHED_ARTICLES_TRACKER.csv')

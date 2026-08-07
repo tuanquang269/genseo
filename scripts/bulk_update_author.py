@@ -62,4 +62,4 @@ def bulk_update_author(blog_id):
         sys.exit(1)
 
 if __name__ == "__main__":
-    bulk_update_author("100000000001")
+    bulk_update_author("104008483131")

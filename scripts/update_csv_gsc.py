@@ -7,8 +7,8 @@ import datetime
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 from gsc_fetcher import get_service
 
-CSV_FILE = "~/genseo/PUBLISHED_ARTICLES_TRACKER.csv"
-SITE_URL = "https://yourdomain.com/"
+CSV_FILE = "/Users/kevinkreative/genseo/PUBLISHED_ARTICLES_TRACKER.csv"
+SITE_URL = "https://wellnessnest.co/"
 
 def fetch_page_data_30_days():
     service = get_service()

@@ -9,8 +9,8 @@ from gsc_fetcher import get_service
 
 def check_indexing_status():
     service = get_service()
-    site_url = 'https://yourdomain.com/'
-    csv_file = '~/genseo/PUBLISHED_ARTICLES_TRACKER.csv'
+    site_url = 'https://wellnessnest.co/'
+    csv_file = '/Users/kevinkreative/genseo/PUBLISHED_ARTICLES_TRACKER.csv'
     
     rows = []
     with open(csv_file, 'r') as f:

@@ -121,7 +121,7 @@ không ai kiểm chứng giả thuyết trước.
 |---|---|
 | `missing config ~/.genseo/shopify_token.json` | `SETUP.md` bước 1 |
 | 401/403 từ Shopify | token thiếu scope (`write_content`, `write_products`, `write_themes`, `read/write_files`) |
-| 404 khi thao tác article | blog ID vẫn là placeholder `100000000001` → `LOCALIZE.md` |
+| 404 khi thao tác article | blog ID vẫn là placeholder `104008483131` → `LOCALIZE.md` |
 | Gate FAIL ở phần author | roster chưa đồng bộ 3 chỗ, hoặc `/pages/<handle>` chưa tồn tại trên site |
 | Bài live nhưng không có schema | publish sai đường (luật #2). Chữa: `repair_schema.py <ID>` |
 | Bài tên "Generated Article" | model ghi metadata dạng HTML comment thay vì `# H1`. Chữa: `fix_untitled.py --apply`. **Đừng xoá** — đó là bài thật bị lỗi title |

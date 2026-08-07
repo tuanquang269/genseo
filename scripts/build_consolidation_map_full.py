@@ -14,7 +14,7 @@ Verdicts (conservative — never kills a page with SG clicks):
 Outputs SG_CONSOLIDATION_FULL.csv. Read-only.
 """
 import csv, re, os
-ROOT="~/genseo"
+ROOT="/Users/kevinkreative/genseo"
 STOP=set("the a an to in of for is are and or vs best guide ultimate complete review {{market}} sg 2025 2026 2027 your you what how do does in-{{market}} everything-you-need know about all things need".split())
 
 def norm(title):
@@ -55,8 +55,8 @@ def main():
                 'sg_pos':r['sg_pos'],'words':r['words'],'blog':r['blog'],'created':r['created'],
                 'cluster_size':len(members),
                 'winner':'yes' if (is_dup and r['url']==winner) else '',
-                'merge_into':winner.replace('https://yourdomain.com','') if (is_dup and r['url']!=winner) else '',
-                'url':r['url'].replace('https://yourdomain.com',''),'id':r['id']})
+                'merge_into':winner.replace('https://wellnessnest.co','') if (is_dup and r['url']!=winner) else '',
+                'url':r['url'].replace('https://wellnessnest.co',''),'id':r['id']})
 
     order={'REDIRECT':0,'MERGE→winner':1,'REVIEW':2,'KEEP/EXPAND':3}
     out.sort(key=lambda r:(order[r['verdict']], r['sg_imp']))
@@ -77,7 +77,7 @@ def main():
         tot=sum(r['sg_clicks'] for r in m)
         print(f"  [{tot} SG clk total] x{len(m)}: {m[0]['title'][:55]}")
         for r in m:
-            print(f"      clk={r['sg_clicks']:>2} imp={r['sg_imp']:>4} w={r['words']:>4} | {r['url'].replace('/blogs/nutrition/','')[:62]}")
+            print(f"      clk={r['sg_clicks']:>2} imp={r['sg_imp']:>4} w={r['words']:>4} | {r['url'].replace('/blogs/news/','')[:62]}")
 
 if __name__=="__main__":
     main()

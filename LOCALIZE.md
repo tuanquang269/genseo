@@ -19,12 +19,12 @@ grep -rn "{{[A-Z_]*}}\|1000000000\|your-store\|yourdomain\|Author One\|REPLACE M
 |---|---|---|
 | `your-store.myshopify.com` | shop domain | `config.example.json` → `~/.genseo/shopify_token.json` |
 | `shpat_YOUR_ADMIN_API_TOKEN` | Admin API token | cùng file trên |
-| `100000000001` | blog ID chính | rải trong `scripts/` |
-| `100000000002` | blog ID thứ hai (nếu có 2 blog) | `scripts/` |
-| `100000000003` | blog ID thứ ba (nếu có) | `scripts/` |
-| `100000000010` | theme ID (main theme) | các script `*_theme.py` |
+| `104008483131` | blog ID chính | rải trong `scripts/` |
+| `104008483131` | blog ID thứ hai (nếu có 2 blog) | `scripts/` |
+| `104008483131` | blog ID thứ ba (nếu có) | `scripts/` |
+| `183190880571` | theme ID (main theme) | các script `*_theme.py` |
 | `100000000099` | article ID mẫu trong test/self-check | vài script |
-| `yourdomain.com` | domain thật | `scripts/validate_article.py` và một số script khác |
+| `wellnessnest.co` | domain thật | `scripts/validate_article.py` và một số script khác |
 | `YOUR_INDEXNOW_KEY` | key IndexNow | `scripts/shopify_publisher.py`, `setup_indexnow.py` |
 | `YOUR_MERCHANT_ID` | Merchant Center ID | `scripts/mc_diagnostics.py` |
 

@@ -1,6 +1,6 @@
 import re
 
-with open('~/genseo/GENSEO_30_DAY_SCHEDULE.md') as f:
+with open('/Users/kevinkreative/genseo/GENSEO_30_DAY_SCHEDULE.md') as f:
     content = f.read()
 
 # Extract all secondary keyword lines (which contain ALL keywords used per ticket)

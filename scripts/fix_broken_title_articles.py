@@ -10,8 +10,8 @@ Dry-run by default; --apply to push. Scans ALL nutrition+training articles for t
 import json, urllib.request, re, sys, datetime, os
 
 from genseo_config import SHOP, TOKEN, API
-BLOGS={"nutrition":100000000001,"training":100000000002}
-ROOT="~/genseo"
+BLOGS={"news4008483131}
+ROOT="/Users/kevinkreative/genseo"
 LOG=f"{ROOT}/backups/{datetime.date.today().strftime('%Y%m%d')}/title_fix_log.json"
 
 def api(url, data=None, method="GET"):

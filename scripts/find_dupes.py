@@ -19,7 +19,7 @@ import sys, json, re, datetime, os, urllib.request
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 
 from genseo_config import SHOP, TOKEN, API
-BLOGS={100000000001:"nutrition",100000000002:"training"}
+BLOGS={104008483131:"news"}
 STOP=set("the a an to in of for is are and or vs best guide ultimate complete review {{market}} sg "
          "your you what how do does top picks 2024 2025 2026 2027 2028".split())
 
@@ -39,7 +39,7 @@ def jaccard(a,b):
 def sg_pagemap():
     try:
         from gsc_fetcher import get_service
-        svc=get_service(); SITE='https://yourdomain.com/'
+        svc=get_service(); SITE='https://wellnessnest.co/'
         SG=[{'filters':[{'dimension':'country','operator':'equals','expression':'{{COUNTRY_CODE}}'}]}]
         end=datetime.date.today()-datetime.timedelta(days=2); start=end-datetime.timedelta(days=89)
         fmt=lambda d:d.strftime('%Y-%m-%d')
@@ -60,7 +60,7 @@ def main():
             for a in d['articles']:
                 if a.get('published_at') and a['title'].strip() and a['title'].strip()!='Generated Article':
                     arts.append({**a,"blog":bname,"bid":bid,"key":norm_key(a['title']),
-                                 "url":f"https://yourdomain.com/blogs/{bname}/{a['handle']}"})
+                                 "url":f"https://wellnessnest.co/blogs/{bname}/{a['handle']}"})
             url=None
             for p in res.headers.get('Link','').split(','):
                 if 'rel="next"' in p: url=p[p.find('<')+1:p.find('>')]
@@ -121,8 +121,8 @@ def main():
 
     if apply and log:
         stamp=datetime.datetime.now(datetime.timezone.utc).strftime("%Y%m%d")
-        os.makedirs(f"~/genseo/backups/{stamp}",exist_ok=True)
-        p=f"~/genseo/backups/{stamp}/dupe_merge_log.json"
+        os.makedirs(f"/Users/kevinkreative/genseo/backups/{stamp}",exist_ok=True)
+        p=f"/Users/kevinkreative/genseo/backups/{stamp}/dupe_merge_log.json"
         prev=json.load(open(p)) if os.path.exists(p) else []
         json.dump(prev+log, open(p,"w"), indent=2)
         print(f"\nLogged {len(log)} merges -> {p} (reversible)")

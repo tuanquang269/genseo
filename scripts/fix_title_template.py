@@ -36,17 +36,17 @@ from pathlib import Path
 
 CONFIG = os.path.expanduser("~/.genseo/shopify_token.json")
 API_VERSION = "2026-04"
-THEME = "100000000010"
+THEME = "183190880571"
 ASSET = "layout/theme.liquid"
 BACKUP = Path("backups/20260802/layout__theme.liquid")
 SUFFIX = " – Your Brand"
 UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
 
 VERIFY_URLS = (
-    "https://yourdomain.com/",
-    "https://yourdomain.com/products/dymatize-nutrition-iso-100-hydrolyzed-1-3-5-lb",
-    "https://yourdomain.com/collections/protein-powder",
-    "https://yourdomain.com/blogs/nutrition/the-ultimate-guide-to-protein-powders-in-{{market}}",
+    "https://wellnessnest.co/",
+    "https://wellnessnest.co/products/dymatize-nutrition-iso-100-hydrolyzed-1-3-5-lb",
+    "https://wellnessnest.co/collections/protein-powder",
+    "https://wellnessnest.co/blogs/news/the-ultimate-guide-to-protein-powders-in-{{market}}",
 )
 
 BEFORE = """    <title>

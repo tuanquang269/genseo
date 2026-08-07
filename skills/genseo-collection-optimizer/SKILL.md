@@ -28,7 +28,7 @@ This agent acts as a specialized AI architect for Shopify Collection Pages. It c
 
 ### 1. Ingest Search Console Data
 - Use the `run_command` tool to execute the GSC fetcher script:
-  `python3 ~/genseo/scripts/gsc_fetcher.py fetch_url_data "https://yourdomain.com" "[COLLECTION_URL]"`
+  `python3 ~/genseo/scripts/gsc_fetcher.py fetch_url_data "https://wellnessnest.co" "[COLLECTION_URL]"`
 - Analyze the output to identify keywords with high impressions but low clicks, or highly local terms with good CTR (e.g., strong CTR for queries with "{{MARKET}}").
 
 ### 2. Web Content & Technical Audit
@@ -118,7 +118,7 @@ This agent acts as a specialized AI architect for Shopify Collection Pages. It c
   products=json.loads(urllib.request.urlopen(req).read())['products']
   for i,p in enumerate(products):
       v=p['variants'][0] if p.get('variants') else {}
-      print(json.dumps({'position':i+1,'name':p['title'],'url':f\"https://yourdomain.com/products/{p['handle']}\",'brand':p.get('vendor',''),'price':v.get('price','0'),'available':v.get('available',True)}))
+      print(json.dumps({'position':i+1,'name':p['title'],'url':f\"https://wellnessnest.co/products/{p['handle']}\",'brand':p.get('vendor',''),'price':v.get('price','0'),'available':v.get('available',True)}))
   "
   ```
 - Use this data to populate the `itemListElement` array in the schema template below.
@@ -220,14 +220,14 @@ Prepend this `<style>` block to **every** collection HTML file, before all other
       "dateModified": "[YYYY-MM-DD]",
       "isPartOf": {
         "@type": "WebSite",
-        "@id": "https://yourdomain.com/#website",
+        "@id": "https://wellnessnest.co/#website",
         "name": "Your Brand",
-        "url": "https://yourdomain.com"
+        "url": "https://wellnessnest.co"
       },
       "breadcrumb": {
         "@type": "BreadcrumbList",
         "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://yourdomain.com" },
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://wellnessnest.co" },
           { "@type": "ListItem", "position": 2, "name": "[Collection Name]", "item": "[COLLECTION_URL]" }
         ]
       },

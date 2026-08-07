@@ -39,7 +39,7 @@ UA = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
 AUTH = json.load(open(CONFIG))
 SHOP, TOKEN = AUTH["shop"], AUTH["access_token"]
 HDR = {"X-Shopify-Access-Token": TOKEN, "Content-Type": "application/json"}
-BLOG_ID = {"nutrition": 100000000001, "training": 100000000002}
+BLOG_ID = {"news4008483131}
 LDJSON = re.compile(r'<script type="application/ld\+json">(.*?)</script>', re.S)
 
 
@@ -119,7 +119,7 @@ def repair(body):
 
 
 def live_ok(blog, handle):
-    url = f"https://yourdomain.com/blogs/{blog}/{handle}?nc={int(time.time())}"
+    url = f"https://wellnessnest.co/blogs/{blog}/{handle}?nc={int(time.time())}"
     r = urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=45)
     if r.status != 200:
         return False, f"HTTP {r.status}"
@@ -137,7 +137,7 @@ def live_ok(blog, handle):
 
 def selftest():
     # the already-repaired Impact Whey hub must now pass, and its FAQPage must be valid
-    body = api("blogs/100000000001/articles/100000000099.json")["article"]["body_html"]
+    body = api("blogs/104008483131/articles/621567902011.json")["article"]["body_html"]
     assert all(parses(b) for b in LDJSON.findall(body)), "the reference article is broken"
     assert repair(body)[0] is None, "repair() should refuse an already-valid article"
     # a synthetic broken block must be detected and repaired

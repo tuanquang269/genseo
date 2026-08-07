@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import glob, os, re, subprocess
 
-ticket_file = "~/genseo/image-regeneration-tickets.md"
+ticket_file = "/Users/kevinkreative/genseo/image-regeneration-tickets.md"
 with open(ticket_file, "r", encoding="utf-8") as f:
     text = f.read()
 
@@ -12,15 +12,15 @@ success_count = 0
 failed_ids = []
 
 for idx, art_id in enumerate(art_ids, 1):
-    draft_path = f"~/genseo/published_drafts/draft_{art_id}.md"
+    draft_path = f"/Users/kevinkreative/genseo/published_drafts/draft_{art_id}.md"
     print(f"\n[{idx}/{len(art_ids)}] Publishing article {art_id}...")
 
     pub_cmd = [
         "python3",
-        os.path.expanduser("~/genseo/scripts/shopify_publisher.py"),
+        os.path.expanduser("/Users/kevinkreative/genseo/scripts/shopify_publisher.py"),
         "update",
         draft_path,
-        "100000000001",
+        "104008483131",
         art_id
     ]
     res = subprocess.run(pub_cmd, capture_output=True, text=True)
@@ -34,9 +34,9 @@ for idx, art_id in enumerate(art_ids, 1):
 
     ver_cmd = [
         "python3",
-        "~/genseo/scripts/verify_published.py",
+        "/Users/kevinkreative/genseo/scripts/verify_published.py",
         art_id,
-        "100000000001"
+        "104008483131"
     ]
     ver_res = subprocess.run(ver_cmd, capture_output=True, text=True)
 
