@@ -38,6 +38,7 @@
   </aside>
 
   <section class="sta__inline" data-sta-inline hidden>
+    <div class="page-width">
     <h2>Shop This Article</h2>
     <ul class="sta__theme-grid grid product-grid grid--2-col-tablet-down grid--4-col-desktop" role="list">
       {%- assign sta_handle_list = sta_handles | split: '|' -%}
@@ -65,6 +66,7 @@
       {%- endfor -%}
     </ul>
     <div class="sta__inline-grid" data-sta-inline-products hidden></div>
+    </div>
   </section>
 </div>
 
@@ -363,10 +365,16 @@
     text-align: center;
   }
 
+  #{{ sta_id }} .sta__theme-grid {
+    justify-content: center;
+  }
+
   #{{ sta_id }} .sta__inline-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
+    max-width: 72rem;
+    margin: 0 auto;
   }
 
   #{{ sta_id }} .sta__inline-card {
