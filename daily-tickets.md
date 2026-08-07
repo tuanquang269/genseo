@@ -46,7 +46,11 @@ Agent được lệnh *"continue with the next ticket in daily-tickets.md"* → 
 - **Comparison table:** what changes after 40 (muscle loss %, recovery, bone, brain fog) × how creatine addresses each, with citations
 - **Angle:** muscle loss after 40 is measurable and creatine is one of the few supplements with real strength evidence in women — de-bro the narrative.
 - **Author:** (from roster.json)
-- **Dedup note:** menopause series exists but zero creatine coverage (checked 2026-08-07)
+- **Dedup note:** menopause series exists but zero creatine coverage on the BLOG (checked 2026-08-07).
+  ⚠ Store has an UNPUBLISHED page draft `/pages/9-surprising-things-creatine-may-do-for-women-beyond-building-muscle`
+  (id 157057941819) — a page, not an article; read it before writing to avoid overlap, do not publish it.
+- **Collection-claim note:** FusiForce is NOT in womens-essentials-collection (only FloraFresh + AgeAura are)
+  — link the collection as a browse suggestion, never claim membership. Same trap caught in Ticket #1.
 
 ## [ ] Ticket #3 — NEW ARTICLE
 
