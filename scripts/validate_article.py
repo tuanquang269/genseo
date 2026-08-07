@@ -29,6 +29,16 @@ MARKET_RE=re.compile(r'\bU\.?S\.?A?\.?\b|\bUnited States\b|\bAmericans?\b')
 BIO_RE=re.compile(r'(?is)(?:#{2,3}\s*|<h[23][^>]*>\s*)About the Author\s*(?:</h[23]>)?\s*(.{0,600})')
 MIN_INLINE_IMAGES=3   # every review/product article must have >=3 in-body images (1 per product; hero excluded)
 
+
+def _strip_approved(text):
+    """Drop roster-approved bios and names before the invented-credential scan.
+    Kevin's call 2026-08-07: the approved byline itself may carry a title
+    ("Dr. Marcus Hale"), so the gate polices only what a model ADDS beyond the
+    vetted roster entry — strip bios first, then names (bios contain the name)."""
+    for b in APPROVED_BIOS: text = text.replace(b, "")
+    for n in genseo_roster.NAMES.values(): text = text.replace(n, "")
+    return text
+
 # ---------------------------------------------------------------------------
 # QRG content-quality gate (added 2026-07-30)
 #
@@ -147,7 +157,7 @@ def _author_fails(md):
     if bio:
         bio=bio.group(1)
         cred=re.search(r'(?i)\b(Dr\.|\bMD\b|PhD|\bRD\b|Registered Dietitian|CISSN|Certified [A-Z]|'
-                       r'\d+\+?\s*years of experience|Strength Coach|Endocrinolog|Naturopath|Physician)', bio)
+                       r'\d+\+?\s*years of experience|Strength Coach|Endocrinolog|Naturopath|Physician)', _strip_approved(bio))
         if cred: fails.append(f"invented credential: {cred.group(1)}")
         if not any(s[:60].lower() in bio.lower() for s in APPROVED_BIOS):
             fails.append("bio not approved sentence")
@@ -276,7 +286,7 @@ def main():
     bio=bio.group(1) if bio else ""
     if bio:
         cred=re.search(r'(?i)\b(Dr\.|\bMD\b|PhD|\bRD\b|Registered Dietitian|CISSN|Certified [A-Z]|'
-                       r'\d+\+?\s*years of experience|Strength Coach|Endocrinolog|Naturopath|Physician)', bio)
+                       r'\d+\+?\s*years of experience|Strength Coach|Endocrinolog|Naturopath|Physician)', _strip_approved(bio))
         if cred: fails.append(f"invented credential in author bio: {cred.group(1)}")
         if not any(s[:60].lower() in bio.lower() for s in APPROVED_BIOS):
             fails.append("author bio is not the approved sentence for that staff member")
