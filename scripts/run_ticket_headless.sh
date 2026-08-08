@@ -8,6 +8,11 @@ export PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/us
 for d in "$HOME"/.nvm/versions/node/*/bin; do [ -d "$d" ] && PATH="$d:$PATH"; done
 export PATH
 unset ANTHROPIC_API_KEY
+# Mac mini's global settings.json routes claude through the local 9router proxy
+# (PATI-Opus-5 etc.) for Hermes; GenSeo runs must use the NATIVE Claude
+# subscription instead — process env overrides settings.json env (tested 2026-08-08).
+export ANTHROPIC_BASE_URL=""
+export ANTHROPIC_AUTH_TOKEN=""
 
 CLAUDE_BIN="$HOME/.local/bin/claude"
 [ -x "$CLAUDE_BIN" ] || CLAUDE_BIN="$(command -v claude)"
