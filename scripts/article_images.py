@@ -31,8 +31,22 @@ import re
 import subprocess
 import sys
 
-IMA2 = "/Users/kevinkreative/.npm-global/bin/ima2"
-CWEBP = "/opt/homebrew/bin/cwebp"
+import shutil as _shutil
+
+
+def _find_bin(name, candidates):
+    for c in candidates:
+        p = os.path.expanduser(c)
+        if os.path.isfile(p) and os.access(p, os.X_OK):
+            return p
+    found = _shutil.which(name)
+    if found:
+        return found
+    sys.exit(f"✗ {name} binary not found (tried {candidates} + PATH)")
+
+
+IMA2 = _find_bin("ima2", ["~/.npm-global/bin/ima2", "~/.nvm/versions/node/v24.19.0/bin/ima2", "~/.local/bin/ima2"])
+CWEBP = _find_bin("cwebp", ["/opt/homebrew/bin/cwebp", "~/.local/bin/cwebp", "/usr/local/bin/cwebp"])
 OUT_ROOT = "/Users/kevinkreative/genseo/tmp_images"
 MAX_BYTES = 80 * 1024
 PROMPT_SUFFIX = (" NO watermark. NO blog name text. NO caption. NO attribution text in any "
