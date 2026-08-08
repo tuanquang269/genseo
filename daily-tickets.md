@@ -39,7 +39,7 @@ Agent được lệnh *"continue with the next ticket in daily-tickets.md"* → 
 - **Author:** (from roster.json — Kevin approves)
 - **Dedup note:** no existing creatine article on the blog (checked 2026-08-07)
 
-## [ ] Ticket #2 — NEW ARTICLE
+## [DONE 2026-08-08 https://wellnessnest.co/blogs/news/creatine-for-women-over-40-what-changes-in-the-us] Ticket #2 — NEW ARTICLE
 
 - **Primary keyword:** `creatine for women over 40`
 - **Secondary:** creatine benefits for women, does creatine cause bloating in women, creatine menopause muscle loss
