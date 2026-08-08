@@ -4,9 +4,36 @@
 > framework generate ảnh"). This is the STILL-IMAGE adaptation of the v5.2 12-section Omni video
 > framework (`~/PATI/LLM-Wiki/30-creative/34-video/1-v5.2-flow.md`) + the ugc-cam-xuc emotion layer
 > + the anti-stock direction. Generator stays **ima2 OAuth only**; packaging stays locked to the
-> live PDP (`--product-ref` hard rule). Posture chốt bởi Kevin 2026-08-07:
-> **HERO = clean pack-shot (PDP style, og:image legibility) · INLINE = UGC per this framework ·
+> live PDP (`--product-ref` hard rule). Posture chốt bởi Kevin 2026-08-07, hero lane REPLACED
+> 2026-08-08 (Kevin: "luôn luôn có hình ảnh nhân vật khác nhau mỗi blogs và có ảnh sản phẩm —
+> có model và ảnh sản phẩm trên hình ảnh thumbnail"):
+> **HERO = MODEL + PRODUCT (ad-style, § Hero lane below) · INLINE = UGC per this framework ·
 > faces = PERSONA BANK (Pinterest gate run ONCE, approved creators reused forever).**
+
+## HERO LANE — MODEL + PRODUCT ON THE THUMBNAIL (HARD RULE, Kevin 2026-08-08)
+
+The hero is the FIRST `![...]()` image in the body — `shopify_publisher.py` promotes it to
+`article.image`, so it IS the blog thumbnail and og:image. Reference bar: the GemPages FusiForce
+hero on `/blogs/news/news-copy-of-from-stiff-to-strong…` (model holding the green pouch label-forward,
+bright ad-style). Requirements, all mandatory:
+
+1. **A persona (visible face) AND the real product pack, together in frame.** Model holds or
+   presents the pack label-forward at chest height; label must stay legible at thumbnail size.
+   `--product-ref` + `--persona-ref` + `--qc`, always.
+2. **Different character per blog post.** The hero persona MUST differ from the previous articles'
+   hero personas — rotate through the approved bank, never repeat until the bank is exhausted, then
+   restart with the least-recently-used. Log the persona handle in the tracker CSV row. Bank too
+   small to rotate (or no demo-appropriate persona) → generate with the least-recently-used
+   compliant persona and put one line in the report: "persona bank needs expansion (real-face gate)".
+   NEVER invent a fresh face to satisfy variety — the 🧑 gate still owns new faces.
+3. **Style = bright ad-style hero, NOT gritty UGC.** No `--ugc` flag. Clean daylight, appealing,
+   confident model, natural real-smile mechanics. The anti-stock NEG bank ("no beaming model facing
+   camera") applies to the INLINE lane only — the hero is EXEMPT from that one line by design
+   (Kevin's reference IS a model facing camera with the pack). Anti-AI NEG stays (no plastic skin,
+   no glassy eyes, no waxy face), packaging guard stays, and **no on-image text** stays — the text
+   overlay on Kevin's reference is a design-tool composite, not something ima2 may attempt.
+4. Persona must fit the article's audience demo (women-40+ article → female 40s–50s persona;
+   men's shilajit article → male persona once the bank has one).
 
 ## HARD RULE — emit ALL 10 sections, labeled, in order. Never a run-on blob.
 
@@ -46,7 +73,9 @@ stock-looking output. Write the 10 sections as labeled lines, then pass the asse
 
 ## Per-article image mix (posture chốt 2026-08-07)
 
-1. **Hero** — CLEAN pack-shot lane (PDP-style, legible label, og:image duty). NOT UGC. `--product-ref`, no `--ugc`.
+1. **Hero** — MODEL + PRODUCT lane (§ Hero lane above): approved persona holding the real pack
+   label-forward, bright ad-style, different persona per post. `--product-ref` + `--persona-ref`
+   + `--qc`, no `--ugc`. (Old clean pack-shot lane RETIRED 2026-08-08.)
 2. **Inline ×3** — UGC lane, this framework, typical mix: 1 persona-in-scene (face) + 2 no-face
    (hands/POV/flat-lay/detail). All with `--ugc`; product-in-frame ones also `--product-ref`.
 3. Scene-variety guard: before writing prompts, check the `scene` column for the last ~10 rows in
