@@ -191,3 +191,32 @@ separate Kevin decision, NOT covered by these tickets.
 - **Angle:** direct-from-Wellness-Nest is the only channel with guaranteed authentic product — plus a practical fake-shilajit spotting checklist (ties to the sourcing article).
 - **Author:** (from roster.json)
 - **Dedup note:** sourcing + lab-testing articles exist — link them; no where-to-buy article (blog list checked 2026-08-07)
+
+## [ ] Ticket #13 — NEW ARTICLE (type: LISTICLE — organic presell format)
+
+- **Format:** LISTICLE — numbered points, each = ONE pain/benefit tied to the mechanism, skimmable,
+  soft CTA. Craft: `~/PATI/LLM-Wiki/30-creative/32-copy/7-advertorial-listicle-presell-framework.md`
+  (vault doctrine: listicle fits COLD readers with generic angle = blog search traffic). Still passes
+  every gate — ≥900 words, US anchor, 3 inline images, ≥2 collection links.
+- **Primary keyword:** `how to choose shilajit gummies` (working title: "7 Things to Check Before You Buy Shilajit Gummies")
+- **Secondary:** shilajit gummies ingredients, fulvic acid content, third party tested shilajit, shilajit gummies dosage per serving
+- **Ads evidence (90d):** quality/criteria-hunting visible across campaigns — `US · Shilajit · Category`: "gold shilajit gummies", "better alt shilajit", "erth wellness gummies", "optimum shilajit" (buyers comparing quality across brands); `[S] Shopping DE - 2003` + `ADC | Shopping | DE | Branded | Shilajit Essential Extract |  LP | TROAS 250%`: "shilajit beste qualität", "bestes shilajit testsieger" family. Criteria-education captures ALL of these without naming a single brand in the keyword.
+- **Search intent:** cold buyer who doesn't yet know how to judge a gummy — teach the checklist, let the criteria sell
+- **Collection links:** `/collections/shilajit-wellness-stack`, `/collections/best-seller`
+- **Hero product:** `/products/premium-himalayan-shilajit-gummies` ($59.99)
+- **Angle:** each numbered point = one criterion (actual shilajit mg per serving · fulvic acid disclosure · source transparency · servings math · sugar load · gummy-vs-resin equivalence · return policy). Product appears as the worked example of each criterion, never as a hard pitch.
+- **Author:** (from roster.json)
+- **Dedup note:** distinct from #8 (brand-comparison table) — this is criteria education; cross-link #8's article once live. No how-to-choose article exists (blog list checked 2026-08-07)
+
+## [ ] Ticket #14 — NEW ARTICLE (type: LISTICLE — organic presell format)
+
+- **Format:** LISTICLE — same craft source + gates as #13.
+- **Primary keyword:** `fake shilajit` (working title: "6 Signs Your Shilajit Is Fake — and How to Verify the Real Thing")
+- **Secondary:** real shilajit vs fake, how to test shilajit at home, authentic himalayan shilajit, shilajit purity test
+- **Ads evidence (90d):** authenticity anxiety runs through the paid terms — "natural himalayan shilajit" (`US · Shilajit · Category`), "optimum shilajit", the DE testsieger/qualität family, and the #12 where-to-buy cluster ("wellness nest shilajit dm/amazon" = people checking channels because they fear fakes). Nobody owns this SERP with an owned page yet.
+- **Search intent:** worried buyer pre-purchase OR post-purchase verification — both funnel to a trusted source
+- **Collection links:** `/collections/shilajit-wellness-stack`, `/collections/mens-essential-collection`
+- **Hero product:** `/products/shilasource-himalayan-shilajit-resin` ($59.99); gummies inline
+- **Angle:** 6 verifiable signs (solubility & residue · burn test myth debunk · price-too-good math · label red flags · origin claims without lot traceability · texture/smell). Link the existing sourcing + lab-testing articles as depth. ⚠ House rule: do NOT lead on lab-tested/COA as THE advantage — sourcing transparency + reader empowerment is the story.
+- **Author:** (from roster.json)
+- **Dedup note:** sourcing + lab-testing articles exist — LINK, don't restate; no fake-spotting article (blog list checked 2026-08-07)

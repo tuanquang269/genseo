@@ -87,6 +87,19 @@ ORDER BY metrics.impressions DESC LIMIT 30
 | `<brand> erfahrungen/reviews/recenzie/testsieger` | Review-roundup, brand-SERP defense (only REAL store reviews) | #11 |
 | `<brand> amazon/dm/kaufen/where to buy` | Retail-availability + anti-fake | #12 (lowest priority) |
 | how/what/does question terms | Question long-tail (check dedup first — "what is shilajit" was already covered) | — |
+| Quality/criteria-hunting terms (gold/fake/testsieger/beste qualität/"what to look for") | **Listicle** — numbered checklist, each point = 1 pain/benefit tied to the mechanism | #13 how-to-choose, #14 fake-spotting |
+
+## Listicle lane (added 2026-08-08, Kevin's call)
+
+The vault's Google Ads doctrine runs listicles as PAID presell middle pages
+(`30-creative/31-strategy/14-google-ads-advertorial-full-funnel.md` — Search/Shopping →
+advertorial/listicle → PDP; Nuora's Gate axis in `23-competitor-funnel-lattice.md`).
+The blog version is the ORGANIC twin: vault craft says listicle fits when the reader is
+cold and the angle generic — exactly blog search traffic. Craft source:
+`30-creative/32-copy/7-advertorial-listicle-presell-framework.md` (skimmable numbered
+points, each = one pain/benefit tied to the mechanism, soft CTA); swipes:
+`30-creative/32-copy/44-advertorial-listicle-swipe-vault.md`. Blog listicles still pass
+every gate (≥900 words, US anchor, images, collection links) — format changes, rules don't.
 
 ## Ticket writing checklist
 
