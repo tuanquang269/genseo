@@ -35,4 +35,5 @@ echo "=== GenSeo ticket run $STAMP ===" >> "$LOGDIR/articles-$STAMP.log"
   >> "$LOGDIR/articles-$STAMP.log" 2>&1
 RC=$?
 echo "=== exit $RC ===" >> "$LOGDIR/articles-$STAMP.log"
+bash "$HOME/genseo/scripts/notify_lark.sh" "$LOGDIR/articles-$STAMP.log" "$RC" >> "$LOGDIR/articles-$STAMP.log" 2>&1
 exit $RC
