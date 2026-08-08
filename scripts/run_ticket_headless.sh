@@ -26,7 +26,15 @@ Rules for this run:
 4. Flip the ticket heading to [DONE <date> <url>] (or SKIPPED per skill rules), append the tracker CSV row, then git commit the genseo repo and try to push; if push fails for auth, keep the commit local and note "push pending" in the report — do not treat it as a run failure.
 5. If the ticket is marked type LISTICLE, follow the listicle format instructions in the ticket (craft: ~/PATI/LLM-Wiki/30-creative/32-copy/7-advertorial-listicle-presell-framework.md). Gates unchanged.
 6. If NO `[ ]` ticket remains: do NOT write an article. If the google-ads MCP is unavailable in this environment, append a line to daily-tickets.md under a "## Refill needed" heading asking Kevin to run the mining recipe in the app, and stop.
-7. Finish with a report: article title, primary keyword, Shopify admin draft URL, gate results, next ticket number.'
+7. Finish with a report containing BOTH links on their own lines exactly as:
+   ADMIN: https://admin.shopify.com/store/wellnessnest1/content/articles/<id>
+   FRONTEND: https://wellnessnest.co/blogs/news/<handle>
+   plus: article title, primary keyword, gate results, next ticket number.
+
+STANDING APPROVALS (Kevin, 2026-08-08 — this run is unattended, never pause to ask):
+- The mandatory media-cost gate is PRE-APPROVED for ima2 OAuth image generation only (ChatGPT subscription, $0 per image — hero + 3 inline per article). Do not stop to present a cost table for ima2; note "ima2 $0 subscription (standing approval)" in the report instead.
+- This pre-approval covers NOTHING else: any paid media API (KIE, Veo, Kling, HeyGen, ElevenLabs, per-token image/video/audio) remains FORBIDDEN in this pipeline — if a step seems to need one, skip it, mark the ticket [BLOCKED <reason>], and report.
+- If any OTHER rule requires human input, do not improvise: leave the ticket un-flipped, explain in the report, exit.'
 
 echo "=== GenSeo ticket run $STAMP ===" >> "$LOGDIR/articles-$STAMP.log"
 "$CLAUDE_BIN" -p "$PROMPT" \

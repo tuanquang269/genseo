@@ -14,20 +14,24 @@ STAMP="$(date '+%Y-%m-%d %H:%M')"
 ADMIN_URL=""
 TITLE_LINE=""
 TAIL="(log file missing: $LOG)"
+FRONT_URL=""
 if [ -f "$LOG" ]; then
   ADMIN_URL="$(grep -o 'https://admin\.shopify\.com/store/[^ )"]*' "$LOG" | tail -1)"
+  FRONT_URL="$(grep -o 'https://wellnessnest\.co/blogs/news/[^ )"]*' "$LOG" | tail -1)"
   TITLE_LINE="$(grep -iE 'title:|article title' "$LOG" | tail -1 | cut -c1-160)"
   TAIL="$(tail -12 "$LOG" | cut -c1-200)"
 fi
 
-if [ "$RC" = "0" ]; then
+if [ "$RC" = "0" ] && [ -n "$ADMIN_URL" ]; then
   HEAD="✅ GenSeo: bài mới đã lên Shopify (DRAFT) — chờ anh review"
+elif [ "$RC" = "0" ]; then
+  HEAD="⚠️ GenSeo: run kết thúc nhưng KHÔNG có draft URL — bài chưa lên, xem report tail"
 else
   HEAD="❌ GenSeo: run lỗi (exit $RC) — cần xem log"
 fi
 
 export LK_HEAD="$HEAD" LK_STAMP="$STAMP · $HOSTLABEL" LK_TITLE="$TITLE_LINE" \
-       LK_URL="$ADMIN_URL" LK_TAIL="$TAIL"
+       LK_URL="$ADMIN_URL" LK_FRONT="$FRONT_URL" LK_TAIL="$TAIL"
 
 python3 - <<'EOF'
 import json, os, sys, urllib.request
@@ -47,7 +51,8 @@ tok = post(f"{cfg['base']}/open-apis/auth/v3/tenant_access_token/internal",
 
 parts = [os.environ['LK_HEAD'], os.environ['LK_STAMP']]
 if os.environ.get('LK_TITLE'): parts.append(os.environ['LK_TITLE'])
-if os.environ.get('LK_URL'):   parts.append('Review: ' + os.environ['LK_URL'])
+if os.environ.get('LK_URL'):   parts.append('🔧 Back-end (review/publish): ' + os.environ['LK_URL'])
+if os.environ.get('LK_FRONT'): parts.append('🌐 Front-end (live sau khi publish): ' + os.environ['LK_FRONT'])
 parts.append('\n--- report tail ---\n' + os.environ.get('LK_TAIL', ''))
 text = '\n'.join(parts)
 
