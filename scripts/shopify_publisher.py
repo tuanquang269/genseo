@@ -354,6 +354,59 @@ def _ldjson_block(obj):
     return f'\n<script type="application/ld+json">\n{raw}\n</script>\n'
 
 
+def set_seo_metafields(shop, token, article_id, title=None, meta_description=None):
+    """Write the SEO title/description Shopify actually renders in <head>.
+
+    `summary_html` is the blog-index excerpt — the theme does NOT use it for
+    `<meta name="description">`. That tag comes from `page_description`, which resolves to the
+    article's `global.description_tag` metafield and otherwise silently falls back to the first
+    lines of the body. Every article published before 2026-08-09 shipped with no metafield, so
+    the hand-tuned 140–155 char description from STEP 4 never reached the SERP at all — Google
+    scraped a truncated intro instead. Same story for `global.title_tag` vs the article title.
+    """
+    if not (title or meta_description):
+        return
+    headers = {"X-Shopify-Access-Token": token, "Content-Type": "application/json"}
+    pairs = []
+    if title:
+        pairs.append(("title_tag", title))
+    if meta_description:
+        pairs.append(("description_tag", meta_description))
+    # A second POST for an existing namespace/key is a 422, so re-runs (and `update`) have to
+    # PUT the existing metafield instead of creating a duplicate.
+    existing = {}
+    try:
+        list_url = f"https://{shop}/admin/api/{API}/articles/{article_id}/metafields.json"
+        req = urllib.request.Request(list_url, headers=headers)
+        for m in json.loads(urllib.request.urlopen(req).read()).get("metafields", []):
+            if m.get("namespace") == "global":
+                existing[m.get("key")] = m.get("id")
+    except Exception:
+        pass
+
+    ok = []
+    for key, value in pairs:
+        body = {"namespace": "global", "key": key,
+                "value": value, "type": "single_line_text_field"}
+        if key in existing:
+            url = f"https://{shop}/admin/api/{API}/metafields/{existing[key]}.json"
+            body["id"] = existing[key]
+            method = "PUT"
+        else:
+            url = f"https://{shop}/admin/api/{API}/articles/{article_id}/metafields.json"
+            method = "POST"
+        req = urllib.request.Request(url, data=json.dumps({"metafield": body}).encode("utf-8"),
+                                     headers=headers, method=method)
+        try:
+            urllib.request.urlopen(req).read()
+            ok.append(key)
+        except Exception as e:
+            detail = e.read().decode()[:200] if hasattr(e, "read") else str(e)
+            print(f"  ⚠  SEO metafield '{key}' NOT set: {detail}")
+    if ok:
+        print(f"  ✅ SEO metafields set: {', '.join(ok)}")
+
+
 def _faq_main_entity(md_text):
     """Questions from the FAQ section only.
 
@@ -525,6 +578,8 @@ def do_publish(file_path, blog_id, live=False):
         print(f"  Handle     : {handle}")
         print(f"  URL        : https://wellnessnest.co/blogs/news/{handle}" + ("" if live else "  (404 until published)"))
 
+        set_seo_metafields(shop, token, article_id, title=title, meta_description=meta_description)
+
         # ── Post-Publish Image Verification ─────────────────────────────────
         print(f"\n🔍 Verifying images on live article...")
         time.sleep(2)
@@ -684,6 +739,8 @@ def do_update(file_path, blog_id, article_id):
     headers = {"X-Shopify-Access-Token": token, "Content-Type": "application/json"}
 
     payload = {"article": {"title": title, "body_html": html_content, "author": author_name}}
+    if meta_description:
+        payload["article"]["summary_html"] = f"<p>{meta_description}</p>"
     if thumbnail_b64:
         payload["article"]["image"] = {"attachment": thumbnail_b64}
 
@@ -696,6 +753,8 @@ def do_update(file_path, blog_id, article_id):
         print(f"\nSUCCESS! Article {article_id} updated.")
         print(f"  Handle: {handle}")
         print(f"  URL   : https://wellnessnest.co/blogs/news/{handle}")
+
+        set_seo_metafields(shop, token, article_id, title=title, meta_description=meta_description)
 
         # ── Post-Update Image Verification ──────────────────────────────────
         print(f"\n🔍 Verifying images on live article...")
