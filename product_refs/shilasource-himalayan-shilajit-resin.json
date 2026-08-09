@@ -1,0 +1,8 @@
+{
+ "format": "matte black cylindrical canister (outer tube) + amber-brown glass jar with a brushed gold screw lid (the resin itself)",
+ "color": "matte black tube with white type; amber/brown glass jar, gold lid, black wraparound label",
+ "describe": "Wellness Nest ShilaSource Himalayan Shilajit Resin: a MATTE BLACK CYLINDRICAL CANISTER standing upright with the vertical two-line 'Wellness Nest' wordmark and the white W bird mark down its left side, a small white rounded 'ShilaSource' chip, then 'Himalayan Shilajit' in large white type above a lighter-weight 'Resin', two small white badge lines reading '70% Fulvic Acid' and 'Lab-Tested for Purity', '1.06oz (30g)' beneath them, and a white circular '75 SERVINGS' badge next to 'DIETARY SUPPLEMENT' at the base; beside it a SHORT WIDE AMBER-BROWN GLASS JAR with a BRUSHED GOLD SCREW LID and a black wraparound label carrying the same white Wellness Nest mark, 'ShilaSource', 'Himalayan Shilajit Resin' and a '75 Servings' badge. The resin inside is a thick, glossy, near-black tar that stretches and drips off a stainless spoon.",
+ "handle": "shilasource-himalayan-shilajit-resin",
+ "source": "PDP image index 0 (hf_20260310_083540...webp) at https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin, cropped to the pack pair; curated 2026-08-09 because no curated ref existed",
+ "rule": "This is the ONLY packaging truth for generated images. Restate `describe` inside the prompt - prompt text overrides the ref image when they disagree. NEVER render it as a pouch, tub, plastic bottle or a white/green pack: the tube is MATTE BLACK and the jar is AMBER GLASS WITH A GOLD LID. Either the tube alone, the jar alone, or both together is acceptable in frame."
+}
