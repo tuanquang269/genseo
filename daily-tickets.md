@@ -146,7 +146,7 @@ separate Kevin decision, NOT covered by these tickets.
 - **Author:** (from roster.json)
 - **Dedup note:** types-of-shilajit-products article compares FORMATS — link it, don't rewrite; no brand-comparison / best-gummies article exists (blog list checked 2026-08-07)
 
-## [ ] Ticket #9 — NEW ARTICLE (type: authority-figure search capture)
+## [DONE 2026-08-09] Ticket #9 — NEW ARTICLE (type: authority-figure search capture)
 
 - **Primary keyword:** `barbara o neill shilajit`
 - **Template:** EDITORIAL (per references/article-templates.md)
