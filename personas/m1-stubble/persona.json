@@ -6,18 +6,20 @@
  "gender": "male",
  "age_band": "40-49",
  "ethnicity_key": null,
- "ethnicity_note": "legacy persona \u2014 predates cell assignment",
+ "ethnicity_note": "legacy persona — predates cell assignment",
  "demo": "US man ~40-45, stubble, natural relaxed smile",
  "build_vibe": null,
  "source": {
   "platform": "flickr",
   "page_url": "https://flickr.com/photo.gne?id=15094430190",
   "photo_id": null,
-  "author": null,
-  "license": "UNVERIFIED \u2014 sourced before the licence spine existed",
+  "author": "Chris Collins",
+  "license": "ALL RIGHTS RESERVED (Flickr license id 0)",
   "license_url": null,
   "attribution_required": null,
-  "attribution_text": null
+  "attribution_text": null,
+  "license_id": 0,
+  "license_verified": "2026-08-09 by direct page fetch"
  },
  "image": {
   "width": 1024,
@@ -34,8 +36,8 @@
   "notes": null
  },
  "approved_by": "Kevin, 2026-08-09",
- "camera_notes": "indoor/ambient available light, real skin texture \u2014 always camera-match; ALWAYS feed THIS ref.jpg, never a previous gen (ima2 i2i drifts identity)",
+ "camera_notes": "indoor/ambient available light, real skin texture — always camera-match; ALWAYS feed THIS ref.jpg, never a previous gen (ima2 i2i drifts identity)",
  "usage": "male-audience articles (shilajit men, turkesterone, creatine men); persona is VISUAL ONLY, never named in copy (byline stays the roster author)",
- "status": "active",
- "flag_reason": null
+ "status": "retired",
+ "flag_reason": "licence VERIFIED 2026-08-09 as Flickr license=0 (All Rights Reserved) — outside the 9/11/4 spine. Two independent signals: license:0 in the page JSON and the literal 'All Rights Reserved' string, with zero creativecommons links on the page. Retired pending Kevin's decision; NOT deleted."
 }

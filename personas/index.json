@@ -24,7 +24,7 @@
   "f1-redshirt": {
    "handle": "f1-redshirt",
    "pool_id": "f4049",
-   "status": "flagged",
+   "status": "retired",
    "ref": "/Users/kevinkreative/genseo/personas/f1-redshirt/ref.jpg",
    "used_count": 3,
    "last_used_seq": 9,
@@ -36,7 +36,7 @@
   "f2-brunette": {
    "handle": "f2-brunette",
    "pool_id": "f3039",
-   "status": "active",
+   "status": "retired",
    "ref": "/Users/kevinkreative/genseo/personas/f2-brunette/ref.jpg",
    "used_count": 2,
    "last_used_seq": 6,
@@ -46,7 +46,7 @@
   "f3-silver": {
    "handle": "f3-silver",
    "pool_id": "f6070",
-   "status": "flagged",
+   "status": "retired",
    "ref": "/Users/kevinkreative/genseo/personas/f3-silver/ref.jpg",
    "used_count": 2,
    "last_used_seq": 8,
@@ -56,7 +56,7 @@
   "m1-stubble": {
    "handle": "m1-stubble",
    "pool_id": "m4049",
-   "status": "active",
+   "status": "retired",
    "ref": "/Users/kevinkreative/genseo/personas/m1-stubble/ref.jpg",
    "used_count": 3,
    "last_used_seq": 10,

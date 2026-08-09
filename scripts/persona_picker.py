@@ -204,10 +204,15 @@ def cmd_status(_args):
     for p in tax["rotation_pools"]:
         have = [h for h, e in ppl.items() if e.get("pool_id") == p["pool_id"]]
         clean = [h for h in have if ppl[h].get("status") == "active"]
-        mark = "OK" if len(clean) >= 3 else ("THIN" if clean else "EMPTY — no clean face")
+        flagged = [h for h in have if ppl[h].get("status") == "flagged"]
+        retired = [h for h in have if ppl[h].get("status") == "retired"]
+        mark = "OK" if len(clean) >= 3 else ("THIN" if clean else "EMPTY — no usable face")
+        # Retired faces are NOT selectable, so folding them into a "(n flagged)" note read as
+        # "there is a fallback here" when there isn't one. Name the two states separately.
+        extra = ", ".join(x for x in ("%d flagged" % len(flagged) if flagged else "",
+                                      "%d retired" % len(retired) if retired else "") if x)
         print("%-8s %6d %6d  %s%s" % (p["pool_id"], len(have), p["target_count"], mark,
-                                      "" if len(have) == len(clean)
-                                      else " (%d flagged)" % (len(have) - len(clean))))
+                                      " (%s)" % extra if extra else ""))
 
 
 def main():

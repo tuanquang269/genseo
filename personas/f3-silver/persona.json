@@ -6,18 +6,20 @@
  "gender": "female",
  "age_band": "60-70",
  "ethnicity_key": null,
- "ethnicity_note": "legacy persona \u2014 predates cell assignment",
+ "ethnicity_note": "legacy persona — predates cell assignment",
  "demo": "US woman ~60s, gray-streaked hair",
  "build_vibe": null,
  "source": {
   "platform": "flickr",
   "page_url": "https://flickr.com/photo.gne?id=27750656176",
   "photo_id": null,
-  "author": null,
-  "license": "UNVERIFIED \u2014 sourced before the licence spine existed",
+  "author": "Greg Chapin",
+  "license": "ALL RIGHTS RESERVED (Flickr license id 0)",
   "license_url": null,
   "attribution_required": null,
-  "attribution_text": null
+  "attribution_text": null,
+  "license_id": 0,
+  "license_verified": "2026-08-09 by direct page fetch"
  },
  "image": {
   "width": 819,
@@ -31,11 +33,11 @@
   "watermark": true,
   "face_visible": true,
   "accepted_date": "legacy",
-  "notes": "burned-in watermark 'Chapin (c) 2016 Chapin Photography' \u2014 asserts copyright AND contradicts the pipeline's own NO-watermark rule"
+  "notes": "burned-in watermark 'Chapin (c) 2016 Chapin Photography' — asserts copyright AND contradicts the pipeline's own NO-watermark rule"
  },
  "approved_by": "Kevin, 2026-08-09",
- "camera_notes": "indoor/ambient available light, real skin texture \u2014 always camera-match; ALWAYS feed THIS ref.jpg, never a previous gen (ima2 i2i drifts identity)",
+ "camera_notes": "indoor/ambient available light, real skin texture — always camera-match; ALWAYS feed THIS ref.jpg, never a previous gen (ima2 i2i drifts identity)",
  "usage": "menopause / joint / longevity articles; persona is VISUAL ONLY, never named in copy (byline stays the roster author)",
- "status": "flagged",
- "flag_reason": "burned-in watermark 'Chapin (c) 2016 Chapin Photography' \u2014 asserts copyright AND contradicts the pipeline's own NO-watermark rule"
+ "status": "retired",
+ "flag_reason": "licence VERIFIED 2026-08-09 as Flickr license=0 (All Rights Reserved) — outside the 9/11/4 spine. Two independent signals: license:0 in the page JSON and the literal 'All Rights Reserved' string, with zero creativecommons links on the page. Retired pending Kevin's decision; NOT deleted."
 }
