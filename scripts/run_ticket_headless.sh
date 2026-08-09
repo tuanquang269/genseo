@@ -13,6 +13,13 @@ unset ANTHROPIC_API_KEY
 # subscription instead — process env overrides settings.json env (tested 2026-08-08).
 export ANTHROPIC_BASE_URL=""
 export ANTHROPIC_AUTH_TOKEN=""
+# settings.json ALSO remaps model aliases (ANTHROPIC_DEFAULT_OPUS_MODEL=PATI-Opus-5 …);
+# an unrecognized model name makes the CLI assume a 200k window → autocompact thrash
+# killed 2 of 4 runs (2026-08-08/09). Blank the remaps and pin the model explicitly.
+export ANTHROPIC_DEFAULT_OPUS_MODEL=""
+export ANTHROPIC_DEFAULT_SONNET_MODEL=""
+export ANTHROPIC_DEFAULT_HAIKU_MODEL=""
+export ANTHROPIC_DEFAULT_FABLE_MODEL=""
 
 CLAUDE_BIN="$HOME/.local/bin/claude"
 [ -x "$CLAUDE_BIN" ] || CLAUDE_BIN="$(command -v claude)"
@@ -44,6 +51,7 @@ STANDING APPROVALS (Kevin, 2026-08-08 — this run is unattended, never pause to
 
 echo "=== GenSeo ticket run $STAMP ===" >> "$LOGDIR/articles-$STAMP.log"
 "$CLAUDE_BIN" -p "$PROMPT" \
+  --model opus \
   --output-format text \
   --allowed-tools "Read,Write,Edit,Bash,Glob,Grep,WebFetch" \
   >> "$LOGDIR/articles-$STAMP.log" 2>&1
