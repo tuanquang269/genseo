@@ -118,13 +118,29 @@ def qrg_scores(plain_text):
             try: os.unlink(tmp)
             except OSError: pass
 
+UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
+      "(KHTML, like Gecko) Chrome/126.0 Safari/537.36")
+
 def http_ok(url):
-    import subprocess
-    try:
-        res = subprocess.run(["curl", "-s", "-o", "/dev/null", "-w", "%{http_code}", url], capture_output=True, text=True, timeout=10)
-        return res.stdout.strip() in ("200", "301", "302", "429")
-    except Exception:
-        return False
+    # Shopify throttles bursts of bare no-UA requests, which made this report live URLs as
+    # dead (2026-08-09: /pages/dr-marcus-hale + both AgeAura PDPs all 200 on manual curl).
+    # Browser UA + retry/backoff, and a throttle/transient code never counts as dead.
+    import subprocess, time
+    for attempt in range(3):
+        try:
+            res = subprocess.run(
+                ["curl", "-s", "-o", "/dev/null", "-A", UA, "-w", "%{http_code}", url],
+                capture_output=True, text=True, timeout=15)
+            code = res.stdout.strip()
+        except Exception:
+            code = ""
+        if code.startswith("2") or code in ("301", "302", "307", "308"):
+            return True
+        if code in ("404", "410"):
+            return False          # a real dead link — no point retrying
+        if attempt < 2:
+            time.sleep(1.5 * (attempt + 1))
+    return code in ("429", "430", "503")  # throttled/transient → don't fail the article on it
 
 def test_author_gate():
     """python3 scripts/validate_article.py --self-check-author"""

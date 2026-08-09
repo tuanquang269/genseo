@@ -68,7 +68,7 @@ Agent được lệnh *"continue with the next ticket in daily-tickets.md"* → 
 - **Author:** (from roster.json)
 - **Dedup note:** zero feminine-health articles on blog (checked 2026-08-07)
 
-## [ ] Ticket #4 — NEW ARTICLE
+## [DONE 2026-08-09 https://wellnessnest.co/blogs/news/turkesterone-benefits-dosing-whats-real-us-2026] Ticket #4 — NEW ARTICLE
 
 - **Primary keyword:** `turkesterone benefits and dosing`
 - **Template:** EDITORIAL (per references/article-templates.md)
@@ -81,7 +81,7 @@ Agent được lệnh *"continue with the next ticket in daily-tickets.md"* → 
 - **Author:** (from roster.json)
 - **Dedup note:** no turkesterone article exists (checked 2026-08-07)
 
-## [ ] Ticket #5 — NEW ARTICLE
+## [DONE 2026-08-09 https://wellnessnest.co/blogs/news/nmn-and-tmg-together-why-the-pairing-matters-us-2026] Ticket #5 — NEW ARTICLE
 
 - **Primary keyword:** `nmn and tmg together`
 - **Template:** COMPARISON (per references/article-templates.md)
@@ -94,7 +94,7 @@ Agent được lệnh *"continue with the next ticket in daily-tickets.md"* → 
 - **Author:** (from roster.json)
 - **Dedup note:** zero NMN/longevity articles on the blog (checked 2026-08-07)
 
-## [ ] Ticket #6 — NEW ARTICLE
+## [DONE 2026-08-09 https://wellnessnest.co/blogs/news/urolithin-a-benefits-the-40-problem-us-buyers-miss] Ticket #6 — NEW ARTICLE
 
 - **Primary keyword:** `urolithin a benefits`
 - **Template:** STORY (per references/article-templates.md)
