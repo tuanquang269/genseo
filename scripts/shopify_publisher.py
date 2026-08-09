@@ -363,6 +363,13 @@ def set_seo_metafields(shop, token, article_id, title=None, meta_description=Non
     lines of the body. Every article published before 2026-08-09 shipped with no metafield, so
     the hand-tuned 140–155 char description from STEP 4 never reached the SERP at all — Google
     scraped a truncated intro instead. Same story for `global.title_tag` vs the article title.
+
+    Type matters and is NOT interchangeable: these two keys are Shopify's reserved legacy SEO
+    metafields and the storefront only resolves them at type `string`. Written as
+    `single_line_text_field` they save fine, read back fine over both REST and GraphQL, and are
+    silently ignored by `page_description` — verified 2026-08-09 against this store, where every
+    product whose SEO description does render carries type `string`. Type is immutable, so a
+    wrong-typed one has to be deleted and recreated, which is what the mismatch branch below does.
     """
     if not (title or meta_description):
         return
@@ -380,17 +387,25 @@ def set_seo_metafields(shop, token, article_id, title=None, meta_description=Non
         req = urllib.request.Request(list_url, headers=headers)
         for m in json.loads(urllib.request.urlopen(req).read()).get("metafields", []):
             if m.get("namespace") == "global":
-                existing[m.get("key")] = m.get("id")
+                existing[m.get("key")] = (m.get("id"), m.get("type"))
     except Exception:
         pass
 
     ok = []
     for key, value in pairs:
-        body = {"namespace": "global", "key": key,
-                "value": value, "type": "single_line_text_field"}
+        # Wrong type from an older run: delete it so the POST below can recreate it as `string`.
+        if key in existing and existing[key][1] != "string":
+            del_url = f"https://{shop}/admin/api/{API}/metafields/{existing[key][0]}.json"
+            try:
+                urllib.request.urlopen(
+                    urllib.request.Request(del_url, headers=headers, method="DELETE")).read()
+                del existing[key]
+            except Exception:
+                pass
+        body = {"namespace": "global", "key": key, "value": value, "type": "string"}
         if key in existing:
-            url = f"https://{shop}/admin/api/{API}/metafields/{existing[key]}.json"
-            body["id"] = existing[key]
+            url = f"https://{shop}/admin/api/{API}/metafields/{existing[key][0]}.json"
+            body["id"] = existing[key][0]
             method = "PUT"
         else:
             url = f"https://{shop}/admin/api/{API}/articles/{article_id}/metafields.json"
