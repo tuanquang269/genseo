@@ -1,8 +1,41 @@
 {
+ "schema_version": 2,
  "handle": "f2-brunette",
- "approved_by": "Kevin, 2026-08-09 (one-time real-face gate — picked from 4 Flickr candidates per slot)",
- "demo": "US woman ~30-35, brunette long hair, easy natural smile",
- "source_page": "https://flickr.com/photo.gne?id=25126716442",
- "camera_notes": "outdoor daylight, soft natural light, real skin texture, phone/consumer-camera DOF — always camera-match; ALWAYS feed THIS ref.jpg, never a previous gen (ima2 i2i drifts identity)",
- "usage": "female-audience articles 20s-40s (creatine women, FloraFresh); rotate vs f1-redshirt; byline stays Dr. Marcus Hale — persona is visual only, never named in copy"
+ "pool_id": "f3039",
+ "cell_id": null,
+ "gender": "female",
+ "age_band": "30-39",
+ "ethnicity_key": null,
+ "ethnicity_note": "legacy persona \u2014 predates cell assignment",
+ "demo": "US woman ~30-35, brunette long hair",
+ "build_vibe": null,
+ "source": {
+  "platform": "flickr",
+  "page_url": "https://flickr.com/photo.gne?id=25126716442",
+  "photo_id": null,
+  "author": null,
+  "license": "UNVERIFIED \u2014 sourced before the licence spine existed",
+  "license_url": null,
+  "attribution_required": null,
+  "attribution_text": null
+ },
+ "image": {
+  "width": 683,
+  "height": 1024,
+  "megapixels": 0.7,
+  "sha256": "14838f96f0db326d67668ea5c34a9f090e8f68c980f449fe339145e98afb0509",
+  "bytes": 120707
+ },
+ "qc": {
+  "ai_verdict": "not machine-checked (pre-dates QC pipeline)",
+  "watermark": false,
+  "face_visible": true,
+  "accepted_date": "legacy",
+  "notes": null
+ },
+ "approved_by": "Kevin, 2026-08-09",
+ "camera_notes": "indoor/ambient available light, real skin texture \u2014 always camera-match; ALWAYS feed THIS ref.jpg, never a previous gen (ima2 i2i drifts identity)",
+ "usage": "younger female-audience articles (creatine, feminine probiotics); persona is VISUAL ONLY, never named in copy (byline stays the roster author)",
+ "status": "active",
+ "flag_reason": null
 }

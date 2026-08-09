@@ -1,8 +1,41 @@
 {
+ "schema_version": 2,
  "handle": "m1-stubble",
- "approved_by": "Kevin, 2026-08-09 (one-time real-face gate — picked from 4 Flickr candidates per slot)",
+ "pool_id": "m4049",
+ "cell_id": null,
+ "gender": "male",
+ "age_band": "40-49",
+ "ethnicity_key": null,
+ "ethnicity_note": "legacy persona \u2014 predates cell assignment",
  "demo": "US man ~40-45, stubble, natural relaxed smile",
- "source_page": "https://flickr.com/photo.gne?id=15094430190",
- "camera_notes": "indoor event/ambient available light, warm bokeh background, real skin texture — always camera-match; ALWAYS feed THIS ref.jpg, never a previous gen (ima2 i2i drifts identity)",
- "usage": "male-audience articles (shilajit men, turkesterone, creatine men); byline stays Dr. Marcus Hale — persona is visual only, never named in copy"
+ "build_vibe": null,
+ "source": {
+  "platform": "flickr",
+  "page_url": "https://flickr.com/photo.gne?id=15094430190",
+  "photo_id": null,
+  "author": null,
+  "license": "UNVERIFIED \u2014 sourced before the licence spine existed",
+  "license_url": null,
+  "attribution_required": null,
+  "attribution_text": null
+ },
+ "image": {
+  "width": 1024,
+  "height": 683,
+  "megapixels": 0.7,
+  "sha256": "60ddb9cbd04fdcb7c7fedfd5c5e76dd7f28dd5a1ff3a9210dc126a214a54620c",
+  "bytes": 167894
+ },
+ "qc": {
+  "ai_verdict": "not machine-checked (pre-dates QC pipeline)",
+  "watermark": false,
+  "face_visible": true,
+  "accepted_date": "legacy",
+  "notes": null
+ },
+ "approved_by": "Kevin, 2026-08-09",
+ "camera_notes": "indoor/ambient available light, real skin texture \u2014 always camera-match; ALWAYS feed THIS ref.jpg, never a previous gen (ima2 i2i drifts identity)",
+ "usage": "male-audience articles (shilajit men, turkesterone, creatine men); persona is VISUAL ONLY, never named in copy (byline stays the roster author)",
+ "status": "active",
+ "flag_reason": null
 }
