@@ -25,6 +25,9 @@ import sys
 import tempfile
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# status -> selection tier. Anything NOT in here is unusable: "pending" (machine-gated by
+# fetch_personas.py but never seen by Kevin) and "retired" (licence or QC failure) both.
+SELECTABLE = {"active": 0, "flagged": 1}   # flagged = last resort, still warned about
 INDEX = os.path.join(ROOT, "personas", "index.json")
 TAXONOMY = os.path.join(ROOT, "personas", "taxonomy.json")
 
@@ -123,20 +126,35 @@ def cmd_pick(args):
         print(json.dumps(out, indent=1))
         return
 
-    cands = []
+    cands, pending = [], 0
     for h, e in (index.get("personas") or {}).items():
-        if e.get("pool_id") not in pools or e.get("status") == "retired":
+        if e.get("pool_id") not in pools:
+            continue
+        # ALLOW-list, deliberately. Skipping only "retired" meant every status a future writer
+        # invents is selectable by default — and fetch_personas.py is exactly such a writer.
+        # This engine never opens persona.json, so `approved_by` there has no reader: the
+        # status in THIS file is what stands between a machine-gated face and a live og:image.
+        tier = SELECTABLE.get(e.get("status"))
+        if tier is None:
+            if e.get("status") == "pending":
+                pending += 1
             continue
         if not os.path.exists(e.get("ref") or ""):
             out["warnings"].append("%s: ref.jpg missing on disk, skipped" % h)
             continue
-        cands.append((0 if e.get("status") == "active" else 1,   # flagged = last resort
+        cands.append((tier,
                       pools.index(e["pool_id"]),                  # preferred pool first
                       e.get("last_used_seq", 0),                  # LRU
                       h, e))
+    if pending:
+        out["warnings"].append(
+            "%d face(s) in these pools are PENDING Kevin's approval and cannot be used yet"
+            % pending)
     if not cands:
-        sys.exit("✗ no usable persona for audience %r (pools %s). Bank needs expansion — "
-                 "do NOT invent a face; use a no-face hero and report it." % (token, pools))
+        sys.exit("✗ no usable persona for audience %r (pools %s)%s. Bank needs expansion — "
+                 "do NOT invent a face; use a no-face hero and report it."
+                 % (token, pools,
+                    "; %d await approval" % pending if pending else ""))
     cands.sort()
     tier, _, last_seq, handle, entry = cands[0]
     if tier == 1:
@@ -204,13 +222,12 @@ def cmd_status(_args):
     for p in tax["rotation_pools"]:
         have = [h for h, e in ppl.items() if e.get("pool_id") == p["pool_id"]]
         clean = [h for h in have if ppl[h].get("status") == "active"]
-        flagged = [h for h in have if ppl[h].get("status") == "flagged"]
-        retired = [h for h in have if ppl[h].get("status") == "retired"]
         mark = "OK" if len(clean) >= 3 else ("THIN" if clean else "EMPTY — no usable face")
-        # Retired faces are NOT selectable, so folding them into a "(n flagged)" note read as
-        # "there is a fallback here" when there isn't one. Name the two states separately.
-        extra = ", ".join(x for x in ("%d flagged" % len(flagged) if flagged else "",
-                                      "%d retired" % len(retired) if retired else "") if x)
+        # Only "active" and "flagged" can be picked. Folding the unusable states into one
+        # "(n flagged)" note read as "there is a fallback here" when there isn't. Name each.
+        counts = [(s, len([h for h in have if ppl[h].get("status") == s]))
+                  for s in ("flagged", "pending", "retired")]
+        extra = ", ".join("%d %s" % (n, s) for s, n in counts if n)
         print("%-8s %6d %6d  %s%s" % (p["pool_id"], len(have), p["target_count"], mark,
                                       " (%s)" % extra if extra else ""))
 
