@@ -9,21 +9,28 @@ for d in "$HOME"/.nvm/versions/node/*/bin; do [ -d "$d" ] && PATH="$d:$PATH"; do
 export PATH
 unset ANTHROPIC_API_KEY
 # Mac mini's global settings.json routes claude through the local 9router proxy
-# (PATI-Opus-5 etc.) for Hermes; GenSeo runs must use the NATIVE Claude
-# subscription instead — process env overrides settings.json env (tested 2026-08-08).
-export ANTHROPIC_BASE_URL=""
-export ANTHROPIC_AUTH_TOKEN=""
-# settings.json ALSO remaps model aliases (ANTHROPIC_DEFAULT_OPUS_MODEL=PATI-Opus-5 …);
-# an unrecognized model name makes the CLI assume a 200k window → autocompact thrash
-# killed 2 of 4 runs (2026-08-08/09). Blank the remaps and pin the model explicitly.
-export ANTHROPIC_DEFAULT_OPUS_MODEL=""
-export ANTHROPIC_DEFAULT_SONNET_MODEL=""
-export ANTHROPIC_DEFAULT_HAIKU_MODEL=""
-export ANTHROPIC_DEFAULT_FABLE_MODEL=""
+# (PATI-Opus-5 etc.) for Hermes. FINDINGS 2026-08-09 (00.6-mistakes has the full map):
+# empty-string process env is IGNORED (settings env wins); --settings deep-merges and
+# cannot DELETE a key (null becomes the literal string "null"); any present
+# ANTHROPIC_AUTH_TOKEN key — even empty — switches the CLI out of OAuth. So the ONLY
+# clean native lane is a dedicated CLAUDE_CONFIG_DIR with no settings.json, which
+# needs a one-time `CLAUDE_CONFIG_DIR=$HOME/.claude-genseo claude /login` by Kevin
+# (Keychain cred state is per config dir). Until that login exists we fall back to
+# the legacy 9router lane (works, but unrecognized model name → ~50% autocompact risk).
+GENSEO_CFG="$HOME/.claude-genseo"
+USE_NATIVE=0
+if [ -d "$GENSEO_CFG" ]; then
+  AUTH_JSON="$(CLAUDE_CONFIG_DIR="$GENSEO_CFG" "$HOME/.local/bin/claude" auth status 2>/dev/null || true)"
+  case "$AUTH_JSON" in *'"loggedIn": true'*|*'"loggedIn":true'*) USE_NATIVE=1;; esac
+fi
 
 CLAUDE_BIN="$HOME/.local/bin/claude"
 [ -x "$CLAUDE_BIN" ] || CLAUDE_BIN="$(command -v claude)"
 if [ -z "$CLAUDE_BIN" ]; then echo "FATAL: claude CLI not found"; exit 1; fi
+
+# Run from the repo so the native-lane config dir trusts exactly this workspace
+# (trust for ~/genseo is seeded in ~/.claude-genseo/.claude.json).
+cd "$HOME/genseo" || exit 1
 
 LOGDIR="$HOME/genseo/logs"
 mkdir -p "$LOGDIR"
@@ -50,12 +57,23 @@ STANDING APPROVALS (Kevin, 2026-08-08 — this run is unattended, never pause to
 - If any OTHER rule requires human input, do not improvise: leave the ticket un-flipped, explain in the report, exit.'
 
 echo "=== GenSeo ticket run $STAMP ===" >> "$LOGDIR/articles-$STAMP.log"
-"$CLAUDE_BIN" -p "$PROMPT" \
-  --model opus \
-  --output-format text \
-  --allowed-tools "Read,Write,Edit,Bash,Glob,Grep,WebFetch" \
-  >> "$LOGDIR/articles-$STAMP.log" 2>&1
-RC=$?
+if [ "$USE_NATIVE" = "1" ]; then
+  echo "(lane: native subscription via CLAUDE_CONFIG_DIR=$GENSEO_CFG)" >> "$LOGDIR/articles-$STAMP.log"
+  CLAUDE_CONFIG_DIR="$GENSEO_CFG" "$CLAUDE_BIN" -p "$PROMPT" \
+    --model opus \
+    --output-format text \
+    --allowed-tools "Read,Write,Edit,Bash,Glob,Grep,WebFetch" \
+    >> "$LOGDIR/articles-$STAMP.log" 2>&1
+  RC=$?
+else
+  echo "(lane: LEGACY 9router — run 'CLAUDE_CONFIG_DIR=~/.claude-genseo claude /login' on the mini to unlock the native lane)" >> "$LOGDIR/articles-$STAMP.log"
+  "$CLAUDE_BIN" -p "$PROMPT" \
+    --model opus \
+    --output-format text \
+    --allowed-tools "Read,Write,Edit,Bash,Glob,Grep,WebFetch" \
+    >> "$LOGDIR/articles-$STAMP.log" 2>&1
+  RC=$?
+fi
 echo "=== exit $RC ===" >> "$LOGDIR/articles-$STAMP.log"
 bash "$HOME/genseo/scripts/notify_lark.sh" "$LOGDIR/articles-$STAMP.log" "$RC" >> "$LOGDIR/articles-$STAMP.log" 2>&1
 exit $RC
