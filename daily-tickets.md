@@ -107,7 +107,7 @@ Agent được lệnh *"continue with the next ticket in daily-tickets.md"* → 
 - **Author:** (from roster.json)
 - **Dedup note:** zero urolithin/longevity articles on blog; topic_fitness PASS [brand] (checked 2026-08-07)
 
-## [ ] Ticket #7 — NEW ARTICLE
+## [DONE 2026-08-09 https://wellnessnest.co/blogs/news/shilajit-energy-drops-7-ways-to-use-them-in-the-us] Ticket #7 — NEW ARTICLE
 
 - **Primary keyword:** `shilajit energy drops how to use`
 - **Template:** LISTICLE (per references/article-templates.md)
