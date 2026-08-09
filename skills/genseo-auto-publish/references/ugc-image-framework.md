@@ -33,13 +33,37 @@ bright ad-style). Requirements, all mandatory:
    small to rotate (or no demo-appropriate persona) → generate with the least-recently-used
    compliant persona and put one line in the report: "persona bank needs expansion (real-face gate)".
    NEVER invent a fresh face to satisfy variety — the 🧑 gate still owns new faces.
-3. **Style = bright ad-style hero, NOT gritty UGC.** No `--ugc` flag. Clean daylight, appealing,
+3. **REUSED PERSONA ⇒ NEW LOOK DIRECTION (HARD RULE, Kevin 2026-08-09).** Rotating the bank is
+   NOT enough. When a face comes back around it must be posed differently, or the blog index reads
+   as a wall of AI — Kevin flagged exactly this on the live `/blogs/news` grid: **m1-stubble**
+   (#4 turkesterone + #7 energy drops) and **f2-brunette** (#1 + #6) each shipped the same
+   straight-to-camera ¾ pose twice, *"easily to be spot as AI generated"*. Before writing the hero
+   prompt: grep the tracker for this persona handle, read every prior `gaze:` note, and pick an
+   axis value NOT yet used for that face. State it in the prompt in plain words and log
+   `gaze:<value>` in the tracker row.
+
+   | axis value | what it means in the prompt |
+   |---|---|
+   | `to-camera-3q-left` | body ¾ turned, face to lens, weight on left — the default FIRST use only |
+   | `to-camera-3q-right` | mirror of the above |
+   | `off-left` / `off-right` | head turned away, eyes off-frame, lens catches the side of the face |
+   | `down-at-product` | looking down at the pack / phone / notebook on the surface, not at the lens |
+   | `over-shoulder` | body angled away from camera, head turned back over the shoulder |
+   | `profile` | full side view, eye-line parallel to the frame edge |
+
+   **`to-camera-*` may never run twice in a row for the same persona, across any two articles.**
+   Change at least ONE more variable too: framing (chest-up / waist-up / wider room-with-subject),
+   expression register (neutral-focused / closed-mouth half-smile / mid-laugh / skeptical brow), or
+   wardrobe colour. Identity = the face in `ref.jpg` and nothing else — outfit, hair styling and
+   setting are free to change and SHOULD change. The same discipline applies to the inline
+   persona-in-scene image.
+4. **Style = bright ad-style hero, NOT gritty UGC.** No `--ugc` flag. Clean daylight, appealing,
    confident model, natural real-smile mechanics. The anti-stock NEG bank ("no beaming model facing
    camera") applies to the INLINE lane only — the hero is EXEMPT from that one line by design
    (Kevin's reference IS a model facing camera with the pack). Anti-AI NEG stays (no plastic skin,
    no glassy eyes, no waxy face), packaging guard stays, and **no on-image text** stays — the text
    overlay on Kevin's reference is a design-tool composite, not something ima2 may attempt.
-4. Persona must fit the article's audience demo (women-40+ article → female 40s–50s persona;
+5. Persona must fit the article's audience demo (women-40+ article → female 40s–50s persona;
    men's shilajit article → male persona once the bank has one).
 
 ## HARD RULE — emit ALL 10 sections, labeled, in order. Never a run-on blob.
