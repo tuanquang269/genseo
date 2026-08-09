@@ -50,8 +50,13 @@ CWEBP = _find_bin("cwebp", ["/opt/homebrew/bin/cwebp", "~/.local/bin/cwebp", "/u
 OUT_ROOT = "/Users/kevinkreative/genseo/tmp_images"
 MAX_BYTES = 80 * 1024
 PROMPT_SUFFIX = (" NO watermark. NO blog name text. NO caption. NO attribution text in any "
-                 "corner. Clean image only. Product label must remain legible. "
-                 "No recognizable human faces.")
+                 "corner. Clean image only. Product label must remain legible.")
+# Appended ONLY on no-face images. Until 2026-08-09 this clause rode on EVERY prompt,
+# including the hero lane — which mandates a visible approved persona. So the generator
+# got "match this reference person's face" and "no recognizable human faces" in the same
+# prompt and split the difference into a generic averaged face. That contradiction, not
+# the size of the persona bank, is the main reason the /blogs/news grid read as AI.
+NO_FACE_CLAUSE = " No recognizable human faces."
 PACK_FIDELITY = (" The product package must EXACTLY match the reference image: same package "
                  "format, same shape, same colors, same label layout and text. Do not invent, "
                  "restyle, or substitute the packaging.")
@@ -66,6 +71,12 @@ UGC_NEG = (" NO beaming model staring at camera. NO sterile marble hero countert
 CAMERA_MATCH = (" Match the persona reference photo's camera exactly: available light (not "
                 "studio), real skin texture with visible pores and slight imperfections, same "
                 "focal length class and depth of field, subtle grain, no cosmetic smoothing.")
+# Hero lane forbids --ugc, so before 2026-08-09 it carried NO anti-stock negatives at all —
+# the only images on the blog index were the only ones generated without them. This is the
+# hero-safe subset: it kills the plastic-skin/waxy-symmetry tells without killing the bright
+# ad-style look the hero lane is supposed to have (so no "NO studio softbox" here).
+HERO_NEG = (" NO plastic skin, NO waxy symmetric face, NO glassy eyes, NO airbrushed pores, "
+            "NO teal-orange colour grade, NO flawless catalogue retouching. NOT a stock photo.")
 GEM9 = "/Users/kevinkreative/.local/bin/gem9"
 
 
@@ -253,6 +264,10 @@ def main():
             sys.exit(f"✗ persona ref not found: {a.persona_ref} — persona bank lives in ~/genseo/personas/")
         a.ref.append(a.persona_ref)
         a.prompt += CAMERA_MATCH
+        if not a.ugc:
+            a.prompt += HERO_NEG
+    else:
+        a.prompt += NO_FACE_CLAUSE
     if a.ugc:
         a.prompt += UGC_SUFFIX + UGC_NEG
 
@@ -266,7 +281,10 @@ def main():
     size = "1024x1024" if a.square else "1536x1024"
     print(f"⏳ ima2 gen {name} ({size}, {len(a.ref)} ref{', UGC' if a.ugc else ''})...", flush=True)
     gen_png(a.prompt, size, png, a.ref)
-    if a.ugc:
+    # Any image with a real face needs the grain degrade, not just the UGC lane. The hero
+    # lane forbids --ugc, so until 2026-08-09 the heroes — the only images in the blog
+    # index grid — were the ONLY images that skipped it, and were the glossiest on the site.
+    if a.ugc or a.persona_ref:
         degrade_grain(png)
     nbytes, q, width = compress_webp(png, webp)
     os.unlink(png)  # keep only the deliverable; the PNG is 10-20x the size
