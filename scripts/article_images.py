@@ -87,7 +87,9 @@ def qc_gem9(webp_path, refs, is_ugc, has_persona):
               "(the generated candidate) against the other image(s) (references). Answer each check, "
               "then end with exactly 'VERDICT: PASS' or 'VERDICT: FAIL - <short reason>'.",
               "1. If a product package is visible: does its format/shape/colors/label layout match "
-              "the reference pack shot? Invented or restyled packaging = FAIL."]
+              "the reference pack shot? FAIL only for a WRONG or MISSING label element, wrong "
+              "package format, or wrong colors. Soft/garbled micro-text (small bullet lines, "
+              "fine print) is an accepted generator artifact — NOT a FAIL by itself."]
     if is_ugc:
         rubric.append("2. Does it read as a casual real-phone UGC snapshot (imperfect framing, "
                       "available light, lived-in scene) and NOT a studio/stock photo? Glossy "
