@@ -70,6 +70,16 @@ PRODUCT_NOUNS = {'whey','isolate','creatine','preworkout','pre-workout','mass','
  'amino','casein','collagen','protein','milk','shake','bar','iso','energy','drink','water','bottle',
  'tumbler','omega','multivitamin','burner','carnitine','glutamine','hydro','syntha','pump','review',
  'store','outlet','freesip','test','supplements','powder','nutrition','isogold'}
+# Audience / intent modifiers that make a topic a genuinely different article from the general
+# brand page. "shilajit benefits" and "shilajit benefits for men" are two articles with two
+# buyers and two SERPs; the blunt brand-substring rule below would kill the second one purely
+# because the catalog contains any page mentioning the brand. The Jaccard near-duplicate check
+# earlier in assess() is the real guard against recreating a page we have.
+SEGMENT_MODIFIERS = [
+ 'for men','for women','for beginners','for seniors','for athletes','for runners','for fertility',
+ 'over 40','over 50','over 60','side effects','dosage','how to take','how much','how long',
+ 'vs','versus','before bed','morning or night','empty stomach','with food',
+]
 # category head-terms a COLLECTION owns — a new article cannibalises them
 COLLECTION_HEADTERMS = [
  'best protein powder','protein powder us','buy protein powder','best whey','whey protein powder',
@@ -139,8 +149,17 @@ def assess(topic, sg_imp=None, articles=None, collections=None, pos=None):
     if brand_hit and articles:
         bn = _norm(brand_hit)
         qnouns = {w for w in re.findall(r'[a-z0-9]+', t) if w in PRODUCT_NOUNS}
+        seg = next((s for s in SEGMENT_MODIFIERS
+                    if re.search(r'\b' + re.escape(s) + r'\b', t)), None)
+        seg_taken = seg and any(re.search(r'\b' + re.escape(seg) + r'\b', a.get('title', '').lower())
+                                for a in articles)
         for blob, toks in _article_index(articles):
             if bn in blob and (qnouns & toks or not qnouns):
+                if seg and not seg_taken:
+                    return 'REVIEW', 'covered-segment', (
+                        f'brand "{brand_hit}" has a general article, but "{seg}" is an audience/intent '
+                        'no existing title covers — distinct enough to write IF the ticket brief '
+                        'greenlit this exact topic; link the general page instead of restating it')
                 shared = qnouns & toks
                 return 'FAIL', 'covered', (f'brand "{brand_hit}"' + (f' + {"/".join(sorted(shared))}' if shared else '')
                     + ' is already covered by an existing article — refresh it or pick a genuinely distinct product/angle, do not create a near-duplicate')
@@ -183,6 +202,7 @@ def self_check():
         ("some niche topic", 5, arts, 'FAIL'),                        # demand floor
         ("KSM-66 Ashwagandha US: Benefits & Dosage", None, arts, 'REVIEW'),  # ingredient gap, no brand
         ("shilajit benefits for health and vitality", None, arts, 'FAIL'),   # brand+topic we already cover
+        ("shilajit benefits for men", None, arts, 'REVIEW'),   # audience segment no existing title owns
         ("meiji high protein milk nutrition facts", None, arts, 'REVIEW'),  # not a stocked brand -> human decides
         ("FloraFresh Vaginal Probiotics US", None, [], 'FAIL', 2.6),  # we already rank pos 2.6 -> cannibalise
         ("MenoMate Menopause Probiotic Review", None, [], 'PASS', 17.1),  # weak rank + stocked brand -> genuine
