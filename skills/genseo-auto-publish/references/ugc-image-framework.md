@@ -24,23 +24,32 @@ bright ad-style). Requirements, all mandatory:
    holding the pouch" in the NEGATIVE.** ima2 reliably warps hand-pack grips ("warped hand" was
    the QC fail on 3 of 4 burned rolls). A holding pose is a stretch goal: attempt it only on the
    FIRST roll; any QC fail → switch to the no-contact composition for the remaining re-rolls.
-2. **Different character per blog post.** The hero persona MUST differ from the previous articles'
-   hero personas — rotate through the approved bank, never repeat until the bank is exhausted, then
-   restart with the least-recently-used. **ENUMERATE the bank — `ls ~/genseo/personas/` and read
-   each `persona.json` — before claiming it is too small; NEVER assume its size from docs or
-   prior-run reports** (the 2026-08-09 morning run blocked itself believing the bank had 1 face
-   while 4 were installed). Log the persona handle in the tracker CSV row. Bank too
-   small to rotate (or no demo-appropriate persona) → generate with the least-recently-used
-   compliant persona and put one line in the report: "persona bank needs expansion (real-face gate)".
-   NEVER invent a fresh face to satisfy variety — the 🧑 gate still owns new faces.
+2. **THE PICKER CHOOSES THE PERSONA, THE GAZE AND THE SHOT — YOU DO NOT** (HARD RULE, Kevin
+   2026-08-09: *"prepare 200 referenced different models as hard rule"*). The bank is scaling
+   4 → **200 faces** across **10 rotation pools** (gender × age band; `~/genseo/personas/taxonomy.json`),
+   which is past the size where an agent can eyeball rotation or grep it out of a CSV. Run:
+   ```
+   /usr/bin/python3 ~/genseo/scripts/persona_picker.py pick --audience <token>   # or --brand <Brand>
+   ```
+   and obey the JSON exactly: `hero`, `hero_ref`, `hero_gaze`, `hero_shot`, `inline_gaze`. It enforces
+   pool-scoped LRU, the no-repeat gaze law, the last-3 shot window and the every-3rd no-face hero
+   **mechanically**. Echo every `warnings[]` entry into the report verbatim. **Never `ls` the bank and
+   pick by eye, and never grep the tracker for rotation state** — parsing the free-text `Posted Date`
+   column on 2026-08-09 returned `no-contact` and `bank` as if they were persona handles, which is
+   precisely how a 200-face bank silently rots back into reusing one face. `hero: "NO-FACE"` → compose
+   product-in-a-real-scene or scene-only (still `--product-ref` + `--qc`, still no `--ugc`).
+   Non-zero exit because a pool is empty → use a no-face hero, put the exact error in the report, and
+   **NEVER invent a fresh face or borrow a wrong-demographic one** — the 🧑 gate still owns new faces.
+   **AFTER a successful LIVE publish only:** `persona_picker.py commit --hero … --gaze … --inline-gaze …
+   --shot … --expect-seq <seq from pick>`. A non-zero exit there means another run committed first —
+   re-run `pick`, never force it.
 3. **REUSED PERSONA ⇒ NEW LOOK DIRECTION (HARD RULE, Kevin 2026-08-09).** Rotating the bank is
    NOT enough. When a face comes back around it must be posed differently, or the blog index reads
    as a wall of AI — Kevin flagged exactly this on the live `/blogs/news` grid: **m1-stubble**
    (#4 turkesterone + #7 energy drops) and **f2-brunette** (#1 + #6) each shipped the same
-   straight-to-camera ¾ pose twice, *"easily to be spot as AI generated"*. Before writing the hero
-   prompt: grep the tracker for this persona handle, read every prior `gaze:` note, and pick an
-   axis value NOT yet used for that face. State it in the prompt in plain words and log
-   `gaze:<value>` in the tracker row.
+   straight-to-camera ¾ pose twice, *"easily to be spot as AI generated"*. The picker now decides
+   the value; **your** job is to say `hero_gaze` in the prompt in plain words (and `inline_gaze`,
+   not `hero_gaze`, on the inline persona-in-scene image) and log `gaze:<value>` in the tracker row.
 
    | axis value | what it means in the prompt |
    |---|---|
@@ -61,8 +70,9 @@ bright ad-style). Requirements, all mandatory:
    (#4–#9) after Kevin's rejection showed the repeat is not only gaze — five of six were the same
    shot: ONE adult, mid-shot, indoors, daylight, smiling, with the pack planted large in a
    foreground corner. A wall of that reads as machine output even when the faces and the gaze
-   differ, because the *brief* is visibly identical. Pick a shot type not used in the last 3
-   articles (read the `scene`/`shot` notes in the tracker) and log `shot:<value>`:
+   differ, because the *brief* is visibly identical. The picker returns `hero_shot` (it keeps the
+   last-3 window in `personas/index.json`, so do not read the tracker for it). Write that shot type
+   into the prompt and log `shot:<value>`:
 
    | shot value | what changes |
    |---|---|
@@ -143,6 +153,17 @@ description to the prompt (prompt text overrides the ref image when they disagre
   without the gate; never reuse a gen output as a new persona ref.
 - Persona images still pass the 🖼️ duyệt-ảnh gate the FIRST time each persona is generated (present
   stills next to the Pinterest ref for Kevin); after that first approval the daily pipeline runs QC-only.
+- **Structure (2026-08-09, the 200-face rule).** `taxonomy.json` = the 50-cell / 10-pool target;
+  `<handle>/persona.json` = IMMUTABLE provenance (source URL, photographer, licence + attribution text,
+  sha256, QC verdict, Kevin's approval date); `personas/index.json` = MUTABLE rotation state, written
+  ONLY by `persona_picker.py`. Never hand-edit `index.json` mid-run and never let a persona exist
+  without a licence record — `status: "flagged"` marks a face the picker uses only as a last resort
+  (f1-redshirt: low-res crop; f3-silver: burned-in photographer watermark). Licence spine for new
+  faces: Flickr `license=9,11,4` only (CC0 / CC BY 4.0 / CC BY 2.0). **Pexels and Unsplash are OUT** —
+  both ToS forbid using their photos for machine-learning/datasets.
+- **The 3-option approval gate is UNCHANGED and still blocking for new faces.** Nothing enters the bank
+  without Kevin. Scaling to 200 needs him to pick the intake format first (3-options-per-face, or
+  wave contact sheets) — until he answers, the fetcher may only STAGE candidates, never approve them.
 
 ## Per-article image mix (posture chốt 2026-08-07)
 
