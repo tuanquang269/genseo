@@ -18,3 +18,4 @@ validate_runs.log
 *.pyc
 __pycache__/
 .DS_Store
+repair_runs.log
