@@ -1,0 +1,8 @@
+{
+ "format": "stand-up pouch",
+ "color": "dusty pink / rose",
+ "describe": "a dusty-pink stand-up pouch of Wellness Nest FloraFresh Vaginal Probiotic Gummies, with the vertical white 'Wellness Nest' wordmark and W logo running up the left side, a small white 'FloraFresh' pill badge at the top, the title 'Vaginal Probiotic Gummies', a 'Pineapple flavor' tag with a pineapple icon, four small benefit rows, and '60 GUMMIES DIETARY SUPPLEMENT' at the bottom",
+ "handle": "florafresh-vaginal-probiotics-gummies",
+ "source": "cropped from the live PDP composite at https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies (2026-08-09)",
+ "rule": "This is the ONLY packaging truth for generated images. Restate `describe` inside the prompt \u2014 prompt text overrides the ref image when they disagree."
+}

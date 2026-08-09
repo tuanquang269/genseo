@@ -62,6 +62,30 @@ stock-looking output. Write the 10 sections as labeled lines, then pass the asse
 | 9 | **STYLE / IMPERFECTION** | "Amateur photo energy": subtle grain, unretouched surfaces, no HDR gloss, colours slightly muted like a real phone JPEG. |
 | 10 | **NEGATIVE** | Anti-stock tropes BY NAME (no beaming model staring at camera, no sterile marble countertop with citrus slices, no floating ingredients, no teal-orange grade) + anti-AI (no plastic skin, no glassy eyes, no waxy symmetric face) + no watermark/caption/text + packaging guard (auto). |
 
+## Packaging refs — CURATED LIBRARY ONLY (HARD RULE, Kevin 2026-08-09)
+
+`~/genseo/product_refs/<handle>.png` is a hand-cropped, eyeball-verified shot of the REAL package,
+with `<handle>.json` describing it in words (format, colour, wordmark, title, footer).
+`article_images.py` uses it automatically for `--product-ref <handle>` and appends the written
+description to the prompt (prompt text overrides the ref image when they disagree).
+
+- **Never pass `:index`.** Every WellnessNest PDP "image" is a marketing composite; some contain no
+  package at all. Ticket #3 passed `--product-ref florafresh…:1` — an "AFTER ONLY 2 WEEKS" graphic
+  with no pouch in it — and the generator invented a WHITE pouch and pasted that graphic's stat
+  badges onto the fake label. Two published images shipped wrong. The wrapper now ignores `:index`
+  whenever a curated ref exists, but do not write one anyway.
+- **SKU has no curated ref?** The wrapper prints a warning and falls back to PDP image [0]. In that
+  case you MUST open the downloaded ref and confirm the package is actually in it BEFORE using the
+  output — or stop and report that the SKU needs a curated ref (crop it from the PDP composite,
+  save both `.png` and `.json`, commit).
+- **Describe the real package in the prompt too** — format and colour by name ("dusty-pink stand-up
+  pouch", never "white pouch"), and NEGATIVE-list the failure: "no invented label layout, no
+  stat-percentage badges on the package".
+- Product details beyond the label count too: gummy colour must match the real flavour (FloraFresh
+  pineapple = amber, not red/pink).
+- Covered today: florafresh · fusiforce · ageaura-nmn-tmg · ageaura-urolithin-a · shilajit-shockwave
+  · turkesterone. Any new SKU = curate first, generate second.
+
 ## Persona bank (the face lane — Kevin's chosen posture)
 
 - The 🧑 real-face Pinterest gate runs **ONCE**: curate 3 real (non-AI) candidate photos per persona,

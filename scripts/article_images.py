@@ -86,10 +86,16 @@ def qc_gem9(webp_path, refs, is_ugc, has_persona):
     rubric = ["You are a strict image QC gate for a DTC supplement blog. Compare the FIRST image "
               "(the generated candidate) against the other image(s) (references). Answer each check, "
               "then end with exactly 'VERDICT: PASS' or 'VERDICT: FAIL - <short reason>'.",
-              "1. If a product package is visible: does its format/shape/colors/label layout match "
-              "the reference pack shot? FAIL only for a WRONG or MISSING label element, wrong "
-              "package format, or wrong colors. Soft/garbled micro-text (small bullet lines, "
-              "fine print) is an accepted generator artifact — NOT a FAIL by itself."]
+              "1. PACKAGING (the strictest check). If a package is visible, compare it element by "
+              "element with the reference: (a) same format — pouch vs bottle vs jar vs dropper; "
+              "(b) same dominant color; (c) the brand wordmark present, in the same place, reading "
+              "the same; (d) same product title; (e) same badges/benefit rows in the same layout; "
+              "(f) no text, stat badge, or graphic that is NOT on the reference package. Any "
+              "mismatch in a-f = FAIL, and say which letter failed. Soft or garbled MICRO-text "
+              "(fine print you could not read on the reference either) is an accepted generator "
+              "artifact — not a FAIL on its own.",
+              "1b. If the candidate shows a package but NO reference image contains that package, "
+              "answer 'VERDICT: FAIL - no packaging reference to compare against'."]
     if is_ugc:
         rubric.append("2. Does it read as a casual real-phone UGC snapshot (imperfect framing, "
                       "available light, lived-in scene) and NOT a studio/stock photo? Glossy "
@@ -108,15 +114,46 @@ def qc_gem9(webp_path, refs, is_ugc, has_persona):
     return v.startswith("PASS"), v
 
 
+CURATED_ROOT = os.path.expanduser("~/genseo/product_refs")
+
+
+def curated_ref(handle):
+    """A hand-cropped, verified pack shot for this SKU, if one exists.
+
+    Every WellnessNest PDP image is a marketing composite — some contain no
+    package at all. Ticket #3 fed `--product-ref <handle>:1` (an "AFTER 2 WEEKS"
+    graphic with no pouch in it) and the generator invented a white pouch,
+    copying that graphic's stat badges onto the fake label. The curated crop is
+    the only trustworthy packaging source; the PDP index path is the fallback.
+    Returns (png_path, meta_dict) or (None, None)."""
+    import json
+    png = os.path.join(CURATED_ROOT, f"{handle}.png")
+    if not os.path.exists(png):
+        return None, None
+    meta_path = os.path.join(CURATED_ROOT, f"{handle}.json")
+    meta = json.load(open(meta_path)) if os.path.exists(meta_path) else {}
+    return png, meta
+
+
 def fetch_product_ref(handle_spec):
-    """--product-ref <handle>[:index] → download the real PDP image as a PNG ref.
-    Index defaults to 0 (the main pack shot). Cached per handle:index."""
+    """--product-ref <handle>[:index] → the real packaging as a PNG ref.
+
+    A curated crop in ~/genseo/product_refs wins over any PDP index, because
+    PDP images are composites and an index can silently point at one with no
+    package in it."""
     import io
     import json
     import urllib.request
     from PIL import Image
     handle, _, idx = handle_spec.partition(":")
     idx = int(idx or 0)
+    png, _meta = curated_ref(handle)
+    if png:
+        if idx:
+            print(f"  (ignoring :{idx} — using the curated pack ref for {handle})", flush=True)
+        return png
+    print(f"  ⚠ no curated pack ref for {handle} — falling back to PDP image [{idx}]. "
+          f"VERIFY the package is actually in that image before trusting the output.", flush=True)
     dest = os.path.join(OUT_ROOT, f"ref_{re.sub(r'[^a-z0-9-]', '-', handle)}_{idx}.png")
     if os.path.exists(dest):
         return dest
@@ -203,6 +240,13 @@ def main():
     for spec in a.product_ref:
         a.ref.append(fetch_product_ref(spec))
     if a.product_ref:
+        # Prompt text overrides the ref image when they disagree, so state the real
+        # packaging in words too — a prompt saying "white pouch" beat a pink-pouch ref.
+        for spec in a.product_ref:
+            _, meta = curated_ref(spec.partition(":")[0])
+            if meta and meta.get("describe"):
+                a.prompt += (f" The package in frame is {meta['describe']}. It is a "
+                             f"{meta['format']}, {meta['color']} — never any other format or color.")
         a.prompt += PACK_FIDELITY
     if a.persona_ref:
         if not os.path.exists(a.persona_ref):

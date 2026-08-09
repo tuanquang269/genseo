@@ -1,0 +1,8 @@
+{
+ "format": "stand-up pouch",
+ "color": "bright green",
+ "describe": "a bright-green stand-up pouch of Wellness Nest FusiForce Creatine Monohydrate Gummies, with the vertical white 'Wellness Nest' wordmark and W logo up the left side, a white 'FusiForce' pill badge, the title 'Creatine Monohydrate Gummies', a 'Green Apple flavor' tag, four small benefit rows, and the gummy-count footer",
+ "handle": "fusiforce-creatine-gummies",
+ "source": "cropped from the live PDP composite at https://wellnessnest.co/products/fusiforce-creatine-gummies (2026-08-09)",
+ "rule": "This is the ONLY packaging truth for generated images. Restate `describe` inside the prompt \u2014 prompt text overrides the ref image when they disagree."
+}

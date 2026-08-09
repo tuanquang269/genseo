@@ -1,0 +1,8 @@
+{
+ "format": "white capsule bottle",
+ "color": "white with dark grey text",
+ "describe": "a white plastic capsule bottle of Wellness Nest AgeAura NMN + TMG NAD+ Complex, with the vertical dark 'Wellness Nest' wordmark and W logo on the left, an 'AgeAura' badge, the title 'NMN + TMG NAD + Complex', a 'Vegan Capsule' tag, four small benefit rows, and a capsule-count footer",
+ "handle": "ageaura-pure-nmn-tmg-nad-complex",
+ "source": "cropped from the live PDP composite at https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex (2026-08-09)",
+ "rule": "This is the ONLY packaging truth for generated images. Restate `describe` inside the prompt \u2014 prompt text overrides the ref image when they disagree."
+}

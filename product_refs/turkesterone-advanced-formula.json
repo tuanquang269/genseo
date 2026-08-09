@@ -1,0 +1,8 @@
+{
+ "format": "green plastic jar / tub with a black screw lid",
+ "color": "green with black lid",
+ "describe": "a green plastic jar with a black screw lid of Wellness Nest Premium Turkesterone Advanced Formula, with the 'wellness nest' logo at the top, 'PREMIUM TURKESTERONE' in bold white, an 'ADVANCED FORMULA' banner, three icon badges, the ingredient list on the right, and a capsule-count badge",
+ "handle": "turkesterone-advanced-formula",
+ "source": "cropped from the live PDP composite at https://wellnessnest.co/products/turkesterone-advanced-formula (2026-08-09)",
+ "rule": "This is the ONLY packaging truth for generated images. Restate `describe` inside the prompt \u2014 prompt text overrides the ref image when they disagree."
+}

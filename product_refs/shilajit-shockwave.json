@@ -1,0 +1,8 @@
+{
+ "format": "black glass dropper bottle",
+ "color": "black with green accents",
+ "describe": "a black glass dropper bottle of Wellness Nest Shilajit Shockwave Energy Drops, with a black dropper cap, the lowercase 'wellness nest' logo at the top, 'SHILAJIT SHOCKWAVE' in bold with green electric accents, and the volume footer",
+ "handle": "shilajit-shockwave",
+ "source": "cropped from the live PDP composite at https://wellnessnest.co/products/shilajit-shockwave (2026-08-09)",
+ "rule": "This is the ONLY packaging truth for generated images. Restate `describe` inside the prompt \u2014 prompt text overrides the ref image when they disagree."
+}
