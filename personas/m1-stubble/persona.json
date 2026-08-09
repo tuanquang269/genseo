@@ -1,0 +1,8 @@
+{
+ "handle": "m1-stubble",
+ "approved_by": "Kevin, 2026-08-09 (one-time real-face gate — picked from 4 Flickr candidates per slot)",
+ "demo": "US man ~40-45, stubble, natural relaxed smile",
+ "source_page": "https://flickr.com/photo.gne?id=15094430190",
+ "camera_notes": "indoor event/ambient available light, warm bokeh background, real skin texture — always camera-match; ALWAYS feed THIS ref.jpg, never a previous gen (ima2 i2i drifts identity)",
+ "usage": "male-audience articles (shilajit men, turkesterone, creatine men); byline stays Dr. Marcus Hale — persona is visual only, never named in copy"
+}
