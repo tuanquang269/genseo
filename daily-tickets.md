@@ -58,6 +58,7 @@ Agent được lệnh *"continue with the next ticket in daily-tickets.md"* → 
 ## [ ] Ticket #3 — NEW ARTICLE
 
 - **Primary keyword:** `vaginal probiotics what strains work`
+- **Template:** STORY (per references/article-templates.md)
 - **Secondary:** probiotics for pH balance, lactobacillus for feminine health, probiotics for odor
 - **Search intent:** problem-aware buyer comparing products
 - **Collection links:** `/collections/womens-essentials-collection`, `/collections/best-seller`
@@ -70,6 +71,7 @@ Agent được lệnh *"continue with the next ticket in daily-tickets.md"* → 
 ## [ ] Ticket #4 — NEW ARTICLE
 
 - **Primary keyword:** `turkesterone benefits and dosing`
+- **Template:** EDITORIAL (per references/article-templates.md)
 - **Secondary:** is turkesterone natty, turkesterone vs ecdysterone, turkesterone results timeline
 - **Search intent:** buyer researching before purchase
 - **Collection links:** `/collections/mens-essential-collection`, `/collections/best-seller`
@@ -82,6 +84,7 @@ Agent được lệnh *"continue with the next ticket in daily-tickets.md"* → 
 ## [ ] Ticket #5 — NEW ARTICLE
 
 - **Primary keyword:** `nmn and tmg together`
+- **Template:** COMPARISON (per references/article-templates.md)
 - **Secondary:** why take tmg with nmn, nmn methylation depletion, nmn tmg dosage ratio
 - **Search intent:** informed longevity buyer (knows NMN, asking why TMG)
 - **Collection links:** `/collections/ageaura`, `/collections/best-seller`
@@ -94,6 +97,7 @@ Agent được lệnh *"continue with the next ticket in daily-tickets.md"* → 
 ## [ ] Ticket #6 — NEW ARTICLE
 
 - **Primary keyword:** `urolithin a benefits`
+- **Template:** STORY (per references/article-templates.md)
 - **Secondary:** urolithin a vs nmn, mitophagy supplement, urolithin a muscle aging, pomegranate urolithin
 - **Search intent:** informed longevity buyer comparing next-gen compounds
 - **Collection links:** `/collections/ageaura`, `/collections/best-seller`
@@ -106,6 +110,7 @@ Agent được lệnh *"continue with the next ticket in daily-tickets.md"* → 
 ## [ ] Ticket #7 — NEW ARTICLE
 
 - **Primary keyword:** `shilajit energy drops how to use`
+- **Template:** LISTICLE (per references/article-templates.md)
 - **Secondary:** liquid shilajit vs resin, shilajit drops in coffee, fastest way to take shilajit
 - **Search intent:** format-curious buyer (already sold on shilajit)
 - **Collection links:** `/collections/shilajit-wellness-stack`, `/collections/mens-essential-collection`
@@ -130,6 +135,7 @@ separate Kevin decision, NOT covered by these tickets.
 ## [ ] Ticket #8 — NEW ARTICLE (type: PPC-arbitrage + competitor comparison)
 
 - **Primary keyword:** `best shilajit gummies`
+- **Template:** LISTICLE (per references/article-templates.md)
 - **Secondary:** shilajit gummies for men, himalayan shilajit gummies, shilajit gummies vs resin, aphroly shilajit gummies, gold shilajit gummies
 - **Ads evidence (90d):** campaign `US · Shilajit · Category` — "shilajit gummies" 19 clicks · $88.05 · 0 conv; "himalayan shilajit gummies" 4 clicks · $7.59; "shilajit gummies for men" 1 click · $2.63. Competitor-brand searches in the same lane: "aphroly shilajit gummies" (campaign `[S] Search - SLG - Slovakia  - 2303`), "erth wellness gummies", "better alt shilajit", "gold shilajit gummies", "optimum shilajit" (all `US · Shilajit · Category`). English "best shilajit" also paid-clicked in `[S] Shopping DE - 2003` ($1.89).
 - **Search intent:** buyer comparing gummy brands — the exact click we currently pay $3–4.6 for with zero paid conversions
@@ -143,6 +149,7 @@ separate Kevin decision, NOT covered by these tickets.
 ## [ ] Ticket #9 — NEW ARTICLE (type: authority-figure search capture)
 
 - **Primary keyword:** `barbara o neill shilajit`
+- **Template:** EDITORIAL (per references/article-templates.md)
 - **Secondary:** barbara o'neill shilajit benefits, what does barbara o'neill say about shilajit, barbara o'neill minerals
 - **Ads evidence (90d):** campaign `ADC | Shopping | DE | Branded | Shilajit Essential Extract |  LP | TROAS 250%` — "barbara o neill shilajit" 17 clicks · ≈$52 · **1 conv**; plus "shilajit barbara o neill" (≈$30) and "barbara o neill shilajit kaufen" (≈$20). People search her name + shilajit and it converts — an article owns that SERP for free.
 - **Search intent:** followers of a health educator checking her take before buying
@@ -156,6 +163,7 @@ separate Kevin decision, NOT covered by these tickets.
 ## [ ] Ticket #10 — NEW ARTICLE (type: audience-segment deep-dive)
 
 - **Primary keyword:** `shilajit benefits for men`
+- **Template:** STORY (per references/article-templates.md)
 - **Secondary:** shilajit testosterone, shilajit gummies for men, shilajit energy and recovery, how to increase testosterone naturally
 - **Ads evidence (90d):** campaign `US · Shilajit · Category` — "shilajit benefits for men" 1 click · $1.44; "shilajit gummies for men" 1 click · $2.63; "shilajit benefits" 2 clicks · $2.69. Campaign `[S] Shopping DE - 2003` — "how to increase testosterone" 1 click · $2.07 (a Shopping ad is the wrong answer to that query; an article is the right one).
 - **Search intent:** men researching testosterone/energy angle before buying
@@ -169,6 +177,7 @@ separate Kevin decision, NOT covered by these tickets.
 ## [ ] Ticket #11 — NEW ARTICLE (type: review-intent / brand-SERP defense)
 
 - **Primary keyword:** `wellness nest shilajit reviews`
+- **Template:** EDITORIAL (per references/article-templates.md)
 - **Secondary:** wellness nest shilajit results, shilajit before and after, is wellness nest legit
 - **Ads evidence (90d):** campaign `ADC | Shopping | DE | Branded | Shilajit Essential Extract |  LP | TROAS 250%` — "wellness nest shilajit erfahrungen" (brand-review intent, converting lane); campaign `[S] Search - SLG - Slovakia  - 2303` — "shilajit gummies recenzie"; campaign `[S] Shopping DE - 2003` — "bestes shilajit testsieger" family (test-winner intent, 41+8 impr). Review-intent queries exist in every geo; today no owned page answers them.
 - **Search intent:** near-buyer looking for social proof / verification
@@ -182,6 +191,7 @@ separate Kevin decision, NOT covered by these tickets.
 ## [ ] Ticket #12 — NEW ARTICLE (type: retail-availability / where-to-buy) — LOWEST priority, run last
 
 - **Primary keyword:** `where to buy wellness nest shilajit`
+- **Template:** EDITORIAL (per references/article-templates.md)
 - **Secondary:** wellness nest shilajit amazon, is shilajit sold in stores, how to spot fake shilajit
 - **Ads evidence (90d):** campaign `ADC | Shopping | DE | Branded | Shilajit Essential Extract |  LP | TROAS 250%` — "wellness nest shilajit dm" (drugstore-chain query), "shilajit von wellness nest amazon", "wellness nest shilajit kaufen" family; campaign `[S] Shopping DE - 2003` — "shilajit bestellen". Buyers ask where to purchase; the answer should be an owned page, not a reseller.
 - **Search intent:** brand-navigational, checking channels & authenticity
