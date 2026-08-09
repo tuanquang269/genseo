@@ -132,7 +132,7 @@ the US non-brand campaign spends with **zero** conversions — those exact terms
 lane's job. Blog stays English/US-anchored (gate enforces); a DE-language content lane is a
 separate Kevin decision, NOT covered by these tickets.
 
-## [ ] Ticket #8 — NEW ARTICLE (type: PPC-arbitrage + competitor comparison)
+## [DONE 2026-08-09 https://wellnessnest.co/blogs/news/best-shilajit-gummies-6-us-labels-compared-2026] Ticket #8 — NEW ARTICLE (type: PPC-arbitrage + competitor comparison)
 
 - **Primary keyword:** `best shilajit gummies`
 - **Template:** LISTICLE (per references/article-templates.md)

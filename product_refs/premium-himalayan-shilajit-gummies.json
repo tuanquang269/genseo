@@ -1,0 +1,8 @@
+{
+ "format": "stand-up foil pouch (resealable, flat-bottom)",
+ "color": "matte black upper third fading into deep green lower two-thirds",
+ "describe": "a matte black-to-green stand-up foil pouch of Wellness Nest Premium Himalayan Shilajit Gummies: thin green line-art mountain range across the black top, the lowercase two-line 'wellness nest' wordmark in green, 'PREMIUM HIMALAYAN' in green above 'SHILAJIT GUMMIES' in large white block caps, a thin white line under it reading 'ASHWAGANDHA - GOKSHURA - BLACK MUSLI', three white circular badges side by side across the middle, a photographic snow-capped mountain range filling the green lower half, and a bottom strip reading '60 GUMMIES | 60-DAY SUPPLY' above 'DIETARY SUPPLEMENT'. The gummies themselves are dark brown, almost black, glossy rounded domes.",
+ "handle": "premium-himalayan-shilajit-gummies",
+ "source": "PDP image index 0 (shilajit_gummies.webp) at https://wellnessnest.co/products/premium-himalayan-shilajit-gummies, curated 2026-08-09 because no curated ref existed",
+ "rule": "This is the ONLY packaging truth for generated images. Restate `describe` inside the prompt - prompt text overrides the ref image when they disagree. NEVER render it as a jar, tub or bottle."
+}
