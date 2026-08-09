@@ -17,12 +17,19 @@ The hero is the FIRST `![...]()` image in the body — `shopify_publisher.py` pr
 hero on `/blogs/news/news-copy-of-from-stiff-to-strong…` (model holding the green pouch label-forward,
 bright ad-style). Requirements, all mandatory:
 
-1. **A persona (visible face) AND the real product pack, together in frame.** Model holds or
-   presents the pack label-forward at chest height; label must stay legible at thumbnail size.
-   `--product-ref` + `--persona-ref` + `--qc`, always.
+1. **A persona (visible face) AND the real product pack, together in frame.** Label faces the
+   camera and stays legible at thumbnail size. `--product-ref` + `--persona-ref` + `--qc`, always.
+   **DEFAULT COMPOSITION (2026-08-09, after 4 QC burns in 2 days): the pack STANDS on a
+   surface beside / in front of the model — hands do NOT touch it. Put "no hands touching or
+   holding the pouch" in the NEGATIVE.** ima2 reliably warps hand-pack grips ("warped hand" was
+   the QC fail on 3 of 4 burned rolls). A holding pose is a stretch goal: attempt it only on the
+   FIRST roll; any QC fail → switch to the no-contact composition for the remaining re-rolls.
 2. **Different character per blog post.** The hero persona MUST differ from the previous articles'
    hero personas — rotate through the approved bank, never repeat until the bank is exhausted, then
-   restart with the least-recently-used. Log the persona handle in the tracker CSV row. Bank too
+   restart with the least-recently-used. **ENUMERATE the bank — `ls ~/genseo/personas/` and read
+   each `persona.json` — before claiming it is too small; NEVER assume its size from docs or
+   prior-run reports** (the 2026-08-09 morning run blocked itself believing the bank had 1 face
+   while 4 were installed). Log the persona handle in the tracker CSV row. Bank too
    small to rotate (or no demo-appropriate persona) → generate with the least-recently-used
    compliant persona and put one line in the report: "persona bank needs expansion (real-face gate)".
    NEVER invent a fresh face to satisfy variety — the 🧑 gate still owns new faces.
