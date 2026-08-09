@@ -54,7 +54,9 @@ Rules for this run:
 STANDING APPROVALS (Kevin, 2026-08-08 — this run is unattended, never pause to ask):
 - The mandatory media-cost gate is PRE-APPROVED for ima2 OAuth image generation only (ChatGPT subscription, $0 per image — hero + 3 inline per article). Do not stop to present a cost table for ima2; note "ima2 $0 subscription (standing approval)" in the report instead.
 - This pre-approval covers NOTHING else: any paid media API (KIE, Veo, Kling, HeyGen, ElevenLabs, per-token image/video/audio) remains FORBIDDEN in this pipeline — if a step seems to need one, skip it, mark the ticket [BLOCKED <reason>], and report.
-- If any OTHER rule requires human input, do not improvise: leave the ticket un-flipped, explain in the report, exit.'
+- If any OTHER rule requires human input, do not improvise: leave the ticket un-flipped, explain in the report, exit.
+
+CONTEXT HYGIENE (a run died on "input exceeds the context window", 2026-08-09): never Read a whole large file — use offset/limit chunks for anything over ~500 lines; never cat/tail entire logs or HTML dumps; read only the sections of skill references you need. If a tool result looks huge, summarize and move on instead of re-reading it.'
 
 echo "=== GenSeo ticket run $STAMP ===" >> "$LOGDIR/articles-$STAMP.log"
 if [ "$USE_NATIVE" = "1" ]; then
