@@ -178,9 +178,14 @@ description to the prompt (prompt text overrides the ref image when they disagre
 
 ## Wrapper mechanics (`article_images.py`)
 
-- `--ugc` → appends the UGC device/style suffix + the anti-stock/anti-AI NEG bank, and applies a
-  light film-grain degrade after generation (borrowed from the degrade-start-frame realism rule —
-  raw ima2 is too HD-clean) before webp compression.
+- `--ugc` → appends the UGC device/style suffix + the anti-stock/anti-AI NEG bank. Without it you
+  are in the hero lane, which gets the hero-safe NEG subset instead (kills plastic skin / waxy
+  symmetry / catalogue retouching, keeps the bright ad look) — **with or without a face**.
+- **Film-grain degrade runs on EVERY image**, always, before webp compression (borrowed from the
+  degrade-start-frame realism rule — raw ima2 is too HD-clean). It used to be a `--ugc` effect, then
+  a `--ugc or --persona-ref` effect; both times the hero lane leaked through and the heroes — the
+  only image the blog index grid shows — were the glossiest thing on the site. Measured on the
+  flattest tiles: live pre-fix heroes 0.00–0.58, grained images 1.2–2.3. A hero at 0.00 is a render.
 - `--persona-ref /abs/path/ref.jpg` → attaches the persona photo + appends the camera-match directive.
 - `--qc` → vision QC via `gem9` (9router subscription — NEVER per-token): sends output + refs with a
   strict rubric (packaging matches PDP ref? UGC-not-stock? no rendered text? face natural, matches

@@ -264,12 +264,18 @@ def main():
             sys.exit(f"✗ persona ref not found: {a.persona_ref} — persona bank lives in ~/genseo/personas/")
         a.ref.append(a.persona_ref)
         a.prompt += CAMERA_MATCH
-        if not a.ugc:
-            a.prompt += HERO_NEG
     else:
         a.prompt += NO_FACE_CLAUSE
     if a.ugc:
         a.prompt += UGC_SUFFIX + UGC_NEG
+    else:
+        # Every non-UGC call IS the hero lane (the framework gives all three inline images
+        # --ugc), so the negatives belong to the LANE, not to whether a face is in frame.
+        # Gating them on persona_ref left the no-face hero — the every-3rd-article branch the
+        # picker now mandates, and the ONLY branch available while the bank is empty — with no
+        # anti-stock negatives at all: the same hole, surviving in the one path that currently
+        # carries every hero on the blog index.
+        a.prompt += HERO_NEG
 
     slug = re.sub(r"[^a-z0-9-]", "-", a.slug.lower())
     name = re.sub(r"[^a-z0-9-]", "-", a.name.lower())
@@ -281,11 +287,12 @@ def main():
     size = "1024x1024" if a.square else "1536x1024"
     print(f"⏳ ima2 gen {name} ({size}, {len(a.ref)} ref{', UGC' if a.ugc else ''})...", flush=True)
     gen_png(a.prompt, size, png, a.ref)
-    # Any image with a real face needs the grain degrade, not just the UGC lane. The hero
-    # lane forbids --ugc, so until 2026-08-09 the heroes — the only images in the blog
-    # index grid — were the ONLY images that skipped it, and were the glossiest on the site.
-    if a.ugc or a.persona_ref:
-        degrade_grain(png)
+    # Unconditional. Raw ima2 output is too HD-clean for anything we publish, and every
+    # narrower rule tried here has leaked: gating on --ugc left all heroes glossy, then gating
+    # on `ugc or persona_ref` still left the no-face hero glossy — and the no-face hero is what
+    # the blog index shows whenever the bank can't fill the slot. There is no image in this
+    # pipeline that wants the untouched render, so stop enumerating which ones do.
+    degrade_grain(png)
     nbytes, q, width = compress_webp(png, webp)
     os.unlink(png)  # keep only the deliverable; the PNG is 10-20x the size
     if a.qc:
