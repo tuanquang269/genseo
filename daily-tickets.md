@@ -160,7 +160,7 @@ separate Kevin decision, NOT covered by these tickets.
 - **Author:** (from roster.json)
 - **Dedup note:** no authority/influencer article exists (blog list checked 2026-08-07)
 
-## [ ] Ticket #10 — NEW ARTICLE (type: audience-segment deep-dive)
+## [DONE 2026-08-09 https://wellnessnest.co/blogs/news/shilajit-benefits-for-men-4-claims-ranked-us-2026] Ticket #10 — NEW ARTICLE (type: audience-segment deep-dive)
 
 - **Primary keyword:** `shilajit benefits for men`
 - **Template:** STORY (per references/article-templates.md)
