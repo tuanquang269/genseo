@@ -69,6 +69,10 @@ if [ "$USE_NATIVE" = "1" ]; then
   RC=$?
 else
   echo "(lane: LEGACY 9router — run 'CLAUDE_CONFIG_DIR=~/.claude-genseo claude /login' on the mini to unlock the native lane)" >> "$LOGDIR/articles-$STAMP.log"
+  # 9router's real per-request limit is smaller than the 200k the CLI assumes for the
+  # unrecognized model name — three runs died on "input exceeds the context window"
+  # (2026-08-09). Cap the window well below it so autocompact fires early enough.
+  export CLAUDE_CODE_MAX_CONTEXT_TOKENS=150000
   "$CLAUDE_BIN" -p "$PROMPT" \
     --model opus \
     --output-format text \
