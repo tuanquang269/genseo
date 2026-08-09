@@ -55,7 +55,7 @@ Agent được lệnh *"continue with the next ticket in daily-tickets.md"* → 
 - **Collection-claim note:** FusiForce is NOT in womens-essentials-collection (only FloraFresh + AgeAura are)
   — link the collection as a browse suggestion, never claim membership. Same trap caught in Ticket #1.
 
-## [ ] Ticket #3 — NEW ARTICLE
+## [DONE 2026-08-09 https://wellnessnest.co/blogs/news/vaginal-probiotics-which-strains-actually-work-us-2026] Ticket #3 — NEW ARTICLE
 
 - **Primary keyword:** `vaginal probiotics what strains work`
 - **Template:** STORY (per references/article-templates.md)
