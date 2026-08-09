@@ -57,13 +57,31 @@ bright ad-style). Requirements, all mandatory:
    wardrobe colour. Identity = the face in `ref.jpg` and nothing else — outfit, hair styling and
    setting are free to change and SHOULD change. The same discipline applies to the inline
    persona-in-scene image.
-4. **Style = bright ad-style hero, NOT gritty UGC.** No `--ugc` flag. Clean daylight, appealing,
+4. **ROTATE THE SHOT TYPE TOO (HARD RULE, 2026-08-09).** Contact-sheeting the six live heroes
+   (#4–#9) after Kevin's rejection showed the repeat is not only gaze — five of six were the same
+   shot: ONE adult, mid-shot, indoors, daylight, smiling, with the pack planted large in a
+   foreground corner. A wall of that reads as machine output even when the faces and the gaze
+   differ, because the *brief* is visibly identical. Pick a shot type not used in the last 3
+   articles (read the `scene`/`shot` notes in the tracker) and log `shot:<value>`:
+
+   | shot value | what changes |
+   |---|---|
+   | `mid-subject-fg-pack` | the current default — subject mid-shot, pack large in the near corner |
+   | `wide-room` | subject small in a real room, pack on a surface at natural size |
+   | `over-shoulder` | camera behind the subject, reading past them to the pack |
+   | `low-table-level` | lens down at surface height, pack in the near plane, subject behind it |
+   | `high-angle-down` | looking down onto the surface and the subject's hands/upper body |
+   | `through-doorway` | subject framed by a doorway/window edge, pack on the near sill or table |
+
+   The label still has to be legible at thumbnail size — that constrains how far the pack can
+   recede, not which shot type you may pick.
+5. **Style = bright ad-style hero, NOT gritty UGC.** No `--ugc` flag. Clean daylight, appealing,
    confident model, natural real-smile mechanics. The anti-stock NEG bank ("no beaming model facing
    camera") applies to the INLINE lane only — the hero is EXEMPT from that one line by design
    (Kevin's reference IS a model facing camera with the pack). Anti-AI NEG stays (no plastic skin,
    no glassy eyes, no waxy face), packaging guard stays, and **no on-image text** stays — the text
    overlay on Kevin's reference is a design-tool composite, not something ima2 may attempt.
-5. Persona must fit the article's audience demo (women-40+ article → female 40s–50s persona;
+6. Persona must fit the article's audience demo (women-40+ article → female 40s–50s persona;
    men's shilajit article → male persona once the bank has one).
 
 ## HARD RULE — emit ALL 10 sections, labeled, in order. Never a run-on blob.
