@@ -103,6 +103,32 @@
    "gaze_used": [],
    "last_gaze": null,
    "angles_used": []
+  },
+  "m6070-wh-02": {
+   "handle": "m6070-wh-02",
+   "pool_id": "m6070",
+   "status": "active",
+   "ref": "/Users/kevinkreative/genseo/personas/m6070-wh-02/ref.jpg",
+   "identity_key": "openimages:04f18ecce0a7d2c8",
+   "used_count": 0,
+   "last_used_seq": 0,
+   "gaze_used": [],
+   "last_gaze": null,
+   "angles_used": [],
+   "angles_reserved": []
+  },
+  "m3039-hl-02": {
+   "handle": "m3039-hl-02",
+   "pool_id": "m3039",
+   "status": "active",
+   "ref": "/Users/kevinkreative/genseo/personas/m3039-hl-02/ref.jpg",
+   "identity_key": "openimages:7e50809314531f48",
+   "used_count": 0,
+   "last_used_seq": 0,
+   "gaze_used": [],
+   "last_gaze": null,
+   "angles_used": [],
+   "angles_reserved": []
   }
  }
 }

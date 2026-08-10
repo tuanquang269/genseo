@@ -1410,6 +1410,16 @@ def evaluate_vision(v, cell):
     # for the question above, and now that the question is asked directly the proxy can go back
     # to what it is good for: contact_sheet.py prints it in the caption, so the eye pass sees
     # which frames to look at hardest.
+    #
+    # Re-tested 2026-08-11 after a glamour shoot (f3039-hl-02: black seamless, strobes, cocktail
+    # dress) reached the bank and had to be thrown out by eye. The flag WAS true on it, so the
+    # obvious move was to start enforcing — and the count seemed to say it was free: of the 61
+    # personas on disk, 8 carry the flag and all 8 were condemned anyway, none of them live.
+    # That number is worthless. Personas on disk are the SURVIVORS; measuring a gate on the
+    # population that already passed every other gate is how a costly gate looks free. The 13-of-45
+    # above is measured on cached accepts, which is the population that decides yield, and it is
+    # the one to trust. Enforcement stays off. The design worked as written: the flag pointed the
+    # eye at the frame, and the eye made the call.
     return reasons
 
 
