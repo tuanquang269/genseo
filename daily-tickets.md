@@ -174,7 +174,7 @@ separate Kevin decision, NOT covered by these tickets.
 - **Author:** (from roster.json)
 - **Dedup note:** general benefits + what-is articles exist — LINK both, do not restate general benefits; no men-specific article (blog list checked 2026-08-07)
 
-## [ ] Ticket #11 — NEW ARTICLE (type: review-intent / brand-SERP defense)
+## [DONE 2026-08-10 https://wellnessnest.co/blogs/news/wellness-nest-shilajit-reviews-what-85-buyers-report] Ticket #11 — NEW ARTICLE (type: review-intent / brand-SERP defense)
 
 - **Primary keyword:** `wellness nest shilajit reviews`
 - **Template:** EDITORIAL (per references/article-templates.md)
