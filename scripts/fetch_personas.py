@@ -524,7 +524,21 @@ def named_subject(text):
 
     TWO adjacent, because findability is what is being tested rather than naming as such:
     "Megan" alone identifies nobody you could look up, and "Anita Ravna" identifies someone you
-    can find in one search."""
+    can find in one search.
+
+    KNOWN BLIND SPOT, MEASURED RATHER THAN GUESSED. The whole test is built on letter case, so it
+    cannot see a name written in a script that has none. 250 of the 11,345 walkable rows (2.2%)
+    carry a title with no cased letter at all — 182 punctuation/numeric, then CJK 39, Hangul 9,
+    Arabic 9, Katakana 7, Devanagari 2, Hebrew 1, Hiragana 1. "구본준 부회장" (a named vice
+    chairman) passes this gate untouched, and so would any Han-character personal name.
+
+    Left unfixed on purpose. A CJK name detector would have to guess from length — most of the
+    real sample is scenery, not people ("模糊總是最美", "貨物整理中") — so it would refuse honest
+    photographs to catch a handful, over 2.2% of the corpus. What covers those rows instead is the
+    vision rubric's recognizable_public_figure / official_or_representative_capacity /
+    identifying_text_in_frame. That is a weaker backstop, not an equal one: it asks the model what
+    it KNOWS, which is the exact failure that made this gate necessary. So 2.2% of the walk is
+    screened by the old, weaker instrument. Worth stating plainly rather than filing as done."""
     run = []
     for word in re.split(r"[^\w'’-]+", text or "") + [""]:
         word = word.strip("'’-")
