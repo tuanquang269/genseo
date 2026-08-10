@@ -45,6 +45,7 @@ import sys
 import tempfile
 import threading
 import time
+import unicodedata
 from concurrent.futures import ThreadPoolExecutor
 
 import numpy as np
@@ -585,6 +586,100 @@ def gate_named_subject(cand):
                        "evidence a vision model never sees, and a named subject is precisely "
                        "the publicity-rights claim a CC licence does not grant"
                        % (name, title[:60]))
+    return True, ""
+
+
+# --------------------------------------------------------------------------------------
+# GATE P3 — an organisation's photostream
+# --------------------------------------------------------------------------------------
+# P2 reads the caption. This reads WHO TOOK THE PHOTOGRAPH, which is the other free string in
+# the metadata and, it turns out, the stronger of the two signals.
+#
+# An organisation does not photograph strangers. It photographs its own officials, employees,
+# members, candidates, students, soldiers, patients — people who are in the frame BECAUSE of
+# their relationship to the organisation, which is the definition of the representative
+# capacity the vision rubric already asks about and mostly fails to see. So the identity of the
+# photostream is evidence about the identity of the subject, obtained for nothing.
+#
+# Written because one got all the way through. f6070-wh-01 reached status="pending" in the live
+# bank from the stream "candidatura Duran i Lleida" — a Catalan election campaign, with
+# "Candidat" sitting in the filename. P2 could not see it: the title was the single token
+# "120412MPduranCandidat310", so there were never two adjacent capitalised words to find. The
+# vision model answered recognizable_public_figure: false and official_or_representative
+# _capacity: false, honestly, because neither is visible in a portrait against a hedge.
+#
+# MEASURED, on the 14,952-row candidate corpus and on all 61 personas ever admitted to disk:
+#   corpus     — refuses 1,094 rows (7.3%) across 276 of 7,549 distinct photostreams
+#   personas   — refuses 11 of 61. TEN of those eleven were already condemned downstream by a
+#                far more expensive instrument (named-subject 6, pose 2, wrong band 2); the
+#                eleventh is the campaign portrait above. So it mostly does not lose faces we
+#                would have kept — it moves a rejection from a paid stage to a free one, and
+#                closes the one hole that was leaking.
+#   survivors  — every persona in the live bank is refused by nothing here. All ten are
+#                ordinary personal names: Keith Williamson, Lisa Cyr, Sean O'Donnell.
+#
+# False positives exist and are accepted, unchanged from P2's reasoning: "Devan Mickell
+# Council" is a surname, not a local authority. One photograph lost out of millions against a
+# serving politician's face on a supplement advertisement — the trade is not close.
+INSTITUTION_WORDS = set("""
+university universities universidad universidade universite universitat universitaet universiteit
+universitet college school escuela escola schule colegio institute instituto institut academy
+academia department ministry ministerio ministere ministerium secretaria secretariat prefeitura
+prefectura ayuntamiento ajuntament camara concello concejo gobierno governo government gouvernement
+regierung embassy embajada embaixada ambassade botschaft consulate consulado police policia polizei
+politiet army navy marines airforce coastguard fleet brigade regiment battalion garrison military
+veterans museum museo museu musee library biblioteca archive foundation fundacion fundacao fondation
+stiftung association asociacion associacao associazione federation federacion federacao federazione
+senate senado senato senat parliament parlamento parlament congress congreso council conselho consejo
+conseil commission comision comissao committee comite municipal municipality municipio kommune kommun
+riksforbund forbund verband hospital clinica church iglesia igreja eglise diocese parish party partido
+partiet partij candidatura campaign campana campanha corporation corp incorporated limited gmbh
+holdings company communications comunicacion comunicacoes prensa imprensa presse agency agencia agence
+agentur bureau authority commissariat command headquarters
+""".split())
+
+# An office held, rather than an organisation named. "Senator Stabenow" and "Cecilia Pérez Jara,
+# ex Ministra SEGEGOB" are personal names, so nothing above fires on them — and the office is
+# exactly what makes the subject un-usable. Adds 8 photostreams to the refusal, every one of
+# them correct on inspection, for +0.24% of the corpus.
+OFFICE_WORDS = set("""
+official minister ministra ministro senator senadora senador diputado diputada deputado vereador
+alcalde alcaldesa governor gobernador presidente prefeito canciller embajador chancellor
+""".split())
+
+# Substrings rather than words, for the shapes that survive tokenisation: a domain is an entity
+# and not a person, and "U.S." tokenises into two one-letter fragments that match nothing.
+INSTITUTION_MARKS = ("(official)", "www.", ".com", ".net", ".org", ".gov", ".edu", "u.s.",
+                     "national park", "public affairs", "official photo")
+
+
+def _fold(text):
+    """Lowercase and strip diacritics, so one word covers `Secretaría` and `Secretaria`."""
+    return "".join(c for c in unicodedata.normalize("NFKD", text or "").lower()
+                   if not unicodedata.combining(c))
+
+
+def institutional_author(name):
+    """The token that marks this photostream as an organisation's, or None."""
+    folded = _fold(name)
+    for mark in INSTITUTION_MARKS:
+        if mark in folded:
+            return mark
+    for token in re.split(r"[^a-z0-9]+", folded):
+        if token in INSTITUTION_WORDS or token in OFFICE_WORDS:
+            return token
+    return None
+
+
+def gate_institutional_author(cand):
+    """Gate P3. Author only — free, and it runs before anything is downloaded."""
+    author = (cand.get("author") or "").strip()
+    mark = institutional_author(author)
+    if mark:
+        return False, ("photostream belongs to an organisation (%r in %r) — an organisation "
+                       "photographs its own officials, staff and members, so the subject is in "
+                       "the frame in a representative capacity, which is the one thing a CC "
+                       "licence never covers" % (mark, author[:60]))
     return True, ""
 
 
@@ -2740,6 +2835,10 @@ def process_candidate(cand, cell, key, session, hashes, args):
     if not ok:
         return ("named-subject", reason)
 
+    ok, reason = gate_institutional_author(cand)
+    if not ok:
+        return ("institutional-author", reason)
+
     ok, reason = gate_origin(cand)
     if not ok:
         return ("origin", reason)
@@ -3041,6 +3140,41 @@ def cmd_selftest(_args):
     for fp in ("Breakfast in Kirkby Malzeard", "Wylin cuz I'm Young tee"):
         check("known false positive %r is still refused, knowingly" % fp[:26],
               not gate_named_subject({"title": fp})[0])
+
+    print("gate P3 — an organisation's photostream")
+    # The one that got through. Title "120412MPduranCandidat310" is a single token, so P2 had
+    # nothing to find; the vision model said recognizable_public_figure: false, honestly. The
+    # author was the whole story and nothing read it.
+    ok_, why = gate_institutional_author({"author": "candidatura Duran i Lleida"})
+    check("the campaign stream that reached the live bank is refused",
+          not ok_ and "candidatura" in why)
+    # One row per shape the gate has to cover, each taken from a real photostream in the corpus.
+    for author, mark in (("US Embassy Sweden", "embassy"),
+                         ("Centerpartiet (official)", "(official)"),
+                         ("ASCOM Prefeitura de Votuporanga", "prefeitura"),
+                         ("Secretaría de Movilidad de Medellín", "secretaria"),
+                         ("Norske Samers Riksforbund", "riksforbund"),
+                         ("Simon Fraser University - University Communications", "university"),
+                         ("Mount Rainier National Park", "national park"),
+                         ("Governor Tom Wolf", "governor"),
+                         ("Cecilia Pérez Jara, ex Ministra SEGEGOB", "ministra"),
+                         # No parentheses on this one, so it is the bare role word that catches
+                         # it — the two forms are separate rungs and both have to work.
+                         ("Official USS Theodore Roosevelt (CVN 71) Page", "official")):
+        check("%r refused (%s)" % (author[:34], mark),
+              institutional_author(author) == mark)
+    # Diacritics must not be a way through: `Secretaría` is matched by the same folded token as
+    # `Secretaria`, and the check above already depends on it.
+    check("folding strips diacritics", _fold("Secretaría de Comunicación") == "secretaria de comunicacion")
+    # The yield the gate must not eat — every individual currently in the live bank, by name.
+    for author in ("Keith Williamson", "Lisa Cyr", "Sean O'Donnell", "Thomas Quine",
+                   "appworks2010", "Megan", "DSC07576"):
+        check("%r survives gate P3" % author, gate_institutional_author({"author": author})[0])
+    check("a missing author is not evidence of anything and passes",
+          gate_institutional_author({})[0] and gate_institutional_author({"author": ""})[0])
+    # Documented cost, same trade as P2: Council is a surname here, and it is refused anyway.
+    check("known false positive 'Devan Mickell Council' is refused, knowingly",
+          not gate_institutional_author({"author": "Devan Mickell Council"})[0])
 
     print("gate A — artwork / archive reproduction")
     for art in ("Portrait of a Woman MET DP161260", "Marble head of an elderly woman",
