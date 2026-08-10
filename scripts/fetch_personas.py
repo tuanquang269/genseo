@@ -1891,7 +1891,11 @@ def seed_row(handle, pool_id, ref, doc, prior):
             "identity_key": identity_key(doc),
             "used_count": int(rec.get("used_count") or 0), "last_used_seq": 0,
             "gaze_used": list(rec.get("gaze_used") or []), "last_gaze": None,
-            "angles_used": list(rec.get("angles_used") or [])}
+            "angles_used": list(rec.get("angles_used") or []),
+            # Empty by construction: a reservation belongs to a run in flight, and no run can be
+            # in flight for a face admitted one line ago. Anything a previous incarnation had
+            # reserved was folded into angles_used at quarantine, where it can never be undone.
+            "angles_reserved": []}
 
 
 def next_handle(cell_id, taken):
@@ -2255,9 +2259,17 @@ def cmd_quarantine(args):
         # this photograph can come back in the neighbouring band — under a new handle, whose
         # fresh row would present all 21 angles as unused. persona.json is the file that travels
         # with the face, so it is where a fact about the face belongs.
+        #
+        # RESERVED angles are folded in as USED, not carried across as reservations. A reservation
+        # belongs to an article that was in flight; once the row is destroyed nobody can ever
+        # close it, so the question "did it publish?" becomes permanently unanswerable. Two
+        # answers are available and they are not symmetrical: call it unused and a live og:image
+        # can be matched by a later one, call it used and the face loses one of twenty-one angles.
         row = (index.get("personas") or {}).get(handle) or {}
         doc["angle_ledger"] = {"handle": handle,
-                               "angles_used": list(row.get("angles_used") or []),
+                               "angles_used": list(row.get("angles_used") or [])
+                                              + [a for a in (row.get("angles_reserved") or [])
+                                                 if a not in (row.get("angles_used") or [])],
                                "gaze_used": list(row.get("gaze_used") or []),
                                "last_gaze": row.get("last_gaze"),
                                "used_count": int(row.get("used_count") or 0)}

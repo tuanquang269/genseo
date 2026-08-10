@@ -154,6 +154,21 @@ def face_angle_phrase(angle_id, persona_ref):
                  f"angle it gives you — do not pick one by hand.\n"
                  f"  spent so far: {', '.join(entry.get('angles_used') or [])}")
 
+    # Third gate: was this angle actually ISSUED for this persona? The check above catches a
+    # REPEAT, which is the rule as written; it cannot catch a fresh angle the agent chose for
+    # itself, and that one is worse — it ships live and lands in no ledger, so the picker will
+    # hand it out again later in perfect good faith. Since 2026-08-11 `pick` reserves what it
+    # issues, so an outstanding reservation is exactly the evidence needed.
+    #
+    # Conditioned on the persona HAVING a reservation, deliberately. An empty list means either
+    # a pre-reservation state file or a persona nobody has picked, and neither is a violation;
+    # refusing on absence would break every legitimate call made before this existed.
+    reserved = entry.get("angles_reserved") or []
+    if reserved and angle_id not in reserved:
+        sys.exit(f"✗ persona {handle} was issued {', '.join(reserved)} — not {angle_id!r}. Use the "
+                 f"angles `persona_picker.py pick` printed for THIS article; substituting one "
+                 f"burns the issued angles and puts an unrecorded angle on a live page.")
+
     return angles[angle_id]
 
 
