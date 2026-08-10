@@ -90,7 +90,65 @@ FORBIDDEN_LICENSES = {
     "12": "CC BY-SA 4.0 - ShareAlike",
 }
 LICENSE_SEARCH_PARAM = "9,11,4"  # order matters only cosmetically; the gate re-checks per photo
-ALLOWED_LICENSE_NAMES = set(v["name"] for v in ALLOWED_LICENSES.values())
+
+# Flickr numeric ids are a Flickr fact. Every other source names licences with a slug
+# ("cc-by-4.0", "cc0", "cc-by-3.0-tw"), so the table above cannot be the gate once a second
+# backend exists. Enumerating the acceptable slugs does not survive contact with jurisdiction
+# ports — there are dozens, they are minted without notice, and a missing one silently reads as
+# "unknown, refuse" on a licence that is in fact fine. So the gate is a RULE over the slug.
+#
+# DENY runs first and wins. It is not the complement of ALLOW: `pd` and `public domain` are
+# rejected on purpose even though they permit everything, because they are ASSERTIONS about
+# status rather than grants, carrying no warranty — the same reason Flickr ids 7, 8 and 10 are
+# in FORBIDDEN_LICENSES above. An empty slug is a reject, never a pass: a source that did not
+# tell us the licence has not told us it is free.
+LICENCE_DENY_RE = re.compile(r"-sa\b|-sa-|-nc\b|-nc-|-nd\b|-nd-|^pd|^public|^gfdl|^fal|"
+                             r"^attribution$|^no[ -]known|^united[ -]states[ -]gov")
+LICENCE_ALLOW_RE = re.compile(r"^cc0(-1\.0)?$|^cc-by-\d\.\d(-[a-z]{2,3})?$")
+FLICKR_ID_TO_SLUG = {"9": "cc0-1.0", "11": "cc-by-4.0", "4": "cc-by-2.0"}
+
+
+def licence_display(slug):
+    """'cc-by-3.0-tw' -> ('CC BY 3.0 TW', canonical deed URL). Cosmetic only; the gate is the
+    regex pair above. The deed URL is built from the slug rather than looked up so a port we
+    have never seen still records a resolvable link in persona.json."""
+    s = slug.lower()
+    if s.startswith("cc0"):
+        return "CC0 1.0", "https://creativecommons.org/publicdomain/zero/1.0/"
+    body = s[len("cc-by-"):]
+    ver, _, port = body.partition("-")
+    name = "CC BY %s%s" % (ver, (" " + port.upper()) if port else "")
+    url = "https://creativecommons.org/licenses/by/%s/%s" % (ver, (port + "/") if port else "")
+    return name, url
+
+
+def licence_ok(slug):
+    """Platform-neutral licence gate. Returns (info_or_None, reason).
+
+    info = {"name","url","attribution","slug"} — the same shape ALLOWED_LICENSES carries, so
+    everything downstream is indifferent to which backend produced the candidate."""
+    s = (slug or "").strip().lower()
+    if not s:
+        return None, ("no licence reported — refusing. An absent licence is not a permissive "
+                      "one; it is a source that did not answer the question")
+    if LICENCE_DENY_RE.search(s):
+        return None, ("licence %r is excluded by the spine (share-alike, non-commercial, "
+                      "no-derivatives, or a status assertion rather than a grant)" % s)
+    if not LICENCE_ALLOW_RE.match(s):
+        return None, ("licence %r is not a form this script knows — refusing rather than "
+                      "guessing what it permits" % s)
+    name, url = licence_display(s)
+    return {"name": name, "url": url, "attribution": not s.startswith("cc0"), "slug": s}, ""
+
+
+def licence_name_ok(name):
+    """Re-check a licence NAME already written into a persona.json. `verify` audits the bank on
+    disk, where schema v3 records the slug but schema v2 kept only the display name — so the
+    audit has to be able to run the same rule against the name. licence_display() is the exact
+    inverse of this transform, which is why round-tripping it is safe."""
+    slug = (name or "").strip().lower().replace(" ", "-")
+    info, _ = licence_ok(slug)
+    return info is not None
 
 # --------------------------------------------------------------------------------------
 # ACCEPTANCE THRESHOLDS
@@ -163,6 +221,32 @@ ETHNICITY_HINTS = {
 # queries prove barren — that is cheaper than widening the composer for everybody.
 QUERY_OVERRIDES = {}
 
+# --- Commons needs its own vocabulary, and the reason is structural -------------------
+# Flickr's `text=` is fuzzy: extra words re-rank. Commons full-text ANDs every term, so each
+# word added is a filter, not a nudge. Measured 2026-08-10 on the same corpus:
+#   man                        128,099
+#   man portrait                 4,685
+#   man kitchen                    166
+#   man kitchen candid portrait        0
+# The 5-7 token phrases above are perfectly good Flickr queries and return literally nothing
+# here. Two or three tokens is not a stylistic preference; it is the difference between a
+# result set and an empty one.
+COMMONS_SUBJECTS = {
+    ("male", "20-29"): ["young man"], ("male", "30-39"): ["man"],
+    ("male", "40-49"): ["man"], ("male", "50-59"): ["older man"],
+    ("male", "60-70"): ["elderly man"],
+    ("female", "20-29"): ["young woman"], ("female", "30-39"): ["woman"],
+    ("female", "40-49"): ["woman"], ("female", "50-59"): ["older woman"],
+    ("female", "60-70"): ["elderly woman"],
+}
+# One token each. Anything longer stacks another AND onto a corpus that is already small.
+COMMONS_SCENES = ["portrait", "kitchen", "garden", "market", "outdoors", "smiling",
+                  "cooking", "walking", "workshop", "cafe"]
+COMMONS_ETHNICITY_HINTS = {
+    "wh": [""], "hl": ["latino", "hispanic"], "bl": ["african"],
+    "as": ["asian"], "mx": ["arab", "indigenous"],
+}
+
 CAMERA_NOTES = ("indoor/ambient available light, real skin texture — always camera-match; "
                 "ALWAYS feed THIS ref.jpg, never a previous gen (ima2 i2i drifts identity)")
 
@@ -224,19 +308,93 @@ def api_key():
 
 
 # --------------------------------------------------------------------------------------
+# GATE P — personality / publicity rights
+# --------------------------------------------------------------------------------------
+# A CC licence is a COPYRIGHT licence and says so in its own text: CC BY 4.0 §2(b)(1) excludes
+# publicity, privacy and personality rights from the grant, and CC0 §4 disclaims that it
+# obtains any consent. So a photograph can be perfectly licensed and still be unusable in an
+# advertisement for a supplement, because the photographer's permission was never the subject's.
+#
+# Commons is the only source that surfaces this as machine-readable state: extmetadata carries
+# Restrictions="personality" (sometimes "trademarked", "insignia", or several joined by "|")
+# when a file has that warning template. Measured on 2026-08-10, SEVEN of eight candidates from
+# a plain `smiling woman` search carried it — this is the common case, not the corner case.
+#
+# One-way valve on purpose. A set flag REJECTS; an empty flag proves nothing at all, because the
+# template is applied by volunteers and its absence is silence rather than clearance. So this
+# gate can only ever remove candidates, and never certifies one.
+PERSONALITY_FLAGS = ("personality", "trademarked", "insignia", "currency", "design")
+
+
+def gate_personality(cand):
+    """Returns (ok, reason). Never a green light — only a refusal."""
+    raw = str(cand.get("restrictions") or "").strip().lower()
+    if not raw:
+        return True, ""
+    hits = [f for f in PERSONALITY_FLAGS if f in raw]
+    if hits:
+        return False, ("source flags restrictions=%r — a CC licence covers copyright only "
+                       "(CC BY 4.0 s2(b)(1) excludes publicity/personality rights), and this "
+                       "file is marked as carrying exactly that kind of claim" % raw)
+    return False, ("source flags restrictions=%r, a warning this script does not recognise — "
+                   "refusing rather than deciding it is harmless" % raw)
+
+
+# --------------------------------------------------------------------------------------
+# GATE C — re-host origin
+# --------------------------------------------------------------------------------------
+# Pexels, Unsplash, nappy and StockSnap are permanently out of this pipeline, and not on
+# licence grounds: their own terms of service forbid using their photographs for machine
+# learning, dataset building or model training, which is what anchoring a generator on a
+# reference image is. That prohibition attaches to the PHOTOGRAPH, so it survives the trip
+# through a mirror. Commons re-hosts a large number of them under a CC tag applied by the
+# uploader, and prior sourcing passes had already scored several as usable picks.
+#
+# A mirror does not dissolve the origin's terms. Read the Credit/Artist HTML, which is where
+# Commons records where a re-hosted file came from, and refuse on a match.
+BANNED_ORIGINS = ("nappy.co", "unsplash.com", "pexels.com", "stocksnap.io", "pixabay.com",
+                  "freepik.com", "burst.shopify.com", "reshot.com")
+
+
+def gate_origin(cand):
+    """Returns (ok, reason)."""
+    blob = " ".join(str(cand.get(k) or "") for k in ("credit_blob", "author", "page_url")).lower()
+    for host in BANNED_ORIGINS:
+        if host in blob:
+            return False, ("re-hosted from %s, whose own terms forbid using the photograph for "
+                           "machine learning / dataset use — a mirror does not dissolve the "
+                           "origin's terms" % host)
+    return True, ""
+
+
+# --------------------------------------------------------------------------------------
 # GATE 1 — licence
 # --------------------------------------------------------------------------------------
-def gate_license(photo):
+def gate_artwork(cand):
+    """Gate A. A photograph OF a painting is not a photograph of a person, and every hour of
+    this corpus is full of them. Title and description only — no download, no model call."""
+    blob = "%s %s %s" % (cand.get("title") or "", (cand.get("raw") or {}).get("title") or "",
+                         _strip_html((cand.get("raw") or {}).get("description") or ""))
+    m = ARTWORK_RE.search(blob)
+    if m:
+        return False, ("title/description reads as artwork or an archive reproduction (%r) — "
+                       "gate 5 would reject it as 'not a camera photograph' after paying for "
+                       "the model call" % m.group(0))
+    return True, ""
+
+
+def gate_license(cand):
     """Read the licence back from the response; never assume the search filter held.
-    Returns (license_id, info_or_None, reason)."""
-    lic = str(photo.get("license", "")).strip()
-    if lic in ALLOWED_LICENSES:
-        return lic, ALLOWED_LICENSES[lic], ""
-    known = FORBIDDEN_LICENSES.get(lic)
-    if known:
-        return lic, None, "licence %s forbidden: %s" % (lic, known)
-    return lic, None, ("licence %r is not a licence id this script knows — refusing rather than "
-                       "guessing what it permits" % lic)
+    Returns (license_slug, info_or_None, reason).
+
+    Flickr answers with a numeric id whose meaning is Flickr's alone, so its backend translates
+    to a slug at the boundary and the untranslatable ids keep their spelled-out refusal here."""
+    raw = str(cand.get("license", "")).strip()
+    if raw in FORBIDDEN_LICENSES:
+        return raw, None, "licence %s forbidden: %s" % (raw, FORBIDDEN_LICENSES[raw])
+    slug = cand.get("licence_slug") or FLICKR_ID_TO_SLUG.get(raw) or raw
+    info, reason = licence_ok(slug)
+    return slug, info, reason
 
 
 # --------------------------------------------------------------------------------------
@@ -259,10 +417,16 @@ def sizes_from_extras(photo):
     return out
 
 
-def largest_size(photo, key, session, allow_getsizes=True, sleep=0.0):
-    """Largest DOWNLOADABLE size. The extras list only carries url_l (1024 long edge, which is
-    0.7MP on a 3:2 frame and fails the floor) and url_o (present only when the owner allows
-    original download), so anything in between needs flickr.photos.getSizes."""
+def largest_size(cand, key, session, allow_getsizes=True, sleep=0.0):
+    """Largest DOWNLOADABLE size, dispatched on the backend that produced the candidate.
+
+    Commons hands back the full asset's real geometry in the same response as the metadata, so
+    its candidates arrive with `sizes` already complete and there is nothing further to ask.
+    Flickr is the awkward one and the rest of this function is about it."""
+    if cand.get("platform") != "flickr":
+        sizes = cand.get("sizes") or []
+        return max(sizes) if sizes else None
+    photo = cand.get("raw") or cand
     cands = sizes_from_extras(photo)
     best = max(cands) if cands else None
     if best and meets_resolution(best[1], best[2]):
@@ -531,27 +695,194 @@ def flickr_call(session, method, key, **params):
     return data
 
 
-def search_page(session, key, text, page, per_page):
+def flickr_page_url(photo):
+    owner = photo.get("path_alias") or photo.get("owner") or ""
+    return "https://www.flickr.com/photos/%s/%s/" % (owner, photo["id"])
+
+
+def flickr_author(photo):
+    for k in ("realname", "ownername", "path_alias", "owner"):
+        for v in [(photo.get(k) or "").strip()]:
+            if v:
+                return v
+    return "unknown"
+
+
+def flickr_search(session, key, text, page, per_page, _cat=None):
+    """Returns (candidates, total_pages) in the NORMALIZED shape every gate downstream reads."""
     data = flickr_call(
         session, "flickr.photos.search", key,
         text=text, license=LICENSE_SEARCH_PARAM, safe_search=1, content_types=0,
         media="photos", sort="relevance", per_page=per_page, page=page,
         extras="license,owner_name,url_l,url_o,o_dims,path_alias,realname")
     photos = data.get("photos", {}) or {}
-    return photos.get("photo", []) or [], int(photos.get("pages", 0) or 0)
+    out = []
+    for p in photos.get("photo", []) or []:
+        lic = str(p.get("license", "")).strip()
+        out.append({
+            "platform": "flickr",
+            "id": str(p.get("id")),
+            "title": (p.get("title") or "").strip(),
+            "page_url": flickr_page_url(p),
+            "author": flickr_author(p),
+            "license": lic,                          # the raw id, so FORBIDDEN_LICENSES still speaks
+            "licence_slug": FLICKR_ID_TO_SLUG.get(lic, ""),
+            "sizes": sizes_from_extras(p),
+            # Flickr exposes no personality-rights flag of any kind. Empty is honest here: the
+            # gate is a one-way valve, so an absent flag was never a clearance anyway.
+            "restrictions": "",
+            "credit_blob": "",
+            "raw": p,
+        })
+    return out, int(photos.get("pages", 0) or 0)
 
 
-def photo_page_url(photo):
-    owner = photo.get("path_alias") or photo.get("owner") or ""
-    return "https://www.flickr.com/photos/%s/%s/" % (owner, photo["id"])
+# --------------------------------------------------------------------------------------
+# Wikimedia Commons
+# --------------------------------------------------------------------------------------
+# The only backend that needs no account, no key and no registration, which is the whole reason
+# it is the default. Its Terms of Use were read in full on 2026-08-10: zero occurrences of
+# "machine learning", "artificial intelligence", "dataset", "training" or "data mining", so
+# unlike Pexels and Unsplash there is no ToS bar on using a file as a generator reference.
+#
+# What it is NOT is a bank of two hundred ordinary faces. Measured the same day: the whole
+# structured-data human corpus under one licence is ~5,400 files, and it skews hard to named
+# public figures, Wikimedia event photography, museum sculpture and archive scans — gate 5
+# rejects those on `recognizable_public_figure`, but only after paying for the model call.
+COMMONS_API = "https://commons.wikimedia.org/w/api.php"
+COMMONS_MIMES = ("image/jpeg", "image/png")
+# One at a time, NEVER OR-ed. `incategory:A OR incategory:B` over two 8-million-file categories
+# returns 974 results; the parser does not mean by it what a reader assumes it means.
+#
+# ORDER IS NOT COSMETIC, and it is the opposite of what it should intuitively be. CC0 asks for
+# no attribution, so walking it first looks like the frugal choice. Measured 2026-08-10: it is
+# the worst one. `incategory:"CC-zero" filetype:bitmap woman` returns the Metropolitan Museum's
+# public-domain dump almost exclusively — Portrait_of_a_Woman_MET_DP161260, Marble_head_of_a_
+# woman, Terracotta_statue, furniture plaques. Institutions releasing scans of dead artists'
+# work pick CC0; living photographers uploading their own pictures pick CC BY. The licence
+# correlates with the KIND of uploader, so the attribution-free category is precisely the one
+# with no photographs of living people in it. CC BY 4.0 first, and it is also the newest
+# instrument (2013+), so it skews to modern uploads rather than mass archive imports.
+COMMONS_LICENCE_CATEGORIES = ("CC-BY-4.0", "CC-BY-3.0", "CC-BY-2.0", "CC-zero")
+
+# Cheap string kill-list, run on title+description BEFORE anything is downloaded or shown to a
+# vision model. The gate-5 rejections it replaces cost a gem9 call each and came back as
+# "not a camera photograph (AI/CGI/illustration)" — technically right about a Vermeer, and a
+# wasteful way to learn that a painting is not a photograph.
+ARTWORK_RE = re.compile(
+    # `met[ _]d[pt]` alone never fires: the accession runs on into digits (MET DP354965), so the
+    # group's trailing \b lands between "P" and "3" and fails. \w* has to eat the number.
+    r"\b(met[ _](?:d[pt]|ap|sf)\w*|painting|portrait of a|study of a|marble|terracotta|bronze|"
+    r"statue|statuette|bust|relief|plaque|engraving|etching|lithograph|woodcut|drawing|"
+    r"sketch|illustration|manuscript|fresco|mosaic|icon|sculpture|figurine|vase|amphora|"
+    r"coin|medal|stamp|postcard|poster|caricature|cartoon|tapestry|embroidery|"
+    r"daguerreotype|ambrotype|tintype|glass[ _]negative|cabinet[ _]card|carte[ _]de[ _]visite)\b",
+    re.I)
 
 
-def author_name(photo):
-    for k in ("realname", "ownername", "path_alias", "owner"):
-        v = (photo.get(k) or "").strip()
-        if v:
-            return v
-    return "unknown"
+class CommonsError(RuntimeError):
+    pass
+
+
+def commons_call(session, params, sleep=0.0, tries=4):
+    """POST, always. A 50-title GET exceeds the URL length the API accepts and comes back 414;
+    the failure looks like a network fault rather than a request that was too long.
+
+    Anonymous callers get 429s in bursts, so back off and retry rather than treating a throttle
+    as evidence about the photographs — the same trap largest_size() documents for Flickr."""
+    body = dict(params, format="json", formatversion="2")
+    for attempt in range(tries):
+        if sleep:
+            time.sleep(sleep)
+        try:
+            r = session.post(COMMONS_API, data=body, timeout=60)
+        except requests.RequestException as exc:
+            raise CommonsError("network: %s: %s" % (type(exc).__name__, exc))
+        if r.status_code == 429:
+            if attempt == tries - 1:
+                raise CommonsError("HTTP 429 after %d attempts — throttled, not empty" % tries)
+            time.sleep(5 * (attempt + 1))
+            continue
+        if r.status_code != 200:
+            raise CommonsError("HTTP %s" % r.status_code)
+        try:
+            data = r.json()
+        except ValueError:
+            raise CommonsError("non-JSON response")
+        if "error" in data:
+            raise CommonsError("api: %s" % (data["error"].get("info") or data["error"]))
+        return data
+    raise CommonsError("unreachable")
+
+
+def _strip_html(s):
+    return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", str(s or ""))).strip()
+
+
+def commons_candidate(page):
+    """One search hit -> the normalized shape, or None when it is not a usable image at all."""
+    ii = (page.get("imageinfo") or [{}])[0]
+    if (ii.get("mime") or "") not in COMMONS_MIMES:
+        return None
+    em = ii.get("extmetadata") or {}
+
+    def meta(k):
+        return str((em.get(k) or {}).get("value", "") or "").strip()
+
+    url = ii.get("url") or ""
+    # The asset URL now carries an ?utm_source= tail. Left on, it becomes part of the cache key
+    # and of the provenance record, so two fetches of one file look like two files.
+    url = url.split("?", 1)[0]
+    try:
+        w, h = int(ii.get("width") or 0), int(ii.get("height") or 0)
+    except (TypeError, ValueError):
+        w = h = 0
+    title = page.get("title") or ""
+    return {
+        "platform": "commons",
+        "id": str(page.get("pageid") or title),
+        "title": _strip_html(meta("ObjectName")) or title[5:],
+        "page_url": "https://commons.wikimedia.org/wiki/" + urllib_quote(title),
+        "author": _strip_html(meta("Artist")) or "unknown",
+        "license": "",
+        "licence_slug": meta("License").lower(),
+        "sizes": [(w * h, w, h, url, "commons-original")] if (w and h and url) else [],
+        "restrictions": meta("Restrictions"),
+        # Credit and Artist are HTML and are where a re-hosted file names where it came from.
+        # Keep them raw, unstripped: gate C matches on the href, which _strip_html would delete.
+        "credit_blob": "%s %s" % (meta("Credit"), meta("Artist")),
+        "raw": {"pageid": page.get("pageid"), "title": title, "description": meta("ImageDescription")},
+    }
+
+
+def urllib_quote(s):
+    return requests.utils.quote(str(s).replace(" ", "_"), safe=":/")
+
+
+def commons_search(session, _key, text, page, per_page, licence_category=None):
+    """Returns (candidates, total_pages).
+
+    `text` is AND-ed term by term — Commons full-text is not Flickr's fuzzy `text=`. Four scene
+    words return zero where two return hundreds, which is why the Commons query composer builds
+    SHORT queries and the Flickr one does not."""
+    cat = licence_category or COMMONS_LICENCE_CATEGORIES[0]
+    # filetype:bitmap is doing real work: namespace 6 is full of book scans and DjVu, and a
+    # plain `man kitchen candid portrait` search returns PDFs of Victorian novels.
+    srsearch = 'incategory:"%s" filetype:bitmap %s' % (cat, text)
+    limit = min(int(per_page or 50), 50)   # 50 is the anonymous ceiling; asking 500 does not raise it
+    data = commons_call(session, {
+        "action": "query", "generator": "search", "gsrsearch": srsearch,
+        "gsrnamespace": 6, "gsrlimit": limit, "gsroffset": max(0, (page - 1) * limit),
+        "prop": "imageinfo", "iiprop": "url|size|extmetadata|mime",
+    })
+    pages = (data.get("query") or {}).get("pages") or []
+    out = [c for c in (commons_candidate(p) for p in pages) if c]
+    # The API reports no page count for a generator search; "one more page exists if this one
+    # came back full" is the honest reading, and cmd_fetch's own caps bound the walk.
+    return out, (page + 1 if len(pages) >= limit else page)
+
+
+SEARCH_BACKENDS = {"commons": commons_search, "flickr": flickr_search}
 
 
 # --------------------------------------------------------------------------------------
@@ -628,9 +959,32 @@ def cell_counts(bank):
 # --------------------------------------------------------------------------------------
 # queries
 # --------------------------------------------------------------------------------------
-def build_queries(cell, max_queries):
+def build_commons_queries(cell):
+    """Short AND-ed queries. Broadest first, so a small corpus is not spent on the narrowest
+    phrasings — the opposite ordering of what reads naturally."""
+    subjects = COMMONS_SUBJECTS[(cell["gender"], cell["age_band"])]
+    hints = [h for h in COMMONS_ETHNICITY_HINTS[cell["ethnicity_key"]] if h]
+    out = []
+    for subj in subjects:
+        out.append(subj)
+        for hint in hints:
+            out.append("%s %s" % (hint, subj))
+    for subj in subjects:
+        for scene in COMMONS_SCENES:
+            out.append("%s %s" % (subj, scene))
+    for hint in hints:
+        for scene in COMMONS_SCENES[:4]:
+            out.append("%s %s %s" % (hint, subjects[0], scene))
+    # The composer can overshoot: "african" + "elderly woman" + "portrait" is four AND-ed terms
+    # and returns nothing. Drop them here rather than teaching every caller the token budget.
+    return [q for q in out if len(q.split()) <= 3]
+
+
+def build_queries(cell, max_queries, source="flickr"):
     """Returns (queries, truncated_count)."""
-    if cell["cell_id"] in QUERY_OVERRIDES:
+    if source == "commons":
+        base = build_commons_queries(cell)
+    elif cell["cell_id"] in QUERY_OVERRIDES:
         base = list(QUERY_OVERRIDES[cell["cell_id"]])
     else:
         subjects = SUBJECT_WORDS[(cell["gender"], cell["age_band"])]
@@ -654,15 +1008,15 @@ def build_queries(cell, max_queries):
 # --------------------------------------------------------------------------------------
 # writing a persona
 # --------------------------------------------------------------------------------------
-def attribution_text(photo, info):
+def attribution_text(cand, info):
     if not info["attribution"]:
         return None
     return '"%s" by %s (%s), licensed under %s (%s)' % (
-        (photo.get("title") or "untitled").strip(), author_name(photo),
-        photo_page_url(photo), info["name"], info["url"])
+        (cand.get("title") or "untitled").strip(), cand.get("author") or "unknown",
+        cand.get("page_url") or "", info["name"], info["url"])
 
 
-def build_persona_doc(handle, cell, photo, lic_id, info, img_meta, vision, raw_verdict, wm_detail):
+def build_persona_doc(handle, cell, cand, lic_id, info, img_meta, vision, raw_verdict, wm_detail):
     age_est = ""
     if isinstance(vision, dict) and vision.get("apparent_age_min") is not None:
         age_est = " ~%s-%s" % (vision.get("apparent_age_min"), vision.get("apparent_age_max"))
@@ -682,14 +1036,14 @@ def build_persona_doc(handle, cell, photo, lic_id, info, img_meta, vision, raw_v
             (isinstance(vision, dict) and vision.get("apparent_ethnicity")) or cell["ethnicity"]),
         "build_vibe": None,
         "source": {
-            "platform": "flickr",
-            "page_url": photo_page_url(photo),
-            "photo_id": str(photo["id"]),
-            "author": author_name(photo),
+            "platform": cand.get("platform") or "unknown",
+            "page_url": cand.get("page_url") or "",
+            "photo_id": str(cand.get("id") or ""),
+            "author": cand.get("author") or "unknown",
             "license": info["name"],
             "license_url": info["url"],
             "attribution_required": bool(info["attribution"]),
-            "attribution_text": attribution_text(photo, info),
+            "attribution_text": attribution_text(cand, info),
         },
         "image": dict(img_meta),
         "qc": {
@@ -697,7 +1051,7 @@ def build_persona_doc(handle, cell, photo, lic_id, info, img_meta, vision, raw_v
             "watermark": False,
             "face_visible": True,
             "accepted_date": time.strftime("%Y-%m-%d"),
-            "notes": ("machine gates passed: licence id %s read back from the API, %.2fMP, "
+            "notes": ("machine gates passed: licence %s read back from the source, %.2fMP, "
                       "burned-in-text screen (%s), dHash-deduped vs the whole bank, vision gate. "
                       "Vision JSON: %s" % (lic_id, img_meta["megapixels"], wm_detail,
                                            json.dumps(vision, sort_keys=True))),
@@ -776,10 +1130,13 @@ def cmd_verify(args):
         rec = bank[handle]
         doc, problems, notes = rec["doc"], [], []
 
+        # Re-derived through the same spine the fetcher uses, not compared against a frozen list
+        # of display names. A jurisdiction port (CC BY 3.0 TW) is minted without anyone telling
+        # us, and an enumeration reads a perfectly fine licence as "unknown, refuse".
         lic = ((doc.get("source") or {}).get("license") or "").strip()
-        if lic not in ALLOWED_LICENSE_NAMES:
-            problems.append("licence %r not in the allow-list (%s)"
-                            % (lic, ", ".join(sorted(ALLOWED_LICENSE_NAMES))))
+        if not licence_name_ok(lic):
+            problems.append("licence %r does not pass the licence spine (CC0, or CC BY with no "
+                            "SA/NC/ND term)" % lic)
 
         if not os.path.exists(rec["ref"]):
             problems.append("ref.jpg missing on disk")
@@ -882,11 +1239,19 @@ def cmd_fetch(args):
               % (cell["cell_id"], have, cell["target_count"]))
         return
 
-    key = api_key()
+    source = getattr(args, "source", "commons")
+    search = SEARCH_BACKENDS[source]
+    # Only Flickr needs a key, and api_key() exits when it is missing. Calling it for Commons
+    # would make a keyless backend refuse to run for want of a key it never uses.
+    key = api_key() if source == "flickr" else None
     session = requests.Session()
     session.headers["User-Agent"] = "genseo-fetch-personas/1.0 (+wellnessnest.co)"
 
-    queries, dropped = build_queries(cell, args.queries)
+    queries, dropped = build_queries(cell, args.queries, source=source)
+    # Commons licence categories are walked one at a time. `incategory:"A" OR incategory:"B"`
+    # over two multi-million-file categories returns 974 results — the parser does not read it
+    # the way a person does, and the failure is silent.
+    lic_scopes = list(COMMONS_LICENCE_CATEGORIES) if source == "commons" else [None]
     hashes = bank_hashes(bank)
     known_photo_ids = set()
     for rec in bank.values():
@@ -898,9 +1263,13 @@ def cmd_fetch(args):
     print("cell %s — %s %s %s | have %d, target %d, fetching up to %d"
           % (cell["cell_id"], cell["gender"], cell["age_band"], cell["ethnicity"],
              have, cell["target_count"], needed))
-    print("licence filter: %s (%s)" % (LICENSE_SEARCH_PARAM,
-                                       ", ".join(ALLOWED_LICENSES[i]["name"]
+    if source == "flickr":
+        print("source: flickr | licence filter: %s (%s)"
+              % (LICENSE_SEARCH_PARAM, ", ".join(ALLOWED_LICENSES[i]["name"]
                                                  for i in LICENSE_SEARCH_PARAM.split(","))))
+    else:
+        print("source: commons | licence categories walked separately: %s"
+              % ", ".join(lic_scopes))
     print("queries (%d%s), up to %d page(s) x %d results each:"
           % (len(queries), ", %d MORE AVAILABLE but capped by --queries" % dropped if dropped else "",
              args.pages, args.per_page))
@@ -913,8 +1282,11 @@ def cmd_fetch(args):
     accepted, examined, seen_ids = [], 0, set()
     stop_reason = "queries exhausted"
     vision_infra_fails = 0
+    # CC0 first, so the attribution-free licence is spent before the ones that oblige us to
+    # carry a credit line into every article that uses the face.
+    jobs = [(scope, q) for scope in lic_scopes for q in queries]
     try:
-        for query in queries:
+        for scope, query in jobs:
             if len(accepted) >= needed:
                 stop_reason = "reached the fetch target"
                 break
@@ -926,8 +1298,8 @@ def cmd_fetch(args):
                     stop_reason = "hit --max-candidates=%d" % args.max_candidates
                     break
                 try:
-                    photos, total_pages = search_page(session, key, query, page, args.per_page)
-                except FlickrError as exc:
+                    photos, total_pages = search(session, key, query, page, args.per_page, scope)
+                except (FlickrError, CommonsError) as exc:
                     print("  ✗ search failed (%s | page %d): %s" % (query, page, exc))
                     break
                 if not photos:
@@ -974,7 +1346,7 @@ def cmd_fetch(args):
                     print("  ✓ %-12s [%s] → %s  %dx%d %.2fMP %s by %s"
                           % (pid, "would accept" if args.dry_run else "accept", handle,
                              img.size[0], img.size[1], img.size[0] * img.size[1] / 1e6,
-                             doc_parts["info"]["name"], author_name(photo)))
+                             doc_parts["info"]["name"], photo.get("author") or "unknown"))
                     accepted.append((handle, cell["pool_id"], ref))
                     hashes[handle] = int(doc_parts["img_meta"]["dhash"], 16)
                 if total_pages and page >= total_pages:
@@ -1028,15 +1400,32 @@ def commit_accepted(accepted):
           % len(accepted))
 
 
-def process_candidate(photo, cell, key, session, hashes, args):
-    """Runs gates 1-5, cheapest first. Returns a tuple whose first element is the gate that
-    rejected it, or ("accept", "", parts, jpeg_bytes, image)."""
-    lic_id, info, reason = gate_license(photo)
+def process_candidate(cand, cell, key, session, hashes, args):
+    """Runs the gates cheapest-first. Returns a tuple whose first element is the gate that
+    rejected it, or ("accept", "", parts, jpeg_bytes, image).
+
+    P and C run FIRST, ahead of the licence gate, because both are free string tests on
+    metadata already in hand — and because both answer a question a licence cannot. A file can
+    be flawlessly CC BY and still be a portrait the source itself marks as carrying personality
+    rights, or a re-host of a photograph whose origin forbids exactly this use."""
+    ok, reason = gate_personality(cand)
+    if not ok:
+        return ("personality", reason)
+
+    ok, reason = gate_origin(cand)
+    if not ok:
+        return ("origin", reason)
+
+    ok, reason = gate_artwork(cand)
+    if not ok:
+        return ("artwork", reason)
+
+    lic_id, info, reason = gate_license(cand)
     if not info:
         return ("licence", reason)
 
     try:
-        size = largest_size(photo, key, session, allow_getsizes=not args.no_getsizes,
+        size = largest_size(cand, key, session, allow_getsizes=not args.no_getsizes,
                             sleep=args.sleep)
     except FlickrError as exc:
         return ("api", "getSizes failed: %s" % exc)
@@ -1047,9 +1436,21 @@ def process_candidate(photo, cell, key, session, hashes, args):
         return ("resolution", "%dx%d = %.2fMP short=%d (floor %.1fMP / %dpx) [%s]"
                 % (w, h, w * h / 1e6, min(w, h), MIN_MEGAPIXELS, MIN_SHORT_EDGE, label))
 
+    # upload.wikimedia.org rate-limits SEPARATELY from the API, and it 429s far sooner. Without
+    # this retry a throttled run reports 30 straight "[download] 429" lines, which read as
+    # thirty bad photographs — the same misreading VISION_INFRA_ABORT exists to prevent one
+    # gate further down. A 429 is the host asking us to slow down; it says nothing about the file.
     try:
-        resp = session.get(url, timeout=90)
-        resp.raise_for_status()
+        for attempt in range(4):
+            resp = session.get(url, timeout=90)
+            if resp.status_code == 429:
+                if attempt == 3:
+                    return ("throttled", "HTTP 429 from the download host after 4 attempts — "
+                                         "slow the run down; this is not a verdict on the photo")
+                time.sleep(5 * (attempt + 1))
+                continue
+            resp.raise_for_status()
+            break
         jpeg, img = as_jpeg(resp.content)
     except (requests.RequestException, OSError, ValueError) as exc:
         return ("download", "%s" % exc)
@@ -1119,6 +1520,89 @@ def cmd_selftest(_args):
     check("all forbidden ids rejected with a reason", True)
     _, info, _ = gate_license({"license": "99"})
     check("unknown licence id refused rather than guessed", info is None)
+
+    print("licence spine (platform-neutral slugs)")
+    for good in ("cc0-1.0", "cc0", "cc-by-4.0", "cc-by-2.0", "cc-by-3.0", "cc-by-3.0-tw",
+                 "cc-by-2.5-in"):
+        i, why = licence_ok(good)
+        check("%s accepted" % good, i is not None, why)
+    check("a jurisdiction port we have never seen still resolves a deed URL",
+          licence_ok("cc-by-3.0-tw")[0]["url"].endswith("/by/3.0/tw/"))
+    for bad in ("cc-by-sa-4.0", "cc-by-nc-2.0", "cc-by-nd-3.0", "cc-by-nc-sa-2.0",
+                "public domain", "pd-old", "gfdl", "no known copyright restrictions",
+                "attribution", "united states government work", "fal", ""):
+        i, why = licence_ok(bad)
+        check("%r refused" % bad, i is None and bool(why))
+    check("CC0 needs no attribution; CC BY does",
+          licence_ok("cc0-1.0")[0]["attribution"] is False
+          and licence_ok("cc-by-4.0")[0]["attribution"] is True)
+    check("display name round-trips back through the gate (what verify re-reads)",
+          all(licence_name_ok(licence_ok(s)[0]["name"])
+              for s in ("cc0-1.0", "cc-by-4.0", "cc-by-2.0", "cc-by-3.0-tw")))
+    check("verify refuses a share-alike display name", not licence_name_ok("CC BY-SA 4.0"))
+    check("a Commons slug reaches the gate without a Flickr id",
+          gate_license({"licence_slug": "cc-by-4.0"})[1] is not None)
+    check("a Flickr id still maps through FLICKR_ID_TO_SLUG",
+          gate_license({"license": "11"})[1]["name"] == "CC BY 4.0")
+
+    print("gate P — personality / publicity rights")
+    check("no flag = no refusal (silence is not clearance, but it is not evidence either)",
+          gate_personality({"restrictions": ""})[0])
+    for flag in ("personality", "trademarked|personality", "insignia", "currency"):
+        ok_, why = gate_personality({"restrictions": flag})
+        check("restrictions=%r refused" % flag, not ok_ and "publicity" in why or not ok_)
+    check("an UNRECOGNISED warning is also refused, not waved through",
+          not gate_personality({"restrictions": "some-new-template-nobody-added-here"})[0])
+
+    print("gate A — artwork / archive reproduction")
+    for art in ("Portrait of a Woman MET DP161260", "Marble head of an elderly woman",
+                "Terracotta statue of a young woman", "Study of a Young Woman",
+                "Woman with a Lute MET DP354965", "1890 cabinet card of a lady"):
+        ok_, why = gate_artwork({"title": art})
+        check("%r refused before download" % art[:34], not ok_, why[:0])
+    for real in ("Woman cooking in her kitchen", "Farmers market, Portland 2019",
+                 "My mother in the garden"):
+        check("%r survives gate A" % real[:30], gate_artwork({"title": real})[0])
+    check("gate A also reads the Commons file description, not only the title",
+          not gate_artwork({"title": "Untitled", "raw": {"description": "Oil painting, c.1650"}})[0])
+
+    print("gate C — re-host origin")
+    check("a plain Commons credit passes", gate_origin({"credit_blob": "Own work"})[0])
+    for host in ("unsplash.com", "pexels.com", "nappy.co"):
+        ok_, why = gate_origin({"credit_blob": '<a href="https://%s/photos/x">via</a>' % host})
+        check("re-host from %s refused" % host, not ok_ and host in why)
+    check("the origin is caught in ANY of credit/author/page_url",
+          not gate_origin({"author": "uploaded from pexels.com"})[0])
+
+    print("Commons query grammar")
+    cq = build_commons_queries(cells_by_id(_load(TAXONOMY, "taxonomy"))["f6070-bl"])
+    check("every Commons query is <= 3 AND-ed terms (4 tokens returns 0 on this corpus)",
+          all(len(q.split()) <= 3 for q in cq), "longest: %r" % max(cq, key=lambda q: len(q.split())))
+    check("broadest query comes first", len(cq[0].split()) <= 2)
+    check("commons queries never leak into the Flickr composer",
+          build_queries(cells_by_id(_load(TAXONOMY, "taxonomy"))["f6070-bl"], 4)[0]
+          != build_queries(cells_by_id(_load(TAXONOMY, "taxonomy"))["f6070-bl"], 4,
+                           source="commons")[0])
+
+    print("Commons candidate normalisation")
+    cand = commons_candidate({
+        "pageid": 42, "title": "File:Some woman.jpg",
+        "imageinfo": [{"mime": "image/jpeg", "width": 2000, "height": 1500,
+                       "url": "https://upload.wikimedia.org/x.jpg?utm_source=api",
+                       "extmetadata": {"License": {"value": "cc-by-4.0"},
+                                       "Artist": {"value": "<a href='/wiki/User:X'>X</a>"},
+                                       "Credit": {"value": "Own work"},
+                                       "Restrictions": {"value": ""}}}]})
+    check("mime-gated, geometry carried, utm tail stripped",
+          cand and cand["sizes"][0][3].endswith("/x.jpg") and cand["sizes"][0][0] == 3000000)
+    check("author HTML flattened for display", cand["author"] == "X")
+    check("credit_blob keeps the raw href gate C matches on",
+          "href" in cand["credit_blob"])
+    check("a PDF in namespace 6 is dropped, not scored",
+          commons_candidate({"pageid": 1, "title": "File:Book.pdf",
+                             "imageinfo": [{"mime": "application/pdf"}]}) is None)
+    check("largest_size does not take the Flickr branch for a Commons candidate",
+          largest_size(cand, None, None)[3].endswith("/x.jpg"))
 
     print("resolution gate")
     check("1024x683 (0.70MP) rejected", not meets_resolution(1024, 683))
@@ -1250,19 +1734,22 @@ def main():
     p = sub.add_parser("plan", help="what each cell still needs (no network)")
     p.set_defaults(fn=cmd_plan)
 
-    f = sub.add_parser("fetch", help="fill ONE taxonomy cell from Flickr")
+    f = sub.add_parser("fetch", help="fill ONE taxonomy cell from a CC image source")
     f.add_argument("--cell", required=True, help="cell_id from personas/taxonomy.json")
+    f.add_argument("--source", choices=sorted(SEARCH_BACKENDS), default="commons",
+                   help="commons (default; no key, no account) or flickr (needs FLICKR_API_KEY)")
     f.add_argument("--limit", type=int, default=None, help="accept at most N (default: the cell's shortfall)")
     f.add_argument("--dry-run", action="store_true",
                    help="run every gate for real but write nothing")
     f.add_argument("--pages", type=int, default=3,
                    help="pages per query (default 3; one page returns the same popular photos)")
-    f.add_argument("--per-page", type=int, default=500, help="results per page, max 500")
+    f.add_argument("--per-page", type=int, default=500,
+                   help="results per page (Flickr max 500; Commons caps anonymous callers at 50)")
     f.add_argument("--queries", type=int, default=12, help="cap on composed query phrasings")
     f.add_argument("--max-candidates", type=int, default=400,
                    help="stop after examining this many photos (reported at the end)")
     f.add_argument("--sleep", type=float, default=0.3,
-                   help="seconds between Flickr calls (search pages AND per-candidate getSizes)")
+                   help="seconds between source calls (search pages AND per-candidate getSizes)")
     f.add_argument("--no-getsizes", action="store_true",
                    help="skip the flickr.photos.getSizes lookup; judge resolution on search extras only")
     f.set_defaults(fn=cmd_fetch)
