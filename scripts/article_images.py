@@ -116,7 +116,16 @@ def face_angle_phrase(angle_id, persona_ref):
     if angle_id not in angles:
         sys.exit(f"✗ unknown --face-angle {angle_id!r}. Valid: {', '.join(sorted(angles))}")
 
-    handle = os.path.basename(os.path.dirname(os.path.abspath(persona_ref)))
+    # The handle is derived from the ref's parent directory, so a ref from outside the bank
+    # yields a handle nothing in index.json matches — which reads as "this persona has spent no
+    # angles" and waves every angle through, forever. Refuse instead of guessing: a face that is
+    # not in the bank has no angle history to check it against, and that is the whole gate.
+    ref_abs = os.path.abspath(persona_ref)
+    if os.path.dirname(os.path.dirname(ref_abs)) != os.path.abspath(PERSONAS):
+        sys.exit(f"✗ persona ref must live in the bank ({PERSONAS}/<handle>/ref.jpg), got "
+                 f"{ref_abs}. An off-bank ref has no angle history, so the one-angle-per-model "
+                 f"rule cannot be enforced against it.")
+    handle = os.path.basename(os.path.dirname(ref_abs))
     try:
         with open(idx_p) as fh:
             entry = ((json.load(fh).get("personas") or {}).get(handle)) or {}
