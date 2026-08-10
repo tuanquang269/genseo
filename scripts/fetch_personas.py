@@ -30,6 +30,7 @@ Runs under /usr/bin/python3 (3.9): stdlib + PIL + numpy + requests, which is the
 interpreter on this Mac carrying all three (homebrew python3 has no PIL).
 """
 import argparse
+import gzip
 import hashlib
 import io
 import json
@@ -53,6 +54,9 @@ INDEX = os.path.join(PERSONAS, "index.json")
 TAXONOMY = os.path.join(PERSONAS, "taxonomy.json")
 GEM9 = "/Users/kevinkreative/.local/bin/gem9"
 FLICKR_REST = "https://api.flickr.com/services/rest/"
+OPENIMAGES_DIR = os.path.join(PERSONAS, "_openimages")
+OPENIMAGES_INDEX = os.path.join(OPENIMAGES_DIR, "candidates.json.gz")
+OPENIMAGES_VERDICTS = os.path.join(OPENIMAGES_DIR, "verdicts.jsonl")
 
 # The repo's split-interpreter trap has a sibling: genseo_config lives next to this file, so
 # the scripts dir must be on sys.path BEFORE the import, or a run launched from any other cwd
@@ -206,6 +210,60 @@ def worker_session(template):
         sess.headers.update(template.headers)
         _THREAD_LOCAL.session = sess
     return sess
+
+
+# --------------------------------------------------------------------------------------
+# verdict cache
+# --------------------------------------------------------------------------------------
+# The taxonomy has 50 cells and Open Images is ONE undifferentiated pool. Without a cache,
+# filling cell 50 means re-judging every face the first 49 already refused — 50 x 15k model
+# calls to source 200 photographs. So the vision answer is stored against the image, not
+# against the cell that happened to ask for it, and evaluate_vision re-reads it for free.
+#
+# It is keyed on the SOURCE's own image id, which is why only the Open Images backend uses it:
+# a Commons pageid is stable, but a Commons candidate carries a thumbnail URL whose geometry
+# depends on the request, so "the same id" there does not mean "the same pixels".
+_VERDICT_CACHE = {}
+_VERDICT_LOCK = threading.Lock()
+
+
+def verdict_cache_load():
+    _VERDICT_CACHE.clear()
+    if not os.path.exists(OPENIMAGES_VERDICTS):
+        return 0
+    with open(OPENIMAGES_VERDICTS) as fh:
+        for line in fh:
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                rec = json.loads(line)
+            except ValueError:
+                continue      # a half-written last line after a kill, not a reason to refuse to run
+            if rec.get("image_id"):
+                _VERDICT_CACHE[rec["image_id"]] = rec
+    return len(_VERDICT_CACHE)
+
+
+def verdict_cached(cand):
+    if cand.get("platform") != "openimages":
+        return None
+    return _VERDICT_CACHE.get(str(cand.get("id")))
+
+
+def verdict_remember(cand, **fields):
+    """Append-only, because a worker thread crashing mid-rewrite must not be able to lose the
+    thousands of model calls already banked. Appending one line can only ever lose that line."""
+    if cand.get("platform") != "openimages":
+        return
+    rec = dict(fields)
+    rec["image_id"] = str(cand.get("id"))
+    rec["seen_date"] = time.strftime("%Y-%m-%d")
+    with _VERDICT_LOCK:
+        _VERDICT_CACHE[rec["image_id"]] = rec
+        os.makedirs(os.path.dirname(OPENIMAGES_VERDICTS), exist_ok=True)
+        with open(OPENIMAGES_VERDICTS, "a") as fh:
+            fh.write(json.dumps(rec, sort_keys=True) + "\n")
 
 
 class _AbortRun(Exception):
@@ -482,7 +540,12 @@ def largest_size(cand, key, session, allow_getsizes=True, sleep=0.0):
 
     Commons hands back the full asset's real geometry in the same response as the metadata, so
     its candidates arrive with `sizes` already complete and there is nothing further to ask.
+    Open Images knows the original's byte count but not its geometry, so it returns zeros and
+    the measurement moves to after the download — an honest "not known yet" rather than a
+    guessed width the resolution gate would treat as fact.
     Flickr is the awkward one and the rest of this function is about it."""
+    if cand.get("platform") == "openimages":
+        return (0, 0, 0, cand["download_url"], "flickr-original")
     if cand.get("platform") != "flickr":
         sizes = cand.get("sizes") or []
         return max(sizes) if sizes else None
@@ -615,15 +678,33 @@ VISION_RUBRIC = (
     '"apparent_gender": "male"|"female"|"ambiguous", "face_clearly_visible": true|false, '
     '"face_obscured": true|false, "beauty_filtered": true|false, '
     '"visible_text_or_watermark": true|false, "recognizable_public_figure": true|false, '
-    '"apparent_ethnicity": "<short phrase>", "notes": "<one short sentence>"}\n'
+    '"apparent_ethnicity": "<short phrase>", '
+    '"ethnicity_group": "white"|"hispanic"|"black"|"asian"|"other"|"unclear", '
+    '"notes": "<one short sentence>"}\n'
     "Definitions. is_camera_photograph: false for AI-generated, CGI, 3D render, painting, "
     "drawing or illustration. person_count: humans whose face is at least partly in frame. "
     "face_obscured: sunglasses, a hand, a mask, hair or heavy shadow covering the face. "
     "beauty_filtered: skin smoothing, blemish removal, catalogue-style retouching, beauty-app "
     "filtering. visible_text_or_watermark: ANY burned-in text, credit line, logo, date stamp or "
     "signature anywhere in the frame. recognizable_public_figure: a celebrity, politician, "
-    "athlete or other identifiable public person."
+    "athlete or other identifiable public person. ethnicity_group: which ONE of the five US "
+    "census-style groups the person most plausibly reads as - white (white non-Hispanic), "
+    "hispanic (Hispanic or Latino of any race), black (Black or African American), asian "
+    "(East, Southeast or South Asian), other (Middle Eastern/North African, Native American, "
+    "Pacific Islander, visibly multiracial). Answer \"unclear\" only when the image genuinely "
+    "does not support a call; a guess you would not defend is worse than \"unclear\"."
 )
+
+# The free-text `apparent_ethnicity` was always advisory — the bank's own ethnicity_note says
+# the gate REPORTS it and does not enforce it. That was survivable while queries carried the
+# demographic ("african american woman kitchen"), because the search engine did the sorting.
+# Open Images has no such lever: it is one undifferentiated pool of 15k faces, so if nothing
+# enforces ethnicity then all 25 non-white cells fill with whatever the corpus skews toward,
+# which the dataset's own card warns is Western. Hence a constrained token the taxonomy can
+# actually match on, and a free-text phrase kept alongside it for a human to check by eye.
+ETHNICITY_GROUP_TO_KEY = {
+    "white": "wh", "hispanic": "hl", "black": "bl", "asian": "as", "other": "mx",
+}
 
 
 def _extract_json(text):
@@ -690,6 +771,41 @@ def vision_check(image_path):
     raise VisionInfraError(last)
 
 
+ETHNICITY_PHRASE_HINTS = (
+    # Ordered: the first hit wins, so the more specific phrase has to come first. "african
+    # american" before "american", "south asian" before "asian", or a substring match places
+    # the face in the wrong cell while looking like it worked.
+    ("wh", ("white", "caucasian", "european", "anglo")),
+    ("hl", ("hispanic", "latino", "latina", "latinx", "mexican", "puerto rican", "cuban")),
+    ("bl", ("african american", "black", "afro", "african")),
+    ("as", ("south asian", "east asian", "southeast asian", "asian", "chinese", "japanese",
+            "korean", "indian", "filipino", "vietnamese", "thai")),
+    ("mx", ("middle eastern", "north african", "mena", "arab", "native american",
+            "indigenous", "pacific islander", "multiracial", "mixed")),
+)
+
+
+def ethnicity_key_of(v):
+    """The taxonomy ethnicity key this verdict places the face in, or None.
+
+    Two readings, in order of trust. `ethnicity_group` is a constrained token the rubric asks
+    for outright, so it needs no interpretation. The free-text `apparent_ethnicity` is the
+    fallback, and it exists because verdicts cached before the token was added would otherwise
+    all have to be re-bought — a cache of thousands of model calls is worth a keyword table.
+    Neither is a fact about the person; both are how the photograph reads, which is all a
+    demographic-coverage target can ever be about."""
+    group = str((v or {}).get("ethnicity_group") or "").strip().lower()
+    if group in ETHNICITY_GROUP_TO_KEY:
+        return ETHNICITY_GROUP_TO_KEY[group]
+    if group == "unclear":
+        return None
+    phrase = str((v or {}).get("apparent_ethnicity") or "").strip().lower()
+    for key, needles in ETHNICITY_PHRASE_HINTS:
+        if any(n in phrase for n in needles):
+            return key
+    return None
+
+
 def evaluate_vision(v, cell):
     """Pure verdict function over the parsed JSON. Returns a list of reject reasons.
 
@@ -734,6 +850,21 @@ def evaluate_vision(v, cell):
         reasons.append("no usable apparent age")
     if str(v.get("apparent_gender", "")).lower() != cell["gender"]:
         reasons.append("gender %r != cell %r" % (v.get("apparent_gender"), cell["gender"]))
+    # .get, not [], and a REASON rather than a KeyError when the cell declares nothing. This
+    # runs on a worker thread, where an exception surfaces as a crashed worker — which the
+    # caller counts as a rejected photograph. A malformed taxonomy would then look like a run
+    # of bad faces. Failing closed says the same "no" out loud, and the selftest asserts up
+    # front that every real cell carries a key the rubric can actually produce.
+    want_key = cell.get("ethnicity_key")
+    seen_key = ethnicity_key_of(v)
+    if not want_key:
+        reasons.append("cell %r declares no ethnicity_key — refusing rather than sourcing into "
+                       "a cell whose demographic target is unstated" % cell.get("cell_id"))
+    elif seen_key is None:
+        reasons.append("apparent ethnicity %r could not be placed in any of the five taxonomy "
+                       "groups" % (v.get("ethnicity_group") or v.get("apparent_ethnicity")))
+    elif seen_key != want_key:
+        reasons.append("reads as %r, cell wants %r" % (seen_key, want_key))
     if v.get("face_clearly_visible") is not True:
         reasons.append("face not clearly visible")
     if v.get("face_obscured") is True:
@@ -991,7 +1122,92 @@ def commons_search(session, _key, text, page, per_page, licence_category=None):
     return out, (page + 1 if len(pages) >= limit else page)
 
 
-SEARCH_BACKENDS = {"commons": commons_search, "flickr": flickr_search}
+# --------------------------------------------------------------------------------------
+# Open Images  (key-free, and it never touches flickr.com)
+# --------------------------------------------------------------------------------------
+# Google publishes, in a plain public bucket, both the licence/URL metadata for the CC BY 2.0
+# half of Flickr AND the MIAP annotations ("More Inclusive Annotations for People"), which box
+# every person with a PERCEIVED gender and age presentation. That second file is the whole
+# reason this backend exists. On Commons the dominant rejections were person_count != 1 and
+# gender != cell — two questions no Commons metadata can answer, so we were paying a ~28s model
+# call to ask them. MIAP answers both for nothing, before a single byte of pixel is fetched.
+#
+# On not crawling Flickr: flickr.com/robots.txt is `User-agent: * / Disallow: /`, with /search
+# additionally denied even to the named allow-list. So we do not fetch a single page of it. The
+# metadata comes from storage.googleapis.com and the pixels from staticflickr.com, whose own
+# robots.txt is the single comment "# Nothing to see here" — no directives, nothing disallowed.
+# The photo page URL is recorded for attribution, which CC BY 2.0 requires, and never requested.
+OPENIMAGES_MIN_BYTES = 250_000
+_OPENIMAGES_POOL = None
+_OPENIMAGES_LOCK = threading.Lock()
+
+
+def openimages_pool():
+    """The whole index, loaded once. ~15k rows and about 1.5MB gzipped — small enough that
+    paging it from memory is simpler and faster than any query engine we would have to keep."""
+    global _OPENIMAGES_POOL
+    with _OPENIMAGES_LOCK:
+        if _OPENIMAGES_POOL is None:
+            if not os.path.exists(OPENIMAGES_INDEX):
+                sys.exit("✗ no Open Images index at %s — build it first:\n    python3 %s"
+                         % (OPENIMAGES_INDEX, os.path.join(OPENIMAGES_DIR, "build_index.py")))
+            with gzip.open(OPENIMAGES_INDEX, "rt") as fh:
+                _OPENIMAGES_POOL = json.load(fh)
+        return _OPENIMAGES_POOL
+
+
+def openimages_candidate(rec):
+    """One index row -> the normalized shape the gates already speak.
+
+    `sizes` is deliberately EMPTY. Open Images records the original's byte count but not its
+    geometry, and inventing a plausible-looking width here would be worse than admitting we do
+    not know one: largest_size would hand the pre-download resolution gate a number that came
+    from nowhere. process_candidate measures the real thing after the download instead."""
+    return {
+        "platform": "openimages",
+        "id": rec["image_id"],
+        "title": rec.get("title") or "",
+        # The Flickr photo page. Recorded because CC BY 2.0 attribution points at it; never fetched.
+        "page_url": rec.get("landing") or "",
+        "author": rec.get("author") or "unknown",
+        "license": "",
+        "licence_slug": "cc-by-2.0",
+        "sizes": [],
+        "download_url": rec["url"],
+        "restrictions": "",
+        "credit_blob": "%s %s" % (rec.get("author") or "", rec.get("author_url") or ""),
+        "raw": {"image_id": rec["image_id"], "split": rec.get("split"),
+                "bytes": rec.get("bytes"), "miap_gender": rec.get("gender"),
+                "miap_age": rec.get("age"), "box": rec.get("box"),
+                "description": rec.get("title") or ""},
+    }
+
+
+def openimages_search(session, _key, text, page, per_page, _scope=None):
+    """Returns (candidates, next_page). `text` is a filter descriptor, not a search phrase.
+
+    There is no server here: the pool is local, so "search" means slice it. The order is
+    shuffled under a FIXED seed derived from the filter — deterministic, so a re-run resumes
+    the same walk rather than re-judging the same first page, but not corpus order, which on
+    Open Images is upload order and would hand one cell a decade of one photographer."""
+    want_gender = None
+    for part in str(text or "").split(";"):
+        k, _, val = part.partition("=")
+        if k.strip() == "gender":
+            want_gender = val.strip()
+    rows = [r for r in openimages_pool()
+            if r.get("bytes", 0) >= OPENIMAGES_MIN_BYTES
+            and (want_gender is None or r["gender"] == want_gender)]
+    rows.sort(key=lambda r: r["image_id"])
+    random.Random("openimages|%s" % text).shuffle(rows)
+    limit = max(1, int(per_page or 50))
+    lo = max(0, (page - 1) * limit)
+    chunk = rows[lo:lo + limit]
+    return [openimages_candidate(r) for r in chunk], (page + 1 if len(chunk) >= limit else page)
+
+
+SEARCH_BACKENDS = {"commons": commons_search, "flickr": flickr_search,
+                   "openimages": openimages_search}
 
 
 # --------------------------------------------------------------------------------------
@@ -1103,6 +1319,13 @@ def commons_term_count(query):
 
 def build_queries(cell, max_queries, source="flickr"):
     """Returns (queries, truncated_count)."""
+    if source == "openimages":
+        # One "query" only, and it is a filter, not a phrasing. The pool is local and already
+        # annotated, so there is nothing a second wording could reach that the first cannot —
+        # the walk is bounded by --pages x --per-page over a shuffled slice instead.
+        gender = ("Predominantly Masculine" if cell["gender"] == "male"
+                  else "Predominantly Feminine")
+        return ["gender=%s" % gender], 0
     if source == "commons":
         base = build_commons_queries(cell)
     elif cell["cell_id"] in QUERY_OVERRIDES:
@@ -1149,8 +1372,9 @@ def build_persona_doc(handle, cell, cand, lic_id, info, img_meta, vision, raw_ve
         "gender": cell["gender"],
         "age_band": cell["age_band"],
         "ethnicity_key": cell["ethnicity_key"],
-        "ethnicity_note": ("sourced for cell %s (%s); the vision gate REPORTS apparent ethnicity "
-                           "but does not enforce it — confirm by eye before first use"
+        "ethnicity_note": ("sourced for cell %s (%s); the vision gate placed it there by how the "
+                           "photograph READS, which is what a coverage target can measure and is "
+                           "not a claim about the person — confirm by eye before first use"
                            % (cell["cell_id"], cell["ethnicity"])),
         "demo": "US %s%s, %s — candid available-light photograph" % (
             "man" if cell["gender"] == "male" else "woman", age_est,
@@ -1391,6 +1615,14 @@ def cmd_fetch(args):
         print("source: flickr | licence filter: %s (%s)"
               % (LICENSE_SEARCH_PARAM, ", ".join(ALLOWED_LICENSES[i]["name"]
                                                  for i in LICENSE_SEARCH_PARAM.split(","))))
+    elif source == "openimages":
+        cached_n = verdict_cache_load()
+        print("source: openimages | %d indexed candidates, all CC BY 2.0, byte floor %dKB | "
+              "pixels from staticflickr.com, metadata from storage.googleapis.com, "
+              "flickr.com never requested"
+              % (len(openimages_pool()), OPENIMAGES_MIN_BYTES // 1000))
+        print("verdict cache: %d image(s) already judged — replayed free, "
+              "re-scored against this cell" % cached_n)
     else:
         print("source: commons | licence categories walked separately: %s"
               % ", ".join(lic_scopes))
@@ -1400,7 +1632,10 @@ def cmd_fetch(args):
     for q in queries:
         print("   %s" % q)
     if args.dry_run:
-        print("DRY RUN: gates run for real, nothing is written to disk.")
+        print("DRY RUN: gates run for real, no persona is written to disk."
+              + (" (The verdict cache IS still appended — a dry run is how we calibrate, and"
+                 " throwing away the model calls it paid for would make calibration the most"
+                 " expensive thing we do.)" if source == "openimages" else ""))
     print("")
 
     accepted, examined, seen_ids = [], 0, set()
@@ -1593,6 +1828,21 @@ def process_candidate(cand, cell, key, session, hashes, args):
     if not info:
         return ("licence", reason)
 
+    # A previous cell already paid for this face. A remembered REJECTION that had nothing to do
+    # with the cell (not a photograph, two people, watermark, too small) is final and costs
+    # nothing to repeat. A remembered vision answer is re-scored against THIS cell, because
+    # "wrong gender for f3039-wh" is a fact about the pairing and not about the photograph.
+    cached = verdict_cached(cand)
+    cached_vision = None
+    if cached:
+        if cached.get("reject"):
+            return (cached["reject"][0], "%s [cached]" % cached["reject"][1])
+        cached_vision = cached.get("vision")
+        if cached_vision:
+            reasons = evaluate_vision(cached_vision, cell)
+            if reasons:
+                return ("vision", "%s [cached]" % "; ".join(reasons))
+
     try:
         size = largest_size(cand, key, session, allow_getsizes=not args.no_getsizes,
                             sleep=args.sleep)
@@ -1601,7 +1851,10 @@ def process_candidate(cand, cell, key, session, hashes, args):
     if not size:
         return ("resolution", "no downloadable size reported")
     _, w, h, url, label = size
-    if not meets_resolution(w, h):
+    # `w and h` because a backend is allowed to say it does not know. Skipping the pre-check
+    # then costs one download that the post-download check may still refuse; asserting a
+    # geometry nobody measured would cost us good photographs on the strength of a guess.
+    if w and h and not meets_resolution(w, h):
         return ("resolution", "%dx%d = %.2fMP short=%d (floor %.1fMP / %dpx) [%s]"
                 % (w, h, w * h / 1e6, min(w, h), MIN_MEGAPIXELS, MIN_SHORT_EDGE, label))
 
@@ -1621,17 +1874,35 @@ def process_candidate(cand, cell, key, session, hashes, args):
                                          "slow the run down; this is not a verdict on the photo")
                 time.sleep(5 * (attempt + 1))
                 continue
+            if resp.status_code in (403, 404, 410):
+                # Measured on a 30-file sample of Open Images originals: 3 were gone (two 404,
+                # one 410). Flickr users delete and re-permission photographs, and a decade-old
+                # index cannot know. Worth remembering, because it is permanent — unlike the
+                # 429 above, which is the opposite of permanent.
+                msg = "HTTP %d — the original is no longer served" % resp.status_code
+                verdict_remember(cand, reject=["gone", msg])
+                return ("gone", msg)
             resp.raise_for_status()
             break
         jpeg, img = as_jpeg(resp.content)
     except (requests.RequestException, OSError, ValueError) as exc:
         return ("download", "%s" % exc)
-    if img.size[0] * img.size[1] / 1e6 < MIN_MEGAPIXELS:
-        return ("resolution", "delivered file is %dx%d, smaller than advertised" % img.size)
+    # Both floors, not just the megapixel one. A 3000x400 panorama is 1.2MP and would have
+    # passed a bare MP check while carrying a 400px short edge — a third of what an ima2
+    # reference needs. For a backend that advertises no geometry at all this is the ONLY
+    # resolution gate there is, so it has to be the whole floor rather than half of it.
+    if not meets_resolution(*img.size):
+        msg = ("delivered file is %dx%d = %.2fMP short=%d (floor %.1fMP / %dpx)"
+               % (img.size[0], img.size[1], img.size[0] * img.size[1] / 1e6, min(img.size),
+                  MIN_MEGAPIXELS, MIN_SHORT_EDGE))
+        verdict_remember(cand, reject=["resolution", msg])
+        return ("resolution", msg)
 
     flagged, wm_detail = watermark_screen(img)
     if flagged:
-        return ("watermark", "burned-in text screen: %s" % wm_detail)
+        msg = "burned-in text screen: %s" % wm_detail
+        verdict_remember(cand, reject=["watermark", msg])
+        return ("watermark", msg)
 
     # list() rather than .items() directly: the serial accept path adds to this dict while
     # workers are running, and iterating a dict that another thread grows raises
@@ -1645,16 +1916,28 @@ def process_candidate(cand, cell, key, session, hashes, args):
         if d <= DHASH_MAX_DISTANCE:
             return ("dupe", "dHash distance %d vs %s" % (d, handle))
 
-    tmp = tempfile.NamedTemporaryFile(suffix=".jpg", delete=False)
-    try:
-        tmp.write(jpeg)
-        tmp.close()
+    if cached_vision is not None:
+        # A previous cell bought this answer and the block above already re-scored it against
+        # THIS cell without objection. The photograph has not changed in the meantime, so the
+        # ~28s call would only re-derive the same JSON. This is the whole point of the cache:
+        # one model call per image for the life of the bank, not one per (image, cell) pair.
+        vision, raw = cached_vision, cached.get("raw") or ""
+    else:
+        tmp = tempfile.NamedTemporaryFile(suffix=".jpg", delete=False)
         try:
-            vision, raw = vision_check(tmp.name)
-        except (OSError, subprocess.SubprocessError, VisionInfraError) as exc:
-            return ("vision-infra", "gem9 unavailable (%s) — refusing to accept unseen" % exc)
-    finally:
-        os.unlink(tmp.name)
+            tmp.write(jpeg)
+            tmp.close()
+            try:
+                vision, raw = vision_check(tmp.name)
+            except (OSError, subprocess.SubprocessError, VisionInfraError) as exc:
+                return ("vision-infra", "gem9 unavailable (%s) — refusing to accept unseen" % exc)
+        finally:
+            os.unlink(tmp.name)
+        # Banked BEFORE the verdict is read, and stored as the model's answer rather than as
+        # pass/fail. "Wrong gender for f3039-wh" is a fact about the pairing; "two people in
+        # frame" is a fact about the photograph. Only the second kind may be replayed, so the
+        # cache keeps the raw reading and lets each cell draw its own conclusion.
+        verdict_remember(cand, vision=vision, raw=raw)
     reasons = evaluate_vision(vision, cell)
     if reasons:
         return ("vision", "; ".join(reasons))
@@ -1859,11 +2142,12 @@ def cmd_selftest(_args):
               "flagged=%s  %s" % (flagged, detail))
 
     print("vision verdict evaluation")
-    cell = {"gender": "male", "age_band": "40-49", "cell_id": "m4049-wh"}
+    cell = {"gender": "male", "age_band": "40-49", "cell_id": "m4049-wh", "ethnicity_key": "wh"}
     good = {"is_camera_photograph": True, "person_count": 1, "apparent_age_min": 42,
             "apparent_age_max": 48, "apparent_gender": "male", "face_clearly_visible": True,
             "face_obscured": False, "beauty_filtered": False,
-            "visible_text_or_watermark": False, "recognizable_public_figure": False}
+            "visible_text_or_watermark": False, "recognizable_public_figure": False,
+            "ethnicity_group": "white", "apparent_ethnicity": "white"}
     check("clean candidate passes", evaluate_vision(good, cell) == [])
     for tweak, label in (({"is_camera_photograph": False}, "AI/CGI rejected"),
                          ({"person_count": 2}, "two people rejected"),
@@ -1884,7 +2168,7 @@ def cmd_selftest(_args):
         return evaluate_vision(dict(good, apparent_age_min=lo, apparent_age_max=hi), c)
 
     check("an estimate straddling the band edge still passes (38-44 in 40-49)", age(38, 44) == [])
-    young = {"gender": "male", "age_band": "20-29", "cell_id": "m2029-wh"}
+    young = {"gender": "male", "age_band": "20-29", "cell_id": "m2029-wh", "ethnicity_key": "wh"}
     check("APPARENT MINOR rejected (12-21 overlaps the 20-29 band but must never be sourced)",
           age(12, 21, young) != [])
     check("hedged estimate rejected (18-75 would otherwise satisfy every band in the taxonomy)",
@@ -1893,6 +2177,88 @@ def cmd_selftest(_args):
           age(29, 70, young) != [])
     check("centre outside the band rejected (52-58 is not a 40-49 face)", age(52, 58) != [])
     check("inverted min/max is normalised, not mis-read", age(48, 42) == [])
+
+    print("ethnicity placement")
+    tax_cells = cells_by_id(_load(TAXONOMY, "taxonomy"))
+    check("every taxonomy cell declares a key the rubric can actually produce",
+          all(c.get("ethnicity_key") in set(ETHNICITY_GROUP_TO_KEY.values())
+              for c in tax_cells.values()),
+          "keys seen: %s" % ",".join(sorted({c.get("ethnicity_key") for c in tax_cells.values()})))
+    check("constrained token beats conflicting free text (the token is what we asked for)",
+          ethnicity_key_of({"ethnicity_group": "black", "apparent_ethnicity": "white"}) == "bl")
+    check("'unclear' returns None and does NOT fall through to the free text — a model that "
+          "declined to call it must not be overruled by its own hedge",
+          ethnicity_key_of({"ethnicity_group": "unclear",
+                            "apparent_ethnicity": "possibly white"}) is None)
+    check("legacy verdict with no token still places via free text (cache stays worth keeping)",
+          ethnicity_key_of({"apparent_ethnicity": "African American"}) == "bl")
+    check("'South Asian' lands in as, not in the mx bucket",
+          ethnicity_key_of({"apparent_ethnicity": "South Asian"}) == "as")
+    check("'Middle Eastern' lands in mx", ethnicity_key_of({"apparent_ethnicity":
+                                                            "Middle Eastern"}) == "mx")
+    check("a phrase nothing matches returns None rather than a guess",
+          ethnicity_key_of({"apparent_ethnicity": "hard to say"}) is None)
+    check("wrong group rejected for the cell",
+          evaluate_vision(dict(good, ethnicity_group="asian"), cell) != [])
+    check("unplaceable ethnicity rejected, not waved through",
+          evaluate_vision(dict(good, ethnicity_group="unclear",
+                               apparent_ethnicity=""), cell) != [])
+
+    print("Open Images backend")
+    fake_pool = [{"image_id": "id%03d" % i, "split": "train",
+                  "url": "https://live.staticflickr.com/x/%d_o.jpg" % i,
+                  "landing": "https://www.flickr.com/photos/u/%d" % i,
+                  "licence": "cc-by-2.0", "author": "u%d" % i, "author_url": "",
+                  "title": "t%d" % i, "bytes": 100_000 + i * 20_000,
+                  "gender": "Predominantly Feminine" if i % 2 else "Predominantly Masculine",
+                  "age": "Middle", "box": [0, 0, 1, 1], "occluded": 0, "truncated": 0}
+                 for i in range(60)]
+    globals()["_OPENIMAGES_POOL"] = fake_pool
+    fem, nxt = openimages_search(None, None, "gender=Predominantly Feminine", 1, 10)
+    check("gender filter is honoured (MIAP does this for free, ahead of any model call)",
+          len(fem) == 10 and all(c["raw"]["miap_gender"] == "Predominantly Feminine" for c in fem))
+    check("byte floor drops the small originals before they cost a download",
+          all(c["raw"]["bytes"] >= OPENIMAGES_MIN_BYTES for c in fem))
+    again, _ = openimages_search(None, None, "gender=Predominantly Feminine", 1, 10)
+    check("page 1 is deterministic — a resumed run must not re-judge the same faces",
+          [c["id"] for c in again] == [c["id"] for c in fem])
+    page2, _ = openimages_search(None, None, "gender=Predominantly Feminine", nxt, 10)
+    check("page 2 is disjoint from page 1", not ({c["id"] for c in page2} & {c["id"] for c in fem}))
+    check("shuffled, not corpus order (upload order would hand a cell one photographer's decade)",
+          [c["id"] for c in fem] != sorted(c["id"] for c in fem))
+    check("candidate declares CC BY 2.0 and passes the licence spine",
+          licence_ok(fem[0]["licence_slug"])[0] is not None)
+    check("sizes is empty on purpose — a geometry nobody measured is not a fact",
+          fem[0]["sizes"] == [] and largest_size(fem[0], None, None)[1:3] == (0, 0))
+    tail, tail_next = openimages_search(None, None, "gender=Predominantly Feminine", 99, 10)
+    check("walking off the end stops rather than looping", tail == [] and tail_next == 99)
+    globals()["_OPENIMAGES_POOL"] = None
+
+    print("verdict cache")
+    cache_tmp = tempfile.NamedTemporaryFile(suffix=".jsonl", delete=False)
+    cache_tmp.close()
+    real_path = OPENIMAGES_VERDICTS
+    globals()["OPENIMAGES_VERDICTS"] = cache_tmp.name
+    try:
+        oi = {"platform": "openimages", "id": "abc123"}
+        verdict_remember(oi, vision=dict(good, apparent_gender="female"), raw="{}")
+        verdict_remember({"platform": "commons", "id": "999"}, reject=["watermark", "no"])
+        check("only the Open Images backend writes (a Commons id does not mean the same pixels)",
+              verdict_cached({"platform": "commons", "id": "999"}) is None)
+        check("cache reloads from disk", verdict_cache_load() == 1)
+        cached_v = verdict_cached(oi)["vision"]
+        check("a verdict refused by one cell is re-scored, not replayed, for the next: "
+              "'wrong gender' is a fact about the PAIRING",
+              evaluate_vision(cached_v, cell) != []
+              and evaluate_vision(cached_v, dict(cell, gender="female")) == [])
+        with open(cache_tmp.name, "a") as fh:
+            fh.write('{"image_id": "trunc"')          # what a kill mid-write leaves behind
+        check("a half-written last line is skipped, not treated as a reason to refuse to run",
+              verdict_cache_load() == 1)
+    finally:
+        globals()["OPENIMAGES_VERDICTS"] = real_path
+        os.unlink(cache_tmp.name)
+        _VERDICT_CACHE.clear()
 
     print("hard constraints")
 

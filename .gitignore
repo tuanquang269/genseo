@@ -19,3 +19,10 @@ validate_runs.log
 __pycache__/
 .DS_Store
 repair_runs.log
+# Open Images working set. The CSVs are 730MB of Google's published metadata, re-downloadable
+# in minutes by personas/_openimages/build_index.py; candidates.json.gz is its derivative;
+# verdicts.jsonl is a local cache of model calls, useful to keep but not to version.
+personas/_openimages/*.csv
+personas/_openimages/candidates.json.gz
+personas/_openimages/verdicts.jsonl
+personas/_openimages/build_index.log
