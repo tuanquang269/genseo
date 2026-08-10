@@ -33,6 +33,7 @@ import argparse
 import glob
 import gzip
 import hashlib
+import html
 import io
 import json
 import os
@@ -2004,10 +2005,18 @@ def build_queries(cell, max_queries, source="flickr"):
 # writing a persona
 # --------------------------------------------------------------------------------------
 def attribution_text(cand, info):
+    """The CC BY credit line, in the form the licence asks for: title, author, source, licence.
+
+    Titles and author names arrive HTML-escaped, because the Open Images metadata carries them
+    exactly as Flickr rendered them into a page. Unescaping is not cosmetic — this string is the
+    thing we owe the photographer, and f3039-bl-01 shipped as `Sean O&#x27;Donnell`, which is not
+    anybody's name. That it survived to disk is also the tell that no human had yet read one of
+    these lines end to end, which is the same reason none of them were reaching a page."""
     if not info["attribution"]:
         return None
+    unesc = html.unescape
     return '"%s" by %s (%s), licensed under %s (%s)' % (
-        (cand.get("title") or "untitled").strip(), cand.get("author") or "unknown",
+        unesc((cand.get("title") or "untitled").strip()), unesc(cand.get("author") or "unknown"),
         cand.get("page_url") or "", info["name"], info["url"])
 
 
@@ -2968,6 +2977,12 @@ def cmd_selftest(_args):
     check("CC0 needs no attribution; CC BY does",
           licence_ok("cc0-1.0")[0]["attribution"] is False
           and licence_ok("cc-by-4.0")[0]["attribution"] is True)
+    credit = attribution_text({"title": "Sunday &amp; Co", "author": "Sean O&#x27;Donnell",
+                               "page_url": "https://example.test/p/1"}, licence_ok("cc-by-2.0")[0])
+    check("the credit line carries a name a person could read",
+          "Sean O'Donnell" in credit and "Sunday & Co" in credit and "&#x27;" not in credit,
+          credit)
+    check("CC0 gets no credit line at all", attribution_text({}, licence_ok("cc0-1.0")[0]) is None)
     check("display name round-trips back through the gate (what verify re-reads)",
           all(licence_name_ok(licence_ok(s)[0]["name"])
               for s in ("cc0-1.0", "cc-by-4.0", "cc-by-2.0", "cc-by-3.0-tw")))

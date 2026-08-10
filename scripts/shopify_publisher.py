@@ -7,6 +7,7 @@ import subprocess
 import re
 import base64
 import time
+import html as html_mod          # `html` alone would shadow the many local html/html_content vars
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import genseo_config as _gcfg
@@ -243,6 +244,62 @@ def discover_images(md_text):
         elif p.startswith("/blogs/") or p.startswith("/cdn/"):
             cdn_paths.append(p)
     return local_paths, cdn_paths
+
+
+def persona_credits_html(md_text):
+    """The CC BY credits this article's images owe, as an HTML block — or "" if none.
+
+    All three usable faces in the persona bank are CC BY 2.0, whose one condition is credit
+    that travels with the work. Until now the credit strings were written into persona.json by
+    fetch_personas.py and read by nothing: `attribution_required: true` sat on disk while the
+    images shipped bare. That went unnoticed only because every live hero still used one of the
+    four retired Pinterest faces; the first publish drawing an active persona is what makes it
+    a real breach, and that publish is the next one.
+
+    Read from the image directory rather than from the draft: article_images.py writes
+    CREDITS.json beside the renders it made, so the credit is attached to the images that
+    actually exist, not to whatever the draft claims about them. Call this BEFORE the upload
+    step rewrites the local paths to CDN URLs."""
+    local, _ = discover_images(md_text)
+    creds = {}
+    for path in local:
+        try:
+            with open(os.path.join(os.path.dirname(path), "CREDITS.json")) as fh:
+                creds.update(json.load(fh))
+        except (OSError, ValueError):
+            continue
+    if not creds:
+        return ""
+    items = []
+    for handle in sorted(creds):
+        c = creds[handle] or {}
+        author, page = html_mod.escape(c.get("author") or "unknown"), c.get("page_url") or ""
+        lic, lic_url = html_mod.escape(c.get("license") or "CC BY"), c.get("license_url") or ""
+        photo = (f'<a href="{html_mod.escape(page)}" rel="nofollow noopener">photograph</a>'
+                 if page else "photograph")
+        licence = (f'<a href="{html_mod.escape(lic_url)}" rel="license nofollow noopener">{lic}</a>'
+                   if lic_url else lic)
+        items.append(f"<li>Reference {photo} by {author}, licensed under {licence}.</li>")
+    return ('\n<hr>\n<aside class="image-credits" style="font-size:0.85em;opacity:0.75">'
+            "<p>Illustrations on this page were generated from licensed reference "
+            f"photographs.</p><ul>{''.join(items)}</ul></aside>")
+
+
+def live_credits_block(shop, token, blog_id, article_id):
+    """The credits block already on the live article, or "" — for refreshes to carry forward.
+
+    Returns "" on any failure, deliberately: a network hiccup must not abort a refresh. The
+    cost of a miss is a credits block that has to be restored by re-publishing; the cost of
+    raising here would be a dead pipeline."""
+    try:
+        req = urllib.request.Request(
+            f"https://{shop}/admin/api/{API}/blogs/{blog_id}/articles/{article_id}.json"
+            "?fields=body_html", headers={"X-Shopify-Access-Token": token})
+        body = json.loads(urllib.request.urlopen(req).read())["article"].get("body_html") or ""
+    except Exception:
+        return ""
+    m = re.search(r'\n?<hr>\n?<aside class="image-credits".*?</aside>', body, re.S)
+    return m.group(0) if m else ""
 
 
 # ---------------------------------------------------------------------------
@@ -526,6 +583,12 @@ def do_publish(file_path, blog_id, live=False):
         stripped_lines.append(line)
     md_text = '\n'.join(stripped_lines).lstrip('\n')
 
+    # ── Image credits — read BEFORE the upload step, which is destructive to this ──
+    # information: _process_images_for_publish rewrites every local path in md_text to a CDN
+    # URL, and the local path is the only thing that points at the directory where
+    # article_images.py left CREDITS.json. One line later there is nothing left to read.
+    credits_html = persona_credits_html(md_text)
+
     # ── Image Upload ────────────────────────────────────────────────────────
     md_text, thumbnail_b64, hero_cdn_url, upload_count, fail_count = _process_images_for_publish(shop, token, md_text)
 
@@ -568,10 +631,11 @@ def do_publish(file_path, blog_id, live=False):
                    "mainEntity": main_entity} if main_entity else None)
 
     html_content = markdown.markdown(md_text, extensions=['extra'])
+    html_content += credits_html          # below the article, above the invisible ld+json
     html_content += _ldjson_block(article_schema)
     if faq_schema:
         html_content += _ldjson_block(faq_schema)
-    
+
     api_url = f"https://{shop}/admin/api/{API}/blogs/{blog_id}/articles.json"
     headers = {"X-Shopify-Access-Token": token, "Content-Type": "application/json"}
     
@@ -734,6 +798,18 @@ def do_update(file_path, blog_id, article_id):
         stripped_lines.append(line)
     md_text = '\n'.join(stripped_lines).lstrip('\n')
 
+    # ── Credits before upload, for the reason given in do_publish ──
+    # A refresh re-sends the WHOLE body, so a credits block omitted here is not merely absent
+    # from the new images — it DELETES the one the original publish put there, and a licence
+    # breach reintroduced by a routine refresh is the kind nobody ever notices. A refresh draft
+    # usually carries CDN URLs, not local paths, so the usual read finds nothing; in that case
+    # the live page is the record of what it owes, so carry its block forward verbatim.
+    credits_html = persona_credits_html(md_text)
+    if not credits_html:
+        credits_html = live_credits_block(shop, token, blog_id, article_id)
+        if credits_html:
+            print("  ↩ carried the existing image-credits block forward (draft had no local images)")
+
     # ── Image Upload ────────────────────────────────────────────────────────
     md_text, thumbnail_b64, hero_cdn_url, upload_count, fail_count = _process_images_for_publish(shop, token, md_text, strip_hero=False)
 
@@ -765,6 +841,7 @@ def do_update(file_path, blog_id, article_id):
     faq_schema = ({"@context":"https://schema.org","@type":"FAQPage","mainEntity":me} if me else None)
 
     html_content = markdown.markdown(md_text, extensions=['extra'])
+    html_content += credits_html          # below the article, above the invisible ld+json
     html_content += _ldjson_block(article_schema)
     if faq_schema:
         html_content += _ldjson_block(faq_schema)

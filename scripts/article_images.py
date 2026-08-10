@@ -172,6 +172,39 @@ def face_angle_phrase(angle_id, persona_ref):
     return angles[angle_id]
 
 
+def record_credit(out_dir, persona_ref):
+    """Note, beside the images, whose photograph this article's face was anchored on.
+
+    CC BY 2.0 is not satisfied by a credit sitting in a JSON file on my laptop — it has to
+    travel with the published work, and all three usable faces in the bank are CC BY. The
+    publisher is the thing that reaches the page, but it sees only image paths: it has no way
+    to know which persona fed which render. So the step that DOES know writes it down, in the
+    one directory the publisher is guaranteed to be reading from.
+
+    Keyed by handle, so a re-roll of the same image overwrites rather than duplicating, and an
+    article using two personas credits both."""
+    try:
+        with open(os.path.join(os.path.dirname(os.path.abspath(persona_ref)),
+                               "persona.json")) as fh:
+            src = (json.load(fh).get("source") or {})
+    except (OSError, ValueError):
+        return                       # no provenance on disk = nothing to assert; upstream gates
+    if not src.get("attribution_required"):
+        return                       # CC0 asks for nothing
+    handle = os.path.basename(os.path.dirname(os.path.abspath(persona_ref)))
+    path = os.path.join(out_dir, "CREDITS.json")
+    try:
+        with open(path) as fh:
+            creds = json.load(fh)
+    except (OSError, ValueError):
+        creds = {}
+    creds[handle] = {"text": src.get("attribution_text"), "license": src.get("license"),
+                     "license_url": src.get("license_url"), "page_url": src.get("page_url"),
+                     "author": src.get("author")}
+    with open(path, "w") as fh:
+        json.dump(creds, fh, indent=1)
+
+
 def degrade_grain(png_path):
     """Light film-grain + micro quality degrade — raw ima2 is too HD-clean for UGC
     (same rationale as the degrade-start-frame video rule). Applied BEFORE webp.
@@ -438,6 +471,11 @@ def main():
         print(f"QC → {verdict}")
         if not passed:
             sys.exit(2)  # caller re-rolls with the FAIL reason folded into the prompt (max 2)
+    if a.persona_ref:
+        # After QC, not before: a render that failed and was thrown away owes nobody a credit,
+        # and a CREDITS.json naming a persona no surviving image used would quietly turn the
+        # credits block into a list of everyone we happened to try.
+        record_credit(out_dir, a.persona_ref)
     print(f"✓ {nbytes//1024}KB webp (q{q}, {width}px)")
     print(webp)
 
