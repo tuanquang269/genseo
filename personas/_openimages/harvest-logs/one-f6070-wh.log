@@ -872,3 +872,221 @@ queries (1), up to 20 page(s) x 500 results each:
   ✗ b020c58cc133c651 [resolution] delivered file is 540x922 = 0.50MP short=540 (floor 1.0MP / 800px)
   ✗ c8d9e607f58fb5c4 [vision] apparent age starts at 15 — below the hard floor of 18; face not clearly visible; face obscured (sunglasses/hands/shadow); eyes are closed — ima2 anchors identity on ref.jpg and there is no iris in it to anchor on
   ✗ 2e3b2a12786aa32a [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600)
+  ! dc21bc63dba8eecc [vision-infra] gem9 unavailable (gem9 exit 1: gem9: HTTP 502: error code: 502) — refusing to accept unseen  (1 in a row)
+  ✗ 1da4e43909de5c48 [gone] HTTP 410 — the photograph is no longer served (tried flickr-2048)
+  ✗ a36cf1b139335b59 [named-subject] title names someone ('Nallur Kandaswamy Kovil Jaffna Sri Lanka' in 'Nallur Kandaswamy Kovil, Jaffna, Sri Lanka') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ! 2773d34a1432374e [vision-infra] gem9 unavailable (gem9 exit 1: gem9: HTTP 502: error code: 502) — refusing to accept unseen  (1 in a row)
+  ✗ f972742341934577 [vision] apparent age starts at 16 — below the hard floor of 18; face not clearly visible; face obscured (sunglasses/hands/shadow); face reads 'down-or-away' — the bank needs a frontal or three-quarter anchor; eyes are closed — ima2 anchors identity on ref.jpg and there is no iris in it to anchor on; head is rolled or the subject is lying down — the 21-angle vocabulary is yaw x pitch with no roll axis, so every angle asked of this ref would be an orientation it never showed
+  ✗ 098548a61a2270e0 [named-subject] title names someone ('Lyon Musée-des-Confluences' in 'Lyon, Musée-des-Confluences') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 415bfa60a872def0 [vision] apparent age 25-45 spans 20 years — too hedged to place in a band; face not clearly visible; face obscured (sunglasses/hands/shadow)
+  ! dee4a3278d50fb37 [vision-infra] gem9 unavailable (gem9 exit 1: gem9: HTTP 502: error code: 502) — refusing to accept unseen  (1 in a row)
+  ✗ c5466d166e6a06b6 [named-subject] title names someone ('Civic Federation Monthly Meeting' in 'Civic Federation Monthly Meeting -- Candidates Night') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ dbe74cdc153c3fb5 [vision] apparent age 25-40 centres on 32, outside cell band 60-70; visible watermark, logo or burned-in text
+  ✗ 9a9628209ad84920 [vision] apparent age 18-28 centres on 23, outside cell band 60-70; reads as 'as', cell wants 'wh'; beauty-filtered / retouched
+  ✗ 6ccf267a61637054 [gone] HTTP 410 — the photograph is no longer served (tried flickr-2048)
+  ✗ 7ebc735cfe682511 [named-subject] title names someone ('Teresa Moore' in 'Teresa Moore') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 26c7572a8a8d9e78 [watermark] burned-in text screen: bottom-left d=0.4000 ratio=5.4 row=0.55
+  ✗ f3a0aa69f7063d03 [vision] apparent age 25-35 centres on 30, outside cell band 60-70; reads as 'as', cell wants 'wh'; visible watermark, logo or burned-in text
+  ✗ 4ffede47bd353ef2 [named-subject] title names someone ('Superintendent Kate Cannon' in 'Superintendent Kate Cannon') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 4926fd77a77f11b1 [vision] apparent age 25-35 centres on 30, outside cell band 60-70; visible watermark, logo or burned-in text
+  ! 8fc0e41cac4dbc5c [vision-infra] gem9 unavailable (gem9 exit 1: gem9: HTTP 502: error code: 502) — refusing to accept unseen  (1 in a row)
+  ✗ 232299e70b9fe949 [watermark] burned-in text screen: bottom-strip d=0.4645 ratio=33.4 row=0.91
+  ✗ 76538aba3231f75b [watermark] burned-in text screen: bottom-right d=0.3561 ratio=4.7 row=0.57
+  ✗ 45d00198e3bd80b7 [named-subject] title names someone ('Jenny Studio Mode' in 'Jenny Studio Mode') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 26bd96f7364b7666 [vision] person_count=0 (need exactly 1 unambiguous subject); apparent age 20-40 spans 20 years — too hedged to place in a band; apparent ethnicity 'unclear' could not be placed in any of the five taxonomy groups; face not clearly visible; face obscured (sunglasses/hands/shadow); face reads 'down-or-away' — the bank needs a frontal or three-quarter anchor; eyes are closed — ima2 anchors identity on ref.jpg and there is no iris in it to anchor on; head spans under a tenth of the frame — the person passed the corpus's 0.10 BOX-area floor as a full-length figure in a wide scene, which is not the same thing as having a face to anchor on
+  ✗ 1e7916b292a09444 [watermark] burned-in text screen: bottom-left d=0.2688 ratio=6.8 row=0.54
+  ! 72e8e9f7125e5067 [vision-infra] gem9 unavailable (gem9 exit 1: gem9: HTTP 502: error code: 502) — refusing to accept unseen  (1 in a row)
+  ✗ 3e675ffb5488216c [vision] apparent age 40-55 centres on 48, outside cell band 60-70
+  ✗ f6562bb096222851 [named-subject] title names someone ('Modeling Portrait' in 'Modeling Portrait') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 1454679576b77089 [named-subject] title names someone ('Gwen Tigner' in 'Gwen Tigner') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ fed001fd97226123 [named-subject] title names someone ('La Dra Ellen Baker' in 'La Dra. Ellen Baker en el espacio') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ fc6dd8a1072cabdc [named-subject] title names someone ('Gabrielle Graeter' in 'NCWRC biologist Gabrielle Graeter taking notes') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 78c093bfe25c03f0 [named-subject] title names someone ('Future Ship Safety Symposium' in 'IMO Future Ship Safety Symposium') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 94b26c0d9ecccc10 [vision] apparent age 45-55 centres on 50, outside cell band 60-70; reads as 'hl', cell wants 'wh'; visible watermark, logo or burned-in text
+  ✗ f8deaba5887a3a65 [resolution] delivered file is 827x584 = 0.48MP short=584 (floor 1.0MP / 800px)
+  ✗ d55ab82b5cd8594c [vision] person_count=2 (need exactly 1 unambiguous subject); apparent age 25-65 spans 40 years — too hedged to place in a band; reads as 'hl', cell wants 'wh'
+  ✗ b1633e601eeeb048 [named-subject] title names someone ('Unique Date Ideas' in '5 Unique Date Ideas') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ b248bd6bfa61277b [named-subject] title names someone ('Dog Training' in 'Dog Training - Jan 2009') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ c35eb1cc7c97d857 [gone] HTTP 410 — the photograph is no longer served (tried flickr-2048)
+  ✗ 3659b5945e2a604d [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600)
+  ✗ 11fb650f6a1885f8 [named-subject] title names someone ('Caroline Bistro Bella Vita Dinner Grand Rapids Food' in 'Caroline Bistro Bella Vita Dinner Grand Rapids Food') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ! adb94f91e9c16f67 [vision-infra] gem9 unavailable (gem9 exit 1: gem9: HTTP 502: error code: 502) — refusing to accept unseen  (1 in a row)
+  ✗ b695b7511167011a [vision] apparent age 18-30 centres on 24, outside cell band 60-70; face not clearly visible; face obscured (sunglasses/hands/shadow); face reads 'down-or-away' — the bank needs a frontal or three-quarter anchor; shown in an official or representative capacity (lectern, stage, uniform, institutional portrait); frame carries text identifying a person, team, employer or private event; eyes are closed — ima2 anchors identity on ref.jpg and there is no iris in it to anchor on; head is rolled or the subject is lying down — the 21-angle vocabulary is yaw x pitch with no roll axis, so every angle asked of this ref would be an orientation it never showed; head spans under a tenth of the frame — the person passed the corpus's 0.10 BOX-area floor as a full-length figure in a wide scene, which is not the same thing as having a face to anchor on
+  ✗ 2869774ff3000ce5 [named-subject] title names someone ('Kenya Africa' in 'U.S. Army research unit marks four decades in Kenya, Africa ') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ! a154f8e32e67cb54 [vision-infra] gem9 unavailable (gem9 exit 1: gem9: HTTP 502: error code: 502) — refusing to accept unseen  (1 in a row)
+  ✗ 2a07b01070cfe87e [named-subject] title names someone ('Raissa Adusumilli' in 'Raissa Adusumilli') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ bf7e7e182bafd7ad [gone] HTTP 410 — the photograph is no longer served (tried flickr-2048)
+  ! 537fcd028b47bc5f [vision-infra] gem9 unavailable (gem9 exit 1: gem9: HTTP 502: error code: 502) — refusing to accept unseen  (1 in a row)
+  ✗ 7f293b8ade8ca28a [named-subject] title names someone ('New Student Orientation Fall' in 'New Student Orientation Fall 2014 at College of DuPage') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 1799d33cc9a05491 [named-subject] title names someone ('Zoe Kravitz' in 'Zoe Kravitz 2011 Shankbone 2') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 30cfdaa49b4fd565 [named-subject] title names someone ('Anne Russell' in 'Anne Russell -- 20 years') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ! 665fdac57347d187 [vision-infra] gem9 unavailable (gem9 exit 1: gem9: HTTP 502: <html>
+<head><title>502 Bad Gateway</title></head>
+<body>
+<center><h1>502 Bad Gateway</h1></center>
+<hr><center>cloudflare</center>
+</body>
+</html>) — refusing to accept unseen  (1 in a row)
+  ✗ d6cba3fe5c00e85e [named-subject] title names someone ('Annie Johansson' in 'På pallen - Annie Johansson (C)') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ e7661d416197205f [named-subject] title names someone ('Feeding Time' in 'Feeding Time') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ a3e89e7f9e24b99d [named-subject] title names someone ('Heidi Ross' in 'Heidi Ross with gravid Hemiphractus at EVACC') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ adb26e0c8d9f1053 [resolution] delivered file is 667x1000 = 0.67MP short=667 (floor 1.0MP / 800px)
+  ! cd3c41014d10eb9e [vision-infra] gem9 unavailable (gem9 exit 1: gem9: HTTP 502: error code: 502) — refusing to accept unseen  (1 in a row)
+  ✗ 6d3bedabbd1dece7 [named-subject] title names someone ('Kitty Daisy' in 'Kitty, Daisy and Lewis') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ b43e46d3d612a133 [watermark] burned-in text screen: bottom-right d=0.2684 ratio=12.2 row=0.90
+  ✗ 96125e3b70faf7f5 [named-subject] title names someone ('Cosplay Shoot' in 'Cosplay Shoot BTS') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 000d2e3d33b18463 [named-subject] title names someone ('Spacer Woman' in 'Spacer Woman') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 24099e40ea028236 [named-subject] title names someone ('Isabel Ice' in 'Isabel Ice') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ! 902690dde1f8a3dc [vision-infra] gem9 unavailable (gem9 exit 1: gem9: HTTP 502: error code: 502) — refusing to accept unseen  (1 in a row)
+  ✗ 0cfdf7992a02c404 [named-subject] title names someone ('Glamor Girl' in 'Glamor Girl') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ! 18d2d0b87d4a3f40 [vision-infra] gem9 unavailable (gem9 exit 1: gem9: HTTP 502: error code: 502) — refusing to accept unseen  (1 in a row)
+  ✗ d46ff679e68f9051 [named-subject] title names someone ('Maïlis Donnet' in '1 Braquage, 2 branques ! - ©Maïlis Donnet (33)') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 837b3d11ff02f116 [named-subject] title names someone ('Maldives October' in 'Maldives, October 2007') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ! df5519976aeed196 [vision-infra] gem9 unavailable (gem9 exit 1: gem9: HTTP 502: <html>
+<head><title>502 Bad Gateway</title></head>
+<body>
+<center><h1>502 Bad Gateway</h1></center>
+<hr><center>cloudflare</center>
+</body>
+</html>) — refusing to accept unseen  (1 in a row)
+  ✗ 77f52ee817091a77 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600)
+  ! 28ff9479a7fd626b [vision-infra] gem9 unavailable (gem9 exit 1: gem9: HTTP 502: error code: 502) — refusing to accept unseen  (1 in a row)
+  ✗ de56cdedcd9f98b4 [monochrome] greyscale — no colour to anchor skin tone or lighting on (coloured-pixel fraction 0.00000 (floor 0.00100))
+  ✗ ee34d27128ec041d [named-subject] title names someone ('The Alaskan Redhead' in 'The Alaskan Redhead exploring holes in the sandstone') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ! 9d1dc1f4cee0bb26 [vision-infra] gem9 unavailable (gem9 exit 1: gem9: HTTP 530: <!DOCTYPE html>
+
+
+
+ <html class="no-js" lang="en-US"> 
+<head>
+<title>Cloudflare Tunnel error | staff.patiagency.com | Cloudflare</title>
+<meta charset="UTF-8" />
+<meta http-equiv="Cont) — refusing to accept unseen  (1 in a row)
+  ✗ 3ebef4f6bf3f2171 [resolution] delivered file is 667x1000 = 0.67MP short=667 (floor 1.0MP / 800px)
+  ✗ 502e84c06e28743f [gone] HTTP 410 — the photograph is no longer served (tried flickr-2048)
+  ✗ d8690067ef3ae337 [named-subject] title names someone ('Lucy Claire' in 'Lucy Claire') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ! 3d6b473d9771f7ca [vision-infra] gem9 unavailable (gem9 exit 1: gem9: HTTP 502: error code: 502) — refusing to accept unseen  (1 in a row)
+  ✗ b5dcf9b3dbebe73a [named-subject] title names someone ('Girl Design' in 'AGSJ Girl Design worn by Pro Skater Leticia Bufoni') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ e367d3c7862d2367 [named-subject] title names someone ('Holland House' in 'Holland House 2010 - 09') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 4fd0714deb0ef8c4 [named-subject] title names someone ('Soo Williamson' in 'Soo Williamson, then known as Soo Fulford') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ aa52a3af74b0a852 [monochrome] greyscale — no colour to anchor skin tone or lighting on (coloured-pixel fraction 0.00000 (floor 0.00100))
+  ✗ 2b4127e46aa95e57 [watermark] burned-in text screen: bottom-right d=0.0389 ratio=19.4 row=0.81
+  ✗ 451110d3872396bb [named-subject] title names someone ('Mary Lattimore' in 'Mary Lattimore') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ! 0f2358e793950ca0 [vision-infra] gem9 unavailable (gem9 exit 1: gem9: HTTP 502: <html>
+<head><title>502 Bad Gateway</title></head>
+<body>
+<center><h1>502 Bad Gateway</h1></center>
+<hr><center>cloudflare</center>
+</body>
+</html>) — refusing to accept unseen  (1 in a row)
+  ✗ 5f9c192e25fe0a47 [vision] apparent age 25-35 centres on 30, outside cell band 60-70
+  ✗ b760ebc5f25788d3 [named-subject] title names someone ('Carolin Wiedemann' in 'Carolin Wiedemann auf der re:publica 2011') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 848125875ca6f613 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600)
+  ✗ 45da90268a1b1f3d [resolution] delivered file is 400x600 = 0.24MP short=400 (floor 1.0MP / 800px)
+  ! 8d51290cfe304eae [vision-infra] gem9 unavailable (gem9 exit 1: gem9: HTTP 502: error code: 502) — refusing to accept unseen  (1 in a row)
+  ! d33d4f9b37737ca8 [vision-infra] gem9 unavailable (gem9 exit 1: gem9: HTTP 502: error code: 502) — refusing to accept unseen  (2 in a row)
+  ✗ 762b982b3e4cf6a3 [named-subject] title names someone ('Rhian Edwards' in 'Rhian Edwards') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 3bc0363f6e20a356 [resolution] delivered file is 402x535 = 0.22MP short=402 (floor 1.0MP / 800px)
+  ✗ a7f764b12de57863 [watermark] burned-in text screen: bottom-strip d=0.5997 ratio=8.4 row=0.91
+  ✗ aa376e93529a0f31 [named-subject] title names someone ('Easter Monday' in 'Easter Monday 2008 18') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 12d456ea3041b1f1 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600)
+  ! d90dc61b0089b69d [vision-infra] gem9 unavailable (gem9 exit 1: gem9: HTTP 530: <!DOCTYPE html>
+
+
+
+ <html class="no-js" lang="en-US"> 
+<head>
+<title>Cloudflare Tunnel error | staff.patiagency.com | Cloudflare</title>
+<meta charset="UTF-8" />
+<meta http-equiv="Cont) — refusing to accept unseen  (1 in a row)
+  ✗ a84fefe9fb646608 [vision] apparent age 25-35 centres on 30, outside cell band 60-70; visible watermark, logo or burned-in text
+  ✗ 556313fbb7f62b54 [named-subject] title names someone ('Cabin Cooking' in 'Cabin Cooking with Shannon for June 2014.  (See edited image') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ b0e9b3dab7846d51 [vision] apparent age 30-45 centres on 38, outside cell band 60-70
+  ✗ e4b914c42fa9e6b1 [named-subject] title names someone ("TicTac O'Clock" in "TicTac O'Clock") — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ d82ef9e854334245 [named-subject] title names someone ('Sadhana Ravishankar' in 'Sadhana Ravishankar with a bag of leafy greens') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ e0256d45ea7dc3ef [named-subject] title names someone ('Guadalajara Jalisco Mexico' in 'Angel singer, film debut, Guadalajara, Jalisco, Mexico') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ d0e130e22ba962d6 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600)
+  ! e7b7a1ff540eb661 [vision-infra] gem9 unavailable (gem9 exit 1: gem9: HTTP 530: <!DOCTYPE html>
+
+
+
+ <html class="no-js" lang="en-US"> 
+<head>
+<title>Cloudflare Tunnel error | staff.patiagency.com | Cloudflare</title>
+<meta charset="UTF-8" />
+<meta http-equiv="Cont) — refusing to accept unseen  (1 in a row)
+  ! 43884ab149a8c477 [vision-infra] gem9 unavailable (gem9 exit 1: gem9: HTTP 530: <!DOCTYPE html>
+
+
+
+ <html class="no-js" lang="en-US"> 
+<head>
+<title>Cloudflare Tunnel error | staff.patiagency.com | Cloudflare</title>
+<meta charset="UTF-8" />
+<meta http-equiv="Cont) — refusing to accept unseen  (2 in a row)
+  ✗ f1ce5aa1d21ff3d8 [monochrome] greyscale — no colour to anchor skin tone or lighting on (coloured-pixel fraction 0.00000 (floor 0.00100))
+  ! 14c8af14215a9ecd [vision-infra] gem9 unavailable (gem9 exit 1: gem9: HTTP 530: <!DOCTYPE html>
+
+
+
+ <html class="no-js" lang="en-US"> 
+<head>
+<title>Cloudflare Tunnel error | staff.patiagency.com | Cloudflare</title>
+<meta charset="UTF-8" />
+<meta http-equiv="Cont) — refusing to accept unseen  (1 in a row)
+  ✗ c69eb7de622b805c [vision] apparent age 30-60 spans 30 years — too hedged to place in a band; reads as 'bl', cell wants 'wh'; face not clearly visible; face obscured (sunglasses/hands/shadow); face reads 'down-or-away' — the bank needs a frontal or three-quarter anchor; eyes are closed — ima2 anchors identity on ref.jpg and there is no iris in it to anchor on; head is rolled or the subject is lying down — the 21-angle vocabulary is yaw x pitch with no roll axis, so every angle asked of this ref would be an orientation it never showed; head spans under a tenth of the frame — the person passed the corpus's 0.10 BOX-area floor as a full-length figure in a wide scene, which is not the same thing as having a face to anchor on
+  ✗ 8c02eac248761723 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600)
+  ✗ f4d2b16fd681c3f5 [named-subject] title names someone ('Libreria Air' in 'Libreria Air - 81') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ cc00a1a7a39a7f40 [named-subject] title names someone ('Rustic Door Part' in 'Making a Rustic Door Part 5 - Strawbale House Build in Redmo') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 16274f73948f9999 [named-subject] title names someone ('Little Owl' in 'Little Owl') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ! b66816cb4b5781fa [vision-infra] gem9 unavailable (gem9 exit 1: gem9: HTTP 530: <!DOCTYPE html>
+
+
+
+ <html class="no-js" lang="en-US"> 
+<head>
+<title>Cloudflare Tunnel error | staff.patiagency.com | Cloudflare</title>
+<meta charset="UTF-8" />
+<meta http-equiv="Cont) — refusing to accept unseen  (1 in a row)
+  ✗ 63a857f9cf89af35 [named-subject] title names someone ('Martha Plockton Bay' in 'Martha, Plockton Bay') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ dd6457ddb8f9dd2c [vision] apparent age 40-60 spans 20 years — too hedged to place in a band; face reads 'down-or-away' — the bank needs a frontal or three-quarter anchor; head spans under a tenth of the frame — the person passed the corpus's 0.10 BOX-area floor as a full-length figure in a wide scene, which is not the same thing as having a face to anchor on
+  ✗ d2329bd6e878900a [vision] apparent age starts at 14 — below the hard floor of 18; face reads 'profile' — the bank needs a frontal or three-quarter anchor; shown in an official or representative capacity (lectern, stage, uniform, institutional portrait); frame carries text identifying a person, team, employer or private event; a child or infant is in the frame
+  ✗ f7751a4200338c23 [vision] apparent age 25-40 centres on 32, outside cell band 60-70; face not clearly visible; face obscured (sunglasses/hands/shadow); eyes are closed — ima2 anchors identity on ref.jpg and there is no iris in it to anchor on
+  ✗ 2c3628d5f0842466 [vision] apparent age 18-25 centres on 22, outside cell band 60-70; head spans under a tenth of the frame — the person passed the corpus's 0.10 BOX-area floor as a full-length figure in a wide scene, which is not the same thing as having a face to anchor on
+  ✗ 823f88529b8bc525 [named-subject] title names someone ('Santa Barbara' in 'feet in Santa Barbara') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 0ba3b11b58eaa2d1 [vision] apparent age 25-40 centres on 32, outside cell band 60-70
+  ✗ a5d00bb104a0c8b6 [vision] apparent age 20-35 centres on 28, outside cell band 60-70; reads as 'as', cell wants 'wh'; eyes are closed — ima2 anchors identity on ref.jpg and there is no iris in it to anchor on
+  ✗ 392ed375718c815c [named-subject] title names someone ('Two Beautiful' in 'Two Beautiful') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 01c6ff83cbac9823 [watermark] burned-in text screen: top-right d=0.0576 ratio=6.2 row=0.40
+  ✗ 4886bc79d9b17e48 [named-subject] title names someone ('Pauline Londeix' in 'Pauline Londeix, WHA61') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 69a3376135b4c79a [named-subject] title names someone ('Ryoko Takeishi' in 'Ryoko Takeishi') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 9074e9837f31b4cd [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600)
+  ✗ c8acae61a03080be [named-subject] title names someone ('Black Akane' in 'Black(Akane) & N(Moonie) - Pokemon') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 63f2d5827ef25d64 [named-subject] title names someone ('Fiona Bruce' in 'Fiona Bruce') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 2f890dd95865047b [named-subject] title names someone ('Kristin Hersh' in 'Kristin Hersh plays and reads from her memoir RAT GIRL') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 30d73a20b5ee8171 [watermark] burned-in text screen: top-right d=0.2530 ratio=7.6 row=0.49
+  ✗ 67d668e3cb55fb5a [named-subject] title names someone ('Jandy Monroe' in 'Jandy Monroe 7') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 711127c3c5d8b181 [vision] apparent age 40-60 spans 20 years — too hedged to place in a band; face obscured (sunglasses/hands/shadow); eyes are closed — ima2 anchors identity on ref.jpg and there is no iris in it to anchor on; head spans under a tenth of the frame — the person passed the corpus's 0.10 BOX-area floor as a full-length figure in a wide scene, which is not the same thing as having a face to anchor on
+  ✗ 2d6a1bd52f975bd6 [vision] apparent age 25-40 centres on 32, outside cell band 60-70; head spans under a tenth of the frame — the person passed the corpus's 0.10 BOX-area floor as a full-length figure in a wide scene, which is not the same thing as having a face to anchor on
+  ✗ d0cc2e23ef492ebe [gone] HTTP 410 — the photograph is no longer served (tried flickr-2048)
+  ✗ 3268aee3e64d4751 [vision] apparent age 18-28 centres on 23, outside cell band 60-70
+  ✗ 81dfa3eee1529e5e [resolution] delivered file is 814x1200 = 0.98MP short=814 (floor 1.0MP / 800px)
+  ✗ 3f31e08c215ce460 [vision] apparent age 30-45 centres on 38, outside cell band 60-70; shown in an official or representative capacity (lectern, stage, uniform, institutional portrait); head spans under a tenth of the frame — the person passed the corpus's 0.10 BOX-area floor as a full-length figure in a wide scene, which is not the same thing as having a face to anchor on
+  ✗ c15cf3ffd405b12e [vision] apparent age 25-45 spans 20 years — too hedged to place in a band; gender 'male' != cell 'female'; apparent ethnicity 'unclear' could not be placed in any of the five taxonomy groups; head spans under a tenth of the frame — the person passed the corpus's 0.10 BOX-area floor as a full-length figure in a wide scene, which is not the same thing as having a face to anchor on
+  ✗ b3b1ad35de99e77d [vision] apparent age 18-30 centres on 24, outside cell band 60-70; face not clearly visible; face obscured (sunglasses/hands/shadow); face reads 'profile' — the bank needs a frontal or three-quarter anchor; shown in an official or representative capacity (lectern, stage, uniform, institutional portrait); eyes are closed — ima2 anchors identity on ref.jpg and there is no iris in it to anchor on
+  ✗ 033952ef92770a96 [vision] apparent age 25-35 centres on 30, outside cell band 60-70; reads as 'hl', cell wants 'wh'; visible watermark, logo or burned-in text
+  ✗ e2099f3987861d77 [named-subject] title names someone ('Sesión Azteca-Box' in 'Sesión Azteca-Box (8)') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 8f6daf5ec51f676b [named-subject] title names someone ('Angie Bowls' in 'Angie Bowls') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 42b599b910384ea7 [named-subject] title names someone ('Entrevistas Diversas' in 'Entrevistas Diversas') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ b4b5d2052e31bea5 [vision] apparent age 20-35 centres on 28, outside cell band 60-70; reads as 'mx', cell wants 'wh'; face not clearly visible; face obscured (sunglasses/hands/shadow); face reads 'down-or-away' — the bank needs a frontal or three-quarter anchor; eyes are closed — ima2 anchors identity on ref.jpg and there is no iris in it to anchor on
+  ✗ c334c54f81b80957 [vision] apparent age 25-45 spans 20 years — too hedged to place in a band; face not clearly visible; face obscured (sunglasses/hands/shadow); face reads 'profile' — the bank needs a frontal or three-quarter anchor; eyes are closed — ima2 anchors identity on ref.jpg and there is no iris in it to anchor on
+  ✗ 23f81fb9ebaa79a4 [named-subject] title names someone ('Moon Stream Concert Anime Weekend Atlanta' in "Moon Stream Concert @ Anime Weekend Atlanta '11") — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 60fbdcfc9c33b348 [named-subject] title names someone ('Tess Henley' in 'Tess Henley 01/23/2015 #12') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 4ad89fded72e2445 [vision] apparent age 20-35 centres on 28, outside cell band 60-70
+  ✗ cfebb8bfe428de3f [named-subject] title names someone ('Eduadour Distillery' in 'Mash tub in Eduadour Distillery') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ a8ed85360f0ac4bd [named-subject] title names someone ('Dead Mans Cove' in 'Model at Dead Mans Cove') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ e04d171ec0e48b45 [named-subject] title names someone ('Irina Naumenko' in 'LE NOIR - Irina Naumenko 01.01-IMG_7983') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 333ddf15f7437ccf [vision] apparent age 25-40 centres on 32, outside cell band 60-70; reads as 'as', cell wants 'wh'; face obscured (sunglasses/hands/shadow)
+  ✗ 3ad1d8fd98c9cb78 [vision] apparent age 18-35 spans 17 years — too hedged to place in a band; face not clearly visible; face obscured (sunglasses/hands/shadow); eyes are closed — ima2 anchors identity on ref.jpg and there is no iris in it to anchor on
+  ✗ fc40b535dca020a7 [vision] apparent age 25-35 centres on 30, outside cell band 60-70
+  ✗ 25f2b5c8a4eca9c5 [named-subject] title names someone ('Magical Moms April' in 'Emily and Chip and Dale 9321 Magical Moms April 09') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant

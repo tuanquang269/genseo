@@ -63,6 +63,8 @@
  "approved_date": null,
  "camera_notes": "indoor/ambient available light, real skin texture \u2014 always camera-match; ALWAYS feed THIS ref.jpg, never a previous gen (each gen is another lossy re-reading; chaining them compounds the drift in everything BUT the identity, which ima2 holds onto \u2014 measured 2026-08-10)",
  "usage": "male-audience articles (ShilaSource, AgeAura); persona is VISUAL ONLY, never named in copy (byline stays the roster author)",
- "status": "pending",
- "flag_reason": null
+ "status": "quarantined",
+ "flag_reason": "lit cigarette between the lips. Every other key reads correctly - one adult, eyes open, head upright, portrait-sized, colour, no identifying text, not representing anyone - and the face is not occluded. The refusal is that the mouth is inside the region ima2 anchors identity on, so unlike a hat this travels into every generation instead of being replaced by the prompt; and a wellness store's hero face reconstructed from a smoker's reference is off-brand in a way no prompt clause can argue with. Wrong in every cell.",
+ "quarantined_date": "2026-08-10",
+ "rejection_is_about": "photograph"
 }

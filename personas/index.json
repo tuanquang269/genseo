@@ -103,17 +103,6 @@
    "gaze_used": [],
    "last_gaze": null,
    "angles_used": []
-  },
-  "m5059-wh-01": {
-   "handle": "m5059-wh-01",
-   "pool_id": "m5059",
-   "status": "pending",
-   "ref": "/Users/kevinkreative/genseo/personas/m5059-wh-01/ref.jpg",
-   "used_count": 0,
-   "last_used_seq": 0,
-   "gaze_used": [],
-   "last_gaze": null,
-   "angles_used": []
   }
  }
 }

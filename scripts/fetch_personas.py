@@ -866,6 +866,7 @@ VISION_RUBRIC = (
     '"face_angle_reads": "frontal"|"three-quarter"|"profile"|"down-or-away", '
     '"eyes_open": true|false, "head_upright": true|false, '
     '"head_size_reads": "tiny"|"portrait"|"fills-frame", '
+    '"mouth_or_face_prop": true|false, '
     '"studio_or_press_context": true|false, '
     '"official_or_representative_capacity": true|false, '
     '"identifying_text_in_frame": true|false, "minor_in_frame": true|false, '
@@ -895,6 +896,11 @@ VISION_RUBRIC = (
     "than about two thirds (a close-up where the head is cropped by the edges or nearly so). "
     "Judge the HEAD, not the body: a full-length standing figure that fills the frame "
     "top to bottom still has a tiny head. "
+    "mouth_or_face_prop: is an object in, against or crossing the MOUTH - a lit or unlit "
+    "cigarette, cigar, pipe, vape or e-cigarette, a straw, a drink held to the lips, food "
+    "being eaten, a mouthpiece, a whistle, a cupped hand over the mouth. Judge the mouth "
+    "region only: a hat, spectacles, earrings, a necklace or an object merely held in the "
+    "hand are NOT this. "
     "studio_or_press_context: true for a seamless studio backdrop, a professional "
     "headshot, a stage or podium, a press conference, a red carpet or any other posed "
     "media-production setting. "
@@ -987,10 +993,34 @@ ETHNICITY_GROUP_TO_KEY = {
 #
 # Both are questions about what the photograph SHOWS, which is the only kind this gate has any
 # business asking — the same correction as 9299e86, on a third axis.
+#
+# mouth_or_face_prop came off the very next pending face: a man in his fifties photographed from
+# below against a glass tower with a LIT CIGARETTE between his lips. Every other key was right and
+# stayed right — one adult subject, eyes open, head upright, portrait-sized, colour, no text, not
+# representing anyone. face_clearly_visible was true and honestly so: nothing hides that face.
+#
+# Two independent reasons to refuse it, and it is worth keeping them apart because they would
+# survive each other's absence:
+#
+#   The ANCHOR reason. We measured that ima2 reconstructs the person in ref.jpg rather than
+#   drifting off them, which is the whole premise the bank now runs on. An object in the MOUTH
+#   sits inside the region the model is reading as identity — it changes the line of the lips, the
+#   set of the cheeks, the shadow under the nose. That is not comparable to a hat, which is why
+#   the hat on m4049-wh-01 was judged fine and this is not: a hat sits above the face and the
+#   prompt can dress the head differently, whereas the anchor carries the mouth.
+#
+#   The BRAND reason. These faces front supplement articles on a wellness store. A hero
+#   reconstructed from a smoker's reference is off-brand in a way no prompt clause reliably
+#   removes, because the clause is arguing with the anchor rather than with the scene.
+#
+# Kept deliberately narrow — the MOUTH region only. Wardrobe, props in the hand, and everything
+# else in the frame are replaced by the prompt and are none of this gate's business; widening it
+# to "anything unwholesome in the photograph" would be a taste filter wearing a rubric's clothes.
 VISION_RUBRIC_KEYS_ADDED = ("is_monochrome_or_period", "face_angle_reads",
                             "official_or_representative_capacity",
                             "identifying_text_in_frame", "minor_in_frame",
-                            "eyes_open", "head_upright", "head_size_reads")
+                            "eyes_open", "head_upright", "head_size_reads",
+                            "mouth_or_face_prop")
 # A profile ref makes most of the 21-angle vocabulary unreachable: article_images.py anchors
 # identity on ref.jpg, and asking ima2 for `front-level` from a 90-degree profile is asking it
 # to invent the half of the face it was never shown. f3039-wh-06 is exactly that photograph.
@@ -1241,6 +1271,14 @@ def evaluate_vision(v, cell):
         reasons.append("head spans under a tenth of the frame — the person passed the corpus's "
                        "0.10 BOX-area floor as a full-length figure in a wide scene, which is "
                        "not the same thing as having a face to anchor on")
+    if v.get("mouth_or_face_prop") is True:
+        # The mouth is inside the region ima2 reads as identity, so unlike a hat or a jacket this
+        # travels with the anchor into every generation instead of being replaced by the prompt.
+        # A wellness store's hero face reconstructed from a cigarette-in-lips reference is the
+        # case that put this here.
+        reasons.append("an object is in or against the mouth (cigarette, vape, straw, food) — it "
+                       "sits inside the region ima2 anchors identity on, so the prompt cannot "
+                       "dress it away the way it can a hat")
     if v.get("minor_in_frame") is True:
         # A child cannot consent and their guardian has not been asked, so this one is a floor
         # rather than a preference — the same reasoning as MIN_APPARENT_AGE, arriving by way of
@@ -2997,7 +3035,7 @@ def cmd_selftest(_args):
             "visible_text_or_watermark": False, "recognizable_public_figure": False,
             "is_monochrome_or_period": False, "face_angle_reads": "three-quarter",
             "eyes_open": True, "head_upright": True, "head_size_reads": "portrait",
-            "studio_or_press_context": False,
+            "mouth_or_face_prop": False, "studio_or_press_context": False,
             "official_or_representative_capacity": False,
             "identifying_text_in_frame": False, "minor_in_frame": False,
             "ethnicity_group": "white", "apparent_ethnicity": "white"}
@@ -3021,7 +3059,9 @@ def cmd_selftest(_args):
                          ({"eyes_open": False}, "asleep / eyes shut rejected"),
                          ({"head_upright": False}, "lying down / head rolled sideways rejected"),
                          ({"head_size_reads": "tiny"},
-                          "person small in a wide scene rejected — no face to anchor on")):
+                          "person small in a wide scene rejected — no face to anchor on"),
+                         ({"mouth_or_face_prop": True},
+                          "cigarette / vape / straw at the lips rejected")):
         v = dict(good)
         v.update(tweak)
         check(label, evaluate_vision(v, cell) != [])
@@ -3033,6 +3073,14 @@ def cmd_selftest(_args):
                                eyes_open=False, head_upright=False),
                           dict(cell, gender="female", age_band="40-49",
                                cell_id="f4049-wh")) != [])
+    # m5059-wh-01 exactly: a lit cigarette between the lips, and every other key right. The hat on
+    # m4049-wh-01 is the control — an object on the head is the prompt's business, an object in
+    # the mouth is the anchor's.
+    check("the cigarette-in-lips reading is refused, and a hat on the head is not",
+          evaluate_vision(dict(good, apparent_age_min=48, apparent_age_max=58,
+                               mouth_or_face_prop=True),
+                          dict(cell, age_band="50-59", cell_id="m5059-wh")) != []
+          and evaluate_vision(dict(good, head_size_reads="fills-frame"), cell) == [])
     check("frontal accepted", evaluate_vision(dict(good, face_angle_reads="frontal"), cell) == [])
     check("unparseable vision output rejected (fails CLOSED, unlike article_images.py)",
           evaluate_vision(None, cell) != [])
