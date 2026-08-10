@@ -34,25 +34,31 @@
   "accepted_date": "2026-08-10",
   "notes": "machine gates passed: licence cc-by-2.0 read back from the source, 10.08MP, burned-in-text screen (bottom-left d=0.0173 ratio=8.7 row=0.14), dHash-deduped vs the whole bank, vision gate. Vision JSON: {\"apparent_age_max\": 32, \"apparent_age_min\": 24, \"apparent_ethnicity\": \"caucasian or hispanic\", \"apparent_gender\": \"female\", \"beauty_filtered\": false, \"ethnicity_group\": \"white\", \"face_clearly_visible\": true, \"face_obscured\": false, \"is_camera_photograph\": true, \"notes\": \"Candid photo of a woman outdoors with a weathered building behind her.\", \"person_count\": 1, \"recognizable_public_figure\": false, \"visible_text_or_watermark\": false}",
   "vision": {
-   "apparent_age_max": 32,
-   "apparent_age_min": 24,
-   "apparent_ethnicity": "caucasian or hispanic",
+   "is_camera_photograph": true,
+   "person_count": 1,
+   "apparent_age_min": 20,
+   "apparent_age_max": 30,
    "apparent_gender": "female",
-   "beauty_filtered": false,
-   "ethnicity_group": "white",
    "face_clearly_visible": true,
    "face_obscured": false,
-   "is_camera_photograph": true,
-   "notes": "Candid photo of a woman outdoors with a weathered building behind her.",
-   "person_count": 1,
+   "beauty_filtered": false,
+   "visible_text_or_watermark": false,
    "recognizable_public_figure": false,
-   "visible_text_or_watermark": false
-  }
+   "is_monochrome_or_period": false,
+   "face_angle_reads": "three-quarter",
+   "studio_or_press_context": false,
+   "apparent_ethnicity": "white/caucasian",
+   "ethnicity_group": "white",
+   "notes": "Candid outdoor shot with natural lighting."
+  },
+  "rubric_refreshed": "2026-08-10"
  },
  "approved_by": null,
  "approved_date": null,
  "camera_notes": "indoor/ambient available light, real skin texture \u2014 always camera-match; ALWAYS feed THIS ref.jpg, never a previous gen (each gen is another lossy re-reading; chaining them compounds the drift in everything BUT the identity, which ima2 holds onto \u2014 measured 2026-08-10)",
  "usage": "female-audience articles (FusiForce, FloraFresh, ShilaSource); persona is VISUAL ONLY, never named in copy (byline stays the roster author)",
- "status": "pending",
- "flag_reason": null
+ "status": "quarantined",
+ "flag_reason": "the confirming reading placed her in the NEXT band (or a different ethnicity group); the photograph is fine, the cell was wrong",
+ "quarantined_date": "2026-08-10",
+ "rejection_is_about": "pairing"
 }

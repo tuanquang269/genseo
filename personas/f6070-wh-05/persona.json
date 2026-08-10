@@ -37,17 +37,21 @@
    "is_camera_photograph": true,
    "person_count": 1,
    "apparent_age_min": 55,
-   "apparent_age_max": 70,
+   "apparent_age_max": 65,
    "apparent_gender": "female",
    "face_clearly_visible": true,
    "face_obscured": false,
    "beauty_filtered": false,
    "visible_text_or_watermark": false,
    "recognizable_public_figure": false,
-   "apparent_ethnicity": "Caucasian",
+   "is_monochrome_or_period": false,
+   "face_angle_reads": "frontal",
+   "studio_or_press_context": true,
+   "apparent_ethnicity": "white",
    "ethnicity_group": "white",
-   "notes": "Full length studio portrait of older woman with glasses."
-  }
+   "notes": "Full-body portrait in a studio setting."
+  },
+  "rubric_refreshed": "2026-08-10"
  },
  "approved_by": null,
  "approved_date": null,

@@ -34,25 +34,30 @@
   "accepted_date": "2026-08-10",
   "notes": "machine gates passed: licence cc-by-2.0 read back from the source, 8.48MP, burned-in-text screen (bottom-left d=0.0240 ratio=1.4 row=0.13), dHash-deduped vs the whole bank, vision gate. Vision JSON: {\"apparent_age_max\": 40, \"apparent_age_min\": 25, \"apparent_ethnicity\": \"caucasian\", \"apparent_gender\": \"female\", \"beauty_filtered\": false, \"ethnicity_group\": \"white\", \"face_clearly_visible\": true, \"face_obscured\": false, \"is_camera_photograph\": true, \"notes\": \"Woman threading a sewing machine on a tiled table.\", \"person_count\": 1, \"recognizable_public_figure\": false, \"visible_text_or_watermark\": false}",
   "vision": {
-   "apparent_age_max": 40,
+   "is_camera_photograph": true,
+   "person_count": 1,
    "apparent_age_min": 25,
-   "apparent_ethnicity": "caucasian",
+   "apparent_age_max": 40,
    "apparent_gender": "female",
-   "beauty_filtered": false,
-   "ethnicity_group": "white",
    "face_clearly_visible": true,
    "face_obscured": false,
-   "is_camera_photograph": true,
-   "notes": "Woman threading a sewing machine on a tiled table.",
-   "person_count": 1,
+   "beauty_filtered": false,
+   "visible_text_or_watermark": false,
    "recognizable_public_figure": false,
-   "visible_text_or_watermark": false
-  }
+   "is_monochrome_or_period": false,
+   "face_angle_reads": "down-or-away",
+   "studio_or_press_context": false,
+   "apparent_ethnicity": "Caucasian",
+   "ethnicity_group": "white",
+   "notes": "A person looking down while operating a sewing machine on a tiled surface."
+  },
+  "rubric_refreshed": "2026-08-10"
  },
  "approved_by": null,
  "approved_date": null,
  "camera_notes": "indoor/ambient available light, real skin texture \u2014 always camera-match; ALWAYS feed THIS ref.jpg, never a previous gen (each gen is another lossy re-reading; chaining them compounds the drift in everything BUT the identity, which ima2 holds onto \u2014 measured 2026-08-10)",
  "usage": "female-audience articles (FusiForce, FloraFresh, ShilaSource); persona is VISUAL ONLY, never named in copy (byline stays the roster author)",
- "status": "pending",
- "flag_reason": null
+ "status": "quarantined",
+ "flag_reason": "head reads profile or down-or-away; article_images.py anchors identity on ref.jpg, so a side-on ref makes most of the 21-angle vocabulary unreachable",
+ "quarantined_date": "2026-08-10"
 }

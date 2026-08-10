@@ -44,15 +44,20 @@
    "beauty_filtered": false,
    "visible_text_or_watermark": false,
    "recognizable_public_figure": false,
+   "is_monochrome_or_period": false,
+   "face_angle_reads": "down-or-away",
+   "studio_or_press_context": false,
    "apparent_ethnicity": "white",
    "ethnicity_group": "white",
-   "notes": "Woman holding flowers."
-  }
+   "notes": "An older woman in formal attire holds a bouquet and looks downward."
+  },
+  "rubric_refreshed": "2026-08-10"
  },
  "approved_by": null,
  "approved_date": null,
  "camera_notes": "indoor/ambient available light, real skin texture \u2014 always camera-match; ALWAYS feed THIS ref.jpg, never a previous gen (each gen is another lossy re-reading; chaining them compounds the drift in everything BUT the identity, which ima2 holds onto \u2014 measured 2026-08-10)",
  "usage": "female-audience articles (AgeAura, MenoMate); persona is VISUAL ONLY, never named in copy (byline stays the roster author)",
- "status": "pending",
- "flag_reason": null
+ "status": "quarantined",
+ "flag_reason": "head reads profile or down-or-away; article_images.py anchors identity on ref.jpg, so a side-on ref makes most of the 21-angle vocabulary unreachable",
+ "quarantined_date": "2026-08-10"
 }

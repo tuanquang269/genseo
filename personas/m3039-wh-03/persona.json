@@ -37,7 +37,7 @@
   "vision": {
    "is_camera_photograph": true,
    "person_count": 1,
-   "apparent_age_min": 35,
+   "apparent_age_min": 30,
    "apparent_age_max": 45,
    "apparent_gender": "male",
    "face_clearly_visible": true,
@@ -45,10 +45,14 @@
    "beauty_filtered": false,
    "visible_text_or_watermark": false,
    "recognizable_public_figure": false,
-   "apparent_ethnicity": "white european",
+   "is_monochrome_or_period": false,
+   "face_angle_reads": "three-quarter",
+   "studio_or_press_context": true,
+   "apparent_ethnicity": "white European descent",
    "ethnicity_group": "white",
-   "notes": "Man presents on stage holding tablet and small prop."
-  }
+   "notes": "Man on stage holding a tablet and a small sneaker."
+  },
+  "rubric_refreshed": "2026-08-10"
  },
  "approved_by": null,
  "approved_date": null,

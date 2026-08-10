@@ -34,20 +34,24 @@
   "accepted_date": "2026-08-10",
   "notes": "machine gates passed: licence cc-by-2.0 read back from the source, 3.15MP, burned-in-text screen (bottom-left d=0.0150 ratio=2.8 row=0.21), dHash-deduped vs the whole bank, vision gate. Vision JSON: {\"apparent_age_max\": 35, \"apparent_age_min\": 25, \"apparent_ethnicity\": \"white\", \"apparent_gender\": \"female\", \"beauty_filtered\": false, \"ethnicity_group\": \"white\", \"face_clearly_visible\": true, \"face_obscured\": false, \"is_camera_photograph\": true, \"notes\": \"Casual selfie.\", \"person_count\": 1, \"recognizable_public_figure\": false, \"visible_text_or_watermark\": false}",
   "vision": {
-   "apparent_age_max": 35,
+   "is_camera_photograph": true,
+   "person_count": 1,
    "apparent_age_min": 25,
-   "apparent_ethnicity": "white",
+   "apparent_age_max": 35,
    "apparent_gender": "female",
-   "beauty_filtered": false,
-   "ethnicity_group": "white",
    "face_clearly_visible": true,
    "face_obscured": false,
-   "is_camera_photograph": true,
-   "notes": "Casual selfie.",
-   "person_count": 1,
+   "beauty_filtered": false,
+   "visible_text_or_watermark": false,
    "recognizable_public_figure": false,
-   "visible_text_or_watermark": false
-  }
+   "is_monochrome_or_period": false,
+   "face_angle_reads": "frontal",
+   "studio_or_press_context": false,
+   "apparent_ethnicity": "White",
+   "ethnicity_group": "white",
+   "notes": "Close-up selfie of a woman indoors."
+  },
+  "rubric_refreshed": "2026-08-10"
  },
  "approved_by": null,
  "approved_date": null,

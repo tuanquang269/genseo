@@ -45,10 +45,14 @@
    "beauty_filtered": false,
    "visible_text_or_watermark": false,
    "recognizable_public_figure": false,
-   "apparent_ethnicity": "white",
+   "is_monochrome_or_period": false,
+   "face_angle_reads": "frontal",
+   "studio_or_press_context": false,
+   "apparent_ethnicity": "Caucasian",
    "ethnicity_group": "white",
-   "notes": "Man beside SUV open hood."
-  }
+   "notes": "A man stands casually beside a dark-colored SUV with its hood open in an outdoor parking area."
+  },
+  "rubric_refreshed": "2026-08-10"
  },
  "approved_by": null,
  "approved_date": null,
