@@ -34,6 +34,7 @@ import hashlib
 import io
 import json
 import os
+import random
 import re
 import subprocess
 import sys
@@ -165,6 +166,10 @@ WM_MIN_DENSITY = 0.020        # stroke density inside a corner/edge band
 WM_MIN_RATIO = 4.0            # ...relative to the picture's interior
 WM_MIN_ROW_COVERAGE = 0.30    # ...and arranged as a horizontal line, the way text is
 VISION_TIMEOUT = 180
+# Statuses that mean "the router is busy", not "this photograph is bad". 502/503/504 are
+# 9router or the provider shedding load; 429 is it asking for less. Everything else —
+# a 400, a 401, a malformed answer — is a real fault that a retry only repeats.
+VISION_TRANSIENT = ("HTTP 429", "HTTP 500", "HTTP 502", "HTTP 503", "HTTP 504")
 VISION_INFRA_ABORT = 5        # consecutive gem9/9router failures that end the run
 MIN_APPARENT_AGE = 18         # absolute floor — never source a face that could read as a minor
 MAX_AGE_INTERVAL = 15         # a wider estimate than this is a hedge, not an answer
@@ -637,6 +642,16 @@ class VisionInfraError(RuntimeError):
     a verdict rejects one photo, an infra failure means every verdict this run is worthless."""
 
 
+def vision_is_transient(message):
+    """Is this gem9 failure the router shedding load, or a real fault?
+
+    Split out from vision_check purely so it is testable without a subprocess: the cost of
+    getting it wrong is asymmetric and silent. Too broad and a genuine 400 gets retried
+    three times per candidate; too narrow and a load blip ends the run through
+    VISION_INFRA_ABORT, which reads to the operator as "this cell has no faces"."""
+    return any(code in (message or "") for code in VISION_TRANSIENT)
+
+
 def vision_check(image_path):
     """Returns (parsed_dict_or_None, raw_output). Raw is stored verbatim in persona.json.
 
@@ -644,18 +659,35 @@ def vision_check(image_path):
     on STDERR with a non-zero exit. Concatenating stderr into the parse made that body look
     like a verdict: it parses, it has no is_camera_photograph key, and every candidate came
     back rejected as "not a camera photograph". Read the exit status, and parse stdout only.
+
+    Retried, for the same reason the download is. Measured 2026-08-10: a lone gem9 call
+    answers in 5.5s, but six concurrent ones drew five straight `HTTP 502` from 9router — and
+    a 502 is the router shedding load, which says nothing whatever about the photograph. Left
+    unretried it took a run out through VISION_INFRA_ABORT, which is precisely the misreading
+    that guard exists to prevent, arriving one layer lower down. Only transient statuses are
+    retried; a malformed answer is not made truer by asking twice.
     """
-    res = subprocess.run([GEM9, "-p", VISION_RUBRIC, image_path],
-                         capture_output=True, text=True, timeout=VISION_TIMEOUT)
-    if res.returncode != 0:
-        raise VisionInfraError("gem9 exit %d: %s"
-                               % (res.returncode, (res.stderr or res.stdout or "").strip()[:200]))
-    raw = (res.stdout or "").strip()
-    parsed = _extract_json(raw)
-    if parsed is None:
-        # Exit 0 with nothing parseable is still an infra symptom, not a judgement on the face.
-        raise VisionInfraError("gem9 exited 0 but returned no JSON: %r" % raw[:200])
-    return parsed, raw
+    last = None
+    for attempt in range(3):
+        res = subprocess.run([GEM9, "-p", VISION_RUBRIC, image_path],
+                             capture_output=True, text=True, timeout=VISION_TIMEOUT)
+        if res.returncode == 0:
+            raw = (res.stdout or "").strip()
+            parsed = _extract_json(raw)
+            if parsed is not None:
+                return parsed, raw
+            # Exit 0 with nothing parseable is still an infra symptom, not a judgement on the
+            # face — but it is not a load symptom either, so it does not earn a retry.
+            raise VisionInfraError("gem9 exited 0 but returned no JSON: %r" % raw[:200])
+        last = "gem9 exit %d: %s" % (res.returncode,
+                                     (res.stderr or res.stdout or "").strip()[:200])
+        if not vision_is_transient(last):
+            break
+        if attempt < 2:
+            # Staggered by attempt AND by worker, or six workers that 502 together simply
+            # retry together and reproduce the burst that caused it.
+            time.sleep(4 * (attempt + 1) + random.uniform(0, 3))
+    raise VisionInfraError(last)
 
 
 def evaluate_vision(v, cell):
@@ -1921,6 +1953,15 @@ def cmd_selftest(_args):
           _DOWNLOAD_GATE.acquire(blocking=False) and not _DOWNLOAD_GATE.acquire(blocking=False))
     _DOWNLOAD_GATE.release()
     set_download_concurrency(2)
+
+    check("a 502 from the router is transient — it is shedding load, not judging a photo",
+          vision_is_transient("gem9 exit 1: gem9: HTTP 502: error code: 502"))
+    check("...and so are 429/503/504",
+          all(vision_is_transient("gem9: HTTP %s: x" % c) for c in ("429", "503", "504")))
+    check("a 400 is NOT retried — asking twice does not make a bad request good",
+          not vision_is_transient("gem9 exit 1: gem9: HTTP 400: bad request"))
+    check("nor is an unparseable answer, which is a fault and not a load symptom",
+          not vision_is_transient("gem9 exited 0 but returned no JSON: ''"))
 
     print("queries + handles")
     tax = _load(TAXONOMY, "taxonomy")
