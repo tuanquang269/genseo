@@ -49,8 +49,13 @@ IMA2 = _find_bin("ima2", ["~/.npm-global/bin/ima2", "~/.nvm/versions/node/v24.19
 CWEBP = _find_bin("cwebp", ["/opt/homebrew/bin/cwebp", "~/.local/bin/cwebp", "/usr/local/bin/cwebp"])
 OUT_ROOT = "/Users/kevinkreative/genseo/tmp_images"
 MAX_BYTES = 80 * 1024
+# The third-party-brand clause is not belt-and-braces: left ungated, the generator fills empty
+# shelf and counter space with plausible supplement tubs, and on 3 of 3 test generations one of
+# them read LIV PURE — a real competing brand, on our own blog. The watermark ban did not cover
+# it and the QC packaging check only compared against OUR label, so nothing was watching.
 PROMPT_SUFFIX = (" NO watermark. NO blog name text. NO caption. NO attribution text in any "
-                 "corner. Clean image only. Product label must remain legible.")
+                 "corner. Clean image only. Product label must remain legible. NO other branded "
+                 "product packaging in frame. Never invent a supplement brand name.")
 # Appended ONLY on no-face images. Until 2026-08-09 this clause rode on EVERY prompt,
 # including the hero lane — which mandates a visible approved persona. So the generator
 # got "match this reference person's face" and "no recognizable human faces" in the same
@@ -112,6 +117,9 @@ def qc_gem9(webp_path, refs, is_ugc, has_persona):
                       "available light, lived-in scene) and NOT a studio/stock photo? Glossy "
                       "stock look = FAIL.")
     rubric.append("3. Any rendered text/watermark/caption that is not on the product label = FAIL.")
+    rubric.append("3b. Any product package in frame that is NOT the referenced product = FAIL. "
+                  "An invented brand name on a jar, tub, bottle or pouch counts, even a plausible "
+                  "one — name it in the reason.")
     if has_persona:
         rubric.append("4. Does the person look like a natural real human matching the persona "
                       "reference (no plastic skin, no dead eyes, no warped hands)? = FAIL if not.")
