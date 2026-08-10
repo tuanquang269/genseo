@@ -1,0 +1,43 @@
+cell m5059-wh — male 50-59 white non-Hispanic | have 0, target 14, fetching up to 1
+source: openimages | 14952 indexed candidates, all CC BY 2.0, byte floor 250KB | pixels from staticflickr.com, metadata from storage.googleapis.com, flickr.com never requested
+verdict cache: 620 image(s) already judged — replayed free, re-scored against this cell
+queries (1), up to 20 page(s) x 500 results each:
+   gender=Predominantly Masculine;age=Older
+
+  ✗ 585cfb9b59131505 [resolution] delivered file is 680x1024 = 0.70MP short=680 (floor 1.0MP / 800px) [cached]
+  ✗ 7ec080b5dbd8a4a4 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ 3a0b72a274530636 [watermark] burned-in text screen: top-left d=0.2090 ratio=6.3 row=0.36 [cached]
+  ✗ bc62f1dd1b510542 [vision] apparent age 60-80 spans 20 years — too hedged to place in a band; reads as 'as', cell wants 'wh' [cached]
+  ✗ 98baa3d81779563b [artwork] title/description reads as artwork or an archive reproduction ('Icon') — gate 5 would reject it as 'not a camera photograph' after paying for the model call
+  ✗ 73724cfdc4c2605e [vision] apparent age 65-80 centres on 72, outside cell band 50-59; recognizable public figure [cached]
+  ✗ e962682e21de3b74 [vision] apparent age 60-80 spans 20 years — too hedged to place in a band; reads as 'as', cell wants 'wh' [cached]
+  ✗ f126d7d532515b70 [vision] apparent age 60-80 spans 20 years — too hedged to place in a band; reads as 'as', cell wants 'wh' [cached]
+  ✗ a1e4a089b5daa320 [vision] apparent age 65-75 centres on 70, outside cell band 50-59 [cached]
+  ✗ ef52ec540eb17b06 [vision] apparent age 70-85 centres on 78, outside cell band 50-59; visible watermark, logo or burned-in text [cached]
+  ✗ 5a1600c71cb5d944 [vision] apparent age 65-80 centres on 72, outside cell band 50-59 [cached]
+  ✗ 061a65819c4f0093 [vision] apparent age 65-80 centres on 72, outside cell band 50-59 [cached]
+  ✗ c8504804a7234f33 [vision] apparent age 65-80 centres on 72, outside cell band 50-59; visible watermark, logo or burned-in text [cached]
+  ✗ 564c552b0fd001be [resolution] delivered file is 1024x683 = 0.70MP short=683 (floor 1.0MP / 800px) [cached]
+  ✗ 37e178b69fb4bb50 [vision] apparent age 60-80 spans 20 years — too hedged to place in a band; visible watermark, logo or burned-in text [cached]
+  ✗ bb348f06f0db4dea [watermark] burned-in text screen: top-left d=0.1391 ratio=6.9 row=0.31 [cached]
+  ✗ 816e6a026c7e6be9 [vision] apparent age 30-45 centres on 38, outside cell band 50-59; visible watermark, logo or burned-in text; recognizable public figure [cached]
+  ✗ b6db4077420e7839 [gone] HTTP 410 — the photograph is no longer served (tried flickr-2048) [cached]
+  ✗ 7ec1fcfba8200faa [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ 366209cb2cfa7f73 [vision] not a camera photograph (AI/CGI/illustration); apparent age 65-80 centres on 72, outside cell band 50-59 [cached]
+  ✗ bb962c134a45bbe9 [vision] apparent age 45-65 spans 20 years — too hedged to place in a band; reads as 'as', cell wants 'wh'; face not clearly visible; face obscured (sunglasses/hands/shadow) [cached]
+  ✗ c6f6e5f2aeae3a50 [watermark] burned-in text screen: bottom-left d=0.1474 ratio=6.8 row=0.39 [cached]
+  ✗ 9227e35ed1793d72 [vision] apparent age 50-75 spans 25 years — too hedged to place in a band; face not clearly visible; face obscured (sunglasses/hands/shadow) [cached]
+  ✗ eb2704207951b160 [resolution] delivered file is 1200x795 = 0.95MP short=795 (floor 1.0MP / 800px) [cached]
+  ✗ 99e07142943043d2 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ 269aa6e87201904a [vision] apparent age 55-75 spans 20 years — too hedged to place in a band; reads as 'hl', cell wants 'wh' [cached]
+  ✗ 7412103e3da2e9c8 [watermark] burned-in text screen: bottom-strip d=0.2540 ratio=9.1 row=0.43
+  ✗ cf97377cb331bb4d [vision] apparent age 60-75 centres on 68, outside cell band 50-59
+  ✗ 7b58e8db9789f843 [resolution] delivered file is 456x843 = 0.38MP short=456 (floor 1.0MP / 800px)
+  ✗ 97e64739838ff227 [vision] apparent age 65-80 centres on 72, outside cell band 50-59
+  ✗ 7ff19edbd2a59ad3 [vision] apparent age 60-80 spans 20 years — too hedged to place in a band; reads as 'as', cell wants 'wh'
+  ✓ 4895f4e6be07caa0 [accept] → m5059-wh-01  1600x1200 1.92MP CC BY 2.0 by LindsayT...
+
+✓ index.json updated (+1 personas as PENDING, atomic, re-read before write)
+
+examined 32 candidate(s), accepted 1 of 1 wanted — stopped: reached the fetch target
+These passed the MACHINE gates only. They are status="pending" and the picker will not hero them. Kevin's approval is what flips them to active.

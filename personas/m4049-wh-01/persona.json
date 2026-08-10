@@ -1,0 +1,63 @@
+{
+ "schema_version": 2,
+ "handle": "m4049-wh-01",
+ "pool_id": "m4049",
+ "cell_id": "m4049-wh",
+ "gender": "male",
+ "age_band": "40-49",
+ "ethnicity_key": "wh",
+ "ethnicity_note": "sourced for cell m4049-wh (white non-Hispanic); the vision gate placed it there by how the photograph READS, which is what a coverage target can measure and is not a claim about the person \u2014 confirm by eye before first use",
+ "demo": "US man ~40-55, Caucasian \u2014 candid available-light photograph",
+ "build_vibe": null,
+ "source": {
+  "platform": "openimages",
+  "page_url": "https://www.flickr.com/photos/psd/39696177",
+  "photo_id": "9d799126a8b77d94",
+  "author": "Paul Downey",
+  "license": "CC BY 2.0",
+  "license_url": "https://creativecommons.org/licenses/by/2.0/",
+  "attribution_required": true,
+  "attribution_text": "\"Cynic\" by Paul Downey (https://www.flickr.com/photos/psd/39696177), licensed under CC BY 2.0 (https://creativecommons.org/licenses/by/2.0/)"
+ },
+ "image": {
+  "width": 2048,
+  "height": 1580,
+  "megapixels": 3.24,
+  "sha256": "76feab84d045dbc55b87c816ad06879b7771cebe440a0de67b14640930b3dd94",
+  "bytes": 804289,
+  "dhash": "36e7293132723939",
+  "rendition": "flickr-2048"
+ },
+ "qc": {
+  "ai_verdict": "{\"is_camera_photograph\": true, \"person_count\": 1, \"apparent_age_min\": 40, \"apparent_age_max\": 55, \"apparent_gender\": \"male\", \"face_clearly_visible\": true, \"face_obscured\": false, \"beauty_filtered\": false, \"visible_text_or_watermark\": false, \"recognizable_public_figure\": false, \"apparent_ethnicity\": \"Caucasian\", \"ethnicity_group\": \"white\", \"notes\": \"Close-up man wearing bucket hat outdoors.\"}",
+  "watermark": false,
+  "face_visible": true,
+  "accepted_date": "2026-08-10",
+  "notes": "machine gates passed: licence cc-by-2.0 read back from the source, 3.24MP, burned-in-text screen (top-right d=0.0233 ratio=11.6 row=0.08), dHash-deduped vs the whole bank, vision gate. Vision JSON: {\"apparent_age_max\": 55, \"apparent_age_min\": 40, \"apparent_ethnicity\": \"Caucasian\", \"apparent_gender\": \"male\", \"beauty_filtered\": false, \"ethnicity_group\": \"white\", \"face_clearly_visible\": true, \"face_obscured\": false, \"is_camera_photograph\": true, \"notes\": \"Close-up man wearing bucket hat outdoors.\", \"person_count\": 1, \"recognizable_public_figure\": false, \"visible_text_or_watermark\": false}",
+  "vision": {
+   "is_camera_photograph": true,
+   "person_count": 1,
+   "apparent_age_min": 40,
+   "apparent_age_max": 55,
+   "apparent_gender": "male",
+   "face_clearly_visible": true,
+   "face_obscured": false,
+   "beauty_filtered": false,
+   "visible_text_or_watermark": false,
+   "recognizable_public_figure": false,
+   "is_monochrome_or_period": false,
+   "face_angle_reads": "three-quarter",
+   "studio_or_press_context": false,
+   "apparent_ethnicity": "white european descent",
+   "ethnicity_group": "white",
+   "notes": "Close-up outdoor portrait of a man wearing a bucket hat."
+  },
+  "rubric_refreshed": "2026-08-10"
+ },
+ "approved_by": null,
+ "approved_date": null,
+ "camera_notes": "indoor/ambient available light, real skin texture \u2014 always camera-match; ALWAYS feed THIS ref.jpg, never a previous gen (each gen is another lossy re-reading; chaining them compounds the drift in everything BUT the identity, which ima2 holds onto \u2014 measured 2026-08-10)",
+ "usage": "male-audience articles (ShilaSource, FusiForce); persona is VISUAL ONLY, never named in copy (byline stays the roster author)",
+ "status": "pending",
+ "flag_reason": null
+}

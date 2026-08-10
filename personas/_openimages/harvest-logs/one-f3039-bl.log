@@ -1,0 +1,43 @@
+cell f3039-bl — female 30-39 Black/African American | have 0, target 2, fetching up to 1
+source: openimages | 14952 indexed candidates, all CC BY 2.0, byte floor 250KB | pixels from staticflickr.com, metadata from storage.googleapis.com, flickr.com never requested
+verdict cache: 795 image(s) already judged — replayed free, re-scored against this cell
+queries (1), up to 20 page(s) x 500 results each:
+   gender=Predominantly Feminine
+
+  · 3ab0418e545b0865 already in the bank
+  · 0e1b3e78cc211c46 already in the bank
+  · e8478070b854e373 already in the bank
+  · 016943a933c0b836 already in the bank
+  · c500a42c68a379ac already in the bank
+  · c51d7e6b6c0bdb4b already in the bank
+  · 43a89ee29f279fe5 already in the bank
+  · 8e8702aa7529987d already in the bank
+  · 4c8b3cadfd5a0446 already in the bank
+  · 2c89bc5fe5cd268f already in the bank
+  · 66307eed4375f452 already in the bank
+  · 1bdf4574075c085a already in the bank
+  · 8f50d66ef1f1140f already in the bank
+  · 363f5d25c4f5df67 already in the bank
+  · 45e8d72ef7ee966d already in the bank
+  · 7fc65a95855c17df already in the bank
+  · 536bddb8c5e94318 already in the bank
+  · 7df3ec67e17814cb already in the bank
+  · 03f55b4f66fb540c already in the bank
+  ✗ 6f0d79982298def3 [vision] reads as 'wh', cell wants 'bl'; beauty-filtered / retouched; recognizable public figure [cached]
+  ✗ b0f311c5394ef10f [gone] HTTP 410 — the original is no longer served [cached]
+  ✗ 07daa2b252f548f7 [gone] HTTP 410 — the original is no longer served [cached]
+  ✗ 1703c8aab44afff0 [resolution] delivered file is 1000x667 = 0.67MP short=667 (floor 1.0MP / 800px) [cached]
+  ✗ 5364349aa54d1177 [watermark] burned-in text screen: bottom-right d=0.1019 ratio=5.4 row=0.39 [cached]
+  ✗ 4451d39110968717 [watermark] burned-in text screen: bottom-left d=0.1960 ratio=98.0 row=0.50 [cached]
+  ✗ 278d322a9b3619aa [watermark] burned-in text screen: bottom-strip d=0.0325 ratio=11.3 row=0.52 [cached]
+  ✗ bdfd7cff8dee4ce6 [vision] apparent age 45-60 centres on 52, outside cell band 30-39; reads as 'wh', cell wants 'bl' [cached]
+  ✗ c16914ea2825835d [gone] HTTP 410 — the original is no longer served [cached]
+  ✗ 6dfe33e7603b6698 [vision] apparent age 20-30 centres on 25, outside cell band 30-39; reads as 'as', cell wants 'bl'; beauty-filtered / retouched [cached]
+  ✗ f930e91d822f8836 [resolution] delivered file is 1366x768 = 1.05MP short=768 (floor 1.0MP / 800px) [cached]
+  ✗ f0f9e24867866ffe [gone] HTTP 410 — the original is no longer served [cached]
+  ✓ 2e2491c5b5d678b4 [accept] → f3039-bl-01  2047x1356 2.78MP CC BY 2.0 by Sean O&#x27;Donnell
+
+✓ index.json updated (+1 personas as PENDING, atomic, re-read before write)
+
+examined 13 candidate(s), accepted 1 of 1 wanted — stopped: reached the fetch target
+These passed the MACHINE gates only. They are status="pending" and the picker will not hero them. Kevin's approval is what flips them to active.

@@ -1,0 +1,40 @@
+cell m3039-wh — male 30-39 white non-Hispanic | have 3, target 20, fetching up to 1
+source: openimages | 14952 indexed candidates, all CC BY 2.0, byte floor 250KB | pixels from staticflickr.com, metadata from storage.googleapis.com, flickr.com never requested
+verdict cache: 596 image(s) already judged — replayed free, re-scored against this cell
+queries (1), up to 20 page(s) x 500 results each:
+   gender=Predominantly Masculine
+
+  · ef295afcf17ed57f already in the bank
+  · 81c453b9bbbf6ca3 already in the bank
+  · 4b407694be39cc1a already in the bank
+  ✗ 6c7db39bbea06554 [vision] apparent age 55-70 centres on 62, outside cell band 30-39 [cached]
+  ✗ cf960604d53dbbc3 [vision] apparent age 20-35 centres on 28, outside cell band 30-39; reads as 'as', cell wants 'wh'; face not clearly visible; face obscured (sunglasses/hands/shadow) [cached]
+  ✗ 172f5bd9031d33af [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ 38713fc11463f7fe [vision] apparent age 18-30 centres on 24, outside cell band 30-39; face not clearly visible; face obscured (sunglasses/hands/shadow); visible watermark, logo or burned-in text [cached]
+  ✗ 838c53fe8c9f704b [vision] apparent age 25-45 spans 20 years — too hedged to place in a band; face not clearly visible; face obscured (sunglasses/hands/shadow) [cached]
+  ✗ 4a836f57e3597788 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ 74e9413ca4cbcd81 [vision] apparent age 18-28 centres on 23, outside cell band 30-39 [cached]
+  ✗ 3a45c17904838ccc [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ bdf7a03ab1d5fb38 [vision] apparent age 55-75 spans 20 years — too hedged to place in a band [cached]
+  ✗ 585cfb9b59131505 [resolution] delivered file is 680x1024 = 0.70MP short=680 (floor 1.0MP / 800px) [cached]
+  ✗ f02a21156d485e48 [vision] face not clearly visible; face obscured (sunglasses/hands/shadow) [cached]
+  ✗ e00fd8a7308107a5 [vision] apparent age 20-40 spans 20 years — too hedged to place in a band; face not clearly visible; face obscured (sunglasses/hands/shadow) [cached]
+  ✗ e053ffb7dfd9b5fd [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ d9f0f1d4fa81efde [vision] apparent age 40-55 centres on 48, outside cell band 30-39; reads as 'hl', cell wants 'wh' [cached]
+  ✗ ed0ec9f73c60f162 [resolution] delivered file is 800x1000 = 0.80MP short=800 (floor 1.0MP / 800px) [cached]
+  ✗ 7ec080b5dbd8a4a4 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ 43f1d90f3ad261fd [vision] apparent age 45-60 centres on 52, outside cell band 30-39; reads as 'hl', cell wants 'wh'; visible watermark, logo or burned-in text; recognizable public figure [cached]
+  ✗ 2d5b04414f733e98 [vision] visible watermark, logo or burned-in text; recognizable public figure [cached]
+  ✗ aeda4eb898bc63ff [vision] apparent age 18-25 centres on 22, outside cell band 30-39 [cached]
+  ✗ 6f6c07ddffd599e6 [vision] apparent age 18-28 centres on 23, outside cell band 30-39; reads as 'hl', cell wants 'wh' [cached]
+  ✗ 86d2e8509e209eef [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ 9f38045e237d6f19 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ 8041aa40f427e248 [vision] apparent age 45-60 centres on 52, outside cell band 30-39; visible watermark, logo or burned-in text; recognizable public figure [cached]
+  ✗ e3213549cb262000 [vision] apparent age 45-55 centres on 50, outside cell band 30-39; beauty-filtered / retouched; recognizable public figure [cached]
+  ✗ 8f2c820ed68a3b74 [vision] apparent age 45-65 spans 20 years — too hedged to place in a band; apparent ethnicity 'unclear' could not be placed in any of the five taxonomy groups; face not clearly visible; face obscured (sunglasses/hands/shadow) [cached]
+  ✓ 2e29c2fc2fb005e5 [accept] → m3039-wh-04  2048x1365 2.80MP CC BY 2.0 by US Embassy Sweden
+
+✓ index.json updated (+1 personas as PENDING, atomic, re-read before write)
+
+examined 26 candidate(s), accepted 1 of 1 wanted — stopped: reached the fetch target
+These passed the MACHINE gates only. They are status="pending" and the picker will not hero them. Kevin's approval is what flips them to active.
