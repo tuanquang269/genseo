@@ -30,6 +30,7 @@ Runs under /usr/bin/python3 (3.9): stdlib + PIL + numpy + requests, which is the
 interpreter on this Mac carrying all three (homebrew python3 has no PIL).
 """
 import argparse
+import glob
 import gzip
 import hashlib
 import io
@@ -169,6 +170,13 @@ WM_FLAT_STD = 14.0            # background smoothness under the strokes
 WM_MIN_DENSITY = 0.020        # stroke density inside a corner/edge band
 WM_MIN_RATIO = 4.0            # ...relative to the picture's interior
 WM_MIN_ROW_COVERAGE = 0.30    # ...and arranged as a horizontal line, the way text is
+# Greyscale screen. Measured across the 44-face bank on 2026-08-10: the one true greyscale
+# photograph (m6070-hl-01) has ZERO pixels above chroma 12, and the next lowest image in the
+# whole bank has 1.8% of its pixels above chroma 30. There is no middle ground to tune against,
+# which is exactly why this threshold is safe — and why it is the ONLY thing measured here.
+# See monochrome_screen for why sepia and period photographs are NOT caught by pixels.
+MONO_CHROMA = 12              # per-pixel max(R,G,B)-min(R,G,B) that counts as "has colour"
+MONO_MIN_FRACTION = 0.001     # below this fraction of coloured pixels the file is greyscale
 VISION_TIMEOUT = 180
 # Statuses that mean "the router is busy", not "this photograph is bad". 502/503/504 are
 # 9router or the provider shedding load; 429 is it asking for less. Everything else —
@@ -631,6 +639,50 @@ def largest_size(cand, key, session, allow_getsizes=True, sleep=0.0):
 
 
 # --------------------------------------------------------------------------------------
+# GATE 2.5 — greyscale screen
+# --------------------------------------------------------------------------------------
+def monochrome_screen(img):
+    """Returns (flagged, detail). Catches TRUE greyscale only — deliberately.
+
+    A black-and-white photograph is useless as a bank reference: ima2 anchors skin tone, hair
+    colour and lighting on the ref, and there is none to anchor on. The bank had one
+    (m6070-hl-01) and nothing measured it.
+
+    The tempting move is a chroma threshold that also catches sepia and period photographs. It
+    does not work, and the measurement is worth recording so nobody re-derives it. Across the
+    whole bank on 2026-08-10:
+
+        f3039-wh-04  a 1940s black-and-white photograph   p95 chroma 21, max  71
+        f6070-wh-05  a colour studio portrait, grey seamless, cream cardigan
+                                                          p95 chroma 10, max  88
+
+    The period photograph is MORE colourful than the colour photograph by p95, because chroma
+    statistics measure how colourful the SCENE is, not whether the film was. Hue coherence does
+    not separate them either (R=0.09 for the period shot, 0.99 for the colour one — but 0.15
+    for f4049-bl-01, a perfectly ordinary colour photograph, because many hues and pure chroma
+    noise both read as incoherent). Any cut that catches the sepia one also throws away candid
+    photographs taken in muted winter or indoor light, which is most of the good ones.
+
+    So: pixels answer only the question pixels can answer. True greyscale has essentially no
+    coloured pixels at all — zero above chroma 12 for m6070-hl-01, against 1.8% above chroma 30
+    for the nearest colour image — and that gap is three orders of magnitude wide. Sepia, toning
+    and period stock are handed to the vision rubric (`is_monochrome_or_period`), which is
+    already looking at the photograph and can simply see it.
+
+    A FRACTION rather than a max, because a single stray coloured pixel — a date stamp, a
+    scanner artefact, one hot JPEG block — must not be able to certify a black-and-white scan
+    as colour.
+    """
+    g = img.convert("RGB").copy()
+    g.thumbnail((256, 256), Image.LANCZOS)
+    a = np.asarray(g, dtype=np.int16)
+    chroma = a.max(axis=2) - a.min(axis=2)
+    frac = float((chroma > MONO_CHROMA).mean())
+    return frac < MONO_MIN_FRACTION, "coloured-pixel fraction %.5f (floor %.5f)" % (
+        frac, MONO_MIN_FRACTION)
+
+
+# --------------------------------------------------------------------------------------
 # GATE 3 — burned-in text screen
 # --------------------------------------------------------------------------------------
 # THIS IS A SCREEN, NOT A PROOF. It looks for what a credit line physically is: thin
@@ -731,11 +783,24 @@ VISION_RUBRIC = (
     '"apparent_gender": "male"|"female"|"ambiguous", "face_clearly_visible": true|false, '
     '"face_obscured": true|false, "beauty_filtered": true|false, '
     '"visible_text_or_watermark": true|false, "recognizable_public_figure": true|false, '
+    '"is_monochrome_or_period": true|false, '
+    '"face_angle_reads": "frontal"|"three-quarter"|"profile"|"down-or-away", '
+    '"studio_or_press_context": true|false, '
     '"apparent_ethnicity": "<short phrase>", '
     '"ethnicity_group": "white"|"hispanic"|"black"|"asian"|"other"|"unclear", '
     '"notes": "<one short sentence>"}\n'
     "Definitions. is_camera_photograph: false for AI-generated, CGI, 3D render, painting, "
     "drawing or illustration. person_count: humans whose face is at least partly in frame. "
+    "is_monochrome_or_period: true for black-and-white, greyscale, sepia, hand-tinted, "
+    "duotone or otherwise colour-less photography, AND for any photograph that reads as "
+    "historical rather than contemporary - period clothing, a vintage print, film-era "
+    "processing. face_angle_reads: which ONE describes the head - frontal (both eyes and both "
+    "cheeks visible, squarely toward camera), three-quarter (turned partly away, the far eye "
+    "still visible), profile (side-on, only one eye visible), down-or-away (chin dropped "
+    "toward the chest, head turned past profile, or the face otherwise not readable as a "
+    "portrait). studio_or_press_context: true for a seamless studio backdrop, a professional "
+    "headshot, a stage or podium, a press conference, a red carpet or any other posed "
+    "media-production setting. "
     "face_obscured: sunglasses, a hand, a mask, hair or heavy shadow covering the face. "
     "beauty_filtered: skin smoothing, blemish removal, catalogue-style retouching, beauty-app "
     "filtering. visible_text_or_watermark: ANY burned-in text, credit line, logo, date stamp or "
@@ -758,6 +823,24 @@ VISION_RUBRIC = (
 ETHNICITY_GROUP_TO_KEY = {
     "white": "wh", "hispanic": "hl", "black": "bl", "asian": "as", "other": "mx",
 }
+
+# Keys the rubric gained on 2026-08-10. The ~470 vision readings already banked in
+# verdicts.jsonl predate them, and there is no way to answer them from a cached JSON — only
+# from the photograph. evaluate_vision therefore treats a MISSING key as "not asked" rather
+# than as a pass, and process_candidate re-asks the model for exactly those candidates that
+# would otherwise be accepted. Cached REJECTIONS still replay for free (a period photograph
+# cannot stop being the wrong gender), so the re-ask costs one call per face we were about to
+# write into the bank anyway, not one per cached row.
+VISION_RUBRIC_KEYS_ADDED = ("is_monochrome_or_period", "face_angle_reads")
+# A profile ref makes most of the 21-angle vocabulary unreachable: article_images.py anchors
+# identity on ref.jpg, and asking ima2 for `front-level` from a 90-degree profile is asking it
+# to invent the half of the face it was never shown. f3039-wh-06 is exactly that photograph.
+FACE_ANGLE_ACCEPTED = ("frontal", "three-quarter")
+
+
+def vision_is_current(v):
+    """Was this reading taken with the rubric we enforce today?"""
+    return isinstance(v, dict) and all(k in v for k in VISION_RUBRIC_KEYS_ADDED)
 
 
 def _extract_json(text):
@@ -931,6 +1014,17 @@ def evaluate_vision(v, cell):
         reasons.append("visible watermark, logo or burned-in text")
     if v.get("recognizable_public_figure") is True:
         reasons.append("recognizable public figure")
+    # `is True` and `if angle and`, so a reading taken before these keys existed passes here
+    # rather than failing — see VISION_RUBRIC_KEYS_ADDED. Absent is "not asked", not "no".
+    if v.get("is_monochrome_or_period") is True:
+        reasons.append("black-and-white, toned or period photograph")
+    angle = str(v.get("face_angle_reads") or "").strip().lower()
+    if angle and angle not in FACE_ANGLE_ACCEPTED:
+        reasons.append("face reads %r — the bank needs a frontal or three-quarter anchor" % angle)
+    # studio_or_press_context is recorded, NOT enforced. It is a taste judgement, the corpus
+    # headroom in the thin cells does not have a fourth gate to spare, and unlike the old
+    # report-only ethnicity field it has somewhere to go: contact_sheet.py prints it in the
+    # caption, so the eye-QC pass over the bank can act on it.
     return reasons
 
 
@@ -2152,6 +2246,17 @@ def process_candidate(cand, cell, key, session, hashes, args):
         verdict_remember(cand, reject=["resolution", msg])
         return ("resolution", msg)
 
+    # Before the watermark screen because it is far cheaper, and cached because "this file has
+    # no colour in it" is a permanent fact about the photograph rather than about this cell.
+    # Sited here rather than up with the vision rubric on purpose: a candidate whose vision
+    # reading is already cached skips the model call entirely, so a greyscale check that lived
+    # only in the rubric would never run on the ~470 faces already banked.
+    flagged, mono_detail = monochrome_screen(img)
+    if flagged:
+        msg = "greyscale — no colour to anchor skin tone or lighting on (%s)" % mono_detail
+        verdict_remember(cand, reject=["monochrome", msg])
+        return ("monochrome", msg)
+
     flagged, wm_detail = watermark_screen(img)
     if flagged:
         msg = "burned-in text screen: %s" % wm_detail
@@ -2170,7 +2275,7 @@ def process_candidate(cand, cell, key, session, hashes, args):
         if d <= DHASH_MAX_DISTANCE:
             return ("dupe", "dHash distance %d vs %s" % (d, handle))
 
-    if cached_vision is not None:
+    if cached_vision is not None and vision_is_current(cached_vision):
         # A previous cell bought this answer and the block above already re-scored it against
         # THIS cell without objection. The photograph has not changed in the meantime, so the
         # ~28s call would only re-derive the same JSON. This is the whole point of the cache:
@@ -2399,12 +2504,45 @@ def cmd_selftest(_args):
         print("  i f3-silver (KNOWN BLIND SPOT: script watermark over hair-on-bokeh) "
               "flagged=%s  %s" % (flagged, detail))
 
+    print("greyscale screen (empirical anchors)")
+
+    def anchor(handle):
+        """Where a persona's ref lives — including after it has been quarantined.
+
+        These anchors are photographs that were IN the bank and should not have been. Moving
+        one out (never deleting it — that is the standing rule) must not quietly delete the
+        evidence that the screen works, so the selftest follows it into quarantine.
+        """
+        for d in [PERSONAS] + sorted(glob.glob(os.path.join(PERSONAS, "_quarantine-*"))):
+            p = os.path.join(d, handle, "ref.jpg")
+            if os.path.exists(p):
+                return p
+        return None
+
+    for handle, want, why in (
+            ("m6070-hl-01", True, "true greyscale — flags"),
+            ("f6070-wh-05", False, "muted COLOUR (grey seamless, cream knit) — stays clean; "
+                                   "a p95-chroma cut would have wrongly killed this one")):
+        p = anchor(handle)
+        if not p:
+            check("%s available as an anchor" % handle, False)
+            continue
+        flagged, detail = monochrome_screen(Image.open(p))
+        check("%s %s" % (handle, why), flagged == want, detail)
+    p = anchor("f3039-wh-04")
+    if p:
+        flagged, detail = monochrome_screen(Image.open(p))
+        check("f3039-wh-04 (1940s b&w) is NOT caught by pixels — this is the documented limit, "
+              "and why is_monochrome_or_period exists in the rubric", flagged is False, detail)
+
     print("vision verdict evaluation")
     cell = {"gender": "male", "age_band": "40-49", "cell_id": "m4049-wh", "ethnicity_key": "wh"}
     good = {"is_camera_photograph": True, "person_count": 1, "apparent_age_min": 42,
             "apparent_age_max": 48, "apparent_gender": "male", "face_clearly_visible": True,
             "face_obscured": False, "beauty_filtered": False,
             "visible_text_or_watermark": False, "recognizable_public_figure": False,
+            "is_monochrome_or_period": False, "face_angle_reads": "three-quarter",
+            "studio_or_press_context": False,
             "ethnicity_group": "white", "apparent_ethnicity": "white"}
     check("clean candidate passes", evaluate_vision(good, cell) == [])
     for tweak, label in (({"is_camera_photograph": False}, "AI/CGI rejected"),
@@ -2414,12 +2552,29 @@ def cmd_selftest(_args):
                          ({"face_obscured": True}, "obscured face rejected"),
                          ({"beauty_filtered": True}, "retouched face rejected"),
                          ({"visible_text_or_watermark": True}, "watermark rejected"),
-                         ({"recognizable_public_figure": True}, "celebrity rejected")):
+                         ({"recognizable_public_figure": True}, "celebrity rejected"),
+                         ({"is_monochrome_or_period": True}, "b&w / period photograph rejected"),
+                         ({"face_angle_reads": "profile"}, "pure profile rejected"),
+                         ({"face_angle_reads": "down-or-away"}, "head down / turned away rejected")):
         v = dict(good)
         v.update(tweak)
         check(label, evaluate_vision(v, cell) != [])
+    check("frontal accepted", evaluate_vision(dict(good, face_angle_reads="frontal"), cell) == [])
     check("unparseable vision output rejected (fails CLOSED, unlike article_images.py)",
           evaluate_vision(None, cell) != [])
+
+    # The whole ~470-row verdict cache predates these two keys. If a missing key read as a
+    # rejection, every cached candidate would fail the early-out in process_candidate and the
+    # cache would be worthless; if it read as an ENFORCED pass, monochrome faces already in the
+    # cache would sail through. It has to read as "not asked", with the re-ask done by
+    # process_candidate for exactly the candidates that would otherwise be accepted.
+    legacy = {k: v for k, v in good.items() if k not in VISION_RUBRIC_KEYS_ADDED}
+    check("a pre-2026-08-10 cached reading still passes (missing key = not asked, not 'no')",
+          evaluate_vision(legacy, cell) == [])
+    check("...but is not mistaken for a current one", not vision_is_current(legacy))
+    check("a reading taken under today's rubric is current", vision_is_current(good))
+    check("studio_or_press_context is RECORDED, not enforced",
+          evaluate_vision(dict(good, studio_or_press_context=True), cell) == [])
 
     # Age gate. These four are the reason it is not a bare interval-overlap test.
     def age(lo, hi, c=cell):
