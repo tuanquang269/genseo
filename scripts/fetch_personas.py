@@ -751,6 +751,9 @@ def flickr_search(session, key, text, page, per_page, _cat=None):
 # rejects those on `recognizable_public_figure`, but only after paying for the model call.
 COMMONS_API = "https://commons.wikimedia.org/w/api.php"
 COMMONS_MIMES = ("image/jpeg", "image/png")
+# One of the widths Commons' own download widget offers, so the render is normally cached
+# already. See commons_candidate for why we fetch a thumbnail rather than the original at all.
+COMMONS_THUMB_WIDTH = 2560
 # One at a time, NEVER OR-ed. `incategory:A OR incategory:B` over two 8-million-file categories
 # returns 974 results; the parser does not mean by it what a reader assumes it means.
 #
@@ -829,14 +832,25 @@ def commons_candidate(page):
     def meta(k):
         return str((em.get(k) or {}).get("value", "") or "").strip()
 
-    url = ii.get("url") or ""
+    # Prefer the rendered thumbnail over the original asset. This is not a bandwidth nicety:
+    # upload.wikimedia.org 429s originals aggressively and the body of its own 429 says to
+    # "instead use thumbnail images in sizes listed on https://w.wiki/GHai". Measured 2026-08-10:
+    # a run against originals came back 43/60 [throttled] — two thirds of the corpus was never
+    # judged, and a rate limit read as an empty corpus. COMMONS_THUMB_WIDTH is one of the widths
+    # Commons itself offers, so the render is usually already cached and costs them nothing.
+    thumb, tw, th = ii.get("thumburl") or "", ii.get("thumbwidth"), ii.get("thumbheight")
+    url = thumb or ii.get("url") or ""
     # The asset URL now carries an ?utm_source= tail. Left on, it becomes part of the cache key
     # and of the provenance record, so two fetches of one file look like two files.
     url = url.split("?", 1)[0]
     try:
-        w, h = int(ii.get("width") or 0), int(ii.get("height") or 0)
+        if thumb and tw and th:
+            w, h, label = int(tw), int(th), "commons-thumb-%d" % COMMONS_THUMB_WIDTH
+        else:
+            w, h, label = int(ii.get("width") or 0), int(ii.get("height") or 0), "commons-original"
     except (TypeError, ValueError):
         w = h = 0
+        label = "commons-original"
     title = page.get("title") or ""
     return {
         "platform": "commons",
@@ -846,7 +860,9 @@ def commons_candidate(page):
         "author": _strip_html(meta("Artist")) or "unknown",
         "license": "",
         "licence_slug": meta("License").lower(),
-        "sizes": [(w * h, w, h, url, "commons-original")] if (w and h and url) else [],
+        # One entry only, deliberately. Listing the original alongside the thumbnail would let
+        # largest_size pick the original again and quietly undo the throttle fix.
+        "sizes": [(w * h, w, h, url, label)] if (w and h and url) else [],
         "restrictions": meta("Restrictions"),
         # Credit and Artist are HTML and are where a re-hosted file names where it came from.
         # Keep them raw, unstripped: gate C matches on the href, which _strip_html would delete.
@@ -874,6 +890,12 @@ def commons_search(session, _key, text, page, per_page, licence_category=None):
         "action": "query", "generator": "search", "gsrsearch": srsearch,
         "gsrnamespace": 6, "gsrlimit": limit, "gsroffset": max(0, (page - 1) * limit),
         "prop": "imageinfo", "iiprop": "url|size|extmetadata|mime",
+        # Asking for a width is what makes the API hand back a thumburl at all. 2560 rather than
+        # 1280 because 1280 wide on a 16:9 frame is 720 tall — under our 800px short edge — so
+        # the cheaper thumbnail would reject good photographs for a reason that has nothing to
+        # do with the photograph. MediaWiki never upscales: when the original is smaller there
+        # is no thumburl and commons_candidate falls back to it.
+        "iiurlwidth": COMMONS_THUMB_WIDTH,
     })
     pages = (data.get("query") or {}).get("pages") or []
     out = [c for c in (commons_candidate(p) for p in pages) if c]
@@ -1245,7 +1267,10 @@ def cmd_fetch(args):
     # would make a keyless backend refuse to run for want of a key it never uses.
     key = api_key() if source == "flickr" else None
     session = requests.Session()
-    session.headers["User-Agent"] = "genseo-fetch-personas/1.0 (+wellnessnest.co)"
+    # Wikimedia's UA policy wants a tool name, a version and a way to reach the operator; a
+    # contact URI satisfies it without putting a personal address in an outbound header.
+    session.headers["User-Agent"] = ("genseo-persona-sourcer/1.1 "
+                                     "(https://wellnessnest.co) python-requests")
 
     queries, dropped = build_queries(cell, args.queries, source=source)
     # Commons licence categories are walked one at a time. `incategory:"A" OR incategory:"B"`
@@ -1282,8 +1307,9 @@ def cmd_fetch(args):
     accepted, examined, seen_ids = [], 0, set()
     stop_reason = "queries exhausted"
     vision_infra_fails = 0
-    # CC0 first, so the attribution-free licence is spent before the ones that oblige us to
-    # carry a credit line into every article that uses the face.
+    # Licence scope is the OUTER loop, so each category is walked across every phrasing before
+    # the next one starts. The order is COMMONS_LICENCE_CATEGORIES', which is deliberately not
+    # the attribution-cheapest first — see the measurement recorded there.
     jobs = [(scope, q) for scope in lic_scopes for q in queries]
     try:
         for scope, query in jobs:
@@ -1603,6 +1629,24 @@ def cmd_selftest(_args):
                              "imageinfo": [{"mime": "application/pdf"}]}) is None)
     check("largest_size does not take the Flickr branch for a Commons candidate",
           largest_size(cand, None, None)[3].endswith("/x.jpg"))
+    check("no thumburl falls back to the original rather than dropping the candidate",
+          cand["sizes"][0][4] == "commons-original")
+    thumbed = commons_candidate({
+        "pageid": 43, "title": "File:Some man.jpg",
+        "imageinfo": [{"mime": "image/jpeg", "width": 6000, "height": 4000,
+                       "url": "https://upload.wikimedia.org/orig.jpg",
+                       "thumburl": "https://upload.wikimedia.org/thumb/2560px-orig.jpg?utm_source=api",
+                       "thumbwidth": 2560, "thumbheight": 1707,
+                       "extmetadata": {"License": {"value": "cc-by-4.0"}}}]})
+    # The whole point of the fix: the ORIGINAL must not survive anywhere in sizes, or
+    # largest_size picks it (24MP beats 4.4MP) and the throttle comes straight back.
+    check("thumbnail wins over the original, and the original is not left as an alternative",
+          len(thumbed["sizes"]) == 1
+          and thumbed["sizes"][0][3] == "https://upload.wikimedia.org/thumb/2560px-orig.jpg"
+          and thumbed["sizes"][0][1:3] == (2560, 1707)
+          and thumbed["sizes"][0][4] == "commons-thumb-2560")
+    check("a 2560px thumbnail of a 16:9 frame still clears the short-edge floor",
+          meets_resolution(COMMONS_THUMB_WIDTH, int(COMMONS_THUMB_WIDTH * 9 / 16)))
 
     print("resolution gate")
     check("1024x683 (0.70MP) rejected", not meets_resolution(1024, 683))
