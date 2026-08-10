@@ -273,6 +273,22 @@ def verify_article_images(shop, token, blog_id, article_id):
         return 0, [], ""
 
 
+def live_article_cover(shop, token, blog_id, article_id):
+    """Return the live article's cover image src, or "" if it has none.
+
+    `update` needs this to tell "backfill a missing cover" apart from "replace the approved hero
+    banner with whatever body image happens to sort first" — see the guard in do_update.
+    """
+    url = f"https://{shop}/admin/api/{API}/blogs/{blog_id}/articles/{article_id}.json?fields=id,image"
+    req = urllib.request.Request(url, headers={"X-Shopify-Access-Token": token})
+    try:
+        res = json.loads(urllib.request.urlopen(req).read())
+        return (res["article"].get("image") or {}).get("src", "") or ""
+    except Exception as e:
+        print(f"  ⚠  Could not read live cover image: {e}")
+        return ""
+
+
 def _process_images_for_publish(shop, token, md_text, strip_hero=True):
     """
     Upload all local images to Shopify Files.
@@ -704,13 +720,16 @@ def do_update(file_path, blog_id, article_id):
                      '', md_text, count=1, flags=re.I)
     lines = md_text.split('\n')
     stripped_lines = []
+    draft_header  = []   # H1 + meta_description comment, kept so the write-back below round-trips
     h1_stripped = False
     for line in lines:
         if not h1_stripped and line.startswith('# '):
             h1_stripped = True
+            draft_header.append(line.rstrip())
             continue
         if line.strip().startswith('<!-- meta_description:'):
             meta_description = line.strip().replace('<!-- meta_description:', '').replace('-->', '').strip()
+            draft_header.append(line.strip())
             continue
         stripped_lines.append(line)
     md_text = '\n'.join(stripped_lines).lstrip('\n')
@@ -756,7 +775,19 @@ def do_update(file_path, blog_id, article_id):
     payload = {"article": {"title": title, "body_html": html_content, "author": author_name}}
     if meta_description:
         payload["article"]["summary_html"] = f"<p>{meta_description}</p>"
-    if thumbnail_b64:
+
+    # `_process_images_for_publish` always hands back base64 for the FIRST local image, because on
+    # the publish path that image is the hero and gets stripped out of the body. On this path
+    # strip_hero=False: the first local image is an ordinary body image and stays in the body, so
+    # sending it as `article.image` would swap the approved hero banner for whichever picture
+    # happens to appear first — silently, since the cover is not visible in the article body.
+    # Only ever backfill a cover the live article does not already have.
+    existing_cover = live_article_cover(shop, token, blog_id, article_id)
+    if existing_cover:
+        print(f"  ⊙ Keeping existing cover image: {existing_cover[:80]}")
+        thumbnail_b64 = None
+    elif thumbnail_b64:
+        print("  ⊙ Article has no cover — backfilling from the first body image.")
         payload["article"]["image"] = {"attachment": thumbnail_b64}
 
     req = urllib.request.Request(api_url, data=json.dumps(payload).encode('utf-8'), headers=headers, method='PUT')
@@ -775,7 +806,9 @@ def do_update(file_path, blog_id, article_id):
         print(f"\n🔍 Verifying images on live article...")
         time.sleep(2)
         img_count, img_srcs, _ = verify_article_images(shop, token, blog_id, article_id)
-        expected = upload_count + (1 if thumbnail_b64 else 0)
+        # Every uploaded image stays in the body here (strip_hero=False), so upload_count already
+        # covers them; the cover is counted separately by verify_article_images.
+        expected = upload_count + (1 if (existing_cover or thumbnail_b64) else 0)
 
         if img_count == 0:
             print(f"  ✗ IMAGE VERIFICATION FAILED — 0 CDN images found!")
@@ -786,9 +819,11 @@ def do_update(file_path, blog_id, article_id):
             for s in img_srcs:
                 print(f"     ✓ {s[:90]}")
 
-        # Update draft with CDN URLs
+        # Update draft with CDN URLs. The H1 and meta_description line go back in: they were only
+        # stripped to build body_html, and a draft without them fails the title resolution at the
+        # top of this function, so a plain re-run of `update` would abort on its own last write.
         with open(file_path, 'w', encoding='utf-8') as f:
-            f.write(md_text)
+            f.write(('\n'.join(draft_header) + '\n\n' if draft_header else '') + md_text)
 
         ping_indexnow(shop, token, blog_id, handle)
     except Exception as e:
