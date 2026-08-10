@@ -190,12 +190,24 @@ MAX_AGE_INTERVAL = 15         # a wider estimate than this is a hedge, not an an
 # thumbnails — so downloads pass through a semaphore while the vision calls fan out. The
 # parallelism belongs on the call we are waiting for, not on the host that asked us to slow down.
 _DOWNLOAD_GATE = threading.BoundedSemaphore(2)
+# And the router has a ceiling of its own, lower than either. Measured 2026-08-10: one gem9
+# call answers in 5.5s, six concurrent ones drew five straight 502s, and a run at --workers 16
+# managed 5.2 candidates a minute against 12/min at --workers 12 — the extra workers spent
+# their time in the retry backoff they had themselves caused. Gating vision separately is what
+# lets --workers describe how many candidates are IN FLIGHT (downloading, hashing, waiting)
+# rather than how many may be shouting at 9router at once.
+_VISION_GATE = threading.BoundedSemaphore(6)
 _THREAD_LOCAL = threading.local()
 
 
 def set_download_concurrency(n):
     global _DOWNLOAD_GATE
     _DOWNLOAD_GATE = threading.BoundedSemaphore(max(1, int(n)))
+
+
+def set_vision_concurrency(n):
+    global _VISION_GATE
+    _VISION_GATE = threading.BoundedSemaphore(max(1, int(n)))
 
 
 def worker_session(template):
@@ -542,6 +554,39 @@ def sizes_from_extras(photo):
     return out
 
 
+# Flickr rate-limits the ORIGINAL size specifically, not the caller. Measured 2026-08-10: after
+# a run at --download-concurrency 8, `_o.jpg` returned HTTP 429 on 12 of 12 serial requests half
+# an hour later — while `_k`, `_h`, `_b` and the plain size all returned 200 for the SAME photo,
+# in the same second, on the same connection. The limiter is attached to the resource, not to us,
+# so backing off would have waited out a penalty that was never going to end on its own. The fix
+# is to stop asking for the one size that is metered.
+#
+# `_k` is the 2048px-long-edge rendition, and it is not merely acceptable — it is everything the
+# gates need. The watermark screen already works on a 720px copy (WM_WORK_EDGE), dHash resizes to
+# 9x8 and is scale-free, and 2048 is two and a half times MIN_SHORT_EDGE. Flickr never upscales,
+# so `_k` returns min(original, 2048) on the long edge: a small original arrives at its true size
+# and fails the floor honestly, exactly as it would have.
+#
+# The one behaviour that changes: an ultra-wide original near the floor (say 2400x800, short edge
+# 800) passed before and now arrives as 2048x683 and is refused. That is a stricter gate, not a
+# looser one, and a 3:1 panorama was never going to be a usable ima2 face anchor.
+#
+# `_o` is deliberately NOT a rung. Falling back to it would reintroduce the metered resource one
+# candidate at a time, which is the failure this ladder exists to end.
+FLICKR_SIZE_LADDER = (("_k", "flickr-2048"), ("_h", "flickr-1600"))
+
+
+def flickr_size_ladder(original_url):
+    """[(url, label)] to try in order for a Flickr static URL, largest unmetered size first.
+
+    Anything that is not a recognisable `_o` original is passed through untouched — a URL we
+    cannot parse is not a URL we should be rewriting."""
+    if not str(original_url or "").endswith("_o.jpg"):
+        return [(original_url, "as-given")]
+    stem = original_url[:-len("_o.jpg")]
+    return [(stem + suf + ".jpg", label) for suf, label in FLICKR_SIZE_LADDER]
+
+
 def largest_size(cand, key, session, allow_getsizes=True, sleep=0.0):
     """Largest DOWNLOADABLE size, dispatched on the backend that produced the candidate.
 
@@ -552,7 +597,8 @@ def largest_size(cand, key, session, allow_getsizes=True, sleep=0.0):
     guessed width the resolution gate would treat as fact.
     Flickr is the awkward one and the rest of this function is about it."""
     if cand.get("platform") == "openimages":
-        return (0, 0, 0, cand["download_url"], "flickr-original")
+        rungs = flickr_size_ladder(cand["download_url"])
+        return (0, 0, 0, rungs[0][0], rungs[0][1])
     if cand.get("platform") != "flickr":
         sizes = cand.get("sizes") or []
         return max(sizes) if sizes else None
@@ -757,8 +803,11 @@ def vision_check(image_path):
     """
     last = None
     for attempt in range(3):
-        res = subprocess.run([GEM9, "-p", VISION_RUBRIC, image_path],
-                             capture_output=True, text=True, timeout=VISION_TIMEOUT)
+        # Held around the call only. Sleeping through the back-off inside the gate would idle
+        # a slot for everyone else, which is the failure this gate exists to stop.
+        with _VISION_GATE:
+            res = subprocess.run([GEM9, "-p", VISION_RUBRIC, image_path],
+                                 capture_output=True, text=True, timeout=VISION_TIMEOUT)
         if res.returncode == 0:
             raw = (res.stdout or "").strip()
             parsed = _extract_json(raw)
@@ -1197,16 +1246,31 @@ def openimages_search(session, _key, text, page, per_page, _scope=None):
     shuffled under a FIXED seed derived from the filter — deterministic, so a re-run resumes
     the same walk rather than re-judging the same first page, but not corpus order, which on
     Open Images is upload order and would hand one cell a decade of one photographer."""
-    want_gender = None
+    want_gender = want_age = None
     for part in str(text or "").split(";"):
         k, _, val = part.partition("=")
-        if k.strip() == "gender":
+        k = k.strip()
+        if k == "gender":
             want_gender = val.strip()
+        elif k == "age":
+            want_age = val.strip()
     rows = [r for r in openimages_pool()
             if r.get("bytes", 0) >= OPENIMAGES_MIN_BYTES
             and (want_gender is None or r["gender"] == want_gender)]
     rows.sort(key=lambda r: r["image_id"])
-    random.Random("openimages|%s" % text).shuffle(rows)
+    # Seeded on the GENDER alone, never on the whole descriptor. Every cell of one gender then
+    # walks the same canonical order, which is what makes the verdict cache pay: cell two
+    # replays cell one's judgements instead of judging a fresh shuffle of the same corpus.
+    random.Random("openimages|gender=%s" % want_gender).shuffle(rows)
+    if want_age:
+        # A stable partition ON TOP of that order, applied after the shuffle so the preferred
+        # rows keep their relative places. This is an ORDERING, not a filter: nothing is
+        # excluded, the rest follow immediately behind, and vision still decides the band.
+        # It exists because the corpus is lopsided — 13,639 rows read "Middle" against 877
+        # "Older" — so a 60-70 cell walking the default order judges several hundred
+        # thirty-somethings for every face it can use.
+        rows = ([r for r in rows if r.get("age") == want_age]
+                + [r for r in rows if r.get("age") != want_age])
     limit = max(1, int(per_page or 50))
     lo = max(0, (page - 1) * limit)
     chunk = rows[lo:lo + limit]
@@ -1255,6 +1319,33 @@ def bank_hashes(bank):
         if os.path.exists(rec["ref"]):
             out[handle] = dhash(Image.open(rec["ref"]))
     return out
+
+
+AUTHOR_CAP_CELL = 1
+AUTHOR_CAP_BANK = 3
+
+
+def author_key_of(name):
+    """Normalised photographer name, or "" when the source recorded none.
+
+    "unknown" is deliberately NOT a key. Open Images leaves the Author field empty on a slice
+    of rows, and folding all of those into one bucket would cap that entire slice of the corpus
+    at three faces on the strength of a missing string."""
+    s = " ".join(str(name or "").split()).lower()
+    return "" if s in ("", "unknown") else s
+
+
+def author_counts(bank, cell_id):
+    """(per-cell, whole-bank) photographer tallies for the faces already on disk."""
+    per_cell, per_bank = {}, {}
+    for rec in bank.values():
+        who = author_key_of((rec["doc"].get("source") or {}).get("author"))
+        if not who:
+            continue
+        per_bank[who] = per_bank.get(who, 0) + 1
+        if rec["doc"].get("cell_id") == cell_id:
+            per_cell[who] = per_cell.get(who, 0) + 1
+    return per_cell, per_bank
 
 
 def taken_handles(bank, index):
@@ -1332,7 +1423,14 @@ def build_queries(cell, max_queries, source="flickr"):
         # the walk is bounded by --pages x --per-page over a shuffled slice instead.
         gender = ("Predominantly Masculine" if cell["gender"] == "male"
                   else "Predominantly Feminine")
-        return ["gender=%s" % gender], 0
+        desc = "gender=%s" % gender
+        # MIAP records a coarse AgePresentation too, and the 50+ bands are precisely where the
+        # corpus is thin. Asking for the "Older" rows FIRST is free — see openimages_search for
+        # why it changes only the order — and it is the difference between the 72 slots in
+        # those two bands being reachable and not.
+        if cell["age_band"] in ("50-59", "60-70"):
+            desc += ";age=Older"
+        return [desc], 0
     if source == "commons":
         base = build_commons_queries(cell)
     elif cell["cell_id"] in QUERY_OVERRIDES:
@@ -1468,6 +1566,14 @@ def cmd_plan(_args):
         print("\nlegacy personas with no cell_id (counted against NO cell above):")
         for pid in sorted(legacy):
             print("  pool %-6s %d" % (pid, legacy[pid]))
+    # Reported, never repaired: `plan` is the one subcommand whose whole job is to tell you
+    # what is true, so it must not change what is true while you read it. The HAVE column
+    # above counts these — the picker cannot see any of them.
+    orphans = sorted(h for h in bank if h not in (_load(INDEX, "index").get("personas") or {}))
+    if orphans:
+        print("\n⚠ %d persona(s) on disk with NO index row — counted in HAVE above, but "
+              "invisible to persona_picker.py: %s\n  The next `fetch` repairs them "
+              "automatically (as PENDING)." % (len(orphans), ", ".join(orphans)))
     print("\nfetch one cell:  fetch_personas.py fetch --cell <cell_id> [--limit N] [--dry-run]")
 
 
@@ -1577,7 +1683,15 @@ def cmd_fetch(args):
         sys.exit("✗ unknown --cell %r. Valid: %s" % (args.cell, ", ".join(sorted(cells))))
     cell = cells[args.cell]
 
-    bank, index = load_bank(), _load(INDEX, "index")
+    bank = load_bank()
+    # Before anything is counted. A face stranded on disk by an earlier interrupted run is
+    # counted by cell_counts() and invisible to the picker, so an unrepaired bank makes this
+    # run fetch too few AND leaves the shortfall in place.
+    repaired = reconcile_orphans(bank)
+    if repaired:
+        print("↺ repaired %d persona(s) left on disk without an index row by an interrupted "
+              "run — added as PENDING: %s" % (len(repaired), ", ".join(repaired)))
+    index = _load(INDEX, "index")
     per_cell, _ = cell_counts(bank)
     have = per_cell.get(cell["cell_id"], 0)
     needed = max(0, cell["target_count"] - have)
@@ -1613,6 +1727,14 @@ def cmd_fetch(args):
         pid = (rec["doc"].get("source") or {}).get("photo_id")
         if pid:
             known_photo_ids.add(str(pid))
+    # Two photographs of one person by one photographer are not two faces, and dHash cannot see
+    # it: a second frame from the same session — different pose, different crop — is nowhere
+    # near identical as pixels. The first Open Images run put two accepts from a single
+    # photographer into one cell for exactly that reason. The author is already in hand from
+    # the index row, so this is the cheapest gate in the file: it spends a dict lookup and
+    # saves a download plus a vision call.
+    author_cell, author_bank = author_counts(bank, cell["cell_id"])
+    author_skips = 0
     taken = taken_handles(bank, index)
 
     print("cell %s — %s %s %s | have %d, target %d, fetching up to %d"
@@ -1649,6 +1771,7 @@ def cmd_fetch(args):
     stop_reason = "queries exhausted"
     vision_infra_fails = 0
     set_download_concurrency(args.download_concurrency)
+    set_vision_concurrency(args.vision_concurrency)
     # Licence scope is the OUTER loop, so each category is walked across every phrasing before
     # the next one starts. The order is COMMONS_LICENCE_CATEGORIES', which is deliberately not
     # the attribution-cheapest first — see the measurement recorded there.
@@ -1692,6 +1815,14 @@ def cmd_fetch(args):
                     if pid in known_photo_ids:
                         print("  · %-12s already in the bank" % pid)
                         continue
+                    who = author_key_of(photo.get("author"))
+                    if who and (author_cell.get(who, 0) >= AUTHOR_CAP_CELL
+                                or author_bank.get(who, 0) >= AUTHOR_CAP_BANK):
+                        # Counted rather than printed: at this depth of walk the line would
+                        # repeat thousands of times. The total is reported at the end, because
+                        # a cap nobody can see is a cap that looks like an empty corpus.
+                        author_skips += 1
+                        continue
                     batch.append((pid, photo))
                 # The candidate travels WITH its future. It used to be looked up as `photo`,
                 # the leftover loop variable from building the batch — which holds the LAST
@@ -1704,12 +1835,33 @@ def cmd_fetch(args):
                 futures = [(pid, photo, pool.submit(process_candidate, photo, cell, key,
                                                     session, hashes, args))
                            for pid, photo in batch]
-                for pid, cand, fut in futures:
+                tail_cancelled = False
+                for i, (pid, cand, fut) in enumerate(futures):
                     if len(accepted) >= needed:
-                        # Reclaim the queued work. A future that has already started cannot be
-                        # cancelled, so up to --workers extra candidates still get judged —
-                        # they simply do not count as examined, because they were not.
-                        if fut.cancel():
+                        if not tail_cancelled:
+                            tail_cancelled = True
+                            # Cancel the WHOLE remaining tail in ONE pass, before waiting on
+                            # anything. Cancelling one future at a time and blocking on each
+                            # already-running one in between is a treadmill: while we wait for
+                            # future N the pool dequeues N+1..N+workers and starts them, so the
+                            # next future we reach is running too, cannot be cancelled, and we
+                            # block on that one while the pool starts more. The walk never
+                            # overtakes the workers, and a full --per-page batch runs to
+                            # completion after the target was already met.
+                            #
+                            # Measured 2026-08-10, --per-page 500 --workers 12: a run that had
+                            # everything it was asked for at 2.6s went on judging the rest of
+                            # the page for 946 seconds — 84s of CPU inside 946s of wall-clock,
+                            # i.e. almost pure waiting on gem9 calls whose verdicts were thrown
+                            # away on arrival. pool.shutdown(cancel_futures=True) in the finally
+                            # could not save it either, because the finally is downstream of
+                            # this loop and the loop is what never ends.
+                            for _, _, tail in futures[i:]:
+                                tail.cancel()
+                        # A future that had already started cannot be cancelled, so up to
+                        # --workers extra candidates still get judged — they simply do not
+                        # count as examined, because they were not.
+                        if fut.cancelled():
                             continue
                         # And if it had already started, we still decline to ACT on it. Letting
                         # a late accept through put 10 faces in a cell that asks for 9 on the
@@ -1761,6 +1913,17 @@ def cmd_fetch(args):
                         print("  ✗ %-12s [dupe] dHash distance %d vs %s (serial re-check: it "
                               "landed while this candidate was in flight)" % (pid, clash[1], clash[0]))
                         continue
+                    # Same reason the dHash check above is repeated serially: the batch was
+                    # filtered against the tallies as they stood when the PAGE was built, and a
+                    # sibling by the same photographer may have been accepted since — each one
+                    # invisible to the other while both were in flight.
+                    who = author_key_of(cand.get("author"))
+                    if who and (author_cell.get(who, 0) >= AUTHOR_CAP_CELL
+                                or author_bank.get(who, 0) >= AUTHOR_CAP_BANK):
+                        print("  ✗ %-12s [author] %s reached the cap while this candidate was "
+                              "in flight" % (pid, cand.get("author")))
+                        author_skips += 1
+                        continue
                     handle = next_handle(cell["cell_id"], taken)
                     taken.add(handle)
                     doc = build_persona_doc(handle, cell, cand, doc_parts["lic_id"],
@@ -1781,6 +1944,9 @@ def cmd_fetch(args):
                              doc_parts["info"]["name"], cand.get("author") or "unknown"))
                     accepted.append((handle, cell["pool_id"], ref))
                     hashes[handle] = int(doc_parts["img_meta"]["dhash"], 16)
+                    if who:
+                        author_cell[who] = author_cell.get(who, 0) + 1
+                        author_bank[who] = author_bank.get(who, 0) + 1
                 if total_pages and page >= total_pages:
                     break
                 time.sleep(args.sleep)
@@ -1799,6 +1965,11 @@ def cmd_fetch(args):
 
     print("\nexamined %d candidate(s), accepted %d of %d wanted — stopped: %s"
           % (examined, len(accepted), needed, stop_reason))
+    if author_skips:
+        print("NOTE: %d candidate(s) skipped by the photographer cap (%d per cell, %d per "
+              "bank). They were never judged, so they are not in `examined` — a deep walk "
+              "that ends short may simply have run out of NEW photographers."
+              % (author_skips, AUTHOR_CAP_CELL, AUTHOR_CAP_BANK))
     if dropped:
         print("NOTE: %d further query phrasings were CAPPED by --queries=%d, not exhausted."
               % (dropped, args.queries))
@@ -1834,6 +2005,39 @@ def commit_accepted(accepted):
     _atomic_write(INDEX, fresh)
     print("\n✓ index.json updated (+%d personas as PENDING, atomic, re-read before write)"
           % len(accepted))
+
+
+def reconcile_orphans(bank):
+    """Give every persona DIRECTORY without an index row the PENDING row it should have had.
+
+    The two halves of a persona are written at different times: write_persona() commits the
+    directory the moment a candidate is accepted, and commit_accepted() writes the index rows
+    once, from a finally, at the end of the run. Anything that stops the interpreter between
+    those two points — SIGKILL, a power cut, `kill` before the handler above existed — leaves
+    a face that load_bank() counts toward the cell target and persona_picker.py can never see,
+    because the picker reads index.json and nothing else. Capacity disappears silently, which
+    is the worst way for it to disappear: `plan` reports the cell as filling up.
+
+    Repairing rather than deleting is the right call. The directory only exists because the
+    candidate passed every machine gate, including the attribution assertion that runs before
+    the file is written, and persona.json holds the licence record CC BY 2.0 requires. The one
+    thing the row must NOT do is arrive active — the same rule commit_accepted() states, for
+    the same reason: an "active" row IS the approval, and this repair path has judged nothing.
+
+    Returns the handles repaired."""
+    index = _load(INDEX, "index")
+    people = index.setdefault("personas", {})
+    orphans = sorted(h for h in bank if h not in people)
+    if not orphans:
+        return []
+    for handle in orphans:
+        doc = bank[handle]["doc"]
+        people[handle] = {"handle": handle, "pool_id": doc.get("pool_id"),
+                          "status": "pending", "ref": bank[handle]["ref"],
+                          "used_count": 0, "last_used_seq": 0,
+                          "gaze_used": [], "last_gaze": None, "angles_used": []}
+    _atomic_write(INDEX, index)
+    return orphans
 
 
 def process_candidate(cand, cell, key, session, hashes, args):
@@ -1899,27 +2103,40 @@ def process_candidate(cand, cell, key, session, hashes, args):
     # this retry a throttled run reports 30 straight "[download] 429" lines, which read as
     # thirty bad photographs — the same misreading VISION_INFRA_ABORT exists to prevent one
     # gate further down. A 429 is the host asking us to slow down; it says nothing about the file.
+    # A rung that 404s means THAT RENDITION was never generated; the photograph may be perfectly
+    # alive one rung down. Only the last rung is allowed to conclude "gone" from a 404 — reading
+    # a missing size as a missing photograph would throw away good faces and, worse, cache the
+    # mistake permanently.
+    ladder = (flickr_size_ladder(cand["download_url"])
+              if cand.get("platform") == "openimages" else [(url, label)])
     try:
-        for attempt in range(4):
-            # The gate is around the request only. Holding a slot through the back-off would
-            # let one throttled worker idle the asset host for everybody else.
-            with _DOWNLOAD_GATE:
-                resp = session.get(url, timeout=90)
-            if resp.status_code == 429:
-                if attempt == 3:
-                    return ("throttled", "HTTP 429 from the download host after 4 attempts — "
-                                         "slow the run down; this is not a verdict on the photo")
-                time.sleep(5 * (attempt + 1))
+        resp = None
+        for rung, (rung_url, rung_label) in enumerate(ladder):
+            for attempt in range(4):
+                # The gate is around the request only. Holding a slot through the back-off would
+                # let one throttled worker idle the asset host for everybody else.
+                with _DOWNLOAD_GATE:
+                    resp = session.get(rung_url, timeout=90)
+                if resp.status_code == 429:
+                    if attempt == 3:
+                        return ("throttled", "HTTP 429 from the download host after 4 attempts — "
+                                             "slow the run down; this is not a verdict on the photo")
+                    time.sleep(5 * (attempt + 1))
+                    continue
+                break
+            if resp.status_code == 404 and rung < len(ladder) - 1:
                 continue
             if resp.status_code in (403, 404, 410):
                 # Measured on a 30-file sample of Open Images originals: 3 were gone (two 404,
                 # one 410). Flickr users delete and re-permission photographs, and a decade-old
                 # index cannot know. Worth remembering, because it is permanent — unlike the
                 # 429 above, which is the opposite of permanent.
-                msg = "HTTP %d — the original is no longer served" % resp.status_code
+                msg = "HTTP %d — the photograph is no longer served (tried %s)" % (
+                    resp.status_code, ", ".join(l for _, l in ladder[:rung + 1]))
                 verdict_remember(cand, reject=["gone", msg])
                 return ("gone", msg)
             resp.raise_for_status()
+            label = rung_label
             break
         jpeg, img = as_jpeg(resp.content)
     except (requests.RequestException, OSError, ValueError) as exc:
@@ -1987,6 +2204,10 @@ def process_candidate(cand, cell, key, session, hashes, args):
             "sha256": hashlib.sha256(jpeg).hexdigest(),
             "bytes": len(jpeg),
             "dhash": dhash_hex(h64),
+            # Which rendition these pixels came from. The bank contains both `flickr-original`
+            # faces (fetched before 2026-08-10) and `flickr-2048` ones, and a file that does not
+            # say which is a file nobody can reproduce.
+            "rendition": label,
         },
     }
     return ("accept", "", parts, jpeg, img)
@@ -2248,7 +2469,10 @@ def cmd_selftest(_args):
                   "licence": "cc-by-2.0", "author": "u%d" % i, "author_url": "",
                   "title": "t%d" % i, "bytes": 100_000 + i * 20_000,
                   "gender": "Predominantly Feminine" if i % 2 else "Predominantly Masculine",
-                  "age": "Middle", "box": [0, 0, 1, 1], "occluded": 0, "truncated": 0}
+                  # Every seventh row reads "Older" — thin, like the corpus, and coprime with
+                  # the gender parity so the Older rows are not all one gender.
+                  "age": "Older" if i % 7 == 0 else "Middle",
+                  "box": [0, 0, 1, 1], "occluded": 0, "truncated": 0}
                  for i in range(60)]
     globals()["_OPENIMAGES_POOL"] = fake_pool
     fem, nxt = openimages_search(None, None, "gender=Predominantly Feminine", 1, 10)
@@ -2269,7 +2493,118 @@ def cmd_selftest(_args):
           fem[0]["sizes"] == [] and largest_size(fem[0], None, None)[1:3] == (0, 0))
     tail, tail_next = openimages_search(None, None, "gender=Predominantly Feminine", 99, 10)
     check("walking off the end stops rather than looping", tail == [] and tail_next == 99)
+
+    print("flickr size ladder")
+    lad = flickr_size_ladder("https://live.staticflickr.com/1/2_3_o.jpg")
+    check("the metered `_o` rendition is never requested — it is the ONLY size flickr rate-limits",
+          all("_o.jpg" not in u for u, _ in lad))
+    check("largest unmetered rendition first, and it is the 2048px one",
+          lad[0] == ("https://live.staticflickr.com/1/2_3_k.jpg", "flickr-2048"))
+    check("...with a real fallback below it, so a rendition that was never generated is not "
+          "mistaken for a deleted photograph", len(lad) > 1)
+    check("every rung clears MIN_SHORT_EDGE at ordinary aspect ratios — a rung that cannot "
+          "pass the floor is a request spent to earn a rejection",
+          meets_resolution(2048, 1365) and meets_resolution(1600, 1067)
+          and not meets_resolution(1024, 683))
+    check("a URL that is not a recognisable original is passed through untouched",
+          flickr_size_ladder("https://example.org/x.png") == [("https://example.org/x.png",
+                                                               "as-given")])
+    check("openimages candidates enter the ladder at its first rung",
+          largest_size(fem[0], None, None)[3].endswith("_k.jpg"))
+
+    print("target-met teardown")
+    # The treadmill, reproduced. One worker, a job that blocks until released, and a queue
+    # behind it: the old code cancelled one future at a time and blocked on each running one
+    # in between, so the pool kept dequeuing while the walk crawled and the whole batch ran.
+    gate, started = threading.Event(), []
+    tp = ThreadPoolExecutor(max_workers=1)
+
+    def _job(n):
+        started.append(n)
+        gate.wait(10)
+        return n
+
+    tp_futs = [(n, tp.submit(_job, n)) for n in range(40)]
+    while not started:
+        time.sleep(0.01)                      # let worker 0 pick up job 0
+    seen_after_target = False
+    for i, (n, f) in enumerate(tp_futs):
+        if n >= 1:                            # stand-in for "the target has been met"
+            if not seen_after_target:
+                seen_after_target = True
+                for _, t in tp_futs[i:]:
+                    t.cancel()
+            if f.cancelled():
+                continue
+            gate.set()
+            f.result()
+    gate.set()
+    tp.shutdown(wait=True, cancel_futures=True)
+    check("cancelling the whole tail in ONE pass stops the pool dequeuing — only the "
+          "already-running candidate is judged after the target is met, not the rest of the "
+          "page (this ran a batch to completion for 946s of wall-clock on 2026-08-10)",
+          len(started) <= 2)
+    check("...and every future behind it really is cancelled, not merely skipped",
+          all(f.cancelled() for n, f in tp_futs if n >= 2))
+
+    print("orphan reconciliation")
+    orphan_doc = {"pool_id": "f-30s", "cell_id": "f3039-wh"}
+    fake_bank = {"zz-orphan-01": {"dir": "/nope", "doc": orphan_doc, "ref": "/nope/ref.jpg"},
+                 "zz-known-01": {"dir": "/nope", "doc": orphan_doc, "ref": "/nope/ref.jpg"}}
+    real_index, real_load, real_write = INDEX, _load, _atomic_write
+    stash = {"personas": {"zz-known-01": {"handle": "zz-known-01", "status": "active"}}}
+    written = {}
+    globals()["_load"] = lambda p, w: json.loads(json.dumps(stash))
+    globals()["_atomic_write"] = lambda p, d: written.update(d)
+    try:
+        got = reconcile_orphans(fake_bank)
+    finally:
+        globals()["_load"], globals()["_atomic_write"] = real_load, real_write
+    check("a persona dir with no index row is repaired", got == ["zz-orphan-01"])
+    check("...as PENDING, never active — this path has judged nothing, and an active row IS "
+          "the approval that puts a face on a live og:image",
+          written["personas"]["zz-orphan-01"]["status"] == "pending")
+    check("...carrying the fields the picker's rotation reads, seeded rather than absent",
+          written["personas"]["zz-orphan-01"]["angles_used"] == []
+          and written["personas"]["zz-orphan-01"]["pool_id"] == "f-30s")
+    check("an already-indexed persona is left exactly as it was — repair must never "
+          "downgrade an approved face back to pending",
+          written["personas"]["zz-known-01"]["status"] == "active")
+
+    older, _ = openimages_search(None, None, "gender=Predominantly Feminine;age=Older", 1, 20)
+    all_old = {r["image_id"] for r in fake_pool
+               if r["age"] == "Older" and r["gender"] == "Predominantly Feminine"
+               and r["bytes"] >= OPENIMAGES_MIN_BYTES}
+    seen_ages = [c["raw"]["miap_age"] for c in older]
+    check("age=Older front-loads every Older row a 60-70 cell could want",
+          all_old and set(c["id"] for c in older[:len(all_old)]) == all_old)
+    check("...and it is an ORDER, not a filter: every Older row precedes every Middle one, "
+          "and the Middle rows are all still there",
+          seen_ages == sorted(seen_ages, key=lambda a: a != "Older")
+          and seen_ages.count("Middle") == len(older) - len(all_old))
+    deep_plain = {c["id"] for c in openimages_search(
+        None, None, "gender=Predominantly Feminine", 1, 60)[0]}
+    deep_age = {c["id"] for c in openimages_search(
+        None, None, "gender=Predominantly Feminine;age=Older", 1, 60)[0]}
+    check("the two orders walk the SAME corpus, so an age-primed cell still hits the cache "
+          "on everything an ordinary cell already judged", deep_plain == deep_age)
     globals()["_OPENIMAGES_POOL"] = None
+
+    print("photographer cap")
+    fake_bank = {
+        "a-01": {"doc": {"cell_id": "f3039-wh", "source": {"author": "Jane  Doe"}}},
+        "a-02": {"doc": {"cell_id": "f4049-wh", "source": {"author": "jane doe"}}},
+        "a-03": {"doc": {"cell_id": "f4049-wh", "source": {"author": "unknown"}}},
+        "a-04": {"doc": {"cell_id": "f4049-wh", "source": {"author": ""}}},
+    }
+    pc, pb = author_counts(fake_bank, "f3039-wh")
+    check("whitespace and case are the same photographer", pb.get("jane doe") == 2)
+    check("per-cell tally counts only this cell", pc.get("jane doe") == 1)
+    check("a missing author is not a photographer — otherwise one blank field caps the corpus",
+          "unknown" not in pb and "" not in pb and author_key_of("unknown") == ""
+          and author_key_of(None) == "")
+    check("one per cell, three per bank",
+          pc["jane doe"] >= AUTHOR_CAP_CELL and pb["jane doe"] < AUTHOR_CAP_BANK)
 
     print("verdict cache")
     cache_tmp = tempfile.NamedTemporaryFile(suffix=".jsonl", delete=False)
@@ -2357,6 +2692,21 @@ def cmd_selftest(_args):
     _DOWNLOAD_GATE.release()
     set_download_concurrency(2)
 
+    set_vision_concurrency(2)
+    vheld = [_VISION_GATE.acquire(blocking=False) for _ in range(3)]
+    for _ in range(sum(vheld)):
+        _VISION_GATE.release()
+    check("the vision gate admits exactly --vision-concurrency at a time",
+          vheld == [True, True, False])
+    check("the two gates are INDEPENDENT — --workers may stay high for downloading and "
+          "hashing without piling that many callers onto 9router",
+          _VISION_GATE is not _DOWNLOAD_GATE)
+    set_vision_concurrency(0)
+    check("a nonsensical vision concurrency still admits one, never zero",
+          _VISION_GATE.acquire(blocking=False) and not _VISION_GATE.acquire(blocking=False))
+    _VISION_GATE.release()
+    set_vision_concurrency(6)
+
     check("a 502 from the router is transient — it is shedding load, not judging a photo",
           vision_is_transient("gem9 exit 1: gem9: HTTP 502: error code: 502"))
     check("...and so are 429/503/504",
@@ -2416,6 +2766,10 @@ def main():
     f.add_argument("--download-concurrency", type=int, default=2,
                    help="simultaneous asset downloads (default 2, deliberately far below "
                         "--workers: upload.wikimedia.org throttles independently of the API)")
+    f.add_argument("--vision-concurrency", type=int, default=6,
+                   help="simultaneous gem9 vision calls (default 6). Also below --workers, and "
+                        "for the same shape of reason: 9router sheds load above roughly six, "
+                        "and a shed call costs a retry backoff far longer than the call itself.")
     f.add_argument("--no-getsizes", action="store_true",
                    help="skip the flickr.photos.getSizes lookup; judge resolution on search extras only")
     f.set_defaults(fn=cmd_fetch)
@@ -2439,5 +2793,31 @@ def main():
     a.fn(a)
 
 
+def _install_sigterm_handler():
+    """Make `kill <pid>` unwind through the finally blocks instead of vanishing.
+
+    A harvest across fifty cells is a long-running background job, so stopping it is a normal
+    operation, not a crash. Default SIGTERM kills the interpreter outright: cmd_fetch's
+    `finally: commit_accepted(...)` never runs, and every face write_persona() already put on
+    disk becomes an orphan — a directory load_bank() counts toward the cell target and
+    persona_picker.py, which reads only index.json, can never select. Measured 2026-08-10:
+    one `kill` stranded f4049-wh-01 exactly that way.
+
+    Ctrl-C was always safe (KeyboardInterrupt is an exception, so finallys run); this gives
+    `kill` the same guarantee. SIGKILL still cannot be caught — reconcile_orphans() at the
+    top of the next fetch is the backstop for that."""
+    import signal
+
+    def _bye(signum, _frame):
+        # SystemExit unwinds; sys.exit() from a handler does the same thing. Anything that
+        # merely sets a flag would need every blocking call to poll it, and the longest wait
+        # in this program is a subprocess we do not control.
+        raise SystemExit("\n✗ interrupted by signal %d — committing what was accepted first"
+                         % signum)
+
+    signal.signal(signal.SIGTERM, _bye)
+
+
 if __name__ == "__main__":
+    _install_sigterm_handler()
     main()
