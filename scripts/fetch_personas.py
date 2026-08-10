@@ -514,13 +514,38 @@ def gate_personality(cand):
 # posture exists to avoid. Blunt and early beats precise and late.
 
 
+def name_like(word):
+    """Does this token read as part of a person's NAME?
+
+    Mixed case is the primary signal — "Rockwell", "Tennø" — and a digit anywhere disqualifies,
+    which turns away the camera defaults this corpus is full of ("DSC07576", "IMG_2914").
+
+    ALL CAPS IS THE CASE THIS TEST USED TO REFUSE OUTRIGHT, and refusing it had a side effect
+    nobody had written down. The `any(c.islower())` requirement was aimed at bare initialisms —
+    "MRI", "SCA", "NPS" name an organisation, not a person — but Flickr captions SHOUT names
+    constantly, so it also waved through "PEDRO BARROS - XGAMES BARCELONA 2013", "KATIE MELUA
+    12- PALAIS DES CONGRES", "DAVID BROOKS", "ANTHONY PIROG", "JANET ECHELMAN". Every one of
+    those reached the only remaining instrument, recognizable_public_figure — the instrument
+    this whole gate exists BECAUSE it fails, since fame is a property of the caption and not of
+    the pixels.
+
+    So keep the initialism job and do it by LENGTH instead of by case: four letters is where
+    initialisms stop and given names start. Measured on the walkable corpus rather than guessed:
+    the change newly refuses 123 of 11,345 rows (1.08%), and the refusals it adds are the names
+    above plus institutional captions like "CONFERENCIA OCPLA 2011" and "FLORIDA SUPERCON" —
+    photographs lost, which is the cheap direction, exactly the trade the two-adjacent-words
+    rule already makes."""
+    if not word or not word[0].isupper() or any(c.isdigit() for c in word):
+        return False
+    if any(c.islower() for c in word):
+        return True
+    return len(word) >= 4
+
+
 def named_subject(text):
     """The first run of two or more adjacent name-like words, or None.
 
-    A word qualifies when it opens uppercase, carries a lowercase letter and holds no digit.
-    That admits "Rockwell" and "Tennø" while turning away the camera defaults this corpus is
-    full of ("DSC07576", "IMG_2914") and bare initialisms ("MRI", "SCA"), which name an
-    organisation rather than a person.
+    Word-level qualification is name_like() above; this is the adjacency rule on top of it.
 
     TWO adjacent, because findability is what is being tested rather than naming as such:
     "Megan" alone identifies nobody you could look up, and "Anita Ravna" identifies someone you
@@ -541,10 +566,8 @@ def named_subject(text):
     screened by the old, weaker instrument. Worth stating plainly rather than filing as done."""
     run = []
     for word in re.split(r"[^\w'’-]+", text or "") + [""]:
-        word = word.strip("'’-")
-        if (word and word[0].isupper() and any(c.islower() for c in word)
-                and not any(c.isdigit() for c in word)):
-            run.append(word)
+        if name_like(word.strip("'’-")):
+            run.append(word.strip("'’-"))
         else:
             if len(run) >= 2:
                 return " ".join(run)
@@ -1773,8 +1796,102 @@ def author_counts(bank, cell_id):
     return per_cell, per_bank
 
 
+def quarantined_handles():
+    """Every handle that has ever been condemned, read off the directories themselves.
+
+    load_bank() only walks personas/<handle>/; quarantined faces live one level deeper, in
+    personas/_quarantine-<reason>/<handle>/, so the bank cannot see them. Reading the disk
+    rather than the index is the point: cmd_quarantine POPS the index row, which is precisely
+    why the handle needs a second witness."""
+    out = set()
+    for qdir in sorted(glob.glob(os.path.join(PERSONAS, "_quarantine-*"))):
+        for name in sorted(os.listdir(qdir)):
+            if os.path.isdir(os.path.join(qdir, name)):
+                out.add(name)
+    return out
+
+
 def taken_handles(bank, index):
-    return set(bank) | set(index.get("personas") or {})
+    """A handle, once issued, is never issued again — including to a face we threw away.
+
+    It used to be `bank | index`, and quarantine removes a handle from BOTH, so next_handle()
+    handed condemned handles straight back to different photographs. That had already happened
+    eleven times on disk: f4049-wh-01 names both "DSC01600" by Steven Depolo (asleep) and "#114"
+    by Heather (unreadable). It matters because PUBLISHED_ARTICLES_TRACKER.csv records hero
+    provenance as a BARE HANDLE — "hero:f2-brunette" — so a recycled handle silently rewrites
+    the only record of which real person is on a live page, and it does it at exactly the worst
+    moment: the likeliest reason to quarantine a shipped hero is discovering she was a named
+    person, i.e. the case where knowing whose face shipped matters most.
+
+    Reusing a handle buys nothing — there are 99 per cell and no cell will see ten."""
+    return set(bank) | set(index.get("personas") or {}) | quarantined_handles()
+
+
+def identity_key(doc):
+    """What identifies the HUMAN, as opposed to the row we happen to be storing her in.
+
+    Kevin's rule is one face angle per MODEL, once, ever. Every enforcement point keys on the
+    handle instead — persona_picker.unused_angles, article_images.py's second gate, and
+    persona_picker commit all read `angles_used` off the index row. A handle is not a person:
+    a face quarantined `--about pairing` ("she reads 52, not 45") is *designed* to be re-admitted
+    by the neighbouring band, and it comes back under a new handle with an empty ledger, so every
+    angle her first incarnation spent gets handed out again. Not "can be" — is, certainly, since
+    the picker drains the pool over a persona's life.
+
+    photo_id is the corpus's own identifier for the photograph; the perceptual hash is the
+    fallback for sources that have none. Both live on persona.json, which is the file that
+    MOVES with the face."""
+    src = doc.get("source") or {}
+    pid = str(src.get("photo_id") or "").strip()
+    if pid:
+        return "%s:%s" % (src.get("platform") or "?", pid)
+    dh = str((doc.get("image") or {}).get("dhash") or "").strip()
+    return "dhash:%s" % dh if dh else ""
+
+
+def prior_angle_ledger():
+    """identity_key -> what every earlier incarnation of that photograph already spent.
+
+    Reads persona.json across the live bank AND every _quarantine-*/ folder, because the index
+    row is destroyed on quarantine and persona.json is what survives the move. cmd_quarantine
+    stamps `angle_ledger` into the doc on its way out for exactly this reason; docs written
+    before that existed simply carry nothing, which reads as "spent nothing" — true for every
+    face in the bank today, none of which has heroed an article."""
+    out = {}
+    for pj in (glob.glob(os.path.join(PERSONAS, "*", "persona.json"))
+               + glob.glob(os.path.join(PERSONAS, "_quarantine-*", "*", "persona.json"))):
+        try:
+            with open(pj) as fh:
+                doc = json.load(fh)
+        except (OSError, ValueError):
+            continue
+        key = identity_key(doc)
+        led = doc.get("angle_ledger") or {}
+        if not key or not led:
+            continue
+        rec = out.setdefault(key, {"angles_used": [], "gaze_used": [], "used_count": 0})
+        for a in led.get("angles_used") or []:
+            if a not in rec["angles_used"]:
+                rec["angles_used"].append(a)
+        for g in led.get("gaze_used") or []:
+            if g not in rec["gaze_used"]:
+                rec["gaze_used"].append(g)
+        rec["used_count"] += int(led.get("used_count") or 0)
+    return out
+
+
+def seed_row(handle, pool_id, ref, doc, prior):
+    """The PENDING index row for a newly admitted face, with any history it already has.
+
+    angles_used is seeded explicitly rather than left to `.get(..) or []` at read time: the hard
+    rule is enforced entirely off this list, and a key that only appears after the first commit
+    looks identical when it is missing and when the persona is genuinely fresh."""
+    rec = prior.get(identity_key(doc)) or {}
+    return {"handle": handle, "pool_id": pool_id, "status": "pending", "ref": ref,
+            "identity_key": identity_key(doc),
+            "used_count": int(rec.get("used_count") or 0), "last_used_seq": 0,
+            "gaze_used": list(rec.get("gaze_used") or []), "last_gaze": None,
+            "angles_used": list(rec.get("angles_used") or [])}
 
 
 def next_handle(cell_id, taken):
@@ -2133,6 +2250,17 @@ def cmd_quarantine(args):
         doc["flag_reason"] = args.note or args.reason
         doc["quarantined_date"] = time.strftime("%Y-%m-%d")
         doc["rejection_is_about"] = args.about
+        # Copy the angle ledger out of the index row BEFORE the row is popped below. The row is
+        # the only place angles_used has ever lived, and `--about pairing` exists precisely so
+        # this photograph can come back in the neighbouring band — under a new handle, whose
+        # fresh row would present all 21 angles as unused. persona.json is the file that travels
+        # with the face, so it is where a fact about the face belongs.
+        row = (index.get("personas") or {}).get(handle) or {}
+        doc["angle_ledger"] = {"handle": handle,
+                               "angles_used": list(row.get("angles_used") or []),
+                               "gaze_used": list(row.get("gaze_used") or []),
+                               "last_gaze": row.get("last_gaze"),
+                               "used_count": int(row.get("used_count") or 0)}
         _atomic_write(os.path.join(PERSONAS, handle, "persona.json"), doc)
         # Written BEFORE the move, so a crash between the two leaves a persona that still says
         # why it was condemned rather than one that silently reads as an ordinary pending face.
@@ -2519,14 +2647,20 @@ def commit_accepted(accepted):
     # this run was downloading, and clobbering it silently repeats a persona.
     fresh = _load(INDEX, "index")
     people = fresh.setdefault("personas", {})
+    # Carry any prior incarnation's spent angles across, keyed on the PHOTOGRAPH. A face that
+    # was quarantined `--about pairing` and re-admitted by the neighbouring band is the same
+    # human under a new handle, and the rule Kevin stated is about the human.
+    prior = prior_angle_ledger()
     for handle, pool_id, ref in accepted:
-        # angles_used seeded explicitly rather than left to `.get(..) or []` at read time:
-        # Kevin's one-angle-per-model rule is enforced entirely off this list, and a key that
-        # only appears after the first commit is a key that looks the same when it is missing
-        # as when the persona is genuinely fresh.
-        people[handle] = {"handle": handle, "pool_id": pool_id, "status": "pending",
-                          "ref": ref, "used_count": 0, "last_used_seq": 0,
-                          "gaze_used": [], "last_gaze": None, "angles_used": []}
+        try:
+            with open(os.path.join(os.path.dirname(ref), "persona.json")) as fh:
+                doc = json.load(fh)
+        except (OSError, ValueError):
+            doc = {}
+        people[handle] = seed_row(handle, pool_id, ref, doc, prior)
+        if people[handle]["angles_used"]:
+            print("  ↳ %s inherits %d spent angle(s) from an earlier incarnation of the same "
+                  "photograph" % (handle, len(people[handle]["angles_used"])))
     _atomic_write(INDEX, fresh)
     print("\n✓ index.json updated (+%d personas as PENDING, atomic, re-read before write)"
           % len(accepted))
@@ -2555,12 +2689,10 @@ def reconcile_orphans(bank):
     orphans = sorted(h for h in bank if h not in people)
     if not orphans:
         return []
+    prior = prior_angle_ledger()
     for handle in orphans:
         doc = bank[handle]["doc"]
-        people[handle] = {"handle": handle, "pool_id": doc.get("pool_id"),
-                          "status": "pending", "ref": bank[handle]["ref"],
-                          "used_count": 0, "last_used_seq": 0,
-                          "gaze_used": [], "last_gaze": None, "angles_used": []}
+        people[handle] = seed_row(handle, doc.get("pool_id"), bank[handle]["ref"], doc, prior)
     _atomic_write(INDEX, index)
     return orphans
 
@@ -2863,6 +2995,19 @@ def cmd_selftest(_args):
           gate_named_subject({"title": "Megan"})[0] and gate_named_subject({"title": "Sanne"})[0])
     check("an all-caps initialism is an organisation, not a person",
           named_subject("MRI SCA NPS") is None)
+    # The other half of that same decision, which used to be missing: a SHOUTED name is still a
+    # name. Keeping only the line above is what let "PEDRO BARROS - XGAMES BARCELONA 2013" past
+    # P2 and left it to recognizable_public_figure, the instrument this gate replaces. Four
+    # letters is the whole difference between the two checks; both must hold or neither means
+    # anything.
+    for title, who in (("PEDRO BARROS - XGAMES BARCELONA 2013", "PEDRO BARROS"),
+                       ("KATIE MELUA 12- PALAIS DES CONGRES", "KATIE MELUA"),
+                       ("DAVID BROOKS", "DAVID BROOKS"),
+                       ("Christine CROST-AUDIN", "Christine CROST-AUDIN")):
+        check("shouted name %r is refused" % who, not gate_named_subject({"title": title})[0]
+              and named_subject(title) == who)
+    check("a shouted THREE-letter token is still an initialism, not a given name",
+          named_subject("BBC NPS ITV") is None and named_subject("JORY BOY") is None)
     # Documented cost, asserted so it stays visible rather than being rediscovered as a bug:
     # these are villages and t-shirt slogans, and they are refused anyway. See the gate comment
     # for why that trade is the right way round.
@@ -3457,6 +3602,32 @@ def cmd_selftest(_args):
     check("handles are unique and filesystem-safe",
           next_handle("m3039-wh", set()) == "m3039-wh-01"
           and next_handle("m3039-wh", {"m3039-wh-01"}) == "m3039-wh-02")
+    # A condemned handle is a SPENT handle. Read off the live disk, not a fixture: the eleven
+    # collisions this check exists to stop are sitting in personas/_quarantine-*/ right now.
+    q = quarantined_handles()
+    check("quarantined handles are counted as taken",
+          bool(q) and q <= taken_handles({}, {"personas": {}})
+          and next_handle("f4049-wh", taken_handles({}, {"personas": {}})) not in q,
+          "%d condemned handle(s) can never be reissued" % len(q))
+    # The rule is one angle per MODEL. A handle is not a model: `--about pairing` is designed to
+    # hand the same photograph back under a different one.
+    doc_a = {"source": {"platform": "openimages", "photo_id": "abc123"}}
+    doc_b = {"source": {"platform": "openimages", "photo_id": "abc123"}, "image": {"dhash": "ff"}}
+    check("identity keys on the photograph, not the handle",
+          identity_key(doc_a) == identity_key(doc_b)
+          and identity_key({"image": {"dhash": "6c6cec4e"}}) == "dhash:6c6cec4e"
+          and identity_key({}) == "")
+    seeded = seed_row("f5059-wh-09", "f5059", "/x/ref.jpg", doc_a,
+                      {identity_key(doc_a): {"angles_used": ["front|level", "profile-left|level"],
+                                             "gaze_used": ["at-lens"], "used_count": 2}})
+    check("a re-admitted photograph inherits the angles its last handle spent",
+          seeded["angles_used"] == ["front|level", "profile-left|level"]
+          and seeded["used_count"] == 2 and seeded["status"] == "pending",
+          "otherwise every angle the first incarnation spent is handed out again")
+    check("a genuinely new photograph starts empty",
+          seed_row("f5059-wh-10", "f5059", "/x/ref.jpg",
+                   {"source": {"platform": "openimages", "photo_id": "zzz"}},
+                   {})["angles_used"] == [])
 
     print("")
     if failures:
