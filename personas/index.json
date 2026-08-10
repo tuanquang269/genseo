@@ -16,9 +16,9 @@
   "m1-stubble"
  ],
  "no_face_cycle": {
-  "period": 3,
+  "period": 1,
   "position": 0,
-  "_doc": "every 3rd hero is no-face: one adult + one pack for 200 rows running is the structural tell that gaze rotation alone cannot reach"
+  "_doc": "period 1 = EVERY hero is no-face. Was 3 (the composition tell gaze rotation cannot reach). Raised to 1 on 2026-08-10 for a second, larger reason: ima2 reproduces the reference person recognisably, so a real private individual was appearing on live pages endorsing supplements. This is the safety default until Kevin picks a posture; restoring 3 is a one-token edit, but do not restore it merely because the bank has faces in it again."
  },
  "personas": {
   "f1-redshirt": {

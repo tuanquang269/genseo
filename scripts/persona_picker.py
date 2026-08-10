@@ -115,14 +115,19 @@ def cmd_pick(args):
     seq = index.get("seq", 0) + 1
     out = {"seq": seq, "audience": token, "pools": pools, "warnings": []}
 
-    cyc = index.get("no_face_cycle") or {"period": 3, "position": 0}
-    pos = (cyc.get("position", 0) + 1) % max(1, cyc.get("period", 3))
+    # Fallback period is 1, not 3: if the key ever goes missing the safe reading of "no cycle
+    # configured" is no faces, not two faces out of every three.
+    cyc = index.get("no_face_cycle") or {"period": 1, "position": 0}
+    pos = (cyc.get("position", 0) + 1) % max(1, cyc.get("period", 1))
     if not args.force_face and cyc.get("period") and pos == 0:
         out.update(hero="NO-FACE", hero_ref=None, hero_gaze=None,
                    hero_shot=choose_shot(tax, index, "no-face", seq), inline_gaze=None,
-                   note=("no-face hero this cycle: a face + a pack on every single row is the "
-                         "structural tell gaze rotation cannot reach. Compose product-in-a-real-"
-                         "scene or scene-only; still --product-ref + --qc, still no --ugc."))
+                   note=("no-face hero this cycle. Two reasons: a face + a pack on every single "
+                         "row is the structural tell gaze rotation cannot reach, and ima2 "
+                         "reproduces the reference person recognisably, which puts a real "
+                         "private individual on a commercial page endorsing a supplement. "
+                         "Compose product-in-a-real-scene or scene-only; still --product-ref + "
+                         "--qc, still no --ugc. Do NOT substitute a face by hand."))
         print(json.dumps(out, indent=1))
         return
 
@@ -186,8 +191,8 @@ def cmd_commit(args):
         sys.exit("✗ seq race: expected %d, state is at %d — another run committed first. "
                  "Re-run pick." % (args.expect_seq, index.get("seq", 0) + 1))
     index["seq"] = index.get("seq", 0) + 1
-    cyc = index.setdefault("no_face_cycle", {"period": 3, "position": 0})
-    cyc["position"] = (cyc.get("position", 0) + 1) % max(1, cyc.get("period", 3))
+    cyc = index.setdefault("no_face_cycle", {"period": 1, "position": 0})
+    cyc["position"] = (cyc.get("position", 0) + 1) % max(1, cyc.get("period", 1))
 
     if args.shot:
         index["recent_shots"] = (list(index.get("recent_shots") or []) + [args.shot])[-6:]

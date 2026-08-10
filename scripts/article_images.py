@@ -121,14 +121,24 @@ def qc_gem9(webp_path, refs, is_ugc, has_persona):
                   "An invented brand name on a jar, tub, bottle or pouch counts, even a plausible "
                   "one — name it in the reason.")
     if has_persona:
-        rubric.append("4. Does the person look like a natural real human matching the persona "
-                      "reference (no plastic skin, no dead eyes, no warped hands)? = FAIL if not.")
+        rubric.append("4. Does the person look like a natural real human (no plastic skin, no dead "
+                      "eyes, no warped hands)? = FAIL if not.")
+        rubric.append("5. IDENTITY. The reference photograph is an anchor for demographics, "
+                      "lighting and camera character — it is NOT a person to reproduce. If the "
+                      "generated person is recognisably the SAME INDIVIDUAL as the reference "
+                      "(same face structure, hairline, distinguishing marks) = FAIL.")
     res = subprocess.run([GEM9, "-p", "\n".join(rubric), webp_path, *refs],
                          capture_output=True, text=True, timeout=180)
     out = (res.stdout or "") + (res.stderr or "")
     m = re.search(r"VERDICT:\s*(PASS|FAIL[^\n]*)", out)
     if not m:
-        return True, f"qc-inconclusive ({out.strip()[-120:]})"  # never hard-block on QC infra failure
+        # Fail OPEN for the cosmetic checks — a 9router hiccup should not abort a whole run over
+        # framing. Fail CLOSED when a face is in frame: check 5 is not a quality check, it is the
+        # only thing standing between a recognisable private individual and a live commercial page,
+        # and a gate that returns PASS when it did not run is not a gate.
+        if has_persona:
+            return False, f"qc-inconclusive with a face in frame ({out.strip()[-120:]})"
+        return True, f"qc-inconclusive ({out.strip()[-120:]})"
     v = m.group(1)
     return v.startswith("PASS"), v
 
