@@ -38,7 +38,9 @@ import re
 import subprocess
 import sys
 import tempfile
+import threading
 import time
+from concurrent.futures import ThreadPoolExecutor
 
 import numpy as np
 import requests
@@ -166,6 +168,39 @@ VISION_TIMEOUT = 180
 VISION_INFRA_ABORT = 5        # consecutive gem9/9router failures that end the run
 MIN_APPARENT_AGE = 18         # absolute floor — never source a face that could read as a minor
 MAX_AGE_INTERVAL = 15         # a wider estimate than this is a hedge, not an answer
+
+
+# Candidates are judged concurrently, because ~85% of a candidate's wall-clock is one gem9
+# subprocess waiting on the network (measured 2026-08-10: 44 candidates in 11m26s = 15.6s each,
+# of which the vision call is ~13s). At the ~2.3% acceptance rate a serial run measured, 200
+# personas is ~8,700 candidates ≈ 38 hours; the whole harvest is bounded by a call we spend
+# almost all of it merely waiting on.
+#
+# The concurrency deliberately does NOT extend to the asset host. upload.wikimedia.org rate-limits
+# separately from the API and 429s far sooner — a throttle we only just fixed by switching to
+# thumbnails — so downloads pass through a semaphore while the vision calls fan out. The
+# parallelism belongs on the call we are waiting for, not on the host that asked us to slow down.
+_DOWNLOAD_GATE = threading.BoundedSemaphore(2)
+_THREAD_LOCAL = threading.local()
+
+
+def set_download_concurrency(n):
+    global _DOWNLOAD_GATE
+    _DOWNLOAD_GATE = threading.BoundedSemaphore(max(1, int(n)))
+
+
+def worker_session(template):
+    """A private requests.Session per worker thread.
+
+    requests.Session is not documented as thread-safe, and its connection pool is the part that
+    isn't. Threads share nothing here but the headers copied off the caller's session, so pooling
+    still works INSIDE a thread and no two threads ever touch one pool."""
+    sess = getattr(_THREAD_LOCAL, "session", None)
+    if sess is None:
+        sess = requests.Session()
+        sess.headers.update(template.headers)
+        _THREAD_LOCAL.session = sess
+    return sess
 
 
 class _AbortRun(Exception):
@@ -1339,10 +1374,14 @@ def cmd_fetch(args):
     accepted, examined, seen_ids = [], 0, set()
     stop_reason = "queries exhausted"
     vision_infra_fails = 0
+    set_download_concurrency(args.download_concurrency)
     # Licence scope is the OUTER loop, so each category is walked across every phrasing before
     # the next one starts. The order is COMMONS_LICENCE_CATEGORIES', which is deliberately not
     # the attribution-cheapest first — see the measurement recorded there.
     jobs = [(scope, q) for scope in lic_scopes for q in queries]
+    # Built here rather than as a `with` around the loops purely so the loop body keeps its
+    # indentation and stays diffable; shutdown() in the finally does what __exit__ would.
+    pool = ThreadPoolExecutor(max_workers=max(1, args.workers))
     try:
         for scope, query in jobs:
             if len(accepted) >= needed:
@@ -1362,10 +1401,15 @@ def cmd_fetch(args):
                     break
                 if not photos:
                     break
+                # One page = one batch, submitted together and consumed IN SUBMISSION ORDER.
+                # Order matters for more than tidy output: vision_infra_fails counts
+                # CONSECUTIVE failures, and "consecutive" only means anything against a fixed
+                # sequence. as_completed() would make the abort threshold depend on which
+                # worker happened to finish first.
+                budget = args.max_candidates - examined
+                batch = []
                 for photo in photos:
-                    if len(accepted) >= needed:
-                        break
-                    if examined >= args.max_candidates:
+                    if len(batch) >= budget:
                         break
                     pid = str(photo.get("id"))
                     if pid in seen_ids:
@@ -1374,8 +1418,19 @@ def cmd_fetch(args):
                     if pid in known_photo_ids:
                         print("  · %-12s already in the bank" % pid)
                         continue
+                    batch.append((pid, photo))
+                futures = [(pid, pool.submit(process_candidate, photo, cell, key,
+                                             session, hashes, args))
+                           for pid, photo in batch]
+                for pid, fut in futures:
+                    if len(accepted) >= needed:
+                        # Reclaim the queued work. A future that has already started cannot be
+                        # cancelled, so up to --workers extra candidates still get judged —
+                        # they simply do not count as examined, because they were not.
+                        if fut.cancel():
+                            continue
+                    verdict = fut.result()
                     examined += 1
-                    verdict = process_candidate(photo, cell, key, session, hashes, args)
                     # An infra failure is NOT evidence the photo is bad. Left uncounted, a
                     # 9router outage renders as 400 content rejections and reads as "Flickr
                     # has nothing for this cell" — the operator rewrites good queries and
@@ -1385,6 +1440,10 @@ def cmd_fetch(args):
                         print("  ! %-12s [vision-infra] %s  (%d in a row)"
                               % (pid, verdict[1], vision_infra_fails))
                         if vision_infra_fails >= VISION_INFRA_ABORT:
+                            # Cancel before unwinding, or exiting the pool's `with` blocks
+                            # until every queued candidate has burned a doomed gem9 call.
+                            for _, pending in futures:
+                                pending.cancel()
                             stop_reason = ("ABORTED — %d consecutive vision-infra failures; "
                                            "this is a gem9/9router problem, not a photo problem"
                                            % vision_infra_fails)
@@ -1395,6 +1454,17 @@ def cmd_fetch(args):
                         print("  ✗ %-12s [%s] %s" % (pid, verdict[0], verdict[1]))
                         continue
                     doc_parts, jpeg, img = verdict[2], verdict[3], verdict[4]
+                    # The authoritative dupe check. The worker compared against the bank as it
+                    # stood when IT ran; siblings in the same batch have landed since, and two
+                    # near-identical photographs would otherwise both pass — each invisible to
+                    # the other. Serial, against the live dict, after every earlier accept.
+                    h64 = int(doc_parts["img_meta"]["dhash"], 16)
+                    clash = next(((hnd, hamming(h64, other)) for hnd, other in hashes.items()
+                                  if hamming(h64, other) <= DHASH_MAX_DISTANCE), None)
+                    if clash:
+                        print("  ✗ %-12s [dupe] dHash distance %d vs %s (serial re-check: it "
+                              "landed while this candidate was in flight)" % (pid, clash[1], clash[0]))
+                        continue
                     handle = next_handle(cell["cell_id"], taken)
                     taken.add(handle)
                     doc = build_persona_doc(handle, cell, photo, doc_parts["lic_id"],
@@ -1413,6 +1483,10 @@ def cmd_fetch(args):
     except _AbortRun:
         pass
     finally:
+        # cancel_futures drops whatever is still queued. Without it an abort — the one case
+        # where we already know the next call will fail too — waits out every candidate the
+        # last page submitted.
+        pool.shutdown(wait=True, cancel_futures=True)
         # write_persona() already committed each accept to disk. If we die here without
         # writing the index, those dirs are invisible to the picker forever while
         # cell_counts() still counts them as filled — capacity vanishes silently.
@@ -1465,7 +1539,12 @@ def process_candidate(cand, cell, key, session, hashes, args):
     P and C run FIRST, ahead of the licence gate, because both are free string tests on
     metadata already in hand — and because both answer a question a licence cannot. A file can
     be flawlessly CC BY and still be a portrait the source itself marks as carrying personality
-    rights, or a re-host of a photograph whose origin forbids exactly this use."""
+    rights, or a re-host of a photograph whose origin forbids exactly this use.
+
+    Runs on a worker thread. It reads `hashes` but never writes it: the authoritative dupe
+    check is the serial one in cmd_fetch, because by the time this returns the bank may have
+    grown by whatever the other workers accepted."""
+    session = worker_session(session)
     ok, reason = gate_personality(cand)
     if not ok:
         return ("personality", reason)
@@ -1500,7 +1579,10 @@ def process_candidate(cand, cell, key, session, hashes, args):
     # gate further down. A 429 is the host asking us to slow down; it says nothing about the file.
     try:
         for attempt in range(4):
-            resp = session.get(url, timeout=90)
+            # The gate is around the request only. Holding a slot through the back-off would
+            # let one throttled worker idle the asset host for everybody else.
+            with _DOWNLOAD_GATE:
+                resp = session.get(url, timeout=90)
             if resp.status_code == 429:
                 if attempt == 3:
                     return ("throttled", "HTTP 429 from the download host after 4 attempts — "
@@ -1519,8 +1601,14 @@ def process_candidate(cand, cell, key, session, hashes, args):
     if flagged:
         return ("watermark", "burned-in text screen: %s" % wm_detail)
 
+    # list() rather than .items() directly: the serial accept path adds to this dict while
+    # workers are running, and iterating a dict that another thread grows raises
+    # RuntimeError("dictionary changed size during iteration") — which would surface as a
+    # crashed worker, i.e. as a rejected photograph. list() is atomic under the GIL.
+    # This snapshot is an EARLY-OUT, sited here to save a vision call on an obvious repeat;
+    # cmd_fetch re-checks against the live bank before it accepts anything.
     h64 = dhash(img)
-    for handle, other in hashes.items():
+    for handle, other in list(hashes.items()):
         d = hamming(h64, other)
         if d <= DHASH_MAX_DISTANCE:
             return ("dupe", "dHash distance %d vs %s" % (d, handle))
@@ -1794,6 +1882,46 @@ def cmd_selftest(_args):
     check("...and the exception class survives scrubbing, so the failure is still diagnosable",
           "ConnectionError" in msg)
 
+    print("concurrency")
+    template = requests.Session()
+    template.headers["User-Agent"] = "selftest/1.0"
+    seen_sessions, lock = [], threading.Lock()
+    # The barrier is the test. Without it the four tasks are so short that one pool thread
+    # runs all four before the others are even spawned — and the run then "passes" a
+    # single-threaded execution as proof of thread isolation. Held objects, not id()s:
+    # a freed session's id is free to reappear on the next one.
+    barrier = threading.Barrier(4, timeout=10)
+
+    def grab():
+        # Twice on purpose: the same thread must be handed the same session both times, or
+        # the connection pooling this is built on top of never actually pools.
+        a, b = worker_session(template), worker_session(template)
+        with lock:
+            seen_sessions.append((a, b))
+        barrier.wait()
+
+    with ThreadPoolExecutor(max_workers=4) as tp:
+        list(tp.map(lambda _: grab(), range(4)))
+    check("a worker thread reuses its own session",
+          all(a is b for a, b in seen_sessions))
+    distinct = {id(a) for a, _ in seen_sessions}
+    check("no two worker threads share a session (requests pools are not thread-safe)",
+          len(distinct) == 4, "%d distinct across 4 threads" % len(distinct))
+    check("the worker session inherits the UA the run identifies itself with",
+          worker_session(template).headers.get("User-Agent") == "selftest/1.0")
+
+    set_download_concurrency(3)
+    held = [_DOWNLOAD_GATE.acquire(blocking=False) for _ in range(4)]
+    for _ in range(sum(held)):
+        _DOWNLOAD_GATE.release()
+    check("the download gate admits exactly --download-concurrency at a time",
+          held == [True, True, True, False])
+    set_download_concurrency(0)
+    check("a nonsensical download concurrency still admits one, never zero",
+          _DOWNLOAD_GATE.acquire(blocking=False) and not _DOWNLOAD_GATE.acquire(blocking=False))
+    _DOWNLOAD_GATE.release()
+    set_download_concurrency(2)
+
     print("queries + handles")
     tax = _load(TAXONOMY, "taxonomy")
     sample = cells_by_id(tax)["m5059-hl"]
@@ -1836,6 +1964,12 @@ def main():
                    help="stop after examining this many photos (reported at the end)")
     f.add_argument("--sleep", type=float, default=0.3,
                    help="seconds between source calls (search pages AND per-candidate getSizes)")
+    f.add_argument("--workers", type=int, default=6,
+                   help="candidates judged concurrently (default 6). Almost all of a candidate's "
+                        "wall-clock is one gem9 vision call this process only waits on.")
+    f.add_argument("--download-concurrency", type=int, default=2,
+                   help="simultaneous asset downloads (default 2, deliberately far below "
+                        "--workers: upload.wikimedia.org throttles independently of the API)")
     f.add_argument("--no-getsizes", action="store_true",
                    help="skip the flickr.photos.getSizes lookup; judge resolution on search extras only")
     f.set_defaults(fn=cmd_fetch)
