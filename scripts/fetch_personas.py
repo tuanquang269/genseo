@@ -487,6 +487,70 @@ def gate_personality(cand):
 
 
 # --------------------------------------------------------------------------------------
+# GATE P2 — the same question, asked of Flickr
+# --------------------------------------------------------------------------------------
+# gate_personality reads Commons' extmetadata Restrictions field. openimages_candidate sets
+# restrictions="" unconditionally, and Open Images supplies every candidate this pipeline
+# actually walks — so the publicity-rights gate it already had is inert on the only corpus in
+# use. Not broken: it answers a question Flickr's metadata does not contain.
+#
+# What Flickr does give is the TITLE, already sitting in the local index row, free to read. Run
+# against the 24 machine-passed faces on 2026-08-10 it refused 15, and three of those had
+# survived BOTH the vision gate and a careful look at the frame by eye:
+#
+#   m3039-wh-02  "Sam Rockwell en la presentación de Moon"          an actor, at a premiere
+#   m3039-bl-01  "Stéphane Diagana se prète au jeu de l'interview"  a world champion, interviewed
+#   f5059-wh-01  "Anita Ravna juni 2013"                            by a Sami political body
+#
+# recognizable_public_figure answered false for all three, and answered honestly. It asks the
+# model what it KNOWS, and being famous is not a property of pixels — it is a property of the
+# caption. Asking a photograph to disclose who someone is was always the wrong place to look,
+# which is why adding sharper questions about the FRAME could never have closed this hole.
+#
+# Two adjacent capitalised words is a deliberately blunt test and it does misfire: "Kirkby
+# Malzeard" is a village, "I'm Young" came off a t-shirt, about one in eight. The trade is not
+# close. A false positive costs one photograph out of nine million candidates; a false negative
+# puts a named actor in a supplement advertisement, which is the exact harm the whole CC-sourcing
+# posture exists to avoid. Blunt and early beats precise and late.
+
+
+def named_subject(text):
+    """The first run of two or more adjacent name-like words, or None.
+
+    A word qualifies when it opens uppercase, carries a lowercase letter and holds no digit.
+    That admits "Rockwell" and "Tennø" while turning away the camera defaults this corpus is
+    full of ("DSC07576", "IMG_2914") and bare initialisms ("MRI", "SCA"), which name an
+    organisation rather than a person.
+
+    TWO adjacent, because findability is what is being tested rather than naming as such:
+    "Megan" alone identifies nobody you could look up, and "Anita Ravna" identifies someone you
+    can find in one search."""
+    run = []
+    for word in re.split(r"[^\w'’-]+", text or "") + [""]:
+        word = word.strip("'’-")
+        if (word and word[0].isupper() and any(c.islower() for c in word)
+                and not any(c.isdigit() for c in word)):
+            run.append(word)
+        else:
+            if len(run) >= 2:
+                return " ".join(run)
+            run = []
+    return None
+
+
+def gate_named_subject(cand):
+    """Gate P2. Title only — no download, no model call, and no second opinion needed."""
+    title = (cand.get("title") or (cand.get("raw") or {}).get("title") or "").strip()
+    name = named_subject(title)
+    if name:
+        return False, ("title names someone (%r in %r) — the caption is the one piece of "
+                       "evidence a vision model never sees, and a named subject is precisely "
+                       "the publicity-rights claim a CC licence does not grant"
+                       % (name, title[:60]))
+    return True, ""
+
+
+# --------------------------------------------------------------------------------------
 # GATE C — re-host origin
 # --------------------------------------------------------------------------------------
 # Pexels, Unsplash, nappy and StockSnap are permanently out of this pipeline, and not on
@@ -2398,10 +2462,11 @@ def process_candidate(cand, cell, key, session, hashes, args):
     """Runs the gates cheapest-first. Returns a tuple whose first element is the gate that
     rejected it, or ("accept", "", parts, jpeg_bytes, image).
 
-    P and C run FIRST, ahead of the licence gate, because both are free string tests on
-    metadata already in hand — and because both answer a question a licence cannot. A file can
-    be flawlessly CC BY and still be a portrait the source itself marks as carrying personality
-    rights, or a re-host of a photograph whose origin forbids exactly this use.
+    P, P2 and C run FIRST, ahead of the licence gate, because all three are free string tests on
+    metadata already in hand — and because all three answer a question a licence cannot. A file
+    can be flawlessly CC BY and still be a portrait the source itself marks as carrying
+    personality rights, a photograph whose caption names the person in it, or a re-host of a
+    photograph whose origin forbids exactly this use.
 
     Runs on a worker thread. It reads `hashes` but never writes it: the authoritative dupe
     check is the serial one in cmd_fetch, because by the time this returns the bank may have
@@ -2410,6 +2475,10 @@ def process_candidate(cand, cell, key, session, hashes, args):
     ok, reason = gate_personality(cand)
     if not ok:
         return ("personality", reason)
+
+    ok, reason = gate_named_subject(cand)
+    if not ok:
+        return ("named-subject", reason)
 
     ok, reason = gate_origin(cand)
     if not ok:
@@ -2665,6 +2734,34 @@ def cmd_selftest(_args):
         check("restrictions=%r refused" % flag, not ok_ and "publicity" in why or not ok_)
     check("an UNRECOGNISED warning is also refused, not waved through",
           not gate_personality({"restrictions": "some-new-template-nobody-added-here"})[0])
+
+    print("gate P2 — a caption that names the subject")
+    # The three that mattered: each passed the vision gate AND a human look at the frame on
+    # 2026-08-10, and the caption is the only place any of them was ever visible.
+    for title, who in (("Sam Rockwell en la presentación de Moon", "Sam Rockwell"),
+                       ("Stéphane Diagana se prète au jeu de l'interview", "Stéphane Diagana"),
+                       ("Anita Ravna juni 2013", "Anita Ravna")):
+        ok_, why = gate_named_subject({"title": title})
+        check("%r refused before download" % who, not ok_ and who in why)
+    # A trailing number, an all-caps prefix and bracketed junk must not hide the name.
+    for title, who in (("Ana Moser (6)", "Ana Moser"),
+                       ("Lena Ek - Riksdagsgruppen 2014", "Lena Ek"),
+                       ("MRI 2013 SCA Alisabeth Merlo", "Alisabeth Merlo")):
+        check("%r found in %r" % (who, title[:32]),
+              named_subject(title) == who)
+    # The camera defaults this corpus is mostly made of, which is the yield the gate must not eat.
+    for title in ("DSC07576", "IMG_2914", "Untitled", "AppWorks", "Cynic", "P1010342"):
+        check("%r survives gate P2" % title, gate_named_subject({"title": title})[0])
+    check("a lone given name is not findable and is allowed through",
+          gate_named_subject({"title": "Megan"})[0] and gate_named_subject({"title": "Sanne"})[0])
+    check("an all-caps initialism is an organisation, not a person",
+          named_subject("MRI SCA NPS") is None)
+    # Documented cost, asserted so it stays visible rather than being rediscovered as a bug:
+    # these are villages and t-shirt slogans, and they are refused anyway. See the gate comment
+    # for why that trade is the right way round.
+    for fp in ("Breakfast in Kirkby Malzeard", "Wylin cuz I'm Young tee"):
+        check("known false positive %r is still refused, knowingly" % fp[:26],
+              not gate_named_subject({"title": fp})[0])
 
     print("gate A — artwork / archive reproduction")
     for art in ("Portrait of a Woman MET DP161260", "Marble head of an elderly woman",
