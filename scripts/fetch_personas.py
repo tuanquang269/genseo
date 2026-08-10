@@ -38,6 +38,7 @@ import json
 import os
 import random
 import re
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -838,9 +839,39 @@ VISION_RUBRIC_KEYS_ADDED = ("is_monochrome_or_period", "face_angle_reads")
 FACE_ANGLE_ACCEPTED = ("frontal", "three-quarter")
 
 
+# How many independent readings must agree before a face is written. See the CONFIRMATION note
+# in process_candidate for the measurement that set this at two; the keys are positional so a
+# third would only mean extending these tuples.
+VISION_CONFIRMATIONS = 2
+VISION_KEYS = ("vision", "vision2")
+RAW_KEYS = ("raw", "raw2")
+
+
 def vision_is_current(v):
     """Was this reading taken with the rubric we enforce today?"""
     return isinstance(v, dict) and all(k in v for k in VISION_RUBRIC_KEYS_ADDED)
+
+
+def vision_readings(cached):
+    """Every reading held for this image, oldest first. Rows written before the confirming call
+    existed carry one; that is a shortfall to make up, not a reason to distrust the reading."""
+    return [v for v in ((cached or {}).get(k) for k in VISION_KEYS) if isinstance(v, dict)]
+
+
+def current_readings(cached):
+    """(reading, raw text) for each held reading taken under today's rubric, oldest first.
+
+    Paired by POSITION rather than zipped after the fact: `vision2` is stored beside `raw2`, and
+    a row that somehow carries one without the other must not silently hand back the other
+    reading's text as if it were the audit trail for this one.
+    """
+    out = []
+    for vk, rk in zip(VISION_KEYS, RAW_KEYS):
+        v = (cached or {}).get(vk)
+        if vision_is_current(v):
+            raw = (cached or {}).get(rk)
+            out.append((v, raw if isinstance(raw, str) else ""))
+    return out
 
 
 def _extract_json(text):
@@ -1415,6 +1446,71 @@ def bank_hashes(bank):
     return out
 
 
+# What a quarantine was ABOUT, and therefore how far it reaches. Only a fault in the photograph
+# itself travels with the pixels; the other two are faults in what we wrote down beside them, and
+# barring the image for those would punish the photograph for our own bookkeeping.
+QUARANTINE_LOCAL = (
+    "pairing",    # she reads 52, not 45 — right face, wrong drawer; the next band should take her
+    "metadata",   # we recorded the wrong photographer/licence; the bug is fixed, the pixels never
+                  # were the problem, and a fresh walk records it correctly
+)
+
+
+def quarantine_blocks_readmission(doc):
+    """Does this quarantine bar the face from the whole bank, or only from the cell it left?
+
+    Default is the whole bank. A quarantine written before this distinction existed carries no
+    `rejection_is_about` at all, and the safe reading of silence is the stricter one: a face
+    wrongly barred can be released by hand, whereas a face wrongly re-admitted comes back silently
+    under a new handle. Every such row has since been stamped explicitly, so the default now
+    guards only future carelessness.
+    """
+    return (doc or {}).get("rejection_is_about") not in QUARANTINE_LOCAL
+
+
+def quarantine_index():
+    """(handle -> dhash, {photo_id}) for faces MOVED OUT of the bank, so it cannot re-admit them.
+
+    persona_dirs() skips `_`-prefixed directories, which is what keeps a quarantined face out of
+    the cell counts — and is also what would let the next walk over the same corpus find the same
+    photograph, judge it again, and write it straight back in. Rejecting a face has to be a fact
+    the bank remembers, not just a directory that moved.
+
+    Deliberately hash-only, and deliberately separate from load_bank(): quarantine is a graveyard,
+    not a shadow bank. Nothing here should ever be counted, picked, or approved.
+    """
+    out, photo_ids = {}, set()
+    for qdir in sorted(glob.glob(os.path.join(PERSONAS, "_quarantine-*"))):
+        for name in sorted(os.listdir(qdir)):
+            pj = os.path.join(qdir, name, "persona.json")
+            if not os.path.exists(pj):
+                continue
+            label = "%s/%s" % (os.path.basename(qdir), name)
+            doc = _load(pj, "quarantined persona.json") or {}
+            # The same split process_candidate already makes about cached verdicts: "the head is
+            # in profile" is a fact about the PHOTOGRAPH and disqualifies it everywhere, while
+            # "she reads 52, not 45" is a fact about the PAIRING and disqualifies it only from
+            # the cell that happened to look. A boundary face is not a bad face — she is a face
+            # in the wrong drawer, and the next band's walk over the same corpus is exactly what
+            # puts her in the right one. Refusing her by hash would make that impossible.
+            if not quarantine_blocks_readmission(doc):
+                continue
+            pid = (doc.get("source") or {}).get("photo_id")
+            if pid:
+                photo_ids.add(str(pid))
+            stored = (doc.get("image") or {}).get("dhash")
+            try:
+                if stored:
+                    out[label] = int(stored, 16)
+                    continue
+            except ValueError:
+                pass
+            ref = os.path.join(qdir, name, "ref.jpg")
+            if os.path.exists(ref):
+                out[label] = dhash(Image.open(ref))
+    return out, photo_ids
+
+
 AUTHOR_CAP_CELL = 1
 AUTHOR_CAP_BANK = 3
 
@@ -1559,7 +1655,8 @@ def attribution_text(cand, info):
         cand.get("page_url") or "", info["name"], info["url"])
 
 
-def build_persona_doc(handle, cell, cand, lic_id, info, img_meta, vision, raw_verdict, wm_detail):
+def build_persona_doc(handle, cell, cand, lic_id, info, img_meta, vision, raw_verdict, wm_detail,
+                      confirm_verdict=""):
     age_est = ""
     if isinstance(vision, dict) and vision.get("apparent_age_min") is not None:
         age_est = " ~%s-%s" % (vision.get("apparent_age_min"), vision.get("apparent_age_max"))
@@ -1592,6 +1689,10 @@ def build_persona_doc(handle, cell, cand, lic_id, info, img_meta, vision, raw_ve
         "image": dict(img_meta),
         "qc": {
             "ai_verdict": raw_verdict,
+            # The independent second reading that agreed. Kept verbatim rather than reduced to a
+            # boolean: when a face is later disputed, the question is always which estimates the
+            # two calls actually gave, and a `confirmed: true` cannot answer it.
+            "ai_verdict_confirm": confirm_verdict,
             "watermark": False,
             "face_visible": True,
             "accepted_date": time.strftime("%Y-%m-%d"),
@@ -1701,6 +1802,10 @@ def cmd_verify(args):
             problems.append("resolution %dx%d = %.2fMP (floor %.1fMP and %dpx short edge)"
                             % (w, h, w * h / 1e6, MIN_MEGAPIXELS, MIN_SHORT_EDGE))
 
+        flagged, detail = monochrome_screen(img)
+        if flagged:
+            problems.append("greyscale: %s" % detail)
+
         flagged, detail = watermark_screen(img)
         notes.append("wm[%s]" % detail)
         if flagged:
@@ -1728,6 +1833,19 @@ def cmd_verify(args):
                     notes.append("vision UNAVAILABLE (%s)" % exc)
                 else:
                     problems.extend("vision: " + r for r in evaluate_vision(vision, cell))
+                    if vision.get("studio_or_press_context") is True:
+                        # Recorded, not a problem — see evaluate_vision. Surfaced here because a
+                        # verify run is the other place a human is already reading the bank.
+                        notes.append("studio/press setting")
+                    if args.update_qc:
+                        # Off by default: "verify" that mutates the thing it verifies is a trap.
+                        # On, it saves re-buying ~16s of model call per face the next time the
+                        # rubric gains a key — and it is what puts the new fields where
+                        # contact_sheet.py can caption them.
+                        doc.setdefault("qc", {})["vision"] = vision
+                        doc["qc"]["rubric_refreshed"] = time.strftime("%Y-%m-%d")
+                        _atomic_write(os.path.join(PERSONAS, handle, "persona.json"), doc)
+                        notes.append("qc rewritten")
 
         print("%-14s %-4s %s%s" % (handle, "FAIL" if problems else "PASS",
                                    "; ".join(problems) if problems else "clean",
@@ -1737,6 +1855,64 @@ def cmd_verify(args):
     if not args.vision:
         print("(gate 5 not run — pass --vision to re-check the bank through gem9)")
     sys.exit(1 if failures else 0)
+
+
+def cmd_quarantine(args):
+    """MOVE a face out of the bank, permanently, with the reason attached.
+
+    Not `approve --reject`: that leaves the persona in place as `retired`, which is right for a
+    face whose photograph is fine but whose LICENCE or rights we decided against — it stays where
+    anyone can see what was retired and why. This is for a face that failed a machine gate, and
+    the difference that matters is re-admission. A retired persona still occupies its handle and
+    is still seen by the dHash check; a face that merely had its directory deleted would be found
+    again by the next walk over the same corpus, judged again, and written straight back in.
+
+    So the directory MOVES rather than being deleted (nothing here is recoverable from the
+    source: the Flickr rendition can disappear, and `gone` is already a verdict this cache
+    records), and quarantine_index() reads it back as a dHash and a photo_id the fetch path
+    refuses. Rejecting a face has to be a fact the bank remembers.
+
+    --about carves out the cases where that refusal would be WRONG. "The head is in profile" is a
+    fact about the photograph and holds in every cell. "She reads 52, not 45" is a fact about the
+    PAIRING: the face is not bad, she is in the wrong drawer, and refusing her by hash would stop
+    the neighbouring band's walk from ever finding her — the free recovery the whole two-reading
+    scheme is built on. "We credited the wrong photographer" is a fact about the METADATA, i.e.
+    about us; the pixels were never in question, and once the bug is fixed a fresh walk records
+    the right answer. Both of those still MOVE the face out of this cell, and both leave the
+    corpus free to re-admit it correctly.
+    """
+    bank, index = load_bank(), _load(INDEX, "index")
+    dest_root = os.path.join(PERSONAS, "_quarantine-%s" % args.reason)
+    for handle in args.handles:
+        if handle not in bank:
+            sys.exit("✗ unknown persona %r — nothing moved" % handle)
+        if os.path.exists(os.path.join(dest_root, handle)):
+            sys.exit("✗ %s is already in %s — nothing moved"
+                     % (handle, os.path.basename(dest_root)))
+    os.makedirs(dest_root, exist_ok=True)
+    moved = []
+    for handle in args.handles:
+        doc = bank[handle]["doc"]
+        doc["status"] = "quarantined"
+        doc["approved_by"] = None
+        doc["flag_reason"] = args.note or args.reason
+        doc["quarantined_date"] = time.strftime("%Y-%m-%d")
+        doc["rejection_is_about"] = args.about
+        _atomic_write(os.path.join(PERSONAS, handle, "persona.json"), doc)
+        # Written BEFORE the move, so a crash between the two leaves a persona that still says
+        # why it was condemned rather than one that silently reads as an ordinary pending face.
+        shutil.move(os.path.join(PERSONAS, handle), os.path.join(dest_root, handle))
+        index.get("personas", {}).pop(handle, None)
+        moved.append(handle)
+    _atomic_write(INDEX, index)
+    print("✓ quarantined %d face(s) into %s/: %s"
+          % (len(moved), os.path.basename(dest_root), ", ".join(moved)))
+    if args.about in QUARANTINE_LOCAL:
+        print("  Recorded as a fact about the %s, not the photograph: they are out of this cell, "
+              "but the corpus may still re-admit them correctly." % args.about.upper())
+    else:
+        print("  Their dHash and photo_id are now refused by `fetch`, so the corpus cannot "
+              "re-admit them. Nothing was deleted.")
 
 
 def cmd_approve(args):
@@ -1815,8 +1991,12 @@ def cmd_fetch(args):
     # over two multi-million-file categories returns 974 results — the parser does not read it
     # the way a person does, and the failure is silent.
     lic_scopes = list(COMMONS_LICENCE_CATEGORIES) if source == "commons" else [None]
+    # Quarantined faces are folded in here and NOT into cmd_verify's: this is the one place that
+    # decides what may enter the bank, and it is the only place a graveyard belongs.
     hashes = bank_hashes(bank)
-    known_photo_ids = set()
+    q_hashes, q_photo_ids = quarantine_index()
+    hashes.update(q_hashes)
+    known_photo_ids = set(q_photo_ids)
     for rec in bank.values():
         pid = (rec["doc"].get("source") or {}).get("photo_id")
         if pid:
@@ -2022,7 +2202,8 @@ def cmd_fetch(args):
                     taken.add(handle)
                     doc = build_persona_doc(handle, cell, cand, doc_parts["lic_id"],
                                             doc_parts["info"], doc_parts["img_meta"],
-                                            doc_parts["vision"], doc_parts["raw"], doc_parts["wm"])
+                                            doc_parts["vision"], doc_parts["raw"], doc_parts["wm"],
+                                            doc_parts.get("confirm_raw", ""))
                     # The bug above was invisible for a whole run because nothing ever checked
                     # that the credit written to disk belonged to the photograph downloaded.
                     # CC BY attribution has to point at the actual work, so this is a licence
@@ -2168,13 +2349,14 @@ def process_candidate(cand, cell, key, session, hashes, args):
     # nothing to repeat. A remembered vision answer is re-scored against THIS cell, because
     # "wrong gender for f3039-wh" is a fact about the pairing and not about the photograph.
     cached = verdict_cached(cand)
-    cached_vision = None
     if cached:
         if cached.get("reject"):
             return (cached["reject"][0], "%s [cached]" % cached["reject"][1])
-        cached_vision = cached.get("vision")
-        if cached_vision:
-            reasons = evaluate_vision(cached_vision, cell)
+        # EVERY reading we hold, not just the first: a candidate the confirming call disqualified
+        # must fail here too, before the download, or the second opinion we paid for only ever
+        # applies to the cell that happened to buy it.
+        for v in vision_readings(cached):
+            reasons = evaluate_vision(v, cell)
             if reasons:
                 return ("vision", "%s [cached]" % "; ".join(reasons))
 
@@ -2275,34 +2457,61 @@ def process_candidate(cand, cell, key, session, hashes, args):
         if d <= DHASH_MAX_DISTANCE:
             return ("dupe", "dHash distance %d vs %s" % (d, handle))
 
-    if cached_vision is not None and vision_is_current(cached_vision):
-        # A previous cell bought this answer and the block above already re-scored it against
-        # THIS cell without objection. The photograph has not changed in the meantime, so the
-        # ~28s call would only re-derive the same JSON. This is the whole point of the cache:
-        # one model call per image for the life of the bank, not one per (image, cell) pair.
-        vision, raw = cached_vision, cached.get("raw") or ""
-    else:
+    # CONFIRMATION. One reading cannot place a face in a ten-year band. Re-screening the bank on
+    # 2026-08-10 took a SECOND reading of forty faces the first reading had already accepted, and
+    # five of them changed band or ethnicity — every one a face whose estimate already sat on a
+    # boundary (45-55 became 45-60; 24-32 became 20-30). Neither call is wrong: the model's
+    # interval is simply wider than the band we sort into, so which side of the line a boundary
+    # face falls on is decided by which call you happened to make. Sorting on one sample of a
+    # quantity noisier than the bucket is how you get a bank that only looks stratified.
+    #
+    # So a face is written only when TWO independent readings both place it in this cell. The
+    # second call is bought only for a candidate the first one accepted, and accepts are rare
+    # (one per thirty to four hundred examined), so it costs a few percent of the run — and
+    # nothing at all on replay, because both readings land in the cache and serve every later
+    # cell. Total cost stays bounded at two calls per image for the life of the bank.
+    #
+    # A rejected boundary face is not lost either, which is what makes this affordable for the
+    # thin cells. The cache stores READINGS, not verdicts, so when the neighbouring band's turn
+    # comes, its walk replays these same two readings for free and accepts her there — which is
+    # where a woman who reads 45-60 belonged in the first place.
+    held = current_readings(cached)
+    readings, raws = [v for v, _ in held], [r for _, r in held]
+
+    while True:
+        for v in readings:
+            reasons = evaluate_vision(v, cell)
+            if reasons:
+                return ("vision", "; ".join(reasons))
+        if len(readings) >= VISION_CONFIRMATIONS:
+            break
         tmp = tempfile.NamedTemporaryFile(suffix=".jpg", delete=False)
         try:
             tmp.write(jpeg)
             tmp.close()
             try:
-                vision, raw = vision_check(tmp.name)
+                v, raw = vision_check(tmp.name)
             except (OSError, subprocess.SubprocessError, VisionInfraError) as exc:
                 return ("vision-infra", "gem9 unavailable (%s) — refusing to accept unseen" % exc)
         finally:
             os.unlink(tmp.name)
-        # Banked BEFORE the verdict is read, and stored as the model's answer rather than as
+        readings.append(v)
+        raws.append(raw)
+        # Banked BEFORE the verdict is read, and stored as the model's answers rather than as
         # pass/fail. "Wrong gender for f3039-wh" is a fact about the pairing; "two people in
         # frame" is a fact about the photograph. Only the second kind may be replayed, so the
-        # cache keeps the raw reading and lets each cell draw its own conclusion.
-        verdict_remember(cand, vision=vision, raw=raw)
-    reasons = evaluate_vision(vision, cell)
-    if reasons:
-        return ("vision", "; ".join(reasons))
+        # cache keeps the raw readings and lets each cell draw its own conclusion.
+        fields = {}
+        for i, r in enumerate(readings):
+            fields[VISION_KEYS[i]], fields[RAW_KEYS[i]] = r, raws[i]
+        verdict_remember(cand, **fields)
+
+    vision, raw = readings[0], (raws[0] if raws else "")
+    confirm_raw = raws[1] if len(raws) > 1 else ""
 
     parts = {
         "lic_id": lic_id, "info": info, "vision": vision, "raw": raw, "wm": wm_detail,
+        "confirm_raw": confirm_raw,
         "img_meta": {
             "width": img.size[0], "height": img.size[1],
             "megapixels": round(img.size[0] * img.size[1] / 1e6, 2),
@@ -2575,6 +2784,41 @@ def cmd_selftest(_args):
     check("a reading taken under today's rubric is current", vision_is_current(good))
     check("studio_or_press_context is RECORDED, not enforced",
           evaluate_vision(dict(good, studio_or_press_context=True), cell) == [])
+
+    # Confirmation. The re-screen on 2026-08-10 found five of forty accepted faces changing band
+    # or ethnicity on a second reading, so a face is written only when two readings agree — and
+    # the pairing of reading to raw text has to survive a half-written row.
+    print("second-reading confirmation")
+    older = dict(good, apparent_age_min=45, apparent_age_max=55)   # centre 50: passes 40-49 + 2
+    newer = dict(good, apparent_age_min=45, apparent_age_max=60)   # centre 52: does not
+    check("two readings held -> both are re-scored, so the disagreeing one still rejects",
+          any(evaluate_vision(v, cell) for v in
+              vision_readings({"vision": older, "vision2": newer})))
+    check("the boundary face the confirm rejects is NOT lost — it passes the next band up",
+          evaluate_vision(newer, dict(cell, age_band="50-59")) == [])
+    check("a row holding one reading asks for one more (VISION_CONFIRMATIONS=%d)"
+          % VISION_CONFIRMATIONS,
+          len(current_readings({"vision": good, "raw": "a"})) < VISION_CONFIRMATIONS)
+    check("readings pair with their OWN raw text, never the other one's",
+          current_readings({"vision": good, "raw": "first", "vision2": newer, "raw2": "second"})
+          == [(good, "first"), (newer, "second")])
+    check("a reading whose raw text was never stored still pairs, with an empty string",
+          current_readings({"vision": good, "vision2": newer, "raw2": "second"})
+          == [(good, ""), (newer, "second")])
+    check("a stale-rubric first reading does not shift the second one's raw text onto it",
+          current_readings({"vision": legacy, "raw": "stale", "vision2": good, "raw2": "fresh"})
+          == [(good, "fresh")])
+
+    print("quarantine: what a rejection is ABOUT decides whether it is bank-wide")
+    check("a profile shot is barred everywhere",
+          quarantine_blocks_readmission({"rejection_is_about": "photograph"}))
+    check("a boundary face is barred only from the cell she left, so the next band can take her",
+          not quarantine_blocks_readmission({"rejection_is_about": "pairing"}))
+    check("nor does OUR bookkeeping error bar the photograph — the pixels were never in question",
+          not quarantine_blocks_readmission({"rejection_is_about": "metadata"}))
+    check("silence reads as the strict case — a wrong bar is undone by hand, a wrong re-admission "
+          "comes back unnoticed",
+          quarantine_blocks_readmission({}) and quarantine_blocks_readmission(None))
 
     # Age gate. These four are the reason it is not a bare interval-overlap test.
     def age(lo, hi, c=cell):
@@ -2932,6 +3176,9 @@ def main():
     v = sub.add_parser("verify", help="re-run the gates over the bank on disk")
     v.add_argument("--vision", action="store_true",
                    help="also re-run gate 5 through gem9 (off by default: verify is otherwise offline)")
+    v.add_argument("--update-qc", action="store_true",
+                   help="write the refreshed vision reading back into persona.json (needs "
+                        "--vision). Use after the rubric gains a key, so the answer is bought once")
     v.set_defaults(fn=cmd_verify)
 
     ap_ = sub.add_parser("approve", help="Kevin's verdict — the ONLY way a face becomes usable")
@@ -2940,6 +3187,19 @@ def main():
     ap_.add_argument("--reason", help="why, when rejecting")
     ap_.add_argument("--by", help="who approved (default: kevin)")
     ap_.set_defaults(fn=cmd_approve)
+
+    q = sub.add_parser("quarantine",
+                       help="MOVE failed faces out of the bank so the corpus cannot re-admit them")
+    q.add_argument("handles", nargs="+")
+    q.add_argument("--reason", required=True,
+                   help="slug for the folder, e.g. pose / monochrome / band")
+    q.add_argument("--note", help="the full reason, written into persona.json")
+    q.add_argument("--about", default="photograph",
+                   choices=("photograph",) + QUARANTINE_LOCAL,
+                   help="what the rejection is about. 'photograph' (default) bars the image from "
+                        "the whole bank; 'pairing' and 'metadata' bar it only from the cell it "
+                        "left, leaving the corpus free to re-admit it correctly")
+    q.set_defaults(fn=cmd_quarantine)
 
     s = sub.add_parser("selftest", help="exercise the pure functions (no network, no API key)")
     s.set_defaults(fn=cmd_selftest)
