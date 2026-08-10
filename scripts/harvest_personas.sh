@@ -45,8 +45,19 @@ run_pass () {
         "$@" > "$LOG_DIR/${pass}-${cell}.log" 2>&1
     # Report from the log rather than the exit status: fetch exits 0 on "found nothing", and
     # "nothing" is the answer this whole exercise is trying to measure.
-    tail -3 "$LOG_DIR/${pass}-${cell}.log" | grep -E 'accepted|is full' | head -1 \
-      || echo "(see $LOG_DIR/${pass}-${cell}.log)"
+    #
+    # Assign, then test — do NOT pipe into `|| echo`. A pipeline's status is the LAST command's,
+    # so `grep ... | head -1 || echo` reports head's success and the fallback can never run: the
+    # line this is meant to catch is precisely the one where grep matched nothing. That is how
+    # m3039-hl printed two raw candidate-rejection lines and passed for a summary.
+    #
+    # `is at depth` joined the pattern with --depth: a cell that is already deep enough prints
+    # neither "accepted" nor "is full", so every skipped cell in pass 1 was silently falling
+    # through to a fallback that also wasn't firing.
+    local summary
+    summary="$(tail -3 "$LOG_DIR/${pass}-${cell}.log" \
+               | grep -E 'accepted|is full|is at depth' | head -1)"
+    printf '%s\n' "${summary:-(no summary line — see $LOG_DIR/${pass}-${cell}.log)}"
   done
 }
 
