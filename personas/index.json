@@ -70,6 +70,105 @@
    ],
    "last_gaze": "down-at-product",
    "angles_used": []
+  },
+  "f3039-wh-01": {
+   "handle": "f3039-wh-01",
+   "pool_id": "f3039",
+   "status": "pending",
+   "ref": "/Users/kevinkreative/genseo/personas/f3039-wh-01/ref.jpg",
+   "used_count": 0,
+   "last_used_seq": 0,
+   "gaze_used": [],
+   "last_gaze": null,
+   "angles_used": []
+  },
+  "f3039-wh-02": {
+   "handle": "f3039-wh-02",
+   "pool_id": "f3039",
+   "status": "pending",
+   "ref": "/Users/kevinkreative/genseo/personas/f3039-wh-02/ref.jpg",
+   "used_count": 0,
+   "last_used_seq": 0,
+   "gaze_used": [],
+   "last_gaze": null,
+   "angles_used": []
+  },
+  "f3039-wh-03": {
+   "handle": "f3039-wh-03",
+   "pool_id": "f3039",
+   "status": "pending",
+   "ref": "/Users/kevinkreative/genseo/personas/f3039-wh-03/ref.jpg",
+   "used_count": 0,
+   "last_used_seq": 0,
+   "gaze_used": [],
+   "last_gaze": null,
+   "angles_used": []
+  },
+  "f3039-wh-04": {
+   "handle": "f3039-wh-04",
+   "pool_id": "f3039",
+   "status": "pending",
+   "ref": "/Users/kevinkreative/genseo/personas/f3039-wh-04/ref.jpg",
+   "used_count": 0,
+   "last_used_seq": 0,
+   "gaze_used": [],
+   "last_gaze": null,
+   "angles_used": []
+  },
+  "f3039-wh-05": {
+   "handle": "f3039-wh-05",
+   "pool_id": "f3039",
+   "status": "pending",
+   "ref": "/Users/kevinkreative/genseo/personas/f3039-wh-05/ref.jpg",
+   "used_count": 0,
+   "last_used_seq": 0,
+   "gaze_used": [],
+   "last_gaze": null,
+   "angles_used": []
+  },
+  "f3039-wh-06": {
+   "handle": "f3039-wh-06",
+   "pool_id": "f3039",
+   "status": "pending",
+   "ref": "/Users/kevinkreative/genseo/personas/f3039-wh-06/ref.jpg",
+   "used_count": 0,
+   "last_used_seq": 0,
+   "gaze_used": [],
+   "last_gaze": null,
+   "angles_used": []
+  },
+  "f3039-wh-07": {
+   "handle": "f3039-wh-07",
+   "pool_id": "f3039",
+   "status": "pending",
+   "ref": "/Users/kevinkreative/genseo/personas/f3039-wh-07/ref.jpg",
+   "used_count": 0,
+   "last_used_seq": 0,
+   "gaze_used": [],
+   "last_gaze": null,
+   "angles_used": []
+  },
+  "f3039-wh-08": {
+   "handle": "f3039-wh-08",
+   "pool_id": "f3039",
+   "status": "pending",
+   "ref": "/Users/kevinkreative/genseo/personas/f3039-wh-08/ref.jpg",
+   "used_count": 0,
+   "last_used_seq": 0,
+   "gaze_used": [],
+   "last_gaze": null,
+   "angles_used": []
+  },
+  "f3039-wh-09": {
+   "handle": "f3039-wh-09",
+   "pool_id": "f3039",
+   "status": "pending",
+   "ref": "/Users/kevinkreative/genseo/personas/f3039-wh-09/ref.jpg",
+   "used_count": 0,
+   "last_used_seq": 0,
+   "gaze_used": [],
+   "last_gaze": null,
+   "angles_used": []
   }
  }
 }

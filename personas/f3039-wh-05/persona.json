@@ -1,0 +1,58 @@
+{
+ "schema_version": 2,
+ "handle": "f3039-wh-05",
+ "pool_id": "f3039",
+ "cell_id": "f3039-wh",
+ "gender": "female",
+ "age_band": "30-39",
+ "ethnicity_key": "wh",
+ "ethnicity_note": "sourced for cell f3039-wh (white non-Hispanic); the vision gate placed it there by how the photograph READS, which is what a coverage target can measure and is not a claim about the person \u2014 confirm by eye before first use",
+ "demo": "US woman ~25-35, Caucasian \u2014 candid available-light photograph",
+ "build_vibe": null,
+ "source": {
+  "platform": "openimages",
+  "page_url": "https://www.flickr.com/photos/borderlys/414118190",
+  "photo_id": "8e8702aa7529987d",
+  "author": "Lisa Cyr",
+  "license": "CC BY 2.0",
+  "license_url": "https://creativecommons.org/licenses/by/2.0/",
+  "attribution_required": true,
+  "attribution_text": "\"Megan\" by Lisa Cyr (https://www.flickr.com/photos/borderlys/414118190), licensed under CC BY 2.0 (https://creativecommons.org/licenses/by/2.0/)"
+ },
+ "image": {
+  "width": 853,
+  "height": 1280,
+  "megapixels": 1.09,
+  "sha256": "b88577b2e28dfd64f16ae8dd3d7d603757fbd47f3467b8766fba5e90f5fb8ff3",
+  "bytes": 257180,
+  "dhash": "b16151c1e34160a0"
+ },
+ "qc": {
+  "ai_verdict": "{\"is_camera_photograph\": true, \"person_count\": 1, \"apparent_age_min\": 25, \"apparent_age_max\": 35, \"apparent_gender\": \"female\", \"face_clearly_visible\": true, \"face_obscured\": false, \"beauty_filtered\": false, \"visible_text_or_watermark\": false, \"recognizable_public_figure\": false, \"apparent_ethnicity\": \"Caucasian\", \"ethnicity_group\": \"white\", \"notes\": \"Woman smiling at camera with direct flash lighting.\"}",
+  "watermark": false,
+  "face_visible": true,
+  "accepted_date": "2026-08-10",
+  "notes": "machine gates passed: licence cc-by-2.0 read back from the source, 1.09MP, burned-in-text screen (bottom-left d=0.0152 ratio=5.2 row=0.07), dHash-deduped vs the whole bank, vision gate. Vision JSON: {\"apparent_age_max\": 35, \"apparent_age_min\": 25, \"apparent_ethnicity\": \"Caucasian\", \"apparent_gender\": \"female\", \"beauty_filtered\": false, \"ethnicity_group\": \"white\", \"face_clearly_visible\": true, \"face_obscured\": false, \"is_camera_photograph\": true, \"notes\": \"Woman smiling at camera with direct flash lighting.\", \"person_count\": 1, \"recognizable_public_figure\": false, \"visible_text_or_watermark\": false}",
+  "vision": {
+   "apparent_age_max": 35,
+   "apparent_age_min": 25,
+   "apparent_ethnicity": "Caucasian",
+   "apparent_gender": "female",
+   "beauty_filtered": false,
+   "ethnicity_group": "white",
+   "face_clearly_visible": true,
+   "face_obscured": false,
+   "is_camera_photograph": true,
+   "notes": "Woman smiling at camera with direct flash lighting.",
+   "person_count": 1,
+   "recognizable_public_figure": false,
+   "visible_text_or_watermark": false
+  }
+ },
+ "approved_by": null,
+ "approved_date": null,
+ "camera_notes": "indoor/ambient available light, real skin texture \u2014 always camera-match; ALWAYS feed THIS ref.jpg, never a previous gen (each gen is another lossy re-reading; chaining them compounds the drift in everything BUT the identity, which ima2 holds onto \u2014 measured 2026-08-10)",
+ "usage": "female-audience articles (FusiForce, FloraFresh, ShilaSource); persona is VISUAL ONLY, never named in copy (byline stays the roster author)",
+ "status": "pending",
+ "flag_reason": null
+}

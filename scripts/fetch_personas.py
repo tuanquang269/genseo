@@ -365,8 +365,15 @@ COMMONS_PROJECTS = {
     "wh": [],
 }
 
+# The instruction is unchanged; the reason attached to it was wrong and is corrected here.
+# "ima2 i2i drifts identity" was measured false on 2026-08-10 — a live hero opened beside its
+# ref.jpg was recognisably the same man, down to the hairline and the brow crease. Feeding the
+# ORIGINAL still matters, but because each generation is another lossy re-reading and chaining
+# them compounds it, not because the chain would lose the face.
 CAMERA_NOTES = ("indoor/ambient available light, real skin texture — always camera-match; "
-                "ALWAYS feed THIS ref.jpg, never a previous gen (ima2 i2i drifts identity)")
+                "ALWAYS feed THIS ref.jpg, never a previous gen (each gen is another lossy "
+                "re-reading; chaining them compounds the drift in everything BUT the identity, "
+                "which ima2 holds onto — measured 2026-08-10)")
 
 
 # --------------------------------------------------------------------------------------
@@ -1686,10 +1693,18 @@ def cmd_fetch(args):
                         print("  · %-12s already in the bank" % pid)
                         continue
                     batch.append((pid, photo))
-                futures = [(pid, pool.submit(process_candidate, photo, cell, key,
-                                             session, hashes, args))
+                # The candidate travels WITH its future. It used to be looked up as `photo`,
+                # the leftover loop variable from building the batch — which holds the LAST
+                # photo of the page, so every accept on a page was written with that one's
+                # author and landing URL. Seven distinct photographs went into the bank
+                # credited to a single Flickr work. The pixels, hashes and vision verdict were
+                # all correct, because those come back inside the future; only the fields read
+                # from the enclosing scope were wrong, which is why it survived the accept
+                # line's own output looking right.
+                futures = [(pid, photo, pool.submit(process_candidate, photo, cell, key,
+                                                    session, hashes, args))
                            for pid, photo in batch]
-                for pid, fut in futures:
+                for pid, cand, fut in futures:
                     if len(accepted) >= needed:
                         # Reclaim the queued work. A future that has already started cannot be
                         # cancelled, so up to --workers extra candidates still get judged —
@@ -1723,7 +1738,7 @@ def cmd_fetch(args):
                         if vision_infra_fails >= VISION_INFRA_ABORT:
                             # Cancel before unwinding, or exiting the pool's `with` blocks
                             # until every queued candidate has burned a doomed gem9 call.
-                            for _, pending in futures:
+                            for _, _, pending in futures:
                                 pending.cancel()
                             stop_reason = ("ABORTED — %d consecutive vision-infra failures; "
                                            "this is a gem9/9router problem, not a photo problem"
@@ -1748,14 +1763,22 @@ def cmd_fetch(args):
                         continue
                     handle = next_handle(cell["cell_id"], taken)
                     taken.add(handle)
-                    doc = build_persona_doc(handle, cell, photo, doc_parts["lic_id"],
+                    doc = build_persona_doc(handle, cell, cand, doc_parts["lic_id"],
                                             doc_parts["info"], doc_parts["img_meta"],
                                             doc_parts["vision"], doc_parts["raw"], doc_parts["wm"])
+                    # The bug above was invisible for a whole run because nothing ever checked
+                    # that the credit written to disk belonged to the photograph downloaded.
+                    # CC BY attribution has to point at the actual work, so this is a licence
+                    # condition, not a tidiness one — assert it before the file is written.
+                    if str(doc["source"]["photo_id"]) != str(pid):
+                        sys.exit("✗ attribution mismatch: %s would be credited to photo %s but "
+                                 "the image downloaded was %s. Refusing to write."
+                                 % (handle, doc["source"]["photo_id"], pid))
                     ref = None if args.dry_run else write_persona(handle, doc, jpeg)
                     print("  ✓ %-12s [%s] → %s  %dx%d %.2fMP %s by %s"
                           % (pid, "would accept" if args.dry_run else "accept", handle,
                              img.size[0], img.size[1], img.size[0] * img.size[1] / 1e6,
-                             doc_parts["info"]["name"], photo.get("author") or "unknown"))
+                             doc_parts["info"]["name"], cand.get("author") or "unknown"))
                     accepted.append((handle, cell["pool_id"], ref))
                     hashes[handle] = int(doc_parts["img_meta"]["dhash"], 16)
                 if total_pages and page >= total_pages:

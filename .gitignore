@@ -26,3 +26,4 @@ personas/_openimages/*.csv
 personas/_openimages/candidates.json.gz
 personas/_openimages/verdicts.jsonl
 personas/_openimages/build_index.log
+personas/_quarantine-bad-attrib/
