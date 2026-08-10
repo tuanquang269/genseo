@@ -26,6 +26,7 @@ House rules baked in:
     After generating, VIEW the output next to the ref before using it.
 """
 import argparse
+import json
 import os
 import re
 import subprocess
@@ -84,6 +85,51 @@ HERO_NEG = (" NO plastic skin, NO waxy symmetric face, NO glassy eyes, NO airbru
             "NO teal-orange colour grade, NO flawless catalogue retouching. NOT a stock photo.")
 GEM9 = "/Users/kevinkreative/.local/bin/gem9"
 
+PERSONAS = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "personas")
+
+
+FACE_ANGLE_CLAUSE = (" HEAD ANGLE, follow exactly and do not average it toward a front-on "
+                     "portrait: {phrase}.")
+
+
+def face_angle_phrase(angle_id, persona_ref):
+    """Kevin's hard rule (2026-08-10): never the same face angle twice for one model.
+
+    persona_picker.py already refuses to hand out a spent angle. This is the second lock, and
+    it is the one that matters: the picker's output passes through an agent that writes a prompt
+    by hand, and every previous single-point rule in this pipeline has eventually been lost at
+    exactly that step — paraphrased, abbreviated, or simply not carried over. So the wrapper
+    re-reads the persona's own history and refuses, rather than trusting that what arrived here
+    is what the picker said.
+
+    Returns the angle's prompt phrase, which is also handed to the QC rubric so the vision gate
+    checks the head against the same words the generator was given.
+    """
+    tax_p, idx_p = os.path.join(PERSONAS, "taxonomy.json"), os.path.join(PERSONAS, "index.json")
+    try:
+        with open(tax_p) as fh:
+            tax = json.load(fh)
+    except (OSError, ValueError) as exc:
+        sys.exit(f"✗ cannot read the face-angle vocabulary ({exc}). Refusing to generate a face "
+                 f"image without it — an unvalidated angle is an unenforced rule.")
+    angles = {a["id"]: a["phrase"] for a in tax.get("face_angle_values") or []}
+    if angle_id not in angles:
+        sys.exit(f"✗ unknown --face-angle {angle_id!r}. Valid: {', '.join(sorted(angles))}")
+
+    handle = os.path.basename(os.path.dirname(os.path.abspath(persona_ref)))
+    try:
+        with open(idx_p) as fh:
+            entry = ((json.load(fh).get("personas") or {}).get(handle)) or {}
+    except (OSError, ValueError):
+        entry = {}          # a bank with no state file yet has spent no angles
+    if angle_id in (entry.get("angles_used") or []):
+        sys.exit(f"✗ persona {handle} has ALREADY used face angle {angle_id!r}. Kevin's hard rule "
+                 f"is one angle per model, once, ever. Run `persona_picker.py pick` and use the "
+                 f"angle it gives you — do not pick one by hand.\n"
+                 f"  spent so far: {', '.join(entry.get('angles_used') or [])}")
+
+    return angles[angle_id]
+
 
 def degrade_grain(png_path):
     """Light film-grain + micro quality degrade — raw ima2 is too HD-clean for UGC
@@ -96,7 +142,7 @@ def degrade_grain(png_path):
     im.save(png_path)
 
 
-def qc_gem9(webp_path, refs, is_ugc, has_persona):
+def qc_gem9(webp_path, refs, is_ugc, has_persona, angle_phrase=None):
     """Vision QC via gem9 (9router subscription — per PATI rule, never per-token).
     Returns (passed, reason)."""
     rubric = ["You are a strict image QC gate for a DTC supplement blog. Compare the FIRST image "
@@ -121,21 +167,39 @@ def qc_gem9(webp_path, refs, is_ugc, has_persona):
                   "An invented brand name on a jar, tub, bottle or pouch counts, even a plausible "
                   "one — name it in the reason.")
     if has_persona:
+        # Check 5 briefly FAILed an image whose person was recognisably the reference individual.
+        # That was the right gate for a bank of one-shot faces; it is the wrong gate for the bank
+        # Kevin reaffirmed on 2026-08-10, which is built on identity PERSISTENCE — the same model
+        # returning at a new angle. Under that design check 5 would fail every single generation,
+        # so it is removed rather than left to be silently overridden at the call site.
+        # What it was protecting against has NOT gone away: the exposure is a publicity-rights
+        # question, it is recorded in CLAUDE.md, and Kevin has accepted it. A vision rubric was
+        # never the right place to litigate it — it belongs at intake, in which photographs enter
+        # the bank at all.
         rubric.append("4. Does the person look like a natural real human (no plastic skin, no dead "
-                      "eyes, no warped hands)? = FAIL if not.")
-        rubric.append("5. IDENTITY. The reference photograph is an anchor for demographics, "
-                      "lighting and camera character — it is NOT a person to reproduce. If the "
-                      "generated person is recognisably the SAME INDIVIDUAL as the reference "
-                      "(same face structure, hairline, distinguishing marks) = FAIL.")
+                      "eyes, no warped hands), and do they read as the SAME PERSON as the "
+                      "reference photograph — same apparent age, build, hair and face? = FAIL if not.")
+        if angle_phrase:
+            rubric.append("5. HEAD ANGLE. The brief for this image was: %s. Look at where the "
+                          "HEAD points, not where the eyes point. If the head is squared to the "
+                          "lens when the brief asked for a turn, or turned when the brief asked "
+                          "for square, or the chin is level when the brief asked it dipped or "
+                          "raised = FAIL, and say what angle you actually see. This one matters: "
+                          "the angle is spent for this model whether or not it was rendered, so a "
+                          "wrong angle costs a real angle and gets a repeat that the bookkeeping "
+                          "will show as unique." % angle_phrase)
     res = subprocess.run([GEM9, "-p", "\n".join(rubric), webp_path, *refs],
                          capture_output=True, text=True, timeout=180)
     out = (res.stdout or "") + (res.stderr or "")
     m = re.search(r"VERDICT:\s*(PASS|FAIL[^\n]*)", out)
     if not m:
         # Fail OPEN for the cosmetic checks — a 9router hiccup should not abort a whole run over
-        # framing. Fail CLOSED when a face is in frame: check 5 is not a quality check, it is the
-        # only thing standing between a recognisable private individual and a live commercial page,
-        # and a gate that returns PASS when it did not run is not a gate.
+        # framing. Fail CLOSED when a face is in frame. The reason changed on 2026-08-10 but the
+        # answer did not: the face branch now carries the head-angle check, and a face angle is
+        # spent for that model the moment it is committed, whether or not the generator actually
+        # rendered it. So an unverified face image does not cost a re-roll, it costs one of 21
+        # irreplaceable angles — and leaves a repeat that the bookkeeping will report as unique.
+        # A gate that returns PASS when it did not run is not a gate.
         if has_persona:
             return False, f"qc-inconclusive with a face in frame ({out.strip()[-120:]})"
         return True, f"qc-inconclusive ({out.strip()[-120:]})"
@@ -260,6 +324,10 @@ def main():
     ap.add_argument("--persona-ref", default=None,
                     help="absolute path to the APPROVED persona ref photo (~/genseo/personas/<handle>/ref.jpg). "
                          "Only personas Kevin approved through the one-time Pinterest gate — never a fresh face.")
+    ap.add_argument("--face-angle", default=None,
+                    help="face angle id from personas/taxonomy.json face_angle_values, e.g. "
+                         "'3q-left+chin-down'. MANDATORY with --persona-ref. Kevin's hard rule: "
+                         "one angle per model, once, ever — take it from persona_picker.py pick.")
     ap.add_argument("--qc", action="store_true",
                     help="vision QC via gem9 (9router): packaging/UGC/no-text/persona rubric; "
                          "FAIL prints the reason and exits 2 so the caller can re-roll")
@@ -280,9 +348,20 @@ def main():
     if a.persona_ref:
         if not os.path.exists(a.persona_ref):
             sys.exit(f"✗ persona ref not found: {a.persona_ref} — persona bank lives in ~/genseo/personas/")
+        if not a.face_angle:
+            sys.exit("✗ --persona-ref requires --face-angle. Kevin's hard rule (2026-08-10) is one "
+                     "face angle per model, once, ever — an image generated without a declared "
+                     "angle cannot be checked against that history, and an unchecked angle is a "
+                     "repeated angle waiting to happen. Get it from `persona_picker.py pick` "
+                     "(fields hero_face_angle / inline_face_angle).")
         a.ref.append(a.persona_ref)
-        a.prompt += CAMERA_MATCH
+        angle_phrase = face_angle_phrase(a.face_angle, a.persona_ref)
+        a.prompt += CAMERA_MATCH + FACE_ANGLE_CLAUSE.format(phrase=angle_phrase)
     else:
+        if a.face_angle:
+            sys.exit("✗ --face-angle without --persona-ref: there is no face to angle, and "
+                     "recording the angle as spent would burn it for nothing.")
+        angle_phrase = None
         a.prompt += NO_FACE_CLAUSE
     if a.ugc:
         a.prompt += UGC_SUFFIX + UGC_NEG
@@ -314,7 +393,7 @@ def main():
     nbytes, q, width = compress_webp(png, webp)
     os.unlink(png)  # keep only the deliverable; the PNG is 10-20x the size
     if a.qc:
-        passed, verdict = qc_gem9(webp, a.ref, a.ugc, bool(a.persona_ref))
+        passed, verdict = qc_gem9(webp, a.ref, a.ugc, bool(a.persona_ref), angle_phrase)
         print(f"QC → {verdict}")
         if not passed:
             sys.exit(2)  # caller re-rolls with the FAIL reason folded into the prompt (max 2)

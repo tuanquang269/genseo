@@ -1016,9 +1016,13 @@ def commit_accepted(accepted):
     fresh = _load(INDEX, "index")
     people = fresh.setdefault("personas", {})
     for handle, pool_id, ref in accepted:
+        # angles_used seeded explicitly rather than left to `.get(..) or []` at read time:
+        # Kevin's one-angle-per-model rule is enforced entirely off this list, and a key that
+        # only appears after the first commit is a key that looks the same when it is missing
+        # as when the persona is genuinely fresh.
         people[handle] = {"handle": handle, "pool_id": pool_id, "status": "pending",
                           "ref": ref, "used_count": 0, "last_used_seq": 0,
-                          "gaze_used": [], "last_gaze": None}
+                          "gaze_used": [], "last_gaze": None, "angles_used": []}
     _atomic_write(INDEX, fresh)
     print("\n✓ index.json updated (+%d personas as PENDING, atomic, re-read before write)"
           % len(accepted))

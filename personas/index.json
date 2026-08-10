@@ -18,9 +18,9 @@
   "NO-FACE"
  ],
  "no_face_cycle": {
-  "period": 1,
+  "period": 3,
   "position": 0,
-  "_doc": "period 1 = EVERY hero is no-face. Was 3 (the composition tell gaze rotation cannot reach). Raised to 1 on 2026-08-10 for a second, larger reason: ima2 reproduces the reference person recognisably, so a real private individual was appearing on live pages endorsing supplements. This is the safety default until Kevin picks a posture; restoring 3 is a one-token edit, but do not restore it merely because the bank has faces in it again."
+  "_doc": "every 3rd hero is no-face: one adult + one pack for 200 rows running is the structural tell that rotating the pose cannot reach. Briefly 1 on 2026-08-10 as a safety default after ima2 was measured reproducing the reference person recognisably; restored to 3 the same day when Kevin reaffirmed the 200-face bank. The rights exposure that motivated 1 is real and unresolved \u2014 it is recorded in CLAUDE.md and accepted by Kevin, not fixed by this number."
  },
  "personas": {
   "f1-redshirt": {
@@ -33,7 +33,8 @@
    "gaze_used": [
     "off-right"
    ],
-   "last_gaze": "off-right"
+   "last_gaze": "off-right",
+   "angles_used": []
   },
   "f2-brunette": {
    "handle": "f2-brunette",
@@ -43,7 +44,8 @@
    "used_count": 2,
    "last_used_seq": 6,
    "gaze_used": [],
-   "last_gaze": null
+   "last_gaze": null,
+   "angles_used": []
   },
   "f3-silver": {
    "handle": "f3-silver",
@@ -53,7 +55,8 @@
    "used_count": 2,
    "last_used_seq": 8,
    "gaze_used": [],
-   "last_gaze": null
+   "last_gaze": null,
+   "angles_used": []
   },
   "m1-stubble": {
    "handle": "m1-stubble",
@@ -65,7 +68,8 @@
    "gaze_used": [
     "down-at-product"
    ],
-   "last_gaze": "down-at-product"
+   "last_gaze": "down-at-product",
+   "angles_used": []
   }
  }
 }
