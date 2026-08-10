@@ -130,7 +130,24 @@ def face_angle_phrase(angle_id, persona_ref):
         with open(idx_p) as fh:
             entry = ((json.load(fh).get("personas") or {}).get(handle)) or {}
     except (OSError, ValueError):
-        entry = {}          # a bank with no state file yet has spent no angles
+        entry = {}
+
+    # Second gate, same reasoning as the first: persona_picker.py already selects on the
+    # {active, flagged} allow-list, but its output passes through an agent that writes the
+    # article_images.py call by hand, and a hand-written --persona-ref never went through the
+    # picker at all. Every persona in the bank is `retired` today and the ones sourcing is about
+    # to add arrive `pending`, so the hand-written path currently points at nothing approved.
+    # Fail CLOSED on a missing or unreadable entry: absent state is absent approval, and this is
+    # the one difference from the angle check above, where absent state genuinely means nothing
+    # has been spent yet. Nothing legitimate is lost — the picker only ever emits refs for
+    # personas that are in index.json and selectable.
+    status = entry.get("status")
+    if status not in ("active", "flagged"):
+        sys.exit(f"✗ persona {handle} is not approved for use (status={status!r}; only 'active' "
+                 f"and 'flagged' may generate). Nothing but `fetch_personas.py approve {handle} "
+                 f"--by <who>` may change that — do not edit index.json by hand, and do not "
+                 f"route around this by passing the ref from somewhere else.")
+
     if angle_id in (entry.get("angles_used") or []):
         sys.exit(f"✗ persona {handle} has ALREADY used face angle {angle_id!r}. Kevin's hard rule "
                  f"is one angle per model, once, ever. Run `persona_picker.py pick` and use the "
