@@ -212,10 +212,29 @@ def cmd_pick(args):
             % (len(exhausted), len(angle_ids(tax)),
                ", ".join("%s (%d left)" % (h, n) for h, n in exhausted)))
     if not cands:
-        sys.exit("✗ no usable persona for audience %r (pools %s)%s. Bank needs expansion — "
-                 "do NOT invent a face; use a no-face hero and report it."
-                 % (token, pools,
-                    "; %d await approval" % pending if pending else ""))
+        # DEGRADE to no-face, do not abort. This branch used to sys.exit(1) while its own message
+        # told the caller to "use a no-face hero" — an instruction the caller could not follow,
+        # because it received a non-zero exit and no JSON. Harmless while the bank had faces;
+        # the moment all four personas were retired (2026-08-10) it became every pick, and the
+        # headless runner would have read the whole image lane as a hard failure.
+        # An empty bank is a known, expected, already-handled state — the no_face_cycle branch
+        # above emits exactly this shape — so it belongs on the degrade path, not the error path.
+        # The two genuinely unusable inputs (bad audience token, unreadable state file) still
+        # exit non-zero; being short of faces is not one of them.
+        out["warnings"].append(
+            "no usable persona for audience %r (pools %s)%s%s — falling back to a NO-FACE hero. "
+            "Bank needs expansion; do NOT invent a face and do NOT reuse a spent angle."
+            % (token, pools,
+               "; %d await approval" % pending if pending else "",
+               "; %d angle-exhausted" % len(exhausted) if exhausted else ""))
+        out.update(hero="NO-FACE", hero_ref=None, hero_gaze=None, hero_face_angle=None,
+                   hero_shot=choose_shot(tax, index, "no-face", seq), inline_gaze=None,
+                   inline_face_angle=None,
+                   note=("NO-FACE hero because the bank could not supply one, not because the "
+                         "cycle called for it. Compose product-in-a-real-scene or scene-only; "
+                         "still --product-ref + --qc, still no --ugc. Report the shortfall."))
+        print(json.dumps(out, indent=1))
+        return
     cands.sort()
     tier, _, last_seq, handle, entry = cands[0]
     if tier == 1:
