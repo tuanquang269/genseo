@@ -246,6 +246,26 @@ COMMONS_ETHNICITY_HINTS = {
     "wh": [""], "hl": ["latino", "hispanic"], "bl": ["african"],
     "as": ["asian"], "mx": ["arab", "indigenous"],
 }
+# Named contemporary PROJECTS, and they matter more than any scene word.
+#
+# Measured 2026-08-10: every Commons licence category is dominated by whichever institution
+# bulk-uploaded into it, because institutions upload in thousands and individuals in ones.
+# CC0 is the Metropolitan Museum's art scans; `incategory:"CC-BY-4.0" incategory:"Portrait
+# photographs"` is the Finnish Heritage Agency's 1901-1991 monochrome archive almost wholesale.
+# The usable photographs are not spread thinly through the corpus waiting to be found by a
+# better adjective — they are CONCENTRATED in a handful of contemporary batch-uploaded
+# projects. So query the project by name and let geography carry the demographic, instead of
+# asking full-text search to honour an ethnicity adjective it has no reason to honour.
+#
+# ⚠️ Every extra token ANDs. `"Wiki Loves Africa" portrait` collapses 3,153 hits to 5. These
+# phrases go in BARE — never combined with a subject or scene word.
+COMMONS_PROJECTS = {
+    "hl": ['"Solo un milagro por persona"'],
+    "bl": ['"Wiki Loves Africa"'],
+    "as": ['"Wiki Loves Folklore"'],
+    "mx": ['"Wiki Loves Folklore"', '"Wiki Loves Africa"'],
+    "wh": [],
+}
 
 CAMERA_NOTES = ("indoor/ambient available light, real skin texture — always camera-match; "
                 "ALWAYS feed THIS ref.jpg, never a previous gen (ima2 i2i drifts identity)")
@@ -986,7 +1006,11 @@ def build_commons_queries(cell):
     phrasings — the opposite ordering of what reads naturally."""
     subjects = COMMONS_SUBJECTS[(cell["gender"], cell["age_band"])]
     hints = [h for h in COMMONS_ETHNICITY_HINTS[cell["ethnicity_key"]] if h]
-    out = []
+    # Projects first and bare. They are the densest seam in the corpus for the thin cells, and
+    # they are the one query shape a scene word can only damage. The age/gender split then
+    # comes from the vision gate rather than from the query, which is where it belongs: an
+    # adjective is a hint to a search engine, the gate is a measurement.
+    out = list(COMMONS_PROJECTS.get(cell["ethnicity_key"], []))
     for subj in subjects:
         out.append(subj)
         for hint in hints:
@@ -999,7 +1023,15 @@ def build_commons_queries(cell):
             out.append("%s %s %s" % (hint, subjects[0], scene))
     # The composer can overshoot: "african" + "elderly woman" + "portrait" is four AND-ed terms
     # and returns nothing. Drop them here rather than teaching every caller the token budget.
-    return [q for q in out if len(q.split()) <= 3]
+    return [q for q in out if commons_term_count(q) <= 3]
+
+
+def commons_term_count(query):
+    """AND-ed terms, not words. A quoted phrase is ONE term however many spaces it contains —
+    counting words would throw away '"Solo un milagro por persona"' (5 words, 1 term, and the
+    single densest seam of usable faces found in the whole corpus)."""
+    rest, terms = re.sub(r'"[^"]*"', "", query), len(re.findall(r'"[^"]*"', query))
+    return terms + len(rest.split())
 
 
 def build_queries(cell, max_queries, source="flickr"):
@@ -1603,8 +1635,18 @@ def cmd_selftest(_args):
     print("Commons query grammar")
     cq = build_commons_queries(cells_by_id(_load(TAXONOMY, "taxonomy"))["f6070-bl"])
     check("every Commons query is <= 3 AND-ed terms (4 tokens returns 0 on this corpus)",
-          all(len(q.split()) <= 3 for q in cq), "longest: %r" % max(cq, key=lambda q: len(q.split())))
-    check("broadest query comes first", len(cq[0].split()) <= 2)
+          all(commons_term_count(q) <= 3 for q in cq),
+          "longest: %r" % max(cq, key=commons_term_count))
+    check("a quoted phrase counts as ONE term, not five",
+          commons_term_count('"Solo un milagro por persona"') == 1
+          and commons_term_count('"Wiki Loves Africa" woman portrait') == 3)
+    check("the project query survives the term filter and leads the cell",
+          cq[0] == '"Wiki Loves Africa"')
+    check("a project phrase is never diluted with a scene or subject word",
+          all(commons_term_count(q) == 1 for q in cq if q.startswith('"')))
+    check("a cell with no named project still starts on its broadest phrasing",
+          build_commons_queries(cells_by_id(_load(TAXONOMY, "taxonomy"))["f3039-wh"])[0]
+          == "woman")
     check("commons queries never leak into the Flickr composer",
           build_queries(cells_by_id(_load(TAXONOMY, "taxonomy"))["f6070-bl"], 4)[0]
           != build_queries(cells_by_id(_load(TAXONOMY, "taxonomy"))["f6070-bl"], 4,
