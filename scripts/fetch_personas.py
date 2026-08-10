@@ -1696,6 +1696,20 @@ def cmd_fetch(args):
                         # they simply do not count as examined, because they were not.
                         if fut.cancel():
                             continue
+                        # And if it had already started, we still decline to ACT on it. Letting
+                        # a late accept through put 10 faces in a cell that asks for 9 on the
+                        # first Open Images run — the same overshoot the --limit cap exists to
+                        # prevent, and for the same reason: the picker balances pool rotation
+                        # against target_count, so an over-filled cell skews every draw after it.
+                        try:
+                            fut.result()
+                        except Exception as exc:          # noqa: BLE001 - see below
+                            # Raising here would kill a run that has already collected
+                            # everything it was asked for, over a candidate whose verdict we
+                            # had just decided to discard. Say it out loud and finish.
+                            print("  · %-12s judged after the target was met; discarded (%s)"
+                                  % (pid, exc))
+                        continue
                     verdict = fut.result()
                     examined += 1
                     # An infra failure is NOT evidence the photo is bad. Left uncounted, a
@@ -2358,7 +2372,9 @@ def main():
     f = sub.add_parser("fetch", help="fill ONE taxonomy cell from a CC image source")
     f.add_argument("--cell", required=True, help="cell_id from personas/taxonomy.json")
     f.add_argument("--source", choices=sorted(SEARCH_BACKENDS), default="commons",
-                   help="commons (default; no key, no account) or flickr (needs FLICKR_API_KEY)")
+                   help="openimages (no key; MIAP pre-filters gender and person count, so it "
+                        "spends far fewer vision calls per accept), commons (no key), or "
+                        "flickr (needs FLICKR_API_KEY)")
     f.add_argument("--limit", type=int, default=None, help="accept at most N (default: the cell's shortfall)")
     f.add_argument("--dry-run", action="store_true",
                    help="run every gate for real but write nothing")
