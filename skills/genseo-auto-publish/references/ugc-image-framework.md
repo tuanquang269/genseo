@@ -31,18 +31,23 @@ bright ad-style). Requirements, all mandatory:
    ```
    /usr/bin/python3 ~/genseo/scripts/persona_picker.py pick --audience <token>   # or --brand <Brand>
    ```
-   and obey the JSON exactly: `hero`, `hero_ref`, `hero_gaze`, `hero_shot`, `inline_gaze`. It enforces
-   pool-scoped LRU, the no-repeat gaze law, the last-3 shot window and the every-3rd no-face hero
-   **mechanically**. Echo every `warnings[]` entry into the report verbatim. **Never `ls` the bank and
-   pick by eye, and never grep the tracker for rotation state** — parsing the free-text `Posted Date`
-   column on 2026-08-09 returned `no-contact` and `bank` as if they were persona handles, which is
-   precisely how a 200-face bank silently rots back into reusing one face. `hero: "NO-FACE"` → compose
-   product-in-a-real-scene or scene-only (still `--product-ref` + `--qc`, still no `--ugc`).
-   Non-zero exit because a pool is empty → use a no-face hero, put the exact error in the report, and
-   **NEVER invent a fresh face or borrow a wrong-demographic one** — the 🧑 gate still owns new faces.
+   and obey the JSON exactly: `hero`, `hero_ref`, `hero_gaze`, `hero_shot`, `inline_gaze`,
+   **`hero_face_angle`**, **`inline_face_angle`** (+ their `*_phrase` fields, which go into the
+   prompt verbatim). It enforces pool-scoped LRU, the one-angle-per-model law, the no-repeat gaze
+   law, the last-3 shot window and the every-3rd no-face hero **mechanically**. Echo every
+   `warnings[]` entry into the report verbatim. **Never `ls` the bank and pick by eye, and never
+   grep the tracker for rotation state** — parsing the free-text `Posted Date` column on 2026-08-09
+   returned `no-contact` and `bank` as if they were persona handles, which is precisely how a
+   200-face bank silently rots back into reusing one face. `hero: "NO-FACE"` → compose
+   product-in-a-real-scene or scene-only (still `--product-ref` + `--qc`, still no `--ugc`); an
+   empty or angle-exhausted pool now DEGRADES to exactly that, with the shortfall in `warnings[]`
+   — report it and **NEVER invent a fresh face or borrow a wrong-demographic one** (the 🧑 gate
+   still owns new faces). A non-zero exit means a bad audience token or an unreadable state file:
+   fix it, do not route around it.
    **AFTER a successful LIVE publish only:** `persona_picker.py commit --hero … --gaze … --inline-gaze …
-   --shot … --expect-seq <seq from pick>`. A non-zero exit there means another run committed first —
-   re-run `pick`, never force it.
+   --shot … --face-angle … --inline-face-angle … --expect-seq <seq from pick>`. `--face-angle` is
+   mandatory for a face hero and commit REFUSES an angle that persona has already spent. A non-zero
+   exit there means another run committed first — re-run `pick`, never force it.
 3. **REUSED PERSONA ⇒ NEW LOOK DIRECTION (HARD RULE, Kevin 2026-08-09).** Rotating the bank is
    NOT enough. When a face comes back around it must be posed differently, or the blog index reads
    as a wall of AI — Kevin flagged exactly this on the live `/blogs/news` grid: **m1-stubble**
@@ -51,16 +56,26 @@ bright ad-style). Requirements, all mandatory:
    the value; **your** job is to say `hero_gaze` in the prompt in plain words (and `inline_gaze`,
    not `hero_gaze`, on the inline persona-in-scene image) and log `gaze:<value>` in the tracker row.
 
-   | axis value | what it means in the prompt |
-   |---|---|
-   | `to-camera-3q-left` | body ¾ turned, face to lens, weight on left — the default FIRST use only |
-   | `to-camera-3q-right` | mirror of the above |
-   | `off-left` / `off-right` | head turned away, eyes off-frame, lens catches the side of the face |
-   | `down-at-product` | looking down at the pack / phone / notebook on the surface, not at the lens |
-   | `over-shoulder` | body angled away from camera, head turned back over the shoulder |
-   | `profile` | full side view, eye-line parallel to the frame edge |
+   **⚠️ THREE INDEPENDENT AXES — do not collapse them.** `face_angle` = where the **HEAD** points
+   (yaw × pitch). `gaze` = where the **EYES** point *within* that head. `shot` = where the
+   **CAMERA** is. The pre-2026-08-10 gaze vocabulary mixed head orientation (`profile`,
+   `over-shoulder`) into the eye axis, so the two contradicted each other in a single prompt and
+   the generator quietly dropped one. Current `gaze_values` are eye-only, and each carries a
+   `family`: **`to-camera`** (`at-lens`, `just-past-lens`) or **`away`** (`down-at-product`,
+   `down-at-hands`, `off-into-room`, `up-and-away`, `at-another-person`). The picker will not give
+   the same persona `to-camera` two articles running, and will not put hero and inline in the
+   `to-camera` family within one article.
 
-   **`to-camera-*` may never run twice in a row for the same persona, across any two articles.**
+   **🔁 ONE FACE ANGLE PER MODEL, ONCE, EVER (HARD RULE, Kevin 2026-08-10: *"khong bao gio
+   generate cung 1 goc mat cho 1 model"*).** 21 angles per persona — 7 yaws (`front`, `3q-left/right`,
+   `profile-left/right`, `half-back-left/right`) × 3 pitches (`level`, `chin-down`, `chin-up`). Each
+   is spent permanently on first use; hero and inline count separately, so one article consumes two.
+   **You do not choose the angle and you do not substitute one** — pass `--face-angle
+   <hero_face_angle>` to `article_images.py` and put `hero_face_angle_phrase` into the prompt
+   verbatim. The wrapper rejects an angle the persona has already spent, and QC FAILs an image whose
+   rendered head does not match the brief. A wrong angle is not a cosmetic miss: the angle is burned
+   whether or not it rendered, so it costs one of 21 AND leaves a repeat the bookkeeping calls unique.
+
    Change at least ONE more variable too: framing (chest-up / waist-up / wider room-with-subject),
    expression register (neutral-focused / closed-mouth half-smile / mid-laugh / skeptical brow), or
    wardrobe colour. Identity = the face in `ref.jpg` and nothing else — outfit, hair styling and
