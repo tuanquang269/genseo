@@ -1,16 +1,20 @@
 cell m3039-hl — male 30-39 Hispanic/Latino | have 0, target 7, fetching up to 1
 source: openimages | 14952 indexed candidates, all CC BY 2.0, byte floor 250KB | pixels from staticflickr.com, metadata from storage.googleapis.com, flickr.com never requested
-verdict cache: 665 image(s) already judged — replayed free, re-scored against this cell
+verdict cache: 939 image(s) already judged — replayed free, re-scored against this cell
 queries (1), up to 20 page(s) x 500 results each:
    gender=Predominantly Masculine
 
   · ef295afcf17ed57f already in the bank
   · 81c453b9bbbf6ca3 already in the bank
   · 74e9413ca4cbcd81 already in the bank
+  · d9f0f1d4fa81efde already in the bank
   · 4b407694be39cc1a already in the bank
+  · 6f6c07ddffd599e6 already in the bank
   · 2e29c2fc2fb005e5 already in the bank
   · 9d799126a8b77d94 already in the bank
   · a1e4a089b5daa320 already in the bank
+  · 10dfe877492f2dd3 already in the bank
+  · b412b5995103ae40 already in the bank
   · 4895f4e6be07caa0 already in the bank
   ✗ 6c7db39bbea06554 [vision] apparent age 55-70 centres on 62, outside cell band 30-39; reads as 'wh', cell wants 'hl' [cached]
   ✗ cf960604d53dbbc3 [vision] apparent age 20-35 centres on 28, outside cell band 30-39; reads as 'as', cell wants 'hl'; face not clearly visible; face obscured (sunglasses/hands/shadow) [cached]
@@ -24,13 +28,11 @@ queries (1), up to 20 page(s) x 500 results each:
   ✗ f02a21156d485e48 [vision] reads as 'wh', cell wants 'hl'; face not clearly visible; face obscured (sunglasses/hands/shadow) [cached]
   ✗ e00fd8a7308107a5 [vision] apparent age 20-40 spans 20 years — too hedged to place in a band; reads as 'wh', cell wants 'hl'; face not clearly visible; face obscured (sunglasses/hands/shadow) [cached]
   ✗ e053ffb7dfd9b5fd [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
-  ✗ d9f0f1d4fa81efde [vision] apparent age 40-55 centres on 48, outside cell band 30-39 [cached]
   ✗ ed0ec9f73c60f162 [resolution] delivered file is 800x1000 = 0.80MP short=800 (floor 1.0MP / 800px) [cached]
   ✗ 7ec080b5dbd8a4a4 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
   ✗ 43f1d90f3ad261fd [vision] apparent age 45-60 centres on 52, outside cell band 30-39; visible watermark, logo or burned-in text; recognizable public figure [cached]
   ✗ 2d5b04414f733e98 [vision] reads as 'wh', cell wants 'hl'; visible watermark, logo or burned-in text; recognizable public figure [cached]
   ✗ aeda4eb898bc63ff [vision] apparent age 18-25 centres on 22, outside cell band 30-39; reads as 'wh', cell wants 'hl' [cached]
-  ✗ 6f6c07ddffd599e6 [vision] apparent age 18-28 centres on 23, outside cell band 30-39 [cached]
   ✗ 86d2e8509e209eef [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
   ✗ 9f38045e237d6f19 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
   ✗ 8041aa40f427e248 [vision] apparent age 45-60 centres on 52, outside cell band 30-39; reads as 'wh', cell wants 'hl'; visible watermark, logo or burned-in text; recognizable public figure [cached]
@@ -188,9 +190,344 @@ queries (1), up to 20 page(s) x 500 results each:
   ✗ 7226d2afb1fad3fa [vision] apparent age 30-50 spans 20 years — too hedged to place in a band; reads as 'bl', cell wants 'hl' [cached]
   ✗ 87d1bf035408f8a6 [vision] person_count=0 (need exactly 1 unambiguous subject); apparent age 25-60 spans 35 years — too hedged to place in a band; gender 'ambiguous' != cell 'male'; apparent ethnicity 'unclear' could not be placed in any of the five taxonomy groups; face not clearly visible [cached]
   ✗ 7aa9f132eba66f51 [vision] apparent age 35-55 spans 20 years — too hedged to place in a band; reads as 'wh', cell wants 'hl'; visible watermark, logo or burned-in text [cached]
-  ✓ 10dfe877492f2dd3 [accept] → m3039-hl-01  2048x1375 2.82MP CC BY 2.0 by Secretaría de Movilidad de Medellín
-
-✓ index.json updated (+1 personas as PENDING, atomic, re-read before write)
-
-examined 177 candidate(s), accepted 1 of 1 wanted — stopped: reached the fetch target
-These passed the MACHINE gates only. They are status="pending" and the picker will not hero them. Kevin's approval is what flips them to active.
+  ✗ 56f91daab6c61fe4 [vision] apparent age 65-75 centres on 70, outside cell band 30-39; reads as 'wh', cell wants 'hl' [cached]
+  ✗ f746ffea9f8ddbb2 [vision] apparent age 40-55 centres on 48, outside cell band 30-39; reads as 'wh', cell wants 'hl' [cached]
+  ✗ 15ba32c3bc1a97d6 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ 0837a0944e6a12cb [gone] HTTP 410 — the photograph is no longer served (tried flickr-2048) [cached]
+  ✗ ef124e6a19582f0a [resolution] delivered file is 608x912 = 0.55MP short=608 (floor 1.0MP / 800px) [cached]
+  ✗ 0b05bd82d5f6676a [watermark] burned-in text screen: top-right d=0.0733 ratio=5.8 row=0.30 [cached]
+  ✗ 494ce54e7654567e [watermark] burned-in text screen: bottom-left d=0.1412 ratio=70.6 row=0.35 [cached]
+  ✗ de3a1770a5080306 [vision] apparent age 55-65 centres on 60, outside cell band 30-39; reads as 'wh', cell wants 'hl' [cached]
+  ✗ 8129f7fcf206d3c4 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ da843dbeaa76ac00 [vision] reads as 'wh', cell wants 'hl' [cached]
+  ✗ 111d1b7173dd0181 [vision] apparent age 18-28 centres on 23, outside cell band 30-39; reads as 'as', cell wants 'hl'; face obscured (sunglasses/hands/shadow); visible watermark, logo or burned-in text [cached]
+  ✗ ed8e3306dd1f91d1 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ fea0dc3ebd3945b8 [vision] apparent age 50-70 spans 20 years — too hedged to place in a band; reads as 'bl', cell wants 'hl' [cached]
+  ✗ 5e1374c0e4f828fe [watermark] burned-in text screen: bottom-left d=0.1873 ratio=14.6 row=0.40 [cached]
+  ✗ 883f6b4258fc4f5e [gone] HTTP 410 — the photograph is no longer served (tried flickr-2048) [cached]
+  ✗ 9f7e38ff2603e193 [vision] apparent age 40-55 centres on 48, outside cell band 30-39; reads as 'wh', cell wants 'hl' [cached]
+  ✗ 3bebd2d6854c4b87 [vision] apparent age 40-60 spans 20 years — too hedged to place in a band; reads as 'wh', cell wants 'hl'; face not clearly visible; face obscured (sunglasses/hands/shadow) [cached]
+  ✗ 2108d845b691fd4d [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ b68a83c8e55e641d [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ a2ac6c7a1fe42917 [vision] apparent age 35-50 centres on 42, outside cell band 30-39; reads as 'wh', cell wants 'hl'; recognizable public figure [cached]
+  ✗ bb348f06f0db4dea [watermark] burned-in text screen: top-left d=0.1391 ratio=6.9 row=0.31 [cached]
+  ✗ cc0d82a4ca60e23e [vision] apparent age 18-30 centres on 24, outside cell band 30-39; reads as 'wh', cell wants 'hl'; visible watermark, logo or burned-in text [cached]
+  ✗ ff3778ce7c9f40e1 [gone] HTTP 410 — the photograph is no longer served (tried flickr-2048) [cached]
+  ✗ 1eb3651272603db0 [vision] reads as 'wh', cell wants 'hl'; face not clearly visible [cached]
+  ✗ 63e2ece263518b7c [vision] reads as 'wh', cell wants 'hl' [cached]
+  ✗ 44447c7a4c282b9e [vision] apparent age 20-35 centres on 28, outside cell band 30-39; reads as 'wh', cell wants 'hl'; face obscured (sunglasses/hands/shadow) [cached]
+  ✗ a4f323b377a8bdd7 [vision] apparent age 45-55 centres on 50, outside cell band 30-39; reads as 'wh', cell wants 'hl'; visible watermark, logo or burned-in text [cached]
+  ✗ 9d3273a0710572b5 [resolution] delivered file is 768x1024 = 0.79MP short=768 (floor 1.0MP / 800px) [cached]
+  ✗ e8e68a937fd68805 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ 07ca4a13e876d088 [vision] reads as 'as', cell wants 'hl' [cached]
+  ✗ 8c98d9fa70f1cc45 [vision] reads as 'mx', cell wants 'hl' [cached]
+  ✗ 03b84e9909ed691c [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ c2e7e32e1b0b159a [vision] reads as 'wh', cell wants 'hl' [cached]
+  ✗ e75d3487216b1f00 [vision] apparent age 18-45 spans 27 years — too hedged to place in a band; reads as 'wh', cell wants 'hl'; face not clearly visible; face obscured (sunglasses/hands/shadow) [cached]
+  ✗ 50eba2e88d798e83 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ decd33f501b91314 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ d13695c996ecc600 [vision] apparent age 20-45 spans 25 years — too hedged to place in a band; reads as 'wh', cell wants 'hl'; face not clearly visible; face obscured (sunglasses/hands/shadow) [cached]
+  ✗ 6d4c62610186aeef [vision] reads as 'wh', cell wants 'hl' [cached]
+  ✗ fad43fb6ac0d9c90 [vision] apparent age 35-55 spans 20 years — too hedged to place in a band; reads as 'wh', cell wants 'hl'; face not clearly visible; face obscured (sunglasses/hands/shadow) [cached]
+  ✗ 12953837a1ebf20c [vision] reads as 'mx', cell wants 'hl'
+  ✗ a70bc37375d50c80 [watermark] burned-in text screen: bottom-left d=0.4049 ratio=7.4 row=0.64 [cached]
+  ✗ 35e262ef02bb3e04 [vision] person_count=0 (need exactly 1 unambiguous subject); apparent age starts at 0 — below the hard floor of 18; gender 'ambiguous' != cell 'male'; apparent ethnicity 'unclear' could not be placed in any of the five taxonomy groups; face not clearly visible [cached]
+  ✗ 3481fda1ff748566 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ aef866bed6660717 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ 0d216d400beb6ebf [vision] reads as 'wh', cell wants 'hl'; face not clearly visible; face obscured (sunglasses/hands/shadow); visible watermark, logo or burned-in text [cached]
+  ✗ 512a1adf52ce81b4 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ 7e49c3fe0e9fb014 [vision] apparent age 55-70 centres on 62, outside cell band 30-39; reads as 'wh', cell wants 'hl' [cached]
+  ✗ 994c763cc1c26447 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ cebf254fc561e31b [resolution] delivered file is 800x1200 = 0.96MP short=800 (floor 1.0MP / 800px) [cached]
+  ✗ 07abd3aee1ef151c [vision] apparent age 55-70 centres on 62, outside cell band 30-39; reads as 'wh', cell wants 'hl'; face obscured (sunglasses/hands/shadow) [cached]
+  ✗ 801389983969e5e1 [resolution] delivered file is 1150x767 = 0.88MP short=767 (floor 1.0MP / 800px) [cached]
+  ✗ 66815c633979b337 [vision] apparent age 45-55 centres on 50, outside cell band 30-39; reads as 'wh', cell wants 'hl' [cached]
+  ✗ d3735958c238f59e [vision] apparent age 18-25 centres on 22, outside cell band 30-39; reads as 'wh', cell wants 'hl' [cached]
+  ✗ 436dc60472022f84 [vision] reads as 'wh', cell wants 'hl'; recognizable public figure [cached]
+  ✗ 8db5610441ad287e [vision] not a camera photograph (AI/CGI/illustration); reads as 'wh', cell wants 'hl'; face obscured (sunglasses/hands/shadow) [cached]
+  ✗ 31524659a0289300 [vision] apparent age 20-45 spans 25 years — too hedged to place in a band; gender 'ambiguous' != cell 'male'; reads as 'wh', cell wants 'hl'; face not clearly visible; face obscured (sunglasses/hands/shadow); visible watermark, logo or burned-in text [cached]
+  ✗ f311a53595dce9de [vision] apparent age 65-75 centres on 70, outside cell band 30-39; reads as 'wh', cell wants 'hl'; recognizable public figure [cached]
+  ✗ 591b89f85f4c9cae [gone] HTTP 410 — the photograph is no longer served (tried flickr-2048) [cached]
+  ✗ 5fc38eaa80f4b594 [resolution] delivered file is 1024x714 = 0.73MP short=714 (floor 1.0MP / 800px) [cached]
+  ✗ f8e16c37d86cf7f1 [vision] apparent age 20-40 spans 20 years — too hedged to place in a band; reads as 'bl', cell wants 'hl'; face not clearly visible; recognizable public figure [cached]
+  ✗ 055ff9dc4547341c [vision] apparent age 18-30 centres on 24, outside cell band 30-39; reads as 'wh', cell wants 'hl' [cached]
+  ✗ df3783186b19aa4b [vision] apparent age 22-32 centres on 27, outside cell band 30-39; reads as 'wh', cell wants 'hl' [cached]
+  ✗ bac367e36a85a477 [vision] reads as 'wh', cell wants 'hl'; visible watermark, logo or burned-in text [cached]
+  ✗ 113213f52efdee15 [watermark] burned-in text screen: bottom-right d=0.5094 ratio=28.0 row=0.91 [cached]
+  ✗ 795f5fa0fa4bc9f0 [vision] apparent age 18-40 spans 22 years — too hedged to place in a band; gender 'ambiguous' != cell 'male'; apparent ethnicity 'unclear' could not be placed in any of the five taxonomy groups; face not clearly visible; face obscured (sunglasses/hands/shadow) [cached]
+  ✗ 779848dbce1e7726 [vision] person_count=0 (need exactly 1 unambiguous subject); apparent age 40-60 spans 20 years — too hedged to place in a band; reads as 'wh', cell wants 'hl'; face not clearly visible; face obscured (sunglasses/hands/shadow); visible watermark, logo or burned-in text [cached]
+  ✗ 5d270642ad132b49 [resolution] delivered file is 1024x768 = 0.79MP short=768 (floor 1.0MP / 800px) [cached]
+  ✗ c0dbf06783030276 [watermark] burned-in text screen: top-strip d=0.1368 ratio=6.2 row=0.45 [cached]
+  ✗ bcd0385449f0621c [vision] reads as 'wh', cell wants 'hl' [cached]
+  ✗ 816e6a026c7e6be9 [vision] reads as 'wh', cell wants 'hl'; visible watermark, logo or burned-in text; recognizable public figure [cached]
+  ✗ 66260078a4b56ce3 [vision] apparent age 50-65 centres on 58, outside cell band 30-39; reads as 'wh', cell wants 'hl' [cached]
+  ✗ ff5d86bca56fdd31 [vision] apparent age 50-65 centres on 58, outside cell band 30-39; reads as 'wh', cell wants 'hl' [cached]
+  ✗ 6a42deca2e883911 [resolution] delivered file is 753x1100 = 0.83MP short=753 (floor 1.0MP / 800px) [cached]
+  ✗ b6db4077420e7839 [gone] HTTP 410 — the photograph is no longer served (tried flickr-2048) [cached]
+  ✗ 5e0ee176e8cff08a [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ 2e15db6dafcbc1e5 [vision] reads as 'wh', cell wants 'hl' [cached]
+  ✗ a0e0e23ff753af4c [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ 81aa07ca0a570630 [resolution] delivered file is 685x687 = 0.47MP short=685 (floor 1.0MP / 800px) [cached]
+  ✗ bde0e8055848b826 [gone] HTTP 410 — the photograph is no longer served (tried flickr-2048) [cached]
+  ✗ 10e5b1b9d7ac9443 [vision] apparent age 20-45 spans 25 years — too hedged to place in a band; apparent ethnicity 'unclear' could not be placed in any of the five taxonomy groups; face not clearly visible; face obscured (sunglasses/hands/shadow) [cached]
+  ✗ 555eda9266552113 [vision] apparent age 60-80 spans 20 years — too hedged to place in a band; reads as 'wh', cell wants 'hl'; visible watermark, logo or burned-in text; recognizable public figure [cached]
+  ✗ 97ecf743ac2f8e87 [watermark] burned-in text screen: top-right d=0.1224 ratio=12.3 row=0.54 [cached]
+  ✗ 7975b95e94fd7235 [vision] apparent age 40-55 centres on 48, outside cell band 30-39; reads as 'wh', cell wants 'hl' [cached]
+  ✗ 6e45197dbdc8f96e [vision] apparent age 50-65 centres on 58, outside cell band 30-39; reads as 'bl', cell wants 'hl' [cached]
+  ✗ 19f8e56a3d95d57d [vision] apparent age 55-70 centres on 62, outside cell band 30-39; reads as 'wh', cell wants 'hl' [cached]
+  ✗ 19946decd3a24549 [vision] apparent age 18-28 centres on 23, outside cell band 30-39; reads as 'wh', cell wants 'hl'; face not clearly visible; face obscured (sunglasses/hands/shadow); visible watermark, logo or burned-in text [cached]
+  ✗ 7294f9559499be6e [vision] apparent age 40-55 centres on 48, outside cell band 30-39; reads as 'wh', cell wants 'hl' [cached]
+  ✗ aef17b040b702151 [vision] apparent age 18-25 centres on 22, outside cell band 30-39; reads as 'bl', cell wants 'hl' [cached]
+  ✗ 73c83fd7a9005e6d [vision] apparent age 45-55 centres on 50, outside cell band 30-39; reads as 'wh', cell wants 'hl'; recognizable public figure [cached]
+  ✗ 1e030069defd11b4 [resolution] delivered file is 900x900 = 0.81MP short=900 (floor 1.0MP / 800px) [cached]
+  ✗ b67074144b115e74 [vision] reads as 'wh', cell wants 'hl' [cached]
+  ✗ c62d9043094ddebf [watermark] burned-in text screen: top-left d=0.0671 ratio=33.6 row=0.77 [cached]
+  ✗ db0638916f418186 [vision] reads as 'wh', cell wants 'hl' [cached]
+  ✗ 44ef7651e35f1741 [vision] apparent age 40-70 spans 30 years — too hedged to place in a band; reads as 'wh', cell wants 'hl'; face not clearly visible; face obscured (sunglasses/hands/shadow) [cached]
+  ✗ 32d27de62061cc86 [vision] apparent age 20-35 centres on 28, outside cell band 30-39; reads as 'wh', cell wants 'hl'; face obscured (sunglasses/hands/shadow); visible watermark, logo or burned-in text [cached]
+  ✗ 0baf01fa84826313 [vision] apparent age 40-50 centres on 45, outside cell band 30-39; reads as 'wh', cell wants 'hl'; recognizable public figure [cached]
+  ✗ c5a2e7e5e0e7552d [vision] not a camera photograph (AI/CGI/illustration); reads as 'wh', cell wants 'hl'; visible watermark, logo or burned-in text; recognizable public figure [cached]
+  ✗ 5f5168358c5e2f85 [vision] apparent age 45-60 centres on 52, outside cell band 30-39; recognizable public figure [cached]
+  ✗ 4e8433dcc82d2279 [vision] reads as 'bl', cell wants 'hl'; recognizable public figure [cached]
+  ✗ f9fe75c5146c81e1 [vision] reads as 'wh', cell wants 'hl' [cached]
+  ✗ a421f3b834257183 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ 18dcbdf3f94d7eaa [vision] reads as 'wh', cell wants 'hl' [cached]
+  ✗ 2fae1af41b918fef [vision] apparent age 45-60 centres on 52, outside cell band 30-39; reads as 'wh', cell wants 'hl'; visible watermark, logo or burned-in text [cached]
+  ✗ 256f9723583ecb26 [vision] person_count=0 (need exactly 1 unambiguous subject); apparent age starts at 0 — below the hard floor of 18; gender 'ambiguous' != cell 'male'; apparent ethnicity 'unclear' could not be placed in any of the five taxonomy groups; face not clearly visible [cached]
+  ✗ d96f7ac1dc7fd1e7 [vision] reads as 'wh', cell wants 'hl'; recognizable public figure [cached]
+  ✗ 04d46317860c1b89 [vision] reads as 'as', cell wants 'hl' [cached]
+  ✗ edf0d689d6dede82 [vision] reads as 'wh', cell wants 'hl' [cached]
+  ✗ 6492b520600bce9f [vision] reads as 'as', cell wants 'hl' [cached]
+  ✗ d1dbbc466161c4ab [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ c6048343ea3ecb1f [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ af8912bcf7fae386 [vision] reads as 'wh', cell wants 'hl' [cached]
+  ✗ 7ec1fcfba8200faa [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ d6c39a006b3ffaeb [vision] apparent age 20-35 centres on 28, outside cell band 30-39; reads as 'wh', cell wants 'hl'; visible watermark, logo or burned-in text [cached]
+  ✗ 3afa8d9797eb9e05 [vision] apparent age 40-55 centres on 48, outside cell band 30-39; reads as 'as', cell wants 'hl' [cached]
+  ✗ 366209cb2cfa7f73 [vision] not a camera photograph (AI/CGI/illustration); apparent age 65-80 centres on 72, outside cell band 30-39; reads as 'wh', cell wants 'hl' [cached]
+  ✗ 6c4822c599217d44 [vision] apparent age 35-50 centres on 42, outside cell band 30-39; reads as 'wh', cell wants 'hl'; visible watermark, logo or burned-in text [cached]
+  ✗ e83577bcc56ee357 [resolution] delivered file is 871x900 = 0.78MP short=871 (floor 1.0MP / 800px) [cached]
+  ✗ bb962c134a45bbe9 [vision] apparent age 45-65 spans 20 years — too hedged to place in a band; reads as 'as', cell wants 'hl'; face not clearly visible; face obscured (sunglasses/hands/shadow) [cached]
+  ✗ d1af4a6d3b6524c6 [vision] apparent age starts at 16 — below the hard floor of 18; reads as 'bl', cell wants 'hl'; face not clearly visible; visible watermark, logo or burned-in text [cached]
+  ✗ 2a8cc999b9c5ef66 [vision] recognizable public figure [cached]
+  ✗ cc75d46994d575f9 [vision] reads as 'wh', cell wants 'hl' [cached]
+  ✗ 8868b74dcd8bc6e6 [vision] apparent age 18-25 centres on 22, outside cell band 30-39 [cached]
+  ✗ bcdc26330f32b040 [vision] apparent age 60-75 centres on 68, outside cell band 30-39; reads as 'wh', cell wants 'hl' [cached]
+  ✗ be3b3606dc69849f [vision] apparent age 35-50 centres on 42, outside cell band 30-39; reads as 'wh', cell wants 'hl'; face obscured (sunglasses/hands/shadow) [cached]
+  ✗ f51ad9eaa04f4f81 [watermark] burned-in text screen: bottom-strip d=0.3439 ratio=69.8 row=0.52 [cached]
+  ✗ 20ac20892947a873 [vision] reads as 'wh', cell wants 'hl'; visible watermark, logo or burned-in text [cached]
+  ✗ 3d0ad61f860578ce [resolution] delivered file is 549x827 = 0.45MP short=549 (floor 1.0MP / 800px) [cached]
+  ✗ f021ae7925642b69 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ f98de5723df99f38 [vision] apparent age 45-55 centres on 50, outside cell band 30-39; reads as 'wh', cell wants 'hl'; face obscured (sunglasses/hands/shadow) [cached]
+  ✗ 566b558350db81af [watermark] burned-in text screen: bottom-left d=0.2078 ratio=13.8 row=0.55 [cached]
+  ✗ 0ad4f5cfb32b0ea9 [gone] HTTP 410 — the photograph is no longer served (tried flickr-2048) [cached]
+  ✗ 65ee90e258ccf70e [watermark] burned-in text screen: bottom-strip d=0.2056 ratio=56.3 row=0.36 [cached]
+  ✗ d9783b44a5177836 [vision] apparent age 25-45 spans 20 years — too hedged to place in a band; reads as 'wh', cell wants 'hl' [cached]
+  ✗ 805a999a4e48fa17 [vision] reads as 'wh', cell wants 'hl' [cached]
+  ✗ aafe9ce017321cac [resolution] delivered file is 696x958 = 0.67MP short=696 (floor 1.0MP / 800px) [cached]
+  ✗ 44cbc94b80e2d737 [vision] person_count=6 (need exactly 1 unambiguous subject); apparent age 20-35 centres on 28, outside cell band 30-39; gender 'ambiguous' != cell 'male'; reads as 'wh', cell wants 'hl'; face obscured (sunglasses/hands/shadow) [cached]
+  ✗ c2a597299ee1b1fd [vision] apparent age 30-50 spans 20 years — too hedged to place in a band; reads as 'bl', cell wants 'hl'; face obscured (sunglasses/hands/shadow) [cached]
+  ✗ d0cd9fa5e4de2be1 [vision] reads as 'wh', cell wants 'hl' [cached]
+  ✗ 79e0c596b33d2ef1 [vision] apparent age 18-25 centres on 22, outside cell band 30-39; reads as 'wh', cell wants 'hl' [cached]
+  ✗ 6d7e8e5e1bea86c9 [vision] reads as 'wh', cell wants 'hl'; face not clearly visible; face obscured (sunglasses/hands/shadow) [cached]
+  ✗ 8dc2423e39097e31 [vision] apparent age 35-50 centres on 42, outside cell band 30-39; reads as 'wh', cell wants 'hl'; recognizable public figure [cached]
+  ✗ 513735f3822cc9b7 [vision] reads as 'wh', cell wants 'hl' [cached]
+  ✗ 184c09cd4324d648 [vision] person_count=0 (need exactly 1 unambiguous subject); apparent age starts at 0 — below the hard floor of 18; gender 'ambiguous' != cell 'male'; apparent ethnicity 'unclear' could not be placed in any of the five taxonomy groups; face not clearly visible [cached]
+  ✗ 55ebf30822b89551 [gone] HTTP 410 — the photograph is no longer served (tried flickr-2048) [cached]
+  ✗ 6085e04d7beed09a [vision] apparent age 20-35 centres on 28, outside cell band 30-39; reads as 'wh', cell wants 'hl' [cached]
+  ✗ c810a0d165834544 [vision] apparent age 22-28 centres on 25, outside cell band 30-39; reads as 'wh', cell wants 'hl' [cached]
+  ✗ 287c1c548bbdf8e9 [vision] apparent age 35-50 centres on 42, outside cell band 30-39; reads as 'wh', cell wants 'hl' [cached]
+  ✗ 5e5cad52566c9b3d [watermark] burned-in text screen: bottom-right d=0.2826 ratio=6.2 row=0.45 [cached]
+  ✗ ec83cfb726d18fae [vision] apparent age 35-50 centres on 42, outside cell band 30-39; visible watermark, logo or burned-in text [cached]
+  ✗ 46d25db8931947c7 [resolution] delivered file is 1024x787 = 0.81MP short=787 (floor 1.0MP / 800px) [cached]
+  ✗ 4249b57ae23a1df3 [vision] apparent age 45-55 centres on 50, outside cell band 30-39; reads as 'wh', cell wants 'hl'; recognizable public figure [cached]
+  ✗ 5ee3ed5b5de8c21d [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ b69b4cf8fe3955f8 [vision] apparent age 45-60 centres on 52, outside cell band 30-39; reads as 'wh', cell wants 'hl' [cached]
+  ✗ 730b189c15c596b5 [vision] apparent age 50-65 centres on 58, outside cell band 30-39; reads as 'as', cell wants 'hl' [cached]
+  ✗ 8e880bbf316c0223 [vision] reads as 'wh', cell wants 'hl' [cached]
+  ✗ c6f6e5f2aeae3a50 [watermark] burned-in text screen: bottom-left d=0.1474 ratio=6.8 row=0.39 [cached]
+  ✗ 1aa3c928a4b63951 [vision] reads as 'wh', cell wants 'hl' [cached]
+  ✗ d6a1a86e7d68f2d0 [vision] apparent age 20-35 centres on 28, outside cell band 30-39; reads as 'wh', cell wants 'hl'; face not clearly visible; face obscured (sunglasses/hands/shadow) [cached]
+  ✗ 93a0e354c1d1ffc0 [gone] HTTP 410 — the photograph is no longer served (tried flickr-2048) [cached]
+  ✗ 608d5f3cc0251dfd [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ 4d3c2476f4f66b3c [watermark] burned-in text screen: bottom-left d=0.3066 ratio=5.7 row=0.61 [cached]
+  ✗ fa294d250cbf918d [vision] apparent age 45-65 spans 20 years — too hedged to place in a band; reads as 'bl', cell wants 'hl' [cached]
+  ✗ 75b3aad6d0f48aa6 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ 4477df07e43421f5 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ e540879b1f892868 [vision] apparent age 35-48 centres on 42, outside cell band 30-39; reads as 'wh', cell wants 'hl' [cached]
+  ✗ 2f26c664117a44b0 [vision] apparent age 55-70 centres on 62, outside cell band 30-39; reads as 'wh', cell wants 'hl' [cached]
+  ✗ 5c9836ed9108fdae [vision] apparent age 55-65 centres on 60, outside cell band 30-39; reads as 'wh', cell wants 'hl' [cached]
+  ✗ a9f136fc8c818c3d [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ 9227e35ed1793d72 [vision] apparent age 50-75 spans 25 years — too hedged to place in a band; reads as 'wh', cell wants 'hl'; face not clearly visible; face obscured (sunglasses/hands/shadow) [cached]
+  ✗ eb2704207951b160 [resolution] delivered file is 1200x795 = 0.95MP short=795 (floor 1.0MP / 800px) [cached]
+  ✗ a2cccb25a388c44a [vision] person_count=2 (need exactly 1 unambiguous subject); apparent age starts at 15 — below the hard floor of 18; gender 'ambiguous' != cell 'male'; reads as 'wh', cell wants 'hl'; face not clearly visible; face obscured (sunglasses/hands/shadow) [cached]
+  ✗ 5d35d923458175ed [gone] HTTP 410 — the photograph is no longer served (tried flickr-2048) [cached]
+  ✗ 9c7088301cd0c6ba [vision] reads as 'wh', cell wants 'hl'; face not clearly visible; face obscured (sunglasses/hands/shadow) [cached]
+  ✗ 120e3e2202a80237 [vision] reads as 'wh', cell wants 'hl' [cached]
+  ✗ a16c7a308410300e [vision] apparent age 18-25 centres on 22, outside cell band 30-39; reads as 'wh', cell wants 'hl' [cached]
+  ✗ c5c7f209850ffb49 [vision] apparent age 20-40 spans 20 years — too hedged to place in a band; reads as 'wh', cell wants 'hl'; face not clearly visible; face obscured (sunglasses/hands/shadow) [cached]
+  ✗ e91be03cf16c00e1 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ 45bb3444a1851172 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ 6ef89b8f3e99fc26 [vision] apparent age 35-50 centres on 42, outside cell band 30-39; reads as 'wh', cell wants 'hl'; visible watermark, logo or burned-in text [cached]
+  ✗ be1b5559cbc0176e [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ 51fb22f704e24e4e [resolution] delivered file is 800x533 = 0.43MP short=533 (floor 1.0MP / 800px) [cached]
+  ✗ bbf3585808850868 [vision] apparent age 20-35 centres on 28, outside cell band 30-39; reads as 'wh', cell wants 'hl'; face not clearly visible; face obscured (sunglasses/hands/shadow) [cached]
+  ✗ 99e07142943043d2 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ f5aa43b02d4df521 [vision] apparent age 50-65 centres on 58, outside cell band 30-39; reads as 'wh', cell wants 'hl' [cached]
+  ✗ d7cb39923522ea1c [resolution] delivered file is 610x916 = 0.56MP short=610 (floor 1.0MP / 800px) [cached]
+  ✗ 3fa8ccb974951b96 [vision] apparent age 30-55 spans 25 years — too hedged to place in a band; reads as 'bl', cell wants 'hl'; face not clearly visible; face obscured (sunglasses/hands/shadow) [cached]
+  ✗ d9614b3256b73572 [vision] apparent age 25-55 spans 30 years — too hedged to place in a band; gender 'ambiguous' != cell 'male'; apparent ethnicity 'unclear' could not be placed in any of the five taxonomy groups; face not clearly visible; face obscured (sunglasses/hands/shadow) [cached]
+  ✗ 95f57fdd17f6d2fa [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ beb23dbd5a793bc3 [vision] apparent age 45-55 centres on 50, outside cell band 30-39; reads as 'wh', cell wants 'hl' [cached]
+  ✗ cc1971c859798c64 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ 4c1fdf1d7ab0dee9 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ 1491cc46bdad1489 [vision] apparent age 45-60 centres on 52, outside cell band 30-39; reads as 'wh', cell wants 'hl'; visible watermark, logo or burned-in text [cached]
+  ✗ a60a8bc191aafeb5 [vision] apparent age 55-70 centres on 62, outside cell band 30-39; reads as 'wh', cell wants 'hl' [cached]
+  ✗ eb5b9181545a1641 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ bea200d727d6eba4 [vision] apparent age 40-60 spans 20 years — too hedged to place in a band; reads as 'wh', cell wants 'hl'; face not clearly visible; face obscured (sunglasses/hands/shadow) [cached]
+  ✗ 9453173e99e9e3bd [vision] apparent age 20-60 spans 40 years — too hedged to place in a band; apparent ethnicity 'unclear' could not be placed in any of the five taxonomy groups; face not clearly visible; face obscured (sunglasses/hands/shadow) [cached]
+  ✗ da3f6728ff2357b3 [vision] reads as 'wh', cell wants 'hl' [cached]
+  ✗ fdd17181112a4f37 [vision] person_count=2 (need exactly 1 unambiguous subject); apparent age 45-60 centres on 52, outside cell band 30-39; reads as 'wh', cell wants 'hl' [cached]
+  ✗ 06fa58c34107dc5c [resolution] delivered file is 800x533 = 0.43MP short=533 (floor 1.0MP / 800px) [cached]
+  ✗ 920a5009362e890f [resolution] delivered file is 1024x683 = 0.70MP short=683 (floor 1.0MP / 800px) [cached]
+  ✗ e27d57ee814bc477 [vision] apparent age 20-40 spans 20 years — too hedged to place in a band; reads as 'wh', cell wants 'hl'; face not clearly visible; face obscured (sunglasses/hands/shadow); visible watermark, logo or burned-in text [cached]
+  ✗ e0d90aaf751a9e18 [vision] apparent age 55-65 centres on 60, outside cell band 30-39; reads as 'wh', cell wants 'hl'; recognizable public figure [cached]
+  ✗ 1f19544e6548f6b1 [vision] apparent age 18-25 centres on 22, outside cell band 30-39; reads as 'wh', cell wants 'hl'; visible watermark, logo or burned-in text [cached]
+  ✗ 04ee7b4f218ef27c [vision] apparent age 18-35 spans 17 years — too hedged to place in a band; reads as 'wh', cell wants 'hl'; face not clearly visible; face obscured (sunglasses/hands/shadow); visible watermark, logo or burned-in text [cached]
+  ✗ 269aa6e87201904a [vision] apparent age 55-75 spans 20 years — too hedged to place in a band [cached]
+  ✗ 1247a0414c4163da [vision] apparent age 50-65 centres on 58, outside cell band 30-39; reads as 'wh', cell wants 'hl' [cached]
+  ✗ 21c5b6d6fe6f2ca0 [resolution] delivered file is 800x533 = 0.43MP short=533 (floor 1.0MP / 800px) [cached]
+  ✗ 47e3c30f7ba83dc9 [vision] apparent age 55-65 centres on 60, outside cell band 30-39; reads as 'wh', cell wants 'hl' [cached]
+  ✗ 7f170a86309e7c66 [vision] apparent age 45-55 centres on 50, outside cell band 30-39 [cached]
+  ✗ 2fbe98fdde7dc439 [vision] apparent age 40-55 centres on 48, outside cell band 30-39; reads as 'wh', cell wants 'hl'; recognizable public figure [cached]
+  ✗ 7d8e667fa75cea68 [vision] apparent age 35-50 centres on 42, outside cell band 30-39; reads as 'wh', cell wants 'hl' [cached]
+  ✗ 6636c524f97984c6 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ 2893ade0228ab0e6 [vision] apparent age 20-32 centres on 26, outside cell band 30-39 [cached]
+  ✗ ecd5e107a3a96fb2 [vision] reads as 'as', cell wants 'hl'; face obscured (sunglasses/hands/shadow) [cached]
+  ✗ 68d0d5eaa16e6eeb [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ 50637f0168a9212f [vision] apparent age 45-55 centres on 50, outside cell band 30-39; reads as 'wh', cell wants 'hl'; visible watermark, logo or burned-in text [cached]
+  ✗ 74696f88a535a568 [vision] reads as 'as', cell wants 'hl' [cached]
+  ✗ dc576c5eecbcac2b [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ 5836519c02a30f10 [vision] apparent ethnicity 'unclear' could not be placed in any of the five taxonomy groups [cached]
+  ✗ d7c4668f5a8dc3be [vision] apparent age 25-45 spans 20 years — too hedged to place in a band; reads as 'wh', cell wants 'hl'; face not clearly visible; face obscured (sunglasses/hands/shadow) [cached]
+  ✗ 7412103e3da2e9c8 [watermark] burned-in text screen: bottom-strip d=0.2540 ratio=9.1 row=0.43 [cached]
+  ✗ 421688a299d8a45b [vision] person_count=0 (need exactly 1 unambiguous subject); apparent age starts at 0 — below the hard floor of 18; gender 'ambiguous' != cell 'male'; apparent ethnicity 'unclear' could not be placed in any of the five taxonomy groups; face not clearly visible; face obscured (sunglasses/hands/shadow) [cached]
+  ✗ 5d65dc9698c5a265 [vision] person_count=2 (need exactly 1 unambiguous subject); apparent age 40-50 centres on 45, outside cell band 30-39; reads as 'wh', cell wants 'hl'; visible watermark, logo or burned-in text; recognizable public figure [cached]
+  ✗ f0970ff163d11f11 [vision] apparent age 65-80 centres on 72, outside cell band 30-39; reads as 'wh', cell wants 'hl'; recognizable public figure [cached]
+  ✗ d0caaf5dc0657b1c [vision] reads as 'wh', cell wants 'hl' [cached]
+  ✗ cf97377cb331bb4d [vision] apparent age 60-75 centres on 68, outside cell band 30-39; reads as 'wh', cell wants 'hl' [cached]
+  ✗ 5add3d10bcfa71d9 [watermark] burned-in text screen: bottom-right d=0.2534 ratio=9.9 row=0.63 [cached]
+  ✗ cab812196ffd9be6 [vision] apparent age 22-30 centres on 26, outside cell band 30-39; reads as 'wh', cell wants 'hl' [cached]
+  ✗ 3a8d123abc28d4dc [watermark] burned-in text screen: top-left d=0.0741 ratio=8.8 row=0.50 [cached]
+  ✗ 81f410d3ff9e8ae6 [vision] apparent age 60-75 centres on 68, outside cell band 30-39; reads as 'wh', cell wants 'hl' [cached]
+  ✗ fbbbf1cf1373b939 [vision] apparent age 25-45 spans 20 years — too hedged to place in a band; reads as 'wh', cell wants 'hl'; face obscured (sunglasses/hands/shadow) [cached]
+  ✗ 7b58e8db9789f843 [resolution] delivered file is 456x843 = 0.38MP short=456 (floor 1.0MP / 800px) [cached]
+  ✗ b61ae1808f63fddf [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ 10d31d93377f7197 [vision] apparent age 45-55 centres on 50, outside cell band 30-39; reads as 'wh', cell wants 'hl'; visible watermark, logo or burned-in text [cached]
+  ✗ f664d9d3a1bb536e [vision] reads as 'as', cell wants 'hl' [cached]
+  ✗ d7cf2acf9baeca52 [watermark] burned-in text screen: bottom-strip d=0.0325 ratio=16.3 row=0.60 [cached]
+  ✗ b7316a2eb7b91085 [vision] reads as 'wh', cell wants 'hl' [cached]
+  ✗ e0d9b46ea2950a9d [resolution] delivered file is 664x1000 = 0.66MP short=664 (floor 1.0MP / 800px) [cached]
+  ✗ 99cd846e5eca1e78 [resolution] delivered file is 1114x725 = 0.81MP short=725 (floor 1.0MP / 800px) [cached]
+  ✗ 48368484887ead95 [vision] apparent age 30-50 spans 20 years — too hedged to place in a band; reads as 'wh', cell wants 'hl'; face not clearly visible; face obscured (sunglasses/hands/shadow) [cached]
+  ✗ eead5c8cb4bafe1f [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ 13eb81f8086e05e7 [vision] apparent age 35-50 centres on 42, outside cell band 30-39; visible watermark, logo or burned-in text [cached]
+  ✗ 5c93bb7def765726 [vision] apparent age 20-30 centres on 25, outside cell band 30-39; reads as 'wh', cell wants 'hl'; recognizable public figure [cached]
+  ✗ e8572edec2a57de4 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ ee703e3ed4a207f0 [vision] person_count=0 (need exactly 1 unambiguous subject); apparent age 50-80 spans 30 years — too hedged to place in a band; apparent ethnicity 'unclear' could not be placed in any of the five taxonomy groups; face not clearly visible; face obscured (sunglasses/hands/shadow) [cached]
+  ✗ 9213e3b35c59e60f [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ f5e088ba5cbf6de6 [vision] reads as 'wh', cell wants 'hl' [cached]
+  ✗ 8828e43bce7e5a40 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ 7352744baf5dfebb [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ 1d2131df0210fb7d [watermark] burned-in text screen: bottom-right d=0.1045 ratio=5.1 row=0.35 [cached]
+  ✗ b9bdac2d15b826e0 [vision] reads as 'wh', cell wants 'hl' [cached]
+  ✗ 1094d4f4cfe10c50 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ 4c7e5c61e4ddb0c3 [watermark] burned-in text screen: bottom-right d=0.5078 ratio=114.0 row=0.82 [cached]
+  ✗ 349aea65aa97af2b [vision] apparent age 40-55 centres on 48, outside cell band 30-39; beauty-filtered / retouched [cached]
+  ✗ 5ab1073d8ed0481e [watermark] burned-in text screen: bottom-right d=0.3122 ratio=7.0 row=0.64 [cached]
+  ✗ 7e4ceed5a67c2acb [gone] HTTP 410 — the photograph is no longer served (tried flickr-2048) [cached]
+  ✗ 12ecf1f6f04eb7db [watermark] burned-in text screen: bottom-right d=0.1755 ratio=5.6 row=0.32 [cached]
+  ✗ 5ab6a5cab72ce9be [vision] apparent age 18-28 centres on 23, outside cell band 30-39 [cached]
+  ✗ 45dffac623f1a4aa [vision] reads as 'wh', cell wants 'hl' [cached]
+  ✗ 812ca07248fe1a40 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ 524dd71ed131eaaa [vision] reads as 'wh', cell wants 'hl'; face not clearly visible; face obscured (sunglasses/hands/shadow) [cached]
+  ✗ 97e64739838ff227 [vision] apparent age 65-80 centres on 72, outside cell band 30-39; reads as 'wh', cell wants 'hl' [cached]
+  ✗ 1d04a0ab760b66c6 [vision] apparent age 35-50 centres on 42, outside cell band 30-39; reads as 'wh', cell wants 'hl'; visible watermark, logo or burned-in text [cached]
+  ✗ 31a95e3be01da8ae [vision] apparent age 20-40 spans 20 years — too hedged to place in a band; reads as 'wh', cell wants 'hl'; face not clearly visible; face obscured (sunglasses/hands/shadow) [cached]
+  ! 4e46fa501dfc786c [vision-infra] gem9 unavailable (gem9 exit 1: gem9: HTTP 502: error code: 502) — refusing to accept unseen  (1 in a row)
+  ✗ 1bd0c9a68b41d02c [vision] apparent age 18-30 centres on 24, outside cell band 30-39; reads as 'wh', cell wants 'hl'; face obscured (sunglasses/hands/shadow); visible watermark, logo or burned-in text
+  ✗ af5ccffc5722b95f [vision] apparent age 45-55 centres on 50, outside cell band 30-39; reads as 'wh', cell wants 'hl'; recognizable public figure
+  ✗ 7ff19edbd2a59ad3 [vision] apparent age 60-80 spans 20 years — too hedged to place in a band; reads as 'as', cell wants 'hl' [cached]
+  ✗ c4eb295c19f7d0b8 [monochrome] greyscale — no colour to anchor skin tone or lighting on (coloured-pixel fraction 0.00000 (floor 0.00100))
+  ✗ c2f167da6991b5bd [vision] apparent age 40-55 centres on 48, outside cell band 30-39; reads as 'wh', cell wants 'hl'; recognizable public figure; face reads 'down-or-away' — the bank needs a frontal or three-quarter anchor
+  ✗ 77bf2d4e916f334e [vision] apparent age 45-60 centres on 52, outside cell band 30-39; reads as 'wh', cell wants 'hl'; visible watermark, logo or burned-in text
+  ✗ d8ad943c726e32b3 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600)
+  ✗ 85be3950dfee915e [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600)
+  ✗ 2828ef35514e3703 [vision] person_count=0 (need exactly 1 unambiguous subject); apparent age 25-45 spans 20 years — too hedged to place in a band; reads as 'wh', cell wants 'hl'; face not clearly visible; face reads 'down-or-away' — the bank needs a frontal or three-quarter anchor
+  ✗ 550c8d4df349f178 [vision] reads as 'as', cell wants 'hl'; face reads 'profile' — the bank needs a frontal or three-quarter anchor
+  ✗ fa08c81213654fd0 [vision] reads as 'wh', cell wants 'hl'
+  ✗ 14c13e209c458298 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600)
+  ✗ a8c3f24ff820eee5 [vision] reads as 'wh', cell wants 'hl'; face not clearly visible; face obscured (sunglasses/hands/shadow)
+  ✗ 1a7ebb8a76d6debb [watermark] burned-in text screen: top-left d=0.0693 ratio=4.7 row=0.35
+  ✗ 0e485ca8c9caf026 [vision] apparent age 18-40 spans 22 years — too hedged to place in a band; apparent ethnicity 'unclear' could not be placed in any of the five taxonomy groups; face not clearly visible; face obscured (sunglasses/hands/shadow); visible watermark, logo or burned-in text; face reads 'down-or-away' — the bank needs a frontal or three-quarter anchor
+  ✗ d08f852d1ba6d4b8 [watermark] burned-in text screen: bottom-right d=0.3335 ratio=8.9 row=0.42
+  ✗ 835786f172859e39 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600)
+  ✗ 40e17003c62445ed [gone] HTTP 410 — the photograph is no longer served (tried flickr-2048)
+  ✗ 9563b2cd43047086 [resolution] delivered file is 816x1224 = 1.00MP short=816 (floor 1.0MP / 800px)
+  ✗ 9a4b8f040f3e7e63 [vision] apparent age 20-50 spans 30 years — too hedged to place in a band; gender 'ambiguous' != cell 'male'; apparent ethnicity 'unclear' could not be placed in any of the five taxonomy groups; face not clearly visible; face obscured (sunglasses/hands/shadow); visible watermark, logo or burned-in text
+  ! 806031137a0b974f [vision-infra] gem9 unavailable (gem9 exit 1: gem9: HTTP 502: error code: 502) — refusing to accept unseen  (1 in a row)
+  ! b385b63aa6c1615a [vision-infra] gem9 unavailable (gem9 exit 1: gem9: HTTP 502: error code: 502) — refusing to accept unseen  (2 in a row)
+  ! 8bc8490ebd8e273f [vision-infra] gem9 unavailable (gem9 exit 1: gem9: HTTP 502: error code: 502) — refusing to accept unseen  (3 in a row)
+  ! 5463952c1c3486c9 [vision-infra] gem9 unavailable (gem9 exit 1: gem9: HTTP 502: error code: 502) — refusing to accept unseen  (4 in a row)
+  ✗ f53f6b0caf43f83a [vision] apparent age 18-28 centres on 23, outside cell band 30-39; reads as 'wh', cell wants 'hl'
+  ! 193f2bdb07340090 [vision-infra] gem9 unavailable (gem9 exit 1: gem9: HTTP 502: error code: 502) — refusing to accept unseen  (1 in a row)
+  ! 31efd1be863c5ba1 [vision-infra] gem9 unavailable (gem9 exit 1: gem9: HTTP 502: error code: 502) — refusing to accept unseen  (2 in a row)
+  ✗ fa506a61cfc826a0 [vision] apparent age 25-45 spans 20 years — too hedged to place in a band; reads as 'wh', cell wants 'hl'; face obscured (sunglasses/hands/shadow); face reads 'down-or-away' — the bank needs a frontal or three-quarter anchor
+  ✗ 97d9fa8e66b0648a [monochrome] greyscale — no colour to anchor skin tone or lighting on (coloured-pixel fraction 0.00000 (floor 0.00100))
+  ✗ b41384154762b3fe [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600)
+  ✗ 402b15d65c292f10 [vision] apparent age 65-85 spans 20 years — too hedged to place in a band; reads as 'wh', cell wants 'hl' [cached]
+  ✗ 918485a29ca1a58b [vision] reads as 'wh', cell wants 'hl'; face not clearly visible; face obscured (sunglasses/hands/shadow); black-and-white, toned or period photograph; face reads 'down-or-away' — the bank needs a frontal or three-quarter anchor
+  ✗ 7d40a468207815a2 [vision] apparent age 60-75 centres on 68, outside cell band 30-39; reads as 'wh', cell wants 'hl'; visible watermark, logo or burned-in text [cached]
+  ✗ 09f66e34205ceb63 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600)
+  ✗ b92d189988cc0f41 [monochrome] greyscale — no colour to anchor skin tone or lighting on (coloured-pixel fraction 0.00000 (floor 0.00100))
+  ✗ f4d380a4a4064507 [vision] reads as 'as', cell wants 'hl'; face obscured (sunglasses/hands/shadow)
+  ✗ 49ffb838b2c3a31a [vision] apparent age 45-55 centres on 50, outside cell band 30-39; reads as 'wh', cell wants 'hl'; recognizable public figure
+  ✗ c1ea36f66bbebf7f [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600)
+  ✗ 33d13e75c202806d [vision] apparent age 20-60 spans 40 years — too hedged to place in a band; gender 'ambiguous' != cell 'male'; apparent ethnicity 'unclear' could not be placed in any of the five taxonomy groups; face not clearly visible; face obscured (sunglasses/hands/shadow); face reads 'down-or-away' — the bank needs a frontal or three-quarter anchor
+  ✗ ac27b67c70e75fbf [vision] apparent age 20-35 centres on 28, outside cell band 30-39; reads as 'wh', cell wants 'hl'
+  ✗ 9df1bb8eddf0f254 [vision] visible watermark, logo or burned-in text; face reads 'profile' — the bank needs a frontal or three-quarter anchor
+  ✗ a478ae583656c41d [vision] apparent age 18-25 centres on 22, outside cell band 30-39; reads as 'wh', cell wants 'hl'
+  ✗ 8921b83f5d1ea8c3 [vision] reads as 'as', cell wants 'hl'; face obscured (sunglasses/hands/shadow)
+  ✗ 933b604f2cb9ada9 [vision] apparent age 50-75 spans 25 years — too hedged to place in a band; reads as 'wh', cell wants 'hl'; face not clearly visible; face obscured (sunglasses/hands/shadow); visible watermark, logo or burned-in text
+  ✗ cea3e8def75e2668 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600)
+  ✗ 152ae09dbb2e61ec [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600)
+  ✗ 7a83f4e5f7942c06 [vision] apparent age 45-55 centres on 50, outside cell band 30-39; reads as 'wh', cell wants 'hl'; recognizable public figure
+  ✗ d0b015407d5e149c [vision] apparent age 45-60 centres on 52, outside cell band 30-39; reads as 'wh', cell wants 'hl'
+  ✗ fa9f6d17a2e93c93 [resolution] delivered file is 1200x806 = 0.97MP short=806 (floor 1.0MP / 800px)
+  ✗ d87ba0b3cac49c1a [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600)
+  ✗ 5f31ceb49669ed52 [vision] apparent age 35-50 centres on 42, outside cell band 30-39; reads as 'wh', cell wants 'hl'; face not clearly visible; face obscured (sunglasses/hands/shadow); recognizable public figure
+  ✗ 83ba4a32d6d33c8b [vision] apparent age 35-55 spans 20 years — too hedged to place in a band; reads as 'wh', cell wants 'hl'; recognizable public figure; face reads 'down-or-away' — the bank needs a frontal or three-quarter anchor
+  ✗ bf7b84dea407b8bc [vision] apparent age 55-70 centres on 62, outside cell band 30-39; reads as 'wh', cell wants 'hl'
+  ✗ 788445afcb8763e3 [monochrome] greyscale — no colour to anchor skin tone or lighting on (coloured-pixel fraction 0.00000 (floor 0.00100))
+  ✗ 3771006013eb632a [vision] apparent age 50-65 centres on 58, outside cell band 30-39; reads as 'wh', cell wants 'hl'; visible watermark, logo or burned-in text; recognizable public figure
+  ✗ 9b91beb892f84e7e [vision] reads as 'wh', cell wants 'hl'
+  ✗ 095950eea2b0e729 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600)
+  ✗ 291e5d7785ad2c51 [vision] apparent age 40-55 centres on 48, outside cell band 30-39; reads as 'wh', cell wants 'hl'
+  ✗ bfd7b1a81340f916 [vision] apparent age 35-55 spans 20 years — too hedged to place in a band; reads as 'bl', cell wants 'hl'
+  ✗ 47f3227210ccceae [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600)
+  ✗ df34591477f57b90 [gone] HTTP 410 — the photograph is no longer served (tried flickr-2048)
+  ✗ a984e35b30c6bb14 [vision] apparent age 45-55 centres on 50, outside cell band 30-39; reads as 'wh', cell wants 'hl'; face reads 'down-or-away' — the bank needs a frontal or three-quarter anchor
+  ✗ b500d62cc38283c9 [resolution] delivered file is 1000x750 = 0.75MP short=750 (floor 1.0MP / 800px)
+  ✗ 7506443cdde04dc9 [vision] apparent age 55-65 centres on 60, outside cell band 30-39; reads as 'wh', cell wants 'hl'; recognizable public figure [cached]
+  ✗ 49cbc8c543abdfea [vision] apparent age 20-32 centres on 26, outside cell band 30-39; reads as 'wh', cell wants 'hl'; face not clearly visible; face obscured (sunglasses/hands/shadow)
+  ✗ c3a901bbc522ce4e [resolution] delivered file is 900x600 = 0.54MP short=600 (floor 1.0MP / 800px)
+  ✗ a1ba5282cbd970e5 [vision] reads as 'wh', cell wants 'hl'
+  ✗ 64e4a31e1f5b1856 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600)
+  ✗ 812518de4ae4b7dd [gone] HTTP 410 — the photograph is no longer served (tried flickr-2048)
+  ✗ 46d6223c3c0d19e3 [vision] apparent age 45-55 centres on 50, outside cell band 30-39; reads as 'wh', cell wants 'hl'; visible watermark, logo or burned-in text; recognizable public figure
+  ✗ a749e0207eed26ba [vision] apparent age 18-30 centres on 24, outside cell band 30-39; reads as 'wh', cell wants 'hl'; recognizable public figure; face reads 'profile' — the bank needs a frontal or three-quarter anchor
+  ✗ 0d3231e467128354 [gone] HTTP 410 — the photograph is no longer served (tried flickr-2048)
+  ✗ 7b072d084f4d3198 [vision] reads as 'wh', cell wants 'hl'; face not clearly visible; face obscured (sunglasses/hands/shadow); visible watermark, logo or burned-in text; face reads 'profile' — the bank needs a frontal or three-quarter anchor
+  ✗ 4a5dc9f4b83b8a73 [vision] reads as 'wh', cell wants 'hl'
+  ✗ 81e315544275ea81 [monochrome] greyscale — no colour to anchor skin tone or lighting on (coloured-pixel fraction 0.00000 (floor 0.00100))
+  ✗ b1d72b20dee07243 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600)

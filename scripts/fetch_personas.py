@@ -787,6 +787,8 @@ VISION_RUBRIC = (
     '"is_monochrome_or_period": true|false, '
     '"face_angle_reads": "frontal"|"three-quarter"|"profile"|"down-or-away", '
     '"studio_or_press_context": true|false, '
+    '"official_or_representative_capacity": true|false, '
+    '"identifying_text_in_frame": true|false, "minor_in_frame": true|false, '
     '"apparent_ethnicity": "<short phrase>", '
     '"ethnicity_group": "white"|"hispanic"|"black"|"asian"|"other"|"unclear", '
     '"notes": "<one short sentence>"}\n'
@@ -802,6 +804,21 @@ VISION_RUBRIC = (
     "portrait). studio_or_press_context: true for a seamless studio backdrop, a professional "
     "headshot, a stage or podium, a press conference, a red carpet or any other posed "
     "media-production setting. "
+    "official_or_representative_capacity: is the subject shown ACTING FOR someone other than "
+    "themselves - speaking at a lectern, podium or on a stage, holding or wearing a "
+    "presentation microphone, at a press conference or official backdrop, wearing a uniform or "
+    "official insignia, or posed for a formal institutional portrait (faculty, corporate, "
+    "party, government). Doing a job is NOT enough on its own: a chef cooking, a mechanic under "
+    "a car or a nurse on a ward is working, not representing. Answer only from what the "
+    "photograph shows; do not consider whether you recognise the person. "
+    "identifying_text_in_frame: text anywhere in frame that could identify a SPECIFIC person, "
+    "team, employer or private event - a personal name, a sports jersey bearing a team name or "
+    "squad number, a name badge, a shirt printed for someone's party or wedding, a company "
+    "uniform logo. Ordinary background signage, brand marks on ordinary clothing and unreadable "
+    "text do not count. "
+    "minor_in_frame: is any child, infant or baby present anywhere in the frame, INCLUDING one "
+    "whose face is turned away, covered, asleep or inside a carrier, sling or pram. Answer this "
+    "independently of person_count. "
     "face_obscured: sunglasses, a hand, a mask, hair or heavy shadow covering the face. "
     "beauty_filtered: skin smoothing, blemish removal, catalogue-style retouching, beauty-app "
     "filtering. visible_text_or_watermark: ANY burned-in text, credit line, logo, date stamp or "
@@ -832,7 +849,32 @@ ETHNICITY_GROUP_TO_KEY = {
 # would otherwise be accepted. Cached REJECTIONS still replay for free (a period photograph
 # cannot stop being the wrong gender), so the re-ask costs one call per face we were about to
 # write into the bank anyway, not one per cached row.
-VISION_RUBRIC_KEYS_ADDED = ("is_monochrome_or_period", "face_angle_reads")
+# The second batch, added after the eye-QC of 2026-08-10 threw out 10 of 24 machine-passed
+# faces. Two of those three gates already existed and were already enforced, which is the whole
+# lesson: the model was not wrong, it was answering a different question from the one that
+# mattered.
+#
+#   recognizable_public_figure asks about the MODEL'S knowledge. It answered false for a Chilean
+#   ex-minister at a government lectern, an SFU faculty portrait and a Peruvian police officer —
+#   honestly, because it does not know who any of them are. Whether a stranger is famous is
+#   unanswerable from pixels; whether a photograph SHOWS someone speaking for an institution is
+#   plainly visible, and it is the second question that decides the publicity-rights class.
+#
+#   visible_text_or_watermark was written for credit lines and date stamps, so the model read
+#   "CEDAR RAPIDS 5" off a jersey and a shirt printed "affinity's 60th birthday", described both
+#   in its notes, and still answered false. Not a contradiction — burned-in overlay and printed
+#   garment text are different things, and only one of them names a person.
+#
+#   person_count is defined here as faces at least partly in frame, so a baby carried facing its
+#   mother is correctly NOT counted. Correct, and not what I need to know.
+#
+# In every case the free-text `notes` field described the disqualifying thing accurately while
+# the boolean beside it said no. The fix is a sharper question, not a better model — and the
+# reason to ask rather than to keyword-scan the notes is that a question has a defined answer
+# and prose does not.
+VISION_RUBRIC_KEYS_ADDED = ("is_monochrome_or_period", "face_angle_reads",
+                            "official_or_representative_capacity",
+                            "identifying_text_in_frame", "minor_in_frame")
 # A profile ref makes most of the 21-angle vocabulary unreachable: article_images.py anchors
 # identity on ref.jpg, and asking ima2 for `front-level` from a 90-degree profile is asking it
 # to invent the half of the face it was never shown. f3039-wh-06 is exactly that photograph.
@@ -1052,10 +1094,32 @@ def evaluate_vision(v, cell):
     angle = str(v.get("face_angle_reads") or "").strip().lower()
     if angle and angle not in FACE_ANGLE_ACCEPTED:
         reasons.append("face reads %r — the bank needs a frontal or three-quarter anchor" % angle)
-    # studio_or_press_context is recorded, NOT enforced. It is a taste judgement, the corpus
-    # headroom in the thin cells does not have a fourth gate to spare, and unlike the old
-    # report-only ethnicity field it has somewhere to go: contact_sheet.py prints it in the
-    # caption, so the eye-QC pass over the bank can act on it.
+    if v.get("official_or_representative_capacity") is True:
+        # The one gate here that is about the SUBJECT rather than the picture. Anonymity is
+        # what the whole CC-sourcing posture rests on: a stranger in a park has a claim in
+        # principle, whereas a minister at a lectern or a professor in a faculty portrait is
+        # someone whose professional likeness is already managed, and putting theirs behind a
+        # supplement ad is the textbook false-endorsement case rather than a remote risk.
+        reasons.append("shown in an official or representative capacity (lectern, stage, "
+                       "uniform, institutional portrait)")
+    if v.get("identifying_text_in_frame") is True:
+        # Doubly disqualifying, and the second half is the part that is easy to miss: text that
+        # names a team and a squad number does not merely identify him, it makes him findable
+        # from a roster — and ima2 anchors on ref.jpg, so it will try to reproduce the lettering
+        # into the generated frame as well.
+        reasons.append("frame carries text identifying a person, team, employer or private event")
+    if v.get("minor_in_frame") is True:
+        # A child cannot consent and their guardian has not been asked, so this one is a floor
+        # rather than a preference — the same reasoning as MIN_APPARENT_AGE, arriving by way of
+        # the background instead of the subject.
+        reasons.append("a child or infant is in the frame")
+    # studio_or_press_context stays recorded and NOT enforced, and the eye-QC that added the
+    # three gates above is also what settled that. Enforcing it would have cost 13 of 45 cached
+    # accepts — 29%, and it emptied two of the thinnest cells outright — because it fires on a
+    # plain studio portrait of an anonymous model, which is a face the bank wants. It is a proxy
+    # for the question above, and now that the question is asked directly the proxy can go back
+    # to what it is good for: contact_sheet.py prints it in the caption, so the eye pass sees
+    # which frames to look at hardest.
     return reasons
 
 
@@ -2767,6 +2831,8 @@ def cmd_selftest(_args):
             "visible_text_or_watermark": False, "recognizable_public_figure": False,
             "is_monochrome_or_period": False, "face_angle_reads": "three-quarter",
             "studio_or_press_context": False,
+            "official_or_representative_capacity": False,
+            "identifying_text_in_frame": False, "minor_in_frame": False,
             "ethnicity_group": "white", "apparent_ethnicity": "white"}
     check("clean candidate passes", evaluate_vision(good, cell) == [])
     for tweak, label in (({"is_camera_photograph": False}, "AI/CGI rejected"),
@@ -2779,7 +2845,12 @@ def cmd_selftest(_args):
                          ({"recognizable_public_figure": True}, "celebrity rejected"),
                          ({"is_monochrome_or_period": True}, "b&w / period photograph rejected"),
                          ({"face_angle_reads": "profile"}, "pure profile rejected"),
-                         ({"face_angle_reads": "down-or-away"}, "head down / turned away rejected")):
+                         ({"face_angle_reads": "down-or-away"}, "head down / turned away rejected"),
+                         ({"official_or_representative_capacity": True},
+                          "minister at a lectern / faculty portrait / uniform rejected"),
+                         ({"identifying_text_in_frame": True},
+                          "team jersey or someone's party shirt rejected"),
+                         ({"minor_in_frame": True}, "child anywhere in the frame rejected")):
         v = dict(good)
         v.update(tweak)
         check(label, evaluate_vision(v, cell) != [])
@@ -2799,6 +2870,24 @@ def cmd_selftest(_args):
     check("a reading taken under today's rubric is current", vision_is_current(good))
     check("studio_or_press_context is RECORDED, not enforced",
           evaluate_vision(dict(good, studio_or_press_context=True), cell) == [])
+
+    # The three readings that got through on 2026-08-10, written as the model actually answered
+    # them. Each old gate is left at the value it really returned, so these fail unless the NEW
+    # gate catches them on its own — which is the entire point, since the old answers were not
+    # mistakes.
+    check("a minister at a government lectern is refused even though the model, honestly, does "
+          "not recognise her",
+          evaluate_vision(dict(good, recognizable_public_figure=False,
+                               studio_or_press_context=True,
+                               official_or_representative_capacity=True), cell) != [])
+    check("a jersey reading team-and-number is refused even though it is not a watermark",
+          evaluate_vision(dict(good, visible_text_or_watermark=False,
+                               identifying_text_in_frame=True), cell) != [])
+    check("a baby carried facing its mother is refused even though person_count=1 is correct",
+          evaluate_vision(dict(good, person_count=1, minor_in_frame=True), cell) != [])
+    check("...and working for a living is still not representing: the chef stays",
+          evaluate_vision(dict(good, studio_or_press_context=False,
+                               official_or_representative_capacity=False), cell) == [])
 
     # Confirmation. The re-screen on 2026-08-10 found five of forty accepted faces changing band
     # or ethnicity on a second reading, so a face is written only when two readings agree — and
