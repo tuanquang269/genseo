@@ -64,7 +64,10 @@ DLC="${DLC:-4}"
 VC="${VC:-6}"
 
 echo "=== pass 1: one face per cell, breadth before depth ==="
-run_pass one --limit 1
+# --depth 1, not --limit 1: --limit caps what THIS RUN adds, so re-running an interrupted pass 1
+# would give a second face to every cell it had already reached before any untouched cell got its
+# first. Depth is idempotent, which is what makes the pass restartable at all.
+run_pass one --depth 1
 echo ""
 echo "=== pass 2: fill to target ==="
 run_pass full

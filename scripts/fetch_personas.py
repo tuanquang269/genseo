@@ -1965,14 +1965,29 @@ def cmd_fetch(args):
     per_cell, _ = cell_counts(bank)
     have = per_cell.get(cell["cell_id"], 0)
     needed = max(0, cell["target_count"] - have)
+    if getattr(args, "depth", None) is not None:
+        # A DEPTH, not a quantity: bring this cell up to N, and do nothing if it is already
+        # there. --limit cannot express that, because it caps what THIS RUN adds, so a breadth
+        # pass re-run after an interruption would hand a second face to every cell it had
+        # already reached before any of the untouched cells got their first — the exact
+        # inversion of what a breadth pass is for. Depth is a statement about the bank, so it
+        # is idempotent, and an interrupted pass can simply be run again.
+        needed = max(0, min(cell["target_count"], args.depth) - have)
     if args.limit is not None:
         # --limit is a CAP, always. It used to fall through to `args.limit` when the cell was
         # already full, which turned a safety brake into a request for N more faces than the
         # taxonomy asks for — and skewed the picker's pool rotation toward that one cell.
         needed = min(needed, args.limit)
     if needed <= 0:
-        print("✓ cell %s is full (%d/%d) — nothing to fetch"
-              % (cell["cell_id"], have, cell["target_count"]))
+        # Say which limit stopped it. "full (1/3)" while --depth 1 is in force reads as a cell
+        # that has met the taxonomy's target, and a breadth pass logging that fifty times would
+        # look exactly like a finished harvest.
+        if have < cell["target_count"]:
+            print("✓ cell %s is at depth %d (%d/%d toward target) — nothing to fetch this pass"
+                  % (cell["cell_id"], args.depth, have, cell["target_count"]))
+        else:
+            print("✓ cell %s is full (%d/%d) — nothing to fetch"
+                  % (cell["cell_id"], have, cell["target_count"]))
         return
 
     source = getattr(args, "source", "commons")
@@ -3148,6 +3163,11 @@ def main():
                         "spends far fewer vision calls per accept), commons (no key), or "
                         "flickr (needs FLICKR_API_KEY)")
     f.add_argument("--limit", type=int, default=None, help="accept at most N (default: the cell's shortfall)")
+    f.add_argument("--depth", type=int, default=None,
+                   help="bring the cell UP TO N faces, doing nothing if it is already there. "
+                        "Unlike --limit this describes the bank rather than the run, so an "
+                        "interrupted breadth pass can be re-run without deepening what it "
+                        "already reached")
     f.add_argument("--dry-run", action="store_true",
                    help="run every gate for real but write nothing")
     f.add_argument("--pages", type=int, default=3,
