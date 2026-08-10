@@ -82,28 +82,6 @@
    "last_gaze": null,
    "angles_used": []
   },
-  "m3039-wh-01": {
-   "handle": "m3039-wh-01",
-   "pool_id": "m3039",
-   "status": "active",
-   "ref": "/Users/kevinkreative/genseo/personas/m3039-wh-01/ref.jpg",
-   "used_count": 0,
-   "last_used_seq": 0,
-   "gaze_used": [],
-   "last_gaze": null,
-   "angles_used": []
-  },
-  "m4049-wh-01": {
-   "handle": "m4049-wh-01",
-   "pool_id": "m4049",
-   "status": "active",
-   "ref": "/Users/kevinkreative/genseo/personas/m4049-wh-01/ref.jpg",
-   "used_count": 0,
-   "last_used_seq": 0,
-   "gaze_used": [],
-   "last_gaze": null,
-   "angles_used": []
-  },
   "f2029-wh-01": {
    "handle": "f2029-wh-01",
    "pool_id": "f2029",
@@ -120,6 +98,17 @@
    "pool_id": "f3039",
    "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/f3039-bl-01/ref.jpg",
+   "used_count": 0,
+   "last_used_seq": 0,
+   "gaze_used": [],
+   "last_gaze": null,
+   "angles_used": []
+  },
+  "m5059-wh-01": {
+   "handle": "m5059-wh-01",
+   "pool_id": "m5059",
+   "status": "pending",
+   "ref": "/Users/kevinkreative/genseo/personas/m5059-wh-01/ref.jpg",
    "used_count": 0,
    "last_used_seq": 0,
    "gaze_used": [],

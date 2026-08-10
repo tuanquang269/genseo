@@ -47,20 +47,25 @@
    "recognizable_public_figure": false,
    "is_monochrome_or_period": false,
    "face_angle_reads": "three-quarter",
+   "eyes_open": true,
+   "head_upright": true,
+   "head_size_reads": "tiny",
    "studio_or_press_context": false,
    "official_or_representative_capacity": false,
    "identifying_text_in_frame": false,
    "minor_in_frame": false,
    "apparent_ethnicity": "white",
    "ethnicity_group": "white",
-   "notes": "Man holding beverage standing beside parked SUV with open hood."
+   "notes": ""
   },
   "rubric_refreshed": "2026-08-10"
  },
- "approved_by": "claude-opus-5",
+ "approved_by": null,
  "approved_date": "2026-08-10",
  "camera_notes": "indoor/ambient available light, real skin texture \u2014 always camera-match; ALWAYS feed THIS ref.jpg, never a previous gen (each gen is another lossy re-reading; chaining them compounds the drift in everything BUT the identity, which ima2 holds onto \u2014 measured 2026-08-10)",
  "usage": "male-audience articles (ShilaSource, FusiForce, Turkesterone); persona is VISUAL ONLY, never named in copy (byline stays the roster author)",
- "status": "active",
- "flag_reason": null
+ "status": "quarantined",
+ "flag_reason": "head spans well under a portrait's share of the frame - the person cleared the corpus's 0.10 BOX-area floor as a full-length figure in a wide scene (car park; porch snapshot), which is not the same thing as having a face to anchor ima2 on. Wrong in every cell, so barred bank-wide.",
+ "quarantined_date": "2026-08-10",
+ "rejection_is_about": "photograph"
 }

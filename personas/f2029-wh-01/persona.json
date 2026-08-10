@@ -37,8 +37,8 @@
   "vision": {
    "is_camera_photograph": true,
    "person_count": 1,
-   "apparent_age_min": 20,
-   "apparent_age_max": 32,
+   "apparent_age_min": 18,
+   "apparent_age_max": 30,
    "apparent_gender": "female",
    "face_clearly_visible": true,
    "face_obscured": false,
@@ -47,13 +47,16 @@
    "recognizable_public_figure": false,
    "is_monochrome_or_period": false,
    "face_angle_reads": "three-quarter",
+   "eyes_open": true,
+   "head_upright": true,
+   "head_size_reads": "portrait",
    "studio_or_press_context": false,
    "official_or_representative_capacity": false,
    "identifying_text_in_frame": false,
    "minor_in_frame": false,
-   "apparent_ethnicity": "caucasian",
+   "apparent_ethnicity": "white",
    "ethnicity_group": "white",
-   "notes": "Woman in casual attire looking off-camera in domestic setting"
+   "notes": "Candid shot."
   },
   "rubric_refreshed": "2026-08-10"
  },

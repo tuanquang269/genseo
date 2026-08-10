@@ -1,1 +1,147 @@
-✓ cell f5059-wh is at depth 1 (1/15 toward target) — nothing to fetch this pass
+cell f5059-wh — female 50-59 white non-Hispanic | have 0, target 15, fetching up to 1
+source: openimages | 14952 indexed candidates, all CC BY 2.0, byte floor 250KB | pixels from staticflickr.com, metadata from storage.googleapis.com, flickr.com never requested
+verdict cache: 1250 image(s) already judged — replayed free, re-scored against this cell
+queries (1), up to 20 page(s) x 500 results each:
+   gender=Predominantly Feminine;age=Older
+
+  · 7fc65a95855c17df already in the bank
+  · 536bddb8c5e94318 already in the bank
+  · 7df3ec67e17814cb already in the bank
+  · 03f55b4f66fb540c already in the bank
+  · 1912c1d9fb92368d already in the bank
+  · edb85f0eea583378 already in the bank
+  · 870cc6e88c2abc14 already in the bank
+  · e939f8bf0bba519b already in the bank
+  · 73b6adca6db690aa already in the bank
+  · 0e1b3e78cc211c46 already in the bank
+  · 016943a933c0b836 already in the bank
+  · c51d7e6b6c0bdb4b already in the bank
+  · 43a89ee29f279fe5 already in the bank
+  · 2e2491c5b5d678b4 already in the bank
+  · 8e8702aa7529987d already in the bank
+  · 4c8b3cadfd5a0446 already in the bank
+  · c3f6cf10f28d265e already in the bank
+  · 2c89bc5fe5cd268f already in the bank
+  · 66307eed4375f452 already in the bank
+  · 1bdf4574075c085a already in the bank
+  · 363f5d25c4f5df67 already in the bank
+  · 45e8d72ef7ee966d already in the bank
+  ✗ b3bfe5a312d7e600 [vision] apparent age 75-95 spans 20 years — too hedged to place in a band [cached]
+  ✗ 90d47269222ec0ab [named-subject] title names someone ('The Crimson Horror' in 'The Crimson Horror') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 6425194e37312dbf [named-subject] title names someone ('Marlene Webber' in 'Marlene Webber - Sessão Solene em homenagem aos 80 anos do R') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 745eb8ba44449305 [named-subject] title names someone ('Christina Sparky' in 'Christina & Sparky, 26-02-11') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 14248e2292cc0a26 [vision] apparent age 75-90 centres on 82, outside cell band 50-59 [cached]
+  ✗ caf5ed16d48fa7c8 [vision] reads as 'mx', cell wants 'wh' [cached]
+  ✗ 375d36c70903565c [named-subject] title names someone ('Ravanamma Yekollu' in 'Ravanamma Yekollu') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 1c9934bea0453806 [named-subject] title names someone ('Congresista Supa' in 'Congresista Supa comprobó falta de atención a la Comunidad E') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 765050da78391202 [named-subject] title names someone ('Philippines Old Woman' in 'Philippines Old Woman') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 0ee3e4e5d05094d9 [vision] apparent age 60-80 spans 20 years — too hedged to place in a band; visible watermark, logo or burned-in text [cached]
+  ✗ f839079936343f79 [vision] apparent age 65-80 centres on 72, outside cell band 50-59 [cached]
+  ✗ 9e9f1132096d039a [named-subject] title names someone ('Tyne Daly' in 'Tyne Daly by David Shankbone') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 79309914537259d8 [watermark] burned-in text screen: bottom-right d=0.2714 ratio=4.0 row=0.67 [cached]
+  ✗ e0232536877636ec [gone] HTTP 404 — the original is no longer served [cached]
+  ✗ d80cbb534c3439f8 [vision] apparent age 65-80 centres on 72, outside cell band 50-59 [cached]
+  ✗ c2ce0a1997dbbb80 [vision] apparent age 70-85 centres on 78, outside cell band 50-59; reads as 'hl', cell wants 'wh'; visible watermark, logo or burned-in text [cached]
+  ✗ 512bf346b7d26da0 [named-subject] title names someone ('Nell McCafferty' in 'Nell McCafferty') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ ae6eab5bc7ba0718 [watermark] burned-in text screen: bottom-strip d=0.0732 ratio=9.3 row=0.42 [cached]
+  ✗ 82eaa7637324946d [named-subject] title names someone ('Marcella LaFever Communication' in 'Marcella LaFever (Communication)') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 928c22eb25a5537d [named-subject] title names someone ('Gunnel Gustafsson Photo NordForsk Terje Heiestad' in 'Gunnel Gustafsson. Photo: NordForsk/Terje Heiestad') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ ea68b874ed10d01d [vision] apparent age 60-80 spans 20 years — too hedged to place in a band [cached]
+  ✗ 2b525bbb35416883 [named-subject] title names someone ('Julie Roberts' in 'Julie Roberts at NERAM') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ a29a9f56b0de1db9 [named-subject] title names someone ('Ski Lake Placid' in 'Classic XC Ski Lake Placid') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 5bcaff75adb387bf [named-subject] title names someone ('Jean Scott' in 'Jean Scott with washboard') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ bd4749135916c07b [gone] HTTP 404 — the original is no longer served [cached]
+  ✗ b603ed1c1ca05d90 [named-subject] title names someone ('Uptown PopUp Ro Brownies' in 'Uptown PopUp Ro Brownies') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ a612af0e08ddab9d [vision] apparent age 65-80 centres on 72, outside cell band 50-59 [cached]
+  ✗ ac118cc15ff678fd [watermark] burned-in text screen: bottom-left d=0.0721 ratio=17.8 row=0.47 [cached]
+  ✗ f035fc2743b0df2a [vision] apparent age 65-85 spans 20 years — too hedged to place in a band; face not clearly visible; face obscured (sunglasses/hands/shadow) [cached]
+  ✗ ca00a06219ad2769 [vision] apparent age 65-80 centres on 72, outside cell band 50-59 [cached]
+  ✗ e6f02fca280be306 [resolution] delivered file is 599x871 = 0.52MP short=599 (floor 1.0MP / 800px) [cached]
+  ✗ 5747237f815c4b67 [vision] apparent age 65-75 centres on 70, outside cell band 50-59 [cached]
+  ✗ ea48b37d2eef5488 [vision] apparent age 60-80 spans 20 years — too hedged to place in a band [cached]
+  ✗ f921dd6163e22348 [watermark] burned-in text screen: bottom-left d=0.1547 ratio=6.4 row=0.31 [cached]
+  ✗ 0bf883c2e43f7ff8 [named-subject] title names someone ('Chippenham Folk Festival' in 'Chippenham Folk Festival 2012 - Draou') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ eb25d69e2ac94899 [vision] apparent age 50-70 spans 20 years — too hedged to place in a band; face reads 'down-or-away' — the bank needs a frontal or three-quarter anchor
+  ✗ acfb270c0fa13d44 [named-subject] title names someone ('Broadway In Review' in 'Broadway In Review') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ bd78efe203524983 [vision] apparent age 75-90 centres on 82, outside cell band 50-59; reads as 'as', cell wants 'wh' [cached]
+  ✗ 6edc7f78f8f9fdf7 [named-subject] title names someone ('Einstein Baggy Pants' in 'Einstein Baggy Pants by Lucien Aigner (NOT)') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ b9c47a7b7dd6613f [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ 82e57ade3fb714ca [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ 1b8020d5a8d620a5 [vision] apparent age 50-70 spans 20 years — too hedged to place in a band; gender 'ambiguous' != cell 'female'; face not clearly visible; face obscured (sunglasses/hands/shadow) [cached]
+  ✗ c836b5dff8365169 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ 786cb60aceb7253f [vision] apparent age 70-85 centres on 78, outside cell band 50-59 [cached]
+  ✗ 76345448aabd314a [named-subject] title names someone ('Traditional Lithuanian' in 'Traditional Lithuanian weaving, Rumsiskes, 2008') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 03145a02239df7b6 [named-subject] title names someone ('Mom Turkey' in 'Mom Turkey') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 233e1255bd4d1d0a [vision] apparent age 80-95 centres on 88, outside cell band 50-59 [cached]
+  ✗ 2ec91a8ddbc8525d [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ 2669c21b9e5bbd0f [named-subject] title names someone ('Peabody Awards' in 'Peabody Awards') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 71c9f0c98bc7c024 [vision] apparent age 70-85 centres on 78, outside cell band 50-59 [cached]
+  ✗ 1dbae2b5d66a5b18 [vision] apparent age 70-85 centres on 78, outside cell band 50-59; reads as 'hl', cell wants 'wh' [cached]
+  ✗ 9fdefc1f7a23624d [vision] apparent age 60-85 spans 25 years — too hedged to place in a band; visible watermark, logo or burned-in text [cached]
+  ✗ ed555d6a4964f0d6 [named-subject] title names someone ('Cinza Pardo' in 'D52- Cinza Pardo - Grey Season') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 984b4b641d9466b0 [named-subject] title names someone ("Mom's Visit" in "Mom's Visit to NOLA") — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 85f165ab26f457c2 [named-subject] title names someone ('Just After Biking' in 'Just After Biking') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 30219bb986d50f65 [vision] apparent age 65-80 centres on 72, outside cell band 50-59 [cached]
+  ✗ 21a5a22d77b8f79a [named-subject] title names someone ('Broadway In Review' in 'Broadway In Review') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ cccc841e181a01b1 [vision] apparent age 80-95 centres on 88, outside cell band 50-59 [cached]
+  ✗ 3d24ee9ec9693c64 [vision] apparent age 55-75 spans 20 years — too hedged to place in a band [cached]
+  ✗ d706c98862b75751 [named-subject] title names someone ('Leaving Vienna' in 'Leaving Vienna...') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ d761344806b65c69 [named-subject] title names someone ('Nadapa Rabari' in 'Nadapa Rabari #3') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ c952288acb5f94c6 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ e3f4c544868d59e7 [named-subject] title names someone ('Susan Gaertner' in 'Susan Gaertner - DFL Gubernatorial Debate') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ c5efbc7cbedf91bd [named-subject] title names someone ('Margaret Ford' in 'Margaret Ford, chair OPLG') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 6f1c5e43842573d3 [named-subject] title names someone ('Waiting Room Nap' in 'Waiting Room Nap') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ f0441d885905c979 [named-subject] title names someone ('Marna Borgstrom' in 'Marna Borgstrom') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ acf1820b8c2e0503 [named-subject] title names someone ('Mary Jo' in 'Mary Jo II') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 315977d3a6ee6802 [vision] apparent age 65-80 centres on 72, outside cell band 50-59 [cached]
+  ✗ 32bc2bf5b6a3583e [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600) [cached]
+  ✗ 72ba78262f10bbaa [named-subject] title names someone ('Civic Federation Monthly Meeting' in 'Civic Federation Monthly Meeting -- Candidates Night') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ ac0a4d1b55fdc01d [named-subject] title names someone ('Human Rights Training Conference Plenary Luncheon' in 'Human Rights Training Conference Plenary Luncheon - 2014') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ bd10fa9ff822ee76 [named-subject] title names someone ('Amy James House' in 'Amy & James House') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ d7381ab409005291 [named-subject] title names someone ('Akha Smile' in 'Akha Smile for 16 Baht') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ a50590804f2c3cb9 [vision] apparent age 45-65 spans 20 years — too hedged to place in a band; reads as 'as', cell wants 'wh' [cached]
+  ✗ 1cd4dc3c200237ec [named-subject] title names someone ('Neomi Guron Personal Collage Artist' in 'Neomi Guron: Personal Collage Artist') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 34eabfbfc6812fab [vision] apparent age 40-55 centres on 48, outside cell band 50-59 [cached]
+  ✗ 6e06afa3e0200967 [watermark] burned-in text screen: top-right d=0.2850 ratio=27.4 row=0.55 [cached]
+  ✗ fc13fefb299a5e44 [vision] apparent age 50-70 spans 20 years — too hedged to place in a band [cached]
+  ✗ d00e6b4237dc5111 [vision] apparent age 40-60 spans 20 years — too hedged to place in a band; face not clearly visible; face reads 'profile' — the bank needs a frontal or three-quarter anchor
+  ✗ 62bbcd8c1e72ca3d [vision] not a camera photograph (AI/CGI/illustration); apparent age 70-90 spans 20 years — too hedged to place in a band; reads as 'as', cell wants 'wh'; visible watermark, logo or burned-in text [cached]
+  ✗ 86097410faa5bf30 [named-subject] title names someone ('Margaret Stanhope' in 'Margaret Stanhope') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 61d4d596b7dca2c4 [named-subject] title names someone ('Meg Tuthill' in 'Meg Tuthill — 10th Ward City Council Candidate Forum') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ c3b73592fe415aaa [vision] apparent age 65-80 centres on 72, outside cell band 50-59; face reads 'down-or-away' — the bank needs a frontal or three-quarter anchor
+  ✗ 37ad5d4c36b76bf2 [named-subject] title names someone ('Britt Bohlin Secretary General' in 'Britt Bohlin, Secretary General of the Nordic Council') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ be7ee91f896798f6 [named-subject] title names someone ('Presidenta Bachelet' in 'Presidenta Bachelet realizó un punto de prensa luego de part') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 4bf2fa01111a3781 [named-subject] title names someone ('Taong Putik Series Bibiclat Aliaga Nueva Ecija' in 'Taong Putik Series (Bibiclat, Aliaga, Nueva Ecija)') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 0d3df1918b95b242 [vision] apparent age 60-80 spans 20 years — too hedged to place in a band; reads as 'as', cell wants 'wh'; face not clearly visible; face reads 'down-or-away' — the bank needs a frontal or three-quarter anchor; eyes are closed — ima2 anchors identity on ref.jpg and there is no iris in it to anchor on
+  ✗ e50195f6f3ae9300 [named-subject] title names someone ('Clarissa Brown Coofier' in 'Clarissa Brown Coofier 33 of 53') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 2b7830f537e29858 [resolution] delivered file is 1024x768 = 0.79MP short=768 (floor 1.0MP / 800px)
+  ✗ fc4c5fcd177db82f [named-subject] title names someone ('Radical Makeover' in 'Radical Makeover') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 0aadd31735df17b0 [named-subject] title names someone ('Virginia Sutter' in 'Virginia Sutter, executive director at Blue Mountain Associa') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 63e83e12cbc6b5e0 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600)
+  ✗ 722573934b53d4ac [vision] apparent age 65-80 centres on 72, outside cell band 50-59
+  ✗ b8ba76c55a3b0381 [resolution] delivered file is 552x787 = 0.43MP short=552 (floor 1.0MP / 800px)
+  ✗ ce4a7d9bfeaac1d6 [resolution] delivered file is 787x591 = 0.47MP short=591 (floor 1.0MP / 800px)
+  ✗ 001c84cacc395ecd [named-subject] title names someone ('Whitley Bay' in 'Linda at Whitley Bay 1') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ a99155f23ba94544 [resolution] delivered file is 720x960 = 0.69MP short=720 (floor 1.0MP / 800px)
+  ✗ e5b87602a5d735e7 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600)
+  ✗ 222a383653c65184 [named-subject] title names someone ('Miss Redpath Chris Killip' in '63.7 Miss Redpath, Chris Killip') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 54e40257d7bdf656 [vision] apparent age 35-50 centres on 42, outside cell band 50-59; face not clearly visible; face obscured (sunglasses/hands/shadow); visible watermark, logo or burned-in text
+  ✗ 21339cc38c01163a [resolution] delivered file is 1024x768 = 0.79MP short=768 (floor 1.0MP / 800px)
+  ✗ 8811c2935581299a [vision] apparent age 60-75 centres on 68, outside cell band 50-59; reads as 'as', cell wants 'wh'
+  ✗ 4a4b8e172380755a [named-subject] title names someone ('Donatella Versace Time Shankbone' in 'Donatella Versace Time Shankbone 2010') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 4d6e586499526469 [vision] apparent age 70-85 centres on 78, outside cell band 50-59
+  ✗ fa1dda16747687d5 [named-subject] title names someone ('Linus Ava Helen Archives' in 'In the Linus & Ava Helen Archives / OSU / Corvallis') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ 0c7ac225eb1a5530 [named-subject] title names someone ('Jean Benett' in 'Jean Benett') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ fc46c57668acc03c [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600)
+  ✗ 25656782472ba576 [named-subject] title names someone ('Old Woman' in 'Old Woman') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✗ d29fdeac3b429b18 [monochrome] greyscale — no colour to anchor skin tone or lighting on (coloured-pixel fraction 0.00000 (floor 0.00100))
+  ✗ e226ab9022566b15 [gone] HTTP 404 — the photograph is no longer served (tried flickr-2048, flickr-1600)
+  ✗ b91827fdd655f2f4 [resolution] delivered file is 888x836 = 0.74MP short=836 (floor 1.0MP / 800px)
+  ✗ 36fb93eec9262274 [vision] apparent age 70-95 spans 25 years — too hedged to place in a band; reads as 'as', cell wants 'wh'
+  ✗ 7283e2ddc74d09f8 [named-subject] title names someone ('Bienal Internacional' in '23ª Bienal Internacional do Livro de São Paulo') — the caption is the one piece of evidence a vision model never sees, and a named subject is precisely the publicity-rights claim a CC licence does not grant
+  ✓ 5bbb71de6e90b7dc [accept] → f5059-wh-01  1536x2048 3.15MP CC BY 2.0 by machiya
+
+✓ index.json updated (+1 personas as PENDING, atomic, re-read before write)
+
+examined 114 candidate(s), accepted 1 of 1 wanted — stopped: reached the fetch target
+These passed the MACHINE gates only. They are status="pending" and the picker will not hero them. Kevin's approval is what flips them to active.

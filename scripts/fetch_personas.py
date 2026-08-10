@@ -864,6 +864,8 @@ VISION_RUBRIC = (
     '"visible_text_or_watermark": true|false, "recognizable_public_figure": true|false, '
     '"is_monochrome_or_period": true|false, '
     '"face_angle_reads": "frontal"|"three-quarter"|"profile"|"down-or-away", '
+    '"eyes_open": true|false, "head_upright": true|false, '
+    '"head_size_reads": "tiny"|"portrait"|"fills-frame", '
     '"studio_or_press_context": true|false, '
     '"official_or_representative_capacity": true|false, '
     '"identifying_text_in_frame": true|false, "minor_in_frame": true|false, '
@@ -879,7 +881,21 @@ VISION_RUBRIC = (
     "cheeks visible, squarely toward camera), three-quarter (turned partly away, the far eye "
     "still visible), profile (side-on, only one eye visible), down-or-away (chin dropped "
     "toward the chest, head turned past profile, or the face otherwise not readable as a "
-    "portrait). studio_or_press_context: true for a seamless studio backdrop, a professional "
+    "portrait). Judge face_angle_reads on which way the head is TURNED, ignoring any tilt of "
+    "the head within the frame; head_upright asks about the tilt separately. "
+    "eyes_open: are BOTH eyes open, with the irises visible? false for eyes shut, mid-blink, "
+    "squinted closed, asleep, or hidden behind hair or shadow. "
+    "head_upright: is the head roughly upright in the frame - the crown toward the top edge, "
+    "the chin toward the bottom - as it would be for someone standing or sitting? false when "
+    "the person is lying down, reclining, or the head is rolled far enough to one side that "
+    "the eye line is closer to vertical than horizontal. "
+    "head_size_reads: how much of the image's HEIGHT does the head span, crown to chin - "
+    "\"tiny\" under about a tenth (the person is an element of a wider scene: a street, a "
+    "crowd, a car park), \"portrait\" about a tenth to about two thirds, \"fills-frame\" more "
+    "than about two thirds (a close-up where the head is cropped by the edges or nearly so). "
+    "Judge the HEAD, not the body: a full-length standing figure that fills the frame "
+    "top to bottom still has a tiny head. "
+    "studio_or_press_context: true for a seamless studio backdrop, a professional "
     "headshot, a stage or podium, a press conference, a red carpet or any other posed "
     "media-production setting. "
     "official_or_representative_capacity: is the subject shown ACTING FOR someone other than "
@@ -950,9 +966,31 @@ ETHNICITY_GROUP_TO_KEY = {
 # the boolean beside it said no. The fix is a sharper question, not a better model — and the
 # reason to ask rather than to keyword-scan the notes is that a question has a defined answer
 # and prose does not.
+#
+# The third batch, added after the first face this harvest accepted turned out to be a woman
+# ASLEEP ON A BEACH, photographed from above with her head rolled flat onto the sand. Every
+# boolean on it read correctly — one subject, colour, camera photograph, no minor, no text, no
+# official capacity, not filtered, age 35-50 into a 40-49 cell — and the notes said so out loud:
+# "Woman resting on sand with eyes closed." The gate had no question it could fail.
+#
+#   eyes_open. Nothing in the rubric asked. face_clearly_visible is about occlusion, and her
+#   face is not occluded; it is simply not awake. A hero banner anchored on shut eyes gives ima2
+#   no iris to reproduce, and a supplement ad whose model appears unconscious is its own problem.
+#
+#   head_upright. face_angle_reads was answered "frontal" and that was FAIR: the head is squarely
+#   toward the lens. The definition speaks to which way the head is TURNED — yaw — and says
+#   nothing about roll, so a head lying sideways is frontal by the letter of it. But the 21-angle
+#   vocabulary the never-repeat rule rotates through is yaw x pitch with no roll axis at all, so
+#   a rolled ref makes every one of the 21 requests a request to invent an orientation the model
+#   was never shown. Exactly the argument FACE_ANGLE_ACCEPTED already makes against profiles,
+#   arriving down the axis nobody had named.
+#
+# Both are questions about what the photograph SHOWS, which is the only kind this gate has any
+# business asking — the same correction as 9299e86, on a third axis.
 VISION_RUBRIC_KEYS_ADDED = ("is_monochrome_or_period", "face_angle_reads",
                             "official_or_representative_capacity",
-                            "identifying_text_in_frame", "minor_in_frame")
+                            "identifying_text_in_frame", "minor_in_frame",
+                            "eyes_open", "head_upright", "head_size_reads")
 # A profile ref makes most of the 21-angle vocabulary unreachable: article_images.py anchors
 # identity on ref.jpg, and asking ima2 for `front-level` from a 90-degree profile is asking it
 # to invent the half of the face it was never shown. f3039-wh-06 is exactly that photograph.
@@ -1186,6 +1224,23 @@ def evaluate_vision(v, cell):
         # from a roster — and ima2 anchors on ref.jpg, so it will try to reproduce the lettering
         # into the generated frame as well.
         reasons.append("frame carries text identifying a person, team, employer or private event")
+    # `is False`, not `not ... is True`: on these two the GOOD answer is true, so an absent key
+    # has to fall through as "not asked" the same way the others do. Reversing the test would
+    # quietly fail every one of the 1,279 readings taken before today.
+    if v.get("eyes_open") is False:
+        reasons.append("eyes are closed — ima2 anchors identity on ref.jpg and there is no iris "
+                       "in it to anchor on")
+    if v.get("head_upright") is False:
+        reasons.append("head is rolled or the subject is lying down — the 21-angle vocabulary is "
+                       "yaw x pitch with no roll axis, so every angle asked of this ref would be "
+                       "an orientation it never showed")
+    if str(v.get("head_size_reads") or "").strip().lower() == "tiny":
+        # Only the small tail is refused. "fills-frame" is a wide-angle selfie and it carries
+        # MORE face than the bank needs, which is a realism complaint about lens distortion and
+        # not an identity one — the body and the scene come from the prompt regardless.
+        reasons.append("head spans under a tenth of the frame — the person passed the corpus's "
+                       "0.10 BOX-area floor as a full-length figure in a wide scene, which is "
+                       "not the same thing as having a face to anchor on")
     if v.get("minor_in_frame") is True:
         # A child cannot consent and their guardian has not been asked, so this one is a floor
         # rather than a preference — the same reasoning as MIN_APPARENT_AGE, arriving by way of
@@ -2941,6 +2996,7 @@ def cmd_selftest(_args):
             "face_obscured": False, "beauty_filtered": False,
             "visible_text_or_watermark": False, "recognizable_public_figure": False,
             "is_monochrome_or_period": False, "face_angle_reads": "three-quarter",
+            "eyes_open": True, "head_upright": True, "head_size_reads": "portrait",
             "studio_or_press_context": False,
             "official_or_representative_capacity": False,
             "identifying_text_in_frame": False, "minor_in_frame": False,
@@ -2961,10 +3017,22 @@ def cmd_selftest(_args):
                           "minister at a lectern / faculty portrait / uniform rejected"),
                          ({"identifying_text_in_frame": True},
                           "team jersey or someone's party shirt rejected"),
-                         ({"minor_in_frame": True}, "child anywhere in the frame rejected")):
+                         ({"minor_in_frame": True}, "child anywhere in the frame rejected"),
+                         ({"eyes_open": False}, "asleep / eyes shut rejected"),
+                         ({"head_upright": False}, "lying down / head rolled sideways rejected"),
+                         ({"head_size_reads": "tiny"},
+                          "person small in a wide scene rejected — no face to anchor on")):
         v = dict(good)
         v.update(tweak)
         check(label, evaluate_vision(v, cell) != [])
+    # f4049-wh-01 exactly: the reading the old rubric had no question to fail. Every boolean it
+    # could answer was the right answer, and the photograph was a woman asleep on sand.
+    check("the sleeping-on-a-beach reading is refused now and was accepted before",
+          evaluate_vision(dict(good, face_angle_reads="frontal", apparent_age_min=35,
+                               apparent_age_max=50, apparent_gender="female",
+                               eyes_open=False, head_upright=False),
+                          dict(cell, gender="female", age_band="40-49",
+                               cell_id="f4049-wh")) != [])
     check("frontal accepted", evaluate_vision(dict(good, face_angle_reads="frontal"), cell) == [])
     check("unparseable vision output rejected (fails CLOSED, unlike article_images.py)",
           evaluate_vision(None, cell) != [])

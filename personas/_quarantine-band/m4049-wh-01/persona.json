@@ -37,8 +37,8 @@
   "vision": {
    "is_camera_photograph": true,
    "person_count": 1,
-   "apparent_age_min": 40,
-   "apparent_age_max": 55,
+   "apparent_age_min": 45,
+   "apparent_age_max": 60,
    "apparent_gender": "male",
    "face_clearly_visible": true,
    "face_obscured": false,
@@ -47,20 +47,25 @@
    "recognizable_public_figure": false,
    "is_monochrome_or_period": false,
    "face_angle_reads": "three-quarter",
+   "eyes_open": true,
+   "head_upright": true,
+   "head_size_reads": "fills-frame",
    "studio_or_press_context": false,
    "official_or_representative_capacity": false,
    "identifying_text_in_frame": false,
    "minor_in_frame": false,
-   "apparent_ethnicity": "white european",
+   "apparent_ethnicity": "White",
    "ethnicity_group": "white",
-   "notes": "Close-up outdoor shot of a man wearing a bucket hat."
+   "notes": "Close-up portrait outdoors."
   },
   "rubric_refreshed": "2026-08-10"
  },
- "approved_by": "claude-opus-5",
+ "approved_by": null,
  "approved_date": "2026-08-10",
  "camera_notes": "indoor/ambient available light, real skin texture \u2014 always camera-match; ALWAYS feed THIS ref.jpg, never a previous gen (each gen is another lossy re-reading; chaining them compounds the drift in everything BUT the identity, which ima2 holds onto \u2014 measured 2026-08-10)",
  "usage": "male-audience articles (ShilaSource, FusiForce); persona is VISUAL ONLY, never named in copy (byline stays the roster author)",
- "status": "active",
- "flag_reason": null
+ "status": "quarantined",
+ "flag_reason": "re-read at apparent age 45-60, centre 52 -> band 50-59. The PHOTOGRAPH is sound (close-up, eyes open, head upright, clear face, no identifying text); only the cell is wrong. --about pairing so the corpus re-admits it into m5059-wh, where the cached reading now replays free.",
+ "quarantined_date": "2026-08-10",
+ "rejection_is_about": "pairing"
 }
