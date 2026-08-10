@@ -202,7 +202,7 @@ separate Kevin decision, NOT covered by these tickets.
 - **Author:** (from roster.json)
 - **Dedup note:** sourcing + lab-testing articles exist — link them; no where-to-buy article (blog list checked 2026-08-07)
 
-## [ ] Ticket #13 — NEW ARTICLE (type: LISTICLE — organic presell format)
+## [DONE 2026-08-10 https://wellnessnest.co/blogs/news/how-to-choose-shilajit-gummies-7-checks-us-2026] Ticket #13 — NEW ARTICLE (type: LISTICLE — organic presell format)
 
 - **Format:** LISTICLE — numbered points, each = ONE pain/benefit tied to the mechanism, skimmable,
   soft CTA. Craft: `~/PATI/LLM-Wiki/30-creative/32-copy/7-advertorial-listicle-presell-framework.md`
