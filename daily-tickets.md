@@ -218,7 +218,7 @@ separate Kevin decision, NOT covered by these tickets.
 - **Author:** (from roster.json)
 - **Dedup note:** distinct from #8 (brand-comparison table) — this is criteria education; cross-link #8's article once live. No how-to-choose article exists (blog list checked 2026-08-07)
 
-## [ ] Ticket #14 — NEW ARTICLE (type: LISTICLE — organic presell format)
+## [DONE 2026-08-11 https://wellnessnest.co/blogs/news/fake-shilajit-6-signs-yours-isnt-real-us-2026] Ticket #14 — NEW ARTICLE (type: LISTICLE — organic presell format)
 
 - **Format:** LISTICLE — same craft source + gates as #13.
 - **Primary keyword:** `fake shilajit` (working title: "6 Signs Your Shilajit Is Fake — and How to Verify the Real Thing")
