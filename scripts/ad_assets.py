@@ -210,7 +210,13 @@ def main():
     if a.qc:
         passed, verdict = qc_gem9(final, refs, a.ugc, False)
         print(f"QC → {verdict}")
-        if not passed:
+        # qc_gem9 fails OPEN when gem9 returns no parseable verdict, and only
+        # fails CLOSED when a face is in frame. Nothing in this batch has a face
+        # by design, so on this lane that branch means a 9router hiccup returns
+        # PASS having compared nothing. That is a dropped gate wearing a gate's
+        # name. Paid creative goes in front of strangers on Google inventory, so
+        # an unrun check is a fail here and the image gets regenerated.
+        if not passed or "qc-inconclusive" in verdict:
             sys.exit(2)
 
     print(f"✓ {fmt} {size[0]}x{size[1]} {nbytes//1024}KB")
