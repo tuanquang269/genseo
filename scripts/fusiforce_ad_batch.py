@@ -53,11 +53,20 @@ def only(objects, extra=""):
 # chevron and invented diagonal stripes across the pouch face. a5 passed from
 # the same reference, so this is drift, not an impossible ask — it just has to
 # be called out in words, since prompt text beats the reference image.
-PACK_SHAPE = (" The white W emblem near the bottom-left of the pouch is a soft, rounded, "
-              "leaf-shaped double stroke exactly as in the reference photograph — NOT a sharp "
+# Round 2 note: the first version of this clause called the emblem a "soft,
+# rounded, leaf-shaped double stroke". The generator did exactly as told and
+# drew an actual two-leaf sprout on both geometries — my wording caused the
+# defect the clause existed to prevent. Describe the mark by what it IS (a
+# letter) and name the wrong readings explicitly; "leaf-shaped" is not a
+# description a generator can safely be handed.
+PACK_SHAPE = (" The white emblem near the bottom-left of the pouch is a stylised capital letter "
+              "W, built from two thick white diagonal strokes with a curved tapering flick on its "
+              "right arm, exactly as in the reference photograph. It is a LETTER W. It is NOT a "
+              "leaf, NOT two leaves, NOT a sprout, NOT a plant or foliage motif, NOT a sharp "
               "angular chevron and NOT a hard-edged geometric V. The pouch face carries no "
-              "diagonal stripes, no extra swoosh, and no background graphic that is not in the "
-              "reference. The wordmark reads exactly 'Wellness Nest' with no altered spelling.")
+              "diagonal stripes, no extra swoosh and no background graphic that is not in the "
+              "reference. The wordmark reads exactly 'Wellness Nest' — two words, no stray "
+              "letter before or after them.")
 
 # ugc=True is the phone-snapshot lane (imperfect framing, available light, grain).
 # The two pack-forward concepts (a5/b5) are the hero lane, matching how the two
