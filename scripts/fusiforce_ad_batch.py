@@ -23,6 +23,42 @@ PY = "/usr/bin/python3"
 LOG = "/Users/kevinkreative/genseo/tmp_images/fusiforce-ad-assets/_batch_log.json"
 PACK = "fusiforce-creatine-gummies"
 
+# Round 1 (2026-08-11) lost 8 of 20 images to the QC gate, and 6 of those 8 were
+# the same defect: asked for a kitchen, gym or bathroom scene, the generator
+# furnished it with a plausible branded supplement container. a2 got a "100%
+# WHEY" tub, b2 an orange-banded "...OTEIN" tub, b4 a branded soap dispenser.
+# This is the LIV PURE failure that article_images.PROMPT_SUFFIX already warns
+# about; its one-line "NO other branded product packaging in frame" is simply
+# not strong enough for scenes whose whole subject is a supplement routine.
+#
+# What works is not a stronger ban but a POSITIVE inventory: naming the only
+# objects allowed in frame leaves the generator nothing to fill space with.
+# Stated per concept, because "the only objects" has to list that concept's
+# actual objects to mean anything.
+# The ban is worded as "nothing BEYOND this list", never as a flat ban on
+# categories the list itself contains — b5's inventory legitimately includes a
+# water bottle, and "no bottle of any kind" on top of that is the same
+# self-contradicting prompt that made the hero lane average two conflicting
+# face instructions into a generic face.
+def only(objects, extra=""):
+    return (f" The ONLY objects anywhere in this image are: {objects}. Nothing beyond that list "
+            f"appears — no additional tub, jar, canister, bottle, dispenser, box, sachet, carton "
+            f"or packaged product, whether in the background, blurred, partly cropped at the "
+            f"edges, on a shelf, or in a reflection. No other brand's product appears anywhere, "
+            f"and no invented brand name is printed on anything.{extra}")
+
+
+# b5 failed both geometries on pack fidelity, on details the generic
+# PACK_FIDELITY clause does not name: it redrew the W emblem as a hard angular
+# chevron and invented diagonal stripes across the pouch face. a5 passed from
+# the same reference, so this is drift, not an impossible ask — it just has to
+# be called out in words, since prompt text beats the reference image.
+PACK_SHAPE = (" The white W emblem near the bottom-left of the pouch is a soft, rounded, "
+              "leaf-shaped double stroke exactly as in the reference photograph — NOT a sharp "
+              "angular chevron and NOT a hard-edged geometric V. The pouch face carries no "
+              "diagonal stripes, no extra swoosh, and no background graphic that is not in the "
+              "reference. The wordmark reads exactly 'Wellness Nest' with no altered spelling.")
+
 # ugc=True is the phone-snapshot lane (imperfect framing, available light, grain).
 # The two pack-forward concepts (a5/b5) are the hero lane, matching how the two
 # already-approved heroes were made.
@@ -41,20 +77,32 @@ CONCEPTS = {
         "square on the right, with tick and cross marks down each column in the same hand, and one "
         "item loosely circled. A faint brown coffee ring stains one corner. The ink bleeds very "
         "slightly into the napkin fibres. Shot on a table in available light, not scanned. The "
-        "marks read as handwriting from a distance but no letter or word is actually formed.")),
+        "marks read as handwriting from a distance but no letter or word is actually formed. "
+        "The right-hand drawing is a single small round gummy — do NOT draw a box, cube, tub or "
+        "package as one of the sketched items."
+        + only("the paper napkin, the bare wooden table top, and one plain dark ceramic mug"))),
     "a3": dict(ugc=True, pack=False, prompt=(
         "A plain unbranded plastic shaker bottle lying on its side in a stainless steel kitchen "
         "sink, lid off beside it, dried chalky white powder residue crusted on the inside wall and "
         "around the rim. Hard morning light through a window above the sink. A few water droplets "
         "in the basin. Completely blank bottle with no label, no logo, no printing, no brand name "
         "anywhere on it. Nothing staged, nothing branded, real domestic kitchen.")),
+    # REFRAMED from the brief. A4 was specified as a side-by-side — a bulky
+    # powder tub that will not fit beside the pouch that does. That needs a
+    # second package in frame, and QC rubric 3b fails any package that is not
+    # the referenced product, brandless or not (it failed both geometries in
+    # round 1, and the square render also misspelt our own wordmark). The rule
+    # behind 3b is Kevin's: never generate someone else's packaging. So the
+    # comparison is carried by the ARTEFACT instead of by a rival container —
+    # the pouch lying flat in a full case, the case still closing. The travel
+    # argument survives; the invented competitor tub does not.
     "a4": dict(ugc=True, pack=True, prompt=(
-        "An open carry-on suitcase on a made bed, packed with real creased clothes and a toiletry "
-        "bag. A large completely blank white plastic supplement tub sits awkwardly on top of the "
-        "clothes, plainly too bulky to fit — the lid pushes above the rim of the case. Tucked flat "
-        "beside the toiletry bag, fitting easily, is the product pouch. The white tub is entirely "
-        "unlabelled: no printing, no logo, no brand name, no text of any kind on it. Warm bedroom "
-        "light, handheld phone snapshot.")),
+        "An open carry-on suitcase on a made bed, tightly packed with real creased clothes and a "
+        "zipped fabric toiletry bag. The product pouch lies flat on top of the folded clothes, "
+        "slim enough that it takes almost no room and the lid would still close. Warm bedroom "
+        "light through a window, handheld phone snapshot, slightly off-level framing."
+        + only("the open suitcase, folded clothes, a zipped fabric toiletry bag, the bed linen, "
+               "and the product pouch itself"))),
     "a5": dict(ugc=False, pack=True, prompt=(
         "A dark stone kitchen counter in real window light. On the left stands the product pouch, "
         "upright and facing the camera. On the right sits a stainless steel scoop heaped with "
@@ -74,7 +122,9 @@ CONCEPTS = {
         "margin. A pair of reading glasses rests at the edge of the frame, and a mug sits just out "
         "of focus behind. Warm afternoon kitchen light. The writing reads as real handwriting from "
         "a distance but no letter, word or number is actually formed — only indistinct pen "
-        "strokes.")),
+        "strokes."
+        + only("the open spiral notebook, a pair of reading glasses, one plain unmarked ceramic "
+               "mug, and the bare wooden table top"))),
     "b3": dict(ugc=True, pack=False, prompt=(
         "Looking up a domestic wooden staircase from the bottom step. A woman's hand rests on the "
         "banister rail in the lower part of the frame — the hand and a little of the forearm only, "
@@ -85,12 +135,19 @@ CONCEPTS = {
         "with a phone. Three short handwritten lines on the note in blue ink, the bottom line "
         "underlined twice. The mirror reflects an ordinary bathroom behind — tiles, a towel on a "
         "rail — with no person and no reflection of a camera or phone anywhere. Soft daylight. The "
-        "note reads as handwriting from a distance but no letter or word is actually formed.")),
+        "note reads as handwriting from a distance but no letter or word is actually formed."
+        + only("the yellow sticky note, the mirror, plain wall tiles, and one plain towel on a "
+               "rail", extra=" In particular there is no soap dispenser, no pump bottle, no "
+               "shampoo, no toothpaste and no toiletry of any kind, on any surface or in the "
+               "reflection."))),
     "b5": dict(ugc=False, pack=True, prompt=(
         "A wooden gym bench in a bright home training space. The product pouch stands upright on "
         "the bench, facing the camera. Beside it lie a tightly rolled exercise mat, two small hex "
         "dumbbells, a plain unbranded stainless water bottle, and a neatly folded towel. Natural "
-        "daylight from a large window, soft shadows on the wood. No people, no hands.")),
+        "daylight from a large window, soft shadows on the wood. No people, no hands."
+        + PACK_SHAPE
+        + only("the wooden bench, a rolled exercise mat, two hex dumbbells, one plain unmarked "
+               "stainless steel water bottle, a folded towel, and the product pouch itself"))),
 }
 
 
