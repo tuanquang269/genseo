@@ -216,6 +216,105 @@ def degrade_grain(png_path):
     im.save(png_path)
 
 
+# Cloudflare (cloudflared, in front of staff.patiagency.com) gives up on a slow upstream at ~90s
+# and answers 502. The judge payload is base64 inside a JSON body, so upstream wall-clock scales
+# with ref bytes. Measured 2026-08-12 against cx/gpt-5.6-luna, same rubric shape:
+#   180KB of refs → 19s, verdict.   260KB → 45s, verdict.   460KB → 502 after 90s.
+# The refs this pipeline actually hands the judge are far past that: curated pack shots reach
+# 918KB (premium-himalayan-shilajit-gummies.png) and persona ref.jpg reaches 1.1MB, so a hero QC
+# — candidate + pack + face — was a ~2MB body and could not be judged AT ALL. From the call site
+# that is indistinguishable from a quota outage: no VERDICT line. And on a face the gate fails
+# CLOSED, so it burns all three rolls without a single real verdict, which is exactly the shape
+# of the two runs that failed to deliver.
+#
+# So the judge gets its own downscaled copies. This does NOT touch what the GENERATOR sees —
+# gen_png still receives the full-resolution refs, where packaging and skin detail decide the
+# output. The rubric only asks whether a wordmark reads the same and where a head points; 768px
+# answers both. Copies are cached on (name, mtime, size, budget) so a re-roll re-encodes nothing.
+JUDGE_PAYLOAD_BYTES = 280 * 1024      # under the measured ~300KB tunnel ceiling
+JUDGE_CACHE = os.path.join(OUT_ROOT, "judge_refs")
+
+
+def judge_ref(path, budget):
+    """A copy of `path` small enough to survive the tunnel. Returns `path` itself if it already
+    is, or if Pillow is unavailable — a full-size ref that might time out still beats no gate."""
+    try:
+        if os.path.getsize(path) <= budget:
+            return path
+        st = os.stat(path)
+    except OSError:
+        return path
+    key = re.sub(r"[^A-Za-z0-9]+", "-", os.path.basename(path))[:60]
+    dest = os.path.join(JUDGE_CACHE, f"{key}-{int(st.st_mtime)}-{st.st_size}-{budget}.jpg")
+    if os.path.exists(dest):
+        return dest
+    try:
+        from PIL import Image
+        os.makedirs(JUDGE_CACHE, exist_ok=True)
+        im = Image.open(path).convert("RGB")
+        for edge, q in ((768, 80), (640, 72), (512, 65), (448, 60)):
+            small = im.copy()
+            small.thumbnail((edge, edge), Image.LANCZOS)
+            small.save(dest, "JPEG", quality=q, optimize=True)
+            if os.path.getsize(dest) <= budget:
+                break
+        return dest
+    except Exception as exc:                                   # noqa: BLE001 — never block the gate
+        print(f"  ⚠ judge-ref downscale failed for {path} ({exc}) — sending it full size", flush=True)
+        return path
+
+
+def judge_images(webp_path, refs):
+    """Candidate first (the rubric says "the FIRST image"), then refs inside the byte budget."""
+    if not refs:
+        return [webp_path]
+    try:
+        spent = os.path.getsize(webp_path)
+    except OSError:
+        spent = MAX_BYTES
+    per_ref = max((JUDGE_PAYLOAD_BYTES - spent) // len(refs), 50 * 1024)
+    return [webp_path] + [judge_ref(r, per_ref) for r in refs]
+
+
+# The judge ladder, most-preferred first. Fixed and declared HERE, not chosen per call.
+#
+# On 2026-08-12 both scheduled runs died on the same thing: gem9's default `ag/gemini-3.1-pro-low`
+# returned 429 RESOURCE_EXHAUSTED for the whole run (every `ag/*` model did), qc fails CLOSED on a
+# face, so the hero could not be verified at all and the run burned all three rolls on a judge that
+# never answered. `cx/gpt-5.6-luna` answered the identical rubric on the same subscription at $0.
+#
+# The 08:47 run flagged the real hazard in its own report: "swapping the judge model changes gate
+# strictness, so I did not keep swapping until something passed." That is why this is a LADDER and
+# not a retry loop. A verdict — PASS or FAIL — ends it immediately; we step down only when the judge
+# did not answer at all (429 / 5xx / timeout / no VERDICT line), which is a transport failure, not a
+# lenient judge. Worst case is two calls per image, in a fixed order, and the reason string names
+# which judge actually spoke so a verdict is never anonymous.
+QC_JUDGES = ["ag/gemini-3.1-pro-low", "cx/gpt-5.6-luna"]
+
+
+def qc_judges():
+    """Ladder for this process. GEM9_MODEL moves a judge to the front; it does not disable the
+    fallback — GEM9_MODEL is a global gem9 variable shared with every other caller, so honouring
+    it as a hard pin would let an unrelated `export` silently take the gate back to one judge."""
+    pinned = os.environ.get("GEM9_MODEL")
+    if not pinned:
+        return list(QC_JUDGES)
+    return [pinned] + [m for m in QC_JUDGES if m != pinned]
+
+
+def run_judge(model, prompt, images):
+    """One rubric call. Returns (verdict_or_None, raw_output). None means the judge did not
+    answer — caller steps down the ladder; it must NOT be read as a FAIL."""
+    try:
+        res = subprocess.run([GEM9, "-m", model, "-p", prompt, *images],
+                             capture_output=True, text=True, timeout=180)
+    except subprocess.TimeoutExpired:
+        return None, "timed out after 180s"
+    out = (res.stdout or "") + (res.stderr or "")
+    m = re.search(r"VERDICT:\s*(PASS|FAIL[^\n]*)", out)
+    return (m.group(1) if m else None), out
+
+
 def qc_gem9(webp_path, refs, is_ugc, has_persona, angle_phrase=None):
     """Vision QC via gem9 (9router subscription — per PATI rule, never per-token).
     Returns (passed, reason)."""
@@ -262,23 +361,26 @@ def qc_gem9(webp_path, refs, is_ugc, has_persona, angle_phrase=None):
                           "the angle is spent for this model whether or not it was rendered, so a "
                           "wrong angle costs a real angle and gets a repeat that the bookkeeping "
                           "will show as unique." % angle_phrase)
-    res = subprocess.run([GEM9, "-p", "\n".join(rubric), webp_path, *refs],
-                         capture_output=True, text=True, timeout=180)
-    out = (res.stdout or "") + (res.stderr or "")
-    m = re.search(r"VERDICT:\s*(PASS|FAIL[^\n]*)", out)
-    if not m:
-        # Fail OPEN for the cosmetic checks — a 9router hiccup should not abort a whole run over
-        # framing. Fail CLOSED when a face is in frame. The reason changed on 2026-08-10 but the
-        # answer did not: the face branch now carries the head-angle check, and a face angle is
-        # spent for that model the moment it is committed, whether or not the generator actually
-        # rendered it. So an unverified face image does not cost a re-roll, it costs one of 21
-        # irreplaceable angles — and leaves a repeat that the bookkeeping will report as unique.
-        # A gate that returns PASS when it did not run is not a gate.
-        if has_persona:
-            return False, f"qc-inconclusive with a face in frame ({out.strip()[-120:]})"
-        return True, f"qc-inconclusive ({out.strip()[-120:]})"
-    v = m.group(1)
-    return v.startswith("PASS"), v
+    prompt, images, tried = "\n".join(rubric), judge_images(webp_path, refs), []
+    for model in qc_judges():
+        verdict, out = run_judge(model, prompt, images)
+        if verdict:
+            # Name the judge. Two models can sit behind one verdict now, and a FAIL reason that
+            # does not say who wrote it cannot be argued with afterwards.
+            return verdict.startswith("PASS"), f"{verdict} [{model}]"
+        tried.append(f"{model}: {out.strip()[-100:]}")
+    # Every judge on the ladder stayed silent — the gate did not run.
+    # Fail OPEN for the cosmetic checks — a 9router hiccup should not abort a whole run over
+    # framing. Fail CLOSED when a face is in frame. The reason changed on 2026-08-10 but the
+    # answer did not: the face branch now carries the head-angle check, and a face angle is
+    # spent for that model the moment it is committed, whether or not the generator actually
+    # rendered it. So an unverified face image does not cost a re-roll, it costs one of 21
+    # irreplaceable angles — and leaves a repeat that the bookkeeping will report as unique.
+    # A gate that returns PASS when it did not run is not a gate.
+    detail = " | ".join(tried)
+    if has_persona:
+        return False, f"qc-inconclusive with a face in frame ({detail})"
+    return True, f"qc-inconclusive ({detail})"
 
 
 CURATED_ROOT = os.path.expanduser("~/genseo/product_refs")

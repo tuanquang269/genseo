@@ -61,13 +61,22 @@ STANDING APPROVALS (Kevin, 2026-08-08 — this run is unattended, never pause to
 
 CONTEXT HYGIENE (a run died on "input exceeds the context window", 2026-08-09): never Read a whole large file — use offset/limit chunks for anything over ~500 lines; never cat/tail entire logs or HTML dumps; read only the sections of skill references you need. If a tool result looks huge, summarize and move on instead of re-reading it.'
 
+# Both lanes get the same grant, declared once so they cannot drift apart.
+# WebSearch added 2026-08-12. It was missing, and its absence was silent: the skill's STEP 2
+# (long-tail / question-keyword expansion) and STEP 3 (competitor SERP + People-Also-Ask harvest)
+# both run on WebSearch, so in the cron lane they were structurally impossible. Runs did not fail
+# on it — they wrote the article from the ticket brief alone and mentioned it at the bottom of the
+# report ("WebSearch permission wasn't granted"), which is the worst failure mode available: every
+# unattended article shipped without the SERP research the skill says it is built on.
+ALLOWED_TOOLS="Read,Write,Edit,Bash,Glob,Grep,WebFetch,WebSearch"
+
 echo "=== GenSeo ticket run $STAMP ===" >> "$LOGDIR/articles-$STAMP.log"
 if [ "$USE_NATIVE" = "1" ]; then
   echo "(lane: native subscription via CLAUDE_CONFIG_DIR=$GENSEO_CFG)" >> "$LOGDIR/articles-$STAMP.log"
   CLAUDE_CONFIG_DIR="$GENSEO_CFG" "$CLAUDE_BIN" -p "$PROMPT" \
     --model opus \
     --output-format text \
-    --allowed-tools "Read,Write,Edit,Bash,Glob,Grep,WebFetch" \
+    --allowed-tools "$ALLOWED_TOOLS" \
     >> "$LOGDIR/articles-$STAMP.log" 2>&1
   RC=$?
 else
@@ -79,7 +88,7 @@ else
   "$CLAUDE_BIN" -p "$PROMPT" \
     --model opus \
     --output-format text \
-    --allowed-tools "Read,Write,Edit,Bash,Glob,Grep,WebFetch" \
+    --allowed-tools "$ALLOWED_TOOLS" \
     >> "$LOGDIR/articles-$STAMP.log" 2>&1
   RC=$?
 fi

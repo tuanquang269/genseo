@@ -28,7 +28,13 @@ def get(url):
 
 def main():
     arts = []
-    for blog in ('104008483131', '104008483131'):
+    # Was hardcoded as ('104008483131', '104008483131') — the same blog listed twice, so every
+    # article landed in the cache twice (96 rows / 48 real articles as of 2026-08-07). Harmless
+    # for the substring dedup checks, misleading for anything that counts. Ask Shopify instead:
+    # the store has exactly one blog today (news), and a second one would now be picked up
+    # automatically rather than needing this literal edited.
+    blogs, _ = get(f"{API}/blogs.json?limit=250&fields=id,handle")
+    for blog in [str(b['id']) for b in blogs['blogs']]:
         url = f"{API}/blogs/{blog}/articles.json?limit=250&fields=id,title,handle"
         while url:
             d, link = get(url)

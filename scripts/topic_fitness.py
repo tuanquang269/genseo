@@ -79,6 +79,14 @@ SEGMENT_MODIFIERS = [
  'for men','for women','for beginners','for seniors','for athletes','for runners','for fertility',
  'over 40','over 50','over 60','side effects','dosage','how to take','how much','how long',
  'vs','versus','before bed','morning or night','empty stomach','with food',
+ # Buy intent, added 2026-08-12. It was missing, and the omission was expensive: "where to buy
+ # wellness nest shilajit" hit the 'covered' branch as a hard FAIL — write nothing — even though
+ # no live title covers buy intent (checked: 0 of 61 articles contain "where to buy", "buy",
+ # "price" or "cost"). Every other distinct intent here gets REVIEW, i.e. "write it only if the
+ # ticket brief greenlit this exact topic", which is the correct answer for a commercial-intent
+ # page that no existing article competes with. This does NOT loosen cannibalisation: the moment
+ # one buy-intent article exists, seg_taken flips and the branch goes back to FAIL.
+ 'where to buy','where can i buy','buy','price','cost','how much does',
 ]
 # category head-terms a COLLECTION owns — a new article cannibalises them
 COLLECTION_HEADTERMS = [
@@ -188,6 +196,12 @@ def _load(path, default):
         return default
 
 
+_SEG_FIXTURE = [
+    {'title': 'Shilajit Resin: What It Is and How to Use It', 'handle': 'shilajit-resin-guide'},
+    {'title': 'Shilajit Benefits for Women: What Changes After 40', 'handle': 'shilajit-women-40'},
+]
+
+
 def self_check():
     arts = _load(f"{ROOT}/existing_articles.json", [])
     # (topic, sg_imp, articles, want). PASS cases use [] to test the winner-shape logic in isolation
@@ -202,7 +216,11 @@ def self_check():
         ("some niche topic", 5, arts, 'FAIL'),                        # demand floor
         ("KSM-66 Ashwagandha US: Benefits & Dosage", None, arts, 'REVIEW'),  # ingredient gap, no brand
         ("shilajit benefits for health and vitality", None, arts, 'FAIL'),   # brand+topic we already cover
-        ("shilajit benefits for men", None, arts, 'REVIEW'),   # audience segment no existing title owns
+        # Both covered-segment branches, on a FIXTURE not the live catalog. This case used to run
+        # against `arts` and silently went stale the moment we published "Shilajit Benefits for
+        # Men" — the gate was then right and the test was wrong, which is the worst way round.
+        ("shilajit benefits for men", None, _SEG_FIXTURE, 'REVIEW'),   # segment no existing title owns
+        ("shilajit benefits for women", None, _SEG_FIXTURE, 'FAIL'),   # segment an existing title owns
         ("meiji high protein milk nutrition facts", None, arts, 'REVIEW'),  # not a stocked brand -> human decides
         ("FloraFresh Vaginal Probiotics US", None, [], 'FAIL', 2.6),  # we already rank pos 2.6 -> cannibalise
         ("MenoMate Menopause Probiotic Review", None, [], 'PASS', 17.1),  # weak rank + stocked brand -> genuine
