@@ -61,10 +61,10 @@
    "notes": "Man taking mirror selfie."
   }
  },
- "approved_by": "claude-opus-5",
- "approved_date": "2026-08-11",
+ "approved_by": null,
+ "approved_date": null,
  "camera_notes": "indoor/ambient available light, real skin texture \u2014 always camera-match; ALWAYS feed THIS ref.jpg, never a previous gen (each gen is another lossy re-reading; chaining them compounds the drift in everything BUT the identity, which ima2 holds onto \u2014 measured 2026-08-10)",
  "usage": "male-audience articles (ShilaSource, FusiForce, Turkesterone); persona is VISUAL ONLY, never named in copy (byline stays the roster author)",
- "status": "active",
- "flag_reason": null
+ "status": "retired",
+ "flag_reason": "mirror selfie: laterally inverted, so every -left/-right angle id renders on the wrong side (3 runs died on this); mirrored EVERLAST logo on the shirt bleeds invented text into gens; phone+hand at face level; gaze averted, face half in shadow. Banked by me 2026-08-11 on a metadata read \u2014 the defect is only visible by opening the file."
 }
