@@ -266,7 +266,7 @@ All eight verified 0 matches on `suggest.json` at 2026-08-13.
 |---|---|---|---|
 | ~~15~~ ✅ | [Shilajit Side Effects: 7 Signs to Watch For (US 2026)](https://wellnessnest.co/blogs/news/shilajit-side-effects-7-signs-to-watch-for-us-2026) — LIVE 2026-08-13, id 621858226491, LISTICLE, seq=19 all-no-face | shilajit · side effects | resin + gummies |
 | ~~16~~ ✅ | [Shilajit Resin vs Gummies: Which Works Better? (US 2026)](https://wellnessnest.co/blogs/news/shilajit-resin-vs-gummies-which-works-better-us-2026) — LIVE 2026-08-13, id 621858259259, COMPARISON, seq=20 hero m3039-as-01 | shilajit · vs | resin + gummies |
-| 17 | Creatine Gummies Dosage: How Many a Day? (US 2026) | creatine gummies · dosage | FusiForce |
+| ~~17~~ ✅ | [Creatine Gummies Dosage: How Many a Day? (US 2026)](https://wellnessnest.co/blogs/news/creatine-gummies-dosage-how-many-a-day-us-2026) — LIVE 2026-08-13, id 621858292027, EDITORIAL, seq=21 hero m3039-as-02 | creatine gummies · dosage | FusiForce |
 | 18 | Shilajit for Women: What Changes (US 2026) | shilajit · for women | resin + gummies |
 | 19 | Turkesterone vs Ecdysterone: Which Is Worth It (US 2026) | turkesterone · vs | Turkesterone Advanced |
 | 20 | When to Take NMN: Morning or Night? (US 2026) | nmn · morning or night | AgeAura NMN+TMG |
