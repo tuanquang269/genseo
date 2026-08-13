@@ -1,29 +1,29 @@
 {
  "_doc": "Machine-readable rotation state for the persona bank. persona.json holds IMMUTABLE provenance; this file holds MUTABLE rotation history. Written only by scripts/persona_picker.py commit (atomic tmp+rename). Never hand-edit during a run.",
  "schema_version": 1,
- "seq": 23,
+ "seq": 24,
  "seeded_from": "PUBLISHED_ARTICLES_TRACKER.csv tickets 1-10 (free-text hero/gaze notes)",
  "recent_shots": [
-  "through-doorway",
   "wide-room",
   "high-angle-down",
   "mid-subject-fg-pack",
   "low-table-level",
-  "wide-room"
+  "wide-room",
+  "high-angle-down"
  ],
  "recent_heroes": [
-  "NO-FACE",
   "m3039-hl-02",
   "m3039-hl-03",
   "NO-FACE",
   "m3039-as-01",
   "m3039-as-02",
   "NO-FACE",
-  "m2029-as-01"
+  "m2029-as-01",
+  "f5059-wh-02"
  ],
  "no_face_cycle": {
   "period": 3,
-  "position": 1,
+  "position": 2,
   "_doc": "every 3rd hero is no-face: one adult + one pack for 200 rows running is the structural tell that rotating the pose cannot reach. Briefly 1 on 2026-08-10 as a safety default after ima2 was measured reproducing the reference person recognisably; restored to 3 the same day when Kevin reaffirmed the 200-face bank. The rights exposure that motivated 1 is real and unresolved \u2014 it is recorded in CLAUDE.md and accepted by Kevin, not fixed by this number."
  },
  "personas": {
@@ -1271,11 +1271,17 @@
    "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/f5059-wh-02/ref.jpg",
    "identity_key": "openimages:62f94bdfce21466a",
-   "used_count": 0,
-   "last_used_seq": 0,
-   "gaze_used": [],
-   "last_gaze": null,
-   "angles_used": [],
+   "used_count": 1,
+   "last_used_seq": 24,
+   "gaze_used": [
+    "at-another-person",
+    "up-and-away"
+   ],
+   "last_gaze": "at-another-person",
+   "angles_used": [
+    "3q-left+chin-down",
+    "3q-right+chin-up"
+   ],
    "angles_reserved": []
   },
   "f5059-wh-03": {

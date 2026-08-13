@@ -269,7 +269,7 @@ All eight verified 0 matches on `suggest.json` at 2026-08-13.
 | ~~17~~ ✅ | [Creatine Gummies Dosage: How Many a Day? (US 2026)](https://wellnessnest.co/blogs/news/creatine-gummies-dosage-how-many-a-day-us-2026) — LIVE 2026-08-13, id 621858292027, EDITORIAL, seq=21 hero m3039-as-02 | creatine gummies · dosage | FusiForce |
 | ~~18~~ ✅ | [Shilajit for Women: What Changes After 45 (US 2026)](https://wellnessnest.co/blogs/news/shilajit-for-women-what-changes-after-45-us-2026) — LIVE 2026-08-13, id 621858488635, STORY, seq=22 hero NO-FACE | shilajit · for women | resin + gummies |
 | ~~19~~ ✅ | [Turkesterone vs Ecdysterone: Which Is Worth It? (US 2026)](https://wellnessnest.co/blogs/news/turkesterone-vs-ecdysterone-which-is-worth-it-us-2026) — LIVE 2026-08-13, id 621858586939, COMPARISON, seq=23 hero m2029-as-01 | turkesterone · vs | Turkesterone Advanced |
-| 20 | When to Take NMN: Morning or Night? (US 2026) | nmn · morning or night | AgeAura NMN+TMG |
+| ~~20~~ ✅ | [When to Take NMN: Morning or Night? (US 2026)](https://wellnessnest.co/blogs/news/when-to-take-nmn-morning-or-night-us-2026) — LIVE 2026-08-13, id 621858619707, EDITORIAL, seq=24 hero f5059-wh-02 | nmn · morning or night | AgeAura NMN+TMG |
 | 21 | Vaginal Probiotics: How Long Until They Work? (US 2026) | vaginal probiotic · how long | FloraFresh |
 | 22 | How Much Shilajit Per Day: Dosage by Form (US 2026) | shilajit · how much | resin + gummies + gold |
 
