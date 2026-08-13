@@ -188,7 +188,14 @@ separate Kevin decision, NOT covered by these tickets.
 - **Author:** (from roster.json)
 - **Dedup note:** no reviews/results article exists (blog list checked 2026-08-07)
 
-## [ ] Ticket #12 — NEW ARTICLE (type: retail-availability / where-to-buy) — LOWEST priority, run last
+## [x] Ticket #12 — NEW ARTICLE (type: retail-availability / where-to-buy) — LOWEST priority, run last
+<!-- DONE 2026-08-13 — LIVE id 621858095419
+     https://wellnessnest.co/blogs/news/where-to-buy-wellness-nest-shilajit-in-the-us-2026 -->
+<!-- This was the last open ticket. The queue is now EMPTY: brand-coverage as a topic source is
+     exhausted (2 vendors, both covered), so the next batch needs a real query-gap input — either
+     GSC (no OAuth client on this machine; scripts/credentials.json and gsc_token.json are absent)
+     or a Google Ads search-terms export. -->
+
 
 - **Primary keyword:** `where to buy wellness nest shilajit`
 - **Template:** EDITORIAL (per references/article-templates.md)

@@ -112,9 +112,28 @@ def face_angle_phrase(angle_id, persona_ref):
     except (OSError, ValueError) as exc:
         sys.exit(f"✗ cannot read the face-angle vocabulary ({exc}). Refusing to generate a face "
                  f"image without it — an unvalidated angle is an unenforced rule.")
-    angles = {a["id"]: a["phrase"] for a in tax.get("face_angle_values") or []}
+    values = tax.get("face_angle_values") or []
+    # The phrase is subject-relative ("turned about 35 degrees to THEIR left"), and on
+    # 2026-08-13 both ima2 and the judge read it viewer-relative: hero 3q-left rendered as
+    # 3q-right and inline profile-right as profile-left, and QC passed both because the judge
+    # makes the same flip the generator did. A gate that shares the generator's confusion cannot
+    # catch it. `frame_hint` restates the same angle in terms neither side has to invert — which
+    # image edge the nose points at, and which ear is nearest the camera — and rides along on the
+    # ONE string that goes to both, so they can never be given different definitions.
+    angles = {a["id"]: " — ".join(x for x in (a["phrase"], a.get("frame_hint")) if x)
+              for a in values}
+    renderable = {a["id"] for a in values if a.get("renderable", True)}
     if angle_id not in angles:
-        sys.exit(f"✗ unknown --face-angle {angle_id!r}. Valid: {', '.join(sorted(angles))}")
+        sys.exit(f"✗ unknown --face-angle {angle_id!r}. Valid: {', '.join(sorted(renderable))}")
+    # Second reader of the same flag persona_picker.py filters on. The picker will not issue a
+    # non-renderable angle, so reaching here means a hand-picked one — and the cost of letting it
+    # through is not a re-roll, it is one of the persona's irreplaceable angles marked spent for
+    # an image the generator cannot render and the judge cannot verify.
+    if angle_id not in renderable:
+        why = next((a.get("not_renderable_reason") for a in values if a["id"] == angle_id), "")
+        sys.exit(f"✗ --face-angle {angle_id!r} is marked non-renderable in taxonomy.json"
+                 f"{': ' + why if why else ''}.\n"
+                 f"  Use an angle from `persona_picker.py pick`; it only issues renderable ones.")
 
     # The handle is derived from the ref's parent directory, so a ref from outside the bank
     # yields a handle nothing in index.json matches — which reads as "this persona has spent no
@@ -354,13 +373,21 @@ def qc_gem9(webp_path, refs, is_ugc, has_persona, angle_phrase=None):
                       "reference photograph — same apparent age, build, hair and face? = FAIL if not.")
         if angle_phrase:
             rubric.append("5. HEAD ANGLE. The brief for this image was: %s. Look at where the "
-                          "HEAD points, not where the eyes point. If the head is squared to the "
-                          "lens when the brief asked for a turn, or turned when the brief asked "
-                          "for square, or the chin is level when the brief asked it dipped or "
-                          "raised = FAIL, and say what angle you actually see. This one matters: "
-                          "the angle is spent for this model whether or not it was rendered, so a "
-                          "wrong angle costs a real angle and gets a repeat that the bookkeeping "
-                          "will show as unique." % angle_phrase)
+                          "HEAD points, not where the eyes point. Answer these three in order "
+                          "before you decide: (a) which edge of the image does the NOSE point "
+                          "toward — left, right, or straight at the lens? (b) which ear is nearest "
+                          "the camera, and on which side of the head silhouette does it sit? "
+                          "(c) is the chin level, dipped, or raised? Then compare all three with "
+                          "the brief. Do NOT translate 'their left' in your head — the brief "
+                          "already tells you what it looks like in the frame; a mirrored render "
+                          "is the exact failure this check exists to catch. If the head is squared "
+                          "to the lens when the brief asked for a turn, or turned when the brief "
+                          "asked for square, or turned toward the WRONG edge of the frame, or the "
+                          "chin is level when the brief asked it dipped or raised = FAIL, and say "
+                          "what you actually see for (a), (b) and (c). This one matters: the angle "
+                          "is spent for this model whether or not it was rendered, so a wrong "
+                          "angle costs a real angle and gets a repeat that the bookkeeping will "
+                          "show as unique." % angle_phrase)
     prompt, images, tried = "\n".join(rubric), judge_images(webp_path, refs), []
     for model in qc_judges():
         verdict, out = run_judge(model, prompt, images)

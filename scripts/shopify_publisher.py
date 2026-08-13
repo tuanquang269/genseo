@@ -52,12 +52,55 @@ def ping_indexnow(shop, token, blog_id, article_handle):
 
 
 def install(package):
-    subprocess.check_call([sys.executable, "-m", "pip", "install", package, "--user", "--break-system-packages", "--quiet"])
+    """pip, then pip without --break-system-packages.
+
+    That flag only exists on pip >= 23. The Command Line Tools python3.9 that `python3` resolves
+    to on this Mac ships pip 21, which exits 2 on the unknown option — so the auto-install this
+    function exists to perform failed with a pip usage dump, and the publisher died on
+    `ModuleNotFoundError: markdown` at import. Nothing about that was visible until a publish was
+    already attempted."""
+    base = [sys.executable, "-m", "pip", "install", package, "--user", "--quiet"]
+    try:
+        subprocess.check_call(base + ["--break-system-packages"])
+    except subprocess.CalledProcessError:
+        subprocess.check_call(base)
+
+
+def _reexec_with_deps():
+    """Hand the whole invocation to an interpreter that already has the dependencies.
+
+    `python3` is PATH-dependent on this machine: /usr/bin/python3 (3.9, no markdown) comes first
+    in an interactive shell, while the headless runner's PATH finds the Homebrew one (markdown
+    3.10.3). So the SAME documented command published fine from cron and died from a terminal.
+    Rather than pin one interpreter in every caller and every doc line — which is the kind of
+    thing that goes stale — this looks for one that can actually run the publisher and re-execs
+    into it. GENSEO_PUBLISHER_REEXEC guards against a loop when no interpreter has the module."""
+    if os.environ.get("GENSEO_PUBLISHER_REEXEC"):
+        return False
+    here = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    for cand in (os.path.join(here, ".venv", "bin", "python"),
+                 "/opt/homebrew/bin/python3", "/usr/local/bin/python3"):
+        if not (os.path.isfile(cand) and os.access(cand, os.X_OK)):
+            continue
+        probe = subprocess.run([cand, "-c", "import markdown"], capture_output=True)
+        if probe.returncode:
+            continue
+        print(f"↻ re-exec under {cand} (this interpreter has no `markdown`)", flush=True)
+        env = dict(os.environ, GENSEO_PUBLISHER_REEXEC="1")
+        os.execve(cand, [cand, os.path.abspath(__file__)] + sys.argv[1:], env)
+    return False
+
 
 try:
     import markdown
 except ImportError:
-    install('markdown')
+    _reexec_with_deps()          # never returns if it finds one
+    try:
+        install('markdown')
+    except subprocess.CalledProcessError as exc:
+        sys.exit(f"✗ `markdown` is missing under {sys.executable} and pip could not install it "
+                 f"({exc}). No other interpreter on this machine has it either. Fix: "
+                 f"`{os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '.venv', 'bin', 'pip')} install markdown`")
     import markdown
 
 def run_oauth(shop, client_id, client_secret):
@@ -679,7 +722,14 @@ def do_publish(file_path, blog_id, live=False):
         print(f"\n🔍 Verifying images on live article...")
         time.sleep(2)
         img_count, img_srcs, _ = verify_article_images(shop, token, blog_id, article_id)
-        expected = upload_count + (1 if thumbnail_b64 else 0)
+        # The hero MOVES, it is not added: `_process_images_for_publish` counted it in
+        # upload_count when it went to Files, then stripped its body tag so it could come back as
+        # `article.image`. `verify_article_images` counts cover + body, so a fully correct publish
+        # returns exactly upload_count. Adding 1 for the thumbnail counted the hero twice and made
+        # every healthy 4-image publish report "⚠ PARTIAL: 4/5" — a permanent false alarm on the
+        # one check that exists to catch a real upload failure, which is how a warning stops being
+        # read at all.
+        expected = upload_count
 
         if img_count == 0:
             print(f"  ✗ IMAGE VERIFICATION FAILED — 0 CDN images found on live article!")

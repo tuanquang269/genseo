@@ -132,13 +132,33 @@ def choose_gaze(tax, entry, handle, seq, exclude=()):
 
 
 def angle_ids(tax):
-    return [a["id"] for a in tax["face_angle_values"]]
+    """Only the angles the generator can actually deliver AND the judge can actually verify.
+
+    Every persona prompt carries an identity-match clause, and QC check 4 asks whether the
+    candidate reads as the same person as the reference photograph. A `half-back-*` angle hides
+    the face by definition, so it contradicts both: on run 20260813-0847 ima2 resolved the
+    conflict toward profile on 3 of 3 rolls and burned the whole re-roll budget, and even a
+    perfect render would leave the judge grading a face it cannot see. The angles stay in the
+    vocabulary — `angle_phrase` still resolves them, so an angle already spent keeps printing —
+    they are simply never ISSUED again. Flag lives in taxonomy.json, not here, so the two
+    readers (this picker and article_images.py) cannot drift apart.
+
+    Capacity after the cut: 15 angles x 42 selectable personas = 630, at 2 per article."""
+    return [a["id"] for a in tax["face_angle_values"] if a.get("renderable", True)]
 
 
 def angle_phrase(tax, aid):
+    """Phrase + frame_hint, the same string article_images.py builds.
+
+    The hint is not decoration. "Turned about 35 degrees to their left" is subject-relative, and
+    on 2026-08-13 both ima2 and the QC judge read it viewer-relative and mirrored the render —
+    the judge could not catch it because it made the identical flip. The hint restates the angle
+    as which frame edge the nose points at and which ear is nearest the lens, which neither side
+    has to invert. It is emitted here so the prompt the agent writes and the rubric the judge
+    reads are quoting one definition."""
     for a in tax["face_angle_values"]:
         if a["id"] == aid:
-            return a["phrase"]
+            return " — ".join(x for x in (a["phrase"], a.get("frame_hint")) if x)
     return None
 
 
