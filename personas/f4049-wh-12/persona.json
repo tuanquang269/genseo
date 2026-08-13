@@ -61,10 +61,10 @@
    "notes": "Woman taking a bathroom mirror selfie."
   }
  },
- "approved_by": null,
- "approved_date": null,
+ "approved_by": "kevin",
+ "approved_date": "2026-08-13",
  "camera_notes": "indoor/ambient available light, real skin texture \u2014 always camera-match; ALWAYS feed THIS ref.jpg, never a previous gen (each gen is another lossy re-reading; chaining them compounds the drift in everything BUT the identity, which ima2 holds onto \u2014 measured 2026-08-10)",
  "usage": "female-audience articles (MenoMate, FusiForce, ShilaSource, FloraFresh); persona is VISUAL ONLY, never named in copy (byline stays the roster author)",
- "status": "pending",
+ "status": "active",
  "flag_reason": null
 }

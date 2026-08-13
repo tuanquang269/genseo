@@ -159,8 +159,21 @@ def assess(topic, sg_imp=None, articles=None, collections=None, pos=None):
         qnouns = {w for w in re.findall(r'[a-z0-9]+', t) if w in PRODUCT_NOUNS}
         seg = next((s for s in SEGMENT_MODIFIERS
                     if re.search(r'\b' + re.escape(s) + r'\b', t)), None)
-        seg_taken = seg and any(re.search(r'\b' + re.escape(seg) + r'\b', a.get('title', '').lower())
-                                for a in articles)
+        # `seg_taken` asks "has this SAME BRAND already had its <segment> article written?" — so the
+        # search has to be brand-scoped. Until 2026-08-13 it scanned every title on the blog, which
+        # made an unrelated page veto the segment: "Shilajit for Women" came back FAIL[covered]
+        # because "Creatine for Women Over 40" contains "for women", and "Turkesterone vs
+        # Ecdysterone" because "Creatine Gummies vs Powder" contains "vs". Both are genuine gaps
+        # that cannibalise nothing. The blunter the shared modifier ("vs", "how much", "buy"), the
+        # more topics one page silently locked out — and with "vs" and "for women" both spent, most
+        # of the comparison and audience long-tail was unreachable, which is a large part of why
+        # the ticket queue looked exhausted. Scoping it to articles that actually mention the brand
+        # keeps the anti-cannibalisation guarantee exactly as strong: the page that would compete
+        # is by definition a page about the same brand.
+        seg_taken = bool(seg) and any(
+            re.search(r'\b' + re.escape(seg) + r'\b', a.get('title', '').lower())
+            for a in articles
+            if bn in _norm(a.get('title', '') + ' ' + a.get('handle', '')))
         for blob, toks in _article_index(articles):
             if bn in blob and (qnouns & toks or not qnouns):
                 if seg and not seg_taken:

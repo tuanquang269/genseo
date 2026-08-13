@@ -1,29 +1,29 @@
 {
  "_doc": "Machine-readable rotation state for the persona bank. persona.json holds IMMUTABLE provenance; this file holds MUTABLE rotation history. Written only by scripts/persona_picker.py commit (atomic tmp+rename). Never hand-edit during a run.",
  "schema_version": 1,
- "seq": 18,
+ "seq": 19,
  "seeded_from": "PUBLISHED_ARTICLES_TRACKER.csv tickets 1-10 (free-text hero/gaze notes)",
  "recent_shots": [
-  "mid-subject-fg-pack",
   "mid-subject-fg-pack",
   "low-table-level",
   "high-angle-down",
   "over-shoulder",
-  "through-doorway"
+  "through-doorway",
+  "wide-room"
  ],
  "recent_heroes": [
-  "f2-brunette",
   "m1-stubble",
   "f3-silver",
   "f1-redshirt",
   "m1-stubble",
   "NO-FACE",
   "m3039-hl-02",
-  "m3039-hl-03"
+  "m3039-hl-03",
+  "NO-FACE"
  ],
  "no_face_cycle": {
   "period": 3,
-  "position": 2,
+  "position": 0,
   "_doc": "every 3rd hero is no-face: one adult + one pack for 200 rows running is the structural tell that rotating the pose cannot reach. Briefly 1 on 2026-08-10 as a safety default after ima2 was measured reproducing the reference person recognisably; restored to 3 the same day when Kevin reaffirmed the 200-face bank. The rights exposure that motivated 1 is real and unresolved \u2014 it is recorded in CLAUDE.md and accepted by Kevin, not fixed by this number."
  },
  "personas": {
@@ -161,7 +161,7 @@
   "m4049-hl-02": {
    "handle": "m4049-hl-02",
    "pool_id": "m4049",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m4049-hl-02/ref.jpg",
    "identity_key": "openimages:0a145dbbc65b5a3e",
    "used_count": 0,
@@ -174,7 +174,7 @@
   "f2029-hl-02": {
    "handle": "f2029-hl-02",
    "pool_id": "f2029",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/f2029-hl-02/ref.jpg",
    "identity_key": "openimages:1643ef88bb426eec",
    "used_count": 0,
@@ -187,7 +187,7 @@
   "m2029-hl-02": {
    "handle": "m2029-hl-02",
    "pool_id": "m2029",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m2029-hl-02/ref.jpg",
    "identity_key": "openimages:fb65d7561c3b24fd",
    "used_count": 0,
@@ -200,7 +200,7 @@
   "m5059-hl-02": {
    "handle": "m5059-hl-02",
    "pool_id": "m5059",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m5059-hl-02/ref.jpg",
    "identity_key": "openimages:df051a0847309c44",
    "used_count": 0,
@@ -229,7 +229,7 @@
   "f4049-bl-02": {
    "handle": "f4049-bl-02",
    "pool_id": "f4049",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/f4049-bl-02/ref.jpg",
    "identity_key": "openimages:2a0920aa36064697",
    "used_count": 0,
@@ -255,7 +255,7 @@
   "m2029-bl-01": {
    "handle": "m2029-bl-01",
    "pool_id": "m2029",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m2029-bl-01/ref.jpg",
    "identity_key": "openimages:f3779cec286e9e84",
    "used_count": 0,
@@ -268,7 +268,7 @@
   "f3039-as-01": {
    "handle": "f3039-as-01",
    "pool_id": "f3039",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/f3039-as-01/ref.jpg",
    "identity_key": "openimages:93c99666121ef338",
    "used_count": 0,
@@ -281,7 +281,7 @@
   "m3039-as-01": {
    "handle": "m3039-as-01",
    "pool_id": "m3039",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m3039-as-01/ref.jpg",
    "identity_key": "openimages:6888ef9e311c3b83",
    "used_count": 0,
@@ -294,7 +294,7 @@
   "m4049-as-01": {
    "handle": "m4049-as-01",
    "pool_id": "m4049",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m4049-as-01/ref.jpg",
    "identity_key": "openimages:1d9c1fb41f293b74",
    "used_count": 0,
@@ -307,7 +307,7 @@
   "f2029-as-01": {
    "handle": "f2029-as-01",
    "pool_id": "f2029",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/f2029-as-01/ref.jpg",
    "identity_key": "openimages:cc242f25f5ef2cbd",
    "used_count": 0,
@@ -320,7 +320,7 @@
   "m2029-as-01": {
    "handle": "m2029-as-01",
    "pool_id": "m2029",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m2029-as-01/ref.jpg",
    "identity_key": "openimages:a53146d220bcc907",
    "used_count": 0,
@@ -372,7 +372,7 @@
   "m2029-mx-01": {
    "handle": "m2029-mx-01",
    "pool_id": "m2029",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m2029-mx-01/ref.jpg",
    "identity_key": "openimages:a074045ca670ced2",
    "used_count": 0,
@@ -385,7 +385,7 @@
   "f3039-wh-10": {
    "handle": "f3039-wh-10",
    "pool_id": "f3039",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/f3039-wh-10/ref.jpg",
    "identity_key": "openimages:8212968aab85d3f7",
    "used_count": 0,
@@ -398,7 +398,7 @@
   "f3039-wh-11": {
    "handle": "f3039-wh-11",
    "pool_id": "f3039",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/f3039-wh-11/ref.jpg",
    "identity_key": "openimages:7c4f41a93a1ad1a4",
    "used_count": 0,
@@ -437,7 +437,7 @@
   "f3039-wh-14": {
    "handle": "f3039-wh-14",
    "pool_id": "f3039",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/f3039-wh-14/ref.jpg",
    "identity_key": "openimages:daf7e5334876707e",
    "used_count": 0,
@@ -476,7 +476,7 @@
   "f3039-wh-17": {
    "handle": "f3039-wh-17",
    "pool_id": "f3039",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/f3039-wh-17/ref.jpg",
    "identity_key": "openimages:3b9167ad89f1fb27",
    "used_count": 0,
@@ -489,7 +489,7 @@
   "m3039-wh-05": {
    "handle": "m3039-wh-05",
    "pool_id": "m3039",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m3039-wh-05/ref.jpg",
    "identity_key": "openimages:8ca8aca0e6174572",
    "used_count": 0,
@@ -502,7 +502,7 @@
   "m3039-wh-06": {
    "handle": "m3039-wh-06",
    "pool_id": "m3039",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m3039-wh-06/ref.jpg",
    "identity_key": "openimages:a2743bd5e86503bf",
    "used_count": 0,
@@ -515,7 +515,7 @@
   "m3039-wh-07": {
    "handle": "m3039-wh-07",
    "pool_id": "m3039",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m3039-wh-07/ref.jpg",
    "identity_key": "openimages:0cfd32e15fab83ef",
    "used_count": 0,
@@ -528,7 +528,7 @@
   "m3039-wh-08": {
    "handle": "m3039-wh-08",
    "pool_id": "m3039",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m3039-wh-08/ref.jpg",
    "identity_key": "openimages:da843dbeaa76ac00",
    "used_count": 0,
@@ -541,7 +541,7 @@
   "m3039-wh-09": {
    "handle": "m3039-wh-09",
    "pool_id": "m3039",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m3039-wh-09/ref.jpg",
    "identity_key": "openimages:c2e7e32e1b0b159a",
    "used_count": 0,
@@ -554,7 +554,7 @@
   "m3039-wh-10": {
    "handle": "m3039-wh-10",
    "pool_id": "m3039",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m3039-wh-10/ref.jpg",
    "identity_key": "openimages:d0cd9fa5e4de2be1",
    "used_count": 0,
@@ -567,7 +567,7 @@
   "m3039-wh-11": {
    "handle": "m3039-wh-11",
    "pool_id": "m3039",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m3039-wh-11/ref.jpg",
    "identity_key": "openimages:f5e088ba5cbf6de6",
    "used_count": 0,
@@ -580,7 +580,7 @@
   "m3039-wh-12": {
    "handle": "m3039-wh-12",
    "pool_id": "m3039",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m3039-wh-12/ref.jpg",
    "identity_key": "openimages:b9bdac2d15b826e0",
    "used_count": 0,
@@ -593,7 +593,7 @@
   "m3039-wh-13": {
    "handle": "m3039-wh-13",
    "pool_id": "m3039",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m3039-wh-13/ref.jpg",
    "identity_key": "openimages:a1ba5282cbd970e5",
    "used_count": 0,
@@ -632,7 +632,7 @@
   "m3039-wh-16": {
    "handle": "m3039-wh-16",
    "pool_id": "m3039",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m3039-wh-16/ref.jpg",
    "identity_key": "openimages:def799dfff596eba",
    "used_count": 0,
@@ -645,7 +645,7 @@
   "m3039-wh-17": {
    "handle": "m3039-wh-17",
    "pool_id": "m3039",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m3039-wh-17/ref.jpg",
    "identity_key": "openimages:921e388614f55f1e",
    "used_count": 0,
@@ -658,7 +658,7 @@
   "m3039-wh-18": {
    "handle": "m3039-wh-18",
    "pool_id": "m3039",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m3039-wh-18/ref.jpg",
    "identity_key": "openimages:99baa6740383bab7",
    "used_count": 0,
@@ -671,7 +671,7 @@
   "m3039-wh-19": {
    "handle": "m3039-wh-19",
    "pool_id": "m3039",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m3039-wh-19/ref.jpg",
    "identity_key": "openimages:35c05ec22286b1ff",
    "used_count": 0,
@@ -684,7 +684,7 @@
   "m3039-wh-20": {
    "handle": "m3039-wh-20",
    "pool_id": "m3039",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m3039-wh-20/ref.jpg",
    "identity_key": "openimages:a7cba798059610ed",
    "used_count": 0,
@@ -723,7 +723,7 @@
   "m3039-wh-23": {
    "handle": "m3039-wh-23",
    "pool_id": "m3039",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m3039-wh-23/ref.jpg",
    "identity_key": "openimages:af1c57c87fa6b2f6",
    "used_count": 0,
@@ -762,7 +762,7 @@
   "f4049-wh-05": {
    "handle": "f4049-wh-05",
    "pool_id": "f4049",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/f4049-wh-05/ref.jpg",
    "identity_key": "openimages:df5519976aeed196",
    "used_count": 0,
@@ -775,7 +775,7 @@
   "f4049-wh-06": {
    "handle": "f4049-wh-06",
    "pool_id": "f4049",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/f4049-wh-06/ref.jpg",
    "identity_key": "openimages:732320891b071e3f",
    "used_count": 0,
@@ -814,7 +814,7 @@
   "f4049-wh-09": {
    "handle": "f4049-wh-09",
    "pool_id": "f4049",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/f4049-wh-09/ref.jpg",
    "identity_key": "openimages:4a66bf2820f6f710",
    "used_count": 0,
@@ -827,7 +827,7 @@
   "f4049-wh-10": {
    "handle": "f4049-wh-10",
    "pool_id": "f4049",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/f4049-wh-10/ref.jpg",
    "identity_key": "openimages:d5802bac967e7895",
    "used_count": 0,
@@ -853,7 +853,7 @@
   "f4049-wh-12": {
    "handle": "f4049-wh-12",
    "pool_id": "f4049",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/f4049-wh-12/ref.jpg",
    "identity_key": "openimages:38facd9e7dac6e0d",
    "used_count": 0,
@@ -866,7 +866,7 @@
   "f4049-wh-13": {
    "handle": "f4049-wh-13",
    "pool_id": "f4049",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/f4049-wh-13/ref.jpg",
    "identity_key": "openimages:34eabfbfc6812fab",
    "used_count": 0,
@@ -879,7 +879,7 @@
   "f4049-wh-14": {
    "handle": "f4049-wh-14",
    "pool_id": "f4049",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/f4049-wh-14/ref.jpg",
    "identity_key": "openimages:48e7cc1abc3b42d9",
    "used_count": 0,
@@ -892,7 +892,7 @@
   "f4049-wh-15": {
    "handle": "f4049-wh-15",
    "pool_id": "f4049",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/f4049-wh-15/ref.jpg",
    "identity_key": "openimages:2a8327081fdec2a7",
    "used_count": 0,
@@ -905,7 +905,7 @@
   "m4049-wh-02": {
    "handle": "m4049-wh-02",
    "pool_id": "m4049",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m4049-wh-02/ref.jpg",
    "identity_key": "openimages:4193291067ce9845",
    "used_count": 0,
@@ -918,7 +918,7 @@
   "m4049-wh-03": {
    "handle": "m4049-wh-03",
    "pool_id": "m4049",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m4049-wh-03/ref.jpg",
    "identity_key": "openimages:969f56a316d0b839",
    "used_count": 0,
@@ -931,7 +931,7 @@
   "m4049-wh-04": {
    "handle": "m4049-wh-04",
    "pool_id": "m4049",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m4049-wh-04/ref.jpg",
    "identity_key": "openimages:e3efaf3273fb3b44",
    "used_count": 0,
@@ -944,7 +944,7 @@
   "m4049-wh-05": {
    "handle": "m4049-wh-05",
    "pool_id": "m4049",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m4049-wh-05/ref.jpg",
    "identity_key": "openimages:262faf7915d5dae0",
    "used_count": 0,
@@ -957,7 +957,7 @@
   "m4049-wh-06": {
    "handle": "m4049-wh-06",
    "pool_id": "m4049",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m4049-wh-06/ref.jpg",
    "identity_key": "openimages:50be994f0ea33ee8",
    "used_count": 0,
@@ -970,7 +970,7 @@
   "m4049-wh-07": {
    "handle": "m4049-wh-07",
    "pool_id": "m4049",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m4049-wh-07/ref.jpg",
    "identity_key": "openimages:32129484c57cda65",
    "used_count": 0,
@@ -1009,7 +1009,7 @@
   "m4049-wh-10": {
    "handle": "m4049-wh-10",
    "pool_id": "m4049",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m4049-wh-10/ref.jpg",
    "identity_key": "openimages:5b0c2cb19a765f19",
    "used_count": 0,
@@ -1035,7 +1035,7 @@
   "m4049-wh-12": {
    "handle": "m4049-wh-12",
    "pool_id": "m4049",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m4049-wh-12/ref.jpg",
    "identity_key": "openimages:a06c8d1a859ab653",
    "used_count": 0,
@@ -1048,7 +1048,7 @@
   "m4049-wh-13": {
    "handle": "m4049-wh-13",
    "pool_id": "m4049",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m4049-wh-13/ref.jpg",
    "identity_key": "openimages:18db3eff62e8a815",
    "used_count": 0,
@@ -1061,7 +1061,7 @@
   "m4049-wh-14": {
    "handle": "m4049-wh-14",
    "pool_id": "m4049",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m4049-wh-14/ref.jpg",
    "identity_key": "openimages:6bea4eaa1562c7ae",
    "used_count": 0,
@@ -1074,7 +1074,7 @@
   "m4049-wh-15": {
    "handle": "m4049-wh-15",
    "pool_id": "m4049",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m4049-wh-15/ref.jpg",
    "identity_key": "openimages:71802aacdabd9796",
    "used_count": 0,
@@ -1100,7 +1100,7 @@
   "f2029-wh-03": {
    "handle": "f2029-wh-03",
    "pool_id": "f2029",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/f2029-wh-03/ref.jpg",
    "identity_key": "openimages:21814edf6f0891d5",
    "used_count": 0,
@@ -1113,7 +1113,7 @@
   "f2029-wh-04": {
    "handle": "f2029-wh-04",
    "pool_id": "f2029",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/f2029-wh-04/ref.jpg",
    "identity_key": "openimages:9cf069c4b8081322",
    "used_count": 0,
@@ -1126,7 +1126,7 @@
   "f2029-wh-05": {
    "handle": "f2029-wh-05",
    "pool_id": "f2029",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/f2029-wh-05/ref.jpg",
    "identity_key": "openimages:e8db8dc6e5d76fba",
    "used_count": 0,
@@ -1139,7 +1139,7 @@
   "m2029-wh-02": {
    "handle": "m2029-wh-02",
    "pool_id": "m2029",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m2029-wh-02/ref.jpg",
    "identity_key": "openimages:129261ab8eeb8f87",
    "used_count": 0,
@@ -1152,7 +1152,7 @@
   "m2029-wh-03": {
    "handle": "m2029-wh-03",
    "pool_id": "m2029",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m2029-wh-03/ref.jpg",
    "identity_key": "openimages:d3735958c238f59e",
    "used_count": 0,
@@ -1165,7 +1165,7 @@
   "m2029-wh-04": {
    "handle": "m2029-wh-04",
    "pool_id": "m2029",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m2029-wh-04/ref.jpg",
    "identity_key": "openimages:bcd0385449f0621c",
    "used_count": 0,
@@ -1204,7 +1204,7 @@
   "m2029-wh-07": {
    "handle": "m2029-wh-07",
    "pool_id": "m2029",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m2029-wh-07/ref.jpg",
    "identity_key": "openimages:6349404ef073e2ab",
    "used_count": 0,
@@ -1217,7 +1217,7 @@
   "m2029-wh-08": {
    "handle": "m2029-wh-08",
    "pool_id": "m2029",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m2029-wh-08/ref.jpg",
    "identity_key": "openimages:d35c6fc502a984a0",
    "used_count": 0,
@@ -1230,7 +1230,7 @@
   "m2029-wh-09": {
    "handle": "m2029-wh-09",
    "pool_id": "m2029",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m2029-wh-09/ref.jpg",
    "identity_key": "openimages:b6f51dc193837904",
    "used_count": 0,
@@ -1256,7 +1256,7 @@
   "f5059-wh-02": {
    "handle": "f5059-wh-02",
    "pool_id": "f5059",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/f5059-wh-02/ref.jpg",
    "identity_key": "openimages:62f94bdfce21466a",
    "used_count": 0,
@@ -1269,7 +1269,7 @@
   "f5059-wh-03": {
    "handle": "f5059-wh-03",
    "pool_id": "f5059",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/f5059-wh-03/ref.jpg",
    "identity_key": "openimages:9e6299774c62316d",
    "used_count": 0,
@@ -1308,7 +1308,7 @@
   "f5059-wh-06": {
    "handle": "f5059-wh-06",
    "pool_id": "f5059",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/f5059-wh-06/ref.jpg",
    "identity_key": "openimages:ddcf18fa4dbef1ad",
    "used_count": 0,
@@ -1334,7 +1334,7 @@
   "m5059-wh-02": {
    "handle": "m5059-wh-02",
    "pool_id": "m5059",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m5059-wh-02/ref.jpg",
    "identity_key": "openimages:beb23dbd5a793bc3",
    "used_count": 0,
@@ -1347,7 +1347,7 @@
   "m5059-wh-03": {
    "handle": "m5059-wh-03",
    "pool_id": "m5059",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m5059-wh-03/ref.jpg",
    "identity_key": "openimages:9b3733a58a4b6910",
    "used_count": 0,
@@ -1360,7 +1360,7 @@
   "m5059-wh-04": {
    "handle": "m5059-wh-04",
    "pool_id": "m5059",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m5059-wh-04/ref.jpg",
    "identity_key": "openimages:0a303ea4efff93d9",
    "used_count": 0,
@@ -1399,7 +1399,7 @@
   "m5059-wh-07": {
    "handle": "m5059-wh-07",
    "pool_id": "m5059",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m5059-wh-07/ref.jpg",
    "identity_key": "openimages:a9997fb0f4cf1a20",
    "used_count": 0,
@@ -1412,7 +1412,7 @@
   "m5059-wh-08": {
    "handle": "m5059-wh-08",
    "pool_id": "m5059",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m5059-wh-08/ref.jpg",
    "identity_key": "openimages:b4eac07c0a3c4e26",
    "used_count": 0,
@@ -1451,7 +1451,7 @@
   "m5059-wh-11": {
    "handle": "m5059-wh-11",
    "pool_id": "m5059",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m5059-wh-11/ref.jpg",
    "identity_key": "openimages:2e6c80402fe7b347",
    "used_count": 0,
@@ -1490,7 +1490,7 @@
   "m5059-wh-14": {
    "handle": "m5059-wh-14",
    "pool_id": "m5059",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m5059-wh-14/ref.jpg",
    "identity_key": "openimages:a4128f8f3548dd4e",
    "used_count": 0,
@@ -1503,7 +1503,7 @@
   "m5059-wh-15": {
    "handle": "m5059-wh-15",
    "pool_id": "m5059",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m5059-wh-15/ref.jpg",
    "identity_key": "openimages:a1879b97ffc20c86",
    "used_count": 0,
@@ -1516,7 +1516,7 @@
   "m6070-wh-03": {
    "handle": "m6070-wh-03",
    "pool_id": "m6070",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m6070-wh-03/ref.jpg",
    "identity_key": "openimages:6ddc2d1f7fa5895a",
    "used_count": 0,
@@ -1529,7 +1529,7 @@
   "m6070-wh-04": {
    "handle": "m6070-wh-04",
    "pool_id": "m6070",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m6070-wh-04/ref.jpg",
    "identity_key": "openimages:dcc4d0f8910d5ad5",
    "used_count": 0,
@@ -1555,7 +1555,7 @@
   "m6070-wh-06": {
    "handle": "m6070-wh-06",
    "pool_id": "m6070",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m6070-wh-06/ref.jpg",
    "identity_key": "openimages:a4ddce1702e5f8d4",
    "used_count": 0,
@@ -1581,7 +1581,7 @@
   "f3039-hl-04": {
    "handle": "f3039-hl-04",
    "pool_id": "f3039",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/f3039-hl-04/ref.jpg",
    "identity_key": "openimages:ed33dac27acb0874",
    "used_count": 0,
@@ -1594,7 +1594,7 @@
   "f3039-hl-05": {
    "handle": "f3039-hl-05",
    "pool_id": "f3039",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/f3039-hl-05/ref.jpg",
    "identity_key": "openimages:0e7b156c3e2ff618",
    "used_count": 0,
@@ -1626,7 +1626,7 @@
   "m3039-hl-04": {
    "handle": "m3039-hl-04",
    "pool_id": "m3039",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m3039-hl-04/ref.jpg",
    "identity_key": "openimages:28b9beae2a34e078",
    "used_count": 0,
@@ -1665,7 +1665,7 @@
   "f2029-hl-03": {
    "handle": "f2029-hl-03",
    "pool_id": "f2029",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/f2029-hl-03/ref.jpg",
    "identity_key": "openimages:a26edea3e65f6b6d",
    "used_count": 0,
@@ -1720,7 +1720,7 @@
   "m3039-bl-04": {
    "handle": "m3039-bl-04",
    "pool_id": "m3039",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m3039-bl-04/ref.jpg",
    "identity_key": "openimages:800d5e751f4adeb1",
    "used_count": 0,
@@ -1733,7 +1733,7 @@
   "m3039-bl-05": {
    "handle": "m3039-bl-05",
    "pool_id": "m3039",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m3039-bl-05/ref.jpg",
    "identity_key": "openimages:7e5b746f0f9d55d1",
    "used_count": 0,
@@ -1746,7 +1746,7 @@
   "m3039-bl-06": {
    "handle": "m3039-bl-06",
    "pool_id": "m3039",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m3039-bl-06/ref.jpg",
    "identity_key": "openimages:0776a456f8d65f9f",
    "used_count": 0,
@@ -1759,7 +1759,7 @@
   "f3039-as-02": {
    "handle": "f3039-as-02",
    "pool_id": "f3039",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/f3039-as-02/ref.jpg",
    "identity_key": "openimages:d8460a61209614fc",
    "used_count": 0,
@@ -1772,7 +1772,7 @@
   "m3039-as-02": {
    "handle": "m3039-as-02",
    "pool_id": "m3039",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m3039-as-02/ref.jpg",
    "identity_key": "openimages:ed350228988684b6",
    "used_count": 0,
@@ -1785,7 +1785,7 @@
   "m3039-as-03": {
    "handle": "m3039-as-03",
    "pool_id": "m3039",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m3039-as-03/ref.jpg",
    "identity_key": "openimages:0701a40bb985ba3c",
    "used_count": 0,
@@ -1798,7 +1798,7 @@
   "m4049-as-02": {
    "handle": "m4049-as-02",
    "pool_id": "m4049",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m4049-as-02/ref.jpg",
    "identity_key": "openimages:74c1b4d4eb22cfed",
    "used_count": 0,
@@ -1811,7 +1811,7 @@
   "m3039-mx-02": {
    "handle": "m3039-mx-02",
    "pool_id": "m3039",
-   "status": "pending",
+   "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m3039-mx-02/ref.jpg",
    "identity_key": "openimages:8370e4fd70032c86",
    "used_count": 0,

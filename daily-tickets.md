@@ -237,3 +237,44 @@ separate Kevin decision, NOT covered by these tickets.
 - **Angle:** 6 verifiable signs (solubility & residue · burn test myth debunk · price-too-good math · label red flags · origin claims without lot traceability · texture/smell). Link the existing sourcing + lab-testing articles as depth. ⚠ House rule: do NOT lead on lab-tested/COA as THE advantage — sourcing transparency + reader empowerment is the story.
 - **Author:** (from roster.json)
 - **Dedup note:** sourcing + lab-testing articles exist — LINK, don't restate; no fake-spotting article (blog list checked 2026-08-07)
+
+---
+
+# BATCH 2026-08-13 — tickets #15–#22 (built WITHOUT GSC)
+
+Kevin: *"I approve all of them, I need published articles without any delay."* The queue was empty
+and GSC is still unauthorised, so this batch was sourced from what is available at $0: the live
+product catalog (11 SKUs), the full 62-article blog inventory, and the `topic_fitness.py` gate.
+
+**Why these eight and not others.** `topic_fitness.py` was returning `FAIL [covered]` on almost
+every shilajit/creatine/turkesterone angle, which is what made the topic well look dry. Root cause
+found and fixed today: `seg_taken` was **brand-blind** — it asked "does ANY live title contain this
+segment modifier?", so *"Creatine for Women Over 40"* vetoed *"Shilajit for Women"*, and
+*"Creatine Gummies vs Powder"* vetoed every `vs` comparison on the blog. Scoping the check to
+articles that actually mention the brand restores the audience and comparison long-tail without
+weakening the anti-cannibalisation guarantee (the page that would compete is by definition a page
+about the same brand). All eight below now return `REVIEW [covered-segment]`, and Kevin's message
+is the ticket-brief greenlight that verdict asks for.
+
+**One article per brand+segment pair — do not add a second.** The moment a `vs` shilajit article
+is live, `seg_taken` flips and every other shilajit `vs` topic correctly goes back to FAIL. That is
+the guard working, not a regression.
+
+All eight verified 0 matches on `suggest.json` at 2026-08-13.
+
+| # | Title | Brand · segment | Products |
+|---|---|---|---|
+| ~~15~~ ✅ | [Shilajit Side Effects: 7 Signs to Watch For (US 2026)](https://wellnessnest.co/blogs/news/shilajit-side-effects-7-signs-to-watch-for-us-2026) — LIVE 2026-08-13, id 621858226491, LISTICLE, seq=19 all-no-face | shilajit · side effects | resin + gummies |
+| 16 | Shilajit Resin vs Gummies: Which Works Better? (US 2026) | shilajit · vs | resin + gummies |
+| 17 | Creatine Gummies Dosage: How Many a Day? (US 2026) | creatine gummies · dosage | FusiForce |
+| 18 | Shilajit for Women: What Changes (US 2026) | shilajit · for women | resin + gummies |
+| 19 | Turkesterone vs Ecdysterone: Which Is Worth It (US 2026) | turkesterone · vs | Turkesterone Advanced |
+| 20 | When to Take NMN: Morning or Night? (US 2026) | nmn · morning or night | AgeAura NMN+TMG |
+| 21 | Vaginal Probiotics: How Long Until They Work? (US 2026) | vaginal probiotic · how long | FloraFresh |
+| 22 | How Much Shilajit Per Day: Dosage by Form (US 2026) | shilajit · how much | resin + gummies + gold |
+
+Template rotation: previous three were LISTICLE, LISTICLE, EDITORIAL. Alternate across the batch.
+
+**Uncovered SKU still with no page of its own:** `pure-shilajit-gold-resin` ($75) and
+`shilajit-shockwave` ($79.99) — the gold resin FAILs the gate as `covered` because "shilajit" is
+its only brand token; it needs a distinct segment angle, not a bare product page.
