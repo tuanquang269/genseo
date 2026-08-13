@@ -271,10 +271,23 @@ All eight verified 0 matches on `suggest.json` at 2026-08-13.
 | ~~19~~ ✅ | [Turkesterone vs Ecdysterone: Which Is Worth It? (US 2026)](https://wellnessnest.co/blogs/news/turkesterone-vs-ecdysterone-which-is-worth-it-us-2026) — LIVE 2026-08-13, id 621858586939, COMPARISON, seq=23 hero m2029-as-01 | turkesterone · vs | Turkesterone Advanced |
 | ~~20~~ ✅ | [When to Take NMN: Morning or Night? (US 2026)](https://wellnessnest.co/blogs/news/when-to-take-nmn-morning-or-night-us-2026) — LIVE 2026-08-13, id 621858619707, EDITORIAL, seq=24 hero f5059-wh-02 | nmn · morning or night | AgeAura NMN+TMG |
 | ~~21~~ ✅ | [Vaginal Probiotics: How Long Until They Work? (US 2026)](https://wellnessnest.co/blogs/news/vaginal-probiotics-how-long-until-they-work-us-2026) — LIVE 2026-08-13, id 621858685243, STORY, seq=25 hero NO-FACE | vaginal probiotic · how long | FloraFresh |
-| 22 | How Much Shilajit Per Day: Dosage by Form (US 2026) | shilajit · how much | resin + gummies + gold |
+| ~~22~~ ✅ | [How Much Shilajit Per Day: Dosage by Form (US 2026)](https://wellnessnest.co/blogs/news/how-much-shilajit-per-day-dosage-by-form-us-2026) — LIVE 2026-08-13, id 621859406139, EDITORIAL, seq=27 hero m3039-bl-04 | shilajit · how much | resin + gummies + gold |
 
 Template rotation: previous three were LISTICLE, LISTICLE, EDITORIAL. Alternate across the batch.
 
 **Uncovered SKU still with no page of its own:** `pure-shilajit-gold-resin` ($75) and
 `shilajit-shockwave` ($79.99) — the gold resin FAILs the gate as `covered` because "shilajit" is
 its only brand token; it needs a distinct segment angle, not a bare product page.
+
+## Refill needed
+
+**2026-08-13 — the queue is EMPTY.** Ticket #22 was the last open item in batch 2026-08-13
+(#15–#22 all shipped). The google-ads MCP is not connected in this environment, so the
+mining recipe in `skills/genseo-auto-publish/references/ads-article-mining.md` cannot be run
+from a headless session. **Kevin: run the mining recipe in the app** (paid-but-not-converting
+terms + converting query patterns) and append the next batch here as `# BATCH <date>`.
+
+Still-uncovered SKUs needing a distinct segment angle, not a bare product page:
+`pure-shilajit-gold-resin` ($75) · `shilajit-shockwave` ($79.99). Note that #22 now publicly
+flags that the gold-resin PDP publishes no serving size — fixing that page is worth more than
+an article about it.
