@@ -44,7 +44,7 @@
    "face_clearly_visible": true,
    "face_obscured": false,
    "beauty_filtered": false,
-   "visible_text_or_watermark": false,
+   "visible_text_or_watermark": true,
    "recognizable_public_figure": false,
    "is_monochrome_or_period": false,
    "face_angle_reads": "frontal",
@@ -52,14 +52,17 @@
    "head_upright": true,
    "head_size_reads": "portrait",
    "mouth_or_face_prop": false,
+   "face_paint_or_costume_head": false,
    "studio_or_press_context": false,
    "official_or_representative_capacity": false,
    "identifying_text_in_frame": false,
    "minor_in_frame": false,
    "apparent_ethnicity": "white",
    "ethnicity_group": "white",
-   "notes": "Man dining at a restaurant."
-  }
+   "notes": "Contemporary restaurant photograph; beverage and plate text visible.",
+   "_model": "cx/gpt-5.6-luna"
+  },
+  "rubric_refreshed": "2026-08-14"
  },
  "approved_by": "kevin",
  "approved_date": "2026-08-13",

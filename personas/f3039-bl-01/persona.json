@@ -50,15 +50,18 @@
    "eyes_open": true,
    "head_upright": true,
    "head_size_reads": "portrait",
+   "mouth_or_face_prop": false,
+   "face_paint_or_costume_head": false,
    "studio_or_press_context": false,
    "official_or_representative_capacity": false,
    "identifying_text_in_frame": false,
    "minor_in_frame": false,
-   "apparent_ethnicity": "Black",
+   "apparent_ethnicity": "Black African descent",
    "ethnicity_group": "black",
-   "notes": "Woman on a yoga mat in a studio setting."
+   "notes": "Contemporary indoor yoga photograph with one adult subject.",
+   "_model": "cx/gpt-5.6-luna"
   },
-  "rubric_refreshed": "2026-08-10"
+  "rubric_refreshed": "2026-08-14"
  },
  "approved_by": "claude-opus-5",
  "approved_date": "2026-08-10",

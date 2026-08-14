@@ -38,8 +38,8 @@
   "vision": {
    "is_camera_photograph": true,
    "person_count": 1,
-   "apparent_age_min": 35,
-   "apparent_age_max": 50,
+   "apparent_age_min": 40,
+   "apparent_age_max": 55,
    "apparent_gender": "male",
    "face_clearly_visible": true,
    "face_obscured": false,
@@ -52,14 +52,17 @@
    "head_upright": true,
    "head_size_reads": "portrait",
    "mouth_or_face_prop": false,
+   "face_paint_or_costume_head": true,
    "studio_or_press_context": false,
    "official_or_representative_capacity": false,
    "identifying_text_in_frame": false,
    "minor_in_frame": false,
-   "apparent_ethnicity": "White",
+   "apparent_ethnicity": "white",
    "ethnicity_group": "white",
-   "notes": "Man in a cowboy hat and bolo tie posing against a plain wall."
-  }
+   "notes": "Adult man in a cowboy hat and bolo tie; warm indoor portrait.",
+   "_model": "cx/gpt-5.6-luna"
+  },
+  "rubric_refreshed": "2026-08-14"
  },
  "approved_by": "kevin",
  "approved_date": "2026-08-13",

@@ -186,6 +186,11 @@ VISION_TIMEOUT = 180
 # a 400, a 401, a malformed answer — is a real fault that a retry only repeats.
 VISION_TRANSIENT = ("HTTP 429", "HTTP 500", "HTTP 502", "HTTP 503", "HTTP 504")
 VISION_INFRA_ABORT = 5        # consecutive gem9/9router failures that end the run
+VISION_MODELS = (            # tried in order; a quota-dead provider falls through, never blocks
+    "ag/gemini-3.1-pro-low",  # primary: the model every cached reading in the bank was judged by
+    "cx/gpt-5.6-luna",        # proven vision lane — this is what article_images.py --qc already uses
+    "cx/gpt-5.4-mini",        # last resort, cheap, same OAuth subscription
+)
 MIN_APPARENT_AGE = 18         # absolute floor — never source a face that could read as a minor
 MAX_AGE_INTERVAL = 15         # a wider estimate than this is a hedge, not an answer
 
@@ -986,6 +991,7 @@ VISION_RUBRIC = (
     '"eyes_open": true|false, "head_upright": true|false, '
     '"head_size_reads": "tiny"|"portrait"|"fills-frame", '
     '"mouth_or_face_prop": true|false, '
+    '"face_paint_or_costume_head": true|false, '
     '"studio_or_press_context": true|false, '
     '"official_or_representative_capacity": true|false, '
     '"identifying_text_in_frame": true|false, "minor_in_frame": true|false, '
@@ -1020,6 +1026,12 @@ VISION_RUBRIC = (
     "being eaten, a mouthpiece, a whistle, a cupped hand over the mouth. Judge the mouth "
     "region only: a hat, spectacles, earrings, a necklace or an object merely held in the "
     "hand are NOT this. "
+    "face_paint_or_costume_head: is the FACE painted or the HEAD disguised - face paint or "
+    "body paint on the face, theatrical or carnival makeup, a mask or half-mask, a wig or "
+    "false hair, or a headdress, helmet or costume hat that hides the hairline and the shape "
+    "of the skull. Ordinary clothing, an ordinary cap or beanie worn normally, ordinary "
+    "cosmetics, spectacles and jewellery are NOT this - judge only whether the FACE'S OWN "
+    "surface or the HEAD'S OWN outline has been replaced by something worn. "
     "studio_or_press_context: true for a seamless studio backdrop, a professional "
     "headshot, a stage or podium, a press conference, a red carpet or any other posed "
     "media-production setting. "
@@ -1135,11 +1147,30 @@ ETHNICITY_GROUP_TO_KEY = {
 # Kept deliberately narrow — the MOUTH region only. Wardrobe, props in the hand, and everything
 # else in the frame are replaced by the prompt and are none of this gate's business; widening it
 # to "anything unwholesome in the photograph" would be a taste filter wearing a rubric's clothes.
+#
+# face_paint_or_costume_head came off the first face this bank ever handed to a live article run.
+# persona_picker issued m3039-bl-05 for the turkesterone hero on 2026-08-13 and ima2's QC came
+# back "person mismatch". The ref is a street performer in full yellow-and-red FACE PAINT with a
+# tray of eggshells balanced on his head. Every boolean read correctly and the notes said it out
+# loud — "Man with yellow and red face paint carrying a large cluster of eggshells on his head" —
+# and the gate still passed him, because the two keys that could have caught it were both
+# answering a narrower question honestly: face_obscured is about something COVERING the face and
+# paint covers nothing, mouth_or_face_prop is about an object AT the mouth and paint is not an
+# object. A sweep of the 127 active faces found one more, m5059-wh-15, in a Renaissance-fair wig
+# and hat. Both are now flagged.
+#
+# This is the mouth_or_face_prop argument arriving on the surface of the face rather than at the
+# mouth, and it is deliberately the SAME argument, not a wider one: ima2 reconstructs the person
+# in ref.jpg, so anything that has replaced the face's own surface or the head's own outline
+# travels with the anchor into every generation and the prompt cannot dress it away. Paint sits
+# where the skin should be; a wig sits where the hairline should be. Ordinary hats stay allowed
+# for exactly the reason m4049-wh-01's hat was allowed — a hat sits ABOVE the face and leaves the
+# anchor intact.
 VISION_RUBRIC_KEYS_ADDED = ("is_monochrome_or_period", "face_angle_reads",
                             "official_or_representative_capacity",
                             "identifying_text_in_frame", "minor_in_frame",
                             "eyes_open", "head_upright", "head_size_reads",
-                            "mouth_or_face_prop")
+                            "mouth_or_face_prop", "face_paint_or_costume_head")
 # A profile ref makes most of the 21-angle vocabulary unreachable: article_images.py anchors
 # identity on ref.jpg, and asking ima2 for `front-level` from a 90-degree profile is asking it
 # to invent the half of the face it was never shown. f3039-wh-06 is exactly that photograph.
@@ -1197,6 +1228,22 @@ class VisionInfraError(RuntimeError):
     a verdict rejects one photo, an infra failure means every verdict this run is worthless."""
 
 
+def vision_reset_hint(message):
+    """Seconds gem9 says its quota needs, or None. Quota is not load.
+
+    A 502 is 9router shedding load and clears in seconds, so the staggered 4s/8s back-off
+    below is right for it. A 429 is a *quota window*, and gem9 prints how long it has left:
+    `"Resource has been exhausted (e.g. check quota (reset after 4m 45s)"`. Blind
+    seconds-scale retry cannot outlast that — it just spends two more calls deepening the
+    exhaustion. Measured 2026-08-13: a whole-bank `verify --vision` returned 0 real readings
+    out of 137 because every candidate burned 3 attempts into a 4-minute window and moved on.
+    Read the number the service already gave us instead of guessing."""
+    m = re.search(r"reset after\s+(?:(\d+)m\s*)?(?:(\d+)s)?", message or "")
+    if not m or not (m.group(1) or m.group(2)):
+        return None
+    return int(m.group(1) or 0) * 60 + int(m.group(2) or 0)
+
+
 def vision_is_transient(message):
     """Is this gem9 failure the router shedding load, or a real fault?
 
@@ -1221,30 +1268,49 @@ def vision_check(image_path):
     unretried it took a run out through VISION_INFRA_ABORT, which is precisely the misreading
     that guard exists to prevent, arriving one layer lower down. Only transient statuses are
     retried; a malformed answer is not made truer by asking twice.
+
+    Falls through VISION_MODELS, because retrying is the wrong tool for a dead provider.
+    Measured 2026-08-13: the whole `ag/` provider hit its quota ceiling, and a bank-wide
+    `verify --vision` returned 0 readings out of 137. Honouring the "reset after 4m 50s" hint
+    and sleeping it out made that run take **twelve hours** and still return 0 — the window is
+    a rolling sub-quota that refills to nothing. A quota hint therefore means "this model is
+    done, take the next one", never "wait". `cx/` answered the same rubric instantly while
+    `ag/` was refusing every call, so the reading was always available; only the routing was
+    missing. The model that actually answered is recorded on the reading, since a rubric is
+    only as comparable as the judge behind it.
     """
     last = None
-    for attempt in range(3):
-        # Held around the call only. Sleeping through the back-off inside the gate would idle
-        # a slot for everyone else, which is the failure this gate exists to stop.
-        with _VISION_GATE:
-            res = subprocess.run([GEM9, "-p", VISION_RUBRIC, image_path],
-                                 capture_output=True, text=True, timeout=VISION_TIMEOUT)
-        if res.returncode == 0:
-            raw = (res.stdout or "").strip()
-            parsed = _extract_json(raw)
-            if parsed is not None:
-                return parsed, raw
-            # Exit 0 with nothing parseable is still an infra symptom, not a judgement on the
-            # face — but it is not a load symptom either, so it does not earn a retry.
-            raise VisionInfraError("gem9 exited 0 but returned no JSON: %r" % raw[:200])
-        last = "gem9 exit %d: %s" % (res.returncode,
-                                     (res.stderr or res.stdout or "").strip()[:200])
-        if not vision_is_transient(last):
-            break
-        if attempt < 2:
-            # Staggered by attempt AND by worker, or six workers that 502 together simply
-            # retry together and reproduce the burst that caused it.
-            time.sleep(4 * (attempt + 1) + random.uniform(0, 3))
+    for model in VISION_MODELS:
+        for attempt in range(3):
+            # Held around the call only. Sleeping through the back-off inside the gate would
+            # idle a slot for everyone else, which is the failure this gate exists to stop.
+            with _VISION_GATE:
+                res = subprocess.run([GEM9, "-m", model, "-p", VISION_RUBRIC, image_path],
+                                     capture_output=True, text=True, timeout=VISION_TIMEOUT)
+            if res.returncode == 0:
+                raw = (res.stdout or "").strip()
+                parsed = _extract_json(raw)
+                if parsed is not None:
+                    parsed["_model"] = model
+                    return parsed, raw
+                # Exit 0 with nothing parseable is an infra symptom, not a judgement on the
+                # face — and not a load symptom either, so it earns no retry on THIS model.
+                # The next model is still worth asking: an unparseable answer is the one
+                # failure another judge most plausibly does not reproduce.
+                last = "gem9[%s] exited 0 but returned no JSON: %r" % (model, raw[:160])
+                break
+            last = "gem9[%s] exit %d: %s" % (model, res.returncode,
+                                             (res.stderr or res.stdout or "").strip()[:200])
+            if vision_reset_hint(last) is not None:
+                # Quota, not load. No amount of waiting on this model beats one call to the
+                # next one. Abandon it for the rest of this candidate.
+                break
+            if not vision_is_transient(last):
+                break
+            if attempt < 2:
+                # Staggered by attempt AND by worker, or six workers that 502 together simply
+                # retry together and reproduce the burst that caused it.
+                time.sleep(4 * (attempt + 1) + random.uniform(0, 3))
     raise VisionInfraError(last)
 
 
@@ -1283,16 +1349,29 @@ def ethnicity_key_of(v):
     return None
 
 
-def evaluate_vision(v, cell):
+def evaluate_vision(v, cell, undecided=None):
     """Pure verdict function over the parsed JSON. Returns a list of reject reasons.
 
     article_images.py deliberately fails OPEN when its QC is inconclusive — it is grading an
     image it already paid to generate. Sourcing is the opposite trade: candidates are free and
     admitting one AI face poisons every article it fronts, so an unusable answer is a reject.
+
+    That trade inverts once a face is IN the bank, which is the other caller. Pass a list as
+    `undecided` to receive the reasons that mean "the judge would not commit" rather than
+    "this face is wrong" — an ethnicity it marked `unclear`, an age range too wide to place.
+    Left as None they stay in the reject list, so harvesting keeps failing closed exactly as
+    before. Measured 2026-08-14: re-judging the bank through the fallback model turned five
+    faces from a definite group into `unclear` — four of them Hispanic cells, where hedging
+    is a known model behaviour and not a property of the photograph. Folding a shrug into
+    FAIL there would have evicted five good faces and called it quality control. A model
+    that declines to answer leaves the gate UNRUN, which is the same state as a model that
+    could not be reached, and it already has a verdict of its own.
     """
     if not isinstance(v, dict):
         return ["vision output was not usable JSON"]
     reasons = []
+    # Where a "the judge shrugged" reason goes. None means the caller wants them as rejects.
+    hedge = reasons if undecided is None else undecided
     if v.get("is_camera_photograph") is not True:
         reasons.append("not a camera photograph (AI/CGI/illustration)")
     try:
@@ -1318,8 +1397,8 @@ def evaluate_vision(v, cell):
             reasons.append("apparent age starts at %d — below the hard floor of %d"
                            % (amin, MIN_APPARENT_AGE))
         elif amax - amin > MAX_AGE_INTERVAL:
-            reasons.append("apparent age %d-%d spans %d years — too hedged to place in a band"
-                           % (amin, amax, amax - amin))
+            hedge.append("apparent age %d-%d spans %d years — too hedged to place in a band"
+                         % (amin, amax, amax - amin))
         elif not (lo - 2 <= mid <= hi + 2):
             reasons.append("apparent age %d-%d centres on %.0f, outside cell band %s"
                            % (amin, amax, mid, cell["age_band"]))
@@ -1338,8 +1417,11 @@ def evaluate_vision(v, cell):
         reasons.append("cell %r declares no ethnicity_key — refusing rather than sourcing into "
                        "a cell whose demographic target is unstated" % cell.get("cell_id"))
     elif seen_key is None:
-        reasons.append("apparent ethnicity %r could not be placed in any of the five taxonomy "
-                       "groups" % (v.get("ethnicity_group") or v.get("apparent_ethnicity")))
+        # NOT the same as landing in the wrong group, which stays a reject below. This is the
+        # rubric's own `unclear` token coming back, i.e. the model was asked and said it could
+        # not tell.
+        hedge.append("apparent ethnicity %r could not be placed in any of the five taxonomy "
+                     "groups" % (v.get("ethnicity_group") or v.get("apparent_ethnicity")))
     elif seen_key != want_key:
         reasons.append("reads as %r, cell wants %r" % (seen_key, want_key))
     if v.get("face_clearly_visible") is not True:
@@ -1398,6 +1480,14 @@ def evaluate_vision(v, cell):
         reasons.append("an object is in or against the mouth (cigarette, vape, straw, food) — it "
                        "sits inside the region ima2 anchors identity on, so the prompt cannot "
                        "dress it away the way it can a hat")
+    if v.get("face_paint_or_costume_head") is True:
+        # Same argument as mouth_or_face_prop, one region wider: paint replaces the skin the
+        # anchor is read from, a wig or headdress replaces the hairline and skull outline. Both
+        # travel into every generation. m3039-bl-05 (street performer in face paint) is the case
+        # that put this here — ima2 QC returned "person mismatch" on the first hero it was used for.
+        reasons.append("the face is painted or the head is disguised (face paint, theatrical "
+                       "makeup, a mask, a wig or a costume headdress) — it replaces the surface "
+                       "ima2 reads identity from, so no prompt clause can recover the person")
     if v.get("minor_in_frame") is True:
         # A child cannot consent and their guardian has not been asked, so this one is a floor
         # rather than a preference — the same reasoning as MIN_APPARENT_AGE, arriving by way of
@@ -2249,9 +2339,13 @@ def cmd_verify(args):
     hashes = bank_hashes(bank)
     cells = cells_by_id(_load(TAXONOMY, "taxonomy")) if args.vision else {}
     failures = 0
+    unverified_n = 0
+    infra_streak = 0
+    aborted = None
     for handle in sorted(bank):
         rec = bank[handle]
         doc, problems, notes = rec["doc"], [], []
+        unverified = False
 
         # Re-derived through the same spine the fetcher uses, not compared against a frozen list
         # of display names. A jurisdiction port (CC BY 3.0 TW) is minted without anyone telling
@@ -2292,22 +2386,47 @@ def cmd_verify(args):
             cell = cells.get(doc.get("cell_id"))
             if cell is None:
                 # Legacy personas carry cell_id: null, so there is no age band or gender to
-                # judge against. Saying so is better than inventing a cell for them.
+                # judge against. Saying so is better than inventing a cell for them — and it
+                # is still an unrun gate, so it cannot print PASS either. Same hole, permanent
+                # cause instead of a transient one.
                 notes.append("vision skipped (no cell_id)")
+                unverified = True
             else:
                 try:
                     vision, _raw = vision_check(rec["ref"])
                 except (OSError, subprocess.SubprocessError, VisionInfraError) as exc:
                     # An audit must not brand a face as failing when it was the model that
-                    # failed. Say the check did not run; do not count it as a problem.
+                    # failed. But it must not call it PASS either — that is the whole reason
+                    # this run exists after a rubric change, and "clean" on a question nobody
+                    # answered is the same false green that let a face-painted persona through.
+                    # Third verdict: UNVER. Not a problem, not a pass.
                     notes.append("vision UNAVAILABLE (%s)" % exc)
+                    unverified = True
+                    infra_streak += 1
                 else:
-                    problems.extend("vision: " + r for r in evaluate_vision(vision, cell))
+                    infra_streak = 0
+                    notes.append("judged by %s" % vision.get("_model", "?"))
+                    # A face already in the bank is not a free candidate, so a shrug from the
+                    # judge must not evict it. Those reasons come back separately and land in
+                    # UNVER — re-runnable — instead of FAIL.
+                    shrugs = []
+                    problems.extend("vision: " + r
+                                    for r in evaluate_vision(vision, cell, undecided=shrugs))
+                    if shrugs:
+                        notes.append("undecided: " + "; ".join(shrugs))
+                        unverified = True
                     if vision.get("studio_or_press_context") is True:
                         # Recorded, not a problem — see evaluate_vision. Surfaced here because a
                         # verify run is the other place a human is already reading the bank.
                         notes.append("studio/press setting")
-                    if args.update_qc:
+                    if args.update_qc and shrugs and (doc.get("qc") or {}).get("vision"):
+                        # A cache refresh must not LOSE information. The stored reading answers
+                        # the question; this one declines to. Overwriting is a straight downgrade
+                        # — and it is what actually happened on 2026-08-14, when five faces that
+                        # had a definite ethnicity_group on disk had it replaced with `unclear`
+                        # by the fallback judge. Keep the decided answer, note the refusal.
+                        notes.append("qc kept (refresh was less decided than the cached reading)")
+                    elif args.update_qc:
                         # Off by default: "verify" that mutates the thing it verifies is a trap.
                         # On, it saves re-buying ~16s of model call per face the next time the
                         # rubric gains a key — and it is what puts the new fields where
@@ -2317,14 +2436,39 @@ def cmd_verify(args):
                         _atomic_write(os.path.join(PERSONAS, handle, "persona.json"), doc)
                         notes.append("qc rewritten")
 
-        print("%-14s %-4s %s%s" % (handle, "FAIL" if problems else "PASS",
-                                   "; ".join(problems) if problems else "clean",
+        verdict = "FAIL" if problems else ("UNVER" if unverified else "PASS")
+        print("%-14s %-5s %s%s" % (handle, verdict,
+                                   "; ".join(problems) if problems
+                                   else ("vision did not run" if unverified else "clean"),
                                    "   [%s]" % " ".join(notes) if notes else ""))
         failures += 1 if problems else 0
-    print("\n%d/%d personas would fail the gates today." % (failures, len(bank)))
+        unverified_n += 1 if (unverified and not problems) else 0
+
+        if infra_streak >= VISION_INFRA_ABORT:
+            # Every model in the chain is refusing. Grinding the remaining bank cannot produce
+            # a reading and only buries the reason under hundreds more identical lines — which
+            # is exactly how a 12-hour run came back with nothing to show for it.
+            aborted = handle
+            print("\n✗ ABORTED after %d consecutive vision failures across every model in "
+                  "VISION_MODELS. The lane is down, not the faces." % infra_streak)
+            break
+
+    checked = len(bank) if aborted is None else (sorted(bank).index(aborted) + 1)
+    print("\n%d/%d personas would fail the gates today." % (failures, checked))
+    if aborted:
+        print("%d personas were never reached — the run stopped early at %s."
+              % (len(bank) - checked, aborted))
+    if unverified_n:
+        # Loud, and it owns the exit code. A rate-limited run that printed "0 would fail"
+        # reads as a clean bill of health for a bank nobody looked at.
+        print("%d/%d UNVERIFIED — gate 5 did not produce a usable answer (the models were "
+              "unreachable, or answered but declined to commit; the per-line note says which). "
+              "These are NOT passes; re-run to settle them." % (unverified_n, checked))
     if not args.vision:
         print("(gate 5 not run — pass --vision to re-check the bank through gem9)")
-    sys.exit(1 if failures else 0)
+    # 1 = real failures. 3 = nothing failed but the audit is incomplete, so `&& deploy`
+    # must not fire. 0 only when every persona was actually looked at.
+    sys.exit(1 if failures else (3 if (unverified_n or aborted) else 0))
 
 
 def cmd_quarantine(args):
@@ -3351,7 +3495,8 @@ def cmd_selftest(_args):
             "visible_text_or_watermark": False, "recognizable_public_figure": False,
             "is_monochrome_or_period": False, "face_angle_reads": "three-quarter",
             "eyes_open": True, "head_upright": True, "head_size_reads": "portrait",
-            "mouth_or_face_prop": False, "studio_or_press_context": False,
+            "mouth_or_face_prop": False, "face_paint_or_costume_head": False,
+            "studio_or_press_context": False,
             "official_or_representative_capacity": False,
             "identifying_text_in_frame": False, "minor_in_frame": False,
             "ethnicity_group": "white", "apparent_ethnicity": "white"}
@@ -3377,7 +3522,10 @@ def cmd_selftest(_args):
                          ({"head_size_reads": "tiny"},
                           "person small in a wide scene rejected — no face to anchor on"),
                          ({"mouth_or_face_prop": True},
-                          "cigarette / vape / straw at the lips rejected")):
+                          "cigarette / vape / straw at the lips rejected"),
+                         ({"face_paint_or_costume_head": True},
+                          "face paint / mask / wig / costume headdress rejected — the anchor "
+                          "surface is not the person's own")):
         v = dict(good)
         v.update(tweak)
         check(label, evaluate_vision(v, cell) != [])
@@ -3398,6 +3546,35 @@ def cmd_selftest(_args):
                           dict(cell, age_band="50-59", cell_id="m5059-wh")) != []
           and evaluate_vision(dict(good, head_size_reads="fills-frame"), cell) == [])
     check("frontal accepted", evaluate_vision(dict(good, face_angle_reads="frontal"), cell) == [])
+
+    print("a shrug from the judge is not a verdict on the face")
+    # The five faces that lost a definite ethnicity_group to `unclear` on 2026-08-14. Harvest
+    # must keep rejecting them (candidates are free); verify must not evict them.
+    _shy = dict(good, ethnicity_group="unclear", apparent_ethnicity="unclear")
+    check("harvest still fails closed on an unclear ethnicity",
+          evaluate_vision(_shy, cell) != [])
+    _u = []
+    check("...but verify gets it as undecided, not as a reject",
+          evaluate_vision(_shy, cell, undecided=_u) == [] and len(_u) == 1)
+    # The distinction that matters: declining to place the face vs placing it somewhere else.
+    _u2 = []
+    check("a face read into the WRONG group is still a hard reject, not a shrug",
+          evaluate_vision(dict(good, ethnicity_group="black"), cell, undecided=_u2) != []
+          and _u2 == [])
+    _u3 = []
+    check("an age range too wide to place is a shrug too",
+          evaluate_vision(dict(good, apparent_age_min=20, apparent_age_max=45),
+                          cell, undecided=_u3) == [] and len(_u3) == 1)
+    # Age has two other outcomes and neither is a shrug — one is a taxonomy miss, and the
+    # under-18 floor is a safety rule that no caller may soften.
+    _u4 = []
+    check("an age centred outside the band stays a reject",
+          evaluate_vision(dict(good, apparent_age_min=20, apparent_age_max=27),
+                          cell, undecided=_u4) != [] and _u4 == [])
+    _u5 = []
+    check("the under-18 floor is absolute and never lands in the undecided bucket",
+          evaluate_vision(dict(good, apparent_age_min=15, apparent_age_max=20),
+                          cell, undecided=_u5) != [] and _u5 == [])
     check("unparseable vision output rejected (fails CLOSED, unlike article_images.py)",
           evaluate_vision(None, cell) != [])
 
@@ -3761,6 +3938,23 @@ def cmd_selftest(_args):
           not vision_is_transient("gem9 exit 1: gem9: HTTP 400: bad request"))
     check("nor is an unparseable answer, which is a fault and not a load symptom",
           not vision_is_transient("gem9 exited 0 but returned no JSON: ''"))
+
+    _q429 = ('gem9: HTTP 429: {"error":{"message":"[antigravity/gemini-3.1-pro-low] [429]: '
+             '{\\n  \\"error\\": {\\n    \\"code\\": 429,\\n    \\"message\\": \\"Resource has '
+             'been exhausted (e.g. check quota (reset after 4m 45s)')
+    check("a 429 quota window is read off the error body, not guessed at",
+          vision_reset_hint(_q429) == 285)
+    check("a seconds-only reset parses too", vision_reset_hint("reset after 53s)") == 53)
+    check("a minutes-only reset parses too", vision_reset_hint("reset after 2m )") == 120)
+    check("a 502 carries no reset hint, so it keeps the staggered back-off",
+          vision_reset_hint("gem9 exit 1: gem9: HTTP 502: error code: 502") is None)
+    check("and a bare 'reset after' with no number is not a hint",
+          vision_reset_hint("reset after ") is None)
+    check("the fallback chain leads with the model the cached bank was judged by",
+          VISION_MODELS[0] == "ag/gemini-3.1-pro-low")
+    check("...and carries at least one lane on a different provider, or a dead provider "
+          "takes the whole gate down with it",
+          len({m.split("/")[0] for m in VISION_MODELS}) >= 2)
 
     print("queries + handles")
     tax = _load(TAXONOMY, "taxonomy")

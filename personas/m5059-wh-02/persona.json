@@ -38,8 +38,8 @@
   "vision": {
    "is_camera_photograph": true,
    "person_count": 1,
-   "apparent_age_min": 45,
-   "apparent_age_max": 60,
+   "apparent_age_min": 40,
+   "apparent_age_max": 55,
    "apparent_gender": "male",
    "face_clearly_visible": true,
    "face_obscured": false,
@@ -52,14 +52,17 @@
    "head_upright": true,
    "head_size_reads": "fills-frame",
    "mouth_or_face_prop": false,
+   "face_paint_or_costume_head": false,
    "studio_or_press_context": false,
    "official_or_representative_capacity": false,
    "identifying_text_in_frame": false,
    "minor_in_frame": false,
-   "apparent_ethnicity": "white male",
+   "apparent_ethnicity": "white-appearing",
    "ethnicity_group": "white",
-   "notes": "Low angle selfie of a white male with a dog in the foreground."
-  }
+   "notes": "Contemporary close-up photograph of a man holding a dog.",
+   "_model": "cx/gpt-5.6-luna"
+  },
+  "rubric_refreshed": "2026-08-14"
  },
  "approved_by": "kevin",
  "approved_date": "2026-08-13",

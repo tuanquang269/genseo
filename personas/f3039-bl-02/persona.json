@@ -38,8 +38,8 @@
   "vision": {
    "is_camera_photograph": true,
    "person_count": 1,
-   "apparent_age_min": 25,
-   "apparent_age_max": 40,
+   "apparent_age_min": 35,
+   "apparent_age_max": 50,
    "apparent_gender": "female",
    "face_clearly_visible": true,
    "face_obscured": false,
@@ -52,14 +52,17 @@
    "head_upright": true,
    "head_size_reads": "fills-frame",
    "mouth_or_face_prop": false,
-   "studio_or_press_context": false,
+   "face_paint_or_costume_head": false,
+   "studio_or_press_context": true,
    "official_or_representative_capacity": false,
    "identifying_text_in_frame": false,
    "minor_in_frame": false,
-   "apparent_ethnicity": "Black woman",
+   "apparent_ethnicity": "Black African descent",
    "ethnicity_group": "black",
-   "notes": "Close-up of a Black woman looking to her left over a white background."
-  }
+   "notes": "Close-up studio portrait of one adult woman.",
+   "_model": "cx/gpt-5.6-luna"
+  },
+  "rubric_refreshed": "2026-08-14"
  },
  "approved_by": "claude (delegated by Kevin for ~/genseo/personas/ only, 2026-08-12)",
  "approved_date": "2026-08-12",

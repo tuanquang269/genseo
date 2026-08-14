@@ -291,3 +291,24 @@ Still-uncovered SKUs needing a distinct segment angle, not a bare product page:
 `pure-shilajit-gold-resin` ($75) · `shilajit-shockwave` ($79.99). Note that #22 now publicly
 flags that the gold-resin PDP publishes no serving size — fixing that page is worth more than
 an article about it.
+
+---
+
+## Shipped without a ticket
+
+- **[DONE 2026-08-13] #23 — turkesterone timing** — mined on the day because the queue was
+  empty. Coverage map across the 11 live SKUs put turkesterone as the thinnest cluster with a
+  stocked $75 product: two existing articles (vs-ecdysterone, benefits-dosing), neither about
+  when to take it. `topic_fitness.py` → `PASS [brand]`; live suggest.json clean on
+  "turkesterone timing", "when to take turkesterone", "turkesterone with food".
+  → https://wellnessnest.co/blogs/news/turkesterone-timing-food-protein-or-fasted-us-2026
+
+Remaining uncovered after #23: `pure-shilajit-gold-resin` · `shilajit-shockwave` (both still
+need a segment angle, not a bare product page).
+
+# BATCH 2026-08-14
+
+- [DONE 2026-08-14 https://wellnessnest.co/blogs/news/shilajit-gold-resin-review-is-75-worth-it-us-2026] **#24 — shilajit gold resin review** — `Shilajit Gold Resin Review: Worth $75? (US 2026)`
+  - Product: `pure-shilajit-gold-resin` · $75 live price · EDITORIAL.
+  - Intent: near-buyer audit of the documented $15 premium. Disclose the missing serving size and Supplement Facts panel. Do not repeat unsupported potency, gold, testing, or outcome claims.
+  - Gates: live `suggest.json` returned no article match; `topic_fitness.py` → `PASS [brand_intent]`.

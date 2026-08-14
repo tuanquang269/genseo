@@ -1,25 +1,25 @@
 {
  "_doc": "Machine-readable rotation state for the persona bank. persona.json holds IMMUTABLE provenance; this file holds MUTABLE rotation history. Written only by scripts/persona_picker.py commit (atomic tmp+rename). Never hand-edit during a run.",
  "schema_version": 1,
- "seq": 27,
+ "seq": 31,
  "seeded_from": "PUBLISHED_ARTICLES_TRACKER.csv tickets 1-10 (free-text hero/gaze notes)",
  "recent_shots": [
-  "mid-subject-fg-pack",
-  "low-table-level",
-  "wide-room",
   "high-angle-down",
   "over-shoulder",
-  "through-doorway"
+  "through-doorway",
+  "mid-subject-fg-pack",
+  "wide-room",
+  "high-angle-down"
  ],
  "recent_heroes": [
-  "NO-FACE",
-  "m3039-as-01",
-  "m3039-as-02",
   "NO-FACE",
   "m2029-as-01",
   "f5059-wh-02",
   "NO-FACE",
-  "m3039-bl-04"
+  "m3039-bl-04",
+  "m3039-bl-06",
+  "NO-FACE",
+  "m3039-hl-04"
  ],
  "no_face_cycle": {
   "period": 3,
@@ -1647,11 +1647,17 @@
    "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m3039-hl-04/ref.jpg",
    "identity_key": "openimages:28b9beae2a34e078",
-   "used_count": 0,
-   "last_used_seq": 0,
-   "gaze_used": [],
-   "last_gaze": null,
-   "angles_used": [],
+   "used_count": 1,
+   "last_used_seq": 31,
+   "gaze_used": [
+    "off-into-room",
+    "down-at-hands"
+   ],
+   "last_gaze": "off-into-room",
+   "angles_used": [
+    "profile-right+chin-up",
+    "3q-left+chin-up"
+   ],
    "angles_reserved": []
   },
   "m3039-hl-05": {
@@ -1761,9 +1767,12 @@
    "ref": "/Users/kevinkreative/genseo/personas/m3039-bl-05/ref.jpg",
    "identity_key": "openimages:7e5b746f0f9d55d1",
    "used_count": 0,
-   "last_used_seq": 0,
-   "gaze_used": [],
-   "last_gaze": null,
+   "last_used_seq": 28,
+   "gaze_used": [
+    "just-past-lens",
+    "off-into-room"
+   ],
+   "last_gaze": "just-past-lens",
    "angles_used": [],
    "angles_reserved": []
   },
@@ -1773,12 +1782,20 @@
    "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m3039-bl-06/ref.jpg",
    "identity_key": "openimages:0776a456f8d65f9f",
-   "used_count": 0,
-   "last_used_seq": 0,
-   "gaze_used": [],
-   "last_gaze": null,
-   "angles_used": [],
-   "angles_reserved": []
+   "used_count": 1,
+   "last_used_seq": 29,
+   "gaze_used": [
+    "down-at-product",
+    "up-and-away"
+   ],
+   "last_gaze": "down-at-product",
+   "angles_used": [
+    "front+level",
+    "profile-left+chin-up",
+    "front+chin-down"
+   ],
+   "angles_reserved": [],
+   "angle_notes": "front+chin-down was burned WITHOUT being issued, on 2026-08-13 (seq 29). The hero shipped for that article was rendered against front+level but reads with a slight downward pitch \u2014 ima2 QC failed it twice on exactly that, and the level re-roll came back worse (yaw + a duplicated fork), so the dipped frame was the one published. Burning the neighbouring angle keeps the hard rule honest: a later article asking this persona for front+chin-down would have produced a head that reads the same as the live hero."
   },
   "f3039-as-02": {
    "handle": "f3039-as-02",
@@ -1855,5 +1872,17 @@
    "angles_reserved": []
   }
  },
- "reservations": {}
+ "reservations": {
+  "30": {
+   "seq": 30,
+   "hero": "NO-FACE",
+   "audience": "men-30-55",
+   "hero_face_angle": null,
+   "inline_face_angle": null,
+   "hero_gaze": null,
+   "inline_gaze": null,
+   "shot": "wide-room",
+   "cycle_position_before": 2
+  }
+ }
 }
