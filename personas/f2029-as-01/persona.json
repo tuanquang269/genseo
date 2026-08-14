@@ -38,8 +38,8 @@
   "vision": {
    "is_camera_photograph": true,
    "person_count": 1,
-   "apparent_age_min": 20,
-   "apparent_age_max": 30,
+   "apparent_age_min": 25,
+   "apparent_age_max": 35,
    "apparent_gender": "female",
    "face_clearly_visible": true,
    "face_obscured": false,
@@ -59,7 +59,7 @@
    "minor_in_frame": false,
    "apparent_ethnicity": "Southeast Asian",
    "ethnicity_group": "asian",
-   "notes": "Contemporary nighttime photograph of one adult woman.",
+   "notes": "Contemporary nighttime flash photograph of one adult woman outdoors.",
    "_model": "cx/gpt-5.6-luna"
   },
   "rubric_refreshed": "2026-08-14"

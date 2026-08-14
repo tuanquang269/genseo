@@ -38,8 +38,8 @@
   "vision": {
    "is_camera_photograph": true,
    "person_count": 1,
-   "apparent_age_min": 30,
-   "apparent_age_max": 40,
+   "apparent_age_min": 25,
+   "apparent_age_max": 35,
    "apparent_gender": "female",
    "face_clearly_visible": true,
    "face_obscured": false,
@@ -59,7 +59,7 @@
    "minor_in_frame": false,
    "apparent_ethnicity": "East Asian",
    "ethnicity_group": "asian",
-   "notes": "Contemporary candid photograph of an adult woman dining outdoors.",
+   "notes": "Contemporary outdoor portrait of one smiling woman.",
    "_model": "cx/gpt-5.6-luna"
   },
   "rubric_refreshed": "2026-08-14"

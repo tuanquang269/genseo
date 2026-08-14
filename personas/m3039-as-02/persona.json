@@ -39,7 +39,7 @@
    "is_camera_photograph": true,
    "person_count": 1,
    "apparent_age_min": 30,
-   "apparent_age_max": 45,
+   "apparent_age_max": 40,
    "apparent_gender": "male",
    "face_clearly_visible": true,
    "face_obscured": false,
@@ -50,7 +50,7 @@
    "face_angle_reads": "frontal",
    "eyes_open": true,
    "head_upright": true,
-   "head_size_reads": "fills-frame",
+   "head_size_reads": "portrait",
    "mouth_or_face_prop": false,
    "face_paint_or_costume_head": false,
    "studio_or_press_context": false,
@@ -59,7 +59,7 @@
    "minor_in_frame": false,
    "apparent_ethnicity": "East Asian",
    "ethnicity_group": "asian",
-   "notes": "Close frontal flash portrait with an exaggerated facial expression.",
+   "notes": "Contemporary flash portrait against a wooden background.",
    "_model": "cx/gpt-5.6-luna"
   },
   "rubric_refreshed": "2026-08-14"

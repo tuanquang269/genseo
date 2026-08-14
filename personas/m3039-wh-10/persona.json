@@ -39,7 +39,7 @@
    "is_camera_photograph": true,
    "person_count": 1,
    "apparent_age_min": 30,
-   "apparent_age_max": 45,
+   "apparent_age_max": 40,
    "apparent_gender": "male",
    "face_clearly_visible": true,
    "face_obscured": false,
@@ -59,7 +59,7 @@
    "minor_in_frame": false,
    "apparent_ethnicity": "white",
    "ethnicity_group": "white",
-   "notes": "Close-up indoor portrait with open mouth and visible teeth.",
+   "notes": "Contemporary close-up photograph of one adult man with a clearly visible face.",
    "_model": "cx/gpt-5.6-luna"
   },
   "rubric_refreshed": "2026-08-14"

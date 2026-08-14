@@ -37,7 +37,7 @@
   "notes": "machine gates passed: licence cc-by-2.0 read back from the source, 1.94MP, burned-in-text screen (bottom-left d=0.0122 ratio=0.6 row=0.05), dHash-deduped vs the whole bank, vision gate. Vision JSON: {\"apparent_age_max\": 45, \"apparent_age_min\": 30, \"apparent_ethnicity\": \"Black\", \"apparent_gender\": \"male\", \"beauty_filtered\": false, \"ethnicity_group\": \"black\", \"eyes_open\": true, \"face_angle_reads\": \"frontal\", \"face_clearly_visible\": true, \"face_obscured\": false, \"head_size_reads\": \"portrait\", \"head_upright\": true, \"identifying_text_in_frame\": false, \"is_camera_photograph\": true, \"is_monochrome_or_period\": false, \"minor_in_frame\": false, \"mouth_or_face_prop\": false, \"notes\": \"Subject is seated indoors, casually dressed.\", \"official_or_representative_capacity\": false, \"person_count\": 1, \"recognizable_public_figure\": false, \"studio_or_press_context\": false, \"visible_text_or_watermark\": false}",
   "vision": {
    "is_camera_photograph": true,
-   "person_count": 1,
+   "person_count": 3,
    "apparent_age_min": 35,
    "apparent_age_max": 45,
    "apparent_gender": "male",
@@ -47,7 +47,7 @@
    "visible_text_or_watermark": false,
    "recognizable_public_figure": false,
    "is_monochrome_or_period": false,
-   "face_angle_reads": "three-quarter",
+   "face_angle_reads": "frontal",
    "eyes_open": true,
    "head_upright": true,
    "head_size_reads": "portrait",
@@ -57,9 +57,9 @@
    "official_or_representative_capacity": false,
    "identifying_text_in_frame": false,
    "minor_in_frame": false,
-   "apparent_ethnicity": "Black African descent",
+   "apparent_ethnicity": "Black",
    "ethnicity_group": "black",
-   "notes": "Contemporary indoor portrait with one clearly visible adult man.",
+   "notes": "Contemporary indoor portrait; two indistinct background people.",
    "_model": "cx/gpt-5.6-luna"
   },
   "rubric_refreshed": "2026-08-14"

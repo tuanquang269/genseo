@@ -38,7 +38,7 @@
   "vision": {
    "is_camera_photograph": true,
    "person_count": 1,
-   "apparent_age_min": 50,
+   "apparent_age_min": 45,
    "apparent_age_max": 60,
    "apparent_gender": "male",
    "face_clearly_visible": true,
@@ -59,7 +59,7 @@
    "minor_in_frame": false,
    "apparent_ethnicity": "white",
    "ethnicity_group": "white",
-   "notes": "Contemporary color portrait of a formally dressed adult man indoors.",
+   "notes": "Formal portrait of a bearded man wearing a tuxedo indoors.",
    "_model": "cx/gpt-5.6-luna"
   },
   "rubric_refreshed": "2026-08-14"

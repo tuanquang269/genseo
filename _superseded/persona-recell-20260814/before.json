@@ -1,0 +1,824 @@
+{
+ "f1-redshirt": {
+  "cell_id": null,
+  "age_band": "40-49",
+  "status": "retired",
+  "pool_id": "f4049"
+ },
+ "f2-brunette": {
+  "cell_id": null,
+  "age_band": "30-39",
+  "status": "retired",
+  "pool_id": "f3039"
+ },
+ "f2029-as-01": {
+  "cell_id": "f2029-as",
+  "age_band": "20-29",
+  "status": "active",
+  "pool_id": "f2029"
+ },
+ "f2029-bl-01": {
+  "cell_id": "f2029-bl",
+  "age_band": "20-29",
+  "status": "active",
+  "pool_id": "f2029"
+ },
+ "f2029-hl-02": {
+  "cell_id": "f2029-hl",
+  "age_band": "20-29",
+  "status": "active",
+  "pool_id": "f2029"
+ },
+ "f2029-hl-03": {
+  "cell_id": "f2029-hl",
+  "age_band": "20-29",
+  "status": "active",
+  "pool_id": "f2029"
+ },
+ "f2029-wh-01": {
+  "cell_id": "f2029-wh",
+  "age_band": "20-29",
+  "status": "active",
+  "pool_id": "f2029"
+ },
+ "f2029-wh-02": {
+  "cell_id": "f2029-wh",
+  "age_band": "20-29",
+  "status": "active",
+  "pool_id": "f2029"
+ },
+ "f2029-wh-03": {
+  "cell_id": "f2029-wh",
+  "age_band": "20-29",
+  "status": "active",
+  "pool_id": "f2029"
+ },
+ "f2029-wh-04": {
+  "cell_id": "f2029-wh",
+  "age_band": "20-29",
+  "status": "active",
+  "pool_id": "f2029"
+ },
+ "f2029-wh-05": {
+  "cell_id": "f2029-wh",
+  "age_band": "20-29",
+  "status": "active",
+  "pool_id": "f2029"
+ },
+ "f3-silver": {
+  "cell_id": null,
+  "age_band": "60-70",
+  "status": "retired",
+  "pool_id": "f6070"
+ },
+ "f3039-as-01": {
+  "cell_id": "f3039-as",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "f3039"
+ },
+ "f3039-as-02": {
+  "cell_id": "f3039-as",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "f3039"
+ },
+ "f3039-bl-01": {
+  "cell_id": "f3039-bl",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "f3039"
+ },
+ "f3039-bl-02": {
+  "cell_id": "f3039-bl",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "f3039"
+ },
+ "f3039-hl-03": {
+  "cell_id": "f3039-hl",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "f3039"
+ },
+ "f3039-hl-04": {
+  "cell_id": "f3039-hl",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "f3039"
+ },
+ "f3039-hl-05": {
+  "cell_id": "f3039-hl",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "f3039"
+ },
+ "f3039-wh-05": {
+  "cell_id": "f3039-wh",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "f3039"
+ },
+ "f3039-wh-10": {
+  "cell_id": "f3039-wh",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "f3039"
+ },
+ "f3039-wh-11": {
+  "cell_id": "f3039-wh",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "f3039"
+ },
+ "f3039-wh-12": {
+  "cell_id": "f3039-wh",
+  "age_band": "30-39",
+  "status": "retired",
+  "pool_id": "f3039"
+ },
+ "f3039-wh-13": {
+  "cell_id": "f3039-wh",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "f3039"
+ },
+ "f3039-wh-14": {
+  "cell_id": "f3039-wh",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "f3039"
+ },
+ "f3039-wh-15": {
+  "cell_id": "f3039-wh",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "f3039"
+ },
+ "f3039-wh-16": {
+  "cell_id": "f3039-wh",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "f3039"
+ },
+ "f3039-wh-17": {
+  "cell_id": "f3039-wh",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "f3039"
+ },
+ "f4049-bl-02": {
+  "cell_id": "f4049-bl",
+  "age_band": "40-49",
+  "status": "active",
+  "pool_id": "f4049"
+ },
+ "f4049-hl-02": {
+  "cell_id": "f4049-hl",
+  "age_band": "40-49",
+  "status": "active",
+  "pool_id": "f4049"
+ },
+ "f4049-wh-04": {
+  "cell_id": "f4049-wh",
+  "age_band": "40-49",
+  "status": "active",
+  "pool_id": "f4049"
+ },
+ "f4049-wh-05": {
+  "cell_id": "f4049-wh",
+  "age_band": "40-49",
+  "status": "active",
+  "pool_id": "f4049"
+ },
+ "f4049-wh-06": {
+  "cell_id": "f4049-wh",
+  "age_band": "40-49",
+  "status": "active",
+  "pool_id": "f4049"
+ },
+ "f4049-wh-07": {
+  "cell_id": "f4049-wh",
+  "age_band": "40-49",
+  "status": "active",
+  "pool_id": "f4049"
+ },
+ "f4049-wh-08": {
+  "cell_id": "f4049-wh",
+  "age_band": "40-49",
+  "status": "active",
+  "pool_id": "f4049"
+ },
+ "f4049-wh-09": {
+  "cell_id": "f4049-wh",
+  "age_band": "40-49",
+  "status": "active",
+  "pool_id": "f4049"
+ },
+ "f4049-wh-10": {
+  "cell_id": "f4049-wh",
+  "age_band": "40-49",
+  "status": "active",
+  "pool_id": "f4049"
+ },
+ "f4049-wh-11": {
+  "cell_id": "f4049-wh",
+  "age_band": "40-49",
+  "status": "active",
+  "pool_id": "f4049"
+ },
+ "f4049-wh-12": {
+  "cell_id": "f4049-wh",
+  "age_band": "40-49",
+  "status": "active",
+  "pool_id": "f4049"
+ },
+ "f4049-wh-13": {
+  "cell_id": "f4049-wh",
+  "age_band": "40-49",
+  "status": "active",
+  "pool_id": "f4049"
+ },
+ "f4049-wh-14": {
+  "cell_id": "f4049-wh",
+  "age_band": "40-49",
+  "status": "active",
+  "pool_id": "f4049"
+ },
+ "f4049-wh-15": {
+  "cell_id": "f4049-wh",
+  "age_band": "40-49",
+  "status": "active",
+  "pool_id": "f4049"
+ },
+ "f5059-wh-02": {
+  "cell_id": "f5059-wh",
+  "age_band": "50-59",
+  "status": "active",
+  "pool_id": "f5059"
+ },
+ "f5059-wh-03": {
+  "cell_id": "f5059-wh",
+  "age_band": "50-59",
+  "status": "active",
+  "pool_id": "f5059"
+ },
+ "f5059-wh-04": {
+  "cell_id": "f5059-wh",
+  "age_band": "50-59",
+  "status": "retired",
+  "pool_id": "f5059"
+ },
+ "f5059-wh-05": {
+  "cell_id": "f5059-wh",
+  "age_band": "50-59",
+  "status": "active",
+  "pool_id": "f5059"
+ },
+ "f5059-wh-06": {
+  "cell_id": "f5059-wh",
+  "age_band": "50-59",
+  "status": "active",
+  "pool_id": "f5059"
+ },
+ "f5059-wh-07": {
+  "cell_id": "f5059-wh",
+  "age_band": "50-59",
+  "status": "active",
+  "pool_id": "f5059"
+ },
+ "m1-stubble": {
+  "cell_id": null,
+  "age_band": "40-49",
+  "status": "retired",
+  "pool_id": "m4049"
+ },
+ "m2029-as-01": {
+  "cell_id": "m2029-as",
+  "age_band": "20-29",
+  "status": "active",
+  "pool_id": "m2029"
+ },
+ "m2029-bl-01": {
+  "cell_id": "m2029-bl",
+  "age_band": "20-29",
+  "status": "active",
+  "pool_id": "m2029"
+ },
+ "m2029-hl-02": {
+  "cell_id": "m2029-hl",
+  "age_band": "20-29",
+  "status": "active",
+  "pool_id": "m2029"
+ },
+ "m2029-hl-03": {
+  "cell_id": "m2029-hl",
+  "age_band": "20-29",
+  "status": "retired",
+  "pool_id": "m2029"
+ },
+ "m2029-mx-01": {
+  "cell_id": "m2029-mx",
+  "age_band": "20-29",
+  "status": "active",
+  "pool_id": "m2029"
+ },
+ "m2029-wh-02": {
+  "cell_id": "m2029-wh",
+  "age_band": "20-29",
+  "status": "active",
+  "pool_id": "m2029"
+ },
+ "m2029-wh-03": {
+  "cell_id": "m2029-wh",
+  "age_band": "20-29",
+  "status": "active",
+  "pool_id": "m2029"
+ },
+ "m2029-wh-04": {
+  "cell_id": "m2029-wh",
+  "age_band": "20-29",
+  "status": "active",
+  "pool_id": "m2029"
+ },
+ "m2029-wh-05": {
+  "cell_id": "m2029-wh",
+  "age_band": "20-29",
+  "status": "active",
+  "pool_id": "m2029"
+ },
+ "m2029-wh-06": {
+  "cell_id": "m2029-wh",
+  "age_band": "20-29",
+  "status": "active",
+  "pool_id": "m2029"
+ },
+ "m2029-wh-07": {
+  "cell_id": "m2029-wh",
+  "age_band": "20-29",
+  "status": "active",
+  "pool_id": "m2029"
+ },
+ "m2029-wh-08": {
+  "cell_id": "m2029-wh",
+  "age_band": "20-29",
+  "status": "active",
+  "pool_id": "m2029"
+ },
+ "m2029-wh-09": {
+  "cell_id": "m2029-wh",
+  "age_band": "20-29",
+  "status": "active",
+  "pool_id": "m2029"
+ },
+ "m2029-wh-10": {
+  "cell_id": "m2029-wh",
+  "age_band": "20-29",
+  "status": "active",
+  "pool_id": "m2029"
+ },
+ "m3039-as-01": {
+  "cell_id": "m3039-as",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "m3039"
+ },
+ "m3039-as-02": {
+  "cell_id": "m3039-as",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "m3039"
+ },
+ "m3039-as-03": {
+  "cell_id": "m3039-as",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "m3039"
+ },
+ "m3039-bl-02": {
+  "cell_id": "m3039-bl",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "m3039"
+ },
+ "m3039-bl-03": {
+  "cell_id": "m3039-bl",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "m3039"
+ },
+ "m3039-bl-04": {
+  "cell_id": "m3039-bl",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "m3039"
+ },
+ "m3039-bl-05": {
+  "cell_id": "m3039-bl",
+  "age_band": "30-39",
+  "status": "flagged",
+  "pool_id": "m3039"
+ },
+ "m3039-bl-06": {
+  "cell_id": "m3039-bl",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "m3039"
+ },
+ "m3039-hl-02": {
+  "cell_id": "m3039-hl",
+  "age_band": "30-39",
+  "status": "retired",
+  "pool_id": "m3039"
+ },
+ "m3039-hl-03": {
+  "cell_id": "m3039-hl",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "m3039"
+ },
+ "m3039-hl-04": {
+  "cell_id": "m3039-hl",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "m3039"
+ },
+ "m3039-hl-05": {
+  "cell_id": "m3039-hl",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "m3039"
+ },
+ "m3039-hl-06": {
+  "cell_id": "m3039-hl",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "m3039"
+ },
+ "m3039-mx-01": {
+  "cell_id": "m3039-mx",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "m3039"
+ },
+ "m3039-mx-02": {
+  "cell_id": "m3039-mx",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "m3039"
+ },
+ "m3039-wh-05": {
+  "cell_id": "m3039-wh",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "m3039"
+ },
+ "m3039-wh-06": {
+  "cell_id": "m3039-wh",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "m3039"
+ },
+ "m3039-wh-07": {
+  "cell_id": "m3039-wh",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "m3039"
+ },
+ "m3039-wh-08": {
+  "cell_id": "m3039-wh",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "m3039"
+ },
+ "m3039-wh-09": {
+  "cell_id": "m3039-wh",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "m3039"
+ },
+ "m3039-wh-10": {
+  "cell_id": "m3039-wh",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "m3039"
+ },
+ "m3039-wh-11": {
+  "cell_id": "m3039-wh",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "m3039"
+ },
+ "m3039-wh-12": {
+  "cell_id": "m3039-wh",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "m3039"
+ },
+ "m3039-wh-13": {
+  "cell_id": "m3039-wh",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "m3039"
+ },
+ "m3039-wh-14": {
+  "cell_id": "m3039-wh",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "m3039"
+ },
+ "m3039-wh-15": {
+  "cell_id": "m3039-wh",
+  "age_band": "30-39",
+  "status": "retired",
+  "pool_id": "m3039"
+ },
+ "m3039-wh-16": {
+  "cell_id": "m3039-wh",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "m3039"
+ },
+ "m3039-wh-17": {
+  "cell_id": "m3039-wh",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "m3039"
+ },
+ "m3039-wh-18": {
+  "cell_id": "m3039-wh",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "m3039"
+ },
+ "m3039-wh-19": {
+  "cell_id": "m3039-wh",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "m3039"
+ },
+ "m3039-wh-20": {
+  "cell_id": "m3039-wh",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "m3039"
+ },
+ "m3039-wh-21": {
+  "cell_id": "m3039-wh",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "m3039"
+ },
+ "m3039-wh-22": {
+  "cell_id": "m3039-wh",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "m3039"
+ },
+ "m3039-wh-23": {
+  "cell_id": "m3039-wh",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "m3039"
+ },
+ "m3039-wh-24": {
+  "cell_id": "m3039-wh",
+  "age_band": "30-39",
+  "status": "active",
+  "pool_id": "m3039"
+ },
+ "m4049-as-01": {
+  "cell_id": "m4049-as",
+  "age_band": "40-49",
+  "status": "active",
+  "pool_id": "m4049"
+ },
+ "m4049-as-02": {
+  "cell_id": "m4049-as",
+  "age_band": "40-49",
+  "status": "active",
+  "pool_id": "m4049"
+ },
+ "m4049-hl-02": {
+  "cell_id": "m4049-hl",
+  "age_band": "40-49",
+  "status": "active",
+  "pool_id": "m4049"
+ },
+ "m4049-mx-01": {
+  "cell_id": "m4049-mx",
+  "age_band": "40-49",
+  "status": "retired",
+  "pool_id": "m4049"
+ },
+ "m4049-wh-02": {
+  "cell_id": "m4049-wh",
+  "age_band": "40-49",
+  "status": "active",
+  "pool_id": "m4049"
+ },
+ "m4049-wh-03": {
+  "cell_id": "m4049-wh",
+  "age_band": "40-49",
+  "status": "active",
+  "pool_id": "m4049"
+ },
+ "m4049-wh-04": {
+  "cell_id": "m4049-wh",
+  "age_band": "40-49",
+  "status": "active",
+  "pool_id": "m4049"
+ },
+ "m4049-wh-05": {
+  "cell_id": "m4049-wh",
+  "age_band": "40-49",
+  "status": "active",
+  "pool_id": "m4049"
+ },
+ "m4049-wh-06": {
+  "cell_id": "m4049-wh",
+  "age_band": "40-49",
+  "status": "active",
+  "pool_id": "m4049"
+ },
+ "m4049-wh-07": {
+  "cell_id": "m4049-wh",
+  "age_band": "40-49",
+  "status": "active",
+  "pool_id": "m4049"
+ },
+ "m4049-wh-08": {
+  "cell_id": "m4049-wh",
+  "age_band": "40-49",
+  "status": "active",
+  "pool_id": "m4049"
+ },
+ "m4049-wh-09": {
+  "cell_id": "m4049-wh",
+  "age_band": "40-49",
+  "status": "active",
+  "pool_id": "m4049"
+ },
+ "m4049-wh-10": {
+  "cell_id": "m4049-wh",
+  "age_band": "40-49",
+  "status": "active",
+  "pool_id": "m4049"
+ },
+ "m4049-wh-11": {
+  "cell_id": "m4049-wh",
+  "age_band": "40-49",
+  "status": "active",
+  "pool_id": "m4049"
+ },
+ "m4049-wh-12": {
+  "cell_id": "m4049-wh",
+  "age_band": "40-49",
+  "status": "active",
+  "pool_id": "m4049"
+ },
+ "m4049-wh-13": {
+  "cell_id": "m4049-wh",
+  "age_band": "40-49",
+  "status": "active",
+  "pool_id": "m4049"
+ },
+ "m4049-wh-14": {
+  "cell_id": "m4049-wh",
+  "age_band": "40-49",
+  "status": "active",
+  "pool_id": "m4049"
+ },
+ "m4049-wh-15": {
+  "cell_id": "m4049-wh",
+  "age_band": "40-49",
+  "status": "active",
+  "pool_id": "m4049"
+ },
+ "m5059-as-01": {
+  "cell_id": "m5059-as",
+  "age_band": "50-59",
+  "status": "active",
+  "pool_id": "m5059"
+ },
+ "m5059-hl-02": {
+  "cell_id": "m5059-hl",
+  "age_band": "50-59",
+  "status": "active",
+  "pool_id": "m5059"
+ },
+ "m5059-wh-02": {
+  "cell_id": "m5059-wh",
+  "age_band": "50-59",
+  "status": "active",
+  "pool_id": "m5059"
+ },
+ "m5059-wh-03": {
+  "cell_id": "m5059-wh",
+  "age_band": "50-59",
+  "status": "active",
+  "pool_id": "m5059"
+ },
+ "m5059-wh-04": {
+  "cell_id": "m5059-wh",
+  "age_band": "50-59",
+  "status": "active",
+  "pool_id": "m5059"
+ },
+ "m5059-wh-05": {
+  "cell_id": "m5059-wh",
+  "age_band": "50-59",
+  "status": "active",
+  "pool_id": "m5059"
+ },
+ "m5059-wh-06": {
+  "cell_id": "m5059-wh",
+  "age_band": "50-59",
+  "status": "active",
+  "pool_id": "m5059"
+ },
+ "m5059-wh-07": {
+  "cell_id": "m5059-wh",
+  "age_band": "50-59",
+  "status": "active",
+  "pool_id": "m5059"
+ },
+ "m5059-wh-08": {
+  "cell_id": "m5059-wh",
+  "age_band": "50-59",
+  "status": "active",
+  "pool_id": "m5059"
+ },
+ "m5059-wh-09": {
+  "cell_id": "m5059-wh",
+  "age_band": "50-59",
+  "status": "active",
+  "pool_id": "m5059"
+ },
+ "m5059-wh-10": {
+  "cell_id": "m5059-wh",
+  "age_band": "50-59",
+  "status": "active",
+  "pool_id": "m5059"
+ },
+ "m5059-wh-11": {
+  "cell_id": "m5059-wh",
+  "age_band": "50-59",
+  "status": "active",
+  "pool_id": "m5059"
+ },
+ "m5059-wh-12": {
+  "cell_id": "m5059-wh",
+  "age_band": "50-59",
+  "status": "active",
+  "pool_id": "m5059"
+ },
+ "m5059-wh-13": {
+  "cell_id": "m5059-wh",
+  "age_band": "50-59",
+  "status": "active",
+  "pool_id": "m5059"
+ },
+ "m5059-wh-14": {
+  "cell_id": "m5059-wh",
+  "age_band": "50-59",
+  "status": "active",
+  "pool_id": "m5059"
+ },
+ "m5059-wh-15": {
+  "cell_id": "m5059-wh",
+  "age_band": "50-59",
+  "status": "flagged",
+  "pool_id": "m5059"
+ },
+ "m6070-wh-02": {
+  "cell_id": "m6070-wh",
+  "age_band": "60-70",
+  "status": "active",
+  "pool_id": "m6070"
+ },
+ "m6070-wh-03": {
+  "cell_id": "m6070-wh",
+  "age_band": "60-70",
+  "status": "active",
+  "pool_id": "m6070"
+ },
+ "m6070-wh-04": {
+  "cell_id": "m6070-wh",
+  "age_band": "60-70",
+  "status": "active",
+  "pool_id": "m6070"
+ },
+ "m6070-wh-05": {
+  "cell_id": "m6070-wh",
+  "age_band": "60-70",
+  "status": "active",
+  "pool_id": "m6070"
+ },
+ "m6070-wh-06": {
+  "cell_id": "m6070-wh",
+  "age_band": "60-70",
+  "status": "active",
+  "pool_id": "m6070"
+ }
+}

@@ -38,13 +38,13 @@
   "vision": {
    "is_camera_photograph": true,
    "person_count": 1,
-   "apparent_age_min": 40,
-   "apparent_age_max": 55,
+   "apparent_age_min": 35,
+   "apparent_age_max": 50,
    "apparent_gender": "female",
    "face_clearly_visible": true,
    "face_obscured": false,
    "beauty_filtered": false,
-   "visible_text_or_watermark": true,
+   "visible_text_or_watermark": false,
    "recognizable_public_figure": false,
    "is_monochrome_or_period": false,
    "face_angle_reads": "frontal",
@@ -59,7 +59,7 @@
    "minor_in_frame": false,
    "apparent_ethnicity": "white",
    "ethnicity_group": "white",
-   "notes": "Woman photographed indoors beside a cat; product labels are visible but not identifying.",
+   "notes": "Adult woman photographed indoors with a cat.",
    "_model": "cx/gpt-5.6-luna"
   },
   "rubric_refreshed": "2026-08-14"

@@ -215,6 +215,20 @@ _DOWNLOAD_GATE = threading.BoundedSemaphore(2)
 _VISION_GATE = threading.BoundedSemaphore(6)
 _THREAD_LOCAL = threading.local()
 
+# Models this process has already watched refuse on quota. A quota ceiling is a property of the
+# PROVIDER over a window, not of the candidate being judged, so the answer does not change
+# between one persona and the next — yet the fall-through re-asks the dead model every single
+# time. Measured 2026-08-14: a 137-persona verify spent 137 calls proving `ag/` was still out of
+# quota, each returning the same 429 in ~0.44s. Cheap per call, and worth removing anyway: it is
+# 137 pointless requests aimed at a router we already know throttles under load, issued from
+# inside the concurrency gate, where each one holds a slot some other worker could have used.
+#
+# Deliberately per-PROCESS and never cleared. The window does refill, but a run that re-tested it
+# would be back to paying per persona for the answer, which is the cost being removed. A fresh
+# run starts with a clean slate and finds the provider healthy again on its first call.
+_VISION_DEAD = set()
+_VISION_DEAD_LOCK = threading.Lock()
+
 
 def set_download_concurrency(n):
     global _DOWNLOAD_GATE
@@ -1052,8 +1066,13 @@ VISION_RUBRIC = (
     "independently of person_count. "
     "face_obscured: sunglasses, a hand, a mask, hair or heavy shadow covering the face. "
     "beauty_filtered: skin smoothing, blemish removal, catalogue-style retouching, beauty-app "
-    "filtering. visible_text_or_watermark: ANY burned-in text, credit line, logo, date stamp or "
-    "signature anywhere in the frame. recognizable_public_figure: a celebrity, politician, "
+    "filtering. visible_text_or_watermark: an OVERLAY laid on top of the photograph - a "
+    "watermark, photographer credit line, stock-agency mark, date stamp, caption bar or "
+    "signature burned into the image. The test is whether the text was ADDED TO THE PICTURE, "
+    "not whether text exists in the scene the picture shows. Text that belongs to the world in "
+    "frame is NOT a watermark: a shop sign, a poster on a wall, a notice board, a slogan or "
+    "brand mark printed on ordinary clothing. Those are covered by identifying_text_in_frame "
+    "when they identify someone, and are otherwise fine. recognizable_public_figure: a celebrity, politician, "
     "athlete or other identifiable public person. ethnicity_group: which ONE of the five US "
     "census-style groups the person most plausibly reads as - white (white non-Hispanic), "
     "hispanic (Hispanic or Latino of any race), black (Black or African American), asian "
@@ -1281,6 +1300,12 @@ def vision_check(image_path):
     """
     last = None
     for model in VISION_MODELS:
+        if model in _VISION_DEAD:
+            # Already watched this one refuse on quota earlier in the run. Skipping is not an
+            # optimisation of the outcome — the fall-through reached the same next model either
+            # way — only of the 0.44s and the gate slot spent re-confirming it.
+            last = last or "gem9[%s]: skipped, quota-dead earlier in this run" % model
+            continue
         for attempt in range(3):
             # Held around the call only. Sleeping through the back-off inside the gate would
             # idle a slot for everyone else, which is the failure this gate exists to stop.
@@ -1303,7 +1328,11 @@ def vision_check(image_path):
                                              (res.stderr or res.stdout or "").strip()[:200])
             if vision_reset_hint(last) is not None:
                 # Quota, not load. No amount of waiting on this model beats one call to the
-                # next one. Abandon it for the rest of this candidate.
+                # next one. Abandon it for the rest of this candidate — and, since a quota
+                # ceiling belongs to the provider rather than to this photograph, for every
+                # candidate after it too.
+                with _VISION_DEAD_LOCK:
+                    _VISION_DEAD.add(model)
                 break
             if not vision_is_transient(last):
                 break
@@ -3547,6 +3576,20 @@ def cmd_selftest(_args):
           and evaluate_vision(dict(good, head_size_reads="fills-frame"), cell) == [])
     check("frontal accepted", evaluate_vision(dict(good, face_angle_reads="frontal"), cell) == [])
 
+    print("the watermark question asks about overlays, not about text in the world")
+    # 2026-08-14: `ANY burned-in text ... anywhere in the frame` made this the single biggest
+    # rejection bucket — 19 of 137 personas failed on it ALONE. Three opened by eye: a blurred
+    # notice board on a far wall, a hoodie slogan, a t-shirt graphic. No actual watermark among
+    # them. The ref.jpg is a FACE anchor and the generated scene re-clothes the persona, so a
+    # garment print cannot propagate; an overlay burned into the pixels can. Keep the two apart,
+    # and keep identifying_text_in_frame as the one that owns jerseys, name badges and uniforms.
+    check("the rubric tells the judge an overlay is the thing being asked about",
+          "ADDED TO THE PICTURE" in VISION_RUBRIC)
+    for _scene in ("shop sign", "poster on a wall", "printed on ordinary clothing"):
+        check("...and names %r as NOT a watermark" % _scene, _scene in VISION_RUBRIC)
+    check("identifying_text_in_frame still owns the cases that do matter",
+          "a name badge" in VISION_RUBRIC and "squad number" in VISION_RUBRIC)
+
     print("a shrug from the judge is not a verdict on the face")
     # The five faces that lost a definite ethnicity_group to `unclear` on 2026-08-14. Harvest
     # must keep rejecting them (candidates are free); verify must not evict them.
@@ -3955,6 +3998,26 @@ def cmd_selftest(_args):
     check("...and carries at least one lane on a different provider, or a dead provider "
           "takes the whole gate down with it",
           len({m.split("/")[0] for m in VISION_MODELS}) >= 2)
+
+    print("a model proven quota-dead stays dead for the run")
+    check("the memo starts empty, so a fresh run always asks the primary first",
+          _VISION_DEAD == set())
+    _saved_dead = set(_VISION_DEAD)
+    try:
+        _VISION_DEAD.clear()
+        _VISION_DEAD.add(VISION_MODELS[0])
+        check("a dead model is skipped without being called again",
+              VISION_MODELS[0] in _VISION_DEAD)
+        check("...but the healthy lanes behind it are untouched",
+              all(m not in _VISION_DEAD for m in VISION_MODELS[1:]))
+        check("only a quota hint kills a model — a 502 is load and must stay retryable",
+              vision_is_transient("gem9 exit 1: gem9: HTTP 502: error code: 502")
+              and vision_reset_hint("gem9 exit 1: gem9: HTTP 502: error code: 502") is None)
+        check("the memo is keyed by model, never by candidate — it is a provider fact",
+              all(isinstance(m, str) and "/" in m for m in _VISION_DEAD))
+    finally:
+        _VISION_DEAD.clear()
+        _VISION_DEAD.update(_saved_dead)
 
     print("queries + handles")
     tax = _load(TAXONOMY, "taxonomy")

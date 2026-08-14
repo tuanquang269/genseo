@@ -39,7 +39,7 @@
    "is_camera_photograph": true,
    "person_count": 1,
    "apparent_age_min": 30,
-   "apparent_age_max": 45,
+   "apparent_age_max": 40,
    "apparent_gender": "male",
    "face_clearly_visible": true,
    "face_obscured": false,
@@ -57,9 +57,9 @@
    "official_or_representative_capacity": false,
    "identifying_text_in_frame": false,
    "minor_in_frame": false,
-   "apparent_ethnicity": "white European appearance",
+   "apparent_ethnicity": "white European-appearing",
    "ethnicity_group": "white",
-   "notes": "Extreme close-up of a bearded man making an exaggerated open-mouth expression.",
+   "notes": "Extreme close-up of an adult man with mouth open and one eye not clearly open.",
    "_model": "cx/gpt-5.6-luna"
   },
   "rubric_refreshed": "2026-08-14"

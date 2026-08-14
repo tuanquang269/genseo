@@ -2,9 +2,9 @@
  "schema_version": 2,
  "handle": "f5059-wh-02",
  "pool_id": "f5059",
- "cell_id": "f5059-wh",
+ "cell_id": "f4049-wh",
  "gender": "female",
- "age_band": "50-59",
+ "age_band": "40-49",
  "ethnicity_key": "wh",
  "ethnicity_note": "sourced for cell f5059-wh (white non-Hispanic); the vision gate placed it there by how the photograph READS, which is what a coverage target can measure and is not a claim about the person \u2014 confirm by eye before first use",
  "demo": "US woman ~45-55, white \u2014 candid available-light photograph",
@@ -39,7 +39,7 @@
    "is_camera_photograph": true,
    "person_count": 1,
    "apparent_age_min": 40,
-   "apparent_age_max": 55,
+   "apparent_age_max": 50,
    "apparent_gender": "female",
    "face_clearly_visible": true,
    "face_obscured": false,
@@ -59,7 +59,7 @@
    "minor_in_frame": false,
    "apparent_ethnicity": "white",
    "ethnicity_group": "white",
-   "notes": "Contemporary color photograph of an adult woman seated on a swing.",
+   "notes": "Contemporary indoor portrait of one smiling adult woman on a swing.",
    "_model": "cx/gpt-5.6-luna"
   },
   "rubric_refreshed": "2026-08-14"
@@ -69,5 +69,13 @@
  "camera_notes": "indoor/ambient available light, real skin texture \u2014 always camera-match; ALWAYS feed THIS ref.jpg, never a previous gen (each gen is another lossy re-reading; chaining them compounds the drift in everything BUT the identity, which ima2 holds onto \u2014 measured 2026-08-10)",
  "usage": "female-audience articles (MenoMate, AgeAura, ShilaSource); persona is VISUAL ONLY, never named in copy (byline stays the roster author)",
  "status": "active",
- "flag_reason": null
+ "flag_reason": null,
+ "recell_history": [
+  {
+   "date": "2026-08-14",
+   "from": "f5059-wh",
+   "to": "f4049-wh",
+   "because": "vision reads 40-55, centres 48"
+  }
+ ]
 }

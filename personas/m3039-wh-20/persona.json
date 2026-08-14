@@ -50,7 +50,7 @@
    "face_angle_reads": "frontal",
    "eyes_open": true,
    "head_upright": true,
-   "head_size_reads": "portrait",
+   "head_size_reads": "fills-frame",
    "mouth_or_face_prop": false,
    "face_paint_or_costume_head": false,
    "studio_or_press_context": false,
@@ -59,7 +59,7 @@
    "minor_in_frame": false,
    "apparent_ethnicity": "white",
    "ethnicity_group": "white",
-   "notes": "Contemporary close portrait of an adult man with a visible arm tattoo.",
+   "notes": "Close-up contemporary photograph of a bearded man with a tattooed arm.",
    "_model": "cx/gpt-5.6-luna"
   },
   "rubric_refreshed": "2026-08-14"

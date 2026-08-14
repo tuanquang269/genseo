@@ -38,15 +38,15 @@
   "vision": {
    "is_camera_photograph": true,
    "person_count": 1,
-   "apparent_age_min": 35,
-   "apparent_age_max": 50,
+   "apparent_age_min": 40,
+   "apparent_age_max": 55,
    "apparent_gender": "male",
    "face_clearly_visible": true,
    "face_obscured": false,
    "beauty_filtered": false,
    "visible_text_or_watermark": false,
    "recognizable_public_figure": false,
-   "is_monochrome_or_period": false,
+   "is_monochrome_or_period": true,
    "face_angle_reads": "three-quarter",
    "eyes_open": true,
    "head_upright": true,
@@ -59,7 +59,7 @@
    "minor_in_frame": false,
    "apparent_ethnicity": "white",
    "ethnicity_group": "white",
-   "notes": "Single adult man photographed indoors wearing a costume hat, glasses, suspenders, and bow tie.",
+   "notes": "Contemporary indoor photograph with vintage-style clothing and costume hat.",
    "_model": "cx/gpt-5.6-luna"
   },
   "rubric_refreshed": "2026-08-14"

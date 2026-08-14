@@ -39,7 +39,7 @@
    "is_camera_photograph": true,
    "person_count": 1,
    "apparent_age_min": 35,
-   "apparent_age_max": 50,
+   "apparent_age_max": 45,
    "apparent_gender": "female",
    "face_clearly_visible": true,
    "face_obscured": false,
@@ -57,9 +57,9 @@
    "official_or_representative_capacity": false,
    "identifying_text_in_frame": false,
    "minor_in_frame": false,
-   "apparent_ethnicity": "white European-appearing",
+   "apparent_ethnicity": "white",
    "ethnicity_group": "white",
-   "notes": "Contemporary outdoor close-up; ornate costume hat, surprised expression.",
+   "notes": "Contemporary outdoor close-up portrait with a large decorative hat.",
    "_model": "cx/gpt-5.6-luna"
   },
   "rubric_refreshed": "2026-08-14"

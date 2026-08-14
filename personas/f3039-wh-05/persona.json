@@ -55,9 +55,9 @@
    "official_or_representative_capacity": false,
    "identifying_text_in_frame": false,
    "minor_in_frame": false,
-   "apparent_ethnicity": "white European",
+   "apparent_ethnicity": "white",
    "ethnicity_group": "white",
-   "notes": "Close-up color photograph of one smiling adult woman.",
+   "notes": "Close-up color photograph of a smiling adult woman.",
    "_model": "cx/gpt-5.6-luna"
   },
   "rubric_refreshed": "2026-08-14"

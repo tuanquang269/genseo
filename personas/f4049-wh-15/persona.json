@@ -39,7 +39,7 @@
    "is_camera_photograph": true,
    "person_count": 1,
    "apparent_age_min": 35,
-   "apparent_age_max": 45,
+   "apparent_age_max": 50,
    "apparent_gender": "female",
    "face_clearly_visible": true,
    "face_obscured": false,
@@ -59,7 +59,7 @@
    "minor_in_frame": false,
    "apparent_ethnicity": "white",
    "ethnicity_group": "white",
-   "notes": "Adult woman posing with bicycles in an indoor storage area.",
+   "notes": "Adult woman posing beside bicycles in an indoor storage area.",
    "_model": "cx/gpt-5.6-luna"
   },
   "rubric_refreshed": "2026-08-14"

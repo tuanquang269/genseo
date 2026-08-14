@@ -50,7 +50,7 @@
    "face_angle_reads": "frontal",
    "eyes_open": true,
    "head_upright": true,
-   "head_size_reads": "portrait",
+   "head_size_reads": "fills-frame",
    "mouth_or_face_prop": false,
    "face_paint_or_costume_head": false,
    "studio_or_press_context": false,

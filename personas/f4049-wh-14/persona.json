@@ -44,7 +44,7 @@
    "face_clearly_visible": true,
    "face_obscured": false,
    "beauty_filtered": false,
-   "visible_text_or_watermark": true,
+   "visible_text_or_watermark": false,
    "recognizable_public_figure": false,
    "is_monochrome_or_period": false,
    "face_angle_reads": "frontal",
@@ -59,7 +59,7 @@
    "minor_in_frame": false,
    "apparent_ethnicity": "white European",
    "ethnicity_group": "white",
-   "notes": "Contemporary indoor photograph; apron text visible.",
+   "notes": "Woman indoors wearing a paint-stained apron and holding painting supplies.",
    "_model": "cx/gpt-5.6-luna"
   },
   "rubric_refreshed": "2026-08-14"

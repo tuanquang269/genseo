@@ -47,7 +47,7 @@
    "visible_text_or_watermark": false,
    "recognizable_public_figure": false,
    "is_monochrome_or_period": false,
-   "face_angle_reads": "profile",
+   "face_angle_reads": "three-quarter",
    "eyes_open": false,
    "head_upright": true,
    "head_size_reads": "fills-frame",
@@ -57,9 +57,9 @@
    "official_or_representative_capacity": false,
    "identifying_text_in_frame": false,
    "minor_in_frame": false,
-   "apparent_ethnicity": "white European",
+   "apparent_ethnicity": "European",
    "ethnicity_group": "white",
-   "notes": "Single adult man outdoors, viewed near profile with one eye visible.",
+   "notes": "Contemporary outdoor close-up photograph; one eye is clearly visible.",
    "_model": "cx/gpt-5.6-luna"
   },
   "rubric_refreshed": "2026-08-14"

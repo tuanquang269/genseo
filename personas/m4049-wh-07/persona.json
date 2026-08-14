@@ -38,8 +38,8 @@
   "vision": {
    "is_camera_photograph": true,
    "person_count": 1,
-   "apparent_age_min": 35,
-   "apparent_age_max": 50,
+   "apparent_age_min": 30,
+   "apparent_age_max": 40,
    "apparent_gender": "male",
    "face_clearly_visible": true,
    "face_obscured": false,
@@ -57,9 +57,9 @@
    "official_or_representative_capacity": false,
    "identifying_text_in_frame": false,
    "minor_in_frame": false,
-   "apparent_ethnicity": "white European-appearing",
+   "apparent_ethnicity": "white",
    "ethnicity_group": "white",
-   "notes": "Contemporary close portrait of one adult man in a dark hat.",
+   "notes": "Contemporary indoor portrait photograph of an adult man wearing a dark hat.",
    "_model": "cx/gpt-5.6-luna"
   },
   "rubric_refreshed": "2026-08-14"

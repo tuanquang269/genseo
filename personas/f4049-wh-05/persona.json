@@ -2,9 +2,9 @@
  "schema_version": 2,
  "handle": "f4049-wh-05",
  "pool_id": "f4049",
- "cell_id": "f4049-wh",
+ "cell_id": "f3039-wh",
  "gender": "female",
- "age_band": "40-49",
+ "age_band": "30-39",
  "ethnicity_key": "wh",
  "ethnicity_note": "sourced for cell f4049-wh (white non-Hispanic); the vision gate placed it there by how the photograph READS, which is what a coverage target can measure and is not a claim about the person \u2014 confirm by eye before first use",
  "demo": "US woman ~35-45, white / hispanic \u2014 candid available-light photograph",
@@ -69,5 +69,13 @@
  "camera_notes": "indoor/ambient available light, real skin texture \u2014 always camera-match; ALWAYS feed THIS ref.jpg, never a previous gen (each gen is another lossy re-reading; chaining them compounds the drift in everything BUT the identity, which ima2 holds onto \u2014 measured 2026-08-10)",
  "usage": "female-audience articles (MenoMate, FusiForce, ShilaSource, FloraFresh); persona is VISUAL ONLY, never named in copy (byline stays the roster author)",
  "status": "active",
- "flag_reason": null
+ "flag_reason": null,
+ "recell_history": [
+  {
+   "date": "2026-08-14",
+   "from": "f4049-wh",
+   "to": "f3039-wh",
+   "because": "vision reads 30-40, centres 35"
+  }
+ ]
 }

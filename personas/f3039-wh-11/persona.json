@@ -39,7 +39,7 @@
    "is_camera_photograph": true,
    "person_count": 1,
    "apparent_age_min": 25,
-   "apparent_age_max": 40,
+   "apparent_age_max": 35,
    "apparent_gender": "female",
    "face_clearly_visible": true,
    "face_obscured": false,
@@ -57,9 +57,9 @@
    "official_or_representative_capacity": false,
    "identifying_text_in_frame": false,
    "minor_in_frame": false,
-   "apparent_ethnicity": "European-appearing",
+   "apparent_ethnicity": "white European appearance",
    "ethnicity_group": "white",
-   "notes": "Outdoor color portrait of one adult woman wearing a wide-brimmed hat.",
+   "notes": "Contemporary outdoor color portrait; face unobstructed.",
    "_model": "cx/gpt-5.6-luna"
   },
   "rubric_refreshed": "2026-08-14"

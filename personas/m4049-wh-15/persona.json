@@ -57,7 +57,7 @@
    "official_or_representative_capacity": false,
    "identifying_text_in_frame": false,
    "minor_in_frame": false,
-   "apparent_ethnicity": "white European appearance",
+   "apparent_ethnicity": "white",
    "ethnicity_group": "white",
    "notes": "Contemporary indoor portrait with clear frontal face.",
    "_model": "cx/gpt-5.6-luna"

@@ -38,13 +38,13 @@
   "vision": {
    "is_camera_photograph": true,
    "person_count": 1,
-   "apparent_age_min": 30,
-   "apparent_age_max": 40,
+   "apparent_age_min": 35,
+   "apparent_age_max": 45,
    "apparent_gender": "male",
    "face_clearly_visible": true,
    "face_obscured": false,
    "beauty_filtered": false,
-   "visible_text_or_watermark": true,
+   "visible_text_or_watermark": false,
    "recognizable_public_figure": false,
    "is_monochrome_or_period": false,
    "face_angle_reads": "frontal",
@@ -57,9 +57,9 @@
    "official_or_representative_capacity": false,
    "identifying_text_in_frame": false,
    "minor_in_frame": false,
-   "apparent_ethnicity": "white",
+   "apparent_ethnicity": "white European-appearing",
    "ethnicity_group": "white",
-   "notes": "Outdoor contemporary photograph; Adidas logo visible on clothing.",
+   "notes": "Contemporary outdoor photograph of one adult man beside a horse.",
    "_model": "cx/gpt-5.6-luna"
   },
   "rubric_refreshed": "2026-08-14"

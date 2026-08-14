@@ -57,9 +57,9 @@
    "official_or_representative_capacity": false,
    "identifying_text_in_frame": false,
    "minor_in_frame": false,
-   "apparent_ethnicity": "white",
+   "apparent_ethnicity": "White European appearance",
    "ethnicity_group": "white",
-   "notes": "Contemporary outdoor close-up portrait with clear frontal face.",
+   "notes": "Contemporary outdoor close-up portrait with a clearly visible face.",
    "_model": "cx/gpt-5.6-luna"
   },
   "rubric_refreshed": "2026-08-14"
