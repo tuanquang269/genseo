@@ -312,3 +312,22 @@ need a segment angle, not a bare product page).
   - Product: `pure-shilajit-gold-resin` · $75 live price · EDITORIAL.
   - Intent: near-buyer audit of the documented $15 premium. Disclose the missing serving size and Supplement Facts panel. Do not repeat unsupported potency, gold, testing, or outcome claims.
   - Gates: live `suggest.json` returned no article match; `topic_fitness.py` → `PASS [brand_intent]`.
+
+## Refill needed
+
+**2026-08-14 — the queue is EMPTY again.** #24 was the only item in this batch and it shipped;
+every heading above is `[DONE]` (#12 included, DONE 2026-08-13 in its HTML comment). No `[ ]`
+ticket remains, so this run published nothing by design.
+
+The google-ads MCP is **not connected in this headless session** (no google-ads tool is exposed —
+only web search / fetch), so the mining recipe in
+`skills/genseo-auto-publish/references/ads-article-mining.md` cannot be run from here.
+**Kevin: run that recipe in the app** (paid-but-not-converting terms + converting query patterns)
+and append the next batch below as `# BATCH <date>`.
+
+$0 fallback if you want tickets without touching Ads: `scripts/build_catalog_tickets.py` /
+`build_ctr_tickets.py` / `refresh_targets.py` / `build_rich_tickets.py` (batch 2026-08-13 was
+sourced this way). Not run here — refilling the queue is your call, not this run's.
+
+Uncovered SKU carried forward from 2026-08-13: `shilajit-shockwave` ($79.99) — still needs a
+distinct segment angle, not a bare product page. `pure-shilajit-gold-resin` is now covered by #24.
