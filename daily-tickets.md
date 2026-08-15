@@ -398,3 +398,12 @@ converting query patterns) and append the next batch below as `# BATCH <date>`.
 The open segments and the uncovered `shilajit-shockwave` SKU listed directly above are unchanged and
 are the shortest path to a $0 refill if you would rather not touch Ads.
 
+**2026-08-15 (third run of the day) — queue still EMPTY, nothing published by design.** No `[ ]`
+heading exists; the queue has now been empty for three consecutive runs. The google-ads MCP is
+**still not exposed to this headless session** (MCP tools present this run: web search / web fetch;
+the Shopify and claude.ai servers are listed but unauthenticated, and Shopify MCP is barred by hard
+rule #2 regardless). **Kevin: run the mining recipe in the app**
+(`skills/genseo-auto-publish/references/ads-article-mining.md`) and append the next batch as
+`# BATCH <date>`. Nothing above this line changed — the open segments and `shilajit-shockwave`
+remain the $0 refill path.
+
