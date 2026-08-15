@@ -331,3 +331,57 @@ sourced this way). Not run here — refilling the queue is your call, not this r
 
 Uncovered SKU carried forward from 2026-08-13: `shilajit-shockwave` ($79.99) — still needs a
 distinct segment angle, not a bare product page. `pure-shilajit-gold-resin` is now covered by #24.
+
+# BATCH 2026-08-15
+
+- [DONE 2026-08-15 https://wellnessnest.co/blogs/news/how-much-nmn-per-day-what-trials-used-us-2026] **#25 — how much nmn per day** — `How Much NMN Per Day: What Trials Used (US 2026)`
+  - **Primary keyword:** `how much nmn per day` · **Secondary:** nmn dosage, nmn dose per day, how many mg of nmn, nmn 500mg
+  - **Template:** COMPARISON (dose ladder judged tier against tier; previous #24 was EDITORIAL so the variety guard is satisfied).
+  - **Products:** `ageaura-pure-nmn-tmg-nad-complex` ($69.95) · `ageaura-pure-nmn-tmg-the-essential-longevity-duo` ($59.95). Collections: `/collections/ageaura`, `/collections/best-seller`.
+  - **Intent:** informed buyer who already knows what NMN is and wants the number. The two live NMN
+    articles cover the TMG pairing (#5) and timing (#20); neither states a dose.
+  - **Angle:** answer from the trials, not from marketing. Every human trial that measured an outcome
+    sat between 250 and 900 mg/day; the largest dose-ranging trial found blood NAD+ rose with dose
+    while efficacy flattened near the middle of that range. Then do the label math on our own listing.
+  - **Disclose (house honesty pattern, same as #22/#24):** only ONE of the four AgeAura NMN listings
+    publishes a milligram amount at all (200 mg NMN + 100 mg TMG per capsule); the other three say
+    only "one capsule daily". None publishes a Supplement Facts panel or a servings-per-container
+    count on the PDP. Do NOT repeat the PDP's "third-party tested" line — no COA is published
+    (house rule `no-coa-competitive-advantage`).
+  - **Evidence spine (all DOIs verified live against api.crossref.org this run; NCBI is IP-blocked
+    from this Mac so nothing was taken from PubMed directly):**
+    Okabe 2022 Front Nutr 10.3389/fnut.2022.868640 (250 mg/d, 12 wk, n=30) ·
+    Katayoshi 2023 Sci Rep 10.1038/s41598-023-29787-3 (125 mg x2 = 250 mg/d, 12 wk, n=36 middle-aged) ·
+    Yoshino 2021 Science 10.1126/science.abe9985 (250 mg/d, 10 wk, postmenopausal prediabetic women) ·
+    Yi 2022 GeroScience 10.1007/s11357-022-00705-1 (300/600/900 mg/d, 60 d, n=80) ·
+    Fukamizu 2022 Sci Rep 10.1038/s41598-022-18272-y (1250 mg/d, 4 wk, n=31).
+  - **Gates:** STEP 0 live `suggest.json` = 0 article matches across 7 query variants
+    (how much nmn per day / nmn dosage / nmn dose / how much nmn / nmn how many mg / nmn 500mg /
+    nmn per day); positive control on "nmn" correctly returned #20 and #5.
+    `topic_fitness.py` -> `REVIEW [covered-segment]` (brand nmn covered, "dosage" segment open) —
+    proceeding under Kevin's standing greenlight for this mined queue (2026-08-13).
+  - **Mined because the queue was empty** (DAILY-RUN section 2). GSC unauthorised and the google-ads
+    MCP is absent headless, so this came from the live catalog + the live blog inventory at $0.
+
+## Refill needed
+
+**2026-08-15 — the queue is EMPTY again.** #25 was mined on the day (the queue was empty at 07:30)
+and shipped, so nothing is left open. GSC is still unauthorised on this Mac and no google-ads tool
+is exposed to a headless run, so the mining recipe in
+`skills/genseo-auto-publish/references/ads-article-mining.md` still cannot run from here.
+**Kevin: run that recipe in the app** and append the next batch below as `# BATCH <date>`.
+
+$0 fallback that produced both this batch and 2026-08-13's: read the live catalog + the live blog
+inventory, list the brand+segment pairs no title covers, gate each through `topic_fitness.py`, then
+STEP 0 each survivor against `suggest.json`.
+
+Segments still open after #25 (all gate to `REVIEW [covered-segment]`, none checked against
+suggest.json yet — do that before writing):
+`creatine gummies` + side effects · `vaginal probiotic` + side effects · `nmn` + side effects ·
+`shilajit` + drops-vs-resin (note the older "Types of Shilajit Products" article already compares
+drops and resin, so this one needs a genuinely narrower angle or it cannibalises).
+
+Uncovered SKU carried forward from 2026-08-13 and 2026-08-14: `shilajit-shockwave` ($79.99) — still
+needs a distinct segment angle, not a bare product page. Ticket #7 (energy drops, 7 ways to use
+them) is the closest existing coverage, so a second generic drops article would cannibalise it.
+
