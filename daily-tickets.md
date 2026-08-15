@@ -385,3 +385,16 @@ Uncovered SKU carried forward from 2026-08-13 and 2026-08-14: `shilajit-shockwav
 needs a distinct segment angle, not a bare product page. Ticket #7 (energy drops, 7 ways to use
 them) is the closest existing coverage, so a second generic drops article would cannibalise it.
 
+**2026-08-15 (second run of the day) — queue still EMPTY, nothing published by design.** This run
+was told to take the first `[ ]` heading; there is none (the only two `[ ]` strings left in this
+file are the instruction line 4 and the prose on line 319). The run stopped without writing an
+article rather than mining a second topic on the same day, because a same-day second article on the
+remaining open segments would land next to #25 while it is still being indexed.
+The google-ads MCP is **still not exposed to this headless session** (available MCP tools this run:
+web search / web fetch only; the Shopify MCP is present but unauthenticated, and it is barred by
+hard rule #2 anyway). **Kevin: run the mining recipe in the app**
+(`skills/genseo-auto-publish/references/ads-article-mining.md` — paid-but-not-converting terms +
+converting query patterns) and append the next batch below as `# BATCH <date>`.
+The open segments and the uncovered `shilajit-shockwave` SKU listed directly above are unchanged and
+are the shortest path to a $0 refill if you would rather not touch Ads.
+
