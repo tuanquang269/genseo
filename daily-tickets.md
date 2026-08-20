@@ -407,3 +407,74 @@ rule #2 regardless). **Kevin: run the mining recipe in the app**
 `# BATCH <date>`. Nothing above this line changed — the open segments and `shilajit-shockwave`
 remain the $0 refill path.
 
+
+# BATCH 2026-08-16
+
+- [DONE 2026-08-20 https://wellnessnest.co/blogs/news/shilajit-shockwave-review-1-drop-or-1-ml-us-2026] Ticket #26 — shilajit shockwave review — `Shilajit Shockwave Review: 1 Drop or 1 mL? (US 2026)`
+  - **Primary keyword:** `shilajit shockwave review` · **Secondary:** shilajit shockwave, shilajit energy drops review, shilajit drops dosage, how many drops of shilajit
+  - **Template:** EDITORIAL (review/audit intent; previous #25 was COMPARISON so the variety guard is satisfied).
+  - **Product:** `shilajit-shockwave` ($79.99) — the LAST stocked SKU with no article, carried forward from 2026-08-13, -14 and -15. Supporting: `premium-himalayan-shilajit-gummies` ($59.99) · `shilasource-himalayan-shilajit-resin` ($59.99) · `pure-shilajit-gold-resin` ($75.00). Collections: `/collections/shilajit-wellness-stack`, `/collections/mens-essential-collection`, `/collections/best-seller`.
+  - **Intent:** near-buyer deciding whether the most expensive shilajit SKU on the store is worth $20 more than the resin.
+  - **Angle (the payload, found by parsing the RENDERED PDP):** the listing publishes TWO conflicting
+    servings — the directions block says `1 serving = 1 drop`, the FAQ block says
+    `drop 1ml (a full dropper)`, roughly a twenty-fold gap. The page's own value block prints a
+    `$0.60` cost per serving; at $79.99 that implies ~133 servings, which only reconciles with the
+    single-drop reading (133 mL would not fit a 1–2 fl oz dropper bottle). So the article resolves
+    the contradiction in the buyer's favour and tells them to start at 2–3 drops.
+  - **Disclose (house honesty pattern, same as #22/#24):** no Supplement Facts panel, no bottle
+    volume, no servings-per-container, and no caffeine mg — the page says only "a moderate dose of
+    caffeine". Across the four US shilajit SKUs, price runs OPPOSITE to label detail: the $59.99
+    gummies publish a full panel (150 mg 10:1 extract = 1,500 mg raw, 2 gummies/6 g, 30 servings),
+    the $75.00 gold resin and the $79.99 drops publish nothing. Do NOT repeat any COA or
+    "third-party tested" line (house rule `no-coa-competitive-advantage`), and do NOT repeat the
+    PDP's asthma answer (see the flag in the run log).
+  - **Evidence spine (all DOIs verified live against api.crossref.org this run; NCBI/Europe PMC are
+    IP-blocked from this Mac):**
+    Keller 2019 JISSN 10.1186/s12970-019-0270-2 (250 & 500 mg/d, 8 wk, resistance-trained men) ·
+    Pandit 2016 Andrologia 10.1111/and.12482 (250 mg BID, 90 d) ·
+    McLellan 2016 Neurosci Biobehav Rev 10.1016/j.neubiorev.2016.09.001 (caffeine dose-response) ·
+    Arring 2018 JACM 10.1089/acm.2017.0361 (ginseng for fatigue — mixed) ·
+    Jamshidi & Cohen 2017 eCAM 10.1155/2017/9217567 (tulsi — small trials) ·
+    FDA 400 mg/day caffeine consumer update + FDA structure/function claims page.
+  - **Gates:** STEP 0 live `suggest.json` = 0 article matches across 6 query variants
+    (shilajit shockwave / shockwave / shilajit shockwave review / shilajit drops review /
+    shilajit energy drops worth it / creatine-style controls); positive control on "shilajit"
+    correctly returned 5 live articles and on "shilajit liquid drops" returned the old
+    Types-of-Shilajit page. `topic_fitness.py` → `PASS [brand_intent]` (the only PASS of the four
+    candidates mined today — the three `side effects` segments all returned `REVIEW`).
+  - **Mined because the queue was empty** (DAILY-RUN section 2). GSC unauthorised and no google-ads
+    tool is exposed to this headless run, so this came from the live catalog + the live blog
+    inventory at $0.
+  - **CARRIED OVER — blocked on images, 5th consecutive day. Ticket stays `[ ]`.**
+    08-16 and 08-17 stalled on an ima2 HTTP **429** quota block; the 08-18 run never started
+    ("You've hit your weekly limit"); 08-19 failed differently, on HTTP 401 `AUTH_CHATGPT_EXPIRED`.
+    **On 2026-08-20 the 401 is GONE and the 429 is back.** Kevin re-authenticated on 08-19 at 08:48
+    (`~/.codex/auth.json` rewritten, `last_refresh` 2026-08-19T01:48:15Z, access_token good to
+    08-29), and the oauth proxy now answers `GET :10531/v1/models` with **HTTP 200** — the exact
+    probe that failed yesterday. So the auth leg is **fixed and needs no further action**. What
+    remains is the older, unrelated block: `POST :3333/api/generate` returns **HTTP 429** with
+    `upstreamType: "usage_limit_reached"` — the ChatGPT plan's image quota, exhausted, not a
+    transient rate limit. `logs/ima2-quota-wait.log` shows it probed for **5 hours** on 08-19 and
+    never reopened. No paid image API was substituted; no credential was entered.
+    **The draft is finished and needs no rework**:
+    `published_drafts/shilajit-shockwave-review-1-drop-or-1-ml-us-2026.md`, 2,011 words, h1:1 h2:9
+    table:True collections:3, 9/9 outbound links 200, 0 MuscleMax — `validate_article.py --draft`'s
+    **only** failure is the 4 absent image files. STEP 0 re-run on 08-20 (7 variants) still returns
+    0 matches on the primary keyword, and the PDP payload (`1 drop` vs `1ml (a full dropper)`,
+    `cost per serving: $0.6`, no Supplement Facts) was re-verified live and still holds.
+    QC re-roll budget **0 of 2 spent** (both 08-20 attempts died in transport at 429, before any
+    image existed to QC). Persona reservation **seq=34 (NO-FACE, 0 face angles)** left RESERVED, not
+    committed — no angle burned. **The blocker is now purely quota: nothing on this Mac can clear
+    it.** When the image allowance resets: make the 4 images, re-validate to PASS, publish
+    live/visible, then `persona_picker.py commit --seq 34`.
+  - **✅ RESOLVED 2026-08-20 (second run of the day) — the image quota REOPENED and the ticket
+    shipped on its 6th day.** The cheap probe that returned 429 at 01:47Z returned **HTTP 200**;
+    `GET :10531/v1/models` was already 200, so both legs were clear. All 4 images generated on the
+    FIRST roll, QC PASS each (`0 of 2` re-rolls spent), and each was eyeballed against its curated
+    ref: hero = Shockwave bottle alone at bench height, no hands; the 3-pack lineup rendered the
+    gummies as the real POUCH (badges verbatim) and ShilaSource as the matte-black canister + amber
+    gold-lid jar, not a pouch. Draft needed **zero rework** — gate `✓ PASS` exit 0 at 2,011 words.
+    LIVE id **621886439739**, `published_at` non-null, frontend 200 with a browser UA. The first
+    `verify_published.py` FAILED on `author is not a named Person` (Shopify wrote the byline as
+    "Wellness Nest Editorial Team"); `repair_schema.py 621886439739` set it to Dr. Marcus Hale and
+    the re-run passed. Reservation seq=34 committed after the live publish; 0 face angles burned.
