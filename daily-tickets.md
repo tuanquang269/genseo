@@ -478,3 +478,71 @@ remain the $0 refill path.
     `verify_published.py` FAILED on `author is not a named Person` (Shopify wrote the byline as
     "Wellness Nest Editorial Team"); `repair_schema.py 621886439739` set it to Dr. Marcus Hale and
     the re-run passed. Reservation seq=34 committed after the live publish; 0 face angles burned.
+
+# BATCH 2026-08-21
+
+- [DONE 2026-08-21 https://wellnessnest.co/blogs/news/creatine-gummies-side-effects-4-real-3-myths-us-2026] Ticket #27 — creatine gummies side effects — `Creatine Gummies Side Effects: 4 Real, 3 Myths (US 2026)`
+  - **Primary keyword:** `creatine gummies side effects` · **Secondary:** creatine side effects, are creatine gummies safe, creatine bloating, creatine gummies kidney, creatine hair loss
+  - **Template:** LISTICLE (7 numbered items; previous #26 was EDITORIAL so the variety guard is satisfied).
+  - **Product:** `fusiforce-creatine-gummies` ($69.99). Collections: `/collections/mens-essential-collection`, `/collections/best-seller`.
+  - **Intent:** buyer who already wants creatine and is checking what it will do to them before committing to a daily habit. Three creatine articles are live (dosage, vs-powder, for-women-over-40); none covers side effects.
+  - **Angle:** split the list — 4 side effects that are real and dose-related (GI distress, water weight, the sugar a powder does not have, and the ADDED PANAX GINSENG rather than the creatine as the interaction line) against 3 that are not (kidney damage, hair loss, dehydration/cramps). The non-obvious payload: creatine raises SERUM CREATININE, the exact marker US labs use to estimate kidney function, so a routine panel can look worse while the kidneys are fine — that mechanism is why the kidney myth keeps regenerating.
+  - **Disclose (house honesty pattern, same as #22/#24/#25/#26):** verified live on the rendered PDP this run — the Green Apple pouch front prints **90 GUMMIES** and the Blueberry pouch front prints **112 GUMMIES** at the same $69.99, i.e. 30 vs 37 days at the label's own 3-gummy serving. The Supplement Facts panel appears only on the pouch BACK in PDP image index 10, at thumbnail size and not legible; no servings-per-container and no grams of sugar are published in the listing text. Article routes the reader to support@wellnessnest.co. Do NOT repeat the PDP's COA / third-party-tested / ISO 17025 / "500+ peer-reviewed studies" lines (house rule `no-coa-competitive-advantage`).
+  - **Evidence spine (all 8 DOIs verified live against api.crossref.org this run; NCBI/eutils IP-blocked from this Mac):**
+    Kreider 2017 JISSN 10.1186/s12970-017-0173-z (ISSN position stand, safety + dose-related GI) ·
+    Antonio 2021 JISSN 10.1186/s12970-021-00412-w (misconceptions: hair loss, cramps, dehydration) ·
+    Ostojic & Ahmetovic 2008 Res Sports Med 10.1080/15438620701693280 (GI distress 10 g vs 5 g) ·
+    Deminice 2015 Int J Sports Med 10.1055/s-0035-1559690 (total body water, deuterium oxide dilution) ·
+    Poortmans & Francaux 1999 MSSE 10.1097/00005768-199908000-00005 (renal function unimpaired) ·
+    Tsiaras 2026 J Ren Nutr 10.1053/j.jrn.2026.04.010 (kidney function systematic review + meta-analysis of RCTs) ·
+    van der Merwe 2009 Clin J Sport Med 10.1097/JSM.0b013e3181b8b52f (DHT:T ratio, 3 wk, the ENTIRE hair-loss basis) ·
+    Yuan 2004 Ann Intern Med 10.7326/0003-4819-141-1-200407060-00011 (American ginseng reduces warfarin effect) ·
+    plus NCCIH Asian ginseng page + FDA structure/function framing.
+    NOTE: two DOIs were rejected during verification because Crossref resolved them to the WRONG paper —
+    10.1097/00005768-199908000-00002 (returns a tibial-stress-fracture paper) and 10.1152/japplphysiol.00745.2002.
+    The correct Poortmans DOI is ...-00005. Do not re-cite the ...-00002 form.
+  - **Gates:** STEP 0 live `suggest.json` = 0 article matches across 6 query variants (creatine gummies side effects / creatine side effects / creatine gummies safe / are creatine gummies safe / creatine bloating / do creatine gummies cause bloating); positive control on "creatine" correctly returned 3 live articles and on "creatine gummies" returned the dosage + vs-powder pages. `topic_fitness.py` → `REVIEW [covered-segment]`, proceeding under Kevin's standing greenlight for this mined queue (2026-08-13).
+  - **Mined because the queue was empty** (DAILY-RUN section 2). GSC unauthorised and no google-ads tool is exposed to this headless run, so this came from the live catalog (22 SKUs) + the live blog inventory (57 articles) at $0.
+
+## Refill needed
+
+**2026-08-21 — the queue was EMPTY at the start of this run and #27 was mined on the day**
+(DAILY-RUN section 2), then shipped, so nothing is left open again. GSC is still unauthorised on
+this Mac and no google-ads tool is exposed to a headless run, so the mining recipe in
+`skills/genseo-auto-publish/references/ads-article-mining.md` still cannot run from here.
+**Kevin: run that recipe in the app** and append the next batch below as `# BATCH <date>`.
+
+$0 fallback that produced this batch: read the live catalog + the live blog inventory, list the
+brand+segment pairs no title covers, gate each through `topic_fitness.py`, then STEP 0 each
+survivor against `suggest.json`.
+
+Segments still open after #27 (each gates to `REVIEW [covered-segment]`; STEP 0 each against
+suggest.json before writing):
+`nmn` + side effects · `vaginal probiotic` + side effects · `turkesterone` + side effects ·
+`shilajit` + drops-vs-resin (the older "Types of Shilajit Products" page already compares drops
+and resin, so this one needs a genuinely narrower angle or it cannibalises).
+**`creatine gummies` + side effects is now CLOSED by #27** — do not re-mine it.
+
+**Every stocked SKU now has an article.** The catalog grew from 11 to 22 handles, but the 11 new
+ones are fulfilment and subscription variants, not new products: `shilajit-gummies-single-jar`
+($39.99) and `shilajit-gummies-two-jar-pack` ($72.00) are add-on jars of the same
+`premium-himalayan-shilajit-gummies`, and the `*-3/6/12-month-reserve` handles are subscription
+bundles of SKUs already covered. None of them justifies its own article; the remaining demand is
+segment long-tail on products we already write about.
+
+**2026-08-21 (second run of the day) — queue still EMPTY, nothing published, by design.** No `[ ]`
+heading exists anywhere in this file. The day's article was already shipped by the 07:30 run
+(#27, LIVE id `621890044219`, frontend re-checked HTTP 200 with a browser UA this run), and
+DAILY-RUN §1 caps the job at one article per day — so this run did not mine a second topic. That
+guard matters here: every segment left open below gates to `REVIEW [covered-segment]`, and a
+same-day second article off a covered segment is exactly how a page starts competing with one of
+our own. **Kevin: run the mining recipe in the app**
+(`skills/genseo-auto-publish/references/ads-article-mining.md`) and append the next batch as
+`# BATCH <date>`. GSC is still unauthorised on this Mac and no google-ads tool is exposed to a
+headless run, so the $0 fallback above stays the only path from here.
+
+Housekeeping done this run: the 07:30 run published, flipped its ticket and appended tracker row
+27, but never committed — `daily-tickets.md` and `personas/index.json` (which carries the seq=35
+persona commit for #27) were left dirty in the working tree. Both are committed now. Nothing else
+about #27 was touched.
+
