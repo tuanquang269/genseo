@@ -546,3 +546,20 @@ Housekeeping done this run: the 07:30 run published, flipped its ticket and appe
 persona commit for #27) were left dirty in the working tree. Both are committed now. Nothing else
 about #27 was touched.
 
+**2026-08-21 (third run of the day) — queue still EMPTY, nothing published, by design.** No `[ ]`
+heading exists anywhere in this file; the only `[ ]` strings left are inside prose (the rules
+block at the top and the historical notes on #26, whose heading is `[DONE 2026-08-20 …]`). Today's
+one article already shipped at 07:30 (#27, LIVE id `621890044219`; frontend re-checked this run,
+HTTP 200 with a browser UA), and DAILY-RUN §1 caps the job at one article per day, so this run did
+not mine a third topic. The same-day guard is the point: every segment listed as open above gates
+to `REVIEW [covered-segment]`, and stacking a second article onto a covered segment on the same
+day is how a page starts competing with one of our own.
+
+**Kevin: run the mining recipe in the app**
+(`skills/genseo-auto-publish/references/ads-article-mining.md`) and append the next batch as
+`# BATCH <date>`. The google-ads MCP is **not exposed to this headless session** (MCP servers
+present this run: claude.ai and Shopify, both unauthenticated — and Shopify MCP is barred by hard
+rule #2 regardless). GSC is still unauthorised on this Mac, so the $0 catalog + blog-inventory
+fallback above stays the only path from here. Nothing above this line changed this run; the
+working tree was already clean when it started.
+
