@@ -563,3 +563,62 @@ rule #2 regardless). GSC is still unauthorised on this Mac, so the $0 catalog + 
 fallback above stays the only path from here. Nothing above this line changed this run; the
 working tree was already clean when it started.
 
+
+# BATCH 2026-08-22
+
+- [DONE 2026-08-22 https://wellnessnest.co/blogs/news/urolithin-a-dosage-how-many-mg-per-day-us-2026] Ticket #28 — urolithin a dosage — `Urolithin A Dosage: How Many mg Per Day? (US 2026)`
+  - **Primary keyword:** `urolithin a dosage` · **Secondary:** how much urolithin a per day, urolithin a 500 mg, urolithin a dose for muscle, urolithin a mitopure dose, is 1000 mg urolithin a better
+  - **Template:** EDITORIAL (templates reference maps dosage intent -> EDITORIAL; previous #27 was LISTICLE so the variety guard is satisfied).
+  - **Product:** `ageaura-pure-urolithin-a` ($199.99). Collections: `/collections/ageaura`, `/collections/best-seller`.
+  - **Intent:** buyer who has already decided urolithin A is worth trying and is now asking what dose to buy — the single most expensive SKU on the store, so the dose question is really a "what am I paying $199.99 for" question.
+  - **Angle:** the dose ladder the human trials actually used — 250 mg / 500 mg / 1,000 mg — judged tier by tier on what each one MOVED, not on what it is marketed to do. The non-obvious payload: 1,000 mg is not the "stronger" option most buyers assume. Andreux 2019 dosed up to 1,000 mg for safety, and Liu 2022 ran 1,000 mg in older adults and found muscle-endurance gains WITHOUT a change in peak ATP — while Singh 2022 got strength and endurance improvements at 500 mg. So the ladder flattens at the top, and the honest US buyer answer is that 500 mg once daily is the line, which is exactly what this SKU sells.
+  - **Second payload (cost, nobody else publishes it):** at $199.99 for 30 capsules that is **$6.67 per day** — verified at source on the rendered PDP this run. The multi-bottle tiers change that number materially: Buy 2 get 1 free $399.99 (3 bottles / 90 days = $4.44/day), Buy 3 get 2 free $599.99 (5 bottles / 150 days = $4.00/day), Buy 6 get 6 free $1,199.99 (12 bottles / 360 days = $3.33/day). Publish the per-day math; it is the real decision the reader is making.
+  - **Disclose (house honesty pattern, same as #22/#24/#25/#26/#27):** verified live on the rendered PDP this run — 500 mg of >=98% pure Urolithin A per vegan HPMC capsule, USP grade; other ingredients microcrystalline cellulose, vegetable magnesium stearate, silicon dioxide; 30 capsules per bottle = 30-day supply at one capsule daily; 90-day money-back guarantee, bottle not returned. Do NOT repeat the PDP's "third-party tested for identity and potency" or "clinically dosed" lines (house rule `no-coa-competitive-advantage`).
+  - **Evidence spine (all 6 DOIs verified live against api.crossref.org this run; NCBI/eutils IP-blocked from this Mac):**
+    Andreux 2019 Nature Metabolism 10.1038/s42255-019-0073-4 (first-in-human, 250/500/1000 mg, 4 wk, safety + plasma exposure) *
+    Singh 2022 Cell Reports Medicine 10.1016/j.xcrm.2022.100633 (middle-aged adults, 500 mg and 1000 mg, 4 months, muscle strength + endurance) *
+    Liu 2022 JAMA Network Open 10.1001/jamanetworkopen.2021.44279 (older adults 65-90, 1000 mg, 4 months, muscle endurance without a peak-ATP change) *
+    Ryu 2016 Nature Medicine 10.1038/nm.4132 (the mitophagy mechanism, C. elegans + rodents) *
+    Tomas-Barberan 2014 J Agric Food Chem 10.1021/jf5024615 (three urolithin metabotypes — why food-source dosing is not a dose) *
+    Singh 2019 Nature Communications 10.1038/s41467-018-07859-7 (gut-barrier / Nrf2, background mechanism).
+    NOTE: doi.org returns 403 to curl for the JAMA and ACS entries (publisher bot-blocking, not a bad DOI) — both resolved correctly through the Crossref API, which is the check that counts.
+  - **Internal links:** the existing `/blogs/news/urolithin-a-benefits-the-40-problem-us-buyers-miss` owns the 40%-converter and mitophagy explainer — LINK it, do not restate it. `/blogs/news/how-much-nmn-per-day-what-trials-used-us-2026` is the sibling dose article for the other AgeAura SKU.
+  - **Gates:** STEP 0 live `suggest.json` = 0 article matches on `urolithin a dosage`, `urolithin a how much`, `nmn side effects`, `turkesterone side effects`, `vaginal probiotics side effects`, `nmn vs nr`; positive controls returned 1 on `urolithin a` (the benefits article) and 5 on `shilajit`, so the check was live and the zeroes are real. `topic_fitness.py` -> `REVIEW [covered-segment]`, proceeding under Kevin's standing greenlight for this mined queue (2026-08-13).
+  - **Mined because the queue was empty** (DAILY-RUN section 2). GSC is still unauthorised and no google-ads tool is exposed to this headless run, so this came from the live catalog + the live blog inventory (57 articles) at $0.
+
+
+## Refill needed
+
+**2026-08-22 — the queue was EMPTY at the start of this run and #28 was mined on the day**
+(DAILY-RUN section 2), then shipped, so nothing is left open again. GSC is still unauthorised on
+this Mac and no google-ads tool is exposed to a headless run (MCP servers present this run:
+claude.ai and Shopify, both UNAUTHENTICATED — and Shopify MCP is barred by hard rule #2 anyway),
+so the mining recipe in `skills/genseo-auto-publish/references/ads-article-mining.md` still cannot
+run from here. **Kevin: run that recipe in the app** and append the next batch below as
+`# BATCH <date>`.
+
+**`urolithin a` + dosage is now CLOSED by #28** — do not re-mine it.
+
+Segments still open after #28 (each gates to `REVIEW [covered-segment]`; STEP 0 each against
+suggest.json before writing — all three returned 0 article matches when probed on 2026-08-22, so
+they are still genuinely uncovered):
+`nmn` + side effects · `vaginal probiotic` + side effects · `turkesterone` + side effects ·
+`shilajit` + drops-vs-resin (the older "Types of Shilajit Products" page already compares drops
+and resin, so this one needs a genuinely narrower angle or it cannibalises) ·
+`nmn` + vs NR (probed clean this run, and the NMN dose article already links the AgeAura SKU).
+
+**⚠ NEW FINDING THIS RUN — a collection-claim trap worth reusing.** `ageaura-pure-urolithin-a` is
+in **NEITHER** `/collections/ageaura` (which contains only `ageaura-pure-nmn-tmg-the-essential-longevity-duo`
+and `ageaura-pure-nmn-tmg`) **NOR** `/collections/best-seller` (shilajit resin, shilajit gummies,
+FusiForce, FloraFresh). Both URLs return 200, so the validator's link check passes either way and
+would NOT have caught a membership claim. #28 links both as browse suggestions only. Verify
+membership with `/collections/<handle>/products.json` before writing any "part of our X collection"
+sentence — same trap first caught on Ticket #1/#2 with FusiForce.
+
+**⚠ RESEARCH LANE RESTORED (partly).** NCBI/eutils is still IP-blocked from this Mac, but the
+**Europe PMC REST API is reachable and anonymous** — no key, no account:
+`https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI:%22<doi>%22&resultType=core&format=json`
+It returned full abstracts for all three urolithin A trials this run, which is how #28 could state
+that BOTH four-month trials missed their pre-named primary endpoint. Crossref confirms a DOI points
+at the right paper; Europe PMC tells you what the paper actually found. Use both from now on —
+Crossref alone cannot stop a real-but-misdescribed citation.
