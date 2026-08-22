@@ -622,3 +622,21 @@ It returned full abstracts for all three urolithin A trials this run, which is h
 that BOTH four-month trials missed their pre-named primary endpoint. Crossref confirms a DOI points
 at the right paper; Europe PMC tells you what the paper actually found. Use both from now on —
 Crossref alone cannot stop a real-but-misdescribed citation.
+
+**2026-08-22 (second run of the day) — queue still EMPTY, nothing published, by design.** No `[ ]`
+heading exists anywhere in this file; every `[ ]` string left is prose (the rules block at the top
+and the historical carry-over notes on #26, whose heading is `[DONE 2026-08-20 …]`). Today's one
+article already shipped (#28, LIVE id `621894074683`; frontend re-checked this run, HTTP 200 with a
+browser UA), and DAILY-RUN §1 caps the job at one article per day, so this run did not mine a
+second topic. The same-day guard is the point: every segment listed as open above gates to
+`REVIEW [covered-segment]`, and stacking a second article onto a covered segment on the same day is
+how a page starts competing with one of our own.
+
+**Kevin: run the mining recipe in the app**
+(`skills/genseo-auto-publish/references/ads-article-mining.md`) and append the next batch as
+`# BATCH <date>`. The google-ads MCP is **not exposed to this headless session** (MCP servers
+present this run: claude.ai and Shopify, both UNAUTHENTICATED — and Shopify MCP is barred by hard
+rule #2 regardless; the only network tools reachable are web search / web fetch). GSC is still
+unauthorised on this Mac, so the $0 catalog + blog-inventory fallback above stays the only path
+from here. Nothing above this line changed this run; the working tree was already clean when it
+started, and tracker row 28 was already appended and committed by the 07:30 run.
