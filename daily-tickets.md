@@ -640,3 +640,20 @@ rule #2 regardless; the only network tools reachable are web search / web fetch)
 unauthorised on this Mac, so the $0 catalog + blog-inventory fallback above stays the only path
 from here. Nothing above this line changed this run; the working tree was already clean when it
 started, and tracker row 28 was already appended and committed by the 07:30 run.
+
+**2026-08-22 (third run of the day) — queue still EMPTY, nothing published, by design.** No `[ ]`
+heading exists anywhere in this file (`grep "^##.*\[ \]"` returns nothing); every remaining `[ ]`
+string is prose — the rules block at the top and the historical carry-over notes. Today's one
+article is #28, still LIVE: `https://wellnessnest.co/blogs/news/urolithin-a-dosage-how-many-mg-per-day-us-2026`
+re-checked this run, HTTP 200 with a browser User-Agent. DAILY-RUN §1 caps the job at one article
+per day, so no second topic was mined.
+
+**Kevin: run the mining recipe in the app**
+(`skills/genseo-auto-publish/references/ads-article-mining.md`) and append the next batch as
+`# BATCH <date>`. The google-ads MCP is **not exposed to this headless session** — the only MCP
+servers present are claude.ai and Shopify, both UNAUTHENTICATED (and Shopify MCP is barred by hard
+rule #2 regardless); the only reachable network tools are web search / web fetch. GSC is still
+unauthorised on this Mac, so the $0 catalog + blog-inventory fallback stays the only path from
+here. The open-segment list above (nmn side effects · vaginal probiotic side effects · turkesterone
+side effects · shilajit drops-vs-resin · nmn vs NR) is unchanged and was not re-probed this run.
+Nothing else in this file changed; the working tree was clean when this run started.
