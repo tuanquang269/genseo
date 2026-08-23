@@ -657,3 +657,86 @@ unauthorised on this Mac, so the $0 catalog + blog-inventory fallback stays the 
 here. The open-segment list above (nmn side effects · vaginal probiotic side effects · turkesterone
 side effects · shilajit drops-vs-resin · nmn vs NR) is unchanged and was not re-probed this run.
 Nothing else in this file changed; the working tree was clean when this run started.
+
+
+# BATCH 2026-08-23
+
+Mined per DAILY-RUN §2 (queue empty; GSC + google-ads still unavailable). Source: live catalog
+(`/collections.json`, `/products.json`) + blog inventory (`ALL_ARTICLES.csv`). Segment `nmn` + `vs NR`
+was on the open-segment list carried from 2026-08-22 and re-probed clean against `suggest.json`
+this run (0 article matches). Chosen over the three `side effects` candidates because the skill's
+own STEP 0.5 WRITE table names this exact pattern ("Comparison that ends at our SKU: NMN vs NR")
+and because the template variety guard wants a non-EDITORIAL after #28.
+
+## [DONE 2026-08-23 https://wellnessnest.co/blogs/news/nmn-vs-nr-what-6-human-trials-say-us-2026] Ticket #29 — NEW ARTICLE (type: COMPARISON)
+- **Primary keyword:** `nmn vs nr`
+- **STEP 0 (live, 2026-08-23):** `suggest.json?q=nmn vs nr` -> 0 article matches. Clean.
+- **STEP 0.5:** `REVIEW [covered-segment]` — greenlit under Kevin's standing queue approval
+  (2026-08-13, "I approve all of them, I need published articles without any delay").
+- **Angle:** the two molecules are compared on marketing volume, not on trial evidence. The honest
+  read is that the positive metabolic RCT on NMN used 250 mg while the null metabolic RCT on NR
+  used 2,000 mg — 8x the dose, opposite result, different populations. Lead with that.
+- **Ends at SKU:** `ageaura-pure-nmn-tmg-nad-complex` ($69.95, curated ref exists). We do NOT sell
+  NR — compare the ingredient, never link an NR product.
+- **Template:** COMPARISON (previous #28 was EDITORIAL, so the variety guard is satisfied).
+- **Evidence bank (all verified this run via Europe PMC, abstracts read — not title-only):**
+  Trammell 2016 Nat Commun `10.1038/ncomms12948` | Martens 2018 Nat Commun `10.1038/s41467-018-03421-7`
+  | Dollerup 2018 AJCN `10.1093/ajcn/nqy132` (NR 2,000 mg/d, 12 wk, insulin sensitivity NOT improved)
+  | Yoshino 2021 Science `10.1126/science.abe9985` (NMN 250 mg, 10 wk, muscle insulin sensitivity up)
+  | Yi 2023 GeroScience `10.1007/s11357-022-00705-1` (300/600/900 mg dose-response, 6-min walk)
+  | Elhassan 2019 Cell Rep `10.1016/j.celrep.2019.07.043` (NR 1 g/d, 21 d, aged muscle).
+- **Collection-membership trap:** `ageaura-pure-nmn-tmg-nad-complex` is NOT in `/collections/ageaura`
+  (verified this run — that collection holds only `...-the-essential-longevity-duo` and `...-nmn-tmg`).
+  Link collections as browse suggestions only. Never write "part of our X collection".
+- **Do NOT state FDA/regulatory status of NMN.** It could not be verified from this machine
+  (WebFetch dead, fda.gov not fetched) and it moves. Omitted deliberately, not forgotten.
+
+**2026-08-23 — Ticket #29 MINED AND PUBLISHED.** Queue was empty at start (0 `[ ]` headings), so the
+run mined per DAILY-RUN §2 instead of skipping the day. `nmn` + `vs NR` is now **CLOSED by #29** — do
+not re-mine it. LIVE id `621895811387`, HTTP 200, og:title correct.
+
+Segments still open after #29 (each gates to `REVIEW [covered-segment]`; STEP 0 each against
+suggest.json before writing — all three `side effects` candidates were re-probed this run on
+2026-08-23 and returned **0 article matches**, so they are still genuinely uncovered):
+`nmn` + side effects · `vaginal probiotic` + side effects · `turkesterone` + side effects ·
+`shilajit` + drops-vs-resin (still needs a genuinely narrower angle or it cannibalises the older
+"Types of Shilajit Products" page).
+
+Still uncovered on the catalog side, needs a distinct segment angle: `pure-shilajit-gold-resin` ($75)
+· `shilajit-shockwave` ($79.99).
+
+**⚠ NEW THIS RUN — the QRG prose gate is not actually running on this Mac.** `validate_article.py`
+printed `⚠ QRG quality scoring skipped (claude-seo runtime not installed)`. The structural gate
+(word count, headings, table, links-return-200, author, images) passed and is real, but the three
+prose gates DAILY-RUN §1.3 leans on — `overall quality < 80`, `filler >= 25`, `ai-pattern >= 25` —
+did **not** execute. Every `✓ PASS` on this machine is therefore structural-only. Banned phrases were
+checked by hand this run (0 hits), but that is a human step standing in for a broken gate. Worth
+fixing before it silently ships a thin article.
+
+**⚠ Reusable finding — the every-3rd no-face hero fired on seq 37.** `persona_picker.py pick` returned
+`hero: NO-FACE` with an empty `warnings[]`. That is the scheduled rotation, NOT an exhausted pool, and
+it means 0 face angles were burned on this article. Do not "fix" it by forcing `--force-face`.
+
+## Refill needed
+
+**2026-08-23 (later run) — 0 `[ ]` tickets remain and today's article is ALREADY SHIPPED.**
+Ticket #29 (`nmn vs nr`) was mined and published LIVE earlier today by the first 2026-08-23 run
+(id `621895811387`, frontend re-verified HTTP 200 with a browser UA this run). DAILY-RUN §1 caps the
+job at one article per day, so this run did **not** mine or publish a second topic. What it did do
+was close the first run's outstanding bookkeeping: that run left `daily-tickets.md`,
+`personas/index.json` (seq 37 commit) and the tracker row **uncommitted** in git. They are committed
+now. `persona_picker.py status` shows seq=37 with **0 reservations open**, so no `release` was owed.
+
+No google-ads tool is exposed to this headless run (MCP servers present: claude.ai and Shopify, both
+UNAUTHENTICATED — and Shopify MCP is barred by hard rule #2 anyway) and GSC is still unauthorised on
+this Mac, so the mining recipe in `skills/genseo-auto-publish/references/ads-article-mining.md`
+cannot run from here. **Kevin: run that recipe in the app** and append the next batch below as
+`# BATCH <date>`. The open segments carried forward are listed in the #29 block above — the three
+`side effects` candidates (`nmn`, `vaginal probiotic`, `turkesterone`) were each re-probed clean
+against the live `suggest.json` on 2026-08-23, plus `pure-shilajit-gold-resin` and
+`shilajit-shockwave` on the catalog side.
+
+**Still unfixed, second run in a row reporting it:** `validate_article.py` prints
+`⚠ QRG quality scoring skipped (claude-seo runtime not installed)` on this Mac, so the three prose
+hard-fails DAILY-RUN §1.3 leans on (overall quality < 80, filler ≥ 25, ai-pattern ≥ 25) do **not**
+execute. Every `✓ PASS` produced here is structural-only.
