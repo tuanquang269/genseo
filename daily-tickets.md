@@ -757,7 +757,7 @@ ecdysterone, timing) so a fourth over-concentrates that cluster; and NMN was pub
 (#29), so a second NMN article two days running risks self-competition inside the same cluster.
 FloraFresh has 2 articles, both from 2026-08-09 — the longest gap of the three brands.
 
-## [ ] Ticket #30 — NEW ARTICLE (type: LISTICLE)
+## [DONE 2026-08-24 https://wellnessnest.co/blogs/news/vaginal-probiotics-side-effects-normal-vs-stop-us-2026] Ticket #30 — NEW ARTICLE (type: LISTICLE)
 - **Primary keyword:** `vaginal probiotics side effects`
 - **Secondary:** are vaginal probiotics safe, probiotic gummies bloating, d-mannose side effects,
   how long do probiotic side effects last, can probiotics cause a yeast infection
@@ -813,7 +813,15 @@ FloraFresh has 2 articles, both from 2026-08-09 — the longest gap of the three
   infection or UTI. Tell the reader plainly when to stop and contact a clinician.
 - **Author:** Dr. Marcus Hale (roster.json, sole source).
 
-### ⛔ 2026-08-24 RUN BLOCKED ON THE HERO IMAGE — ticket #30 stays PENDING, retry it tomorrow
+### ✅ RESOLVED 2026-08-24 (later run) — the blocked-run note below is HISTORY, ticket #30 shipped
+
+The collision was solved in the PROMPT, not by re-picking: the re-pick landed on seq 39 (release keeps seq as a
+counter, so the same pair was NOT re-issued — but `high-angle-down` + `chin-up` did recur with a different persona).
+Fix that worked, 4/4 first-roll QC PASS: front-load the head pose AND the identity clause together; describe the
+camera as only slightly above the eye line; raise the gaze target to chest height so the eyes drop without the head;
+NEGATIVE-list "no chin tucked toward the chest, no bowed or downward-tilted head".
+
+#### ⛔ 2026-08-24 earlier run — BLOCKED ON THE HERO IMAGE (historical)
 
 The ticket above was mined, gated and fully researched this run. **Nothing was written and nothing
 was published.** The run stopped at STEP 5 because the hero image burned all three ima2 attempts
