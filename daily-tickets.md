@@ -740,3 +740,122 @@ against the live `suggest.json` on 2026-08-23, plus `pure-shilajit-gold-resin` a
 `⚠ QRG quality scoring skipped (claude-seo runtime not installed)` on this Mac, so the three prose
 hard-fails DAILY-RUN §1.3 leans on (overall quality < 80, filler ≥ 25, ai-pattern ≥ 25) do **not**
 execute. Every `✓ PASS` produced here is structural-only.
+
+# BATCH 2026-08-24
+
+Mined per DAILY-RUN §2 (queue empty — 0 `[ ]` headings at start; GSC unauthorised and google-ads MCP
+not connected, so no demand data). Source: live catalog `/products.json` (22 SKUs) + `/collections.json`
+(6 collections) + blog inventory `ALL_ARTICLES.csv` (57 articles). Three open `side effects` segments
+were carried forward from #29; all three re-probed clean against `suggest.json` this run
+(`nmn side effects` 0, `turkesterone side effects` 0, `vaginal probiotics side effects` 0).
+`shilajit gold resin` was re-probed and is now **CLOSED** — it returns the live #25 article, so it
+comes off the open list.
+
+Chose `vaginal probiotics side effects` over the other two: FloraFresh is priority brand #3 (vs
+Turkesterone #5, AgeAura #6); turkesterone already carries THREE articles (benefits+dosing, vs
+ecdysterone, timing) so a fourth over-concentrates that cluster; and NMN was published yesterday
+(#29), so a second NMN article two days running risks self-competition inside the same cluster.
+FloraFresh has 2 articles, both from 2026-08-09 — the longest gap of the three brands.
+
+## [ ] Ticket #30 — NEW ARTICLE (type: LISTICLE)
+- **Primary keyword:** `vaginal probiotics side effects`
+- **Secondary:** are vaginal probiotics safe, probiotic gummies bloating, d-mannose side effects,
+  how long do probiotic side effects last, can probiotics cause a yeast infection
+- **STEP 0 (live, 2026-08-24):** `suggest.json?q=vaginal probiotics side effects` → 0 article matches. Clean.
+- **STEP 0.5:** `REVIEW [covered-segment]` — greenlit under Kevin's standing queue approval
+  (2026-08-13, "I approve all of them, I need published articles without any delay").
+- **Template:** LISTICLE — `references/article-templates.md` maps "X side effects" → LISTICLE, and the
+  previous article (#29) was COMPARISON, so the variety guard is satisfied.
+- **Angle:** the honest split — what is a real, expected, self-limiting side effect of an oral
+  Lactobacillus gummy (first-week gas/bloating, mild nausea, the sugar-alcohol load in a sugar-free
+  gummy) versus what is a myth (it "causes" yeast infections) versus what is a genuine
+  contraindication almost nobody publishes (severely immunocompromised / central-line / critically ill
+  — Lactobacillus bacteremia is rare but documented and carries real mortality). Nobody in this SERP
+  separates "expected and passes" from "stop and call someone".
+- **Ends at SKU:** `florafresh-vaginal-probiotics-gummies` ($40.99, curated ref exists at
+  `product_refs/florafresh-vaginal-probiotics-gummies.json`).
+- **Payload verified at source on the rendered PDP this run:** 15 billion CFU per serving from four
+  Lactobacillus strains (L. rhamnosus, L. reuteri, L. salivarius, L. gasseri) + XOS prebiotic +
+  D-Mannose + Vitamin C; 2 gummies daily with water; 60 gummies = 30-day supply; vegan, gluten-free,
+  sugar-free; $40.99.
+- **Collection links:** `florafresh-vaginal-probiotics-gummies` IS a genuine member of BOTH
+  `/collections/womens-essentials-collection` (3 products) and `/collections/best-seller` (4 products)
+  — verified live this run. Membership can be stated here, unlike #28/#29. Still link them as browse
+  suggestions rather than making a promotional claim.
+- **Evidence bank (5 DOIs, each resolved at api.crossref.org to the correct paper AND the abstract read
+  via Europe PMC — not title-only; NCBI eutils stays IP-blocked from this Mac):**
+  Cohen 2020 NEJM `10.1056/NEJMoa1915254` (LACTIN-V, *vaginal* L. crispatus CTV-05, BV recurrence 30%
+  vs 45% placebo at wk12, RR 0.66; AE rate did NOT differ from placebo) |
+  Hayward 2024 JAMA Intern Med `10.1001/jamainternmed.2024.0264` (D-mannose 2 g/d, 6 mo, n=598 UK
+  primary care: 51.0% vs 55.7% had a further suspected UTI, risk difference −5%, P=.26 — NOT effective
+  for prophylaxis) |
+  Sato 2025 J Infect Chemother `10.1016/j.jiac.2025.102794` (Lactobacillus bacteremia, 17 patients,
+  risk factors present in 82.4%, 30-day mortality 35.3%) |
+  Umbrella review 2026 Nutrition Reviews `10.1093/nutrit/nuaf303` (128 SRs/MAs of RCTs, efficacy AND
+  safety of probiotics/prebiotics/synbiotics) |
+  Russo 2019 Beneficial Microbes `10.3920/BM2018.0075` (oral L. acidophilus GLA-14 + L. rhamnosus HN001
+  + lactoferrin as adjuvant to metronidazole in recurrent BV).
+- **Route honesty (the differentiator):** the strongest BV probiotic trial (Cohen 2020) used a
+  *vaginally applied* strain, not an oral gummy. Say so. Do not let a reader infer a NEJM result
+  transfers to an oral product.
+- **Disclose our own gaps (house pattern, same as #22/#24/#25/#26/#27):** the FloraFresh listing
+  publishes 15 billion CFU total but **no per-strain CFU split**, and **no mg amount for D-Mannose or
+  Vitamin C** — a reader who wants to compare the D-mannose dose against the 2 g/d used in Hayward 2024
+  cannot do it from the listing. Route them to support@wellnessnest.co for the panel. This confirms the
+  DAILY-RUN §6 "no Supplement Facts panel" flag; the strain-identity contradiction flagged there is NOT
+  reproducible on the current rendered PDP (the four strains are stated consistently), so that half of
+  the flag looks stale.
+- **Do NOT repeat the PDP's disease-adjacent copy.** "Treats the root cause", "stays & colonizes",
+  "top OB/GYN recommended formula", "100% natural ingredients" and the three inconsistent social-proof
+  counts are all flagged in DAILY-RUN §6 — none of them go in the article. No COA / "clinically tested"
+  line either (house rule `no-coa-competitive-advantage`).
+- **Medical boundary:** structure/function language only. No treatment or cure claim for BV, yeast
+  infection or UTI. Tell the reader plainly when to stop and contact a clinician.
+- **Author:** Dr. Marcus Hale (roster.json, sole source).
+
+### ⛔ 2026-08-24 RUN BLOCKED ON THE HERO IMAGE — ticket #30 stays PENDING, retry it tomorrow
+
+The ticket above was mined, gated and fully researched this run. **Nothing was written and nothing
+was published.** The run stopped at STEP 5 because the hero image burned all three ima2 attempts
+(1 initial roll + the 2 permitted re-rolls, DAILY-RUN §3) and the skill's CRITICAL FAILURE SAFEGUARD
+says to abort rather than draft an article with missing images.
+
+`persona_picker.py pick --audience women-25-45` issued **seq 38**, hero `f2029-bl-01`,
+hero angle `profile-right+chin-up`, gaze `down-at-product`, shot `high-angle-down`,
+inline angle `profile-left+chin-down`, gaze `at-lens`. `warnings[]` was EMPTY.
+
+| roll | QC verdict (gemini-3.1-pro-low via gem9) |
+|---|---|
+| 1 — initial | `FAIL - chin dipped instead of raised` |
+| 2 — re-roll 1, chin instruction hardened, explicit negatives added | `FAIL - chin dipped instead of raised` |
+| 3 — re-roll 2, head pose moved to the top of the prompt, camera softened to a mild downward tilt | `FAIL - human identity mismatch against reference.` |
+
+**ROOT CAUSE, and it is reusable.** `high-angle-down` and `chin-up` are geometrically opposed. A camera
+above the subject pulls the rendered head forward; asking for a raised chin in the same frame fights the
+generator on every roll. Rolls 1 and 2 lost that fight identically. Roll 3 won the pose argument by
+flattening the camera and front-loading the pose — and lost the FACE instead, because the prompt weight
+that had been holding the persona identity went to the pose. **This is a picker-level collision, not a
+prompt-writing failure: the picker can hand out `high-angle-down` + `chin-up` together and there is no
+guard against it.** Worth a rule in the picker rather than another agent burning three rolls on it.
+
+**Bookkeeping is CLEAN — nothing is owed:**
+- `persona_picker.py release --seq 38` was run. Both angles returned to the pool; `status` now reads
+  `21 spent + 0 reserved`, **0 face angles burned**. No angle was ever committed against a failed render.
+- ⚠️ **`release` + re-pick is deterministic on seq**, so tomorrow's `pick` at seq 38 with
+  `--audience women-25-45` will re-issue **the same colliding pair**. Expect it. Do not brute-force a
+  fourth roll at the same combination — either accept the no-face composition the picker offers, or
+  raise the collision with Kevin. Do not invent a face and do not hand-pick a substitute angle.
+- The QC-failed render was NOT deleted. It is parked at
+  `tmp_images/vaginal-probiotics-side-effects-whats-normal-us-2026/hero.QC-FAILED-do-not-ship-20260824.webp`
+  — renamed so no later run can pick it up as a shippable hero. **Do not ship it.**
+- No draft file was created, nothing was sent to Shopify, `PUBLISHED_ARTICLES_TRACKER.csv` was not
+  touched, and `frozen_articles.txt` was not touched.
+
+**Everything the next run needs is already banked in the ticket above** — STEP 0 probe, STEP 0.5 verdict,
+template choice, the PDP payload verified at source, the collection-membership check, and all 5 DOIs
+resolved at Crossref with their abstracts read. Tomorrow's run should go straight to STEP 5 imagery.
+
+**Also still unfixed, third run in a row:** `validate_article.py` prints
+`⚠ QRG quality scoring skipped (claude-seo runtime not installed)` on this Mac, so the three prose
+hard-fails (overall quality < 80, filler ≥ 25, ai-pattern ≥ 25) do not execute. Every `✓ PASS` here is
+structural-only. It did not bite this run — the run never reached the gate.
