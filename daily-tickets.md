@@ -867,3 +867,42 @@ resolved at Crossref with their abstracts read. Tomorrow's run should go straigh
 `⚠ QRG quality scoring skipped (claude-seo runtime not installed)` on this Mac, so the three prose
 hard-fails (overall quality < 80, filler ≥ 25, ai-pattern ≥ 25) do not execute. Every `✓ PASS` here is
 structural-only. It did not bite this run — the run never reached the gate.
+
+## Refill needed
+
+**2026-08-24 (later run) — 0 `[ ]` tickets remain and today's article is ALREADY SHIPPED.**
+Ticket #30 (`vaginal probiotics side effects`) was mined and published LIVE earlier today
+(id `621897744699`; frontend re-verified HTTP 200 with a browser UA this run, `og:title`
+matches). DAILY-RUN §1 caps the job at one article per day, so this run did **not** mine or
+publish a second topic. What it did do was close the bookkeeping the shipping run left open:
+`logs/daily/2026-08-24.log` and `logs/daily/last-run.json` both still described today as
+**BLOCKED**, which is what the cron reports back to Kevin through Eugene — Kevin would have
+been told the day failed while the article was live. Both are corrected now.
+`persona_picker.py status` reads seq=39 with **0 reservations open**, so no `release` was owed,
+and the tracker row for #30 is present.
+
+**Correction to the blocked-run warning above (line ~852): it was WRONG.** That note predicted
+`release --seq 38` + re-pick would deterministically re-issue the same colliding pair. It did
+not — `release()` keeps seq as a counter, so the retry picked at seq 39 with a *different*
+persona. The `high-angle-down` + `chin-up` collision itself did recur and was solved in the
+PROMPT (4/4 first-roll QC PASS, 0 re-rolls): front-load the head pose **and** the identity
+clause together, describe the camera as only slightly above the eye line, raise the down-gaze
+target to chest height, and NEGATIVE-list "no chin tucked toward the chest, no bowed or
+downward-tilted head". Future runs: that pair is promptable, **do not treat it as a blocker**.
+
+No google-ads tool is exposed to this headless run (MCP servers present: claude.ai and Shopify,
+both UNAUTHENTICATED — and Shopify MCP is barred by hard rule #2 anyway) and GSC is still
+unauthorised on this Mac, so the mining recipe in
+`skills/genseo-auto-publish/references/ads-article-mining.md` cannot run from here.
+**Kevin: run that recipe in the app** and append the next batch below as `# BATCH <date>`.
+Open segments carried forward after #30: `nmn side effects` and `turkesterone side effects`
+(both re-probed clean against the live `suggest.json` on 2026-08-24), plus
+`pure-shilajit-gold-resin` and `shilajit-shockwave` on the catalog side.
+`vaginal probiotics side effects` is now CLOSED (shipped as #30) and
+`shilajit gold resin` was already closed by #25.
+
+**Still unfixed, FOURTH run in a row:** `validate_article.py` prints
+`⚠ QRG quality scoring skipped (claude-seo runtime not installed)`, so the three prose
+hard-fails DAILY-RUN §1.3 leans on (overall quality < 80, filler ≥ 25, ai-pattern ≥ 25) do
+**not** execute. It bit today: #30 shipped on a structural-only PASS plus a hand-checked
+banned-phrase list.
