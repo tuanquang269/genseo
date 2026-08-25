@@ -1065,3 +1065,54 @@ concept shot for the drug-interaction beat); neither needs a face, so neither ca
 `⚠ QRG quality scoring skipped (claude-seo runtime not installed)`, so the three prose hard-fails
 DAILY-RUN §1.3 leans on (overall quality < 80, filler ≥ 25, ai-pattern ≥ 25) do not execute on this
 Mac. It did not bite this run — the run never reached the gate.
+
+### ✅ RESOLVED — the blocked-run note above is HISTORY. Ticket #31 SHIPPED later the same day.
+
+The block was cleared by the next run of 2026-08-25: id `621904232763`, live at
+`/blogs/news/turkesterone-side-effects-4-ingredients-to-check-us-2026`, heading flipped `[DONE]`,
+tracker row present. Re-verified this run — frontend HTTP 200 with a browser UA, `verify_published.py`
+PASS (schema, `Dr. Marcus Hale` as Person, table), and the live `suggest.json` now returns the
+article on `turkesterone side effects`, so it is in the store's own index. The parked
+`hero.QC-PASS-VALID-ONLY-FOR-m2029-hl-02-front-level.webp` was correctly **not** shipped: the
+re-pick issued a different persona (`m2029-mx-01`, seq 41), so the hero was regenerated. Both
+QC-failed renders stay parked and unshipped. Nothing is owed on the picker: `status` reads
+`25 spent + 0 reserved`, seq 41 committed.
+
+## Refill needed
+
+**2026-08-25 (later run) — 0 `[ ]` tickets remain and today's article is ALREADY SHIPPED.**
+DAILY-RUN §1 caps the job at one article per day, so this run did **not** mine or publish a second
+topic. What it did do was close the bookkeeping the shipping run left open: `logs/daily/2026-08-25.log`
+and `logs/daily/last-run.json` both still described today as **BLOCKED**, which is what the cron
+reports back to Kevin through Eugene — he would have been told the day failed while the article was
+live. Both are corrected now. This is the second day running that the shipping run flipped the ticket
+and the tracker but not the run record (same as 2026-08-24); the fix belongs in the skill's STEP 10,
+not in a daily patch.
+
+No google-ads tool is exposed to this headless run (MCP servers present: claude.ai and Shopify, both
+UNAUTHENTICATED — and Shopify MCP is barred by hard rule #2 anyway) and GSC is still unauthorised on
+this Mac, so the mining recipe in `skills/genseo-auto-publish/references/ads-article-mining.md`
+cannot run from here. **Kevin: run that recipe in the app** and append the next batch below as
+`# BATCH <date>`.
+
+Open segments carried forward after #31, all re-probed live against `suggest.json` this run:
+- `nmn side effects` — **0 article matches, still open.** It is now the last untaken member of the
+  `side effects` family: turkesterone (#31), vaginal probiotics (#30), creatine gummies and shilajit
+  are all live and each returns its own article on that query.
+- catalog side: `pure-shilajit-gold-resin` and `shilajit-shockwave` still have no article.
+- `turkesterone side effects` is now CLOSED (shipped as #31).
+
+Note for whoever mines next: the `shilajit` cluster is at 5+ articles and any new shilajit angle now
+FAILs the fitness gate as `covered` — do not force one. Also parse `suggest.json` with
+`json.loads(raw, strict=False)`; the payload carries raw control characters and a plain `json.load`
+raises `Invalid control character`, which a careless run would misread as "0 matches" and use to
+green-light an already-COVERED keyword.
+
+**Still unfixed, SIXTH run in a row:** `validate_article.py` prints
+`⚠ QRG quality scoring skipped (claude-seo runtime not installed)`, so overall-quality/filler/
+ai-pattern hard-fails do not execute on this Mac. #31 shipped on a structural-only PASS plus a
+hand-checked banned-phrase list.
+
+**`ALL_ARTICLES.csv` is stale (2026-08-17, missing #26–#31).** Harmless while every check runs
+against the live site, but a run that trusts it for internal-link picking will miss the six newest
+articles. `python3 scripts/fetch_all_articles.py` refreshes it.
