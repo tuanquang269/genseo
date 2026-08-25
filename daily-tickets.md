@@ -906,3 +906,162 @@ Open segments carried forward after #30: `nmn side effects` and `turkesterone si
 hard-fails DAILY-RUN §1.3 leans on (overall quality < 80, filler ≥ 25, ai-pattern ≥ 25) do
 **not** execute. It bit today: #30 shipped on a structural-only PASS plus a hand-checked
 banned-phrase list.
+
+# BATCH 2026-08-25
+
+Mined per DAILY-RUN §2 (queue empty — 0 `[ ]` headings at start; GSC unauthorised and no google-ads
+tool exposed to this headless run, so no demand data). Source: live catalog `/products.json`
+(22 SKUs) + `/collections.json` (6 collections) + blog inventory. Two open segments were carried
+forward from #30: `nmn side effects` and `turkesterone side effects`. Both re-probed clean against
+`suggest.json` this run (0 article matches each). `shilajit` + any angle now FAILs the gate as
+`covered`, so it was dropped rather than forced.
+
+Chose `turkesterone side effects` over `nmn side effects` on three counts: Turkesterone is priority
+brand #5 vs AgeAura #6; the turkesterone cluster has 3 articles whose most recent is 2026-08-13
+(12 days) while NMN has 4 whose most recent is 2026-08-23 (2 days) — a fifth NMN page now would
+land next to #29 while it is still being indexed; and #30 already spent yesterday on the third
+`side effects` segment, so alternating brands keeps the clusters even.
+
+## [ ] Ticket #31 — NEW ARTICLE (type: EDITORIAL)
+- **Primary keyword:** `turkesterone side effects`
+- **Secondary:** is turkesterone safe, turkesterone liver, turkesterone side effects in males,
+  does turkesterone affect hormones, turkesterone drug interactions
+- **STEP 0 (live, 2026-08-25):** `suggest.json?q=turkesterone side effects` → 0 article matches.
+  Also 0 on `nmn side effects`, `creatine loading phase`, `when to take creatine`. Positive
+  controls the same run: `turkesterone` → 3 live articles, `creatine` → 4, `nmn` → 4, `shilajit`
+  → 5. The check was live, so the zero is real.
+- **STEP 0.5:** `topic_fitness.py "Turkesterone Side Effects: What's Real? (US 2026)"` →
+  `REVIEW [covered-segment]` — greenlit under Kevin's standing queue approval (2026-08-13,
+  "I approve all of them, I need published articles without any delay").
+- **Template:** EDITORIAL. The registry maps "X side effects" → LISTICLE, but two things override
+  it here: #30 (yesterday) was LISTICLE so the variety guard wants a different shape, and a
+  numbered list of side effects would misrepresent the evidence — there is no published human
+  adverse-event catalogue for turkesterone to number. Answer-first EDITORIAL is the honest shape.
+- **Ends at SKU:** `turkesterone-advanced-formula` ($75.00, curated ref exists at
+  `product_refs/turkesterone-advanced-formula.json` — green plastic jar, black screw lid).
+- **Angle (the payload):** the side-effect question for turkesterone is not really about
+  turkesterone. Two facts do the work. (1) The 10-week human trial everyone cites as "the
+  turkesterone study" is not one — it is Isenmann 2019 on **ecdysterone**, a different
+  phytoecdysteroid; the only human turkesterone data is an 11-man **acute** study that followed
+  people for 24 hours. So "no known side effects" is a statement about missing evidence, not about
+  safety. (2) Turkesterone is almost never sold alone, and every documented human adverse event in
+  a stacked formula belongs to one of the *other* ingredients. On our own label that means
+  ashwagandha (liver-injury case reports), tongkat ali (an unsettled regulatory picture), piperine
+  (raises the blood level of co-taken medicines) and colostrum (a dairy allergen in a product no
+  one reads as dairy). The reader's real job is to read the panel, and only a label that publishes
+  per-ingredient doses lets them.
+- **Third beat:** ecdysterone sits on the WADA Monitoring Program, so for a tested athlete the
+  relevant "side effect" is a doping-control one, not a physiological one.
+- **Payload verified at source on the rendered PDP this run:** 500 mg Turkesterone
+  (Ajuga turkestanica) · 300 mg KSM-66 Ashwagandha · 250 mg Tongkat Ali · 250 mg Colostrum
+  (15% IgG) · 10 mg BioPerine. 60 capsules per bottle, 2 daily with food, $75.00.
+- **Collection links:** `turkesterone-advanced-formula` IS a genuine member of
+  `/collections/mens-essential-collection` and `/collections/shilajit-wellness-stack` (verified
+  live this run) but is **NOT** in `/collections/best-seller` (that holds shilajit resin, shilajit
+  gummies, FusiForce, FloraFresh). Link best-seller as a browse suggestion only — never as a
+  membership claim. Same trap as #1/#2/#28/#29.
+- **Evidence bank (11 DOIs, every one resolved at api.crossref.org to the correct paper AND its
+  abstract read via Europe PMC — not title-only; NCBI eutils stays IP-blocked from this Mac):**
+  Isenmann 2019 Arch Toxicol `10.1007/s00204-019-02490-x` (ecdysterone, 10 wk, n=46 young men
+  strength-training; muscle mass and 1-RM bench up; **no increase in liver or kidney toxicity
+  biomarkers**) |
+  Grabowska/Muscles 2024 `10.3390/muscles3040031` (the only human turkesterone study — n=11 men,
+  **acute**, pre / 3 h / 24 h; no significant effect on IGF-1, RMR, lipid or carbohydrate
+  metabolism; authors report favourable hemodynamic and GI tolerability over that window) |
+  Nutrients 2024 review `10.3390/nu16091382` (ecdysterone + turkesterone, sources and evidence) |
+  Metabolites 2021 `10.3390/metabo11060366` (single 50 mg dose, 12 volunteers, urinary elimination;
+  states ecdysterone was added to the **WADA Monitoring Program**) |
+  Björnsson 2020 Liver Int `10.1111/liv.14393` (ashwagandha DILI, 5 cases, Iceland + US DILIN;
+  latency 2–12 wk, cholestatic or mixed, jaundice + pruritus, no hepatic failure, tests normalised
+  in 1–5 months in four of five) |
+  Cureus 2026 scoping review `10.7759/cureus.109764` (13 publications, 25 patients; injury after
+  weeks of use, cholestatic/mixed predominating) |
+  Hepatology Communications 2023 `10.1097/hc9.0000000000000270` (largest series, India) |
+  EFSA 2021 `10.2903/j.efsa.2021.6937` (tongkat ali root extract as an EU novel food at up to
+  200 mg/day: positive in vitro chromosome-aberration test and a positive in vivo comet assay at
+  2,000 mg/kg bw at first-contact tissues → Panel concluded safety **not established**) |
+  eCAM 2013 `10.1155/2013/102987` (the counterweight — 13-week subchronic rodent study on tongkat
+  ali root powder found no adverse effects to 2 g/kg/day, ADI up to 1.2 g/adult/day) |
+  Bhardwaj 2002 JPET `10.1124/jpet.102.034728` (piperine inhibits human P-glycoprotein and CYP3A4;
+  digoxin and cyclosporine transport IC50 15.5 and 74.1 µM) |
+  Chandrasekhar 2012 Indian J Psychol Med `10.4103/0253-7176.106022` (KSM-66, 300 mg **twice**
+  daily, 60 days, n=64 — the dose our label runs at half of).
+- **Disclose our own gaps (house honesty pattern, #22/#24/#25/#26/#27/#28/#30):** the listing
+  publishes ingredient doses but **no Supplement Facts panel**, and it does not say whether the
+  500 mg turkesterone figure is per capsule or per 2-capsule serving — the copy says "in one
+  powerful capsule" and then "Take 2 daily", which cannot both be the serving. Colostrum is not
+  flagged as a **milk allergen** anywhere in the listing. Route the reader to
+  support@wellnessnest.co for the panel.
+- **⛔ Do NOT repeat these PDP lines** (house rule `no-coa-competitive-advantage` plus
+  unsupportable safety/authority claims): "zero reported side effects", "Doctor-approved",
+  "Backed by 100,000+ studies", "Clean, Natural & Third-Party Validated", "4.9/5 stars from 1,800+
+  real customers", "5 clinically studied ingredients". The first one is flatly contradicted by the
+  evidence in this very article — it is flagged to Kevin in the run report, not argued with in the
+  body.
+- **Medical boundary:** structure/function language only. No treatment or cure claim. State plainly
+  who should not take it and when to stop and call a clinician.
+- **Author:** Dr. Marcus Hale (roster.json, sole source).
+
+### ⛔ 2026-08-25 — CARRIED OVER, BLOCKED AT STEP 5 ON THE INLINE PERSONA IMAGE. Ticket stays `[ ]`.
+
+The ticket above is fully mined, gated and researched. **Nothing was written and nothing was
+published.** The run stopped at STEP 5 because the inline persona-in-scene image burned all three
+ima2 attempts (1 initial roll + the 2 permitted re-rolls, DAILY-RUN §3), and the skill's CRITICAL
+FAILURE SAFEGUARD says to abort rather than draft an article with missing images. This was **not**
+a quota or auth failure — `GET :10531/v1/models` returned 200 and every roll produced an image.
+It was a pose failure, three times.
+
+`persona_picker.py pick --audience men-20-35` issued **seq 40**, hero `m2029-hl-02`,
+hero angle `front+level`, gaze `at-lens`, shot `mid-subject-fg-pack`,
+inline angle `front+chin-up`, inline gaze `down-at-hands`. `warnings[]` was EMPTY.
+
+**The HERO passed on the first roll** and was eyeballed against `product_refs/turkesterone-advanced-formula.png`:
+green jar, black screw lid, wordmark, ADVANCED FORMULA banner, all three icon badges and the
+ingredient list all correct and legible at thumbnail size; pack standing on the console with no hand
+touching it. It is parked at
+`tmp_images/turkesterone-side-effects-4-ingredients-to-check-us-2026/hero.QC-PASS-VALID-ONLY-FOR-m2029-hl-02-front-level.webp`.
+**The filename is a guard, not decoration** — seq 40 was released, so the next `pick` may hand out a
+different persona, and shipping this hero under a different persona's committed angle is exactly the
+permanent-damage case DAILY-RUN §3 warns about. Reuse it ONLY if the next pick re-issues
+`m2029-hl-02` + `front+level`; otherwise regenerate.
+
+| roll | QC verdict (gemini-3.1-pro-low via gem9) |
+|---|---|
+| 1 — initial, hands on a shaker at chest height, camera slightly below eye line | `FAIL - chin dipped not raised` |
+| 2 — re-roll 1, chin-lift hardened (throat visible, gap chin-to-collarbone), hands raised to collarbone height, camera dropped to sternum and angled up | `FAIL - chin dipped not raised, unreferenced background tub` |
+| 3 — re-roll 2, chin-lift made physical: he is DRINKING from the shaker, which tips the head back | `FAIL - head turned right.` |
+
+**ROOT CAUSE, and it extends the 2026-08-24 finding rather than repeating it.** `chin-up` paired
+with a downward gaze (`down-at-hands`) is the collision; `high-angle-down` was never the whole story.
+On 08-24 the pair was `profile-right+chin-up` + `high-angle-down` and the fix was to flatten the
+camera and raise the gaze target to chest height. **That fix does not generalise to a `front` yaw.**
+Applied here it failed twice — with the head squared to the lens there is no yaw for the generator to
+hide the pose in, so "looking down at his hands" collapses the whole head forward every time.
+Roll 3 finally won the chin by making the lift *physical* (drinking tips the head back) — and the
+render does show a correctly raised chin, jaw lengthened, throat visible — but the raised shaker
+occluded most of the face, and with the identity cue weakened the head drifted a few degrees off
+axis, so QC caught it on yaw instead. **Reusable rule: when the issued pair is `front+chin-up` with
+an `away`-family gaze, motivate the chin-lift with an action that does NOT put hands or an object in
+front of the face** (looking up at a shelf, pulling a t-shirt over the head, tipping a cap back,
+standing under a doorway light). Do not spend three rolls rediscovering this.
+
+**Bookkeeping is CLEAN — nothing is owed:**
+- `persona_picker.py release --seq 40` was run. Both angles returned to the pool; `status` reads
+  `23 spent + 0 reserved`, **0 face angles burned**. No angle was committed against a failed render.
+- The QC-failed render was NOT deleted. It is parked as
+  `tmp_images/turkesterone-side-effects-4-ingredients-to-check-us-2026/inline-1-kitchen-shaker.QC-FAILED-do-not-ship-20260825.webp`.
+  **Do not ship it.**
+- No draft file was created, nothing was sent to Shopify, `PUBLISHED_ARTICLES_TRACKER.csv` was not
+  touched, `frozen_articles.txt` was not touched, and no file was deleted.
+
+**Everything the next run needs is already banked in the ticket above** — the STEP 0 probe with its
+positive controls, the STEP 0.5 verdict, the template decision and why it departs from the registry,
+the PDP payload verified at source, the collection-membership check, and all 11 DOIs resolved at
+Crossref with their abstracts read at Europe PMC. **Tomorrow's run should go straight to STEP 5
+imagery.** Two of the four images still need to exist (a no-face label-reading shot and a no-face
+concept shot for the drug-interaction beat); neither needs a face, so neither can hit this collision.
+
+**Still unfixed, FIFTH run in a row:** `validate_article.py` prints
+`⚠ QRG quality scoring skipped (claude-seo runtime not installed)`, so the three prose hard-fails
+DAILY-RUN §1.3 leans on (overall quality < 80, filler ≥ 25, ai-pattern ≥ 25) do not execute on this
+Mac. It did not bite this run — the run never reached the gate.
