@@ -922,7 +922,7 @@ brand #5 vs AgeAura #6; the turkesterone cluster has 3 articles whose most recen
 land next to #29 while it is still being indexed; and #30 already spent yesterday on the third
 `side effects` segment, so alternating brands keeps the clusters even.
 
-## [ ] Ticket #31 — NEW ARTICLE (type: EDITORIAL)
+## [DONE 2026-08-25 https://wellnessnest.co/blogs/news/turkesterone-side-effects-4-ingredients-to-check-us-2026] Ticket #31 — NEW ARTICLE (type: EDITORIAL)
 - **Primary keyword:** `turkesterone side effects`
 - **Secondary:** is turkesterone safe, turkesterone liver, turkesterone side effects in males,
   does turkesterone affect hormones, turkesterone drug interactions
