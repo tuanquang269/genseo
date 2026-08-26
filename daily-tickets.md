@@ -1199,3 +1199,32 @@ this pipeline — it is the one gate that is silently absent rather than failing
 
 `ALL_ARTICLES.csv` is current as of the #32 run (63 rows + header). No refresh needed before the
 next run.
+
+**2026-08-26 (third run of the day) — queue still EMPTY, nothing published, by design.**
+`grep "^## \[ \]"` returns nothing; every remaining `[ ]` string in this file is prose (the rules
+block at the top and the historical run notes). Per the run rules, a run that finds no pending
+ticket does **not** write an article. DAILY-RUN §1 also caps the job at one article per day and
+ticket #32 already shipped this morning — re-verified live again this run: frontend
+`nmn-side-effects-6-checks-before-you-start-us-2026` returns **HTTP 200** with a browser UA.
+`logs/daily/last-run.json` still reads `status: published` / ticket #32, so no bookkeeping repair
+was needed.
+
+No google-ads tool is exposed to this headless run (MCP servers present: exa, claude.ai, Shopify —
+and Shopify MCP is barred by hard rule #2 anyway), and GSC remains unauthorised on this Mac, so the
+mining recipe in `skills/genseo-auto-publish/references/ads-article-mining.md` cannot run from here.
+**Kevin: run that recipe in the app** and append the next batch below as `# BATCH <date>`.
+
+Re-probed live this run against `suggest.json` (`curl -sg` + browser UA + `json.loads(strict=False)`),
+so the next run starts from verified ground:
+- `best time to take creatine` — **0 article matches**, still the cleanest open segment on the board.
+- `probiotics for bv` — **0 article matches**, still untaken.
+The remaining segment reads from the earlier note today stand unchanged and are not re-listed:
+`menopause supplement` is a ranking gap not an inventory gap, `nmn vs nad` is a cannibalisation risk
+against #29, `pure-shilajit-gold-resin` is the only genuinely uncovered SKU, and the `side effects`
+family is CLOSED across all five brands.
+
+**Still unfixed, EIGHTH run in a row:** `validate_article.py` prints
+`⚠ QRG quality scoring skipped (claude-seo runtime not installed)`, so the overall-quality / filler /
+ai-pattern hard-fails do not execute on this Mac. Installing the claude-seo runtime is the
+highest-value fix left in this pipeline — it is the one gate that is silently absent rather than
+failing loudly.
