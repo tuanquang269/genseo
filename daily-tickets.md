@@ -1116,3 +1116,86 @@ hand-checked banned-phrase list.
 **`ALL_ARTICLES.csv` is stale (2026-08-17, missing #26–#31).** Harmless while every check runs
 against the live site, but a run that trusts it for internal-link picking will miss the six newest
 articles. `python3 scripts/fetch_all_articles.py` refreshes it.
+
+
+# BATCH 2026-08-26 — mined by the unattended run (no GSC, no google-ads MCP)
+
+**Evidence header.** Queue was empty at 07:30 (0 `[ ]` headings). Mined per DAILY-RUN §2 from what is
+on the machine: live catalog (`products.json`, 22 SKUs), live blog inventory (`ALL_ARTICLES.csv`
+refreshed this run to 63 rows), and live `search/suggest.json` probes. Carried forward from the
+2026-08-25 refill note: `nmn side effects` was the last untaken member of the `side effects` family.
+Re-probed live this run with `curl -sg` + browser UA + `json.loads(strict=False)`:
+
+- `nmn side effects` → **0 article matches** — OPEN, taken as #32.
+- `nmn` → 4 articles (when-to-take, vs-nr, and-tmg-together, how-much-per-day) — none targets side effects.
+- `nmn dosage` → 0 matches.
+- `pure shilajit gold resin` → 0 matches — still open on the catalog side.
+- `shilajit shockwave` → **1 match, `/blogs/news/shilajit-shockwave-review-1-drop-or-1-ml-us-2026`.**
+  DAILY-RUN §2 and the 2026-08-25 refill note both still list this SKU as uncovered. **They are stale.**
+  This is the drift STEP 0 exists to catch. Only `pure-shilajit-gold-resin` remains uncovered.
+
+`build_catalog_tickets.py` still returns 0 tickets on this store (brand-coverage based, every house
+brand has a page). Not waited on.
+
+## [DONE 2026-08-26 https://wellnessnest.co/blogs/news/nmn-side-effects-6-checks-before-you-start-us-2026] Ticket #32 — NEW ARTICLE (type: LISTICLE)
+
+- **Primary keyword:** `nmn side effects`
+- **Title:** NMN Side Effects: 6 Checks Before You Start (US 2026)  (53 chars)
+- **STEP 0:** live `suggest.json` → 0 article matches. PASS.
+- **STEP 0.5:** `topic_fitness.py` → `REVIEW [covered-segment]` — "brand nmn has a general article,
+  but 'side effects' is an audience/intent no existing title covers". Proceeding under Kevin's
+  standing greenlight for this queue (2026-08-13: *"I approve all of them, I need published articles
+  without any delay"*), per DAILY-RUN §1.2.
+- **Template:** LISTICLE. Registry maps `X side effects` → LISTICLE; previous article #31 was
+  EDITORIAL, so the variety guard is satisfied.
+- **Product:** `ageaura-pure-nmn-tmg-nad-complex` $69.95 (the only NMN SKU with a curated
+  `product_refs/` entry). Panel re-verified at source on the RENDERED PDP this run — see the tracker row.
+- **Internal links:** the 4 live NMN articles, all re-checked HTTP 200 this run.
+- **Angle:** the dose ladder. Human NMN trials ran to 1,250 mg/day and reported no severe adverse
+  events; the documented, dose-dependent effects on this label belong to the *co-ingredients*
+  (betaine/TMG on LDL, trans-resveratrol on CYP enzymes) and to an allergen almost nobody reads —
+  spermidine here is from **wheat germ extract**, so the label carries a `Contains: Wheat` line.
+
+## Refill needed
+
+**2026-08-26 (later run) — 0 `[ ]` tickets remain and today's article is ALREADY SHIPPED.**
+DAILY-RUN §1 caps the job at one article per day, so this run did **not** mine or publish a second
+topic. Nothing was left open by the shipping run either: `logs/daily/2026-08-26.log` and
+`logs/daily/last-run.json` both already read `status: published` / ticket #32 — the STEP 10
+bookkeeping miss that had to be repaired by hand on 2026-08-24 and 2026-08-25 did **not** recur.
+Ticket #32 re-verified live this run: frontend 200 with a browser UA, tracker row present.
+
+No google-ads tool is exposed to this headless run (MCP servers present: claude.ai and Shopify, both
+UNAUTHENTICATED — and Shopify MCP is barred by hard rule #2 anyway) and GSC is still unauthorised on
+this Mac, so the mining recipe in `skills/genseo-auto-publish/references/ads-article-mining.md`
+cannot run from here. **Kevin: run that recipe in the app** and append the next batch below as
+`# BATCH <date>`.
+
+Open segments after #32, all probed live against `suggest.json` this run (`curl -sg` + browser UA +
+`json.loads(strict=False)`):
+- `best time to take creatine` — **0 article matches.** Cleanest open segment on the board. The
+  creatine cluster has vs-powder, dosage and women-over-40, none of them timing.
+- `probiotics for bv` — **0 article matches.** FloraFresh has which-strains (#3) and side-effects
+  (#30); the BV-specific intent is untaken.
+- `menopause supplement` — **0 article matches**, but read this one carefully before taking it:
+  MenoMate carries ~15 legacy pre-pipeline articles (meal-plan sets, symptom pages) that
+  `topic_fitness.py` will very likely score `covered`. It is a gap in *ranking*, not in *inventory*.
+- `nmn vs nad` — 0 matches, but #29 `nmn-vs-nr` is adjacent enough that this is probably a
+  cannibalisation risk, not an opportunity. Check `find_dupes.py` logic before drafting.
+- catalog side: `pure-shilajit-gold-resin` is the **only** genuinely uncovered SKU. It needs a
+  distinct segment angle, not a bare product page.
+- CLOSED and confirmed live this run: `creatine gummies dosage`, `urolithin a dosage`,
+  `shilajit for women`, `turkesterone vs ecdysterone`, `shilajit shockwave`.
+
+The `side effects` family is now CLOSED across all five brands (shilajit, creatine gummies,
+vaginal probiotics #30, turkesterone #31, NMN #32). Do not force another shilajit angle either: the
+cluster is at 6+ articles and any new one FAILs the fitness gate as `covered`.
+
+**Still unfixed, SEVENTH run in a row:** `validate_article.py` prints
+`⚠ QRG quality scoring skipped (claude-seo runtime not installed)`, so the overall-quality / filler /
+ai-pattern hard-fails do not execute on this Mac. #32 shipped on a structural-only PASS plus a
+hand-checked banned-phrase list. Installing the claude-seo runtime is the highest-value fix left in
+this pipeline — it is the one gate that is silently absent rather than failing loudly.
+
+`ALL_ARTICLES.csv` is current as of the #32 run (63 rows + header). No refresh needed before the
+next run.
