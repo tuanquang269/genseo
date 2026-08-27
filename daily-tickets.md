@@ -1366,3 +1366,64 @@ failing loudly.
 **Open flag, still not re-verified:** the Blueberry FusiForce pouch front was recorded printing 112
 gummies against Green Apple's 90 at the same $69.99. The `.js` endpoint exposes no per-variant pack
 image, so #33 published only the verified 90 figure.
+
+## Refill needed
+
+**2026-08-27 (third run) — QUEUE EMPTY. No `[ ]` ticket anywhere in this file. No article written.**
+
+`grep -n '^#\{1,3\} \[ \]' daily-tickets.md` returns nothing. Every `[ ]` string left in the file is
+prose (the rules block at the top, plus the historical run notes). Ticket #33
+(`best-time-to-take-creatine-before-or-after-us-2026`) shipped earlier today; its bookkeeping was
+committed by the previous run (`30b2107`). Nothing was published or re-published this run.
+
+All four ticket generators re-run this run. All four dead-end, unchanged from the earlier run:
+
+| Generator | Result this run |
+|---|---|
+| `build_catalog_tickets.py` | `0 PASS tickets`, `0 unvouched brands`, `0 already-covered`, `0 thin (<3 SKU)` — catalog coverage is genuinely closed |
+| `build_rich_tickets.py` | `FileNotFoundError: blog_ticket_candidates.csv` — its input is GSC-derived and absent |
+| `build_ctr_tickets.py` | `scripts/credentials.json not found` — GSC OAuth is not configured on this Mac |
+| `refresh_targets.py` | `scripts/credentials.json not found` — same GSC blocker |
+
+**google-ads MCP is unavailable in this environment** (the only MCP servers present are `claude.ai`
+and `Shopify`, both unauthorised and non-interactive here). So per the run rules, no mining was
+attempted from ad data and no ticket was invented.
+
+### Kevin — please run the mining recipe in the app
+
+Open the google-ads MCP in the desktop app and mine a fresh batch, then paste it into this file under
+a `# BATCH <date>` heading. Mining must come from **segment gaps**, not from walking the SKU list —
+the SKU list is exhausted.
+
+Carried candidates, unchanged and **not** re-probed this run (no GSC, no ads MCP):
+
+- `how long does creatine take to work` — same cluster as #33, buyer-intent, ends at
+  `fusiforce-creatine-gummies`. Saturation evidence (Hultman 1996, Kreider 2017) is banked in the #33
+  row, so research cost is near zero. **Strongest of the set.** Run `find_dupes.py` against #33
+  first — timing and time-to-effect are adjacent intents.
+- `probiotics for bv` — FloraFresh has which-strains (#3) and side-effects (#30); BV-specific intent
+  is still open after five runs of carrying it. Route-honesty constraint from the #30 row stands: the
+  NEJM LACTIN-V result used a **vaginal** strain and does not transfer to an oral gummy.
+- `turkesterone dosage` — check `find_dupes.py` first; #31 plus the existing benefits-dosing article
+  may already own the dose intent.
+- `shilajit for sleep` — shilajit cluster is at 7+ articles; `topic_fitness.py` will likely score it
+  `covered`. Do not force it.
+- `nmn vs nad` — cannibalisation risk against #29 `nmn-vs-nr`, unchanged.
+- `urolithin a vs nmn` — cross-brand inside AgeAura; would need care not to cannibalise #28 or #29.
+- `menopause supplement` — a **ranking** gap, not an inventory gap (MenoMate carries ~15 legacy
+  pre-pipeline articles), unchanged.
+
+**Housekeeping snag, new this run:** `build_catalog_tickets.py` with no arg now refuses to run —
+`refusing to overwrite existing catalog-brand-tickets.md`. That stale 0-ticket artifact is sitting in
+the repo root. Delete it, or call the generator with an out-path / `--append`, otherwise every future
+run has to route around it.
+
+**Still unfixed, ELEVENTH run in a row:** `validate_article.py` prints
+`⚠ QRG quality scoring skipped (claude-seo runtime not installed)`, so the overall-quality / filler /
+ai-pattern hard-fails do not execute on this Mac. Installing the claude-seo runtime remains the
+highest-value fix left in this pipeline — it is the one gate that is silently absent rather than
+failing loudly.
+
+**Open flag, still not re-verified:** the Blueberry FusiForce pouch front was recorded printing 112
+gummies against Green Apple's 90 at the same $69.99. The `.js` endpoint exposes no per-variant pack
+image, so #33 published only the verified 90 figure.
