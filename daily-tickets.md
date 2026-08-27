@@ -1228,3 +1228,141 @@ family is CLOSED across all five brands.
 ai-pattern hard-fails do not execute on this Mac. Installing the claude-seo runtime is the
 highest-value fix left in this pipeline — it is the one gate that is silently absent rather than
 failing loudly.
+
+
+# BATCH 2026-08-27 — mined by the unattended run (queue empty; no GSC, no google-ads MCP)
+
+Evidence header: mined at $0 from the live catalog (`products.json`, 22 SKUs) + the live blog
+inventory (`suggest.json` probes, browser UA, `curl -sg`, `json.loads(strict=False)`) because GSC is
+unauthorised on this Mac and no google-ads tool is exposed to a headless run. The segment was
+carried on the open-segment list by the 2026-08-25 and 2026-08-26 runs and re-probed live today.
+
+STEP 0 live probes this run — `best time to take creatine` **0 article matches**, `when to take
+creatine` 0, `creatine timing` 0, `creatine before or after workout` 0. Positive control
+`creatine` returns 4 live articles (dosage · women-over-40 · gummies-vs-powder · side-effects) and
+**none of them targets timing**. Product probe `creatine` returns `fusiforce-creatine-gummies` at
+$69.99 plus three reserve SKUs, so the segment ends at a SKU we stock.
+
+DRIFT CAUGHT THIS RUN: DAILY-RUN §2 and the tickets refill notes still list
+`pure-shilajit-gold-resin` as the only genuinely uncovered SKU. It is **not** uncovered —
+`/blogs/news/shilajit-gold-resin-review-is-75-worth-it-us-2026` is live and `suggest.json` returns
+it for `shilajit gold resin`. The catalog side now has **no** uncovered SKU.
+
+## [DONE 2026-08-27 https://wellnessnest.co/blogs/news/best-time-to-take-creatine-before-or-after-us-2026] Ticket #33 — NEW ARTICLE (type: EDITORIAL)
+
+- **Primary keyword:** `best time to take creatine`
+- **Template:** `EDITORIAL` — the registry maps how/what/why/dosage informational intent to
+  EDITORIAL, and #32 was LISTICLE, so the variety guard is satisfied.
+- **Working title:** Best Time to Take Creatine: Before or After? (US 2026)
+- **Product:** FusiForce — Creatine Monohydrate Gummies 5,000 mg, `fusiforce-creatine-gummies`,
+  $69.99, Green Apple + Blueberry, 3 gummies = 5 g creatine + 25 mg Panax ginseng (10% ginsenosides).
+- **Collections (all three verified live members):** `/collections/mens-essential-collection`,
+  `/collections/best-seller`, `/collections/shilajit-wellness-stack`.
+- **Angle:** the timing question has a real answer and it is not the one the search demands.
+  Total daily intake and *consistency* drive muscle saturation; the around-workout window is a
+  small, weakly-evidenced second-order effect. Our own PDP already says "take anytime" — the
+  article backs that with the evidence instead of inventing a window.
+- **Internal links (4 live creatine articles, re-check 200 before use):** creatine-gummies-dosage ·
+  creatine-gummies-vs-powder · creatine-for-women-over-40 · creatine-gummies-side-effects.
+- **House rules:** no COA / ISO 17025 / Eurofins / "third-party tested" / "137,000 customers" /
+  "4.8-4.9 stars" repeated from the PDP (`no-coa-competitive-advantage`). No MuscleMax.
+
+
+## Refill needed
+
+**2026-08-27 — Ticket #33 shipped, queue is EMPTY again (0 `[ ]` headings).** The next run must
+mine per DAILY-RUN §2. GSC is still unauthorised on this Mac and no google-ads tool is exposed to a
+headless run, so `skills/genseo-auto-publish/references/ads-article-mining.md` cannot run from here.
+**Kevin: run that recipe in the app** and append the next batch below as `# BATCH <date>`.
+
+**THE CATALOG SIDE IS NOW CLOSED — this supersedes DAILY-RUN §2 and every refill note above it.**
+`pure-shilajit-gold-resin` is no longer uncovered: `suggest.json` returns
+`/blogs/news/shilajit-gold-resin-review-is-75-worth-it-us-2026` for `shilajit gold resin`. Every SKU
+on the store now has at least one article. Future mining has to come from **segment gaps**, not from
+walking the SKU list — `build_catalog_tickets.py` was already returning 0 and now the manual fallback
+returns 0 too.
+
+Re-probed live this run (`curl -sg` + browser UA + `json.loads(strict=False)`), all **0 article
+matches**, so the next run starts from verified ground:
+- `how long does creatine take to work` — 0. Strongest of the set: same cluster as #33, buyer-intent,
+  ends at `fusiforce-creatine-gummies`, and the saturation evidence spine (Hultman 1996, Kreider 2017)
+  is already banked in the #33 row so the research cost is near zero.
+- `probiotics for bv` — 0. Still untaken after three runs of carrying it. FloraFresh has
+  which-strains (#3) and side-effects (#30); the BV-specific intent is open. Note the route-honesty
+  constraint the #30 row established: the NEJM LACTIN-V result used a **vaginal** strain and does not
+  transfer to an oral gummy — any BV article has to say so or it is misleading.
+- `turkesterone dosage` — 0, but check `find_dupes.py` first: #31 (side effects) and the existing
+  benefits-dosing article may already own the dose intent.
+- `shilajit for sleep` — 0, but the shilajit cluster is at 7+ articles and `topic_fitness.py` will
+  very likely score it `covered`. Do not force it.
+- `nmn vs nad` — 0, still a cannibalisation risk against #29 `nmn-vs-nr`, unchanged.
+- `menopause supplement` — 0, still a **ranking** gap not an inventory gap (MenoMate carries ~15
+  legacy pre-pipeline articles), unchanged.
+- `urolithin a vs nmn` — 0. New this run. Cross-brand comparison inside AgeAura; would need care not
+  to cannibalise #28 (urolithin-a-dosage) or #29 (nmn-vs-nr).
+
+**Still unfixed, NINTH run in a row:** `validate_article.py` prints
+`⚠ QRG quality scoring skipped (claude-seo runtime not installed)`, so the overall-quality / filler /
+ai-pattern hard-fails do not execute on this Mac. #33 shipped on a structural-only PASS plus a
+hand-checked banned-phrase list (0 hits). Installing the claude-seo runtime is still the
+highest-value fix left in this pipeline — it is the one gate that is silently absent rather than
+failing loudly.
+
+**Open flag for Kevin, carried from #27 and not re-verified this run:** the Blueberry FusiForce pouch
+front was recorded printing 112 gummies against Green Apple's 90 at the same $69.99. The `.js`
+endpoint exposes no per-variant pack image, so #33 published only the verified 90 figure.
+
+## Refill needed
+
+**2026-08-27 (later run) — QUEUE EMPTY. No `[ ]` ticket anywhere in this file. No article written.**
+
+Ticket #33 (`best-time-to-take-creatine-before-or-after-us-2026`) shipped earlier today and was
+re-verified live this run: frontend GET returns **HTTP 200** with a browser UA. Its bookkeeping
+(ticket flip, tracker row, persona `seq=43` commit) was left **uncommitted** by that run; this run
+commits it. Nothing was re-published.
+
+All four ticket generators were run this run and all four dead-end:
+
+| Generator | Result this run |
+|---|---|
+| `build_catalog_tickets.py` | `0 PASS tickets`, `0 unvouched brands`, `0 already-covered`, `0 thin` — the catalog side is genuinely closed, confirming the 2026-08-26 note |
+| `build_rich_tickets.py` | `FileNotFoundError: blog_ticket_candidates.csv` — its input is GSC-derived and absent |
+| `build_ctr_tickets.py` | needs an out-path arg **and** GSC; GSC is unauthorised on this Mac |
+| `refresh_targets.py` | same GSC dependency |
+
+So there is no $0 local path left to a new ticket: brand-coverage as a topic source is exhausted
+(every SKU has an article) and every remaining generator needs query data this machine cannot read.
+The google-ads MCP is **not exposed to this headless run** either.
+
+**Kevin: run the mining recipe in the app** —
+`skills/genseo-auto-publish/references/ads-article-mining.md` — and append the next batch below as
+`# BATCH <date>`. Mining must now come from **segment gaps**, not from walking the SKU list.
+
+Carried candidates, all re-probed 0-article by the 2026-08-27 earlier run and **not** re-probed here
+(one of them, `best time to take creatine`, became #33, so the list is one shorter):
+
+- `how long does creatine take to work` — same cluster as #33, buyer-intent, ends at
+  `fusiforce-creatine-gummies`; the saturation evidence spine (Hultman 1996, Kreider 2017) is banked
+  in the #33 row, so research cost is near zero. **Strongest of the set.** Check `find_dupes.py`
+  against #33 first — timing and time-to-effect are adjacent intents.
+- `probiotics for bv` — FloraFresh has which-strains (#3) and side-effects (#30); BV-specific intent
+  is still open after four runs of carrying it. Route-honesty constraint from the #30 row stands:
+  the NEJM LACTIN-V result used a **vaginal** strain and does not transfer to an oral gummy.
+- `turkesterone dosage` — check `find_dupes.py` first; #31 plus the existing benefits-dosing article
+  may already own the dose intent.
+- `shilajit for sleep` — shilajit cluster is at 7+ articles; `topic_fitness.py` will likely score it
+  `covered`. Do not force it.
+- `nmn vs nad` — cannibalisation risk against #29 `nmn-vs-nr`, unchanged.
+- `urolithin a vs nmn` — cross-brand inside AgeAura; would need care not to cannibalise #28 or #29.
+- `menopause supplement` — a **ranking** gap, not an inventory gap (MenoMate carries ~15 legacy
+  pre-pipeline articles), unchanged.
+
+**Still unfixed, TENTH run in a row:** `validate_article.py` prints
+`⚠ QRG quality scoring skipped (claude-seo runtime not installed)`, so the overall-quality / filler /
+ai-pattern hard-fails do not execute on this Mac. Installing the claude-seo runtime remains the
+highest-value fix left in this pipeline — it is the one gate that is silently absent rather than
+failing loudly.
+
+**Open flag, still not re-verified:** the Blueberry FusiForce pouch front was recorded printing 112
+gummies against Green Apple's 90 at the same $69.99. The `.js` endpoint exposes no per-variant pack
+image, so #33 published only the verified 90 figure.
