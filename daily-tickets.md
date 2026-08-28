@@ -1427,3 +1427,93 @@ failing loudly.
 **Open flag, still not re-verified:** the Blueberry FusiForce pouch front was recorded printing 112
 gummies against Green Apple's 90 at the same $69.99. The `.js` endpoint exposes no per-variant pack
 image, so #33 published only the verified 90 figure.
+
+# BATCH 2026-08-28 — mined by the unattended run (queue empty; no GSC, no google-ads MCP)
+
+Evidence header: mined at $0 from the live catalog (`products.json`, 22 SKUs) + the live blog
+inventory (`ALL_ARTICLES.csv`, 63 rows) + `suggest.json` probes (`curl -sg`, browser UA,
+`json.loads(strict=False)`). GSC is unauthorised on this Mac and no google-ads tool is exposed to a
+headless run. `probiotics for bv` has been carried on the open-segment list by the 2026-08-25,
+-08-26 and three 2026-08-27 runs and was re-probed live today.
+
+STEP 0 live probes this run — **9 probes, all 0 article matches**: `probiotics for bv`,
+`bv`, `bacterial vaginosis`, `probiotics for bacterial vaginosis`, `vaginal odor`,
+`lactobacillus crispatus`, `ph balance`, `does probiotics help bv`, `florafresh`. Positive control
+`probiotics` returns 4 live articles (which-strains · how-long · side-effects · a MenoMate meal-plan
+page) and **none targets BV**. Product probe confirms the segment ends at a stocked SKU,
+`florafresh-vaginal-probiotics-gummies` $40.99.
+
+**DRIFT CAUGHT THIS RUN — Urolithin A is NOT a stocked SKU.** `CLAUDE.md` §2 and `DAILY-RUN.md` §2
+both describe AgeAura as "NMN+TMG · Urolithin A · Longevity Peptides". The live `products.json`
+returns **22 products and no urolithin SKU at all**; a product probe for `urolithin` returns zero
+results while an article probe returns two live urolithin articles. So `urolithin a vs nmn` — carried
+as a candidate by the last three runs — was **rejected this run**: half the comparison would point at
+a product the store does not sell. `product_refs/ageaura-pure-urolithin-a.png` is also now a ref for
+a delisted SKU. Kevin: either the SKU was delisted or it never shipped; the two live urolithin
+articles should be checked for links to a dead product page.
+
+## [DONE 2026-08-28 https://wellnessnest.co/blogs/news/probiotics-for-bv-do-they-actually-work-us-2026] Ticket #34 — NEW ARTICLE (type: COMPARISON)
+
+- **Primary keyword:** `probiotics for bv`
+- **Template:** `COMPARISON` — the registry maps "which should you / alternative to" comparison
+  intent to COMPARISON, and the article is structurally a three-way route comparison
+  (antibiotics vs vaginal probiotic vs oral gummy). Previous #33 was EDITORIAL, so the variety
+  guard is satisfied. Last COMPARISON was #29 on 2026-08-23.
+- **Working title:** Probiotics for BV: Do They Actually Work? (US 2026) — 50 chars.
+- **Product:** FloraFresh — Vaginal Probiotics Gummies, `florafresh-vaginal-probiotics-gummies`,
+  $40.99, Pineapple flavor, 15 billion CFU per 2-gummy serving from 4 *Lactobacillus* species
+  (rhamnosus, reuteri, salivarius, gasseri) + XOS prebiotics + D-mannose + vitamin C; 60 gummies =
+  30 days at the label's own serving size; ~$1.37/day. Range $24.50–$110.70.
+- **Collections (all three verified live members via `collections/<h>/products.json`):**
+  `/collections/womens-essentials-collection`, `/collections/best-seller`,
+  `/collections/shilajit-wellness-stack`.
+- **Angle — THE ROUTE PROBLEM, and the honest rebuttal to it.** The landmark BV probiotic result
+  (LACTIN-V, NEJM) used *L. crispatus* CTV-05 delivered **vaginally**, and the vitamin C result used
+  a **vaginal** tablet — neither transfers automatically to a swallowed gummy. But the article does
+  not stop at the convenient half: the 2022 *Front Nutr* meta-regression tested route directly and
+  found it did **not** predict recurrence (p=0.67 vaginal, p=0.44 oral). Stating both is the
+  differentiator against every competitor page that picks one and sells it.
+- **Internal links (3 live FloraFresh articles, each re-checked 200 this run):** vaginal-probiotics-
+  how-long · vaginal-probiotics-which-strains · vaginal-probiotics-side-effects.
+- **House rules:** medical boundary is structure/function only, with an explicit "probiotics do not
+  cure BV, antibiotics do" answer block and a stop-and-call-a-clinician list. Nothing repeated from
+  the PDP per `no-coa-competitive-advantage` — see the tracker row for the exact suppressed list.
+  No MuscleMax.
+
+## Refill needed
+
+**2026-08-28 — Ticket #34 shipped, queue is EMPTY again (0 `[ ]` headings).** The next run must
+mine per DAILY-RUN §2. GSC is still unauthorised and no google-ads tool is exposed to a headless run,
+so `skills/genseo-auto-publish/references/ads-article-mining.md` cannot run from here.
+**Kevin: run that recipe in the app** and append the next batch below as `# BATCH <date>`.
+
+Carried candidates, re-probed live this run unless noted, all **0 article matches**:
+
+- `how long does creatine take to work` — 0. Ends at `fusiforce-creatine-gummies`; the saturation
+  evidence spine (Hultman 1996, Kreider 2017) is banked in the #33 row. **Deferred again this run**
+  for a substantive reason, not indecision: #33 (`best time to take creatine`) shipped 2026-08-27,
+  and timing vs time-to-effect are adjacent intents on a page that is one day old. Give it distance,
+  and run `find_dupes.py` against #33 when GSC credentials exist.
+- `turkesterone dosage` — 0, but **topic_fitness is wrong about this one**. It returns
+  `REVIEW [covered-segment]` claiming "dosage is an intent no existing title covers"; the live
+  article `Turkesterone Benefits & Dosing: What's Real? (US 2026)` has *Dosing* in its title and
+  already owns that intent. Treat as taken unless it is reframed.
+- `urolithin a vs nmn` — **REJECTED, see the drift note above.** No urolithin SKU on the store.
+- `shilajit for sleep` — shilajit cluster is at 18+ articles; do not force it.
+- `nmn vs nad` — cannibalisation risk against #29 `nmn-vs-nr`, unchanged. NMN cluster is now at 5.
+- `menopause supplement` — a **ranking** gap, not an inventory gap (~15 legacy MenoMate articles).
+- **New this run, not yet probed:** `probiotics while on antibiotics` and `yeast infection vs bv`
+  are the two obvious neighbours of #34 and the FloraFresh cluster is only at 4 articles — the
+  least-saturated brand cluster on the store. Probe those first next run.
+
+**Still unfixed, ELEVENTH run in a row:** `validate_article.py` prints
+`⚠ QRG quality scoring skipped (claude-seo runtime not installed)`, so the overall-quality / filler /
+ai-pattern hard-fails do not execute on this Mac. #34 shipped on a structural PASS plus a
+hand-checked 26-phrase banned list (0 hits). Installing the claude-seo runtime remains the
+highest-value fix left in this pipeline — it is the one gate that is silently absent rather than
+failing loudly.
+
+**Housekeeping snag, carried from 2026-08-27 and still true:** `build_catalog_tickets.py` with no arg
+refuses to run — `refusing to overwrite existing catalog-brand-tickets.md`. That stale 0-ticket
+artifact is still in the repo root. It was NOT deleted this run (§4 forbids `rm`); move it to
+`_superseded/` or call the generator with an out-path.
