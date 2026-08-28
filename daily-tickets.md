@@ -1517,3 +1517,44 @@ failing loudly.
 refuses to run — `refusing to overwrite existing catalog-brand-tickets.md`. That stale 0-ticket
 artifact is still in the repo root. It was NOT deleted this run (§4 forbids `rm`); move it to
 `_superseded/` or call the generator with an out-path.
+
+## Refill needed
+
+**2026-08-28 (second run today) — queue still EMPTY (0 `[ ]` headings).** No article was written.
+Per DAILY-RUN §2 the next batch must be mined, but GSC is unauthorised
+(`scripts/credentials.json` missing) and **no google-ads tool is exposed to this headless run**, so
+`skills/genseo-auto-publish/references/ads-article-mining.md` cannot execute from here.
+**Kevin: run that recipe in the app** and append the next batch below as `# BATCH <date>`.
+
+Live index re-pulled this run (`fetch_all_articles.py`): **68 articles**, #34 confirmed present.
+Cluster sizes now: shilajit 23 · menopause 9 (legacy MenoMate) · probiotics 5 · creatine 5 · NMN 5 ·
+turkesterone 4 · urolithin 2.
+
+Probed live against the fresh index this run — all **0 title/handle matches**, all still open:
+
+- `probiotics while on antibiotics` — 0. Neighbour of #34, and the FloraFresh cluster is 5 articles
+  against shilajit's 23, so it is still the least-saturated brand cluster on the store. **Best
+  candidate for the next run.**
+- `yeast infection vs bv` — 0. Differential-diagnosis intent; nothing on the store touches "yeast".
+  Watch the medical-claim surface: this one needs the roster's strongest reviewer, not any author.
+- `how long does creatine take to work` — 0. Deferred twice for adjacency to #33
+  (`best time to take creatine`, shipped 2026-08-27); that page is now 1 day old, so the argument to
+  keep deferring is weaker than last run but not yet gone. Ship it after the two probiotic angles.
+- `turkesterone dosage` — treat as TAKEN. `topic_fitness.py` still returns `REVIEW [covered-segment]`
+  claiming no title covers dosing; the live `Turkesterone Benefits & Dosing: What's Real? (US 2026)`
+  does. Unchanged from last run.
+- `urolithin a vs nmn` — still REJECTED. No urolithin SKU on the store.
+- `shilajit for sleep` — cluster at 23. Do not force it.
+- `nmn vs nad` — cannibalisation risk against #29 `nmn-vs-nr`. Unchanged.
+- `menopause supplement` — a ranking gap, not an inventory gap (9 legacy MenoMate articles).
+
+**Still unfixed, TWELFTH run in a row:** `validate_article.py` prints
+`⚠ QRG quality scoring skipped (claude-seo runtime not installed)`, so the overall-quality / filler /
+ai-pattern hard-fails never execute on this Mac. Every recent article shipped on a structural PASS
+plus a hand-checked banned-phrase list. Installing the claude-seo runtime is still the
+highest-value fix left in this pipeline — the one gate that is silently absent rather than failing loudly.
+
+**Housekeeping snag, carried from 2026-08-27, still true:** `build_catalog_tickets.py` with no arg
+refuses to run — `refusing to overwrite existing catalog-brand-tickets.md`. That stale 0-ticket
+artifact is still in the repo root; §4 forbids `rm`, so move it to `_superseded/` or call the
+generator with an out-path.
