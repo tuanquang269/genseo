@@ -1558,3 +1558,31 @@ highest-value fix left in this pipeline — the one gate that is silently absent
 refuses to run — `refusing to overwrite existing catalog-brand-tickets.md`. That stale 0-ticket
 artifact is still in the repo root; §4 forbids `rm`, so move it to `_superseded/` or call the
 generator with an out-path.
+
+## Refill needed
+
+**2026-08-28 (third run today) — queue still EMPTY (0 `[ ]` headings).** No article was written; per
+the run rules an empty queue means do not invent one. Mining still cannot execute from here: GSC is
+unauthorised (`scripts/credentials.json` absent — re-checked this run) and **no google-ads tool is
+exposed to this headless run** (tool search for a Google Ads / keyword-planner capability returns
+only web-search tools), so `skills/genseo-auto-publish/references/ads-article-mining.md` is
+unreachable. **Kevin: run that recipe in the app** and append the next batch below as `# BATCH <date>`.
+
+No live re-probe this run — the second run today already re-pulled the index (68 articles) and probed
+the full candidate list a few hours ago; a third pull the same day would only burn quota. The ranked
+shortlist from that run stands unchanged and is ready to become tickets the moment a batch lands:
+
+1. `probiotics while on antibiotics` — FloraFresh cluster is 5 vs shilajit's 23, least saturated.
+2. `yeast infection vs bv` — differential-diagnosis intent, nothing on the store touches "yeast";
+   needs the roster's strongest medical reviewer.
+3. `how long does creatine take to work` — deferred three times for adjacency to #33 (2026-08-27);
+   that page is now 1 day old, so the deferral argument is nearly spent.
+
+Rejected/taken, unchanged: `turkesterone dosage` (taken — `topic_fitness.py` is wrong about it),
+`urolithin a vs nmn` (no urolithin SKU), `shilajit for sleep` (cluster at 23), `nmn vs nad`
+(cannibalises #29), `menopause supplement` (ranking gap, not inventory gap).
+
+**Still unfixed, THIRTEENTH run in a row:** `validate_article.py` prints
+`⚠ QRG quality scoring skipped (claude-seo runtime not installed)`, so the overall-quality / filler /
+ai-pattern hard-fails never execute on this Mac. Installing the claude-seo runtime is still the
+highest-value fix left in this pipeline — the one gate that is silently absent rather than failing loudly.
