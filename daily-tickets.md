@@ -1686,3 +1686,25 @@ with real search-term evidence. Until then the ranked shortlist above stands unc
 best available starting point: (1) `yeast infection vs bv`, (2) `probiotics while on antibiotics`
 — safe to ship now that #35 is a non-probiotics article standing between it and #34, (3) a distinct
 segment angle for `pure-shilajit-gold-resin` / `shilajit-shockwave`.
+
+**2026-08-29 (third run of the day) — queue still EMPTY, nothing published, by design.** No `[ ]`
+heading exists anywhere in this file (`grep "^##.*\[ \]"` returns only the historical, already-
+RESOLVED `###` note at line 1005); every other remaining `[ ]` string is prose. Today's article is
+still live and healthy: Ticket #35 (`how-long-does-creatine-take-to-work-week-by-week-us-2026`,
+article id 621929496891) re-checked this run and returned HTTP 200 with a browser UA. This run's
+instructions say to log a refill request instead of mining when the queue is empty, so no article
+was written and no persona angle was spent.
+
+### Kevin — please run the mining recipe in the app
+
+The google-ads MCP is still not exposed to this headless session (no ads tool is registered at all)
+and GSC remains unauthorised, so `references/ads-article-mining.md` cannot run here. Please run it in
+the app so the queue refills with real search-term evidence. The ranked shortlist above is unchanged
+and remains the best available starting point: (1) `yeast infection vs bv`, (2) `probiotics while on
+antibiotics`, (3) a distinct segment angle for `pure-shilajit-gold-resin` / `shilajit-shockwave`.
+
+Two carried blockers, unchanged and still worth Kevin's hands: the claude-seo runtime is not
+installed, so `validate_article.py` silently skips the QRG quality/filler/AI-pattern hard-fails
+(fifteenth run in a row); and the stale 0-ticket `catalog-brand-tickets.md` in the repo root still
+blocks `build_catalog_tickets.py` — it needs a move to `_superseded/`, which §4 puts outside the
+daily loop.
