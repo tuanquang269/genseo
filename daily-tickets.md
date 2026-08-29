@@ -1586,3 +1586,103 @@ Rejected/taken, unchanged: `turkesterone dosage` (taken — `topic_fitness.py` i
 `⚠ QRG quality scoring skipped (claude-seo runtime not installed)`, so the overall-quality / filler /
 ai-pattern hard-fails never execute on this Mac. Installing the claude-seo runtime is still the
 highest-value fix left in this pipeline — the one gate that is silently absent rather than failing loudly.
+
+# BATCH 2026-08-29 — mined by the unattended run (queue empty; no GSC, no google-ads MCP)
+
+Queue was EMPTY at the start of this run (0 `[ ]` headings). Per DAILY-RUN §1.1.2 an empty queue is
+the job, not a blocker, so this run mined a ticket from the live catalog + live blog inventory and
+executed it.
+
+**Live STEP 0 probes this run** (`curl -sg` + browser UA + `json.loads(strict=False)`), 9 probes:
+`probiotics while on antibiotics` 0 · `probiotics with antibiotics` 0 · `antibiotics` 0 ·
+`yeast infection` 0 · `yeast infection vs bv` 0 · `how long does creatine take to work` 0 ·
+`creatine how long` 0 · `creatine loading` 0. Positive control `probiotics` returned 5 live
+articles, so the endpoint was answering truthfully.
+
+**Why creatine and not the probiotics candidates the last three runs ranked first.** The carried
+shortlist put `probiotics while on antibiotics` at #1 on cluster-saturation grounds (FloraFresh 5 vs
+shilajit 23). That ranking was made before #34 shipped. #34 (`Probiotics for BV`, 2026-08-28) is one
+day old and BV's standard of care *is* antibiotics, so a `probiotics while on antibiotics` page would
+have been the most cannibalising thing on the store, not the least. `how long does creatine take to
+work` had been deferred three times for adjacency to #33 (`best time to take creatine`, 2026-08-27);
+those are different intents — time-of-day vs time-to-effect — and no live creatine article covers
+onset at all (live cluster: dosage · side effects · women over 40 · gummies vs powder · best time).
+Deferral spent. The two probiotics angles stay open for a later run.
+
+## [DONE 2026-08-29 https://wellnessnest.co/blogs/news/how-long-does-creatine-take-to-work-week-by-week-us-2026] Ticket #35 — NEW ARTICLE (type: STORY)
+
+- **Primary keyword:** how long does creatine take to work
+- **Title:** How Long Does Creatine Take to Work? Week by Week (US 2026)
+- **Brand / SKU:** FusiForce Creatine Monohydrate Gummies ($69.99) — `fusiforce-creatine-gummies`
+- **Template:** STORY. #34 was COMPARISON, #33 EDITORIAL, #32 LISTICLE; STORY has not run in the
+  last 5 articles, and a week-by-week timeline is a genuine journey/lived-problem intent.
+- **Collections (verified live this run):** `best-seller` and `mens-essential-collection` both
+  contain the SKU. `womens-essentials-collection` does **not** — link it only for the other lines,
+  never as if it carried creatine.
+- **Angle:** the gap between "working" and "noticeable" — water in week 1, saturation by day 28,
+  strength only from week 4–12, and the measured non-responder minority.
+- **Compliance:** do NOT restate the PDP's COA / Eurofins / ISO 17025 / "137,000 customers" /
+  star-rating claims (house rule `no-coa-competitive-advantage`). Do NOT state the gummy count or
+  the ginseng mg — both carry the packaging discrepancies flagged in DAILY-RUN §6.
+
+## Refill needed — next run
+
+**Queue is EMPTY again** (0 `[ ]` headings) after #35 closed. Per DAILY-RUN §1.1.2 the next run mines
+rather than skips. GSC is still unauthorised and no google-ads tool is exposed to a headless run, so
+`references/ads-article-mining.md` stays unreachable; mine from live catalog + live blog inventory.
+
+Ranked shortlist, all probed live 2026-08-29 at 0 article matches:
+
+1. `yeast infection vs bv` — differential-diagnosis intent, nothing on the store touches "yeast".
+   Now the strongest FloraFresh angle because it is a *diagnosis* question, not a second "do probiotics
+   work for X" page. Watch the medical-claim surface hard.
+2. `probiotics while on antibiotics` — held back this run on purpose. #34 (`Probiotics for BV`,
+   2026-08-28) is the standard-of-care-is-antibiotics page, so this one was the most cannibalising
+   candidate on the store, not the least. It gets safer the further #34 recedes; ship it after one
+   non-probiotics article, not before.
+3. A shilajit angle for the two uncovered SKUs — `pure-shilajit-gold-resin` ($75) and
+   `shilajit-shockwave` ($79.99), still the only stocked products with no distinct segment page. The
+   shilajit cluster is at 23, so this needs a genuinely distinct segment angle or `seg_taken` will
+   veto it.
+
+Rejected/taken, unchanged: `turkesterone dosage` (taken — `topic_fitness.py` is wrong about it),
+`urolithin a vs nmn` (no urolithin SKU on the live catalog — 22 products, re-confirmed 2026-08-29),
+`nmn vs nad` (cannibalises #29), `menopause supplement` (ranking gap, not an inventory gap).
+Creatine onset is now CLOSED by #35.
+
+**New rule earned this run, worth carrying:** any DOI containing `(`, `)`, `<` or `>` must be swapped
+for the journal's alternate DOI before it goes into a markdown link. The Crossref-canonical DOI for
+Rawson & Volek 2003 is `10.1519/1533-4287(2003)017<0822:EOCSAR>2.0.CO;2`; dropped into `[text](url)`
+it terminates the link at the first `)` and injects a bogus tag. Alternate `10.1519/00124278-200311000-00031`
+is the same paper and URL-safe. Nothing in the pipeline checks for this.
+
+**Second rule earned this run:** `article_images.py` tolerates 2 concurrent ima2 gens, not 3 — the
+third returned `OAuth proxy returned 500`. That is a TRANSPORT failure and must not be charged against
+the 2-QC-re-roll budget; re-run it serially instead.
+
+**Still unfixed, FOURTEENTH run in a row:** `validate_article.py` prints
+`⚠ QRG quality scoring skipped (claude-seo runtime not installed)`, so the overall-quality / filler /
+ai-pattern hard-fails never execute on this Mac. Installing the claude-seo runtime is still the
+highest-value fix left in this pipeline — the one gate that is silently absent rather than failing loudly.
+
+**Housekeeping, carried since 2026-08-27, deliberately NOT actioned:** the stale 0-ticket
+`catalog-brand-tickets.md` in the repo root still makes `build_catalog_tickets.py` refuse to run
+("refusing to overwrite existing catalog-brand-tickets.md"). §4 forbids `rm`; the fix is a move to
+`_superseded/` or an explicit out-path. Left for Kevin — moving repo files is outside the §1 daily loop.
+
+**2026-08-29 (second run of the day) — queue still EMPTY, nothing published, by design.** No `[ ]`
+heading exists anywhere in this file (`grep "^## \[ \]"` returns nothing); every remaining `[ ]`
+string is prose. Today's article is already shipped and verified live: Ticket #35
+(`how-long-does-creatine-take-to-work-week-by-week-us-2026`, article id 621929496891) returned HTTP
+200 with a browser UA on re-check this run, its tracker row is present, and the persona reservation
+for it is already closed (`personas/index.json` at seq 45). This run's instructions say to log a
+refill request instead of mining when the queue is empty, so no second article was written.
+
+### Kevin — please run the mining recipe in the app
+
+The google-ads MCP is not exposed to this headless session and GSC is still unauthorised, so
+`references/ads-article-mining.md` cannot run here. Please run it in the app so the queue refills
+with real search-term evidence. Until then the ranked shortlist above stands unchanged and is the
+best available starting point: (1) `yeast infection vs bv`, (2) `probiotics while on antibiotics`
+— safe to ship now that #35 is a non-probiotics article standing between it and #34, (3) a distinct
+segment angle for `pure-shilajit-gold-resin` / `shilajit-shockwave`.
