@@ -1708,3 +1708,164 @@ installed, so `validate_article.py` silently skips the QRG quality/filler/AI-pat
 (fifteenth run in a row); and the stale 0-ticket `catalog-brand-tickets.md` in the repo root still
 blocks `build_catalog_tickets.py` — it needs a move to `_superseded/`, which §4 puts outside the
 daily loop.
+
+
+# BATCH 2026-08-30 — mined by the unattended run (queue empty; no GSC, no google-ads MCP)
+
+Queue was EMPTY at the start of this run (0 `[ ]` headings). Per DAILY-RUN §1.1.2 an empty queue is
+the job, not a blocker, so this run mined from the live catalog (22 SKUs) + live blog inventory.
+
+**Live STEP 0 probes this run** (`curl -sg` + browser UA + `json.loads(strict=False)`), 28 probes.
+Positive control `probiotics` returned 5 live articles, so the endpoint was answering truthfully.
+0 article matches: `yeast infection vs bv` · `yeast infection` · `probiotics and yeast` ·
+`probiotics while on antibiotics` · `probiotics with antibiotics` · `antibiotics` ·
+`is turkesterone a steroid` · `turkesterone natty` · `turkesterone steroid` · `turkesterone for women` ·
+`how long does turkesterone take to work` · `turkesterone results` · `creatine hair loss` ·
+`does creatine cause hair loss` · `hair loss` · `dht` · `creatine kidneys` · `creatine safe` ·
+`shilajit testosterone` · `shilajit and testosterone` · `nmn and exercise` · `shilajit for athletes` ·
+`shilajit resin vs gold resin`.
+
+**DAILY-RUN §2 IS STALE — corrected here.** §2 lists `pure-shilajit-gold-resin` and
+`shilajit-shockwave` as "still uncovered, needs a distinct segment angle". Both are LIVE:
+`shilajit gold resin` → *Shilajit Gold Resin Review: Is $75 Worth It? (US 2026)*, `shilajit shockwave`
+→ *Shilajit Shockwave Review: 1 Drop or 1 mL? (US 2026)*. Shortlist item 3 from the 2026-08-29 run is
+therefore CLOSED. Every stocked SKU now has a page.
+
+**Two candidates killed by reading the live pages, not by suggest.json.** `suggest.json` matches
+shallowly and returned 0 for both, so both looked greenfield:
+- `is turkesterone a steroid` / `turkesterone natty` — already owned by #4
+  (*Turkesterone Benefits & Dosing*), which contains "steroid" ×17, "natty" ×6, "anabolic" ×6,
+  "WADA" ×3 and answers the natty question in its own intro. A dedicated page cannibalises it.
+- `does creatine cause hair loss` — already named in the answer block of
+  *Creatine Gummies Side Effects: 4 Real, 3 Myths* ("Kidney damage, hair loss and dehydration are the
+  three that US buyers ask about most"). It is a sub-angle of a live page, not a gap.
+**Rule earned: a 0 from `suggest.json` is necessary but NOT sufficient. Before writing, fetch the
+cluster's existing pages and grep the candidate's key terms in the rendered body.** Both of these
+would have shipped as cannibalising duplicates on suggest.json evidence alone.
+
+**Why `yeast infection vs bv` and not `probiotics while on antibiotics`** — this REVERSES the
+2026-08-29 shortlist's stated unblock condition. That run held the antibiotics angle back and said it
+"gets safer the further #34 recedes; ship it after one non-probiotics article". #35 satisfied that
+condition literally, but the condition was wrong: the overlap with #34 is **semantic, not temporal**.
+#34 (*Probiotics for BV*, 4,288 words) contains "antibiotic" ×20, "metronidazole" ×5, a whole H2
+"Contender 1: Antibiotics, the Only Actual Treatment", and frames probiotics as "an add-on after
+antibiotics". A creatine article shipping in between changes none of that. By contrast #34 contains
+"yeast" exactly ONCE — a passing line in its when-to-call-a-clinician list — and "candida" zero times.
+The yeast angle is the genuinely uncovered one. `probiotics while on antibiotics` is now recommended
+for RETIREMENT as a standalone page, not deferral.
+
+## [DONE 2026-08-30 https://wellnessnest.co/blogs/news/yeast-infection-vs-bv-how-to-tell-them-apart-us-2026] Ticket #36 — NEW ARTICLE (type: COMPARISON)
+
+- **Primary keyword:** yeast infection vs bv
+- **Title:** Yeast Infection vs BV: How to Tell Them Apart (US 2026)
+- **Brand / SKU:** FloraFresh vaginal probiotics — `florafresh-vaginal-probiotics-gummies` ($40.99),
+  `florafresh-single-bottle` ($24.50), `florafresh-3-month-reserve` ($57.00)
+- **Template:** COMPARISON. Registry maps "X vs Y" intent → COMPARISON. Previous article #35 was
+  STORY, so the variety guard is satisfied.
+- **Cluster rationale:** FloraFresh is the second-thinnest cluster with a stocked SKU (5 live pages
+  vs shilajit 24, menopause 15). Urolithin is thinner (2) but has NO SKU on the live 22-product
+  catalog, so it cannot end at a product.
+- **Angle:** the differentiation itself — discharge character, odour, itch, and pH are what separate
+  the two, and they are treated with opposite drug classes. This is a "which one do I have, and what
+  do I do next" page. #34 owns BV *treatment efficacy*; this page owns *identification*. Send the
+  reader to a clinician for diagnosis, and place probiotics honestly where the evidence puts them —
+  post-treatment recurrence support, not a cure and not a treatment for either condition.
+- **Compliance (YMYL, hard):** no diagnosis, no cure claims, no "treats", no "eliminates". State
+  plainly that self-diagnosis is unreliable and that both conditions need a clinician. Do NOT restate
+  FloraFresh PDP claims flagged in DAILY-RUN §6 — no "treats the root cause", no "stays & colonizes",
+  no "top OB/GYN recommended", no "100% natural", no social-proof counts, no COA/clinically-tested
+  language (`no-coa-competitive-advantage`). No mg serving figures.
+
+### ✅ RESOLVED 2026-08-30 (later run) — the blocked-run note below is HISTORY. Ticket #36 SHIPPED.
+
+Live at https://wellnessnest.co/blogs/news/yeast-infection-vs-bv-how-to-tell-them-apart-us-2026
+(article id `621932282171`, `published_at` non-null, frontend 200 with a browser UA). Both post-publish
+gates passed; `verify_published.py` passed on the first try so no `repair_schema.py` was needed.
+
+What the resuming run did, and the two things worth reusing:
+- Took a **fresh pick, seq 47** (`warnings[]` empty) exactly as the note below recommended, and
+  regenerated BOTH the hero and the persona inline image under it so `commit` matched what shipped.
+  `inline-1-notebook` and `inline-2-bathroom-shelf` were reused unchanged (no-face, no angle spent).
+  Seq 46 stays burned and unreleased — 2 of f3039-as-01's 21 angles are gone with no article on them.
+- **The mirror-of-ref class below is real, and it is broader than the exact mirror.** f3039-as-02's
+  ref also faces frame-LEFT; the inline `profile-left` came back "head turned wrong direction" on roll 1.
+  The fix was to stop *asserting* the direction and **motivate it with scene geometry** (window and exit
+  door off the RIGHT edge, photographer on her LEFT), state the silhouette as testable checks (which ear,
+  which side of the silhouette, where nose/chin/back-of-head point), and add "IGNORE the reference photo's
+  head direction entirely". Passed next roll.
+- **A front angle needs every competing directional cue REMOVED, including the lighting.** The hero's
+  roll 2 failed "head turned right, not squared" — caused by my own prompt writing the light as "a frosted
+  window off to the right". The model turned her head into the light. Roll 3 used frontal bounced light, a
+  symmetric doorframe on both sides, the pack centred in front of her, and bilateral-symmetry checks. PASS.
+  (Roll 1 had failed "chin dipped not raised": the `down-at-product` gaze drags the whole head down unless
+  pitch and gaze are separated in words — "chin UP, head tilted BACK, only the EYEBALLS move down".)
+- One hero attempt returned "No image data returned from the image backend" — no image, so no QC verdict.
+  A roll the judge never saw is **not** a QC re-roll; it was retried, not counted, and that is what left
+  budget for the roll that passed.
+
+**Kevin — the picker fix suggested below is still unactioned and still recommended:** record each persona's
+ref-pose yaw in `persona.json` and have `persona_picker.py` refuse to issue the mirror of it, the way it
+already refuses a spent angle. Two personas in a row have now burned rolls on this.
+
+<details><summary>Original blocked-run note (2026-08-30 earlier run) — kept for the record</summary>
+
+### Ticket #36 STATUS 2026-08-30 — BLOCKED AT THE HERO IMAGE, NOT PUBLISHED. Left `[ ]` on purpose.
+
+The heading stays `[ ]` so the NEXT run continues this ticket instead of mining a new one. The queue is
+therefore NOT empty tomorrow. Everything except the hero is finished and banked.
+
+**Done and reusable:**
+- Draft written and saved: `published_drafts/yeast-infection-vs-bv-how-to-tell-them-apart-us-2026.md`
+  (1,888 content words, h2:11, 1 comparison table, 6 FAQs, 2 collection links, byline intact).
+- `validate_article.py --draft` now fails on **exactly one** item: `only 3 body image tag(s) — need >=4`.
+  Every other structural check passes. Drop in a hero as the FIRST image tag and it should go green.
+- 3 of 4 images generated and **QC PASS on the first roll**, already referenced in the draft:
+  `inline-1-notebook` (no-face), `inline-2-bathroom-shelf` (no-face, product), `inline-3-kitchen-persona`
+  (persona f3039-as-01, angle `profile-left+chin-down`). All three eyeballed against
+  `product_refs/florafresh-vaginal-probiotics-gummies.png`: pouch format, vertical wordmark, FloraFresh
+  badge, closed 'Pineapple flavor' outline border and AMBER gummy colour all correct.
+- 9 citations verified at Crossref (DOI + author surnames). `Sobel, 2007` is SINGLE-AUTHOR — never write
+  "Sobel et al.". Amsel 1983 has 6 real authors despite Crossref returning an empty author array.
+
+**The blocker: the hero mirrors, and the re-roll budget is spent.**
+Picker seq 46 issued hero `f3039-as-01` @ `3q-left+chin-up` (nose must point at the frame-RIGHT edge).
+Three generations, all with the picker's `hero_face_angle_phrase` verbatim including the `frame_hint`:
+1. roll 1 — QC **PASS**, but the head was mirrored (nose at the frame-LEFT edge). Caught by eye, not by QC.
+2. roll 2 — QC **FAIL** "head turned toward wrong edge (mirrored)".
+3. roll 3 — QC **FAIL** "wrong head angle, nose points left instead of right".
+Budget of 2 re-rolls is spent, so the run STOPPED per DAILY-RUN section 3 and did not roll a fourth time.
+Both failed rolls preserved (never deleted) at `_superseded/img-qc-fails/`.
+
+**Root cause, and it is new.** `personas/f3039-as-01/ref.jpg` is ITSELF a three-quarter view with the
+subject's nose pointing at the frame-LEFT edge. The requested `3q-left` is the near-exact MIRROR of the
+reference's own pose, so identity-locking drags the head back to the ref every time. Roll 1 also
+reproduced the ref's teal velvet top verbatim, which confirms the ref is driving pose and wardrobe, not
+just identity. The same persona's `profile-left+chin-down` inline image rendered CORRECTLY on the first
+roll — 80 degrees is far enough from the ref pose to force a genuine re-pose. This is a THIRD failure
+class, distinct from the label-element class (#33) and the scene-geometry class (#31/#33):
+**an angle that is the mirror of the persona ref's own pose is effectively unrenderable for that persona,
+and `frame_hint` does not fix it.** The 2026-08-13 fix assumed the flip was a left/right vocabulary
+problem; for a mirror-of-ref angle it is not.
+
+**Persona reservation seq 46 was deliberately NOT released.** `release` + re-pick is documented as
+deterministic on seq (DAILY-RUN section 3), so releasing would re-issue the identical failing assignment
+tomorrow and loop forever. Holding the reservation costs 2 angles out of 1,905 — which DAILY-RUN itself
+calls "nothing" — and makes the next `pick` advance to seq 47 with a different persona.
+
+**Recommended next run:** take a FRESH pick (seq 47). Regenerate the hero AND the persona inline image
+under that new pick so `commit` matches what actually ships exactly; keep `inline-1-notebook` and
+`inline-2-bathroom-shelf` as they are (both no-face, no angle spent). Then gate and publish.
+
+**For Kevin — the real fix.** `taxonomy.json` has a per-angle `renderable` flag, but this failure is
+per-PERSONA: it depends on which way that persona's own ref.jpg faces. Suggested fix is to record each
+persona's ref-pose yaw in `persona.json` and have `persona_picker.py` refuse to issue the mirror of it,
+the same way it already refuses a spent angle. Not actioned here — changing the picker's issuing logic
+is outside the section 1 daily loop.
+
+**Second finding, already worked around in the draft.** `validate_article.py:206` wraps "the first line
+not starting with `<`" as the answer block in `--draft` mode. A MULTI-LINE HTML comment whose
+continuation lines are indented therefore turns those lines into a false answer block, and the article
+fails `answer block missing US-market anchor` even when the real opening paragraph is correct. Keep
+block comments in a draft on ONE line.
+
+</details>
