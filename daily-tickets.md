@@ -1869,3 +1869,45 @@ fails `answer block missing US-market anchor` even when the real opening paragra
 block comments in a draft on ONE line.
 
 </details>
+
+
+## Refill needed
+
+**2026-08-30 (later run) — queue EMPTY, nothing published, by design.** No `[ ]` heading exists
+anywhere in this file. `grep "^##.*\[ \]"` returns zero rows; the only two `[ ]` strings left are
+historical `###` blocked-run notes (line 1005 and the `<details>` block above), and BOTH are marked
+RESOLVED — #31 and #36 both shipped. Ticket #36 re-checked this run:
+`yeast-infection-vs-bv-how-to-tell-them-apart-us-2026` (article id `621932282171`) returns HTTP 200
+with a browser UA. This run's instructions say to log a refill request instead of mining when the
+queue is empty, so no article was written and **no persona angle was spent**.
+
+### Kevin — please run the mining recipe in the app
+
+The google-ads MCP is still not registered in this headless session (the only MCP tools present are
+web search/fetch; Shopify and claude.ai are unauthenticated) and GSC remains unauthorised, so
+`references/ads-article-mining.md` cannot run here. Please run it in the app so the queue refills
+with real search-term evidence.
+
+**The hand-mined shortlist is now genuinely exhausted — this is new.** All three items the
+2026-08-29 runs carried forward are closed:
+1. `yeast infection vs bv` — SHIPPED as #36 on 2026-08-30.
+2. `probiotics while on antibiotics` — the 2026-08-30 mining pass RETIRED it as a standalone page.
+   #34 (*Probiotics for BV*) contains "antibiotic" ×20, "metronidazole" ×5 and a whole H2 on
+   antibiotics; the overlap is semantic, not temporal, so waiting does not unblock it.
+3. `pure-shilajit-gold-resin` / `shilajit-shockwave` — both already LIVE; DAILY-RUN §2 is stale on
+   this point and was corrected in the 2026-08-30 batch note above.
+
+Every stocked SKU on the live 22-product catalog now has a page. There is no keyword left that can
+be justified from the catalog alone, which is exactly why real search-term data is now the binding
+constraint on this queue — not a nice-to-have. Also apply the rule earned on 2026-08-30 when mining:
+a 0 from `suggest.json` is necessary but NOT sufficient; fetch the cluster's existing pages and grep
+the candidate's key terms in the rendered body before writing a ticket.
+
+Three carried blockers for Kevin's hands, unchanged:
+- The claude-seo runtime is not installed, so `validate_article.py` silently skips the QRG
+  quality/filler/AI-pattern hard-fails (sixteenth run in a row).
+- The stale 0-ticket `catalog-brand-tickets.md` in the repo root still blocks
+  `build_catalog_tickets.py`; it needs a move to `_superseded/`, which §4 puts outside the daily loop.
+- `persona_picker.py` still issues angles that mirror a persona's own `ref.jpg` pose. Two personas
+  in a row (f3039-as-01 seq 46, f3039-as-02) have burned image rolls on it. Suggested fix stands:
+  record the ref-pose yaw in `persona.json` and refuse its mirror the way a spent angle is refused.
