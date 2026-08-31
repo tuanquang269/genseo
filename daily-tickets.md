@@ -1911,3 +1911,86 @@ Three carried blockers for Kevin's hands, unchanged:
 - `persona_picker.py` still issues angles that mirror a persona's own `ref.jpg` pose. Two personas
   in a row (f3039-as-01 seq 46, f3039-as-02) have burned image rolls on it. Suggested fix stands:
   record the ref-pose yaw in `persona.json` and refuse its mirror the way a spent angle is refused.
+
+
+# BATCH 2026-08-31
+
+**Mined this run (queue was empty — 0 `[ ]` headings). Evidence: hand-mined from the live
+catalog + live cluster pages, per DAILY-RUN section 2. GSC unauthorised and google-ads MCP not
+exposed headless, so no search-term data was available.**
+
+STEP 0 probes run this morning against `search/suggest.json` (curl -sg + browser UA), 8 candidates,
+all returned 0 articles: `urolithin a side effects` · `creatine loading phase` · `shilajit at night` ·
+`urolithin a vs nmn` · `turkesterone for women` · `shilajit and testosterone` · `creatine and kidneys` ·
+`nmn and blood pressure`.
+
+Applying the rule earned 2026-08-30 (a 0 from suggest.json is necessary but NOT sufficient), the
+Urolithin A cluster's two live pages were fetched and grepped:
+- `urolithin-a-dosage-how-many-mg-per-day-us-2026` — "side effect" x0, no safety/tolerability H2.
+- `urolithin-a-benefits-the-40-problem-us-buyers-miss` — "side effect" x1, no safety H2, but it DOES
+  own an H2 "Urolithin A vs NMN", so the `urolithin a vs nmn` candidate is KILLED as semantically covered.
+
+Result: `urolithin a side effects` is the genuinely uncovered leg. The cluster has dosage + benefits;
+every other brand on this store already has its side-effects page (shilajit #15, turkesterone #31,
+NMN #32, creatine gummies #27, vaginal probiotics #30). Urolithin A is the only one missing it.
+
+## [DONE 2026-08-31 https://wellnessnest.co/blogs/news/urolithin-a-side-effects-what-3-trials-report-us-2026] Ticket #37 — NEW ARTICLE (type: LISTICLE)
+
+- **Primary keyword:** urolithin a side effects
+- **Working title:** Urolithin A Side Effects: What the Trials Report (US 2026)
+- **STEP 0.5 topic_fitness:** `REVIEW [covered-segment]` — proceed under Kevin's standing greenlight
+  for this queue (2026-08-13, "I approve all of them, I need published articles without any delay").
+- **Template:** LISTICLE. #36 was COMPARISON, so the variety guard holds; "X side effects" is the
+  LISTICLE intent row in `references/article-templates.md`.
+- **SKU it ends at:** `ageaura-pure-urolithin-a` ($199.99, 30 vegan capsules, 500 mg/serving) — the
+  only Urolithin A SKU on the store. Curated ref exists.
+- **Collections (both verified HTTP 200):** `/collections/ageaura` · `/collections/best-seller`
+- **Internal links:** the two cluster pages above (link them, do not restate them).
+- **Author:** Dr. Marcus Hale (roster.json, sole source).
+- **Persona:** picker seq 48 returned `hero: NO-FACE` (scheduled no-face cycle) — 0 face angles at
+  risk this run, which also routes around the mirror-of-ref failure that blocked 2026-08-30.
+
+### Ticket #37 — post-publish record (written by the later run of 2026-08-31)
+
+The run that wrote #37 shipped the article but exited before it recorded the IDs or committed. Both
+post-publish gates were re-run this run and both PASS:
+- `verify_published.py 621934805307 104008483131` → `✓ Live article verified — schema, author, table
+  all present` (FAQPage True · ld+json True · table True · author `Dr. Marcus Hale`).
+- Frontend `urolithin-a-side-effects-what-3-trials-report-us-2026` returns HTTP 200 with a browser
+  UA; `published_at` is non-null (`2026-08-30T17:40:59-07:00`).
+- Persona `commit` also landed before the exit: `personas/index.json` is at seq 48 with `NO-FACE`
+  appended to `recent_heroes` and `no_face_cycle.position` rolled to 0. No angle needs releasing.
+
+Nothing was left half-done — only the `git commit` was missing, and this run makes it.
+
+## Refill needed
+
+**2026-08-31 (later run) — queue EMPTY, nothing published, by design.** `grep "^## \[ \]"` returns
+zero rows. Today's article is ALREADY SHIPPED (#37 above), so per rule 6 this run wrote no article,
+mined no ticket, and **spent no persona angle**.
+
+### Kevin — please run the mining recipe in the app
+
+The google-ads MCP is still not registered in this headless session (no google-ads tool is exposed;
+Shopify and claude.ai are present but unauthenticated) and GSC remains unauthorised, so
+`references/ads-article-mining.md` cannot run here. Please run it in the app so the queue refills
+with real search-term evidence.
+
+**The hand-mined shortlist stays exhausted.** The 2026-08-31 mining pass burned its own best
+candidate (`urolithin a side effects` → #37) and, in the same pass, KILLED `urolithin a vs nmn` as
+semantically covered by the existing benefits page. Of the eight probes it ran, the six left over
+are all still unverified against their clusters: `creatine loading phase` · `shilajit at night` ·
+`turkesterone for women` · `shilajit and testosterone` · `creatine and kidneys` ·
+`nmn and blood pressure`. A 0 from `suggest.json` is necessary but NOT sufficient — grep the
+cluster's rendered pages before any of those becomes a ticket. Every stocked SKU on the live
+22-product catalog has a page, so real search-term data is the binding constraint, not a nice-to-have.
+
+Three carried blockers for Kevin's hands, all re-checked this run and all unchanged:
+- The claude-seo runtime is not installed (`ModuleNotFoundError: No module named 'claude_seo'`), so
+  `validate_article.py` silently skips the QRG quality/filler/AI-pattern hard-fails (seventeenth run
+  in a row).
+- The stale 0-ticket `catalog-brand-tickets.md` in the repo root still blocks
+  `build_catalog_tickets.py`; it needs a move to `_superseded/`, which §4 puts outside the daily loop.
+- `persona_picker.py` still issues angles that mirror a persona's own `ref.jpg` pose. #37 dodged this
+  only because it drew a NO-FACE hero, so the bug is untested-again, not fixed. Suggested fix stands:
+  record the ref-pose yaw in `persona.json` and refuse its mirror the way a spent angle is refused.
