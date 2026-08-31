@@ -1994,3 +1994,37 @@ Three carried blockers for Kevin's hands, all re-checked this run and all unchan
 - `persona_picker.py` still issues angles that mirror a persona's own `ref.jpg` pose. #37 dodged this
   only because it drew a NO-FACE hero, so the bug is untested-again, not fixed. Suggested fix stands:
   record the ref-pose yaw in `persona.json` and refuse its mirror the way a spent angle is refused.
+
+## Refill needed
+
+**2026-08-31 (third run of the day) — queue EMPTY, nothing published, by design.**
+`grep -nE "^#{1,4} .*\[ \]" daily-tickets.md` returns only the two historical `###` blocked-run
+notes (line 1005 for #31, and the `<details>` note for #36); both are marked RESOLVED and both
+articles shipped, so there is **no open ticket heading anywhere in this file**. Today's article is
+already live — #37 `urolithin-a-side-effects-what-3-trials-report-us-2026` re-checked this run,
+HTTP 200 with a browser UA. Per rule 6 this run wrote no article, mined no ticket, and **spent no
+persona angle**. Working tree was clean at start, so no bookkeeping was outstanding either.
+
+### Kevin — please run the mining recipe in the app
+
+The google-ads MCP is still not registered in this headless session (a tool search for google-ads
+returns only web search/fetch; Shopify and claude.ai are present but unauthenticated) and GSC
+remains unauthorised, so `references/ads-article-mining.md` cannot run here. Please run it in the
+app so the queue refills with real search-term evidence.
+
+**The hand-mined shortlist stays exhausted**, unchanged from the earlier run today. Six probes from
+the 2026-08-31 mining pass are still unverified against their clusters and are the cheapest place to
+restart: `creatine loading phase` · `shilajit at night` · `turkesterone for women` ·
+`shilajit and testosterone` · `creatine and kidneys` · `nmn and blood pressure`. A 0 from
+`suggest.json` is necessary but NOT sufficient — fetch and grep the cluster's rendered pages before
+any of those becomes a ticket (that rule is what killed `urolithin a vs nmn`). Every stocked SKU on
+the live 22-product catalog already has a page, so real search-term data is the binding constraint.
+
+Three carried blockers for Kevin's hands, all unchanged:
+- The claude-seo runtime is not installed, so `validate_article.py` silently skips the QRG
+  quality/filler/AI-pattern hard-fails (eighteenth run in a row).
+- The stale 0-ticket `catalog-brand-tickets.md` in the repo root still blocks
+  `build_catalog_tickets.py`; it needs a move to `_superseded/`, which §4 puts outside the daily loop.
+- `persona_picker.py` still issues angles that mirror a persona's own `ref.jpg` pose. Still untested
+  since #37 drew NO-FACE. Suggested fix stands: record the ref-pose yaw in `persona.json` and refuse
+  its mirror the way a spent angle is refused.
