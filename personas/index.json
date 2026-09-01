@@ -1,29 +1,29 @@
 {
  "_doc": "Machine-readable rotation state for the persona bank. persona.json holds IMMUTABLE provenance; this file holds MUTABLE rotation history. Written only by scripts/persona_picker.py commit (atomic tmp+rename). Never hand-edit during a run.",
  "schema_version": 1,
- "seq": 48,
+ "seq": 49,
  "seeded_from": "PUBLISHED_ARTICLES_TRACKER.csv tickets 1-10 (free-text hero/gaze notes)",
  "recent_shots": [
-  "through-doorway",
   "over-shoulder",
   "wide-room",
   "high-angle-down",
   "through-doorway",
-  "mid-subject-fg-pack"
+  "mid-subject-fg-pack",
+  "low-table-level"
  ],
  "recent_heroes": [
-  "m2029-mx-01",
   "NO-FACE",
   "m3039-hl-05",
   "f2029-wh-03",
   "NO-FACE",
   "f3039-as-01",
   "f3039-as-02",
-  "NO-FACE"
+  "NO-FACE",
+  "f3039-bl-01"
  ],
  "no_face_cycle": {
   "period": 3,
-  "position": 0,
+  "position": 1,
   "_doc": "every 3rd hero is no-face: one adult + one pack for 200 rows running is the structural tell that rotating the pose cannot reach. Briefly 1 on 2026-08-10 as a safety default after ima2 was measured reproducing the reference person recognisably; restored to 3 the same day when Kevin reaffirmed the 200-face bank. The rights exposure that motivated 1 is real and unresolved \u2014 it is recorded in CLAUDE.md and accepted by Kevin, not fixed by this number."
  },
  "personas": {
@@ -103,10 +103,17 @@
    "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/f3039-bl-01/ref.jpg",
    "used_count": 0,
-   "last_used_seq": 0,
-   "gaze_used": [],
-   "last_gaze": null,
-   "angles_used": []
+   "last_used_seq": 49,
+   "gaze_used": [
+    "at-lens",
+    "off-into-room"
+   ],
+   "last_gaze": "at-lens",
+   "angles_used": [],
+   "angles_reserved": [
+    "profile-left+chin-up",
+    "front+chin-down"
+   ]
   },
   "m6070-wh-02": {
    "handle": "m6070-wh-02",
@@ -1942,6 +1949,17 @@
    "hero_gaze": "just-past-lens",
    "inline_gaze": "down-at-hands",
    "shot": "high-angle-down",
+   "cycle_position_before": 0
+  },
+  "49": {
+   "seq": 49,
+   "hero": "f3039-bl-01",
+   "audience": "women-25-45",
+   "hero_face_angle": "profile-left+chin-up",
+   "inline_face_angle": "front+chin-down",
+   "hero_gaze": "at-lens",
+   "inline_gaze": "off-into-room",
+   "shot": "low-table-level",
    "cycle_position_before": 0
   }
  }

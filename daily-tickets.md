@@ -2028,3 +2028,60 @@ Three carried blockers for Kevin's hands, all unchanged:
 - `persona_picker.py` still issues angles that mirror a persona's own `ref.jpg` pose. Still untested
   since #37 drew NO-FACE. Suggested fix stands: record the ref-pose yaw in `persona.json` and refuse
   its mirror the way a spent angle is refused.
+
+---
+
+# BATCH 2026-09-01 — mined by the unattended run (queue empty; no GSC, no google-ads MCP)
+
+**Evidence header.** `daily-tickets.md` had zero `[ ]` headings at 07:31 ICT, so DAILY-RUN §1.1.2
+applies: mine, then execute. Sources used, all $0 and all on this machine or the live store:
+`https://wellnessnest.co/products.json` (22 SKUs), `ALL_ARTICLES.csv` (68 rows),
+`PUBLISHED_ARTICLES_TRACKER.csv` (37 rows), and the six unverified probes the 2026-08-31 run
+left behind. STEP 0 probed 8 keywords against `search/suggest.json` with a browser UA — all 8
+returned 0 articles. Then the 2026-08-30 rule was applied (a 0 from suggest.json is necessary
+but NOT sufficient): the four live turkesterone pages were fetched and their rendered bodies
+grepped. Result — `female` x0, `woman` x0, `menstrual` x0 across all four; the only occurrence of
+`women` in any body is an internal link to the *creatine* for-women page. No H2 or H3 anywhere in
+the cluster addresses a female reader. The segment is genuinely unowned, so it is not a
+cannibalisation risk against `turkesterone-benefits-dosing-whats-real-us-2026`.
+
+STEP 0.5 `topic_fitness.py "turkesterone for women"` → `REVIEW [covered-segment]` (exit 2):
+*"brand has a general article, but 'for women' is an audience/intent no existing title covers —
+distinct enough to write IF the ticket brief greenlit this exact topic; link the general page
+instead of restating it."* Proceeding under Kevin's standing greenlight of 2026-08-13
+("I approve all of them, I need published articles without any delay"). The instruction inside
+the verdict is obeyed: this article links the general page rather than restating its dosing.
+
+Candidates rejected this pass, with the reason:
+- `shilajit and testosterone` — the live `shilajit-benefits-for-men` page already ranks four
+  testosterone claims; the grep, not suggest.json, killed it.
+- `creatine and kidneys` — `creatine-gummies-side-effects-4-real-3-myths` owns the kidney myth as
+  a named item in its own body.
+- `creatine loading phase` / `shilajit at night` / `nmn and blood pressure` — left unprobed at the
+  cluster-grep stage once a stronger candidate cleared; they stay on the shortlist.
+
+## [DONE 2026-09-01 https://wellnessnest.co/blogs/news/turkesterone-for-women-3-trials-85-men-0-women-us-2026] Ticket #38 — NEW ARTICLE (type: EDITORIAL)
+
+- **Primary keyword:** `turkesterone for women`
+- **Secondary:** turkesterone for females, is turkesterone safe for women, turkesterone women dosage,
+  turkesterone side effects women, does turkesterone work for women
+- **Search intent:** informational, audience-segment safety/efficacy question with buyer intent
+- **Title (59 chars):** `Turkesterone for Women: 3 Trials, 85 Men, 0 Women (US 2026)`
+- **Template:** `EDITORIAL` — the registry routes `"for women/men" informational` here, and it
+  breaks the run of COMPARISON (#34), STORY (#35), COMPARISON (#36), LISTICLE (#37).
+- **BLOG_ID:** `104008483131`
+- **Hero product:** `/products/turkesterone-advanced-formula` ($75.00, 60 capsules, 2/day)
+- **Secondary product:** `/products/fusiforce-creatine-gummies` ($69.99) — the evidence-backed
+  alternative for the muscle goal, which is an honest recommendation, not a shoehorn.
+- **Collection links (≥2, verified live 2026-09-01):** `/collections/womens-essentials-collection`,
+  `/collections/best-seller`
+- **Angle:** every human study that measured a muscle, strength or metabolic outcome for
+  turkesterone or ecdysterone enrolled men only — 11 (Harris 2024) + 46 (Isenmann 2019) +
+  28 recruited/24 completed (JISSN 2025) = 85 men, 0 women. The one human study that did include
+  women measured urinary excretion, not results, and reported no sex difference. Meanwhile the
+  working mechanism runs through **estrogen receptor beta**, which is the one receptor where a
+  female reader has an obvious reason to want data and has none. Our own PDP is written "for men"
+  in its own words. Say all of that plainly.
+- **Author:** Dr. Marcus Hale (roster.json, sole source)
+- **Dedup note:** STEP 0 clean (0 hits, 8 probes) + cluster grep clean (see evidence header).
+
