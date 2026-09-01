@@ -2109,3 +2109,33 @@ an interactive session so an unattended run can mine on its own.
 Ticket format to copy: the #38 block above (primary keyword, secondaries, intent, ≤60-char title,
 template key, BLOG_ID `104008483131`, hero product URL, ≥2 verified-live collection links, angle,
 author from `roster.json`).
+
+
+## Refill needed
+
+**2026-09-01 (third run of the day) — queue EMPTY, nothing published, by design.**
+`grep -n "^#.*\[ \]" daily-tickets.md` returns only two prose lines (the historical blocked-run
+notes for #31 and #36, both marked RESOLVED, both articles shipped). There is **no open ticket
+heading anywhere in this file**. Ticket #12 is `[x]` (closed 2026-08-13). Today's article #38
+`turkesterone-for-women-3-trials-85-men-0-women-us-2026` re-checked this run: **HTTP 200** with a
+browser User-Agent. Per rule 6 this run wrote no article, mined no ticket, and **spent no persona
+angle** (`persona_picker.py pick` was never called, so nothing needs releasing). Working tree was
+clean at the start of the run.
+
+### Kevin — please run the mining recipe in the app
+
+The google-ads MCP is still not registered in this headless session — a tool search for
+google-ads keyword/campaign/search-term tools returns only `WebSearch`, `WebFetch` and the generic
+`exa` web tools. The `claude.ai` and `Shopify` MCP servers both report "requires authentication"
+here, and a non-interactive session cannot run the OAuth flow. The demand-side mining inputs are
+therefore unreachable from an unattended run, and self-mining without them would only re-derive the
+same shortlist already logged above.
+
+Run the mining recipe in the app and append 3–5 fresh `[ ]` tickets, or authorise the connectors in
+an interactive session so an unattended run can mine on its own. The unprobed shortlist carried
+from earlier runs is still open: `creatine loading phase`, `shilajit at night`,
+`nmn and blood pressure`.
+
+Ticket format to copy: the #38 block above (primary keyword, secondaries, intent, ≤60-char title,
+template key, BLOG_ID `104008483131`, hero product URL, ≥2 verified-live collection links, angle,
+author from `roster.json`).
