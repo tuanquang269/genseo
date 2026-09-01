@@ -2085,3 +2085,27 @@ Candidates rejected this pass, with the reason:
 - **Author:** Dr. Marcus Hale (roster.json, sole source)
 - **Dedup note:** STEP 0 clean (0 hits, 8 probes) + cluster grep clean (see evidence header).
 
+
+## Refill needed
+
+**2026-09-01 (later run of the day) — queue EMPTY, nothing published, by design.**
+`grep -nE "^#{1,3} \[ \]" daily-tickets.md` returns nothing: there is **no open ticket heading
+anywhere in this file**. The only remaining `[ ]` strings are prose (the rules block at the top and
+the historical blocked-run notes for #31 and #36 — both marked RESOLVED, both articles shipped).
+Today's article is already live — #38 `turkesterone-for-women-3-trials-85-men-0-women-us-2026`
+re-checked this run: **HTTP 200** with a browser User-Agent. Per rule 6 this run wrote no article,
+mined no ticket, and **spent no persona angle** (`persona_picker.py pick` was never called, so
+nothing needs releasing). Working tree was clean at the start of the run.
+
+### Kevin — please run the mining recipe in the app
+
+The google-ads MCP is still not registered in this headless session (a tool search for google-ads
+keyword/campaign tools returns only the generic MCP resource readers and WebFetch), and the
+`claude.ai` + `Shopify` MCP servers both report "requires authentication" here. A non-interactive
+session cannot run the OAuth flow, so the demand-side mining inputs are unreachable from this run.
+Run the mining recipe in the app and append 3–5 fresh `[ ]` tickets, or authorise the connectors in
+an interactive session so an unattended run can mine on its own.
+
+Ticket format to copy: the #38 block above (primary keyword, secondaries, intent, ≤60-char title,
+template key, BLOG_ID `104008483131`, hero product URL, ≥2 verified-live collection links, angle,
+author from `roster.json`).
