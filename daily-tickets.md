@@ -2273,3 +2273,48 @@ bodies**: `creatine loading phase`, `shilajit at night`, `nmn and blood pressure
 Ticket format to copy: the #39 block above (primary keyword, secondaries, intent, ≤60-char title,
 template key, BLOG_ID `104008483131`, hero product URL, ≥2 verified-live collection links, angle,
 author from `roster.json`).
+
+## Refill needed
+
+**2026-09-02 (third run of the day) — 0 `[ ]` tickets remain and today's article is ALREADY
+SHIPPED AND COMMITTED.** `grep -n "^#\{1,4\}.*\[ \]" daily-tickets.md` returns only two `###`
+history notes, and both are explicitly marked RESOLVED above them: the 2026-08-25 note (line 1005)
+was closed by Ticket #31 shipping the same day (line 1069), and the 2026-08-30 note (line 1812) was
+closed by Ticket #36 shipping the same day (line 1779). Every other `[ ]` string in this file is
+prose in the rules block at the top. Per rule 6 this run wrote no article and mined no ticket.
+
+**No persona angle was spent.** `persona_picker.py pick` was never called this run, so there is
+nothing to `release`. Bank state at the end of this run: **137 personas / 200 target**, seq=50,
+31 angles spent + 4 reserved.
+
+**Unchanged and still open — carried, not caused by this run:**
+
+- Dangling reservations **seq 46** (`f3039-as-01`) and **seq 49** (`f3039-bl-01`) still burn 4
+  angles against articles that already shipped. They need Kevin's partial-commit fix; forcing
+  either `commit` would record a wrong angle, so both are being left burned deliberately.
+- Pool **`f6070` is still EMPTY** (1 have / 10 target, 1 retired) and **`f5059` is at 5 / 27**.
+  Any ticket aimed at a woman 50+ will keep degrading to a no-face hero until those pools are fed.
+- Standing recommendation from the 2026-09-02 first run still stands: **`persona_picker.py` should
+  not pair a `to-camera` gaze with a `profile-*` yaw on a persona whose ref reads frontal.** That
+  pairing cost 3 QC rolls on #38 and 3 more on #39.
+
+### Kevin — please run the mining recipe in the app
+
+The google-ads MCP is still not registered in this headless session — a tool search for google-ads
+keyword / campaign / search-term tools returns only `WebSearch`, `WebFetch` and the generic `exa`
+web tools. The `claude.ai` and `Shopify` MCP servers both report "requires authentication" here,
+and a non-interactive session cannot run the OAuth flow.
+
+Run the mining recipe in the app and append 3–5 fresh `[ ]` tickets, or authorise the connectors in
+an interactive session so an unattended run can mine on its own.
+
+**Shortlist state — do not re-propose these, the 2026-09-02 first run killed them by grepping all
+68 live article bodies:** `creatine loading phase`, `shilajit at night` / `shilajit for sleep`,
+`nmn and blood pressure`, `creatine hair loss`, `turkesterone dosage`, `shilajit vs <anything>`.
+Keep that run's lesson when mining: **a `suggest.json` 0 is not evidence of absence when the live
+title uses a different word form** — `turkesterone dosage` probed clean while
+`Turkesterone Benefits & Dosing` had been live all along.
+
+Ticket format to copy: the #39 block above (primary keyword, secondaries, intent, ≤60-char title,
+template key, BLOG_ID `104008483131`, hero product URL, ≥2 verified-live collection links, angle,
+author from `roster.json`).
