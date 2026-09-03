@@ -2318,3 +2318,136 @@ title uses a different word form** — `turkesterone dosage` probed clean while
 Ticket format to copy: the #39 block above (primary keyword, secondaries, intent, ≤60-char title,
 template key, BLOG_ID `104008483131`, hero product URL, ≥2 verified-live collection links, angle,
 author from `roster.json`).
+
+
+# BATCH 2026-09-03 — mined by the unattended run (queue empty; no GSC, no google-ads MCP)
+
+**Evidence header.** `daily-tickets.md` had **zero `[ ]` ticket headings** at 07:30 ICT
+(`grep -n "^#\{1,4\}.*\[ \]"` returns only the two `###` history notes at lines 1005 and 1812,
+both marked RESOLVED above them). DAILY-RUN §1.1.2 applies: mine, then execute. Sources, all $0
+and all local or on the live store: `https://wellnessnest.co/products.json` (22 SKUs),
+`collections.json` (6 live collections), `ALL_ARTICLES.csv` (68 rows),
+`PUBLISHED_ARTICLES_TRACKER.csv` (39 rows), Crossref (DOI verification).
+
+**STEP 0 — 16 keywords probed against `search/suggest.json`** (`curl -sg` + browser UA). Every one
+returned **0**, which the 2026-09-02 run proved is *necessary but not sufficient* — so all **68
+live article bodies were fetched and grepped** again. What the grep decided:
+
+- `is turkesterone a steroid` / `turkesterone drug test` — **KILLED BY GREP.** suggest.json returned
+  0, but `steroid` appears **17x** in `turkesterone-benefits-dosing-whats-real`, **14x** in
+  `turkesterone-vs-ecdysterone`, `wada` 5x, and `turkesterone-side-effects` carries an H2 literally
+  titled *"If you get drug-tested, the side effect is a doping-control one."* Owned three times over.
+- `Turkesterone Advanced Formula Review` — topic_fitness said `PASS [brand_intent]`, the
+  winning pattern, and it was **still killed by grep**: all four live turkesterone pages already
+  name `advanced formula`, quote `$75`, and price the SKU per day. A "review" would be a
+  near-duplicate wearing a different title. **topic_fitness PASS is not a licence to skip the grep.**
+- `creatine gummies potency / storage / caffeine / men over 50` — **KILLED.** The creatine cluster
+  is saturated: 5 modern pages own water weight (14 mentions), the coffee/pre-workout question (an
+  H2 in `best-time-to-take-creatine`), storage (4), rest days, loading, and hair loss as a named myth.
+- `does shilajit break a fast` — **KILLED at STEP 0.5** (`FAIL [covered]`), consistent with the
+  2026-09-02 kill of `shilajit at night`: shilajit timing is owned by
+  `how-much-shilajit-per-day` H2 *"When to Take It, and How Long Before You Judge It"* and by
+  `shilajit-energy-drops`.
+- `does nmn improve endurance` — **KILLED at STEP 0.5** (`FAIL [covered]`); `nmn for athletes` and
+  `nmn for men` both returned `REVIEW [covered-segment]` but were declined anyway — the NMN cluster
+  is now **six** pages and #39 (yesterday) was already an NMN audience-segment article.
+
+**The gap that survived, and it is a structural one.** ShilaSource and FusiForce are the store's
+**#1 and #2 priority house brands**, and across all 68 live bodies **not one page mentions both**.
+A whole-corpus co-mention scan returned **0 articles** containing `shilajit` and `creatine`
+together and **0 sentences** containing both words. Every page in the library answers a
+single-product question; nothing answers the question a buyer who already owns one asks about the
+other. `take together` = 0 occurrences corpus-wide, `same time as creatine` = 0.
+
+STEP 0.5 `topic_fitness.py "Shilajit and Creatine: Can You Stack Them?"` →
+`PASS [brand]: names a stocked brand ("shilajit") — product/brand page, viable`. A clean PASS, not
+a REVIEW, so no greenlight clause is needed for this one.
+
+## [DONE 2026-09-03 https://wellnessnest.co/blogs/news/shilajit-and-creatine-can-you-take-both-daily-us-2026] Ticket #40 — NEW ARTICLE (type: COMPARISON)
+
+- **Primary keyword:** `shilajit and creatine together`
+- **Secondary:** can you take shilajit and creatine, shilajit vs creatine, shilajit creatine stack,
+  shilajit with creatine, taking shilajit and creatine at the same time
+- **Search intent:** informational with commercial follow-through — a buyer who owns one SKU
+  deciding whether to add the second
+- **Title (57 chars):** `Shilajit and Creatine: Can You Take Both Daily? (US 2026)`
+- **Template:** `COMPARISON` — #39 was LISTICLE and #38 EDITORIAL, so the variety guard routes away
+  from both; the content is two contenders + a stack verdict, which is the comparison shape.
+- **BLOG_ID:** `104008483131`
+- **Hero products:** `/products/shilasource-himalayan-shilajit-resin` ($59.99, 30 g / 75 servings)
+  and `/products/fusiforce-creatine-gummies` ($69.99, 5,000 mg per 3-gummy serving)
+- **Collection links (≥2, verified live 2026-09-03, all HTTP 200):**
+  `/collections/shilajit-wellness-stack`, `/collections/mens-essential-collection`,
+  `/collections/best-seller`
+- **Angle — separate mechanisms, zero combined evidence, one real attribution problem.** Creatine
+  works by saturating intramuscular phosphocreatine (Kreider 2017 ISSN position stand). Shilajit's
+  human trials measured testosterone (Pandit 2015, *Andrologia*) and strength retention plus serum
+  hydroxyproline (Keller 2019, *JISSN*). The pathways do not overlap and there is no antagonism to
+  report — but **no human trial has ever tested the pair**, so anyone promising synergy is
+  inventing it. The one concrete caution is not an interaction, it is **attribution**: creatine
+  raises serum creatinine as an assay artefact with no kidney pathology (Williamson 2014, *BMJ Case
+  Reports*), shilajit carries iron and can upset a stomach in week one, and starting both on the
+  same Monday makes any result — good or bad — unassignable. The practical payload is a
+  **two-week stagger**. Second honest caution: fulvic acid extracted from shilajit forms a complex
+  with furosemide *in vitro* (Agarwal 2008) — a lab finding about one drug, not a demonstrated
+  clinical interaction, but the reason to space shilajit from prescription medication.
+- **Compliance:** no synergy claim, no testosterone-boost promise, no "clinically tested stack"
+  language. Do NOT restate the FusiForce PDP's COA / Eurofins / "137,000 customers" copy (house
+  rule `no-coa-competitive-advantage`). Flag honestly, as prior articles do, that the FusiForce PDP
+  says 25 mg ginseng while the panel says 50 mg, and that the front reads 90 gummies against a
+  28-serving panel. DSHEA line + clinician routing required. No MuscleMax.
+- **Author:** Dr. Marcus Hale (roster.json, sole source)
+- **Dedup note:** STEP 0 clean (16 probes) + whole-corpus co-mention scan clean (0 articles, 0
+  sentences). Target handle `shilajit-and-creatine-can-you-take-both-daily-us-2026` probed **404**
+  before write.
+
+
+## Refill needed
+
+**2026-09-03 — Ticket #40 shipped; 0 `[ ]` tickets remain.** `grep -n "^#\{1,4\}.*\[ \]"` returns
+only the two `###` history notes (lines 1005, 1812), both marked RESOLVED above them. Tomorrow's run
+mines again — an empty queue is the job, not a blocker (DAILY-RUN §1.1.2).
+
+**Persona state after this run:** 137 personas / 200 target, seq=51, **33 angles spent + 4 reserved**.
+Ticket #40 burned and COMMITTED two angles on `m3039-hl-06` (hero `3q-left+chin-up`, inline
+`profile-left+chin-down`) because both images shipped live. Dangling reservations **seq 46** and
+**seq 49** are still open and still burning 4 angles against articles that already shipped — they
+need Kevin's partial-commit fix and were left untouched again on purpose.
+
+**Two method lessons from this run, both worth carrying:**
+
+1. **A `topic_fitness` PASS is not a licence to skip the body grep.**
+   `Turkesterone Advanced Formula Review` returned `PASS [brand_intent]` — the documented *winning*
+   pattern — and the whole-corpus grep killed it anyway: all four live turkesterone pages already
+   name `advanced formula` and quote `$75`. Pair this with the 2026-09-02 lesson (a `suggest.json` 0
+   is not evidence of absence) and the rule is simply: **nothing skips the 68-body grep.**
+2. **The cross-brand co-mention scan is a reusable way to find real gaps.** What justified #40 was
+   not a keyword — it was that ShilaSource and FusiForce, the #1 and #2 priority house brands, had
+   **never appeared on the same page** (0 articles, 0 sentences containing both `shilajit` and
+   `creatine`; `take together` 0 corpus-wide). The library answers single-product questions and
+   almost never answers a two-product one. **`FloraFresh × anything` and `turkesterone × creatine`
+   are the same shape of hole** — check them with the same scan before mining a keyword.
+
+**Also worth knowing before the next publish:** `shopify_publisher.do_update` sets `strip_hero=False`
+BY DESIGN, so running `update` on a draft that still carries the hero tag renders the hero twice
+(cover + body). Either drop the hero tag from the draft before an `update` and keep 4 real inline
+images in the body, or restore it only for a fresh `publish`. Re-uploads also gain a `_<uuid>`
+filename suffix — do not copy CDN basenames back into local draft paths.
+
+**Shortlist state — do not re-propose, all killed by the live-body grep:** `creatine loading phase`,
+`shilajit at night` / `shilajit for sleep`, `nmn and blood pressure`, `creatine hair loss`,
+`turkesterone dosage`, `shilajit vs <anything>`, `is turkesterone a steroid` / `turkesterone drug
+test`, `turkesterone advanced formula review`, `does shilajit break a fast`, `does nmn improve
+endurance` / `nmn for athletes` / `nmn for men`, `creatine gummies potency` / `storage` / `caffeine`
+/ `men over 50`.
+
+Ticket format to copy: the #40 block above (primary keyword, secondaries, intent, ≤60-char title,
+template key, BLOG_ID `104008483131`, hero product URLs, ≥2 verified-live collection links, angle,
+compliance notes, author from `roster.json`, dedup note).
+
+### Kevin — please run the mining recipe in the app
+
+The google-ads MCP is still not registered in this headless session, GSC is still unauthorised, and
+the `claude.ai` and `Shopify` MCP servers both report "requires authentication" — a non-interactive
+session cannot run the OAuth flow. Mining stays hand-done until one of those is fixed. Authorise the
+connectors in an interactive session, or append 3–5 fresh `[ ]` tickets from the app.
