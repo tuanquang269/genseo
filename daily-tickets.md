@@ -2451,3 +2451,42 @@ The google-ads MCP is still not registered in this headless session, GSC is stil
 the `claude.ai` and `Shopify` MCP servers both report "requires authentication" — a non-interactive
 session cannot run the OAuth flow. Mining stays hand-done until one of those is fixed. Authorise the
 connectors in an interactive session, or append 3–5 fresh `[ ]` tickets from the app.
+
+
+## Refill needed
+
+**2026-09-03 (later run) — 0 `[ ]` tickets remain and today's article is ALREADY SHIPPED.**
+`grep -n "^#\{1,4\}.*\[ \]" daily-tickets.md` returns only the two `###` history notes (lines 1005,
+1812), and both are marked RESOLVED in the lines directly above them. No ticket heading anywhere in
+this file is open. Per the run contract §6, **no article was written** — an empty queue is the
+correct outcome, not a failure.
+
+**Ticket #40 (`shilajit-and-creatine-can-you-take-both-daily-us-2026`) is live and needs nothing
+from this run.** No images generated, no persona angles picked, no `persona_picker.py` call of any
+kind — so nothing to `commit` and nothing to `release`. Persona state is unchanged from the note
+above: 137 personas / 200 target, seq=51, 33 angles spent + 4 reserved, with dangling reservations
+**seq 46** and **seq 49** still open and still awaiting Kevin's partial-commit fix.
+
+**Why mining did not happen here.** The google-ads MCP is still not registered in this headless
+session (a tool search for keyword-planner/search-volume tooling returns only `WebSearch`,
+`exa`, `WebFetch` and `Monitor` — no ads tools). GSC remains unauthorised, and the `claude.ai` and
+`Shopify` MCP servers both report "requires authentication"; a non-interactive session cannot run
+the OAuth flow. Keyword mining therefore stays hand-done.
+
+### Kevin — please run the mining recipe in the app
+
+Append 3–5 fresh `[ ]` tickets starting at **#41**, or authorise the connectors in an interactive
+session so the next headless run can mine on its own.
+
+Copy the #40 block for the format: primary keyword, secondaries, intent, ≤60-char title, template
+key, BLOG_ID `104008483131`, hero product URLs, ≥2 verified-live collection links, angle, compliance
+notes, author from `roster.json`, dedup note.
+
+**Template rotation note for #41:** the last four shipped were #37 LISTICLE → #38 EDITORIAL →
+#39 LISTICLE → #40 COMPARISON. Prefer **STORY** or **EDITORIAL** for the next ticket.
+
+**Shortlist state — still dead, do not re-propose:** `creatine loading phase`, `shilajit at night` /
+`shilajit for sleep`, `nmn and blood pressure`, `creatine hair loss`, `turkesterone dosage`,
+`shilajit vs <anything>`, `is turkesterone a steroid` / `turkesterone drug test`, `turkesterone
+advanced formula review`, `does shilajit break a fast`, `does nmn improve endurance` / `nmn for
+athletes` / `nmn for men`, `creatine gummies potency` / `storage` / `caffeine` / `men over 50`.
