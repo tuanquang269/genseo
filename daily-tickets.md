@@ -2677,3 +2677,38 @@ Please run the mining recipe in the app to refill the queue. Ask for **EDITORIAL
    quality/filler/AI-pattern scores are unmeasured on all of them.
 3. **The vision QC lane failed DNS on the 9router host** during the #41 run — all four `--qc` calls
    returned `qc-inconclusive`. Images were hand-verified as fallback, but the automated lane is down.
+
+---
+
+## Refill needed
+
+**2026-09-04 (third run) — QUEUE EMPTY, nothing published, by design.** `grep "^## \[ \]"` returns
+zero headings. Ticket #41 remains today's only article and is still live. This run wrote no article
+and burned no persona angles.
+
+**Kevin — refill needed.** The google-ads MCP is still not connected in this unattended
+environment, so no keyword volumes can be pulled. Please run the mining recipe in the app.
+Ask for **EDITORIAL or LISTICLE** for #42 (last five: #37 LISTICLE → #38 EDITORIAL → #39 LISTICLE
+→ #40 COMPARISON → #41 STORY).
+
+**NEW THIS RUN — `WebSearch` and `WebFetch` are available again in this environment.** Prior runs
+recorded both as unavailable and that is now out of date; a live query returned real competitor
+SERP results (hermeticasuperfoods, everestshilajit, consumerhealthdigest all ranking for
+"shilajit gummies 2026"). This does **not** replace the google-ads MCP — WebSearch returns no
+search volume and no CPC, so it cannot rank candidates by demand — but it does unblock the parts
+of mining that need SERP reality rather than volume: competitor coverage checks, SERP-intent
+reads, and "does a page already own this question" verification. Worth deciding whether a future
+unattended run may mine on WebSearch + the internal FAQ scan alone, with volume filled in later.
+
+**Reservation audit (correction to item 1 above — it is NOT holding anything hostage).** `seq 46`
+(`f3039-as-01`) and `seq 49` (`f3039-bl-01`) both trace to articles that DID publish and are live:
+ticket #36 (`yeast-infection-vs-bv`) and ticket #38 (`turkesterone-for-women`). So `release` would
+be the **wrong** call — it would hand those angles back and let a future article reuse a face angle
+that is already on a live og:image. Left untouched on purpose. `status` shows the angles as
+`4 reserved`, i.e. held and un-issuable, which is the safe direction; the picker's own docs price an
+abandoned reservation at "nothing". Closing them cleanly needs the gaze/shot values from the
+original `pick` output, which no longer exists, and `commit` correctly refuses a guess. **Net: a
+bookkeeping loose end, not a live-site risk — do not let a future run "fix" it by releasing.**
+
+**Still open, unchanged:** the QRG prose scorer (item 2) and the 9router vision-QC DNS failure
+(item 3) both remain broken and both still need your hand.
