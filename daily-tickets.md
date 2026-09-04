@@ -2529,3 +2529,151 @@ notes, author from `roster.json`, dedup note.
 `shilajit vs <anything>`, `is turkesterone a steroid` / `turkesterone drug test`, `turkesterone
 advanced formula review`, `does shilajit break a fast`, `does nmn improve endurance` / `nmn for
 athletes` / `nmn for men`, `creatine gummies potency` / `storage` / `caffeine` / `men over 50`.
+
+---
+
+# BATCH 2026-09-04 — mined by the unattended run (queue was empty; DAILY-RUN §1.1.2 / §2)
+
+**Mining evidence, $0, no external SERP tool** (WebSearch/WebFetch dead, GSC unauthorised,
+google-ads MCP not connected — DAILY-RUN §5). Sources actually used:
+`curl https://wellnessnest.co/products.json` (22 live SKUs), `PUBLISHED_ARTICLES_TRACKER.csv`
+(40 rows), `published_drafts/*.md` body grep, `scripts/topic_fitness.py`, and live
+`search/suggest.json` probes.
+
+**Gap found by internal demand signal, not by guessing.** Three already-live articles carry a
+*"how long does NMN take to work"* FAQ entry — `when-to-take-nmn`, `nmn-vs-nr`,
+`how-much-nmn-per-day` — each answering it in three to five sentences. The question is being
+asked often enough that our own writers keep answering it in passing, and no article owns it.
+That is the cheapest real demand signal available on this machine.
+
+Candidates gated before this one was chosen:
+
+| Candidate title | `topic_fitness.py` | Verdict |
+|---|---|---|
+| Vaginal Probiotics After Antibiotics: When to Start | `FAIL [covered]` | dropped, do not re-propose |
+| Does Creatine Cause Bloating? What Actually Happens | `REVIEW [review]` | held — overlaps #27 creatine gummies side effects |
+| Shilajit for Beginners: First 30 Days | `REVIEW [covered-segment]` | held for a later batch |
+| How Long Should You Cycle Turkesterone? | `REVIEW [covered-segment]` | held for a later batch |
+| **How Long Does NMN Take to Work? Week 1 to 12** | `REVIEW [covered-segment]` | **CHOSEN** |
+
+## [DONE 2026-09-04 https://wellnessnest.co/blogs/news/how-long-does-nmn-take-to-work-week-1-to-12-us-2026] Ticket #41 — NEW ARTICLE (type: STORY)
+
+- **Primary keyword:** `how long does nmn take to work`
+- **Secondary:** how long before nmn works, when will i feel nmn, nmn results timeline,
+  how long to take nmn before seeing results, does nmn work immediately
+- **Search intent:** informational with retention intent — someone who already bought a bottle
+  and is deciding whether to keep taking it, plus a pre-purchase buyer sizing up the commitment
+- **Title (54 chars):** `How Long Does NMN Take to Work? Week 1 to 12 (US 2026)`
+- **Template:** `STORY` — last four shipped were #37 LISTICLE → #38 EDITORIAL → #39 LISTICLE →
+  #40 COMPARISON, and the refill note asked for STORY or EDITORIAL. A timeline is a lived
+  journey (week 1 nothing → day 30 first measurable change), which is the STORY shape.
+- **BLOG_ID:** `104008483131`
+- **Hero products:** `/products/ageaura-pure-nmn-tmg-nad-complex` ($69.95) and
+  `/products/ageaura-pure-nmn-tmg-the-essential-longevity-duo` ($59.95). Range across the line
+  $59.95–$159.99.
+- **Collection links (≥2, verified live 2026-09-04, HTTP 200):** `/collections/ageaura`,
+  `/collections/best-seller`
+- **Angle — put a clock on every published NMN finding, and name the ones with no clock at all.**
+  Absorption is fast and effect is not: the first human study dosed 100/250/500 mg and monitored
+  for five hours with no symptom or vital-sign change (Irie 2020, *Endocrine Journal*). The first
+  point at which anything was *measured* to move is **day 30** — blood NAD+ up dose-dependently
+  and six-minute walking distance improved against placebo in the 300/600/900 mg ladder (Yi 2023,
+  *GeroScience*). Functional endpoints land at 6 to 12 weeks: aerobic capacity in amateur runners
+  at 6 weeks (Liao 2021, *JISSN*), muscle insulin sensitivity at 10 weeks (Yoshino 2021,
+  *Science*), blood NAD+ at 12 weeks (Okabe 2022, *Frontiers in Nutrition*), arterial stiffness
+  trending down but not significant at 12 weeks (Katayoshi 2023, *Scientific Reports*). The
+  honest counterweight: **energy, sleep, skin and cognition have no clock because no trial
+  measured them**, and the 10-week insulin trial did not detect a rise in muscle NAD+ at all.
+- **Compliance:** no "feel it in X days" promise, no energy/skin/anti-ageing claim, no COA or
+  "clinically tested" language (house rule `no-coa-competitive-advantage`). Report the AgeAura
+  panel honestly — serving size in mg and servings per container, no invented shipping speed.
+  DSHEA line + clinician routing required. No MuscleMax.
+- **Author:** Dr. Marcus Hale (roster.json, sole source)
+- **Dedup note:** STEP 0 clean. `suggest.json?q=nmn` returns the six live NMN articles (#20, #25,
+  #29, #32, #39 and NMN+TMG) and none targets the timeline; `q=how long does nmn take to work`
+  and `q=nmn take to work` both return zero articles; `q=how long` returns three articles, all
+  other brands. Body grep confirms the question exists only as an FAQ entry inside three
+  articles, which this one must link to rather than restate. Target handle
+  `how-long-does-nmn-take-to-work-week-1-to-12-us-2026` probed **404** before write.
+
+### Ticket #41 — post-publish record (2026-09-04, unattended run)
+
+**SHIPPED LIVE.** Article id `621969375547`, handle
+`how-long-does-nmn-take-to-work-week-1-to-12-us-2026`, 1,960 words, STORY template, 4 images
+(hero promoted to `article.image` + 3 inline). Both STEP 8 gates passed: publisher printed
+`✅ IMAGE VERIFICATION PASSED`, and the live page returns HTTP 200 with the intended `og:title`,
+three `cdn.shopify.com` inline images each returning image bytes, `FAQPage` + `Person` JSON-LD
+present, and the shop-this-article widget rendering with
+`data-liquid-handles="|ageaura-pure-nmn-tmg-nad-complex|"`.
+
+**Persona: no angles burned.** `pick --audience adults-50-70` returned seq=52 with
+`hero: "NO-FACE"` — the scheduled every-3rd no-face hero — so no face angle was issued and none
+was spent. All four images are no-face by design. `commit --hero NO-FACE --shot over-shoulder
+--expect-seq 52` closed the reservation cleanly. Dangling reservations **seq 46** and **seq 49**
+were left untouched again; they still need Kevin's partial-commit fix.
+
+**Two degradations to report, neither of which blocked the run:**
+
+1. **The vision QC lane is down.** All four `--qc` calls returned `qc-inconclusive`, not FAIL —
+   both QC models failed DNS resolution on the 9router host (`urlopen error [Errno 8] nodename
+   nor servname provided`). Same host family as the QC router, so this is a network/route
+   problem, not a rubric failure. Fallback taken: every image was opened and checked by hand
+   against `product_refs/ageaura-pure-nmn-tmg-nad-complex.png` before it entered the draft, which
+   is the packaging hard rule's own instruction for an uncurated ref. Packaging matched on all
+   three product images (60 capsules / 30 servings footer, AgeAura badge, vertical Wellness Nest
+   wordmark, white capsule bottle — no pouch, no jar). **One re-roll was spent on inline-3:** the
+   first roll put a boarding-pass prop in the case whose printed text rendered as gibberish, which
+   is exactly the rendered-text tell the QC rubric fails. The re-roll negative-listed printed paper
+   and came back clean. 1 of the 2 re-rolls used.
+2. **The QRG prose scorer did not run.** `validate_article.py` printed
+   `⚠ QRG quality scoring skipped (claude-seo runtime not installed)`, so the structural gate
+   passed but the quality/filler/AI-pattern scores were never computed on this article. Fallback:
+   the 16 banned phrases from SKILL STEP 5 were grepped by hand — zero hits — and MuscleMax was
+   grepped for separately, also zero. Worth fixing at source: the claude-seo runtime is missing
+   from this Mac, and every article published since it went missing has shipped without a prose score.
+
+## Refill needed
+
+**2026-09-04 — Ticket #41 shipped; 0 `[ ]` tickets remain.** The next run mines again (DAILY-RUN
+§1.1.2 / §2). This run proved the mining lane works headless without any external SERP tool: the
+winning signal was an **internal** one — three already-live articles each carried a
+"how long does NMN take to work" FAQ entry, so our own writers had answered the question three
+times in passing without any page owning it. Re-run that scan for the next batch:
+`grep -il "<candidate question>" published_drafts/*.md` and look for a question answered in 3+
+articles but titled in none.
+
+**Template rotation note for #42:** last five shipped were #37 LISTICLE → #38 EDITORIAL →
+#39 LISTICLE → #40 COMPARISON → #41 STORY. Prefer **EDITORIAL** or **LISTICLE** next.
+
+**Shortlist state — held, still gated, do not re-propose without re-running the gate:**
+`Shilajit for Beginners: First 30 Days` (REVIEW covered-segment) · `How Long Should You Cycle
+Turkesterone?` (REVIEW covered-segment) · `Does Creatine Cause Bloating?` (REVIEW review —
+overlaps #27). **Newly dead:** `vaginal probiotics after antibiotics` → `FAIL [covered]`.
+
+---
+
+**2026-09-04 (later run) — QUEUE EMPTY, nothing published, by design.** `grep "^## \[ \]"` returns
+zero headings; every remaining `[ ]` string in this file is prose (the rules block at the top and
+historical run notes). Today's article, **ticket #41**, was already shipped by the earlier run and is
+confirmed live right now: `https://wellnessnest.co/blogs/news/how-long-does-nmn-take-to-work-week-1-to-12-us-2026`
+returns **HTTP 200** with a browser User-Agent. This run wrote no article and burned no persona angles.
+
+**Housekeeping done by this run:** the earlier run left its work uncommitted. Ticket #41's ticket +
+post-publish record (120 lines) and the `personas/index.json` rotation state (seq 51 → 52, `no_face_cycle`
+position 2 → 0, `recent_heroes` +NO-FACE, `recent_shots` +over-shoulder) are committed by this run.
+The tracker CSV row was already appended and is gitignored, so it stays local as designed.
+
+**Kevin — refill needed.** The google-ads MCP is not connected in this unattended environment, and
+WebSearch/WebFetch and GSC are also unavailable here, so no keyword volumes can be pulled headless.
+Please run the mining recipe in the app to refill the queue. Ask for **EDITORIAL or LISTICLE** for
+#42 (last five: #37 LISTICLE → #38 EDITORIAL → #39 LISTICLE → #40 COMPARISON → #41 STORY).
+
+**Still open, needs your hand — not fixable by an unattended run:**
+
+1. **Two dangling persona reservations, `seq 46` and `seq 49`,** are still unclosed. They hold face
+   angles hostage. Needs the partial-commit fix.
+2. **The QRG prose scorer has not run since the `claude-seo` runtime went missing from this Mac.**
+   Every article since then passed the structural gate with `⚠ QRG quality scoring skipped`. Prose
+   quality/filler/AI-pattern scores are unmeasured on all of them.
+3. **The vision QC lane failed DNS on the 9router host** during the #41 run — all four `--qc` calls
+   returned `qc-inconclusive`. Images were hand-verified as fallback, but the automated lane is down.
