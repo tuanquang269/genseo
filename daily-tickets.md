@@ -2846,3 +2846,47 @@ So the demand mining has to happen on your side.
 scorer still absent (`claude-seo` runtime missing) · dangling persona reservations `seq 46` and
 `seq 49` · IndexNow key unconfigured · the 17 "From Stiff to Strong" duplicates and the GemPages
 "Types of Shilajit Products" page still awaiting an explicit delete go-ahead.
+
+---
+
+## Refill needed
+
+### Kevin — please run the mining recipe in the app (2026-09-05, third run)
+
+**0 `[ ]` ticket headings remain.** `grep "^##.*\[ \]" daily-tickets.md` returns nothing. The only
+`[ ]` strings left in the file are prose: the rules block at the top and the two historical blocked
+notes for #31 (~line 1005) and #36 (~line 1812), both already sitting under `### ✅ RESOLVED`.
+
+**No article was written this run,** per the run rules given (no `[ ]` ticket → do not write).
+Today's article already shipped: **#42 — when-to-take-shilajit-morning-or-night-us-2026**. Mining a
+second one now would only add self-competition. The `DAILY-RUN.md` §1.1.2 conflict flagged by the
+earlier run is still open and still needs your call.
+
+**The google-ads MCP is not available in this environment.** Tool search for keyword/volume mining
+returns only WebSearch/WebFetch/Exa — no `mcp__*google*ads*` server. Reachable MCP servers: only
+CheckoutChamp Design; Linear and Shopify are present but unauthorized (needs OAuth in an interactive
+session). So the demand mining has to happen on your side.
+
+**Ready to pick up for #43** — unchanged, carried from the two earlier runs today:
+- Template rotation wants **LISTICLE or STORY** (#38 EDITORIAL → #39 LISTICLE → #40 COMPARISON →
+  #41 STORY → #42 EDITORIAL).
+- `creatine gummies for women` — gated `REVIEW [covered-segment]`, held. FusiForce SKU. Existing
+  coverage is #2 `creatine for women over 40`, an age segment not a format one.
+- `do creatine gummies work` — `FAIL [covered]`. Dead, do not re-mine.
+
+**Blockers re-verified this run — all five unchanged, none fixable unattended:**
+
+1. **gem9 vision-QC host `staff.patiagency.com` → NXDOMAIN** (day 3). Every image ships on a manual
+   check only.
+2. **QRG prose scorer still absent** — `claude-seo` is not on PATH on this Mac. 24 articles in a row
+   have passed the structural gate with `⚠ QRG quality scoring skipped`.
+3. **Dangling persona reservations `seq 46` and `seq 49`** still open (`f3039-as-01`, `f3039-bl-01` —
+   4 angles each held). Both need the partial-commit fix; not released, because releasing an article
+   that is in fact live is the worse error.
+4. **IndexNow key** still unconfigured; the ping is skipped every run.
+5. The 17 *"From Stiff to Strong"* duplicates and the GemPages *"Types of Shilajit Products"* page
+   still await an explicit delete go-ahead — deletion is destructive, so untouched.
+
+**Persona bank health (informational):** 137/200 faces, 35 angles spent + 4 reserved of 1905.
+Pool `f6070` is **EMPTY** (1 retired, no usable face) and `f5059` sits at 5/27 — a ticket aimed at
+women 50+ will degrade to a NO-FACE hero until those pools are filled.
