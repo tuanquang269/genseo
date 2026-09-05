@@ -2712,3 +2712,107 @@ bookkeeping loose end, not a live-site risk — do not let a future run "fix" it
 
 **Still open, unchanged:** the QRG prose scorer (item 2) and the 9router vision-QC DNS failure
 (item 3) both remain broken and both still need your hand.
+
+---
+
+# BATCH 2026-09-05
+
+Mined by the unattended run of 2026-09-05, per DAILY-RUN §1.1.2 ("an empty queue is the job, not
+a blocker"). $0 mining, machine-local sources only: live `products.json` (22 SKUs), the 41-row
+tracker, a body grep of `published_drafts/*.md`, `topic_fitness.py`, and live `suggest.json`.
+
+**The signal is internal, not guessed.** Four already-live shilajit articles answer *when* to take
+it in passing — `shilajit-and-creatine` tells you to "take shilajit in the morning with food",
+`shilajit-side-effects` fixes nausea by moving it off an empty stomach, `shilajit-energy-drops`
+rules out evening dosing on caffeine grounds, `shilajit-benefits-for-men` describes resin as a
+morning habit — and **no page owns the question.** Our own writers answered it four times sideways.
+That is demand, and detecting it costs nothing.
+
+## [DONE 2026-09-05 https://wellnessnest.co/blogs/news/when-to-take-shilajit-morning-or-night-us-2026] Ticket #42 — NEW ARTICLE (type: EDITORIAL)
+
+- **Primary keyword:** `when to take shilajit`
+- **Secondary:** best time to take shilajit, shilajit morning or night, shilajit empty stomach,
+  shilajit with food, shilajit before bed
+- **Search intent:** informational, buyer already owns or is about to buy — timing/how-to-use
+- **Template:** `EDITORIAL` (how/what/why informational per the template registry; #41 was STORY,
+  #40 COMPARISON, #39 LISTICLE, #38 EDITORIAL — the refill note asked for EDITORIAL or LISTICLE)
+- **STEP 0 (live, before writing):** `q="when to take shilajit"` → 0 articles. `q="best time to
+  take shilajit"` → 0. `q="shilajit morning"` → 0. `q="shilajit empty stomach"` → 0.
+  `q="take shilajit"` → 2, both other angles (shilajit+creatine stacking, duration-of-use).
+  Target handle `when-to-take-shilajit-morning-or-night-us-2026` probed **404**.
+- **STEP 0.5:** `REVIEW [covered-segment]` — brand shilajit has general articles, "morning or
+  night" is an intent no existing title covers. Proceeding under Kevin's 2026-08-13 standing
+  greenlight for this queue.
+- **Angle (the differentiator):** no human trial has ever compared morning against evening
+  shilajit. Every trial either split the dose twice daily or gave it once daily and never said
+  when. So the honest answer is that the clock is not the variable — the stomach, the format and
+  consistency are. The one timing rule with real evidence behind it is the caffeine cut-off on the
+  Shockwave drops.
+- **Products (all verified 200):** `/products/shilasource-himalayan-shilajit-resin` ($59.99) ·
+  `/products/premium-himalayan-shilajit-gummies` ($59.99) · `/products/shilajit-shockwave` ($79.99)
+- **Collections (≥2, verified 200):** `/collections/best-seller`, `/collections/womens-essentials-collection`
+- **Internal links (all verified 200):** how-much-shilajit-per-day · shilajit-side-effects-7-signs ·
+  shilajit-resin-vs-gummies · shilajit-energy-drops · for-how-long-can-we-take-shilajit ·
+  shilajit-and-creatine
+- **Author:** Dr. Marcus Hale (roster.json, verbatim bio)
+
+### Post-publish record — Ticket #42 (2026-09-05)
+
+**Live:** https://wellnessnest.co/blogs/news/when-to-take-shilajit-morning-or-night-us-2026 —
+article `621973340475`, blog `104008483131`, HTTP 200, published_at non-null, visible not draft.
+1,831 words · EDITORIAL · 8 H2 · 1 table · 6 FAQs · 3 collection links · 4 images (hero cover + 3 inline).
+
+**The queue was empty and this run mined rather than skipping.** The three runs of 2026-09-04 all
+stopped at "refill needed" and handed the day back. `DAILY-RUN.md` §1.1.2 says the opposite — *"an
+empty queue is the job, not a blocker"* — so ticket #42 was mined at $0 from machine-local sources
+only and executed the same run. The demand signal was internal: four already-live shilajit articles
+answer *when* to take it inside their own prose, and no page owns the question.
+
+**STEP 0 ran against the live site before a word was written.** 0 article hits for `when to take
+shilajit` and for all four variants; the target handle 404'd; a control query (`shilajit side
+effects`) correctly returned the live #15 article, which proves the probe was working rather than
+silently returning empty.
+
+**Gates.** `validate_article.py --draft` printed `✓ PASS` on the **first attempt**, before the
+publisher ran — the draft was never edited to appease it. Both post-publish gates pass: publisher
+`✅ IMAGE VERIFICATION PASSED`, and live HTTP 200 with the intended `og:title`, three inline CDN
+images returning 159–166 KB each, FAQPage + Person JSON-LD, and the Shop-This-Article widget wired
+to all three shilajit handles.
+
+**Persona.** `pick --audience men-30-55` → seq 53, hero `m3039-mx-02` (a face hero — the no-face
+cycle was at position 0), shot `wide-room`, gaze `off-into-room`, angle `front+chin-down`; inline
+persona angle `profile-right+chin-down`, gaze `down-at-product`. `warnings[]` empty. Both angles
+were confirmed as actually shipped before `commit`, which closed at exit 0. 13 angles left on this
+persona. Reservations **seq 46 and 49** left untouched again, for the reason the 2026-09-04 audit
+established — do not let a future run "fix" them by releasing.
+
+**QC lane is down for the second day, and this run found the cause.** All four `--qc` calls returned
+`qc-inconclusive` because gem9's base host `staff.patiagency.com` returns **NXDOMAIN** from this Mac
+(`curl` exit 6, HTTP 000). It is a DNS/tunnel failure at the 9router edge, not a model or key
+problem. `qc-inconclusive` is not a FAIL, so **0 of the 2 re-rolls were spent**. Every image was
+hand-verified against `product_refs/` instead. **Kevin: this is a one-line fix on your side and it
+is the difference between an image lane with a gate and one without.**
+
+---
+
+## Refill needed
+
+**Queue is empty again after #42.** Rotation: #38 EDITORIAL → #39 LISTICLE → #40 COMPARISON →
+#41 STORY → #42 EDITORIAL. Ask for **LISTICLE or STORY** for #43.
+
+Two candidates were already gated by this run and are ready to pick up:
+
+- **`creatine gummies for women`** — `REVIEW [covered-segment]`, held. FusiForce is the SKU; the
+  existing coverage is `creatine for women over 40` (#2), which is an age segment, not a format one.
+- **`do creatine gummies work`** — came back `FAIL [covered]`. **Dead, do not re-mine it.**
+
+**Still open, needs your hand — not fixable by an unattended run:**
+
+1. **The gem9 vision-QC host does not resolve** (`staff.patiagency.com` NXDOMAIN). Day 2. Diagnosed
+   above. Until it is fixed, every image ships on a manual check only.
+2. **The QRG prose scorer has not run since the `claude-seo` runtime went missing from this Mac** —
+   23 articles in a row have passed the structural gate with `⚠ QRG quality scoring skipped`.
+3. **Dangling persona reservations `seq 46` and `seq 49`** still need the partial-commit fix.
+4. **IndexNow key** still unconfigured; the ping is skipped every run.
+5. The 17 *"From Stiff to Strong"* duplicates and the GemPages *"Types of Shilajit Products"* page
+   still need an explicit go-ahead — deletion is destructive and was not touched.
