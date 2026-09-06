@@ -3050,3 +3050,55 @@ rotation exactly.
 **Persona bank health:** 137/200 faces, seq=54, 37 angles spent + 4 reserved of 1905. Pool `f6070`
 is **EMPTY** (1 retired, no usable face) and `f5059` sits at 5/27 — a ticket aimed at women 50+ will
 still degrade to a NO-FACE hero until those pools are filled.
+
+---
+
+## Refill needed
+
+### Kevin — please run the mining recipe in the app (2026-09-06, third run)
+
+**No `[ ]` ticket remains and NO article was written this run.** The only two `[ ]` strings left in
+this file (lines ~1005 and ~1812) are *historical status notes* inside tickets #31 and #36, both of
+which have since shipped and carry `[DONE …]` headings — they are not open work. The last real
+ticket, #43, shipped earlier today. The google-ads MCP is **not available** in this environment (a
+tool search for ads / campaign / search-terms tooling returned only web-search and fetch tools), so
+search-terms mining cannot run here. Per the run contract, an empty queue with no mining source
+means: stop, do not invent an article.
+
+**What to run in the app (google-ads MCP available there):**
+1. Pull the last 90 days of search terms for the wellness_nest / AgeAura campaigns.
+2. Drop the terms that already map to a live article (`ALL_ARTICLES.csv` is current as of today).
+3. Keep terms with real impressions and no owned page, then write them into a new `# BATCH` block
+   with the usual fields (primary keyword, intent, template, products, collections, author).
+
+**Rotation for #44:** #43 LISTICLE → #42 EDITORIAL → #41 STORY → #40 COMPARISON, so **STORY or
+COMPARISON** is owed. The picker's `recent_shots` window currently ends `low-table-level`, so avoid
+that shot on the next hero.
+
+**Still the strongest machine-local candidate if you want #44 without waiting for ads data:**
+`Urolithin A vs NMN: Which Should You Take? (US 2026)` — COMPARISON, gated `REVIEW [covered-segment]`
+on 2026-09-06, both SKUs AgeAura and in stock, no `urolithin a vs` article exists. It fits the owed
+rotation exactly.
+
+**Health check run this run (not a blocker):** article #43 `621976420667` re-verified —
+frontend HTTP 200, FAQPage + ld+json + comparison table all present, author Dr. Marcus Hale.
+
+**Loose end closed this run:** `personas/index.json` was left dirty in the working tree after #43 —
+the picker had recorded the commit (seq 53 → 54, hero `f3039-hl-03`, no-face cycle position 2) but
+that state was never git-committed. It is committed now. No hand-editing was done.
+
+**Blockers re-verified 2026-09-06 (third run) — all five unchanged, none fixable unattended:**
+
+1. **gem9 vision-QC host `staff.patiagency.com` → NXDOMAIN** (day 5). `curl` exit 6, HTTP 000.
+   Every image still ships on a manual reference check only.
+2. **QRG prose scorer absent** — `claude-seo` still not on PATH on this Mac (`command -v` empty).
+3. **Dangling persona reservations `seq 46` and `seq 49`** still open in `picker status`
+   (`f3039-as-01`, `f3039-bl-01`). Do NOT release them blind — they need the partial-commit fix.
+4. **IndexNow key** still unconfigured (`~/.genseo/` holds only `lark_app.json` and
+   `shopify_token.json`).
+5. The 17 *"From Stiff to Strong"* duplicates and the GemPages *"Types of Shilajit Products"* page
+   still await an explicit delete go-ahead — destructive, so untouched.
+
+**Persona bank health:** 137/200 faces, seq=54, 37 angles spent + 4 reserved of 1905. Pool `f6070`
+is **EMPTY** (1 retired, no usable face) and `f5059` sits at 5/27 — a ticket aimed at women 50+ will
+still degrade to a NO-FACE hero until those pools are filled.
