@@ -2890,3 +2890,163 @@ session). So the demand mining has to happen on your side.
 **Persona bank health (informational):** 137/200 faces, 35 angles spent + 4 reserved of 1905.
 Pool `f6070` is **EMPTY** (1 retired, no usable face) and `f5059` sits at 5/27 — a ticket aimed at
 women 50+ will degrade to a NO-FACE hero until those pools are filled.
+
+---
+
+# BATCH 2026-09-06
+
+## [DONE 2026-09-06 https://wellnessnest.co/blogs/news/creatine-gummies-for-women-6-things-to-know-us-2026] Ticket #43 — NEW ARTICLE (type: LISTICLE)
+
+- **Primary keyword:** `creatine gummies for women`
+- **Secondary:** creatine gummies women dosage, do creatine gummies make you bloat,
+  creatine and water weight women, creatine gummies for women over 40, creatine hair loss myth
+- **Search intent:** informational, buyer-adjacent — a woman deciding whether the gummy format
+  is right for her, and what actually happens in the first weeks
+- **Template:** `LISTICLE` (numbered cards; #42 was EDITORIAL, #41 STORY, #40 COMPARISON,
+  #39 LISTICLE, #38 EDITORIAL — the refill note asked for LISTICLE or STORY)
+- **STEP 0 (live, before writing):** `q="creatine gummies for women"` → 0 articles.
+  Control query `q="creatine"` → 7 live articles, so the probe was working, not silently empty.
+  Target handle `creatine-gummies-for-women-6-things-to-know-us-2026` probed **404**.
+- **STEP 0.5:** `REVIEW [covered-segment]` — brand "creatine gummies" has general articles, but
+  "for women" is an audience no existing title covers. The nearest neighbour is #2
+  *Creatine for Women Over 40*, which is an AGE segment on creatine generally, not the gummy
+  FORMAT. Proceeding under Kevin's 2026-08-13 standing greenlight for this queue.
+- **Angle (the differentiator):** the format questions are the ones women actually ask and the
+  age-segment article does not answer — 3 gummies vs a scoop, sugar per serving, why the
+  "5 g for everyone" number is not scaled to body weight, and the two fears (bloating, hair
+  loss) that come from misreading the literature. Link #2 rather than restate it.
+- **Products (all verified 200):** `/products/fusiforce-creatine-gummies` ($69.99) ·
+  `/products/fusiforce-3-month-half-reserve` ($119.67) · `/products/fusiforce-6-month-reserve` ($201.60)
+- **Collections (≥2, verified 200):** `/collections/womens-essentials-collection`, `/collections/best-seller`
+- **Internal links (all verified 200):** creatine-for-women-over-40 · creatine-gummies-vs-powder ·
+  creatine-gummies-dosage · creatine-gummies-side-effects · best-time-to-take-creatine ·
+  how-long-does-creatine-take-to-work · shilajit-and-creatine
+- **Author:** Dr. Marcus Hale (roster.json, verbatim bio)
+- **Persona (picker seq 54):** hero `f3039-hl-03` — US woman ~25-35, Latina.
+
+### Post-publish record — Ticket #43 (2026-09-06)
+
+**Live:** https://wellnessnest.co/blogs/news/creatine-gummies-for-women-6-things-to-know-us-2026 —
+article `621976420667`, blog `104008483131`, HTTP 200, published LIVE and visible, never a draft.
+1,809 words · LISTICLE · 8 H2 · 2 tables · 6 FAQs · 3 collection links · 4 images (hero cover + 3 inline).
+
+**The queue was empty and this run mined rather than skipping.** All three runs of 2026-09-05 stopped
+at "refill needed" after #42 shipped, and left the `DAILY-RUN.md` §1.1.2 conflict open. Today is a new
+day, so §1.1.2 applies cleanly: an empty queue is the job. Mined at $0 from machine-local sources only
+(live `products.json`, `ALL_ARTICLES.csv`, the tracker) — GSC and the google-ads MCP remain unavailable.
+
+**STEP 0 ran against the live site before a word was written.** `q="creatine gummies for women"` → 0
+articles. Control query `q="creatine"` → 7 live articles, which proves the probe was working rather
+than silently returning empty. Target handle probed **404** before drafting.
+
+**Three candidates were gated, two were rejected by the gate, not by preference.**
+`how long does shilajit take to work` → `FAIL [covered]`. `Turkesterone Results Timeline` →
+`FAIL [covered]`. `Shilajit for Testosterone` → `FAIL [covered]`. `Do You Need to Cycle Shilajit?` →
+`FAIL [covered]`. Only `creatine gummies for women` and `Urolithin A vs NMN` returned `REVIEW
+[covered-segment]`; the creatine one won on template rotation (LISTICLE was owed, COMPARISON ran at #40)
+and because a third consecutive "How Long Does X Take to Work" title in eight days is itself a
+scaled-content pattern.
+
+**The differentiator against #2 `creatine for women over 40`** is format, not age: three-gummy serving
+vs a scoop, the 0.03 g/kg maintenance maths against the flat 5 g label, the intracellular-water reading
+of "creatine bloat", and the hair-loss study read properly. #2 is linked rather than restated.
+
+**Gates.** `validate_article.py --draft` printed `✓ PASS` on the **first attempt**, before the publisher
+ran — the draft was never edited to appease it. Both post-publish gates pass: publisher
+`✅ IMAGE VERIFICATION PASSED`, and live HTTP 200 with the intended `og:title`, four CDN images returning
+130–175 KB each, FAQPage + Person JSON-LD, and the Shop-This-Article widget wired to all three FusiForce
+handles (`fusiforce-creatine-gummies`, `fusiforce-3-month-half-reserve`, `fusiforce-6-month-reserve`).
+
+**Persona.** `pick --audience women-25-45` → seq 54, hero `f3039-hl-03` (US woman ~25–35, Latina; a face
+hero — the no-face cycle was not at its position), shot `low-table-level`, gaze `up-and-away`, angle
+`3q-left+chin-down`; inline persona angle `profile-right+chin-up`, gaze `at-another-person`. `warnings[]`
+empty. Both angles were confirmed as actually shipped before `commit`, which closed at exit 0. 13 angles
+left on this persona. Reservations **seq 46 and 49** left untouched again, for the reason the 2026-09-04
+audit established — do not let a future run "fix" them by releasing.
+
+**QC lane is down for the fourth day.** All four `--qc` calls returned `qc-inconclusive` because gem9's
+base host `staff.patiagency.com` still returns **NXDOMAIN** from this Mac (`curl` exit 6, HTTP 000).
+`qc-inconclusive` is not a FAIL, so **0 of the 2 re-rolls were spent**. Every image was opened and
+hand-verified against `product_refs/fusiforce-creatine-gummies.png` instead: pouch format, green,
+vertical Wellness Nest wordmark, FusiForce badge, Green Apple tag, four benefit rows and the gummy-count
+footer all match on all four renders; no hands touch the pouch on the hero; no invented label layout.
+
+**Open product/compliance flag re-confirmed, not written into the article:** the FusiForce pack front
+reads "90 GUMMIES" while the panel is 28 servings × 3 = 84, and the PDP says 25 mg ginseng where the
+panel says 50 mg. The article therefore names the three-gummy serving but never states how many days a
+pouch lasts, because the two printed numbers disagree. Kevin — this is a packaging fix, not a copy fix.
+
+**Not claimed, on purpose:** the PDP's Eurofins post-cook testing and published COAs are a real
+differentiator, but the `no-coa-competitive-advantage` house rule keeps them out of the article. The
+buying section tells the reader to ask *any* brand for batch documentation instead.
+
+---
+
+## Refill needed
+
+**Queue is empty again after #43.** Rotation for #44: #43 LISTICLE → #42 EDITORIAL → #41 STORY →
+#40 COMPARISON → #39 LISTICLE, so **STORY or COMPARISON** is owed.
+
+**Ready to pick up for #44:**
+- `Urolithin A vs NMN: Which Should You Take? (US 2026)` — gated `REVIEW [covered-segment]` this run,
+  held only because the rotation wanted a LISTICLE. Both SKUs are AgeAura, both in stock, and no
+  `urolithin a vs` article exists. COMPARISON template. This is the strongest remaining candidate.
+- `Probiotics for Vaginal Odor` — gated `REVIEW [review]`: no stocked-brand + intent signal. Needs a
+  demand check before it is worth writing.
+- Dead, do not re-mine: `how long does shilajit take to work`, `shilajit for testosterone`,
+  `do you need to cycle shilajit`, `turkesterone results timeline`, `do creatine gummies work` — all `FAIL [covered]`.
+
+**Blockers re-verified this run — all five unchanged, none fixable unattended:**
+
+1. **gem9 vision-QC host `staff.patiagency.com` → NXDOMAIN** (day 4). Every image ships on a manual check only.
+2. **QRG prose scorer still absent** — `claude-seo` is not on PATH on this Mac. 25 articles in a row have
+   passed the structural gate with `⚠ QRG quality scoring skipped`.
+3. **Dangling persona reservations `seq 46` and `seq 49`** still open. Both need the partial-commit fix.
+4. **IndexNow key** still unconfigured; the publisher skipped the ping again.
+5. The 17 *"From Stiff to Strong"* duplicates and the GemPages *"Types of Shilajit Products"* page still
+   await an explicit delete go-ahead — deletion is destructive, so untouched.
+
+**Persona bank health (informational):** 137/200 faces, 37 angles spent + 4 reserved of 1905.
+Pool `f6070` is **EMPTY** (1 retired, no usable face) and `f5059` sits at 5/27 — a ticket aimed at women
+50+ will still degrade to a NO-FACE hero until those pools are filled.
+
+---
+
+## Refill needed
+
+### Kevin — please run the mining recipe in the app (2026-09-06, later run)
+
+**No `[ ]` ticket remains and NO article was written this run.** Ticket #43 shipped earlier today
+(`creatine-gummies-for-women-6-things-to-know-us-2026`, article `621976420667`), which was the last
+open item. The google-ads MCP is **not available** in this environment — a tool search for
+ads/campaign/search-terms tooling returned nothing, so search-terms mining cannot run here. Per the
+run contract, an empty queue with no mining source means: stop, do not invent an article.
+
+**What to run in the app (google-ads MCP available there):**
+1. Pull the last 90 days of search terms for the wellness_nest / AgeAura campaigns.
+2. Drop the terms that already map to a live article (`ALL_ARTICLES.csv` is current as of today).
+3. Keep terms with real impressions and no owned page, then write them into a new `# BATCH` block
+   with the usual fields (primary keyword, intent, template, products, collections, author).
+
+**Rotation for #44:** #43 LISTICLE → #42 EDITORIAL → #41 STORY → #40 COMPARISON, so **STORY or
+COMPARISON** is owed.
+
+**Still the strongest machine-local candidate if you want #44 without waiting for ads data:**
+`Urolithin A vs NMN: Which Should You Take? (US 2026)` — COMPARISON, gated `REVIEW [covered-segment]`
+on 2026-09-06, both SKUs AgeAura and in stock, no `urolithin a vs` article exists. It fits the owed
+rotation exactly.
+
+**Blockers re-verified 2026-09-06 (later run) — all five unchanged, none fixable unattended:**
+
+1. **gem9 vision-QC host `staff.patiagency.com` → NXDOMAIN** (day 5). `curl` exit 6, HTTP 000.
+   Every image still ships on a manual reference check only.
+2. **QRG prose scorer absent** — `claude-seo` still not on PATH on this Mac.
+3. **Dangling persona reservations `seq 46` and `seq 49`** still open (confirmed in `picker status`).
+   Do NOT release them blind — they need the partial-commit fix.
+4. **IndexNow key** still unconfigured.
+5. The 17 *"From Stiff to Strong"* duplicates and the GemPages *"Types of Shilajit Products"* page
+   still await an explicit delete go-ahead — destructive, so untouched.
+
+**Persona bank health:** 137/200 faces, seq=54, 37 angles spent + 4 reserved of 1905. Pool `f6070`
+is **EMPTY** (1 retired, no usable face) and `f5059` sits at 5/27 — a ticket aimed at women 50+ will
+still degrade to a NO-FACE hero until those pools are filled.
