@@ -3110,3 +3110,35 @@ ticket #43 shipped 2026-09-06. google-ads MCP unavailable in this environment, s
 `skills/genseo-auto-publish/references/ads-article-mining.md` cannot run here. **Kevin: run the
 mining recipe in the app** and append next batch as `# BATCH <date>`. Rotation for #44: STORY or
 COMPARISON owed; strongest local candidate `Urolithin A vs NMN` (COMPARISON).
+
+---
+
+## Refill needed
+
+### Kevin — please run the mining recipe in the app (2026-09-07, later run)
+
+**No `[ ]` ticket remains and NO article was written this run.** `grep '^## \[ \]' daily-tickets.md`
+returns nothing. The two leftover `[ ]` strings (lines 1005 and 1812) sit inside historical
+`###` notes on Tickets #31 and #36, both already `[DONE]`. Last real ticket: #43
+(`creatine-gummies-for-women-6-things-to-know-us-2026`). google-ads MCP is **not available**
+here, so search-term mining cannot run. Per rule 6: stop, do not invent an article.
+
+**What to run in the app:**
+1. Pull last 90 days of search terms for wellness_nest / AgeAura.
+2. Drop terms that already map to a live article (`ALL_ARTICLES.csv`).
+3. Keep terms with real impressions and no owned page. Append as `# BATCH 2026-09-07`.
+
+**Rotation for #44:** #43 LISTICLE → #42 EDITORIAL → #41 STORY → #40 COMPARISON, so **STORY or
+COMPARISON** is owed.
+
+**Strongest machine-local candidate (not written — no `[ ]` ticket):**
+`Urolithin A vs NMN: Which Should You Take? (US 2026)` — COMPARISON, both SKUs AgeAura and in
+stock, no `urolithin a vs` article exists.
+
+**Blockers unchanged, none fixable unattended:**
+1. gem9 vision-QC host `staff.patiagency.com` → NXDOMAIN.
+2. QRG prose scorer (`claude-seo`) still not on PATH.
+3. Dangling persona reservations `seq 46` and `seq 49` still open — do not release blind.
+4. IndexNow key still unconfigured.
+5. 17 *"From Stiff to Strong"* duplicates + GemPages *"Types of Shilajit Products"* page still
+   await an explicit delete go-ahead.
