@@ -3102,3 +3102,11 @@ that state was never git-committed. It is committed now. No hand-editing was don
 **Persona bank health:** 137/200 faces, seq=54, 37 angles spent + 4 reserved of 1905. Pool `f6070`
 is **EMPTY** (1 retired, no usable face) and `f5059` sits at 5/27 — a ticket aimed at women 50+ will
 still degrade to a NO-FACE hero until those pools are filled.
+
+## Refill needed
+
+**2026-09-07 — queue EMPTY, nothing published by design.** No `[ ]` ticket heading remains; last
+ticket #43 shipped 2026-09-06. google-ads MCP unavailable in this environment, so mining recipe in
+`skills/genseo-auto-publish/references/ads-article-mining.md` cannot run here. **Kevin: run the
+mining recipe in the app** and append next batch as `# BATCH <date>`. Rotation for #44: STORY or
+COMPARISON owed; strongest local candidate `Urolithin A vs NMN` (COMPARISON).
