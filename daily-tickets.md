@@ -3142,3 +3142,90 @@ stock, no `urolithin a vs` article exists.
 4. IndexNow key still unconfigured.
 5. 17 *"From Stiff to Strong"* duplicates + GemPages *"Types of Shilajit Products"* page still
    await an explicit delete go-ahead.
+
+---
+
+# BATCH 2026-09-08
+
+## [ ] Ticket #44 — NEW ARTICLE (type: COMPARISON)
+
+- **Primary keyword:** `Urolithin A vs NMN`
+- **Secondary:** urolithin A or NMN, is urolithin A better than NMN, NMN vs urolithin A for muscle,
+  can you take urolithin A and NMN together, urolithin A vs NMN price
+- **Search intent:** informational and buyer-adjacent — a US adult choosing which AgeAura pathway to
+  buy first, based on goal, human evidence, label clarity, price, and uncertainty
+- **Template:** `COMPARISON` (#43 was LISTICLE; the exact `vs` intent maps to COMPARISON)
+- **STEP 0 (live, before writing):** `q="Urolithin A vs NMN"` → 0 articles on 2026-09-08.
+  Live `suggest.json` is the duplicate authority.
+- **STEP 0.5:** `REVIEW [covered-segment]` — the brand `urolithin` has a general article, but the
+  direct `vs` choice is a distinct audience and intent. Proceeding under Kevin's 2026-08-13 standing
+  greenlight and the explicit hold in Ticket #43's post-run note.
+- **Angle:** two different jobs, not a winner-takes-all contest. Compare mitochondrial quality control
+  with NAD+ precursor biology, then route the choice by buyer goal and disclose that no head-to-head
+  or combination trial exists.
+- **Products (verified HTTP 200):** `/products/ageaura-pure-urolithin-a` ($199.99) ·
+  `/products/ageaura-pure-nmn-tmg-nad-complex` ($69.95)
+- **Collections (verified HTTP 200):** `/collections/ageaura` · `/collections/best-seller`
+- **Author (verified HTTP 200):** Dr. Marcus Hale (`roster.json`, verbatim bio)
+- **Persona reservation:** picker seq 55 · hero `NO-FACE` · shot `high-angle-down` · warnings `[]`.
+- **2026-09-09 run: `[BLOCKED-IMAGE-GENERATOR]`.** STEP 0 live duplicate check still returned 0 articles.
+  STEP 0.5 remained approved `REVIEW [covered-segment]`. The mandatory first hero call used only
+  `scripts/article_images.py` with both curated product refs and the $0 ima2 OAuth lane. It produced
+  no file: the provider returned HTTP 400 `INVALID_REQUEST` (`OpenAI rejected the image request`).
+  Per the critical image safeguard, no draft was written, the validator and publisher were not run,
+  and no alternate provider was used. Reservation seq 55 was released cleanly; no face angles burned.
+- **2026-09-09 retry: `[BLOCKED-IMAGE-GENERATOR]`.** Live body scan found the topic covered only as a
+  section inside the general Urolithin A article, not as a standalone comparison. Research verified
+  eight source DOIs and author surnames. ClinicalTrials.gov found no completed head-to-head or
+  combination trial; one 20-person multimodal feasibility study (`NCT07451496`) is still recruiting.
+  The picker ran exactly once for this retry: seq 57, hero `f4049-wh-11`, shot
+  `mid-subject-fg-pack`, warnings `[]`. Three hero requests through `scripts/article_images.py`, the
+  curated Urolithin A ref, the approved persona ref, and $0 ima2 OAuth all failed before image output
+  with `OpenAI rejected the image request`. No QC verdict existed. No draft, validation, or publication
+  followed. Seq 57 was released cleanly; both reserved face angles returned; no angles burned.
+
+### 2026-09-09 (third attempt) — Ticket #44 STILL `[BLOCKED-IMAGE-GENERATOR]`, ROOT CAUSE FOUND
+
+Ticket left `[ ]` on purpose. No pick was run, so **zero face angles burned** this run.
+
+**Diagnosis (new this run — previous two runs did not isolate it):**
+The failure is NOT the prompt, NOT the refs, NOT moderation, and NOT this repo's code.
+A control generation with a deliberately bland prompt (empty wooden table, morning light)
+and `refs=0` failed identically:
+
+```
+[generate.request] ... provider="oauth" model="gpt-5.4-mini" refs=0 promptChars=534
+[oauth.response]   ... status=400
+[generate.parallel_failed] errorCode="INVALID_REQUEST" errorMessage="OpenAI rejected the image request."
+```
+
+Every `/api/generate` in `/tmp/ima2-serve-genseo.log` returns HTTP 400 in ~1.5s — too fast
+for content moderation, and it fails before any image work starts. The daemon banner shows
+the cause:
+
+```
+[oauth] A newer version of openai-oauth is available: 1.0.2 -> 2.0.0.
+```
+
+`ima2 serve` is pinned to the `openai-oauth` **1.0.2** transport; npm now publishes **2.0.0**.
+The upstream OAuth image endpoint has moved on and rejects the 1.x request shape outright.
+Also note `~/.npm-global/bin/ima2` no longer exists — the binary `article_images.py` looks
+for first has moved, so its `_find_bin` is falling through to another path.
+
+**Why this run did not fix it:** upgrading a global npm package and re-doing a ChatGPT OAuth
+login are host-level changes with a human sign-in step. Per the unattended-run rules, a step
+needing human input means stop and report rather than improvise.
+
+**Kevin — one-time fix, then this ticket runs clean (est. 3 min):**
+1. `npx openai-oauth@latest` (or `npm i -g openai-oauth@2.0.0`) and re-run the ChatGPT sign-in if it asks.
+2. Reinstall/relink the `ima2` CLI so `ima2` resolves on PATH again (was `~/.npm-global/bin/ima2`).
+3. `pkill -f "ima2 serve"` so the next run starts a fresh daemon on the new transport.
+4. Smoke test: `/usr/bin/python3 scripts/article_images.py --slug _smoketest --name probe --prompt "empty wooden table, morning light, no text, no people"` → expect a saved PNG, not `INVALID_REQUEST`.
+
+Article research/angle/products/author in the ticket above are unchanged and still valid.
+No draft written, no gate run, no publish, no tracker row, no persona commit.
+
+**Housekeeping spotted (not touched):** two stale reservations are still open —
+`seq=46` (`f3039-as-01`) and `seq=49` (`f3039-bl-01`). If those articles never went live,
+`release --seq 46` / `release --seq 49` returns 4 angles. Also `f6070` pool is `EMPTY` and
+`f5059` is 5/27 — that limits older-female heroes.
