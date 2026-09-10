@@ -3325,3 +3325,17 @@ is likely why yesterday's run reported them as cleared.) **Not released this run
 would be wrong if those articles are in fact live. Kevin: confirm whether they published, then
 `release --seq 46` / `release --seq 49` returns 8 angles. Bank is 137/200 personas; `f6070` EMPTY,
 `f5059` at 5/27 — older-female heroes remain constrained.
+
+### 2026-09-10 (third run) — Ticket #44 STILL `[BLOCKED-IMAGE-QUOTA]`
+
+Ticket left `[ ]`. The picker ran exactly once: seq 58, hero `f4049-wh-13`, shot
+`mid-subject-fg-pack`, warnings `[]`. The mandatory hero request used only
+`scripts/article_images.py`, both curated product refs, the approved persona ref, the assigned
+`3q-right+level` angle, and the $0 OAuth `gpt-5.6-luna` lane. The service accepted the request,
+then returned HTTP 429 `usage_limit_reached`. It produced zero images, so no QC verdict existed
+and zero of two QC re-rolls were used.
+
+Per the critical image safeguard, no draft was written, the validator and publisher were not run,
+and no tracker row was added. Reservation seq 58 was released cleanly. Both assigned angles
+(`3q-right+level`, `3q-left+chin-down`) returned to the pool; no angle burned. The picker kept its
+sequence and gaze-rotation history by design. No alternate or paid image provider was used.
