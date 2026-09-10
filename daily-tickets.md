@@ -3229,3 +3229,99 @@ No draft written, no gate run, no publish, no tracker row, no persona commit.
 `seq=46` (`f3039-as-01`) and `seq=49` (`f3039-bl-01`). If those articles never went live,
 `release --seq 46` / `release --seq 49` returns 4 angles. Also `f6070` pool is `EMPTY` and
 `f5059` is 5/27 — that limits older-female heroes.
+
+### 2026-09-10 — Ticket #44 `[BLOCKED-IMAGE-QUOTA]` — transport bug FIXED, new blocker is account quota
+
+Ticket left `[ ]`. **No pick was run, so zero face angles burned.** No draft, no gate, no publish,
+no tracker row, no persona commit.
+
+**STEP 0 (live site, re-run today, authoritative):** `q="Urolithin A vs NMN"` → **0 articles**;
+`q="urolithin NMN"` → 0. `q="urolithin"` → 3 live articles, none a `vs` comparison
+(benefits-40-problem, side-effects-3-trials, dosage-how-many-mg). Topic is still NOT a duplicate.
+
+**The 2026-09-09 root cause was correct but the prescribed fix was the wrong package.**
+`openai-oauth` was a red herring — it is a *bundled dependency* of the daemon, and its
+"1.0.2 -> 2.0.0" banner still prints today even after a clean upgrade. The actual fault was
+**`ima2-gen` itself: installed `1.1.11` vs published `3.16.0`**, and a retired model id.
+
+**What this run changed (all reversible, no credentials entered, no account created):**
+1. Backed up the OAuth session dir → `~/.ima2.bak-20260910-0731` (990 MB) before touching anything.
+2. `npm i -g ima2-gen@latest` → `1.1.11` → **`3.16.0`**. Existing ChatGPT OAuth session survived
+   the upgrade; **no sign-in prompt appeared**, so no human login step was needed after all.
+3. Restarted the daemon on 3333. `ima2 --version` → `3.16.0`, clients now log `client="cli/3.16.0"`.
+4. v3 removed provider `auto` and requires an explicit default →
+   `ima2 defaults set image oauth/gpt-5.6-luna` (written to `~/.ima2/config.json`).
+   **`gpt-5.4-mini`, the model every previous run sent, has been retired upstream** — it is absent
+   from the daemon's live model list. That retired id was the literal cause of the HTTP 400s.
+
+**Proof the transport is fixed — the error class changed:**
+```
+before: status=400  errorMessage="OpenAI rejected the image request."        (bad request shape)
+after : status=429  errorMessage="OpenAI rate limited the image request."    (request shape VALID)
+```
+A 429 can only be produced by a request the server accepted and understood.
+
+**The new, different blocker — ChatGPT image quota is exhausted.** Raw daemon response:
+```json
+{"error":"OpenAI rate limited the image request.","upstreamType":"usage_limit_reached"}
+```
+`usage_limit_reached` is a plan-quota verdict, not a transient throttle. Verified not recoverable
+in-run and not model-specific: four backoff retries over ~10 min (60/120/180/240 s) on
+`gpt-5.6-luna`, plus `gpt-5.6-sol` and `gpt-5.5`, **all** returned 429. Account-wide.
+
+Per §3 the gate needs 1 hero + ≥3 inline images, so no publishable article exists today.
+Per the standing image safeguard no draft was written. **QC re-roll budget untouched (0 of 2 used)** —
+the budget covers QC FAILs, and no image was ever produced to QC.
+
+**Kevin — what is actually needed now (~0 min of work, just time or a plan change):**
+- The code/install problem is **solved**; do not redo the `openai-oauth` steps from yesterday's note.
+- Image generation will resume **on its own** when the ChatGPT image quota resets, or immediately
+  on a plan with remaining image credits. Nothing in this repo needs editing.
+- Rollback if ever needed: `npm i -g ima2-gen@1.1.11` and restore `~/.ima2.bak-20260910-0731`.
+  Not recommended — 1.1.11 can only ever emit the retired model id.
+
+**Left running on purpose:** the upgraded `ima2 serve` on port 3333 (it replaced an already-running
+old daemon, so this is not a new orphan). Next run will find a healthy, correctly-configured daemon.
+
+**Housekeeping:** `persona_picker.py list --open` is now **empty** — the seq 46 / 49 stale
+reservations flagged yesterday are already cleared. `f6070` pool is still EMPTY and `f5059` still 5.
+Article research, angle, products, collections and author in the ticket above remain valid and unchanged.
+
+### 2026-09-10 (second run) — Ticket #44 STILL `[BLOCKED-IMAGE-QUOTA]` — same blocker, nothing new to fix
+
+Ticket left `[ ]`. **No pick was run, so zero face angles burned.** No draft, no gate, no publish,
+no tracker row, no persona commit. QC re-roll budget untouched (0 of 2) — no image ever existed to QC.
+
+**STEP 0 (live, re-run today, authoritative):** `q="Urolithin A vs NMN"` → **0 articles**;
+`q="urolithin NMN"` → 0; `q="urolithin"` → the same 3 non-comparison articles
+(benefits-40-problem, side-effects-3-trials, dosage-how-many-mg). Still NOT a duplicate.
+
+**Ticket assets re-verified live today, all HTTP 200:** `/products/ageaura-pure-urolithin-a` ·
+`/products/ageaura-pure-nmn-tmg-nad-complex` · `/collections/ageaura` · `/collections/best-seller`.
+Author gate self-check passes (`roster.json` has `dr-marcus-hale`).
+
+**Image lane is correctly installed and correctly authenticated — the block is purely account quota.**
+- `ima2 billing` → `{"oauth": true, "apiKeyValid": false}` — the $0 OAuth lane is signed in and the
+  paid API-key lane is absent, which is the intended configuration.
+- `GET /api/models` → `"oauth":{"status":"ready"}`, `gpt-5.6-luna` present as the default.
+  Yesterday's `ima2-gen@3.16.0` upgrade is intact; the retired-model-id fault did NOT come back.
+- Raw upstream verdict is byte-identical to yesterday:
+  `{"error":"OpenAI rate limited the image request.","upstreamType":"usage_limit_reached"}`
+
+**Retries this run:** hero-sized `gpt-5.6-luna` 1536x1024 plus spaced backoff attempts (120 s, 240 s)
+and a `gpt-5.5` control at 1024x1024 — **every one returned 429 `usage_limit_reached`**. Not
+model-specific, not size-specific, not prompt-specific (control used refs=0 and a bland prompt).
+Log now shows 16 accepted requests and 16 rate-limited generations.
+
+**Kevin — nothing in this repo needs editing. This is a ChatGPT plan-quota wait, not a bug.**
+The §3 gate needs 1 hero + ≥3 inline images; with 0 obtainable, no publishable article exists today.
+Options: wait for the image quota to reset, or move the ChatGPT account to a plan with image credits.
+Per the standing approval, no paid image API (KIE / Veo / Kling / per-token) was considered.
+
+**Housekeeping correction — yesterday's note was WRONG on this point.** `persona_picker.py status`
+today still shows both stale reservations OPEN: `seq=46` (`f3039-as-01`, 4 angles) and `seq=49`
+(`f3039-bl-01`, 4 angles). (`list --open` is not a valid subcommand — use `status`; that bad command
+is likely why yesterday's run reported them as cleared.) **Not released this run** — releasing blind
+would be wrong if those articles are in fact live. Kevin: confirm whether they published, then
+`release --seq 46` / `release --seq 49` returns 8 angles. Bank is 137/200 personas; `f6070` EMPTY,
+`f5059` at 5/27 — older-female heroes remain constrained.
