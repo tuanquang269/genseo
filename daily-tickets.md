@@ -3339,3 +3339,24 @@ Per the critical image safeguard, no draft was written, the validator and publis
 and no tracker row was added. Reservation seq 58 was released cleanly. Both assigned angles
 (`3q-right+level`, `3q-left+chin-down`) returned to the pool; no angle burned. The picker kept its
 sequence and gaze-rotation history by design. No alternate or paid image provider was used.
+
+### 2026-09-11 — Ticket #44 STILL `[BLOCKED-IMAGE-QUOTA]`
+
+Ticket left `[ ]` so the next daily run retries it. STEP 0 checked the live `suggest.json` before
+writing and returned **0 articles** for `Urolithin A vs NMN`. STEP 0.5 remained the approved
+`REVIEW [covered-segment]` result under Kevin's 2026-08-13 queue greenlight.
+
+The picker reserved seq 59: hero `f5059-wh-05`, shot `through-doorway`, hero angle
+`3q-left+chin-up`, inline angle `3q-left+level`, warnings `[]`. The mandatory hero request ran only
+through `scripts/article_images.py` with both curated AgeAura bottle refs, the approved persona ref,
+the assigned face angle, `--qc`, and the $0 OAuth `gpt-5.6-luna` lane. The service accepted the
+request, then returned HTTP 429 `OpenAI rate limited the image request` after 2.3 seconds. It created
+no image. This is the same account-quota blocker recorded on 2026-09-10, not a QC failure.
+
+Per the image safeguard, no draft was written. `validate_article.py` and
+`shopify_publisher.py` were not run. Nothing was published. No tracker row was added. The QC re-roll
+budget remains **0 of 2** because no image existed to inspect. Seq 59 was released cleanly; both
+reserved angles returned to the pool and no angle burned. The unrelated seq 46 and seq 49
+reservations remain untouched. The upgraded `ima2 serve` process on port 3333 remains the one
+pre-existing daemon; no extra background process was started. No alternate or paid image provider,
+credential, account, browser, deletion, or frozen-article change was used.
