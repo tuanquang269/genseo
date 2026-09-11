@@ -3360,3 +3360,26 @@ reserved angles returned to the pool and no angle burned. The unrelated seq 46 a
 reservations remain untouched. The upgraded `ima2 serve` process on port 3333 remains the one
 pre-existing daemon; no extra background process was started. No alternate or paid image provider,
 credential, account, browser, deletion, or frozen-article change was used.
+
+### 2026-09-11 (second run) — Ticket #44 STILL `[BLOCKED-IMAGE-QUOTA]`
+
+Ticket left `[ ]`. Research was refreshed before image work. Current human evidence still supports
+an honest two-path comparison: Urolithin A has direct randomized muscle-endurance and mitochondrial-
+marker trials, while NMN reliably raises blood NAD+ but its muscle results remain mixed in systematic
+reviews. No completed head-to-head or combination trial was found. Live prices remain $199.99 for
+AgeAura Pure Urolithin A and $69.95 for AgeAura Pure NMN + TMG NAD+ Complex.
+
+The picker ran exactly once: seq 60, hero `f5059-wh-06`, gaze `at-lens`, shot
+`through-doorway`, hero angle `3q-left+chin-up`, inline angle `profile-left+level`, warnings `[]`.
+The mandatory hero call used `/usr/bin/python3 scripts/article_images.py`, both curated AgeAura
+bottle refs, the approved persona ref, the assigned face angle, `--qc`, and only the $0 ima2 OAuth
+lane. The first shell attempt accidentally used Homebrew Python 3.14, which lacks Pillow, and stopped
+before contacting ima2. The required retry used the correct system Python 3.9. The service accepted
+that request, then returned HTTP 429 `OpenAI rate limited the image request`; the daemon recorded the
+same `usage_limit_reached` account-quota class as prior runs. It produced no image.
+
+Per the critical image safeguard, drafting stopped. No draft, validation, publication, or tracker row
+exists. The QC re-roll budget remains **0 of 2** because no candidate image existed to judge. Seq 60
+was released cleanly; both assigned angles returned to the pool. The sequence and gaze rotation remain
+recorded by picker design. Seq 46 and seq 49 remain untouched. The pre-existing ima2 daemon remains on
+port 3333. No paid or alternate media API was used.

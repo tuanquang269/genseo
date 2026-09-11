@@ -1,7 +1,7 @@
 {
  "_doc": "Machine-readable rotation state for the persona bank. persona.json holds IMMUTABLE provenance; this file holds MUTABLE rotation history. Written only by scripts/persona_picker.py commit (atomic tmp+rename). Never hand-edit during a run.",
  "schema_version": 1,
- "seq": 59,
+ "seq": 60,
  "seeded_from": "PUBLISHED_ARTICLES_TRACKER.csv tickets 1-10 (free-text hero/gaze notes)",
  "recent_shots": [
   "high-angle-down",
@@ -1392,12 +1392,14 @@
    "ref": "/Users/kevinkreative/genseo/personas/f5059-wh-06/ref.jpg",
    "identity_key": "openimages:ddcf18fa4dbef1ad",
    "used_count": 0,
-   "last_used_seq": 56,
+   "last_used_seq": 60,
    "gaze_used": [
     "down-at-hands",
-    "down-at-product"
+    "down-at-product",
+    "at-lens",
+    "off-into-room"
    ],
-   "last_gaze": "down-at-hands",
+   "last_gaze": "at-lens",
    "angles_used": [],
    "angles_reserved": []
   },
