@@ -3383,3 +3383,41 @@ exists. The QC re-roll budget remains **0 of 2** because no candidate image exis
 was released cleanly; both assigned angles returned to the pool. The sequence and gaze rotation remain
 recorded by picker design. Seq 46 and seq 49 remain untouched. The pre-existing ima2 daemon remains on
 port 3333. No paid or alternate media API was used.
+
+### 2026-09-12 — Ticket #44 STILL `[BLOCKED-IMAGE-QUOTA]`
+
+Ticket left `[ ]`. STEP 0 checked the live `suggest.json` before writing and returned **0 articles** for
+`Urolithin A vs NMN`. STEP 0.5 remained the approved `REVIEW [covered-segment]`. Both live products were
+available at HTTP 200: Urolithin A at $199.99 and NMN + TMG at $69.95. Both collections and the author
+page returned HTTP 200; the roster self-check passed.
+
+The picker ran once: seq 61, hero `f4049-wh-11`, gaze `down-at-product`, shot `over-shoulder`, hero angle
+`front+chin-down`, inline angle `3q-right+chin-up`, warnings `[]`. The mandatory hero ran only through
+`scripts/article_images.py` with both curated AgeAura refs, the approved persona ref, the assigned face
+angle, `--qc`, and the $0 OAuth `gpt-5.6-luna` lane. The accepted request returned HTTP 429 `OpenAI rate
+limited the image request` after 2.3 seconds. It produced no image.
+
+The image safeguard stopped drafting. No validation, publication, tracker row, or live URL exists. QC
+re-roll use is **0 of 2** because no candidate reached QC. Seq 61 was released cleanly; both angles were
+returned and none burned. Seq 46 and seq 49 remain untouched. No paid provider, credential, account,
+browser, deletion, or frozen-article change was used.
+
+### 2026-09-12 (second run) — Ticket #44 STILL `[BLOCKED-IMAGE-QUOTA]`
+
+Ticket left `[ ]`. STEP 0 checked the live `suggest.json` and returned **0 articles** for `Urolithin A vs
+NMN`. STEP 0.5 returned `REVIEW [covered-segment]`; the ticket's vetted comparison brief greenlit this
+exact topic, so the run continued. The author roster self-check passed. Current year was confirmed as
+2026. The existing ima2 daemon remained the only listener on port 3333.
+
+The existing picker reservation was reused without calling `pick` again: seq 62, hero `f4049-wh-13`,
+gaze `down-at-product`, inline gaze `just-past-lens`, shot `over-shoulder`, hero angle
+`profile-left+chin-up`, inline angle `profile-left+chin-down`, warnings `[]`. The mandatory hero request
+used `/usr/bin/python3 scripts/article_images.py`, both curated AgeAura product refs without `:index`,
+the original approved persona ref, the assigned face-angle phrase, `--qc`, no `--ugc`, and only the
+pre-approved $0 ima2 OAuth lane. Both bottles stood on a surface with no hands touching them in the
+prompt. The request returned `OpenAI rate limited the image request`. It produced no image.
+
+The image safeguard stopped the run. No draft, validator run, publisher run, tracker row, article ID, or
+live URL exists. QC re-roll use is **0 of 2** because no image reached QC. Seq 62 was released cleanly;
+both reserved angles returned to the pool and none burned. Seq 46 and seq 49 remain untouched. No paid
+or alternate media provider, credential, account, browser, deletion, or frozen-article change was used.
