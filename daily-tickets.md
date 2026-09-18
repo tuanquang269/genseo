@@ -3147,7 +3147,7 @@ stock, no `urolithin a vs` article exists.
 
 # BATCH 2026-09-08
 
-## [ ] Ticket #44 — NEW ARTICLE (type: COMPARISON)
+## [DONE 2026-09-18 https://wellnessnest.co/blogs/news/urolithin-a-vs-nmn-which-fits-your-goal-in-the-us] Ticket #44 — NEW ARTICLE (type: COMPARISON)
 
 - **Primary keyword:** `Urolithin A vs NMN`
 - **Secondary:** urolithin A or NMN, is urolithin A better than NMN, NMN vs urolithin A for muscle,
@@ -3421,3 +3421,124 @@ The image safeguard stopped the run. No draft, validator run, publisher run, tra
 live URL exists. QC re-roll use is **0 of 2** because no image reached QC. Seq 62 was released cleanly;
 both reserved angles returned to the pool and none burned. Seq 46 and seq 49 remain untouched. No paid
 or alternate media provider, credential, account, browser, deletion, or frozen-article change was used.
+
+### 2026-09-14 — Ticket #44 `[BLOCKED-IMAGE-QC-NETWORK]`
+
+Ticket left `[ ]`. STEP 0 checked the live `suggest.json` before writing and returned **0 articles** for
+`Urolithin A vs NMN`. STEP 0.5 remained the approved `REVIEW [covered-segment]`. Both products were live
+and available: Urolithin A at $199.99 and NMN + TMG at $69.95. Both collections and the author page
+returned HTTP 200; the roster entry passed.
+
+The existing picker reservation was reused without another `pick`: seq 63, hero `f5059-wh-05`, shot
+`mid-subject-fg-pack`, hero angle `profile-left+level`, inline angle `3q-right+chin-down`, hero gaze
+`just-past-lens`, and inline gaze `at-another-person`. The mandatory hero ran only through
+`/usr/bin/python3 scripts/article_images.py` with both curated AgeAura refs, the original approved persona
+ref, the assigned face angle, `--qc`, no `--ugc`, and the $0 OAuth image lane. Generation succeeded and
+created a 71,618-byte WebP file. Both QC routes then failed Domain Name System lookup with `[Errno 8]
+ nodename nor servname provided, or not known`. The face-image gate failed closed as designed.
+
+The candidate never became an approved image. It moved to
+`_superseded/qc-failed-images/20260914-ticket44-hero-qc-inconclusive-dns-f5059-wh-05.webp`.
+QC re-roll use is **0 of 2** because another generation cannot repair the QC network service. The image
+safeguard stopped drafting. No draft, validation, publication, tracker row, article ID, or live URL exists.
+Seq 63 was released cleanly; both reserved angles returned to the pool and none burned. Seq 46 and seq 49
+remain untouched. No alternate or paid provider, credential, account, browser, deletion, or
+`frozen_articles.txt` change was used. Retry after the QC routes can resolve their host.
+
+### 2026-09-16 — Ticket #44 `[BLOCKED-IMAGE-QC-NETWORK]`
+
+Ticket left `[ ]`. STEP 0 checked the live `suggest.json` before writing and returned **0 articles** for
+`Urolithin A vs NMN`. STEP 0.5 returned the ticket-approved `REVIEW [covered-segment]`. Both product pages,
+both collection pages, and the author page returned HTTP 200. Both products were available: Urolithin A at
+$199.99 and NMN + TMG at $69.95. The roster entry passed.
+
+Reservation seq 64 remains reserved for this unfinished article: persona `f5059-wh-06`, shot
+`mid-subject-fg-pack`, hero angle `profile-left+level`, inline angle `profile-right+chin-down`, hero gaze
+`at-another-person`, and inline gaze `up-and-away`. The existing hero
+`tmp_images/urolithin-a-vs-nmn/hero.webp` remains approved by the recorded
+`QC → PASS [ag/gemini-3.1-pro-low]` result. It is WebP, 1200×800, and 70,076 bytes.
+
+The mandatory QC host `staff.patiagency.com` still failed Domain Name System resolution with `[Errno 8]
+nodename nor servname provided, or not known`. The remaining three required inline images could not receive
+real QC verdicts. Approved complete image set: **0**; existing approved hero: **1 of 4 required**. QC re-roll
+use is **0 of 2** because another generation cannot repair the QC network service.
+
+The image safeguard stopped drafting. No draft, validation, publication, tracker row, article ID, or live
+URL exists. Seq 64 stays reserved because its approved hero belongs to this unfinished article. Seq 46 and
+seq 49 remain untouched. No angle was committed or released. No alternate or paid provider, credential,
+account, browser, deletion, permission denial, or `frozen_articles.txt` change was used. Retry after the QC
+host resolves, then generate and approve all three inline images before drafting.
+
+### 2026-09-17 — Ticket #44 `[BLOCKED-IMAGE-QC-NETWORK]`
+
+Ticket left `[ ]`. STEP 0 checked the live `suggest.json` before writing and returned **0 articles** for
+`Urolithin A vs NMN`. STEP 0.5 returned the ticket-approved `REVIEW [covered-segment]`. Both live products
+were available: Urolithin A at $199.99 and NMN + TMG at $69.95. The author gate passed.
+
+The $0 ima2 OAuth image lane is ready, and reservation seq 64 remains assigned to this unfinished article:
+persona `f5059-wh-06`, shot `mid-subject-fg-pack`, hero angle `profile-left+level`, inline angle
+`profile-right+chin-down`, hero gaze `at-another-person`, and inline gaze `up-and-away`. The approved hero
+`tmp_images/urolithin-a-vs-nmn/hero.webp` remains intact: WebP, 1200×800, 70,076 bytes, with recorded
+`QC → PASS [ag/gemini-3.1-pro-low]`.
+
+The mandatory QC host `staff.patiagency.com` still failed Domain Name System resolution. Therefore the three
+required inline images could not receive real QC verdicts. The article has only **1 of 4 required approved
+images**. QC re-roll use is **0 of 2** because another generation cannot repair the QC network service.
+
+The image safeguard stopped the run. No draft, validator run, publisher run, tracker row, article ID, or live
+URL exists. Seq 64 stays reserved. Seq 46 and seq 49 remain untouched. No angle was committed or released.
+No alternate or paid provider, credential, account, browser, deletion, permission denial, or
+`frozen_articles.txt` change was used. Retry after the QC host resolves.
+
+### 2026-09-17 (second run) — Ticket #44 `[BLOCKED-IMAGE-QC]`
+
+Ticket left `[ ]`. The obsolete QC hostname was bypassed with the current local Nine-router endpoint at
+`http://127.0.0.1:20128/v1`. Both judges passed route probes. The existing approved hero remained intact.
+
+Reservation seq 64 was reused without another `pick`. The required persona inline image ran only through
+`scripts/article_images.py` with the curated Urolithin A ref, original approved persona ref, assigned
+`profile-right+chin-down` angle, `up-and-away` gaze, `--ugc`, `--qc`, and the $0 ima2 OAuth lane. The initial
+candidate failed QC for warped hands. Re-roll 1 hid both hands but failed for a mirrored head direction.
+Re-roll 2 corrected the direction but failed because the chin remained level instead of down.
+
+The initial generation plus both allowed QC re-rolls are exhausted. The three failed WebP files were preserved
+under `_superseded/qc-failed-images/`; none may enter a draft. The complete set remains unavailable at **1 of 4
+required approved images**, so the image safeguard stopped the run. No draft, validator run, publisher run,
+tracker row, article ID, or live URL exists. Seq 64 was released cleanly; both reserved angles returned to the
+pool. Seq 46 and seq 49 remain untouched. No fourth image was generated. No paid or alternate media provider
+was used.
+
+### 2026-09-18 — Ticket #44 `[DONE]`
+
+STEP 0 checked the live `suggest.json` before writing and returned **0 articles** for
+`Urolithin A vs NMN`. STEP 0.5 returned the ticket-approved `REVIEW [covered-segment]`.
+Both product pages, both collection pages, and the author page returned HTTP 200. Verified
+prices were $199.99 for AgeAura Pure Urolithin A and $69.95 for AgeAura Pure NMN + TMG.
+
+Reservation seq 65 issued persona `f4049-wh-11`, hero angle `3q-left+chin-up`, inline angle
+`profile-right+level`, hero gaze `just-past-lens`, inline gaze `at-another-person`, and shot
+`through-doorway`. Four images shipped: one persona-and-two-product hero plus three inline
+images. All four passed QC through the local Nine-router lane. The NMN inline used one QC
+re-roll after the first candidate failed for a glossy stock look. That failed WebP remains in
+`_superseded/qc-failed-images/`; nothing was deleted. Seq 65 was committed after public HTTP
+200. Both issued face angles were burned exactly once.
+
+One 2,009-word COMPARISON article was written. `validate_article.py --draft` printed
+`RESULT: ✓ PASS — safe to publish.` before `shopify_publisher.py --live` ran. Shopify created
+article ID `622041366843` at
+`https://wellnessnest.co/blogs/news/urolithin-a-vs-nmn-which-fits-your-goal-in-the-us`.
+The first Admin publish state did not propagate to the storefront and the public URL returned
+404. A repair re-published the same article through Shopify's supported GraphQL `articleUpdate`
+with `isPublished=true` and the current `publishDate`. No duplicate article was created.
+
+Final public verification passed: HTTP 200, exact `og:title`, correct canonical URL, featured
+image, all three inline images, Article + FAQPage + Person structured data, Dr. Marcus Hale,
+comparison table, and both product handles. Live predictive search also returns the article.
+The prohibited competitor text is absent. The tracker row was added with Python's `csv` module.
+IndexNow was skipped because its key is not configured. QRG prose scoring remained unavailable
+because `claude-seo` is not installed; the mechanical article validator still passed.
+
+## Refill needed
+
+No pending `[ ]` ticket remains as of 2026-09-18. The Google Ads mining tool is unavailable in this
+environment. Kevin should run the mining recipe in the app before the next article run.
