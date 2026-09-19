@@ -3601,3 +3601,17 @@ comparison table, both product handles, and three collections. The prohibited co
 is absent. The tracker row was added with Python. IndexNow was skipped because its key is not
 configured. QRG prose scoring remained unavailable because `claude-seo` is not installed; the
 mechanical article validator still passed.
+
+## Refill needed
+
+**2026-09-19 (later run) — queue EMPTY, nothing published, by design.** `grep -nE "^#{1,3} \[ \]" daily-tickets.md` returns nothing. Last ticket #45 shipped earlier today and is still live (HTTP 200 with a browser User-Agent). Per this run's rule 6: do not write an article. `persona_picker.py pick` was never called, so nothing needs releasing.
+
+### Kevin — please run the mining recipe in the app
+
+The google-ads MCP is not registered in this session (only the Exa web tools are). GSC is unauthorised. A non-interactive session cannot run the OAuth flow. Demand-side mining inputs are unreachable here.
+
+Run the mining recipe in `skills/genseo-auto-publish/references/ads-article-mining.md` and append 3–5 fresh `[ ]` tickets as `# BATCH 2026-09-19` (or later). Or authorise the Google Ads connector in an interactive session so the next unattended run can mine on its own.
+
+**Rotation for #46:** #45 EDITORIAL → #44 COMPARISON → #43 LISTICLE → #42 EDITORIAL, so **STORY or LISTICLE** is owed.
+
+Ticket format to copy: the #45 block above (primary keyword, secondaries, intent, ≤60-char title, template key, BLOG_ID `104008483131`, hero product URL, ≥2 verified-live collection links, angle, author from `roster.json`). Never mention or link MuscleMax.
