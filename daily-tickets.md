@@ -3538,7 +3538,66 @@ The prohibited competitor text is absent. The tracker row was added with Python'
 IndexNow was skipped because its key is not configured. QRG prose scoring remained unavailable
 because `claude-seo` is not installed; the mechanical article validator still passed.
 
-## Refill needed
+# BATCH 2026-09-19
 
-No pending `[ ]` ticket remains as of 2026-09-18. The Google Ads mining tool is unavailable in this
-environment. Kevin should run the mining recipe in the app before the next article run.
+Queue was empty after Ticket #44. Mined one ticket per DAILY-RUN §2. Live catalog + body grep +
+`topic_fitness.py` + live `suggest.json`. One article only.
+
+## [DONE 2026-09-19 https://wellnessnest.co/blogs/news/nmn-and-creatine-together-safe-daily-stack-us-2026] Ticket #45 — NEW ARTICLE (type: EDITORIAL)
+
+- **Primary keyword:** `nmn and creatine together`
+- **Secondary:** can you take nmn and creatine together, nmn creatine stack, taking nmn and creatine
+  at the same time, nmn with creatine, nmn and creatine daily
+- **Search intent:** informational with commercial follow-through — a US adult who already uses one
+  of the two SKUs, deciding whether the other can share the same day
+- **Title (53 chars):** `NMN and Creatine Together: Safe Daily Stack (US 2026)`
+- **Template:** `EDITORIAL` — last live article (#44) was COMPARISON; this is a how/what stack
+  question, not a winner-takes-all vs. #40 already used COMPARISON for a two-brand stack.
+- **BLOG_ID:** `104008483131`
+- **STEP 0 (live, before writing, 2026-09-19):** `q="nmn and creatine together"` → 0 articles.
+  Variants `can you take nmn and creatine together`, `nmn creatine`, `nmn and creatine` → 0 articles.
+  Live `suggest.json` is the duplicate authority. Full-body grep of live HTML found **one** sentence
+  on `/blogs/news/nmn-for-women-what-the-all-female-trial-missed-us-2026` pointing creatine to a
+  different article. No page owns this stack.
+- **STEP 0.5:** `PASS [brand]` on the primary keyword and both candidate titles.
+- **Angle — two mechanisms, zero combined evidence, one attribution problem.** Creatine saturates
+  intramuscular phosphocreatine (Kreider 2017 ISSN position stand). NMN is a NAD+ precursor
+  (Yoshino 2021; Yi 2023). Pathways do not overlap and there is no antagonism to report — but **no
+  human trial has tested the pair**, so synergy claims are invented. The practical caution is
+  **attribution**: if both start the same week, a change in energy, scale weight, or a lab
+  creatinine reading cannot be assigned. Stagger. Do not invent AgeAura NMN milligrams; cite trial
+  doses only. FusiForce labeled serving is 3 gummies / 5,000 mg creatine.
+- **Hero products (verified HTTP 200, 2026-09-19):**
+  `/products/fusiforce-creatine-gummies` ($69.99) ·
+  `/products/ageaura-pure-nmn-tmg-nad-complex` ($69.95)
+- **Collections (verified HTTP 200):** `/collections/ageaura` · `/collections/best-seller`
+  · `/collections/mens-essential-collection`
+- **Author (verified HTTP 200):** Dr. Marcus Hale (`roster.json`, verbatim bio)
+- **Never mention or link MuscleMax.**
+
+### 2026-09-19 — Ticket #45 `[DONE]`
+
+STEP 0 checked live `suggest.json` before writing and returned **0 articles** for
+`nmn and creatine together`. STEP 0.5 returned `PASS [brand]`. Both product pages,
+three collection pages, and the author page returned HTTP 200. Verified prices were
+$69.99 for FusiForce Creatine Monohydrate Gummies and $69.95 for AgeAura Pure NMN + TMG.
+
+Four images shipped (already QC-passed; not regenerated this closeout): screened-back-porch
+hero (both packs, over-shoulder, no face), trailhead-picnic FusiForce pouch, hallway-linen-closet
+AgeAura bottle, rec-room-den grocery unpack of both packs. FusiForce is a bright-green stand-up
+pouch. AgeAura is a white capsule bottle.
+
+One 1,996-word EDITORIAL article was written.
+`validate_article.py --draft` printed `RESULT: ✓ PASS — safe to publish.` before
+`shopify_publisher.py` ran. Shopify created article ID `622045987131` at
+https://wellnessnest.co/blogs/news/nmn-and-creatine-together-safe-daily-stack-us-2026
+The publisher defaulted to an unpublished DRAFT. A repair flipped the **same** article
+live with REST `PUT {"article":{"id":622045987131,"published":true}}`. No second article
+was created. Storefront returned 404, then HTTP 200 on poll.
+
+Final public verification passed: HTTP 200, exact `og:title`, correct canonical URL, featured
+image, all three inline images, Article + FAQPage + Person structured data, Dr. Marcus Hale,
+comparison table, both product handles, and three collections. The prohibited competitor text
+is absent. The tracker row was added with Python. IndexNow was skipped because its key is not
+configured. QRG prose scoring remained unavailable because `claude-seo` is not installed; the
+mechanical article validator still passed.
