@@ -3615,3 +3615,41 @@ Run the mining recipe in `skills/genseo-auto-publish/references/ads-article-mini
 **Rotation for #46:** #45 EDITORIAL → #44 COMPARISON → #43 LISTICLE → #42 EDITORIAL, so **STORY or LISTICLE** is owed.
 
 Ticket format to copy: the #45 block above (primary keyword, secondaries, intent, ≤60-char title, template key, BLOG_ID `104008483131`, hero product URL, ≥2 verified-live collection links, angle, author from `roster.json`). Never mention or link MuscleMax.
+
+# BATCH 2026-09-20
+
+- [DONE 2026-09-20 https://wellnessnest.co/blogs/news/turkesterone-creatine-6-things-to-know-us-2026] #46 Turkesterone + Creatine stacking safety
+  - Primary keyword: turkesterone and creatine together
+  - Secondaries: turkesterone creatine stack, can you take turkesterone with creatine, turkesterone creatine safety
+  - Intent: buyer-safety ("can I combine these two supplements I already take")
+  - Title (≤60): "Turkesterone + Creatine: 6 Things to Know (US 2026)" (51 chars)
+  - Template: LISTICLE (rotation owed: #45 EDITORIAL, #44 COMPARISON, #43 LISTICLE, #42 EDITORIAL — STORY/LISTICLE owed, LISTICLE chosen for the "6 things to check" numbered-safety-card shape)
+  - BLOG_ID: 104008483131
+  - Hero products: turkesterone-advanced-formula ($75) + fusiforce-creatine-gummies ($69.99)
+  - Collections: /collections/mens-essential-collection, /collections/best-seller
+  - Angle: no completed human trial has ever combined turkesterone + creatine; mechanisms don't overlap (turkesterone = ecdysteroid/anabolic-signalling; creatine = ATP-phosphagen); dosing, timing, and the one real caution (kidney-history users should clear creatine with a doctor) stated plainly, no fabricated synergy claims
+  - Author: Dr. Marcus Hale (roster.json)
+  - STEP 0: suggest.json 0 hits for "turkesterone creatine stack" and "stacking turkesterone" (both queried 2026-09-20); confirmed by body-grep of all 5 live turkesterone articles — none discusses creatine co-stacking
+  - Persona: seq=69, hero m2029-wh-02, audience men-20-35
+
+# BATCH 2026-09-21
+
+- [DONE 2026-09-21 https://wellnessnest.co/blogs/news/florafresh-vs-generic-probiotics-4-strain-facts-us-2026] #47 FloraFresh vs generic probiotics (brand-buyer-intent comparison)
+  - Primary keyword: florafresh vs generic probiotics
+  - Secondaries: florafresh strains, vaginal probiotic strains that work, generic probiotics for vaginal health
+  - Intent: brand_intent comparison ("is the named product actually better than a cheap generic")
+  - Title (≤60): "FloraFresh vs. Generic Probiotics: 4 Strain Facts (US 2026)" (59 chars)
+  - Template: COMPARISON (rotation owed: #46 LISTICLE, #45 EDITORIAL, #44 COMPARISON, #43 LISTICLE — COMPARISON not repeating #46, fits vs-intent)
+  - BLOG_ID: 104008483131
+  - Hero product: florafresh-vaginal-probiotics-gummies ($40.99, compare_at $57.99, 15B CFU, 4 strains: L. rhamnosus/reuteri/salivarius/gasseri, pineapple flavor → amber gummy)
+  - Collections: /collections/womens-essentials-collection, /collections/best-seller (both HTTP 200 verified 2026-09-21)
+  - Related internal link: /blogs/news/vaginal-probiotics-which-strains-actually-work-us-2026 (HTTP 200 verified)
+  - Angle: FloraFresh's rhamnosus/reuteri strains have real urogenital-relevant trial history (GR-1/RC-14-type strain research); "generic" multi-strain probiotics typically use gut-only strains (plain acidophilus/bifidobacterium) never studied for vaginal relevance. Comparison table characterizes "typical generic probiotic" by category, not a fabricated competitor SKU/label — no invented packaging. Do NOT claim FloraFresh contains L. crispatus (it doesn't); crispatus trial evidence is background only, not attributed to this SKU.
+  - Author: Dr. Marcus Hale (roster.json)
+  - STEP 0: suggest.json 0 hits for "florafresh vs generic probiotics" and "florafresh strains" (both queried 2026-09-21, clean JSON both times)
+  - STEP 0.5: topic_fitness PASS [brand_intent] for both "florafresh vs generic probiotics" and "florafresh probiotics reviews"
+  - Persona: seq=70, hero f3039-hl-04, audience women-25-45, hero_face_angle 3q-left+chin-down, inline_face_angle front+chin-up, hero_gaze just-past-lens, inline_gaze down-at-product, hero_shot high-angle-down
+
+## Refill needed
+
+**2026-09-21 — no pending `[ ]` ticket heading remains.** The Google Ads MCP is unavailable in this session. Kevin: run the mining recipe in the app and append 3–5 fresh `[ ]` tickets. No article was written.
