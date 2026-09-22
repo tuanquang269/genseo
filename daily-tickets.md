@@ -3653,3 +3653,11 @@ Ticket format to copy: the #45 block above (primary keyword, secondaries, intent
 ## Refill needed
 
 **2026-09-21 — no pending `[ ]` ticket heading remains.** The Google Ads MCP is unavailable in this session. Kevin: run the mining recipe in the app and append 3–5 fresh `[ ]` tickets. No article was written.
+
+**2026-09-22 — no pending `[ ]` ticket heading remains. No article written.** `grep "^#{1,3} \[ \]"` returns nothing. The only leftover `[ ]` strings are prose inside already-shipped tickets (#31 and #36, both `[DONE]`). Last live ticket is #47 (2026-09-21). The google-ads MCP is not registered in this session (only the Exa web tools are), so the mining recipe cannot run from here.
+
+### Kevin — please run the mining recipe in the app
+
+Run `skills/genseo-auto-publish/references/ads-article-mining.md` and append 3–5 fresh `[ ]` tickets as `# BATCH 2026-09-22` (or later).
+
+**Rotation for #48:** #47 COMPARISON → #46 LISTICLE → #45 EDITORIAL → #44 COMPARISON, so **STORY** is owed next.
