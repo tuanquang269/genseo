@@ -3661,3 +3661,32 @@ Ticket format to copy: the #45 block above (primary keyword, secondaries, intent
 Run `skills/genseo-auto-publish/references/ads-article-mining.md` and append 3–5 fresh `[ ]` tickets as `# BATCH 2026-09-22` (or later).
 
 **Rotation for #48:** #47 COMPARISON → #46 LISTICLE → #45 EDITORIAL → #44 COMPARISON, so **STORY** is owed next.
+
+# BATCH 2026-09-23
+
+Queue was empty. Mined one ticket from the live catalog and the fitness gate. One article only.
+
+## [SKIPPED-DUPLICATE 2026-09-24 https://wellnessnest.co/blogs/news/urolithin-a-for-beginners-4-things-to-know-us-2026] Ticket #48 — NEW ARTICLE (type: STORY)
+
+- **Primary keyword:** `urolithin a for beginners`
+- **Secondary:** starting urolithin a, first month on urolithin a, urolithin a 500 mg, what to expect week one urolithin a
+- **Search intent:** a first-time US buyer who already decided to try it and wants the first month explained without a miracle claim
+- **Title (52 chars):** `Urolithin A for Beginners: Week 1 Is Not the Result`
+- **Template:** `STORY` — #47 was COMPARISON, #46 LISTICLE, #45 EDITORIAL. STORY was owed.
+- **BLOG_ID:** `104008483131`
+- **STEP 0 (live, 2026-09-23):** `urolithin a for beginners` and `urolithin a dosage beginners` returned 0 articles. `urolithin a dosage` returns the dosage page. Link it. Do not rewrite it.
+- **STEP 0.5:** `REVIEW [covered-segment]` — "for beginners" is not owned by any live Urolithin A title. This ticket greenlights that exact topic.
+- **Angle:** week one is not the result. The first human safety trial measured blood markers at 4 weeks, not a feeling on day 3 (Andreux 2019, Nature Metabolism). The middle-aged muscle trial ran 4 months (Singh 2022, Cell Reports Medicine). A beginner judges the bottle by the clock those trials used. AgeAura is one 500 mg capsule a day. Do not invent a loading phase. Do not claim a week-1 feeling.
+- **Hero product (HTTP 200):** `/products/ageaura-pure-urolithin-a` ($199.99)
+- **Collections (HTTP 200):** `/collections/ageaura` · `/collections/best-seller`
+- **Author:** Dr. Marcus Hale, bio copied verbatim from roster.json
+- **Persona:** seq=73, hero f4049-wh-13, audience adults-50-70, hero angle 3q-right+chin-up, inline angle profile-left+chin-down. Reserved. Release only if this article never goes live.
+- **Never mention or link MuscleMax.**
+
+**2026-09-23 — no pending `[ ]` ticket heading remains. No article written.** `grep "^#{1,3} \[ \]"` returns nothing. Last live ticket is #47 (2026-09-21). The google-ads MCP is not registered in this session (only the Exa web tools are), so the mining recipe cannot run from here. `persona_picker.py pick` was never called, so no face angle was reserved.
+
+### Kevin — please run the mining recipe in the app
+
+Run `skills/genseo-auto-publish/references/ads-article-mining.md` and append 3–5 fresh `[ ]` tickets as `# BATCH 2026-09-23` (or later).
+
+**Rotation for #48:** #47 COMPARISON → #46 LISTICLE → #45 EDITORIAL → #44 COMPARISON, so **STORY** is owed next.
