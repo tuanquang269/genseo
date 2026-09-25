@@ -3690,3 +3690,17 @@ Queue was empty. Mined one ticket from the live catalog and the fitness gate. On
 Run `skills/genseo-auto-publish/references/ads-article-mining.md` and append 3–5 fresh `[ ]` tickets as `# BATCH 2026-09-23` (or later).
 
 **Rotation for #48:** #47 COMPARISON → #46 LISTICLE → #45 EDITORIAL → #44 COMPARISON, so **STORY** is owed next.
+
+## Refill needed
+
+**2026-09-24 — no pending `[ ]` ticket heading remains. No article written.** Ticket #48 is already `[SKIPPED-DUPLICATE]`. The only leftover `[ ]` strings sit inside shipped tickets #31 and #36, both `[DONE]`. The google-ads MCP is not registered in this session (only the Exa web tools are), so the mining recipe cannot run from here. `persona_picker.py pick` was never called, so no face angle was reserved.
+
+### Kevin — please run the mining recipe in the app
+
+Run `skills/genseo-auto-publish/references/ads-article-mining.md` and append 3–5 fresh `[ ]` tickets as `# BATCH 2026-09-24` (or later).
+
+**Next template after #48:** #48 was planned as STORY but skipped, so STORY is still owed. Then LISTICLE, EDITORIAL, COMPARISON.
+
+**2026-09-25 — no pending `[ ]` ticket heading remains. No article written.** The google-ads MCP is unavailable in this session.
+
+Kevin: run the mining recipe in the app and append 3–5 fresh `[ ]` tickets.
