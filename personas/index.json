@@ -2027,17 +2027,6 @@
    "shot": "through-doorway",
    "cycle_position_before": 1
   },
-  "75": {
-   "seq": 75,
-   "hero": "NO-FACE",
-   "audience": "women-50-70",
-   "hero_face_angle": null,
-   "inline_face_angle": null,
-   "hero_gaze": null,
-   "inline_gaze": null,
-   "shot": "wide-room",
-   "cycle_position_before": 2
-  },
   "76": {
    "seq": 76,
    "hero": "f5059-wh-06",
