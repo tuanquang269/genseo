@@ -3704,3 +3704,22 @@ Run `skills/genseo-auto-publish/references/ads-article-mining.md` and append 3�
 **2026-09-25 — no pending `[ ]` ticket heading remains. No article written.** The google-ads MCP is unavailable in this session.
 
 Kevin: run the mining recipe in the app and append 3–5 fresh `[ ]` tickets.
+
+# BATCH 2026-09-26
+
+## [ ] Ticket #49 — NEW ARTICLE (type: STORY)
+
+- **Primary keyword:** `florafresh for women over 50`
+- **Secondary:** vaginal probiotics after 50, vaginal microbiome menopause, lactobacillus after menopause, feminine probiotics over 50
+- **Search intent:** US woman 50–70 noticing post-menopause changes (dryness, discomfort, recurring imbalance) who wants to know whether a probiotic gummy is a sensible daily habit — educational, not treatment claims
+- **Title (56 chars):** `FloraFresh for Women Over 50: What Changes (US 2026)`
+- **Template:** `STORY` — owed after #47 COMPARISON (per 2026-09-24 note); #48 skipped so STORY still owed.
+- **BLOG_ID:** `104008483131`
+- **STEP 0 (live, 2026-09-26):** suggest.json for `florafresh for women over 50` and `probiotics for women over 50` returned 0 articles. `vaginal probiotics` returns the strains/how-long/side-effects cluster — link them, do not restate them.
+- **STEP 0.5:** topic_fitness.py = `PASS [brand]` (names stocked brand FloraFresh).
+- **Angle:** menopause drops estrogen → Lactobacillus dominance falls → pH rises; that mechanism is documented (cite, don't invent). FloraFresh's 4 strains + XOS + D-Mannose + vitamin C map onto that story as daily support, never as treatment. No disease claims, no COA claims, no menopause-treatment claim. Link the existing strains article for the strain-level detail.
+- **Hero product (HTTP 200):** `/products/florafresh-vaginal-probiotics-gummies` ($40.99)
+- **Collections (HTTP 200):** `/collections/womens-essentials-collection` · `/collections/best-seller`
+- **Author:** Dr. Marcus Hale, bio verbatim from roster.json.
+- **Persona:** seq=75 reserved → hero NO-FACE (scheduled cycle), wide-room shot. No face angles issued. Release only if article never goes live.
+- **Never mention or link MuscleMax.**
