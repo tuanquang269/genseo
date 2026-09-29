@@ -3707,7 +3707,7 @@ Kevin: run the mining recipe in the app and append 3–5 fresh `[ ]` tickets.
 
 # BATCH 2026-09-26
 
-## [ ] Ticket #49 — NEW ARTICLE (type: STORY)
+## [DONE 2026-09-27 https://wellnessnest.co/blogs/news/florafresh-for-women-over-50-what-changes-us-2026] Ticket #49 — NEW ARTICLE (type: STORY)
 
 - **Primary keyword:** `florafresh for women over 50`
 - **Secondary:** vaginal probiotics after 50, vaginal microbiome menopause, lactobacillus after menopause, feminine probiotics over 50
@@ -3723,3 +3723,26 @@ Kevin: run the mining recipe in the app and append 3–5 fresh `[ ]` tickets.
 - **Author:** Dr. Marcus Hale, bio verbatim from roster.json.
 - **Persona:** seq=75 reserved → hero NO-FACE (scheduled cycle), wide-room shot. No face angles issued. Release only if article never goes live.
 - **Never mention or link MuscleMax.**
+
+## Refill needed
+
+**2026-09-27 — no pending `[ ]` ticket heading remains.** No article was written. The google-ads MCP is unavailable in this session. Kevin: run `skills/genseo-auto-publish/references/ads-article-mining.md` in the app and append 3–5 fresh `[ ]` tickets.
+
+**2026-09-27 follow-up:** Please run the mining recipe in the app, then append the next batch of `[ ]` tickets here.
+**2026-09-28:** No pending `[ ]` ticket remains. Please run the mining recipe in the app and append 3–5 fresh `[ ]` tickets.
+
+**2026-09-29 — no pending `[ ]` ticket heading remains. No article written.** `grep "^#{1,3} \[ \]"` returns nothing. Last live ticket is #49 (2026-09-27). The google-ads MCP is not registered in this session (only the Exa web tools are), so the mining recipe cannot run from here. `persona_picker.py pick` was never called, so no face angle was reserved.
+
+### Kevin — please run the mining recipe in the app
+
+Run `skills/genseo-auto-publish/references/ads-article-mining.md` and append 3–5 fresh `[ ]` tickets as `# BATCH 2026-09-29` (or later).
+
+**Next template after #49:** #49 was STORY, #47 COMPARISON, #46 LISTICLE, so **LISTICLE** is owed next. Then EDITORIAL, COMPARISON, STORY.
+
+**2026-09-29 (second run) — no pending `[ ]` ticket heading remains. No article written.** `grep "^#{1,6} .*\[ \]"` matches only two historical notes inside already-closed tickets (#31 and #36, both `[DONE]`). Last live ticket is still #49 (2026-09-27). The google-ads MCP is not registered in this session (only the Exa web tools are), so the mining recipe cannot run from here. `persona_picker.py pick` was never called, so no face angle was reserved.
+
+### Kevin — please run the mining recipe in the app
+
+Run `skills/genseo-auto-publish/references/ads-article-mining.md` and append 3–5 fresh `[ ]` tickets as `# BATCH 2026-09-29` (or later).
+
+**Next template after #49:** **LISTICLE** is still owed next. Then EDITORIAL, COMPARISON, STORY.
