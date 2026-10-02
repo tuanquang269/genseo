@@ -3746,3 +3746,5 @@ Run `skills/genseo-auto-publish/references/ads-article-mining.md` and append 3�
 Run `skills/genseo-auto-publish/references/ads-article-mining.md` and append 3–5 fresh `[ ]` tickets as `# BATCH 2026-09-29` (or later).
 
 **Next template after #49:** **LISTICLE** is still owed next. Then EDITORIAL, COMPARISON, STORY.
+
+**2026-10-02 — no pending `[ ]` ticket remains. Google Ads connector is unavailable in this session. Kevin: run the mining recipe in the app and append 3–5 fresh `[ ]` tickets.**
