@@ -3748,3 +3748,4 @@ Run `skills/genseo-auto-publish/references/ads-article-mining.md` and append 3�
 **Next template after #49:** **LISTICLE** is still owed next. Then EDITORIAL, COMPARISON, STORY.
 
 **2026-10-02 — no pending `[ ]` ticket remains. Google Ads connector is unavailable in this session. Kevin: run the mining recipe in the app and append 3–5 fresh `[ ]` tickets.**
+**2026-10-03 — no pending `[ ]` ticket heading remains. No article written or published. The google-ads MCP is unavailable in this session. Kevin: run `skills/genseo-auto-publish/references/ads-article-mining.md` in the app and append 3–5 fresh `[ ]` tickets. Ticket #50 stays blocked; this run did not retry it.**
