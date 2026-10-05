@@ -3863,7 +3863,7 @@ Template rotation after #50 COMPARISON / #49 STORY: **LISTICLE → EDITORIAL →
 - **Author:** Dr. Marcus Hale, bio verbatim from roster.json.
 - **Never mention or link MuscleMax.**
 
-## [ ] Ticket #55 — NEW ARTICLE (type: LISTICLE)
+## [DONE 2026-10-05 https://wellnessnest.co/blogs/news/turkesterone-for-beginners-5-checks-before-you-start] Ticket #55 — NEW ARTICLE (type: LISTICLE)
 
 - **Primary keyword:** `turkesterone for beginners`
 - **Secondary:** turkesterone starting dose, turkesterone beginner guide us, how to start turkesterone
@@ -3940,5 +3940,37 @@ Template rotation after #50 COMPARISON / #49 STORY: **LISTICLE → EDITORIAL →
 - **Angle:** practical use only — serving per the curated ShilaSource PDP/ref (do not invent mg), dissolving in warm water/tea, storage, timing (link `when-to-take-shilajit-morning-or-night-us-2026`), dose by form (link `how-much-shilajit-per-day-dosage-by-form-us-2026`). If #53 is live, link it. No COA claims. No MuscleMax.
 - **Hero product (HTTP 200):** `/products/shilasource-himalayan-shilajit-resin`
 - **Collections (HTTP 200):** `/collections/shilajit-wellness-stack` · `/collections/best-seller`
+- **Author:** Dr. Marcus Hale, bio verbatim from roster.json.
+- **Never mention or link MuscleMax.**
+
+## [ ] Ticket #60 — NEW ARTICLE (type: COMPARISON)
+
+- **Primary keyword:** `florafresh and cranberry`
+- **Secondary:** can you take probiotics and cranberry together, vaginal probiotic with cranberry pills, cranberry vs probiotic for women
+- **Search intent:** US woman already taking (or considering) cranberry who wants to know whether FloraFresh replaces it, overlaps, or pairs with it
+- **Title (53 chars):** `FloraFresh and Cranberry: Can You Take Both? (US 2026)`
+- **Template:** `COMPARISON` — buffer ticket mined by Grok Bot 2026-10-05 (5/day quota); cranberry vs FloraFresh as two different jobs
+- **BLOG_ID:** `104008483131`
+- **STEP 0 (live, 2026-10-05):** suggest.json `cranberry` / `probiotic cranberry` → **0 articles**. PASS.
+- **STEP 0.5:** `topic_fitness.py` = `PASS [brand]`.
+- **Angle:** FloraFresh PDP does NOT contain cranberry — say so plainly. Cranberry evidence is about urinary tract (PACs), FloraFresh is vaginal-flora strains per the live PDP; different jobs, generally taken together, ask a clinician if on antibiotics/warfarin. Link `vaginal-probiotics-which-strains-actually-work-us-2026` and `probiotics-for-bv-do-they-actually-work-us-2026` instead of restating. No disease-treatment claims, no COA claims. No MuscleMax.
+- **Hero product (HTTP 200):** `/products/florafresh-vaginal-probiotics-gummies`
+- **Collections (HTTP 200):** `/collections/womens-essentials-collection` · `/collections/best-seller`
+- **Author:** Dr. Marcus Hale, bio verbatim from roster.json.
+- **Never mention or link MuscleMax.**
+
+## [ ] Ticket #61 — NEW ARTICLE (type: LISTICLE)
+
+- **Primary keyword:** `turkesterone for men over 40`
+- **Secondary:** turkesterone after 40, turkesterone older men, is turkesterone worth it over 40
+- **Search intent:** US man 40+ curious about turkesterone for strength/recovery who wants age-specific, honest checks before buying the stocked formula
+- **Title (55 chars):** `Turkesterone for Men Over 40: 5 Honest Checks (US 2026)`
+- **Template:** `LISTICLE` — after #60 COMPARISON
+- **BLOG_ID:** `104008483131`
+- **STEP 0 (live, 2026-10-05):** suggest.json `turkesterone over 40` → **0 articles**; `turkesterone men` only returns the women-trials article. PASS.
+- **STEP 0.5:** `topic_fitness.py` = `REVIEW [covered-segment]` ("for men 40+" audience uncovered). Greenlit for this exact topic by the 5/day buffer mining.
+- **Angle:** 5 checks for 40+ — what human data exists vs rodent hype (no fabricated hypertrophy trials), label dose on the curated ref, interactions/meds questions for a doctor, pairing with lifting/protein (link timing + creatine-stack articles), who should skip (link side-effects). If #55 is live, link it rather than restating beginner basics. No COA claims. No MuscleMax.
+- **Hero product (HTTP 200):** `/products/turkesterone-advanced-formula`
+- **Collections (HTTP 200):** `/collections/mens-essential-collection` · `/collections/best-seller`
 - **Author:** Dr. Marcus Hale, bio verbatim from roster.json.
 - **Never mention or link MuscleMax.**
