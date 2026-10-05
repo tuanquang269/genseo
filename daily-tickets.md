@@ -3831,7 +3831,7 @@ Template rotation after #50 COMPARISON / #49 STORY: **LISTICLE → EDITORIAL →
 - **Author:** Dr. Marcus Hale, bio verbatim from roster.json.
 - **Never mention or link MuscleMax.**
 
-## [ ] Ticket #53 — NEW ARTICLE (type: COMPARISON)
+## [SKIPPED-DUPLICATE 2026-10-05 https://wellnessnest.co/blogs/news/shilajit-gold-resin-review-is-75-worth-it-us-2026 — near-dup: live review already has ShilaSource-vs-Gold-Resin H2 + head-to-head table (price/weight/servings/fulvic/cost/lot doc); topic_fitness REVIEW covered-segment] Ticket #53 — NEW ARTICLE (type: COMPARISON)
 
 - **Primary keyword:** `shilasource vs gold resin`
 - **Secondary:** shilasource resin vs pure gold resin, humic resin vs gold resin shilajit, which shilajit resin us
