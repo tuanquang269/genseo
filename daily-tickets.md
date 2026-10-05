@@ -3847,7 +3847,7 @@ Template rotation after #50 COMPARISON / #49 STORY: **LISTICLE → EDITORIAL →
 - **Author:** Dr. Marcus Hale, bio verbatim from roster.json.
 - **Never mention or link MuscleMax.**
 
-## [ ] Ticket #54 — NEW ARTICLE (type: STORY)
+## [SKIPPED-DUPLICATE 2026-10-05 https://wellnessnest.co/blogs/news/vaginal-probiotics-how-long-until-they-work-us-2026 near-dup: live 2080-word timeline article (week 1/2/4/12/24) already built around FloraFresh, our only vaginal probiotic (5 mentions + product block); suggest.json "vaginal probiotics how long" matches; same intent, would cannibalise] Ticket #54 — NEW ARTICLE (type: STORY)
 
 - **Primary keyword:** `florafresh how long to work`
 - **Secondary:** how long do vaginal probiotic gummies take, florafresh results timeline, when will florafresh work
