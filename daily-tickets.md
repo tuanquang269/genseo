@@ -3747,5 +3747,41 @@ Run `skills/genseo-auto-publish/references/ads-article-mining.md` and append 3�
 
 **Next template after #49:** **LISTICLE** is still owed next. Then EDITORIAL, COMPARISON, STORY.
 
+# BATCH 2026-09-30
+
+## [DONE 2026-10-05 https://wellnessnest.co/blogs/news/florafresh-gummies-vs-capsules-5-format-facts-us-2026] Ticket #50 — NEW ARTICLE (type: COMPARISON)
+- **UNBLOCKED 2026-10-05 (Grok Bot):** image lane rewired to Grok Imagine via 9router (`xai/grok-imagine-image` in `scripts/article_images.py`). Codex/ima2 OAuth no longer required.
+
+
+- **Primary keyword:** `florafresh gummies vs capsules`
+- **Secondary:** vaginal probiotic gummies vs capsules, do probiotic gummies survive stomach acid, florafresh gummy format
+- **Search intent:** a US buyer already sold on vaginal probiotics, choosing a format. The FloraFresh product page itself opens the comparison ("Unlike traditional probiotic capsules, FloraFresh comes in a convenient gummy format"), and no live article answers it.
+- **Title (57 chars):** `FloraFresh Gummies vs Capsules: 5 Format Facts (US 2026)`
+- **Template:** `COMPARISON` — the keyword is a vs-intent, so the intent table overrides the rotation note (LISTICLE was owed). #49 was STORY, so variety holds.
+- **BLOG_ID:** `104008483131`
+- **STEP 0 (live, 2026-09-30):** suggest.json returned 0 articles for `florafresh gummies vs capsules`, `vaginal probiotic capsules`, and `gummies vs capsules`. `florafresh` returns only the over-50 story and the vs-generic comparison — link both, restate neither.
+- **STEP 0.5:** `topic_fitness.py` = `PASS [brand_intent]`.
+- **Angle:** a format decision, not a strain story. Five checkable facts: the PDP states 15 billion CFU from L. rhamnosus, L. reuteri, L. salivarius, L. gasseri plus XOS, D-Mannose and vitamin C; gummies are chewed and capsules swallowed; a gummy's heat and moisture are a real shelf-life constraint a buyer can see on the pack; price is $40.99 for 60 gummies; adherence decides whether any of that matters. The capsule side is a CATEGORY, never a named SKU — the store sells no capsule. No disease claims, no COA claims, no invented competitor label.
+- **Hero product (HTTP 200):** `/products/florafresh-vaginal-probiotics-gummies` ($40.99)
+- **Collections (HTTP 200):** `/collections/womens-essentials-collection` · `/collections/best-seller`
+- **Author:** Dr. Marcus Hale, bio verbatim from roster.json.
+- **Persona:** seq=81 reserved, hero NO-FACE (scheduled cycle), shot wide-room. No face angles issued. Release only if this article never goes live.
+- **Never mention or link MuscleMax.**
+
+## Refill needed
+
+**2026-09-30 — no pending `[ ]` ticket heading remains. No article written.** Ticket #50 is `[BLOCKED 2026-09-30 image-lane-401]`, not open. The google-ads connector is not available in this session. Kevin: run the mining recipe in `skills/genseo-auto-publish/references/ads-article-mining.md` and append 3–5 fresh `[ ]` tickets.
+
+**2026-09-30 (second run) — no pending `[ ]` ticket heading remains. No article written.** `grep "^#{1,4} "` shows every ticket heading as `[DONE]`, `[SKIPPED]`, or `[BLOCKED]`. Ticket #50 stays blocked on the image lane (`image-lane-401`) and is not an open ticket, so this run did not retry it and did not call `persona_picker.py pick`. The google-ads connector is still not available here (only the Exa web tools are), so the mining recipe cannot run from this session.
+
+**2026-10-01 — no pending `[ ]` ticket remains, #50 re-checked and still blocked, root cause now identified.** `grep "^#{1,4} "` again shows only `[DONE]`/`[SKIPPED]`/`[BLOCKED]` headings. Re-probed the image lane directly (two fresh no-ref `article_images.py` calls) instead of trusting yesterday's note — both failed `Server authentication or access was denied` (401). Root cause: `~/.codex/auth.json` (ima2's ChatGPT OAuth session) has an expired `access_token` and `id_token` (JWT `exp` in the past; `ima2 doctor`/`status` wrongly reports it "ready" because it only checks file presence, not token freshness). This needs a human-run `codex login` (or `ima2` re-login) — not something this job can do unattended (no credential entry allowed). Ticket #50 left `[BLOCKED]`, persona seq=81 still reserved-not-committed. google-ads connector still unavailable here (only Exa web tools), so mining still can't run from this session. Logged root cause in `00.6-mistakes.md`.
+
+### Kevin — please run the mining recipe in the app, Ticket #50 images now use Grok Imagine via article_images.py (no codex login)
+
+Run `skills/genseo-auto-publish/references/ads-article-mining.md` and append 3–5 fresh `[ ]` tickets as `# BATCH 2026-09-30` (or later). Image lane unblocked 2026-10-05 via Grok Imagine (9router). #50 is open `[ ]` — run it.
+
 **2026-10-02 — no pending `[ ]` ticket remains. Google Ads connector is unavailable in this session. Kevin: run the mining recipe in the app and append 3–5 fresh `[ ]` tickets.**
+**2026-10-02 (run) — no pending `[ ]` ticket remains. No article written. Please run `skills/genseo-auto-publish/references/ads-article-mining.md` in the app and append 3–5 fresh `[ ]` tickets.**
 **2026-10-03 — no pending `[ ]` ticket heading remains. No article written or published. The google-ads MCP is unavailable in this session. Kevin: run `skills/genseo-auto-publish/references/ads-article-mining.md` in the app and append 3–5 fresh `[ ]` tickets. Ticket #50 stays blocked; this run did not retry it.**
+
+**2026-10-05 — Ticket #50 `[DONE]`.** Published live: https://wellnessnest.co/blogs/news/florafresh-gummies-vs-capsules-5-format-facts-us-2026 (id 634867581243). Grok image lane worked, 4 images, 0/2 re-rolls. Queue now empty again — next run mines (DAILY-RUN.md §2).
