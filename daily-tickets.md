@@ -3785,3 +3785,96 @@ Run `skills/genseo-auto-publish/references/ads-article-mining.md` and append 3�
 **2026-10-03 — no pending `[ ]` ticket heading remains. No article written or published. The google-ads MCP is unavailable in this session. Kevin: run `skills/genseo-auto-publish/references/ads-article-mining.md` in the app and append 3–5 fresh `[ ]` tickets. Ticket #50 stays blocked; this run did not retry it.**
 
 **2026-10-05 — Ticket #50 `[DONE]`.** Published live: https://wellnessnest.co/blogs/news/florafresh-gummies-vs-capsules-5-format-facts-us-2026 (id 634867581243). Grok image lane worked, 4 images, 0/2 re-rolls. Queue now empty again — next run mines (DAILY-RUN.md §2).
+
+# BATCH 2026-10-05 — mined for 5/day target (Grok Bot; no GSC, no google-ads MCP)
+
+**Evidence header.** Queue was empty after Ticket #50 shipped. Kevin confirmed **5 articles/day**
+on 2026-10-05. Mined per DAILY-RUN §2 from live catalog (`products.json`), blog inventory, and
+live `search/suggest.json` probes (browser UA). Images: `GENSEO_IMAGE_BACKEND=gpt`
+(`cx/gpt-image-2.5` via 9router, Grok fallback). SEL vault notes not required for this batch.
+
+STEP 0 probes this mine (all **0 article matches** unless noted):
+`fusiforce dosage` · `ageaura review` · `shilasource vs gold resin` · `florafresh how long to work` ·
+`turkesterone for beginners`.
+
+Template rotation after #50 COMPARISON / #49 STORY: **LISTICLE → EDITORIAL → COMPARISON → STORY → LISTICLE**.
+
+## [SKIPPED-DUPLICATE 2026-10-05 https://wellnessnest.co/blogs/news/creatine-gummies-dosage-how-many-a-day-us-2026] Ticket #51 — NEW ARTICLE (type: LISTICLE)
+
+- **Primary keyword:** `fusiforce dosage`
+- **Secondary:** creatine gummies dosage fusiforce, how many fusiforce gummies, 5000 mg creatine gummies serving
+- **Search intent:** US buyer who already knows creatine gummies exist and wants the exact FusiForce serving math (gummies → mg → daily total) before ordering
+- **Title (52 chars):** `FusiForce Dosage: How Many Gummies Per Day? (US 2026)`
+- **Template:** `LISTICLE` — numbered serving checks; #50 was COMPARISON so variety holds
+- **BLOG_ID:** `104008483131`
+- **STEP 0 (live, 2026-10-05):** suggest.json for `fusiforce dosage` → **0 articles**. PASS.
+- **STEP 0.5:** `topic_fitness.py` = `PASS [brand]` (stocked brand FusiForce).
+- **Angle:** panel truth only — 3 gummies = 5,000 mg creatine monohydrate on the curated PDP/ref. Checklist: serving size, timing vs loading myth, water, stacking with turkesterone/NMN (link existing stack articles, do not restate). No COA claims. No MuscleMax.
+- **Hero product (HTTP 200):** `/products/fusiforce-creatine-gummies`
+- **Collections (HTTP 200):** `/collections/mens-essential-collection` · `/collections/best-seller`
+- **Author:** Dr. Marcus Hale, bio verbatim from roster.json.
+- **Never mention or link MuscleMax.**
+
+## [ ] Ticket #52 — NEW ARTICLE (type: EDITORIAL)
+
+- **Primary keyword:** `ageaura review`
+- **Secondary:** ageaura nmn review, ageaura pure nmn tmg, is ageaura worth it
+- **Search intent:** US buyer comparing AgeAura NMN+TMG bottle to the category before first purchase
+- **Title (48 chars):** `AgeAura Review: What's on the NMN Label (US 2026)`
+- **Template:** `EDITORIAL` — after #51 LISTICLE
+- **BLOG_ID:** `104008483131`
+- **STEP 0 (live, 2026-10-05):** suggest.json for `ageaura review` → **0 articles**. PASS.
+- **STEP 0.5:** `topic_fitness.py` = `PASS [brand_intent]`.
+- **Angle:** label-forward review of `ageaura-pure-nmn-tmg-nad-complex` — panel doses, TMG co-factor role, what human NMN trials actually used (cite banked evidence from #25/#32; do not invent). No COA / "clinically tested" claims. Link how-much-nmn and nmn-side-effects; do not cannibalise them.
+- **Hero product (HTTP 200):** `/products/ageaura-pure-nmn-tmg-nad-complex`
+- **Collections (HTTP 200):** `/collections/ageaura` · `/collections/best-seller`
+- **Author:** Dr. Marcus Hale, bio verbatim from roster.json.
+- **Never mention or link MuscleMax.**
+
+## [ ] Ticket #53 — NEW ARTICLE (type: COMPARISON)
+
+- **Primary keyword:** `shilasource vs gold resin`
+- **Secondary:** shilasource resin vs pure gold resin, humic resin vs gold resin shilajit, which shilajit resin us
+- **Search intent:** US buyer choosing between the two stocked resins ($59.99 ShilaSource vs $75 Gold Resin)
+- **Title (58 chars):** `ShilaSource vs Gold Resin: Which Shilajit Fits? (US 2026)`
+- **Template:** `COMPARISON` — after #52 EDITORIAL
+- **BLOG_ID:** `104008483131`
+- **STEP 0 (live, 2026-10-05):** suggest.json for `shilasource vs gold resin` → **0 articles**. PASS.
+- **STEP 0.5:** `topic_fitness.py` = `PASS [brand_intent]`.
+- **Angle:** two stocked SKUs, specs from live PDPs + curated refs only. Price, serving size disclosure (Gold Resin historically thin on mg — report honestly, don't invent), format (resin jar), who each fits. Soft CTA to both product URLs. No fake COA gap claims beyond what the pages state. No MuscleMax.
+- **Hero products (HTTP 200):** `/products/shilasource-himalayan-shilajit-resin` · `/products/pure-shilajit-gold-resin`
+- **Collections (HTTP 200):** `/collections/shilajit-wellness-stack` · `/collections/best-seller`
+- **Author:** Dr. Marcus Hale, bio verbatim from roster.json.
+- **Never mention or link MuscleMax.**
+
+## [ ] Ticket #54 — NEW ARTICLE (type: STORY)
+
+- **Primary keyword:** `florafresh how long to work`
+- **Secondary:** how long do vaginal probiotic gummies take, florafresh results timeline, when will florafresh work
+- **Search intent:** US woman who just started (or is about to start) FloraFresh and wants a realistic timeline — not a disease-treatment promise
+- **Title (55 chars):** `FloraFresh: How Long Until You Notice a Change? (US 2026)`
+- **Template:** `STORY` — after #53 COMPARISON
+- **BLOG_ID:** `104008483131`
+- **STEP 0 (live, 2026-10-05):** suggest.json for `florafresh how long to work` → **0 articles**. PASS.
+- **STEP 0.5:** `topic_fitness.py` = `PASS [brand]`.
+- **Angle:** adherence + microbiome timeline story. Link existing FloraFresh strains / how-long / over-50 / vs-capsules articles. No BV/yeast treatment claims, no "colonizes" disease language, no invented strain outcome weeks. Panel: 4 strains + XOS + D-Mannose + vitamin C from curated ref. Compliance flags on the PDP stay reported-not-fixed.
+- **Hero product (HTTP 200):** `/products/florafresh-vaginal-probiotics-gummies`
+- **Collections (HTTP 200):** `/collections/womens-essentials-collection` · `/collections/best-seller`
+- **Author:** Dr. Marcus Hale, bio verbatim from roster.json.
+- **Never mention or link MuscleMax.**
+
+## [ ] Ticket #55 — NEW ARTICLE (type: LISTICLE)
+
+- **Primary keyword:** `turkesterone for beginners`
+- **Secondary:** turkesterone starting dose, turkesterone beginner guide us, how to start turkesterone
+- **Search intent:** US lifter new to ecdysteroids who wants a first-week checklist before buying the stocked jar
+- **Title (54 chars):** `Turkesterone for Beginners: 5 Checks Before You Start`
+- **Template:** `LISTICLE` — after #54 STORY; #51 was also LISTICLE but brand/intent differ
+- **BLOG_ID:** `104008483131`
+- **STEP 0 (live, 2026-10-05):** suggest.json for `turkesterone for beginners` → **0 articles**. PASS.
+- **STEP 0.5:** `topic_fitness.py` = `REVIEW [covered-segment]` (brand has a general article; beginners segment uncovered). Proceed under Kevin's standing greenlight (2026-08-13).
+- **Angle:** 5 beginner checks — label dose vs trial doses, cycle length honesty (no fabricated human hypertrophy trials), stacking with creatine (link #46, don't restate), side-effect checks (link #31), who should skip. Hero SKU `turkesterone-advanced-formula`. No COA claims. No MuscleMax.
+- **Hero product (HTTP 200):** `/products/turkesterone-advanced-formula`
+- **Collections (HTTP 200):** `/collections/mens-essential-collection` · `/collections/best-seller`
+- **Author:** Dr. Marcus Hale, bio verbatim from roster.json.
+- **Never mention or link MuscleMax.**
