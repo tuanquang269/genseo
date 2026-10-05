@@ -3815,7 +3815,7 @@ Template rotation after #50 COMPARISON / #49 STORY: **LISTICLE → EDITORIAL →
 - **Author:** Dr. Marcus Hale, bio verbatim from roster.json.
 - **Never mention or link MuscleMax.**
 
-## [ ] Ticket #52 — NEW ARTICLE (type: EDITORIAL)
+## [BLOCKED 2026-10-05 qc-reroll-budget-spent: inline persona f4049-wh-11 profile-left+chin-up rendered chin-down 3/3 rolls; hero+2 inline PASS kept in tmp_images/ageaura-review-whats-on-the-nmn-label-us-2026/; reservation seq=83 released] Ticket #52 — NEW ARTICLE (type: EDITORIAL)
 
 - **Primary keyword:** `ageaura review`
 - **Secondary:** ageaura nmn review, ageaura pure nmn tmg, is ageaura worth it
@@ -3876,5 +3876,69 @@ Template rotation after #50 COMPARISON / #49 STORY: **LISTICLE → EDITORIAL →
 - **Angle:** 5 beginner checks — label dose vs trial doses, cycle length honesty (no fabricated human hypertrophy trials), stacking with creatine (link #46, don't restate), side-effect checks (link #31), who should skip. Hero SKU `turkesterone-advanced-formula`. No COA claims. No MuscleMax.
 - **Hero product (HTTP 200):** `/products/turkesterone-advanced-formula`
 - **Collections (HTTP 200):** `/collections/mens-essential-collection` · `/collections/best-seller`
+- **Author:** Dr. Marcus Hale, bio verbatim from roster.json.
+- **Never mention or link MuscleMax.**
+
+## [ ] Ticket #56 — NEW ARTICLE (type: EDITORIAL)
+
+- **Primary keyword:** `fusiforce for men over 50`
+- **Secondary:** creatine gummies for men over 50, creatine after 50 men us, is creatine safe over 50
+- **Search intent:** US man 50+ weighing creatine for strength/muscle retention who wants an age-specific, honest read before buying the stocked gummies
+- **Title (52 chars):** `FusiForce Creatine Gummies for Men Over 50 (US 2026)`
+- **Template:** `EDITORIAL` — buffer ticket mined by Grok Bot 2026-10-05 (5/day quota); after #55 LISTICLE
+- **BLOG_ID:** `104008483131`
+- **STEP 0 (live, 2026-10-05):** suggest.json `creatine men over 50` / `creatine over 50` → **0 articles**. Existing `creatine-for-women-over-40-what-changes-in-the-us` is the women segment — link it, don't restate. PASS.
+- **STEP 0.5:** `topic_fitness.py` = `PASS [brand]`.
+- **Angle:** what changes after 50 (sarcopenia, recovery, kidney-function questions to ask a doctor), what the label actually gives (3 gummies = 5,000 mg per curated ref — verify on PDP), pairing with resistance training. Link dosage (`creatine-gummies-dosage-how-many-a-day-us-2026`), side effects and timing articles instead of restating. No fabricated trial numbers, no COA claims. No MuscleMax.
+- **Hero product (HTTP 200):** `/products/fusiforce-creatine-gummies`
+- **Collections (HTTP 200):** `/collections/mens-essential-collection` · `/collections/best-seller`
+- **Author:** Dr. Marcus Hale, bio verbatim from roster.json.
+- **Never mention or link MuscleMax.**
+
+## [ ] Ticket #57 — NEW ARTICLE (type: LISTICLE)
+
+- **Primary keyword:** `shilajit for beginners`
+- **Secondary:** how to start shilajit, shilajit first time, shilajit gummies beginner guide
+- **Search intent:** US first-time buyer who wants a short pre-purchase checklist before their first jar of shilajit gummies
+- **Title (53 chars):** `Shilajit for Beginners: 5 Checks Before Your First Jar`
+- **Template:** `LISTICLE` — after #56 EDITORIAL
+- **BLOG_ID:** `104008483131`
+- **STEP 0 (live, 2026-10-05):** suggest.json `shilajit beginners` → **0 articles**. PASS.
+- **STEP 0.5:** `topic_fitness.py` = `REVIEW [covered-segment]` (shilajit has general articles; "for beginners" audience uncovered — precedent: `urolithin-a-for-beginners-4-things-to-know-us-2026`). Greenlit for this exact topic by the 5/day buffer mining.
+- **Angle:** 5 beginner checks — read the panel (2 gummies = 150 mg 10:1 extract ≈ 1,500 mg raw per curated PDP), start at labeled serving, timing (link `when-to-take-shilajit-morning-or-night-us-2026`), spotting fakes (link `fake-shilajit-6-signs-yours-isnt-real-us-2026`), who should skip / side effects (link `shilajit-side-effects-7-signs-to-watch-for-us-2026`). Link, don't restate. No COA claims. No MuscleMax.
+- **Hero product (HTTP 200):** `/products/premium-himalayan-shilajit-gummies`
+- **Collections (HTTP 200):** `/collections/shilajit-wellness-stack` · `/collections/best-seller`
+- **Author:** Dr. Marcus Hale, bio verbatim from roster.json.
+- **Never mention or link MuscleMax.**
+
+## [ ] Ticket #58 — NEW ARTICLE (type: STORY)
+
+- **Primary keyword:** `ageaura nmn for men over 50`
+- **Secondary:** nmn for men over 50, nmn after 50 what to expect, nmn tmg men
+- **Search intent:** US man 50+ considering NMN for energy/healthy aging who wants realistic expectations tied to the stocked AgeAura complex
+- **Title (53 chars):** `AgeAura NMN for Men Over 50: What to Expect (US 2026)`
+- **Template:** `STORY` — after #57 LISTICLE
+- **BLOG_ID:** `104008483131`
+- **STEP 0 (live, 2026-10-05):** suggest.json `nmn men` / `nmn over 50` → **0 articles**. Existing `nmn-for-women-what-the-all-female-trial-missed-us-2026` is the women segment. PASS.
+- **STEP 0.5:** `topic_fitness.py` = `PASS [brand]`.
+- **Angle:** one realistic 12-week story arc for a 50+ man, grounded only in published human-trial facts (cite honestly, no invented numbers); why TMG is paired (link `nmn-and-tmg-together-why-the-pairing-matters-us-2026`), dose (link `how-much-nmn-per-day-what-trials-used-us-2026`), timeline (link `how-long-does-nmn-take-to-work-week-1-to-12-us-2026`). If #52 AgeAura review is live, link it. No disease claims, no COA claims. No MuscleMax.
+- **Hero product (HTTP 200):** `/products/ageaura-pure-nmn-tmg-nad-complex`
+- **Collections (HTTP 200):** `/collections/ageaura` · `/collections/best-seller`
+- **Author:** Dr. Marcus Hale, bio verbatim from roster.json.
+- **Never mention or link MuscleMax.**
+
+## [ ] Ticket #59 — NEW ARTICLE (type: EDITORIAL)
+
+- **Primary keyword:** `how to use shilasource shilajit resin`
+- **Secondary:** how to take shilajit resin, shilajit resin pea size, dissolve shilajit resin in water
+- **Search intent:** US buyer who owns or is about to buy the ShilaSource resin jar and wants the practical daily-use how-to
+- **Title (55 chars):** `ShilaSource Shilajit Resin: How to Use It Daily (US 2026)`
+- **Template:** `EDITORIAL` — after #58 STORY
+- **BLOG_ID:** `104008483131`
+- **STEP 0 (live, 2026-10-05):** suggest.json `how to use shilajit resin` → **0 articles**. `shilajit resin use` returns gold-resin review + resin-vs-gummies (different intent: purchase/format, not usage how-to) — link them. PASS.
+- **STEP 0.5:** `topic_fitness.py` = `PASS [brand]`.
+- **Angle:** practical use only — serving per the curated ShilaSource PDP/ref (do not invent mg), dissolving in warm water/tea, storage, timing (link `when-to-take-shilajit-morning-or-night-us-2026`), dose by form (link `how-much-shilajit-per-day-dosage-by-form-us-2026`). If #53 is live, link it. No COA claims. No MuscleMax.
+- **Hero product (HTTP 200):** `/products/shilasource-himalayan-shilajit-resin`
+- **Collections (HTTP 200):** `/collections/shilajit-wellness-stack` · `/collections/best-seller`
 - **Author:** Dr. Marcus Hale, bio verbatim from roster.json.
 - **Never mention or link MuscleMax.**
