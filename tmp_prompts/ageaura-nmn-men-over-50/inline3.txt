@@ -1,0 +1,10 @@
+SPEC: Photorealistic casual smartphone photo, 1536x1024 landscape.
+FIDELITY LOCK: a white plastic capsule bottle of Wellness Nest AgeAura NMN + TMG NAD+ Complex, exactly as the reference (white bottle, dark grey text, vertical 'Wellness Nest' wordmark with W logo on the left, 'AgeAura' badge, 'NMN + TMG NAD + Complex' title). A capsule bottle, never a pouch or jar.
+REFERENCE: real pack shot (auto via --product-ref).
+SCENE/MOMENT: a home office desk in the evening: an open paper wall calendar lies flat on the desk with twelve week rows, several days crossed off with a pencil, and the bottle stands upright beside the calendar - tracking a 12-week trial of a daily habit. The ONLY packaged product in the frame is the AgeAura bottle.
+DEVICE & CAMERA: shot on a phone held overhead at a slight angle, casual top-down framing, natural depth of field.
+SUBJECT & BODY: no person in frame; a pencil and a pair of reading glasses lie on the calendar.
+LIGHTING: warm desk lamp from the left, soft falloff to the edges, slightly yellow white balance.
+ENVIRONMENT DETAIL: a closed laptop, a coffee ring on a coaster, a small green succulent in a pot (brand colour accent).
+STYLE/IMPERFECTION: amateur snapshot energy, subtle grain, pencil smudges, muted phone-JPEG colours, no HDR gloss.
+NEGATIVE: no readable words or numbers on the calendar, no pill bottles, no other supplement containers, no face, no hands, no pouch, no jar, no teal-orange grade, no watermark, no caption, no on-image text.

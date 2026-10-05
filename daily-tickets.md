@@ -3911,7 +3911,7 @@ Template rotation after #50 COMPARISON / #49 STORY: **LISTICLE → EDITORIAL →
 - **Author:** Dr. Marcus Hale, bio verbatim from roster.json.
 - **Never mention or link MuscleMax.**
 
-## [ ] Ticket #58 — NEW ARTICLE (type: STORY)
+## [DONE 2026-10-05 https://wellnessnest.co/blogs/news/ageaura-nmn-for-men-over-50-what-to-expect-us-2026] Ticket #58 — NEW ARTICLE (type: STORY)
 
 - **Primary keyword:** `ageaura nmn for men over 50`
 - **Secondary:** nmn for men over 50, nmn after 50 what to expect, nmn tmg men
