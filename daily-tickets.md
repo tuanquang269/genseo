@@ -3895,7 +3895,7 @@ Template rotation after #50 COMPARISON / #49 STORY: **LISTICLE → EDITORIAL →
 - **Author:** Dr. Marcus Hale, bio verbatim from roster.json.
 - **Never mention or link MuscleMax.**
 
-## [ ] Ticket #57 — NEW ARTICLE (type: LISTICLE)
+## [DONE 2026-10-05 https://wellnessnest.co/blogs/news/shilajit-for-beginners-5-checks-before-your-first-pouch] Ticket #57 — NEW ARTICLE (type: LISTICLE)
 
 - **Primary keyword:** `shilajit for beginners`
 - **Secondary:** how to start shilajit, shilajit first time, shilajit gummies beginner guide
