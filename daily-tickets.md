@@ -3879,7 +3879,7 @@ Template rotation after #50 COMPARISON / #49 STORY: **LISTICLE → EDITORIAL →
 - **Author:** Dr. Marcus Hale, bio verbatim from roster.json.
 - **Never mention or link MuscleMax.**
 
-## [ ] Ticket #56 — NEW ARTICLE (type: EDITORIAL)
+## [DONE 2026-10-05 https://wellnessnest.co/blogs/news/fusiforce-creatine-gummies-for-men-over-50-us-2026] Ticket #56 — NEW ARTICLE (type: EDITORIAL)
 
 - **Primary keyword:** `fusiforce for men over 50`
 - **Secondary:** creatine gummies for men over 50, creatine after 50 men us, is creatine safe over 50
