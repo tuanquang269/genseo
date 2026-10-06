@@ -451,7 +451,7 @@ Kevin's standing greenlight for mined queues (2026-08-13) + 5/day GO cover the R
   - **Products:** `/products/ageaura-pure-nmn-tmg-nad-complex` ($69.95) hero; `/products/ageaura-pure-nmn-tmg-p2` ($59.95). Collections: `/collections/ageaura`, `/collections/best-seller`. NMN + TMG ONLY.
   - **Angle:** honest format comparison — human trials used oral capsules/tablets; sublingual absorption claims rest on thin evidence (say so); powder = dosing accuracy + stability trade-offs. House honesty pattern: say what the AgeAura PDP does and doesn't publish (mg per capsule). LINK how-much-nmn-per-day, nmn-and-tmg-together, nmn-vs-nr — don't restate.
 
-- [ ] **#MB1006-5 — turkesterone cycle** — `Turkesterone Cycle: Do You Need Breaks? (US 2026)`
+- [DONE 2026-10-06 https://wellnessnest.co/blogs/news/turkesterone-cycle-do-you-need-breaks-us-2026] **#MB1006-5 — turkesterone cycle** — `Turkesterone Cycle: Do You Need Breaks? (US 2026)`
   - **Primary keyword:** `turkesterone cycle` · **Secondary:** turkesterone cycle length, do you need to cycle turkesterone, turkesterone on and off, turkesterone 8 weeks
   - **Template:** EDITORIAL · **Gate:** topic_fitness PASS [brand]
   - **Products:** `/products/turkesterone-advanced-formula` ($75). Collections: `/collections/mens-essential-collection`, `/collections/best-seller`.
