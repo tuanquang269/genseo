@@ -55,13 +55,19 @@ def main():
     sys.path.insert(0, os.path.join(ROOT, "scripts"))
     import genseo_config as cfg
     from shopify_publisher import upload_image_to_shopify_files
-    shop, token, api = cfg.SHOP, cfg.TOKEN, cfg.API
+    from shopify_auth import pick
+    api = cfg.API
+    # CLI control app for theme + pages (write_themes/write_online_store_pages); Files upload needs write_files,
+    # which the CLI app lacks today -> GenSeo publisher token as fallback (pick() decides per job).
+    shop, token, src = pick({"write_themes", "write_online_store_pages", "read_themes"})
+    f_shop, f_token, f_src = pick({"write_files"})
+    print(f"auth: theme+pages via {src} · Files via {f_src}")
     body = open(os.path.join(out_dir, "body.html")).read()
     cache_p = os.path.join(out_dir, "cdn_map.json")
     cache = json.load(open(cache_p)) if os.path.exists(cache_p) else {}
     for local in sorted(set(re.findall(r'(?:src|srcset|data-gslfp-thumb)="(/[^"]+\.(?:webp|png|jpe?g))"', body))):
         if local not in cache:
-            url = upload_image_to_shopify_files(shop, token, local)
+            url = upload_image_to_shopify_files(f_shop, f_token, local)
             if not url:
                 sys.exit(f"✗ image upload failed: {local}")
             cache[local] = url

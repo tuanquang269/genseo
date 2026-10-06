@@ -9,13 +9,16 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.environ["GENSEO_PUBLISHER_REEXEC"] = "1"
 sys.path.insert(0, os.path.join(ROOT, "scripts"))
 import genseo_config as cfg
-shop, token, api = cfg.SHOP, cfg.TOKEN, cfg.API
+from shopify_auth import pick
+api = cfg.API
+shop, token, AUTH_SRC = pick({"write_themes", "write_online_store_pages", "read_themes"})  # CLI app first, GenSeo token fallback
 H = {"X-Shopify-Access-Token": token, "Content-Type": "application/json"}
 def call(path, method="GET", data=None):
     r = urllib.request.Request(f"https://{shop}/admin/api/{api}/{path}", method=method, headers=H,
                                data=json.dumps(data).encode() if data is not None else None)
     return json.load(urllib.request.urlopen(r, timeout=60))
 cmd = sys.argv[1]
+print("auth:", AUTH_SRC)
 if cmd in ("on", "off", "status"):
     for pid in sys.argv[2:]:
         p = call(f"pages/{pid}.json")["page"]
