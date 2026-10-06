@@ -3927,7 +3927,7 @@ Template rotation after #50 COMPARISON / #49 STORY: **LISTICLE → EDITORIAL →
 - **Author:** Dr. Marcus Hale, bio verbatim from roster.json.
 - **Never mention or link MuscleMax.**
 
-## [ ] Ticket #59 — NEW ARTICLE (type: EDITORIAL)
+## [BLOCKED 2026-10-06 qc-reroll-budget-spent: inline persona m3039-wh-09 3q-left+chin-down rendered wrong head direction 3/3 rolls; hero+2 inline PASS kept in tmp_images/shilasource-shilajit-resin-how-to-use-daily-us-2026/; draft published_drafts/shilasource-shilajit-resin-how-to-use-daily-us-2026.md ready except inline-1; reservation seq=91 released] Ticket #59 — NEW ARTICLE (type: EDITORIAL)
 
 - **Primary keyword:** `how to use shilasource shilajit resin`
 - **Secondary:** how to take shilajit resin, shilajit resin pea size, dissolve shilajit resin in water
