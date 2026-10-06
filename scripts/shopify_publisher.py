@@ -758,7 +758,7 @@ def do_publish(file_path, blog_id, live=False):
         sys.exit(1)
 
 
-def do_update(file_path, blog_id, article_id):
+def do_update(file_path, blog_id, article_id, replace_cover=False, no_carry_credits=False):
     # ── FREEZE LIST: articles under ranking stabilization must not be touched at all ──
     FREEZE_FILE = "/Users/kevinkreative/genseo/frozen_articles.txt"
     if os.path.exists(FREEZE_FILE):
@@ -855,13 +855,27 @@ def do_update(file_path, blog_id, article_id):
     # usually carries CDN URLs, not local paths, so the usual read finds nothing; in that case
     # the live page is the record of what it owes, so carry its block forward verbatim.
     credits_html = persona_credits_html(md_text)
-    if not credits_html:
+    # --replace-cover means every image is new, so the live block credits images that are gone;
+    # --no-carry-credits drops it explicitly (e.g. a follow-up refresh of such an article).
+    if not credits_html and (replace_cover or no_carry_credits):
+        print("  ⊘ not carrying the old image-credits block (images replaced; new images need no credit)")
+    elif not credits_html:
         credits_html = live_credits_block(shop, token, blog_id, article_id)
         if credits_html:
             print("  ↩ carried the existing image-credits block forward (draft had no local images)")
 
     # ── Image Upload ────────────────────────────────────────────────────────
-    md_text, thumbnail_b64, hero_cdn_url, upload_count, fail_count = _process_images_for_publish(shop, token, md_text, strip_hero=False)
+    # --replace-cover (Kevin 2026-10-06, Urolithin->NMN+TMG rewrites): the draft's FIRST local image is a new
+    # hero that REPLACES the live cover (old cover showed a discontinued pack). Same semantics as do_publish:
+    # the hero is stripped from the body and sent as article.image. Default (no flag) keeps the live cover.
+    _hero_alt = None
+    if replace_cover:
+        _hm = re.search(r'!\[([^\]]*)\]\((/[^)]+)\)', md_text)
+        if not _hm:
+            print('✗ ABORT (update --replace-cover): the draft has no local hero image to use as the new cover.')
+            sys.exit(2)
+        _hero_alt = _hm.group(1).strip() or None
+    md_text, thumbnail_b64, hero_cdn_url, upload_count, fail_count = _process_images_for_publish(shop, token, md_text, strip_hero=replace_cover)
 
     if fail_count > 0:
         print(f"\n  ⚠  {fail_count} image(s) failed to upload.")
@@ -910,7 +924,14 @@ def do_update(file_path, blog_id, article_id):
     # happens to appear first — silently, since the cover is not visible in the article body.
     # Only ever backfill a cover the live article does not already have.
     existing_cover = live_article_cover(shop, token, blog_id, article_id)
-    if existing_cover:
+    if replace_cover:
+        if not thumbnail_b64:
+            print('✗ ABORT (update --replace-cover): hero image did not upload/encode; refusing to update with a stale cover.')
+            sys.exit(2)
+        print(f"  ⊙ Replacing cover image (was: {(existing_cover or 'none')[:80]})")
+        payload['article']['image'] = {'attachment': thumbnail_b64, **({'alt': _hero_alt} if _hero_alt else {})}
+        existing_cover = None
+    elif existing_cover:
         print(f"  ⊙ Keeping existing cover image: {existing_cover[:80]}")
         thumbnail_b64 = None
     elif thumbnail_b64:
@@ -935,7 +956,7 @@ def do_update(file_path, blog_id, article_id):
         img_count, img_srcs, _ = verify_article_images(shop, token, blog_id, article_id)
         # Every uploaded image stays in the body here (strip_hero=False), so upload_count already
         # covers them; the cover is counted separately by verify_article_images.
-        expected = upload_count + (1 if (existing_cover or thumbnail_b64) else 0)
+        expected = upload_count if replace_cover else upload_count + (1 if (existing_cover or thumbnail_b64) else 0)
 
         if img_count == 0:
             print(f"  ✗ IMAGE VERIFICATION FAILED — 0 CDN images found!")
@@ -980,6 +1001,10 @@ if __name__ == "__main__":
     upd_parser.add_argument('file_path')
     upd_parser.add_argument('blog_id')
     upd_parser.add_argument('article_id')
+    upd_parser.add_argument('--replace-cover', action='store_true',
+                            help='first local image in the draft becomes the NEW cover (stripped from body)')
+    upd_parser.add_argument('--no-carry-credits', action='store_true',
+                            help="don't carry the live image-credits block forward (its images were replaced)")
     
     args = parser.parse_args()
     
@@ -988,6 +1013,7 @@ if __name__ == "__main__":
     elif args.command == 'publish':
         do_publish(args.file_path, args.blog_id, live=args.live)
     elif args.command == 'update':
-        do_update(args.file_path, args.blog_id, args.article_id)
+        do_update(args.file_path, args.blog_id, args.article_id, replace_cover=args.replace_cover,
+                  no_carry_credits=args.no_carry_credits)
     else:
         parser.print_help()
