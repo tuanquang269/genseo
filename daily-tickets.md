@@ -407,3 +407,58 @@ rule #2 regardless). **Kevin: run the mining recipe in the app**
 `# BATCH <date>`. Nothing above this line changed — the open segments and `shilajit-shockwave`
 remain the $0 refill path.
 
+
+# BATCH 2026-10-06 (MacBook failover lane — ticket ids prefixed MB so they can never collide with the Mini's #NN queue)
+
+Mined by Grok Bot on the MacBook at $0 while the Mac Mini was unreachable (its queue + persona state
+since 2026-08-15 live only on the Mini, unpushed). Source: live catalog (products.json) + live blog
+inventory (sitemap_blogs_1.xml, 88 handles incl. the 5 Oct-5 posts) + `topic_fitness.py` + STEP 0
+`suggest.json` (0 article matches for every primary/secondary query, checked 2026-10-06 ~10:00 ICT).
+Kevin's standing greenlight for mined queues (2026-08-13) + 5/day GO cover the REVIEW verdicts.
+
+**MacBook-lane rules for this batch (read before every ticket):**
+- **ALL images NO-FACE** (hero = real pack in a real scene, `--product-ref` + `--qc`, no `--persona-ref`; inline =
+  hands/POV/flat-lay/scene). Reason: `personas/index.json` on this Mac is stale vs the Mini (angles spent
+  Aug 16–Oct 5 are unknown here), so any persona pick risks re-spending an angle — Kevin's hard rule. Do NOT run
+  `persona_picker.py pick` in this batch. QC must FAIL any image with a recognizable human face.
+- **AgeAura = NMN + TMG only.** Never mention, link or picture Urolithin A.
+- **Fact-check log (Google: manual fact-checking of AI content is "critical", SEL 2026-10-06):** before publish,
+  write `~/genseo/logs/claims/<slug>.md` — one row per factual claim (number, study, mechanism, dose): claim ·
+  source URL · fetched & confirmed (Y/N). Any claim not confirmed from a fetched source is deleted from the draft.
+- Byline: roster.json only. Blog id 104008483131. Publish `--live`.
+
+- [ ] **#MB1006-1 — vaginal probiotics after antibiotics** — `Vaginal Probiotics After Antibiotics: When to Start (US 2026)`
+  - **Primary keyword:** `probiotics after antibiotics for women` · **Secondary:** vaginal probiotics after antibiotics, when to take probiotics after antibiotics, yeast infection after antibiotics, how long after antibiotics to take probiotics
+  - **Template:** EDITORIAL · **Gate:** topic_fitness PASS [brand]
+  - **Products:** `/products/florafresh-vaginal-probiotics-gummies` ($40.99). Collections: `/collections/womens-essentials-collection`, `/collections/best-seller`.
+  - **Angle:** timing (spacing the dose from the antibiotic, continuing after the course), what the evidence does and does not show for preventing post-antibiotic yeast/BV, when to call a clinician. Link existing: yeast-infection-vs-bv, vaginal-probiotics-how-long-until-they-work, probiotics-for-bv. No drug/cure claims (FDA structure/function only).
+
+- [ ] **#MB1006-2 — how to take shilajit resin** — `How to Take Shilajit Resin: Dissolve It Right (US 2026)`
+  - **Primary keyword:** `how to take shilajit resin` · **Secondary:** how to dissolve shilajit resin, shilajit resin in warm water, pea size shilajit, shilajit resin under tongue
+  - **Template:** LISTICLE (step-by-step) · **Gate:** topic_fitness REVIEW [covered-segment] → greenlit (no "how to take" title exists)
+  - **Products:** `/products/shilasource-himalayan-shilajit-resin` ($59.99) hero; `/products/pure-shilajit-gold-resin` ($75) inline. Collections: `/collections/shilajit-wellness-stack`, `/collections/mens-essential-collection`.
+  - **Angle:** the practical method (tool/scoop, pea-size portion, water temperature, stirring, taste fixes, storage). LINK — do not restate — how-much-shilajit-per-day (dose) and when-to-take-shilajit (timing). Don't lead on lab-tested/COA as the advantage.
+
+- [ ] **#MB1006-3 — creatine gummies loading phase** — `Creatine Gummies Loading Phase: Is It Needed? (US 2026)`
+  - **Primary keyword:** `creatine loading phase gummies` · **Secondary:** do you need to load creatine, creatine loading phase, how many creatine gummies to load, creatine saturation
+  - **Template:** STORY · **Gate:** topic_fitness PASS [brand]
+  - **Products:** `/products/fusiforce-creatine-gummies` ($69.99). Collections: `/collections/mens-essential-collection`, `/collections/best-seller`.
+  - **Angle:** loading (≈20 g/day × 5–7 days) vs steady 3–5 g/day reach the same muscle saturation, just later — cite the classic Hultman 1996 J Appl Physiol data only if fetched/confirmed. What loading means in gummy count (and why most buyers should not). LINK creatine-gummies-dosage + how-long-does-creatine-take-to-work, don't restate.
+
+- [ ] **#MB1006-4 — nmn capsules vs powder vs sublingual** — `NMN Capsules vs Powder vs Sublingual: Which Format? (US 2026)`
+  - **Primary keyword:** `nmn capsules vs powder` · **Secondary:** sublingual nmn, nmn powder vs capsules, best form of nmn, nmn absorption
+  - **Template:** COMPARISON · **Gate:** topic_fitness PASS [brand_intent]
+  - **Products:** `/products/ageaura-pure-nmn-tmg-nad-complex` ($69.95) hero; `/products/ageaura-pure-nmn-tmg-p2` ($59.95). Collections: `/collections/ageaura`, `/collections/best-seller`. NMN + TMG ONLY.
+  - **Angle:** honest format comparison — human trials used oral capsules/tablets; sublingual absorption claims rest on thin evidence (say so); powder = dosing accuracy + stability trade-offs. House honesty pattern: say what the AgeAura PDP does and doesn't publish (mg per capsule). LINK how-much-nmn-per-day, nmn-and-tmg-together, nmn-vs-nr — don't restate.
+
+- [ ] **#MB1006-5 — turkesterone cycle** — `Turkesterone Cycle: Do You Need Breaks? (US 2026)`
+  - **Primary keyword:** `turkesterone cycle` · **Secondary:** turkesterone cycle length, do you need to cycle turkesterone, turkesterone on and off, turkesterone 8 weeks
+  - **Template:** EDITORIAL · **Gate:** topic_fitness PASS [brand]
+  - **Products:** `/products/turkesterone-advanced-formula` ($75). Collections: `/collections/mens-essential-collection`, `/collections/best-seller`.
+  - **Angle:** cycling is a bro-science carry-over from hormonal compounds; no human trial tested on/off cycles of turkesterone — say that plainly, give the conservative label-led approach. LINK turkesterone-side-effects, turkesterone-timing, turkesterone-benefits-dosing — don't restate.
+
+- [ ] **#MB1006-6 — vaginal probiotics during your period** (buffer) — `Vaginal Probiotics During Your Period: Keep Taking Them? (US 2026)`
+  - **Primary keyword:** `probiotics during period` · **Secondary:** vaginal probiotics on period, menstruation vaginal ph, florafresh during period, probiotics for period odor
+  - **Template:** STORY · **Gate:** topic_fitness PASS [brand]
+  - **Products:** `/products/florafresh-vaginal-probiotics-gummies` ($40.99). Collections: `/collections/womens-essentials-collection`, `/collections/best-seller`.
+  - **Angle:** menstrual blood raises vaginal pH; oral probiotics keep going through the cycle; what's normal vs a reason to see a clinician. Run only if #MB1006-1 shipped and the angles don't overlap.

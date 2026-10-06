@@ -118,7 +118,7 @@ def repair(aid, blog="104008483131"):
     else:
         print(f"  [{aid}] healthy (schema+author present) | {a.get('handle')}")
 
-def recent_article_ids(hours, blogs=("104008483131","104008483131")):
+def recent_article_ids(hours, blogs=("104008483131",)):  # was the same id twice -> double check/repair (fixed 2026-10-03)
     """Article IDs updated within the last `hours`, across the given blogs."""
     since=(datetime.datetime.now(datetime.timezone.utc)-datetime.timedelta(hours=hours)).strftime('%Y-%m-%dT%H:%M:%SZ')
     out=[]

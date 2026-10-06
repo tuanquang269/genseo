@@ -24,6 +24,31 @@ if [ -d "$GENSEO_CFG" ]; then
   case "$AUTH_JSON" in *'"loggedIn": true'*|*'"loggedIn":true'*) USE_NATIVE=1;; esac
 fi
 
+# Writing lane when the native OAuth dir is logged out (2026-10-06): the Mini routes through its local
+# 9router (:20128, via its global settings.json — process env cannot override it there). A Mac WITHOUT a
+# local router (the MacBook) uses the HOSTED 9router (ai.patigroup.com — same PATI-* models, no Mini
+# dependency), key read from the env or the vault .env the same way gem9 does. Never printed.
+LANE_ROUTER="local"
+if [ "$USE_NATIVE" != "1" ] && ! curl -s -m 3 -o /dev/null http://127.0.0.1:20128/ 2>/dev/null; then
+  _K="${NINE_ROUTER_KEY:-}"
+  if [ -z "$_K" ] && [ -f "$HOME/PATI/LLM-Wiki/.env" ]; then
+    _K="$(grep -E '^(export )?NINE_ROUTER_KEY=' "$HOME/PATI/LLM-Wiki/.env" | head -1 | sed -E 's/^(export )?NINE_ROUTER_KEY=//; s/^["'"'"']//; s/["'"'"']$//')"
+  fi
+  if [ -n "$_K" ]; then
+    export ANTHROPIC_BASE_URL="${GENSEO_ROUTER_BASE:-https://ai.patigroup.com}"
+    export ANTHROPIC_AUTH_TOKEN="$_K"
+    LANE_ROUTER="hosted"
+    # Lean config dir: the MacBook's global ~/.claude carries MCP servers, plugins, hooks and memory that
+    # filled 450k tokens before the first ticket read and made autocompact thrash (2026-10-06 09:57).
+    # ~/.claude-genseo has no settings.json; the router token makes a /login unnecessary.
+    export CLAUDE_CONFIG_DIR="$GENSEO_CFG"; mkdir -p "$GENSEO_CFG"
+  else
+    echo "[$(date '+%F %T')] FATAL: no local 9router, no native login, no NINE_ROUTER_KEY" >> "$HOME/genseo/logs/articles-retry.log"
+    exit 1
+  fi
+  unset _K
+fi
+
 CLAUDE_BIN="$HOME/.local/bin/claude"
 [ -x "$CLAUDE_BIN" ] || CLAUDE_BIN="$(command -v claude)"
 if [ -z "$CLAUDE_BIN" ]; then echo "FATAL: claude CLI not found"; exit 1; fi
@@ -31,6 +56,24 @@ if [ -z "$CLAUDE_BIN" ]; then echo "FATAL: claude CLI not found"; exit 1; fi
 # Run from the repo so the native-lane config dir trusts exactly this workspace
 # (trust for ~/genseo is seeded in ~/.claude-genseo/.claude.json).
 cd "$HOME/genseo" || exit 1
+# Empty queue — do not burn the model lane (Kevin/Grok Bot 2026-10-05; synced from Mini).
+# Counts both ticket styles: "- [ ] **#NN" (2026-08-15+) and "## [ ] Ticket #NN" (batch 1-2).
+_OPEN=$(grep -cE '^(- \[ \]|## \[ \])' "$HOME/genseo/daily-tickets.md" 2>/dev/null || true)
+_OPEN=${_OPEN:-0}
+if [ "$_OPEN" -eq 0 ]; then
+  echo "[$(date '+%F %T')] retry skipped: ticket queue empty" >> "$HOME/genseo/logs/articles-retry.log"
+  exit 0
+fi
+# Two-Mac failover guard (Kevin 2026-10-06: no automation may depend on one Mac). The live site is
+# the shared state: if today's (ICT) target is already live — from EITHER Mac — do not start a ticket.
+# Fails closed: an unreadable feed (-1) also stops the run rather than publishing blind.
+_TARGET="${GENSEO_DAILY_TARGET:-5}"
+_LIVE="$(/usr/bin/python3 "$HOME/genseo/scripts/genseo_published_today.py" 2>/dev/null | tail -1)"
+case "$_LIVE" in ''|*[!0-9-]*) _LIVE=-1;; esac
+if [ "$_LIVE" -lt 0 ] || [ "$_LIVE" -ge "$_TARGET" ]; then
+  echo "[$(date '+%F %T')] $(hostname -s) skipped: live today=$_LIVE target=$_TARGET" >> "$HOME/genseo/logs/articles-retry.log"
+  exit 0
+fi
 
 LOGDIR="$HOME/genseo/logs"
 mkdir -p "$LOGDIR"
@@ -59,7 +102,13 @@ STANDING APPROVALS (Kevin, 2026-08-08 — this run is unattended, never pause to
 - This pre-approval covers NOTHING else: any paid media API (KIE, Veo, Kling, HeyGen, ElevenLabs, per-token image/video/audio) remains FORBIDDEN in this pipeline — if a step seems to need one, skip it, mark the ticket [BLOCKED <reason>], and report.
 - If any OTHER rule requires human input, do not improvise: leave the ticket un-flipped, explain in the report, exit.
 
-CONTEXT HYGIENE (a run died on "input exceeds the context window", 2026-08-09): never Read a whole large file — use offset/limit chunks for anything over ~500 lines; never cat/tail entire logs or HTML dumps; read only the sections of skill references you need. If a tool result looks huge, summarize and move on instead of re-reading it.'
+CONTEXT HYGIENE (a run died on "input exceeds the context window", 2026-08-09): never Read a whole large file — use offset/limit chunks for anything over ~500 lines; never cat/tail entire logs or HTML dumps; read only the sections of skill references you need. If a tool result looks huge, summarize and move on instead of re-reading it.
+
+TWO-MAC FAILOVER RULES (Kevin 2026-10-06 — GenSeo runs on whichever Mac is online; the Mini and the MacBook keep separate ticket files):
+A. DOUBLE-PUBLISH GUARD: immediately BEFORE running shopify_publisher.py, run `/usr/bin/python3 scripts/genseo_published_today.py` — if it prints a number >= '"${GENSEO_DAILY_TARGET:-5}"' (or -1), do NOT publish: release any persona reservation, leave the ticket un-flipped, report "daily target already live" and stop. Then re-run STEP 0 (suggest.json for the primary keyword) at that same moment: if an article for this keyword went live since you started (the other Mac may have shipped it), mark the ticket [SKIPPED-DUPLICATE <date> <url>] and stop.
+B. FACT-CHECK LOG (Google calls manual fact-checking of AI content critical, SEL 2026-10-06): before publishing, write logs/claims/<slug>.md with one line per factual claim (number, study, dose, mechanism): claim | source URL | fetched+confirmed Y/N. Delete from the draft any claim you could not confirm from a source you actually fetched. Mention the claim count in the report.
+C. AgeAura = NMN + TMG only. Never mention, link or picture Urolithin A in any article.
+D. If the ticket batch header says "ALL images NO-FACE" (MacBook failover lane, or env GENSEO_NO_FACE='"${GENSEO_NO_FACE:-0}"' = 1): that OVERRIDES the HERO / PERSONA ROTATION / FACE ANGLE rules above for this run — do NOT run persona_picker.py at all, never pass --persona-ref, make the hero a NO-FACE real-pack-in-a-real-scene image (--product-ref + --qc, no --ugc) and all 3 inline images no-face (--ugc --qc). Log "persona: none (failover no-face)" in the tracker/report.'
 
 # Both lanes get the same grant, declared once so they cannot drift apart.
 # WebSearch added 2026-08-12. It was missing, and its absence was silent: the skill's STEP 2
@@ -74,19 +123,22 @@ echo "=== GenSeo ticket run $STAMP ===" >> "$LOGDIR/articles-$STAMP.log"
 if [ "$USE_NATIVE" = "1" ]; then
   echo "(lane: native subscription via CLAUDE_CONFIG_DIR=$GENSEO_CFG)" >> "$LOGDIR/articles-$STAMP.log"
   CLAUDE_CONFIG_DIR="$GENSEO_CFG" "$CLAUDE_BIN" -p "$PROMPT" \
-    --model opus \
+    --model PATI-Alpha-Plan-Review \
+    --fallback-model PATI-Fable-5 \
     --output-format text \
     --allowed-tools "$ALLOWED_TOOLS" \
     >> "$LOGDIR/articles-$STAMP.log" 2>&1
   RC=$?
 else
-  echo "(lane: LEGACY 9router — run 'CLAUDE_CONFIG_DIR=~/.claude-genseo claude /login' on the mini to unlock the native lane)" >> "$LOGDIR/articles-$STAMP.log"
+  echo "(lane: 9router $LANE_ROUTER on $(hostname -s) — PATI-Alpha-Plan-Review, fallback PATI-Fable-5)" >> "$LOGDIR/articles-$STAMP.log"
   # 9router's real per-request limit is smaller than the 200k the CLI assumes for the
   # unrecognized model name — three runs died on "input exceeds the context window"
   # (2026-08-09). Cap the window well below it so autocompact fires early enough.
   export CLAUDE_CODE_MAX_CONTEXT_TOKENS=150000
   "$CLAUDE_BIN" -p "$PROMPT" \
-    --model opus \
+    --model PATI-Alpha-Plan-Review \
+    --fallback-model PATI-Fable-5 \
+    --strict-mcp-config \
     --output-format text \
     --allowed-tools "$ALLOWED_TOOLS" \
     >> "$LOGDIR/articles-$STAMP.log" 2>&1

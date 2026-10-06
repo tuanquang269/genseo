@@ -9,6 +9,44 @@ Written 2026-08-13. Rebuild when the state block at the bottom stops matching re
 
 ---
 
+## 0 · Two-Mac failover (Kevin 2026-10-06 — no automation may depend on one Mac)
+
+GenSeo runs from **whichever Mac is online**. Both Macs carry the same pipeline and the same
+schedule; the live site decides who publishes.
+
+| | Mac Mini (primary) | MacBook Pro (standby) |
+|---|---|---|
+| launchd | Mini's existing 07:30 batch + 14:47 catch-up | `com.pati.genseo-daily` 07:30 + 14:47 (`~/Library/LaunchAgents/com.pati.genseo-daily.plist`) |
+| wrapper | `~/bin/grokbot-genseo-daily.sh` | `~/bin/grokbot-genseo-daily.sh` (role `standby`, waits 20 min first) |
+| writer | claude `PATI-Alpha-Plan-Review` → `PATI-Fable-5` via local 9router :20128 | same models via the **hosted** 9router `ai.patigroup.com` (key from vault `.env`, never printed) |
+| images | `GENSEO_IMAGE_BACKEND=gpt` (cx/gpt-image-2.5 via 9router), Grok Imagine fallback | ima2 ChatGPT OAuth lane (`GENSEO_IMA2_PROVIDER=oauth`, `GENSEO_IMA2_MODEL=gpt-6-sol`, $0 subscription) |
+| image QC | gem9 judges | gem9 judges (gem9 defaults to the hosted router, so it works without the Mini) |
+| tickets | Mini `daily-tickets.md` (#NN) | MacBook `daily-tickets.md` (#MBmmdd-N — ids can never collide) |
+
+**Double-publish prevention.** The Macs share no writable state (vault Syncthing is MacBook→Mini
+one-way; the Mini's repo commits are unpushed), so the PUBLIC SITE is the lock:
+1. `scripts/genseo_published_today.py` counts today's (ICT) posts in `/blogs/news.atom`. Every
+   wrapper loop AND `run_ticket_headless.sh` exit when it is ≥ `GENSEO_DAILY_TARGET` (5). Unreadable
+   feed = fail closed.
+2. `--peer-active 50 --local-log state/published-by-<host>.log`: a post that went live in the last
+   50 min and was not published by this Mac means the other Mac is mid-batch → stand down.
+3. The runner prompt re-checks the count + STEP 0 `suggest.json` immediately before
+   `shopify_publisher.py` (catches a topic the other Mac shipped while this run was writing).
+4. Standby waits 20 min at each slot so a healthy Mini goes first.
+5. A local mkdir lock (`state/daily.lock`) stops the 14:47 catch-up overlapping a running batch.
+
+**MacBook lane = all images NO-FACE** until `personas/index.json` is re-synced from the Mini
+(angles spent there since 2026-08-15 are unknown here — re-spending one breaks Kevin's
+one-angle-per-model rule). QC fails any image with a recognizable face on the no-face lane.
+
+**Fact-check log:** every run writes `logs/claims/<slug>.md` (claim | source | confirmed) and drops
+unconfirmed claims before publish (SEL 2026-10-06: Google calls manual fact-checking critical).
+
+**When the Mini comes back:** copy `scripts/genseo_published_today.py`, the guard block of
+`run_ticket_headless.sh`, the `--peer-active` check in `grokbot-genseo-daily.sh`, and this section to
+the Mini; push the Mini's unpushed commits (or rsync `personas/index.json`, `PUBLISHED_ARTICLES_TRACKER.csv`,
+`daily-tickets.md`) so both Macs share persona + tracker state again.
+
 ## 1 · The daily loop
 
 Do these in order. Stop at the first hard stop and report it. One article per day is the

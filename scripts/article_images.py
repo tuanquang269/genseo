@@ -358,6 +358,12 @@ def qc_gem9(webp_path, refs, is_ugc, has_persona, angle_phrase=None):
     rubric.append("3b. Any product package in frame that is NOT the referenced product = FAIL. "
                   "An invented brand name on a jar, tub, bottle or pouch counts, even a plausible "
                   "one — name it in the reason.")
+    if not has_persona:
+        # 2026-10-06: no-face lane (and the MacBook failover lane, where personas/index.json is not
+        # synced with the Mini) — a face that slipped in is an unapproved/unaccounted persona.
+        rubric.append("4. FACES. This image must contain NO recognizable human face (hands, arms, "
+                      "a back or a cropped body below the eyes are fine). Any recognizable face, "
+                      "even partly turned or in the background = FAIL - face in frame.")
     if has_persona:
         # Check 5 briefly FAILed an image whose person was recognisably the reference individual.
         # That was the right gate for a bank of one-shot faces; it is the wrong gate for the bank
@@ -491,6 +497,14 @@ def gen_png(prompt, size, out_png, refs, timeout=360):
         if not os.path.exists(r):
             sys.exit(f"✗ ref image not found: {r}")
         cmd += ["--ref", r]
+    # 2026-10-06 (MacBook failover): ima2 3.x has no default model until one is set, so name the
+    # lane explicitly. GENSEO_IMA2_PROVIDER/MODEL override; default = ChatGPT OAuth (subscription, $0).
+    prov = os.environ.get("GENSEO_IMA2_PROVIDER", "oauth")
+    model = os.environ.get("GENSEO_IMA2_MODEL", "gpt-6-sol")
+    if prov:
+        cmd += ["--provider", prov]
+    if model:
+        cmd += ["--model", model]
     env = os.environ.copy()
     env["PATH"] = os.path.dirname(IMA2) + ":" + env.get("PATH", "")
     _ensure_serve(env)
