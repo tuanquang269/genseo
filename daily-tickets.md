@@ -445,7 +445,7 @@ Kevin's standing greenlight for mined queues (2026-08-13) + 5/day GO cover the R
   - **Products:** `/products/fusiforce-creatine-gummies` ($69.99). Collections: `/collections/mens-essential-collection`, `/collections/best-seller`.
   - **Angle:** loading (≈20 g/day × 5–7 days) vs steady 3–5 g/day reach the same muscle saturation, just later — cite the classic Hultman 1996 J Appl Physiol data only if fetched/confirmed. What loading means in gummy count (and why most buyers should not). LINK creatine-gummies-dosage + how-long-does-creatine-take-to-work, don't restate.
 
-- [ ] **#MB1006-4 — nmn capsules vs powder vs sublingual** — `NMN Capsules vs Powder vs Sublingual: Which Format? (US 2026)`
+- [DONE 2026-10-06 https://wellnessnest.co/blogs/news/nmn-capsules-vs-powder-vs-sublingual-best-form-us-2026] **#MB1006-4 — nmn capsules vs powder vs sublingual** — `NMN Capsules vs Powder vs Sublingual: Which Format? (US 2026)`
   - **Primary keyword:** `nmn capsules vs powder` · **Secondary:** sublingual nmn, nmn powder vs capsules, best form of nmn, nmn absorption
   - **Template:** COMPARISON · **Gate:** topic_fitness PASS [brand_intent]
   - **Products:** `/products/ageaura-pure-nmn-tmg-nad-complex` ($69.95) hero; `/products/ageaura-pure-nmn-tmg-p2` ($59.95). Collections: `/collections/ageaura`, `/collections/best-seller`. NMN + TMG ONLY.
