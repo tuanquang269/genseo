@@ -8,6 +8,12 @@ export PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/us
 for d in "$HOME"/.nvm/versions/node/*/bin; do [ -d "$d" ] && PATH="$d:$PATH"; done
 export PATH
 unset ANTHROPIC_API_KEY
+# Pipeline scripts need Pillow/markdown. If the first python3 on PATH lacks them (MacBook: Homebrew 3.12),
+# shim python3 -> /usr/bin/python3 for this run so the agent never trips on "No module named PIL".
+if ! python3 -c 'import PIL, markdown' >/dev/null 2>&1 && /usr/bin/python3 -c 'import PIL, markdown' >/dev/null 2>&1; then
+  mkdir -p "$HOME/genseo/state/pybin" && ln -sf /usr/bin/python3 "$HOME/genseo/state/pybin/python3"
+  export PATH="$HOME/genseo/state/pybin:$PATH"
+fi
 # Mac mini's global settings.json routes claude through the local 9router proxy
 # (PATI-Opus-5 etc.) for Hermes. FINDINGS 2026-08-09 (00.6-mistakes has the full map):
 # empty-string process env is IGNORED (settings env wins); --settings deep-merges and
@@ -107,7 +113,9 @@ CONTEXT HYGIENE (a run died on "input exceeds the context window", 2026-08-09): 
 TWO-MAC FAILOVER RULES (Kevin 2026-10-06 — GenSeo runs on whichever Mac is online; the Mini and the MacBook keep separate ticket files):
 A. DOUBLE-PUBLISH GUARD: immediately BEFORE running shopify_publisher.py, run `/usr/bin/python3 scripts/genseo_published_today.py` — if it prints a number >= '"${GENSEO_DAILY_TARGET:-5}"' (or -1), do NOT publish: release any persona reservation, leave the ticket un-flipped, report "daily target already live" and stop. Then re-run STEP 0 (suggest.json for the primary keyword) at that same moment: if an article for this keyword went live since you started (the other Mac may have shipped it), mark the ticket [SKIPPED-DUPLICATE <date> <url>] and stop.
 B. FACT-CHECK LOG (Google calls manual fact-checking of AI content critical, SEL 2026-10-06): before publishing, write logs/claims/<slug>.md with one line per factual claim (number, study, dose, mechanism): claim | source URL | fetched+confirmed Y/N. Delete from the draft any claim you could not confirm from a source you actually fetched. Mention the claim count in the report.
-C. AgeAura = NMN + TMG only. Never mention, link or picture Urolithin A in any article.
+C. AgeAura = NMN + TMG only. Never mention, link or picture Urolithin A in any article. If the next open ticket is about Urolithin A (or AgeAura Urolithin A), mark it [SKIPPED-UNFIT <date> AgeAura is NMN+TMG only] and take the following ticket instead.
+F. Never run Bash commands in the background (no run_in_background, no trailing &): this is a one-shot -p run and it ENDS when you stop talking, killing background image jobs (2026-10-06 10:47 a run exited mid-images). Run image generations in the foreground, one or several per command.
+E. NEVER modify an existing live post: no [REFRESH EXISTING], no shopify_publisher.py update on an article you did not create in this run. If STEP 0/0.5 says refresh or duplicate, mark the ticket SKIPPED and move to the next one.
 D. If the ticket batch header says "ALL images NO-FACE" (MacBook failover lane, or env GENSEO_NO_FACE='"${GENSEO_NO_FACE:-0}"' = 1): that OVERRIDES the HERO / PERSONA ROTATION / FACE ANGLE rules above for this run — do NOT run persona_picker.py at all, never pass --persona-ref, make the hero a NO-FACE real-pack-in-a-real-scene image (--product-ref + --qc, no --ugc) and all 3 inline images no-face (--ugc --qc). Log "persona: none (failover no-face)" in the tracker/report.'
 
 # Both lanes get the same grant, declared once so they cannot drift apart.
