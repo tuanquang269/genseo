@@ -1,1043 +1,1091 @@
 {
- "_doc": "GenSeo persona bank taxonomy. 200 slots / 50 sourcing cells / 10 rotation pools. Rotation happens at POOL level (gender+age); ethnicity cells are sourcing quotas only, so a cell of 1 never forces a persona repeat.",
- "version": 2,
- "created": "2026-08-09",
- "total_slots": 200,
- "gender_split": {
-  "male": 114,
-  "female": 86
- },
- "ethnicity_totals": {
-  "white non-Hispanic": {
-   "count": 108,
-   "pct": 54.0
+  "_doc": "GenSeo persona bank taxonomy. 200 slots / 50 sourcing cells / 10 rotation pools. Rotation happens at POOL level (gender+age); ethnicity cells are sourcing quotas only, so a cell of 1 never forces a persona repeat.",
+  "version": 2,
+  "created": "2026-08-09",
+  "total_slots": 200,
+  "gender_split": {
+    "male": 114,
+    "female": 86
   },
-  "Hispanic/Latino": {
-   "count": 38,
-   "pct": 19.0
+  "ethnicity_totals": {
+    "white non-Hispanic": {
+      "count": 108,
+      "pct": 54.0
+    },
+    "Hispanic/Latino": {
+      "count": 38,
+      "pct": 19.0
+    },
+    "Black/African American": {
+      "count": 26,
+      "pct": 13.0
+    },
+    "Asian American (incl. South Asian)": {
+      "count": 17,
+      "pct": 8.5
+    },
+    "multiracial/MENA/Native/other": {
+      "count": 11,
+      "pct": 5.5
+    }
   },
-  "Black/African American": {
-   "count": 26,
-   "pct": 13.0
-  },
-  "Asian American (incl. South Asian)": {
-   "count": 17,
-   "pct": 8.5
-  },
-  "multiracial/MENA/Native/other": {
-   "count": 11,
-   "pct": 5.5
-  }
- },
- "rotation_pools": [
-  {
-   "pool_id": "m2029",
-   "gender": "male",
-   "age_band": "20-29",
-   "target_count": 16,
-   "brands_served": [
-    "Turkesterone",
-    "FusiForce",
-    "ShilaSource"
-   ]
-  },
-  {
-   "pool_id": "m3039",
-   "gender": "male",
-   "age_band": "30-39",
-   "target_count": 37,
-   "brands_served": [
-    "ShilaSource",
-    "FusiForce",
-    "Turkesterone"
-   ]
-  },
-  {
-   "pool_id": "m4049",
-   "gender": "male",
-   "age_band": "40-49",
-   "target_count": 26,
-   "brands_served": [
-    "ShilaSource",
-    "FusiForce"
-   ]
-  },
-  {
-   "pool_id": "m5059",
-   "gender": "male",
-   "age_band": "50-59",
-   "target_count": 25,
-   "brands_served": [
-    "ShilaSource",
-    "AgeAura"
-   ]
-  },
-  {
-   "pool_id": "m6070",
-   "gender": "male",
-   "age_band": "60-70",
-   "target_count": 10,
-   "brands_served": [
-    "AgeAura"
-   ]
-  },
-  {
-   "pool_id": "f2029",
-   "gender": "female",
-   "age_band": "20-29",
-   "target_count": 10,
-   "brands_served": [
-    "FusiForce",
-    "FloraFresh"
-   ]
-  },
-  {
-   "pool_id": "f3039",
-   "gender": "female",
-   "age_band": "30-39",
-   "target_count": 17,
-   "brands_served": [
-    "FusiForce",
-    "FloraFresh",
-    "ShilaSource"
-   ]
-  },
-  {
-   "pool_id": "f4049",
-   "gender": "female",
-   "age_band": "40-49",
-   "target_count": 22,
-   "brands_served": [
-    "MenoMate",
-    "FusiForce",
-    "ShilaSource",
-    "FloraFresh"
-   ]
-  },
-  {
-   "pool_id": "f5059",
-   "gender": "female",
-   "age_band": "50-59",
-   "target_count": 27,
-   "brands_served": [
-    "MenoMate",
-    "AgeAura",
-    "ShilaSource"
-   ]
-  },
-  {
-   "pool_id": "f6070",
-   "gender": "female",
-   "age_band": "60-70",
-   "target_count": 10,
-   "brands_served": [
-    "AgeAura",
-    "MenoMate"
-   ]
-  }
- ],
- "cells": [
-  {
-   "cell_id": "m2029-wh",
-   "pool_id": "m2029",
-   "gender": "male",
-   "age_band": "20-29",
-   "ethnicity": "white non-Hispanic",
-   "ethnicity_key": "wh",
-   "brands_served": [
-    "Turkesterone",
-    "FusiForce",
-    "ShilaSource"
-   ],
-   "target_count": 9
-  },
-  {
-   "cell_id": "m2029-hl",
-   "pool_id": "m2029",
-   "gender": "male",
-   "age_band": "20-29",
-   "ethnicity": "Hispanic/Latino",
-   "ethnicity_key": "hl",
-   "brands_served": [
-    "Turkesterone",
-    "FusiForce",
-    "ShilaSource"
-   ],
-   "target_count": 3
-  },
-  {
-   "cell_id": "m2029-bl",
-   "pool_id": "m2029",
-   "gender": "male",
-   "age_band": "20-29",
-   "ethnicity": "Black/African American",
-   "ethnicity_key": "bl",
-   "brands_served": [
-    "Turkesterone",
-    "FusiForce",
-    "ShilaSource"
-   ],
-   "target_count": 2
-  },
-  {
-   "cell_id": "m2029-as",
-   "pool_id": "m2029",
-   "gender": "male",
-   "age_band": "20-29",
-   "ethnicity": "Asian American (incl. South Asian)",
-   "ethnicity_key": "as",
-   "brands_served": [
-    "Turkesterone",
-    "FusiForce",
-    "ShilaSource"
-   ],
-   "target_count": 1
-  },
-  {
-   "cell_id": "m2029-mx",
-   "pool_id": "m2029",
-   "gender": "male",
-   "age_band": "20-29",
-   "ethnicity": "multiracial/MENA/Native/other",
-   "ethnicity_key": "mx",
-   "brands_served": [
-    "Turkesterone",
-    "FusiForce",
-    "ShilaSource"
-   ],
-   "target_count": 1
-  },
-  {
-   "cell_id": "m3039-wh",
-   "pool_id": "m3039",
-   "gender": "male",
-   "age_band": "30-39",
-   "ethnicity": "white non-Hispanic",
-   "ethnicity_key": "wh",
-   "brands_served": [
-    "ShilaSource",
-    "FusiForce",
-    "Turkesterone"
-   ],
-   "target_count": 20
-  },
-  {
-   "cell_id": "m3039-hl",
-   "pool_id": "m3039",
-   "gender": "male",
-   "age_band": "30-39",
-   "ethnicity": "Hispanic/Latino",
-   "ethnicity_key": "hl",
-   "brands_served": [
-    "ShilaSource",
-    "FusiForce",
-    "Turkesterone"
-   ],
-   "target_count": 7
-  },
-  {
-   "cell_id": "m3039-bl",
-   "pool_id": "m3039",
-   "gender": "male",
-   "age_band": "30-39",
-   "ethnicity": "Black/African American",
-   "ethnicity_key": "bl",
-   "brands_served": [
-    "ShilaSource",
-    "FusiForce",
-    "Turkesterone"
-   ],
-   "target_count": 5
-  },
-  {
-   "cell_id": "m3039-as",
-   "pool_id": "m3039",
-   "gender": "male",
-   "age_band": "30-39",
-   "ethnicity": "Asian American (incl. South Asian)",
-   "ethnicity_key": "as",
-   "brands_served": [
-    "ShilaSource",
-    "FusiForce",
-    "Turkesterone"
-   ],
-   "target_count": 3
-  },
-  {
-   "cell_id": "m3039-mx",
-   "pool_id": "m3039",
-   "gender": "male",
-   "age_band": "30-39",
-   "ethnicity": "multiracial/MENA/Native/other",
-   "ethnicity_key": "mx",
-   "brands_served": [
-    "ShilaSource",
-    "FusiForce",
-    "Turkesterone"
-   ],
-   "target_count": 2
-  },
-  {
-   "cell_id": "m4049-wh",
-   "pool_id": "m4049",
-   "gender": "male",
-   "age_band": "40-49",
-   "ethnicity": "white non-Hispanic",
-   "ethnicity_key": "wh",
-   "brands_served": [
-    "ShilaSource",
-    "FusiForce"
-   ],
-   "target_count": 14
-  },
-  {
-   "cell_id": "m4049-hl",
-   "pool_id": "m4049",
-   "gender": "male",
-   "age_band": "40-49",
-   "ethnicity": "Hispanic/Latino",
-   "ethnicity_key": "hl",
-   "brands_served": [
-    "ShilaSource",
-    "FusiForce"
-   ],
-   "target_count": 5
-  },
-  {
-   "cell_id": "m4049-bl",
-   "pool_id": "m4049",
-   "gender": "male",
-   "age_band": "40-49",
-   "ethnicity": "Black/African American",
-   "ethnicity_key": "bl",
-   "brands_served": [
-    "ShilaSource",
-    "FusiForce"
-   ],
-   "target_count": 4
-  },
-  {
-   "cell_id": "m4049-as",
-   "pool_id": "m4049",
-   "gender": "male",
-   "age_band": "40-49",
-   "ethnicity": "Asian American (incl. South Asian)",
-   "ethnicity_key": "as",
-   "brands_served": [
-    "ShilaSource",
-    "FusiForce"
-   ],
-   "target_count": 2
-  },
-  {
-   "cell_id": "m4049-mx",
-   "pool_id": "m4049",
-   "gender": "male",
-   "age_band": "40-49",
-   "ethnicity": "multiracial/MENA/Native/other",
-   "ethnicity_key": "mx",
-   "brands_served": [
-    "ShilaSource",
-    "FusiForce"
-   ],
-   "target_count": 1
-  },
-  {
-   "cell_id": "m5059-wh",
-   "pool_id": "m5059",
-   "gender": "male",
-   "age_band": "50-59",
-   "ethnicity": "white non-Hispanic",
-   "ethnicity_key": "wh",
-   "brands_served": [
-    "ShilaSource",
-    "AgeAura"
-   ],
-   "target_count": 14
-  },
-  {
-   "cell_id": "m5059-hl",
-   "pool_id": "m5059",
-   "gender": "male",
-   "age_band": "50-59",
-   "ethnicity": "Hispanic/Latino",
-   "ethnicity_key": "hl",
-   "brands_served": [
-    "ShilaSource",
-    "AgeAura"
-   ],
-   "target_count": 5
-  },
-  {
-   "cell_id": "m5059-bl",
-   "pool_id": "m5059",
-   "gender": "male",
-   "age_band": "50-59",
-   "ethnicity": "Black/African American",
-   "ethnicity_key": "bl",
-   "brands_served": [
-    "ShilaSource",
-    "AgeAura"
-   ],
-   "target_count": 3
-  },
-  {
-   "cell_id": "m5059-as",
-   "pool_id": "m5059",
-   "gender": "male",
-   "age_band": "50-59",
-   "ethnicity": "Asian American (incl. South Asian)",
-   "ethnicity_key": "as",
-   "brands_served": [
-    "ShilaSource",
-    "AgeAura"
-   ],
-   "target_count": 2
-  },
-  {
-   "cell_id": "m5059-mx",
-   "pool_id": "m5059",
-   "gender": "male",
-   "age_band": "50-59",
-   "ethnicity": "multiracial/MENA/Native/other",
-   "ethnicity_key": "mx",
-   "brands_served": [
-    "ShilaSource",
-    "AgeAura"
-   ],
-   "target_count": 1
-  },
-  {
-   "cell_id": "m6070-wh",
-   "pool_id": "m6070",
-   "gender": "male",
-   "age_band": "60-70",
-   "ethnicity": "white non-Hispanic",
-   "ethnicity_key": "wh",
-   "brands_served": [
-    "AgeAura"
-   ],
-   "target_count": 5
-  },
-  {
-   "cell_id": "m6070-hl",
-   "pool_id": "m6070",
-   "gender": "male",
-   "age_band": "60-70",
-   "ethnicity": "Hispanic/Latino",
-   "ethnicity_key": "hl",
-   "brands_served": [
-    "AgeAura"
-   ],
-   "target_count": 2
-  },
-  {
-   "cell_id": "m6070-bl",
-   "pool_id": "m6070",
-   "gender": "male",
-   "age_band": "60-70",
-   "ethnicity": "Black/African American",
-   "ethnicity_key": "bl",
-   "brands_served": [
-    "AgeAura"
-   ],
-   "target_count": 1
-  },
-  {
-   "cell_id": "m6070-as",
-   "pool_id": "m6070",
-   "gender": "male",
-   "age_band": "60-70",
-   "ethnicity": "Asian American (incl. South Asian)",
-   "ethnicity_key": "as",
-   "brands_served": [
-    "AgeAura"
-   ],
-   "target_count": 1
-  },
-  {
-   "cell_id": "m6070-mx",
-   "pool_id": "m6070",
-   "gender": "male",
-   "age_band": "60-70",
-   "ethnicity": "multiracial/MENA/Native/other",
-   "ethnicity_key": "mx",
-   "brands_served": [
-    "AgeAura"
-   ],
-   "target_count": 1
-  },
-  {
-   "cell_id": "f2029-wh",
-   "pool_id": "f2029",
-   "gender": "female",
-   "age_band": "20-29",
-   "ethnicity": "white non-Hispanic",
-   "ethnicity_key": "wh",
-   "brands_served": [
-    "FusiForce",
-    "FloraFresh"
-   ],
-   "target_count": 5
-  },
-  {
-   "cell_id": "f2029-hl",
-   "pool_id": "f2029",
-   "gender": "female",
-   "age_band": "20-29",
-   "ethnicity": "Hispanic/Latino",
-   "ethnicity_key": "hl",
-   "brands_served": [
-    "FusiForce",
-    "FloraFresh"
-   ],
-   "target_count": 2
-  },
-  {
-   "cell_id": "f2029-bl",
-   "pool_id": "f2029",
-   "gender": "female",
-   "age_band": "20-29",
-   "ethnicity": "Black/African American",
-   "ethnicity_key": "bl",
-   "brands_served": [
-    "FusiForce",
-    "FloraFresh"
-   ],
-   "target_count": 1
-  },
-  {
-   "cell_id": "f2029-as",
-   "pool_id": "f2029",
-   "gender": "female",
-   "age_band": "20-29",
-   "ethnicity": "Asian American (incl. South Asian)",
-   "ethnicity_key": "as",
-   "brands_served": [
-    "FusiForce",
-    "FloraFresh"
-   ],
-   "target_count": 1
-  },
-  {
-   "cell_id": "f2029-mx",
-   "pool_id": "f2029",
-   "gender": "female",
-   "age_band": "20-29",
-   "ethnicity": "multiracial/MENA/Native/other",
-   "ethnicity_key": "mx",
-   "brands_served": [
-    "FusiForce",
-    "FloraFresh"
-   ],
-   "target_count": 1
-  },
-  {
-   "cell_id": "f3039-wh",
-   "pool_id": "f3039",
-   "gender": "female",
-   "age_band": "30-39",
-   "ethnicity": "white non-Hispanic",
-   "ethnicity_key": "wh",
-   "brands_served": [
-    "FusiForce",
-    "FloraFresh",
-    "ShilaSource"
-   ],
-   "target_count": 9
-  },
-  {
-   "cell_id": "f3039-hl",
-   "pool_id": "f3039",
-   "gender": "female",
-   "age_band": "30-39",
-   "ethnicity": "Hispanic/Latino",
-   "ethnicity_key": "hl",
-   "brands_served": [
-    "FusiForce",
-    "FloraFresh",
-    "ShilaSource"
-   ],
-   "target_count": 3
-  },
-  {
-   "cell_id": "f3039-bl",
-   "pool_id": "f3039",
-   "gender": "female",
-   "age_band": "30-39",
-   "ethnicity": "Black/African American",
-   "ethnicity_key": "bl",
-   "brands_served": [
-    "FusiForce",
-    "FloraFresh",
-    "ShilaSource"
-   ],
-   "target_count": 2
-  },
-  {
-   "cell_id": "f3039-as",
-   "pool_id": "f3039",
-   "gender": "female",
-   "age_band": "30-39",
-   "ethnicity": "Asian American (incl. South Asian)",
-   "ethnicity_key": "as",
-   "brands_served": [
-    "FusiForce",
-    "FloraFresh",
-    "ShilaSource"
-   ],
-   "target_count": 2
-  },
-  {
-   "cell_id": "f3039-mx",
-   "pool_id": "f3039",
-   "gender": "female",
-   "age_band": "30-39",
-   "ethnicity": "multiracial/MENA/Native/other",
-   "ethnicity_key": "mx",
-   "brands_served": [
-    "FusiForce",
-    "FloraFresh",
-    "ShilaSource"
-   ],
-   "target_count": 1
-  },
-  {
-   "cell_id": "f4049-wh",
-   "pool_id": "f4049",
-   "gender": "female",
-   "age_band": "40-49",
-   "ethnicity": "white non-Hispanic",
-   "ethnicity_key": "wh",
-   "brands_served": [
-    "MenoMate",
-    "FusiForce",
-    "ShilaSource",
-    "FloraFresh"
-   ],
-   "target_count": 12
-  },
-  {
-   "cell_id": "f4049-hl",
-   "pool_id": "f4049",
-   "gender": "female",
-   "age_band": "40-49",
-   "ethnicity": "Hispanic/Latino",
-   "ethnicity_key": "hl",
-   "brands_served": [
-    "MenoMate",
-    "FusiForce",
-    "ShilaSource",
-    "FloraFresh"
-   ],
-   "target_count": 4
-  },
-  {
-   "cell_id": "f4049-bl",
-   "pool_id": "f4049",
-   "gender": "female",
-   "age_band": "40-49",
-   "ethnicity": "Black/African American",
-   "ethnicity_key": "bl",
-   "brands_served": [
-    "MenoMate",
-    "FusiForce",
-    "ShilaSource",
-    "FloraFresh"
-   ],
-   "target_count": 3
-  },
-  {
-   "cell_id": "f4049-as",
-   "pool_id": "f4049",
-   "gender": "female",
-   "age_band": "40-49",
-   "ethnicity": "Asian American (incl. South Asian)",
-   "ethnicity_key": "as",
-   "brands_served": [
-    "MenoMate",
-    "FusiForce",
-    "ShilaSource",
-    "FloraFresh"
-   ],
-   "target_count": 2
-  },
-  {
-   "cell_id": "f4049-mx",
-   "pool_id": "f4049",
-   "gender": "female",
-   "age_band": "40-49",
-   "ethnicity": "multiracial/MENA/Native/other",
-   "ethnicity_key": "mx",
-   "brands_served": [
-    "MenoMate",
-    "FusiForce",
-    "ShilaSource",
-    "FloraFresh"
-   ],
-   "target_count": 1
-  },
-  {
-   "cell_id": "f5059-wh",
-   "pool_id": "f5059",
-   "gender": "female",
-   "age_band": "50-59",
-   "ethnicity": "white non-Hispanic",
-   "ethnicity_key": "wh",
-   "brands_served": [
-    "MenoMate",
-    "AgeAura",
-    "ShilaSource"
-   ],
-   "target_count": 15
-  },
-  {
-   "cell_id": "f5059-hl",
-   "pool_id": "f5059",
-   "gender": "female",
-   "age_band": "50-59",
-   "ethnicity": "Hispanic/Latino",
-   "ethnicity_key": "hl",
-   "brands_served": [
-    "MenoMate",
-    "AgeAura",
-    "ShilaSource"
-   ],
-   "target_count": 5
-  },
-  {
-   "cell_id": "f5059-bl",
-   "pool_id": "f5059",
-   "gender": "female",
-   "age_band": "50-59",
-   "ethnicity": "Black/African American",
-   "ethnicity_key": "bl",
-   "brands_served": [
-    "MenoMate",
-    "AgeAura",
-    "ShilaSource"
-   ],
-   "target_count": 4
-  },
-  {
-   "cell_id": "f5059-as",
-   "pool_id": "f5059",
-   "gender": "female",
-   "age_band": "50-59",
-   "ethnicity": "Asian American (incl. South Asian)",
-   "ethnicity_key": "as",
-   "brands_served": [
-    "MenoMate",
-    "AgeAura",
-    "ShilaSource"
-   ],
-   "target_count": 2
-  },
-  {
-   "cell_id": "f5059-mx",
-   "pool_id": "f5059",
-   "gender": "female",
-   "age_band": "50-59",
-   "ethnicity": "multiracial/MENA/Native/other",
-   "ethnicity_key": "mx",
-   "brands_served": [
-    "MenoMate",
-    "AgeAura",
-    "ShilaSource"
-   ],
-   "target_count": 1
-  },
-  {
-   "cell_id": "f6070-wh",
-   "pool_id": "f6070",
-   "gender": "female",
-   "age_band": "60-70",
-   "ethnicity": "white non-Hispanic",
-   "ethnicity_key": "wh",
-   "brands_served": [
-    "AgeAura",
-    "MenoMate"
-   ],
-   "target_count": 5
-  },
-  {
-   "cell_id": "f6070-hl",
-   "pool_id": "f6070",
-   "gender": "female",
-   "age_band": "60-70",
-   "ethnicity": "Hispanic/Latino",
-   "ethnicity_key": "hl",
-   "brands_served": [
-    "AgeAura",
-    "MenoMate"
-   ],
-   "target_count": 2
-  },
-  {
-   "cell_id": "f6070-bl",
-   "pool_id": "f6070",
-   "gender": "female",
-   "age_band": "60-70",
-   "ethnicity": "Black/African American",
-   "ethnicity_key": "bl",
-   "brands_served": [
-    "AgeAura",
-    "MenoMate"
-   ],
-   "target_count": 1
-  },
-  {
-   "cell_id": "f6070-as",
-   "pool_id": "f6070",
-   "gender": "female",
-   "age_band": "60-70",
-   "ethnicity": "Asian American (incl. South Asian)",
-   "ethnicity_key": "as",
-   "brands_served": [
-    "AgeAura",
-    "MenoMate"
-   ],
-   "target_count": 1
-  },
-  {
-   "cell_id": "f6070-mx",
-   "pool_id": "f6070",
-   "gender": "female",
-   "age_band": "60-70",
-   "ethnicity": "multiracial/MENA/Native/other",
-   "ethnicity_key": "mx",
-   "brands_served": [
-    "AgeAura",
-    "MenoMate"
-   ],
-   "target_count": 1
-  }
- ],
- "audience_routing": {
-  "men-20-35": [
-   "m2029",
-   "m3039"
+  "rotation_pools": [
+    {
+      "pool_id": "m2029",
+      "gender": "male",
+      "age_band": "20-29",
+      "target_count": 16,
+      "brands_served": [
+        "Turkesterone",
+        "FusiForce",
+        "ShilaSource"
+      ]
+    },
+    {
+      "pool_id": "m3039",
+      "gender": "male",
+      "age_band": "30-39",
+      "target_count": 37,
+      "brands_served": [
+        "ShilaSource",
+        "FusiForce",
+        "Turkesterone"
+      ]
+    },
+    {
+      "pool_id": "m4049",
+      "gender": "male",
+      "age_band": "40-49",
+      "target_count": 26,
+      "brands_served": [
+        "ShilaSource",
+        "FusiForce"
+      ]
+    },
+    {
+      "pool_id": "m5059",
+      "gender": "male",
+      "age_band": "50-59",
+      "target_count": 25,
+      "brands_served": [
+        "ShilaSource",
+        "AgeAura"
+      ]
+    },
+    {
+      "pool_id": "m6070",
+      "gender": "male",
+      "age_band": "60-70",
+      "target_count": 10,
+      "brands_served": [
+        "AgeAura"
+      ]
+    },
+    {
+      "pool_id": "f2029",
+      "gender": "female",
+      "age_band": "20-29",
+      "target_count": 10,
+      "brands_served": [
+        "FusiForce",
+        "FloraFresh"
+      ]
+    },
+    {
+      "pool_id": "f3039",
+      "gender": "female",
+      "age_band": "30-39",
+      "target_count": 17,
+      "brands_served": [
+        "FusiForce",
+        "FloraFresh",
+        "ShilaSource"
+      ]
+    },
+    {
+      "pool_id": "f4049",
+      "gender": "female",
+      "age_band": "40-49",
+      "target_count": 22,
+      "brands_served": [
+        "MenoMate",
+        "FusiForce",
+        "ShilaSource",
+        "FloraFresh"
+      ]
+    },
+    {
+      "pool_id": "f5059",
+      "gender": "female",
+      "age_band": "50-59",
+      "target_count": 27,
+      "brands_served": [
+        "MenoMate",
+        "AgeAura",
+        "ShilaSource"
+      ]
+    },
+    {
+      "pool_id": "f6070",
+      "gender": "female",
+      "age_band": "60-70",
+      "target_count": 10,
+      "brands_served": [
+        "AgeAura",
+        "MenoMate"
+      ]
+    }
   ],
-  "men-30-55": [
-   "m3039",
-   "m4049",
-   "m5059"
+  "cells": [
+    {
+      "cell_id": "m2029-wh",
+      "pool_id": "m2029",
+      "gender": "male",
+      "age_band": "20-29",
+      "ethnicity": "white non-Hispanic",
+      "ethnicity_key": "wh",
+      "brands_served": [
+        "Turkesterone",
+        "FusiForce",
+        "ShilaSource"
+      ],
+      "target_count": 9
+    },
+    {
+      "cell_id": "m2029-hl",
+      "pool_id": "m2029",
+      "gender": "male",
+      "age_band": "20-29",
+      "ethnicity": "Hispanic/Latino",
+      "ethnicity_key": "hl",
+      "brands_served": [
+        "Turkesterone",
+        "FusiForce",
+        "ShilaSource"
+      ],
+      "target_count": 3
+    },
+    {
+      "cell_id": "m2029-bl",
+      "pool_id": "m2029",
+      "gender": "male",
+      "age_band": "20-29",
+      "ethnicity": "Black/African American",
+      "ethnicity_key": "bl",
+      "brands_served": [
+        "Turkesterone",
+        "FusiForce",
+        "ShilaSource"
+      ],
+      "target_count": 2
+    },
+    {
+      "cell_id": "m2029-as",
+      "pool_id": "m2029",
+      "gender": "male",
+      "age_band": "20-29",
+      "ethnicity": "Asian American (incl. South Asian)",
+      "ethnicity_key": "as",
+      "brands_served": [
+        "Turkesterone",
+        "FusiForce",
+        "ShilaSource"
+      ],
+      "target_count": 1
+    },
+    {
+      "cell_id": "m2029-mx",
+      "pool_id": "m2029",
+      "gender": "male",
+      "age_band": "20-29",
+      "ethnicity": "multiracial/MENA/Native/other",
+      "ethnicity_key": "mx",
+      "brands_served": [
+        "Turkesterone",
+        "FusiForce",
+        "ShilaSource"
+      ],
+      "target_count": 1
+    },
+    {
+      "cell_id": "m3039-wh",
+      "pool_id": "m3039",
+      "gender": "male",
+      "age_band": "30-39",
+      "ethnicity": "white non-Hispanic",
+      "ethnicity_key": "wh",
+      "brands_served": [
+        "ShilaSource",
+        "FusiForce",
+        "Turkesterone"
+      ],
+      "target_count": 20
+    },
+    {
+      "cell_id": "m3039-hl",
+      "pool_id": "m3039",
+      "gender": "male",
+      "age_band": "30-39",
+      "ethnicity": "Hispanic/Latino",
+      "ethnicity_key": "hl",
+      "brands_served": [
+        "ShilaSource",
+        "FusiForce",
+        "Turkesterone"
+      ],
+      "target_count": 7
+    },
+    {
+      "cell_id": "m3039-bl",
+      "pool_id": "m3039",
+      "gender": "male",
+      "age_band": "30-39",
+      "ethnicity": "Black/African American",
+      "ethnicity_key": "bl",
+      "brands_served": [
+        "ShilaSource",
+        "FusiForce",
+        "Turkesterone"
+      ],
+      "target_count": 5
+    },
+    {
+      "cell_id": "m3039-as",
+      "pool_id": "m3039",
+      "gender": "male",
+      "age_band": "30-39",
+      "ethnicity": "Asian American (incl. South Asian)",
+      "ethnicity_key": "as",
+      "brands_served": [
+        "ShilaSource",
+        "FusiForce",
+        "Turkesterone"
+      ],
+      "target_count": 3
+    },
+    {
+      "cell_id": "m3039-mx",
+      "pool_id": "m3039",
+      "gender": "male",
+      "age_band": "30-39",
+      "ethnicity": "multiracial/MENA/Native/other",
+      "ethnicity_key": "mx",
+      "brands_served": [
+        "ShilaSource",
+        "FusiForce",
+        "Turkesterone"
+      ],
+      "target_count": 2
+    },
+    {
+      "cell_id": "m4049-wh",
+      "pool_id": "m4049",
+      "gender": "male",
+      "age_band": "40-49",
+      "ethnicity": "white non-Hispanic",
+      "ethnicity_key": "wh",
+      "brands_served": [
+        "ShilaSource",
+        "FusiForce"
+      ],
+      "target_count": 14
+    },
+    {
+      "cell_id": "m4049-hl",
+      "pool_id": "m4049",
+      "gender": "male",
+      "age_band": "40-49",
+      "ethnicity": "Hispanic/Latino",
+      "ethnicity_key": "hl",
+      "brands_served": [
+        "ShilaSource",
+        "FusiForce"
+      ],
+      "target_count": 5
+    },
+    {
+      "cell_id": "m4049-bl",
+      "pool_id": "m4049",
+      "gender": "male",
+      "age_band": "40-49",
+      "ethnicity": "Black/African American",
+      "ethnicity_key": "bl",
+      "brands_served": [
+        "ShilaSource",
+        "FusiForce"
+      ],
+      "target_count": 4
+    },
+    {
+      "cell_id": "m4049-as",
+      "pool_id": "m4049",
+      "gender": "male",
+      "age_band": "40-49",
+      "ethnicity": "Asian American (incl. South Asian)",
+      "ethnicity_key": "as",
+      "brands_served": [
+        "ShilaSource",
+        "FusiForce"
+      ],
+      "target_count": 2
+    },
+    {
+      "cell_id": "m4049-mx",
+      "pool_id": "m4049",
+      "gender": "male",
+      "age_band": "40-49",
+      "ethnicity": "multiracial/MENA/Native/other",
+      "ethnicity_key": "mx",
+      "brands_served": [
+        "ShilaSource",
+        "FusiForce"
+      ],
+      "target_count": 1
+    },
+    {
+      "cell_id": "m5059-wh",
+      "pool_id": "m5059",
+      "gender": "male",
+      "age_band": "50-59",
+      "ethnicity": "white non-Hispanic",
+      "ethnicity_key": "wh",
+      "brands_served": [
+        "ShilaSource",
+        "AgeAura"
+      ],
+      "target_count": 14
+    },
+    {
+      "cell_id": "m5059-hl",
+      "pool_id": "m5059",
+      "gender": "male",
+      "age_band": "50-59",
+      "ethnicity": "Hispanic/Latino",
+      "ethnicity_key": "hl",
+      "brands_served": [
+        "ShilaSource",
+        "AgeAura"
+      ],
+      "target_count": 5
+    },
+    {
+      "cell_id": "m5059-bl",
+      "pool_id": "m5059",
+      "gender": "male",
+      "age_band": "50-59",
+      "ethnicity": "Black/African American",
+      "ethnicity_key": "bl",
+      "brands_served": [
+        "ShilaSource",
+        "AgeAura"
+      ],
+      "target_count": 3
+    },
+    {
+      "cell_id": "m5059-as",
+      "pool_id": "m5059",
+      "gender": "male",
+      "age_band": "50-59",
+      "ethnicity": "Asian American (incl. South Asian)",
+      "ethnicity_key": "as",
+      "brands_served": [
+        "ShilaSource",
+        "AgeAura"
+      ],
+      "target_count": 2
+    },
+    {
+      "cell_id": "m5059-mx",
+      "pool_id": "m5059",
+      "gender": "male",
+      "age_band": "50-59",
+      "ethnicity": "multiracial/MENA/Native/other",
+      "ethnicity_key": "mx",
+      "brands_served": [
+        "ShilaSource",
+        "AgeAura"
+      ],
+      "target_count": 1
+    },
+    {
+      "cell_id": "m6070-wh",
+      "pool_id": "m6070",
+      "gender": "male",
+      "age_band": "60-70",
+      "ethnicity": "white non-Hispanic",
+      "ethnicity_key": "wh",
+      "brands_served": [
+        "AgeAura"
+      ],
+      "target_count": 5
+    },
+    {
+      "cell_id": "m6070-hl",
+      "pool_id": "m6070",
+      "gender": "male",
+      "age_band": "60-70",
+      "ethnicity": "Hispanic/Latino",
+      "ethnicity_key": "hl",
+      "brands_served": [
+        "AgeAura"
+      ],
+      "target_count": 2
+    },
+    {
+      "cell_id": "m6070-bl",
+      "pool_id": "m6070",
+      "gender": "male",
+      "age_band": "60-70",
+      "ethnicity": "Black/African American",
+      "ethnicity_key": "bl",
+      "brands_served": [
+        "AgeAura"
+      ],
+      "target_count": 1
+    },
+    {
+      "cell_id": "m6070-as",
+      "pool_id": "m6070",
+      "gender": "male",
+      "age_band": "60-70",
+      "ethnicity": "Asian American (incl. South Asian)",
+      "ethnicity_key": "as",
+      "brands_served": [
+        "AgeAura"
+      ],
+      "target_count": 1
+    },
+    {
+      "cell_id": "m6070-mx",
+      "pool_id": "m6070",
+      "gender": "male",
+      "age_band": "60-70",
+      "ethnicity": "multiracial/MENA/Native/other",
+      "ethnicity_key": "mx",
+      "brands_served": [
+        "AgeAura"
+      ],
+      "target_count": 1
+    },
+    {
+      "cell_id": "f2029-wh",
+      "pool_id": "f2029",
+      "gender": "female",
+      "age_band": "20-29",
+      "ethnicity": "white non-Hispanic",
+      "ethnicity_key": "wh",
+      "brands_served": [
+        "FusiForce",
+        "FloraFresh"
+      ],
+      "target_count": 5
+    },
+    {
+      "cell_id": "f2029-hl",
+      "pool_id": "f2029",
+      "gender": "female",
+      "age_band": "20-29",
+      "ethnicity": "Hispanic/Latino",
+      "ethnicity_key": "hl",
+      "brands_served": [
+        "FusiForce",
+        "FloraFresh"
+      ],
+      "target_count": 2
+    },
+    {
+      "cell_id": "f2029-bl",
+      "pool_id": "f2029",
+      "gender": "female",
+      "age_band": "20-29",
+      "ethnicity": "Black/African American",
+      "ethnicity_key": "bl",
+      "brands_served": [
+        "FusiForce",
+        "FloraFresh"
+      ],
+      "target_count": 1
+    },
+    {
+      "cell_id": "f2029-as",
+      "pool_id": "f2029",
+      "gender": "female",
+      "age_band": "20-29",
+      "ethnicity": "Asian American (incl. South Asian)",
+      "ethnicity_key": "as",
+      "brands_served": [
+        "FusiForce",
+        "FloraFresh"
+      ],
+      "target_count": 1
+    },
+    {
+      "cell_id": "f2029-mx",
+      "pool_id": "f2029",
+      "gender": "female",
+      "age_band": "20-29",
+      "ethnicity": "multiracial/MENA/Native/other",
+      "ethnicity_key": "mx",
+      "brands_served": [
+        "FusiForce",
+        "FloraFresh"
+      ],
+      "target_count": 1
+    },
+    {
+      "cell_id": "f3039-wh",
+      "pool_id": "f3039",
+      "gender": "female",
+      "age_band": "30-39",
+      "ethnicity": "white non-Hispanic",
+      "ethnicity_key": "wh",
+      "brands_served": [
+        "FusiForce",
+        "FloraFresh",
+        "ShilaSource"
+      ],
+      "target_count": 9
+    },
+    {
+      "cell_id": "f3039-hl",
+      "pool_id": "f3039",
+      "gender": "female",
+      "age_band": "30-39",
+      "ethnicity": "Hispanic/Latino",
+      "ethnicity_key": "hl",
+      "brands_served": [
+        "FusiForce",
+        "FloraFresh",
+        "ShilaSource"
+      ],
+      "target_count": 3
+    },
+    {
+      "cell_id": "f3039-bl",
+      "pool_id": "f3039",
+      "gender": "female",
+      "age_band": "30-39",
+      "ethnicity": "Black/African American",
+      "ethnicity_key": "bl",
+      "brands_served": [
+        "FusiForce",
+        "FloraFresh",
+        "ShilaSource"
+      ],
+      "target_count": 2
+    },
+    {
+      "cell_id": "f3039-as",
+      "pool_id": "f3039",
+      "gender": "female",
+      "age_band": "30-39",
+      "ethnicity": "Asian American (incl. South Asian)",
+      "ethnicity_key": "as",
+      "brands_served": [
+        "FusiForce",
+        "FloraFresh",
+        "ShilaSource"
+      ],
+      "target_count": 2
+    },
+    {
+      "cell_id": "f3039-mx",
+      "pool_id": "f3039",
+      "gender": "female",
+      "age_band": "30-39",
+      "ethnicity": "multiracial/MENA/Native/other",
+      "ethnicity_key": "mx",
+      "brands_served": [
+        "FusiForce",
+        "FloraFresh",
+        "ShilaSource"
+      ],
+      "target_count": 1
+    },
+    {
+      "cell_id": "f4049-wh",
+      "pool_id": "f4049",
+      "gender": "female",
+      "age_band": "40-49",
+      "ethnicity": "white non-Hispanic",
+      "ethnicity_key": "wh",
+      "brands_served": [
+        "MenoMate",
+        "FusiForce",
+        "ShilaSource",
+        "FloraFresh"
+      ],
+      "target_count": 12
+    },
+    {
+      "cell_id": "f4049-hl",
+      "pool_id": "f4049",
+      "gender": "female",
+      "age_band": "40-49",
+      "ethnicity": "Hispanic/Latino",
+      "ethnicity_key": "hl",
+      "brands_served": [
+        "MenoMate",
+        "FusiForce",
+        "ShilaSource",
+        "FloraFresh"
+      ],
+      "target_count": 4
+    },
+    {
+      "cell_id": "f4049-bl",
+      "pool_id": "f4049",
+      "gender": "female",
+      "age_band": "40-49",
+      "ethnicity": "Black/African American",
+      "ethnicity_key": "bl",
+      "brands_served": [
+        "MenoMate",
+        "FusiForce",
+        "ShilaSource",
+        "FloraFresh"
+      ],
+      "target_count": 3
+    },
+    {
+      "cell_id": "f4049-as",
+      "pool_id": "f4049",
+      "gender": "female",
+      "age_band": "40-49",
+      "ethnicity": "Asian American (incl. South Asian)",
+      "ethnicity_key": "as",
+      "brands_served": [
+        "MenoMate",
+        "FusiForce",
+        "ShilaSource",
+        "FloraFresh"
+      ],
+      "target_count": 2
+    },
+    {
+      "cell_id": "f4049-mx",
+      "pool_id": "f4049",
+      "gender": "female",
+      "age_band": "40-49",
+      "ethnicity": "multiracial/MENA/Native/other",
+      "ethnicity_key": "mx",
+      "brands_served": [
+        "MenoMate",
+        "FusiForce",
+        "ShilaSource",
+        "FloraFresh"
+      ],
+      "target_count": 1
+    },
+    {
+      "cell_id": "f5059-wh",
+      "pool_id": "f5059",
+      "gender": "female",
+      "age_band": "50-59",
+      "ethnicity": "white non-Hispanic",
+      "ethnicity_key": "wh",
+      "brands_served": [
+        "MenoMate",
+        "AgeAura",
+        "ShilaSource"
+      ],
+      "target_count": 15
+    },
+    {
+      "cell_id": "f5059-hl",
+      "pool_id": "f5059",
+      "gender": "female",
+      "age_band": "50-59",
+      "ethnicity": "Hispanic/Latino",
+      "ethnicity_key": "hl",
+      "brands_served": [
+        "MenoMate",
+        "AgeAura",
+        "ShilaSource"
+      ],
+      "target_count": 5
+    },
+    {
+      "cell_id": "f5059-bl",
+      "pool_id": "f5059",
+      "gender": "female",
+      "age_band": "50-59",
+      "ethnicity": "Black/African American",
+      "ethnicity_key": "bl",
+      "brands_served": [
+        "MenoMate",
+        "AgeAura",
+        "ShilaSource"
+      ],
+      "target_count": 4
+    },
+    {
+      "cell_id": "f5059-as",
+      "pool_id": "f5059",
+      "gender": "female",
+      "age_band": "50-59",
+      "ethnicity": "Asian American (incl. South Asian)",
+      "ethnicity_key": "as",
+      "brands_served": [
+        "MenoMate",
+        "AgeAura",
+        "ShilaSource"
+      ],
+      "target_count": 2
+    },
+    {
+      "cell_id": "f5059-mx",
+      "pool_id": "f5059",
+      "gender": "female",
+      "age_band": "50-59",
+      "ethnicity": "multiracial/MENA/Native/other",
+      "ethnicity_key": "mx",
+      "brands_served": [
+        "MenoMate",
+        "AgeAura",
+        "ShilaSource"
+      ],
+      "target_count": 1
+    },
+    {
+      "cell_id": "f6070-wh",
+      "pool_id": "f6070",
+      "gender": "female",
+      "age_band": "60-70",
+      "ethnicity": "white non-Hispanic",
+      "ethnicity_key": "wh",
+      "brands_served": [
+        "AgeAura",
+        "MenoMate"
+      ],
+      "target_count": 5
+    },
+    {
+      "cell_id": "f6070-hl",
+      "pool_id": "f6070",
+      "gender": "female",
+      "age_band": "60-70",
+      "ethnicity": "Hispanic/Latino",
+      "ethnicity_key": "hl",
+      "brands_served": [
+        "AgeAura",
+        "MenoMate"
+      ],
+      "target_count": 2
+    },
+    {
+      "cell_id": "f6070-bl",
+      "pool_id": "f6070",
+      "gender": "female",
+      "age_band": "60-70",
+      "ethnicity": "Black/African American",
+      "ethnicity_key": "bl",
+      "brands_served": [
+        "AgeAura",
+        "MenoMate"
+      ],
+      "target_count": 1
+    },
+    {
+      "cell_id": "f6070-as",
+      "pool_id": "f6070",
+      "gender": "female",
+      "age_band": "60-70",
+      "ethnicity": "Asian American (incl. South Asian)",
+      "ethnicity_key": "as",
+      "brands_served": [
+        "AgeAura",
+        "MenoMate"
+      ],
+      "target_count": 1
+    },
+    {
+      "cell_id": "f6070-mx",
+      "pool_id": "f6070",
+      "gender": "female",
+      "age_band": "60-70",
+      "ethnicity": "multiracial/MENA/Native/other",
+      "ethnicity_key": "mx",
+      "brands_served": [
+        "AgeAura",
+        "MenoMate"
+      ],
+      "target_count": 1
+    }
   ],
-  "men-50-70": [
-   "m5059",
-   "m6070",
-   "m4049"
+  "audience_routing": {
+    "men-20-35": [
+      "m2029",
+      "m3039"
+    ],
+    "men-30-55": [
+      "m3039",
+      "m4049",
+      "m5059"
+    ],
+    "men-50-70": [
+      "m5059",
+      "m6070",
+      "m4049"
+    ],
+    "women-25-45": [
+      "f3039",
+      "f2029",
+      "f4049"
+    ],
+    "women-40-60": [
+      "f4049",
+      "f5059"
+    ],
+    "women-50-70": [
+      "f5059",
+      "f6070",
+      "f4049"
+    ],
+    "adults-50-70": [
+      "f5059",
+      "m5059",
+      "f6070",
+      "m6070"
+    ],
+    "active-20-45": [
+      "m3039",
+      "f3039",
+      "m2029",
+      "f2029",
+      "m4049",
+      "f4049"
+    ]
+  },
+  "brand_fallback_audience": {
+    "ShilaSource": "men-30-55",
+    "Turkesterone": "men-20-35",
+    "FusiForce": "active-20-45",
+    "FloraFresh": "women-25-45",
+    "MenoMate": "women-40-60",
+    "AgeAura": "adults-50-70"
+  },
+  "gaze_values": [
+    {
+      "id": "at-lens",
+      "family": "to-camera",
+      "phrase": "eyes looking straight into the lens"
+    },
+    {
+      "id": "just-past-lens",
+      "family": "to-camera",
+      "phrase": "eyes just past the lens, as if at someone standing beside the camera"
+    },
+    {
+      "id": "down-at-product",
+      "family": "away",
+      "phrase": "eyes down on the product, reading it"
+    },
+    {
+      "id": "down-at-hands",
+      "family": "away",
+      "phrase": "eyes down on their own hands, mid-task"
+    },
+    {
+      "id": "off-into-room",
+      "family": "away",
+      "phrase": "eyes off into the room, mid-thought, not at anything in particular"
+    },
+    {
+      "id": "up-and-away",
+      "family": "away",
+      "phrase": "eyes raised and away from the lens, toward a window or the ceiling"
+    },
+    {
+      "id": "at-another-person",
+      "family": "away",
+      "phrase": "eyes on someone just out of frame, mid-conversation"
+    }
   ],
-  "women-25-45": [
-   "f3039",
-   "f2029",
-   "f4049"
+  "shot_values": [
+    "mid-subject-fg-pack",
+    "wide-room",
+    "over-shoulder",
+    "low-table-level",
+    "high-angle-down",
+    "through-doorway"
   ],
-  "women-40-60": [
-   "f4049",
-   "f5059"
+  "face_angle_values": [
+    {
+      "id": "front+level",
+      "yaw": "front",
+      "pitch": "level",
+      "phrase": "head squared to the lens, both ears equally visible, chin level with the lens",
+      "renderable": true,
+      "frame_hint": "in the frame: the nose points straight at the lens, both ears show about equally, and the face is centred on the head silhouette — there is no left/right turn at all"
+    },
+    {
+      "id": "front+chin-down",
+      "yaw": "front",
+      "pitch": "chin-down",
+      "phrase": "head squared to the lens, both ears equally visible, chin dipped about 12 degrees below level, brow toward camera",
+      "renderable": true,
+      "frame_hint": "in the frame: the nose points straight at the lens, both ears show about equally, and the face is centred on the head silhouette — there is no left/right turn at all"
+    },
+    {
+      "id": "front+chin-up",
+      "yaw": "front",
+      "pitch": "chin-up",
+      "phrase": "head squared to the lens, both ears equally visible, chin raised about 10 degrees above level, jawline lengthened",
+      "renderable": true,
+      "frame_hint": "in the frame: the nose points straight at the lens, both ears show about equally, and the face is centred on the head silhouette — there is no left/right turn at all"
+    },
+    {
+      "id": "3q-left+level",
+      "yaw": "3q-left",
+      "pitch": "level",
+      "phrase": "head turned about 35 degrees to their left, the far cheek narrowing, chin level with the lens",
+      "renderable": true,
+      "frame_hint": "in the frame this means: the NOSE points toward the RIGHT edge of the image, and the ear nearest the camera is the subject's RIGHT ear, sitting on the LEFT side of the head silhouette. Judge the turn by which EAR you can see, not by which way it feels — 'to their left' is the subject's own left, which is the opposite of the viewer's."
+    },
+    {
+      "id": "3q-left+chin-down",
+      "yaw": "3q-left",
+      "pitch": "chin-down",
+      "phrase": "head turned about 35 degrees to their left, the far cheek narrowing, chin dipped about 12 degrees below level, brow toward camera",
+      "renderable": true,
+      "frame_hint": "in the frame this means: the NOSE points toward the RIGHT edge of the image, and the ear nearest the camera is the subject's RIGHT ear, sitting on the LEFT side of the head silhouette. Judge the turn by which EAR you can see, not by which way it feels — 'to their left' is the subject's own left, which is the opposite of the viewer's."
+    },
+    {
+      "id": "3q-left+chin-up",
+      "yaw": "3q-left",
+      "pitch": "chin-up",
+      "phrase": "head turned about 35 degrees to their left, the far cheek narrowing, chin raised about 10 degrees above level, jawline lengthened",
+      "renderable": true,
+      "frame_hint": "in the frame this means: the NOSE points toward the RIGHT edge of the image, and the ear nearest the camera is the subject's RIGHT ear, sitting on the LEFT side of the head silhouette. Judge the turn by which EAR you can see, not by which way it feels — 'to their left' is the subject's own left, which is the opposite of the viewer's."
+    },
+    {
+      "id": "3q-right+level",
+      "yaw": "3q-right",
+      "pitch": "level",
+      "phrase": "head turned about 35 degrees to their right, the far cheek narrowing, chin level with the lens",
+      "renderable": true,
+      "frame_hint": "in the frame this means: the NOSE points toward the LEFT edge of the image, and the ear nearest the camera is the subject's LEFT ear, sitting on the RIGHT side of the head silhouette. Judge the turn by which EAR you can see, not by which way it feels — 'to their left' is the subject's own left, which is the opposite of the viewer's."
+    },
+    {
+      "id": "3q-right+chin-down",
+      "yaw": "3q-right",
+      "pitch": "chin-down",
+      "phrase": "head turned about 35 degrees to their right, the far cheek narrowing, chin dipped about 12 degrees below level, brow toward camera",
+      "renderable": true,
+      "frame_hint": "in the frame this means: the NOSE points toward the LEFT edge of the image, and the ear nearest the camera is the subject's LEFT ear, sitting on the RIGHT side of the head silhouette. Judge the turn by which EAR you can see, not by which way it feels — 'to their left' is the subject's own left, which is the opposite of the viewer's."
+    },
+    {
+      "id": "3q-right+chin-up",
+      "yaw": "3q-right",
+      "pitch": "chin-up",
+      "phrase": "head turned about 35 degrees to their right, the far cheek narrowing, chin raised about 10 degrees above level, jawline lengthened",
+      "renderable": true,
+      "frame_hint": "in the frame this means: the NOSE points toward the LEFT edge of the image, and the ear nearest the camera is the subject's LEFT ear, sitting on the RIGHT side of the head silhouette. Judge the turn by which EAR you can see, not by which way it feels — 'to their left' is the subject's own left, which is the opposite of the viewer's."
+    },
+    {
+      "id": "profile-left+level",
+      "yaw": "profile-left",
+      "pitch": "level",
+      "phrase": "head turned about 80 degrees to their left, very close to full profile, chin level with the lens",
+      "renderable": true,
+      "frame_hint": "in the frame this means: the NOSE points toward the RIGHT edge of the image, and the ear nearest the camera is the subject's RIGHT ear, sitting on the LEFT side of the head silhouette. Judge the turn by which EAR you can see, not by which way it feels — 'to their left' is the subject's own left, which is the opposite of the viewer's."
+    },
+    {
+      "id": "profile-left+chin-down",
+      "yaw": "profile-left",
+      "pitch": "chin-down",
+      "phrase": "head turned about 80 degrees to their left, very close to full profile, chin dipped about 12 degrees below level, brow toward camera",
+      "renderable": true,
+      "frame_hint": "in the frame this means: the NOSE points toward the RIGHT edge of the image, and the ear nearest the camera is the subject's RIGHT ear, sitting on the LEFT side of the head silhouette. Judge the turn by which EAR you can see, not by which way it feels — 'to their left' is the subject's own left, which is the opposite of the viewer's."
+    },
+    {
+      "id": "profile-left+chin-up",
+      "yaw": "profile-left",
+      "pitch": "chin-up",
+      "phrase": "head turned about 80 degrees to their left, very close to full profile, chin raised about 10 degrees above level, jawline lengthened",
+      "renderable": true,
+      "frame_hint": "in the frame this means: the NOSE points toward the RIGHT edge of the image, and the ear nearest the camera is the subject's RIGHT ear, sitting on the LEFT side of the head silhouette. Judge the turn by which EAR you can see, not by which way it feels — 'to their left' is the subject's own left, which is the opposite of the viewer's."
+    },
+    {
+      "id": "profile-right+level",
+      "yaw": "profile-right",
+      "pitch": "level",
+      "phrase": "head turned about 80 degrees to their right, very close to full profile, chin level with the lens",
+      "renderable": true,
+      "frame_hint": "in the frame this means: the NOSE points toward the LEFT edge of the image, and the ear nearest the camera is the subject's LEFT ear, sitting on the RIGHT side of the head silhouette. Judge the turn by which EAR you can see, not by which way it feels — 'to their left' is the subject's own left, which is the opposite of the viewer's."
+    },
+    {
+      "id": "profile-right+chin-down",
+      "yaw": "profile-right",
+      "pitch": "chin-down",
+      "phrase": "head turned about 80 degrees to their right, very close to full profile, chin dipped about 12 degrees below level, brow toward camera",
+      "renderable": true,
+      "frame_hint": "in the frame this means: the NOSE points toward the LEFT edge of the image, and the ear nearest the camera is the subject's LEFT ear, sitting on the RIGHT side of the head silhouette. Judge the turn by which EAR you can see, not by which way it feels — 'to their left' is the subject's own left, which is the opposite of the viewer's."
+    },
+    {
+      "id": "profile-right+chin-up",
+      "yaw": "profile-right",
+      "pitch": "chin-up",
+      "phrase": "head turned about 80 degrees to their right, very close to full profile, chin raised about 10 degrees above level, jawline lengthened",
+      "renderable": true,
+      "frame_hint": "in the frame this means: the NOSE points toward the LEFT edge of the image, and the ear nearest the camera is the subject's LEFT ear, sitting on the RIGHT side of the head silhouette. Judge the turn by which EAR you can see, not by which way it feels — 'to their left' is the subject's own left, which is the opposite of the viewer's."
+    },
+    {
+      "id": "half-back-left+level",
+      "yaw": "half-back-left",
+      "pitch": "level",
+      "phrase": "head turned about 120 degrees away to their left, seen from behind the shoulder so only the cheekbone and jawline are visible, chin level with the lens",
+      "renderable": false,
+      "not_renderable_reason": "the face is hidden by definition, which contradicts the identity-match clause every persona prompt carries and QC check 4; ima2 resolved the conflict toward profile on 3/3 rolls (run 20260813-0847) and the judge cannot verify identity it cannot see",
+      "frame_hint": "in the frame this means: the NOSE points toward the RIGHT edge of the image, and the ear nearest the camera is the subject's RIGHT ear, sitting on the LEFT side of the head silhouette. Judge the turn by which EAR you can see, not by which way it feels — 'to their left' is the subject's own left, which is the opposite of the viewer's."
+    },
+    {
+      "id": "half-back-left+chin-down",
+      "yaw": "half-back-left",
+      "pitch": "chin-down",
+      "phrase": "head turned about 120 degrees away to their left, seen from behind the shoulder so only the cheekbone and jawline are visible, chin dipped about 12 degrees below level, brow toward camera",
+      "renderable": false,
+      "not_renderable_reason": "the face is hidden by definition, which contradicts the identity-match clause every persona prompt carries and QC check 4; ima2 resolved the conflict toward profile on 3/3 rolls (run 20260813-0847) and the judge cannot verify identity it cannot see",
+      "frame_hint": "in the frame this means: the NOSE points toward the RIGHT edge of the image, and the ear nearest the camera is the subject's RIGHT ear, sitting on the LEFT side of the head silhouette. Judge the turn by which EAR you can see, not by which way it feels — 'to their left' is the subject's own left, which is the opposite of the viewer's."
+    },
+    {
+      "id": "half-back-left+chin-up",
+      "yaw": "half-back-left",
+      "pitch": "chin-up",
+      "phrase": "head turned about 120 degrees away to their left, seen from behind the shoulder so only the cheekbone and jawline are visible, chin raised about 10 degrees above level, jawline lengthened",
+      "renderable": false,
+      "not_renderable_reason": "the face is hidden by definition, which contradicts the identity-match clause every persona prompt carries and QC check 4; ima2 resolved the conflict toward profile on 3/3 rolls (run 20260813-0847) and the judge cannot verify identity it cannot see",
+      "frame_hint": "in the frame this means: the NOSE points toward the RIGHT edge of the image, and the ear nearest the camera is the subject's RIGHT ear, sitting on the LEFT side of the head silhouette. Judge the turn by which EAR you can see, not by which way it feels — 'to their left' is the subject's own left, which is the opposite of the viewer's."
+    },
+    {
+      "id": "half-back-right+level",
+      "yaw": "half-back-right",
+      "pitch": "level",
+      "phrase": "head turned about 120 degrees away to their right, seen from behind the shoulder so only the cheekbone and jawline are visible, chin level with the lens",
+      "renderable": false,
+      "not_renderable_reason": "the face is hidden by definition, which contradicts the identity-match clause every persona prompt carries and QC check 4; ima2 resolved the conflict toward profile on 3/3 rolls (run 20260813-0847) and the judge cannot verify identity it cannot see",
+      "frame_hint": "in the frame this means: the NOSE points toward the LEFT edge of the image, and the ear nearest the camera is the subject's LEFT ear, sitting on the RIGHT side of the head silhouette. Judge the turn by which EAR you can see, not by which way it feels — 'to their left' is the subject's own left, which is the opposite of the viewer's."
+    },
+    {
+      "id": "half-back-right+chin-down",
+      "yaw": "half-back-right",
+      "pitch": "chin-down",
+      "phrase": "head turned about 120 degrees away to their right, seen from behind the shoulder so only the cheekbone and jawline are visible, chin dipped about 12 degrees below level, brow toward camera",
+      "renderable": false,
+      "not_renderable_reason": "the face is hidden by definition, which contradicts the identity-match clause every persona prompt carries and QC check 4; ima2 resolved the conflict toward profile on 3/3 rolls (run 20260813-0847) and the judge cannot verify identity it cannot see",
+      "frame_hint": "in the frame this means: the NOSE points toward the LEFT edge of the image, and the ear nearest the camera is the subject's LEFT ear, sitting on the RIGHT side of the head silhouette. Judge the turn by which EAR you can see, not by which way it feels — 'to their left' is the subject's own left, which is the opposite of the viewer's."
+    },
+    {
+      "id": "half-back-right+chin-up",
+      "yaw": "half-back-right",
+      "pitch": "chin-up",
+      "phrase": "head turned about 120 degrees away to their right, seen from behind the shoulder so only the cheekbone and jawline are visible, chin raised about 10 degrees above level, jawline lengthened",
+      "renderable": false,
+      "not_renderable_reason": "the face is hidden by definition, which contradicts the identity-match clause every persona prompt carries and QC check 4; ima2 resolved the conflict toward profile on 3/3 rolls (run 20260813-0847) and the judge cannot verify identity it cannot see",
+      "frame_hint": "in the frame this means: the NOSE points toward the LEFT edge of the image, and the ear nearest the camera is the subject's LEFT ear, sitting on the RIGHT side of the head silhouette. Judge the turn by which EAR you can see, not by which way it feels — 'to their left' is the subject's own left, which is the opposite of the viewer's."
+    }
   ],
-  "women-50-70": [
-   "f5059",
-   "f6070",
-   "f4049"
-  ],
-  "adults-50-70": [
-   "f5059",
-   "m5059",
-   "f6070",
-   "m6070"
-  ],
-  "active-20-45": [
-   "m3039",
-   "f3039",
-   "m2029",
-   "f2029",
-   "m4049",
-   "f4049"
-  ]
- },
- "brand_fallback_audience": {
-  "ShilaSource": "men-30-55",
-  "Turkesterone": "men-20-35",
-  "FusiForce": "active-20-45",
-  "FloraFresh": "women-25-45",
-  "MenoMate": "women-40-60",
-  "AgeAura": "adults-50-70"
- },
- "gaze_values": [
-  {
-   "id": "at-lens",
-   "family": "to-camera",
-   "phrase": "eyes looking straight into the lens"
-  },
-  {
-   "id": "just-past-lens",
-   "family": "to-camera",
-   "phrase": "eyes just past the lens, as if at someone standing beside the camera"
-  },
-  {
-   "id": "down-at-product",
-   "family": "away",
-   "phrase": "eyes down on the product, reading it"
-  },
-  {
-   "id": "down-at-hands",
-   "family": "away",
-   "phrase": "eyes down on their own hands, mid-task"
-  },
-  {
-   "id": "off-into-room",
-   "family": "away",
-   "phrase": "eyes off into the room, mid-thought, not at anything in particular"
-  },
-  {
-   "id": "up-and-away",
-   "family": "away",
-   "phrase": "eyes raised and away from the lens, toward a window or the ceiling"
-  },
-  {
-   "id": "at-another-person",
-   "family": "away",
-   "phrase": "eyes on someone just out of frame, mid-conversation"
-  }
- ],
- "shot_values": [
-  "mid-subject-fg-pack",
-  "wide-room",
-  "over-shoulder",
-  "low-table-level",
-  "high-angle-down",
-  "through-doorway"
- ],
- "face_angle_values": [
-  {
-   "id": "front+level",
-   "yaw": "front",
-   "pitch": "level",
-   "phrase": "head squared to the lens, both ears equally visible, chin level with the lens"
-  },
-  {
-   "id": "front+chin-down",
-   "yaw": "front",
-   "pitch": "chin-down",
-   "phrase": "head squared to the lens, both ears equally visible, chin dipped about 12 degrees below level, brow toward camera"
-  },
-  {
-   "id": "front+chin-up",
-   "yaw": "front",
-   "pitch": "chin-up",
-   "phrase": "head squared to the lens, both ears equally visible, chin raised about 10 degrees above level, jawline lengthened"
-  },
-  {
-   "id": "3q-left+level",
-   "yaw": "3q-left",
-   "pitch": "level",
-   "phrase": "head turned about 35 degrees to their left, the far cheek narrowing, chin level with the lens"
-  },
-  {
-   "id": "3q-left+chin-down",
-   "yaw": "3q-left",
-   "pitch": "chin-down",
-   "phrase": "head turned about 35 degrees to their left, the far cheek narrowing, chin dipped about 12 degrees below level, brow toward camera"
-  },
-  {
-   "id": "3q-left+chin-up",
-   "yaw": "3q-left",
-   "pitch": "chin-up",
-   "phrase": "head turned about 35 degrees to their left, the far cheek narrowing, chin raised about 10 degrees above level, jawline lengthened"
-  },
-  {
-   "id": "3q-right+level",
-   "yaw": "3q-right",
-   "pitch": "level",
-   "phrase": "head turned about 35 degrees to their right, the far cheek narrowing, chin level with the lens"
-  },
-  {
-   "id": "3q-right+chin-down",
-   "yaw": "3q-right",
-   "pitch": "chin-down",
-   "phrase": "head turned about 35 degrees to their right, the far cheek narrowing, chin dipped about 12 degrees below level, brow toward camera"
-  },
-  {
-   "id": "3q-right+chin-up",
-   "yaw": "3q-right",
-   "pitch": "chin-up",
-   "phrase": "head turned about 35 degrees to their right, the far cheek narrowing, chin raised about 10 degrees above level, jawline lengthened"
-  },
-  {
-   "id": "profile-left+level",
-   "yaw": "profile-left",
-   "pitch": "level",
-   "phrase": "head turned about 80 degrees to their left, very close to full profile, chin level with the lens"
-  },
-  {
-   "id": "profile-left+chin-down",
-   "yaw": "profile-left",
-   "pitch": "chin-down",
-   "phrase": "head turned about 80 degrees to their left, very close to full profile, chin dipped about 12 degrees below level, brow toward camera"
-  },
-  {
-   "id": "profile-left+chin-up",
-   "yaw": "profile-left",
-   "pitch": "chin-up",
-   "phrase": "head turned about 80 degrees to their left, very close to full profile, chin raised about 10 degrees above level, jawline lengthened"
-  },
-  {
-   "id": "profile-right+level",
-   "yaw": "profile-right",
-   "pitch": "level",
-   "phrase": "head turned about 80 degrees to their right, very close to full profile, chin level with the lens"
-  },
-  {
-   "id": "profile-right+chin-down",
-   "yaw": "profile-right",
-   "pitch": "chin-down",
-   "phrase": "head turned about 80 degrees to their right, very close to full profile, chin dipped about 12 degrees below level, brow toward camera"
-  },
-  {
-   "id": "profile-right+chin-up",
-   "yaw": "profile-right",
-   "pitch": "chin-up",
-   "phrase": "head turned about 80 degrees to their right, very close to full profile, chin raised about 10 degrees above level, jawline lengthened"
-  },
-  {
-   "id": "half-back-left+level",
-   "yaw": "half-back-left",
-   "pitch": "level",
-   "phrase": "head turned about 120 degrees away to their left, seen from behind the shoulder so only the cheekbone and jawline are visible, chin level with the lens"
-  },
-  {
-   "id": "half-back-left+chin-down",
-   "yaw": "half-back-left",
-   "pitch": "chin-down",
-   "phrase": "head turned about 120 degrees away to their left, seen from behind the shoulder so only the cheekbone and jawline are visible, chin dipped about 12 degrees below level, brow toward camera"
-  },
-  {
-   "id": "half-back-left+chin-up",
-   "yaw": "half-back-left",
-   "pitch": "chin-up",
-   "phrase": "head turned about 120 degrees away to their left, seen from behind the shoulder so only the cheekbone and jawline are visible, chin raised about 10 degrees above level, jawline lengthened"
-  },
-  {
-   "id": "half-back-right+level",
-   "yaw": "half-back-right",
-   "pitch": "level",
-   "phrase": "head turned about 120 degrees away to their right, seen from behind the shoulder so only the cheekbone and jawline are visible, chin level with the lens"
-  },
-  {
-   "id": "half-back-right+chin-down",
-   "yaw": "half-back-right",
-   "pitch": "chin-down",
-   "phrase": "head turned about 120 degrees away to their right, seen from behind the shoulder so only the cheekbone and jawline are visible, chin dipped about 12 degrees below level, brow toward camera"
-  },
-  {
-   "id": "half-back-right+chin-up",
-   "yaw": "half-back-right",
-   "pitch": "chin-up",
-   "phrase": "head turned about 120 degrees away to their right, seen from behind the shoulder so only the cheekbone and jawline are visible, chin raised about 10 degrees above level, jawline lengthened"
-  }
- ],
- "_axes_doc": "THREE INDEPENDENT AXES, deliberately non-overlapping so a prompt can carry all three without contradicting itself. face_angle = where the HEAD points (yaw x pitch); this is the axis under Kevin's 2026-08-10 hard rule and it may NEVER repeat for a given persona. gaze = where the EYES point RELATIVE to the head. shot = where the CAMERA is and how much of the scene it takes. The pre-2026-08-10 gaze_values mixed head orientation ('profile', 'over-shoulder') into the eye axis, which is why they had to be rewritten: face_angle cannot be enforced against a vocabulary that already secretly encodes it.",
- "face_angle_rule": "HARD RULE (Kevin, 2026-08-10): never generate the same face angle twice for one model. Per persona, every id in face_angle_values may be used at most ONCE, ever - hero and inline count separately. 21 angles per persona x 200 personas = 4200 unique hero images before the bank can repeat anything. Enforced in persona_picker.py (selection refuses a used angle and skips exhausted personas), in article_images.py (--face-angle is mandatory with --persona-ref and is rejected if already used), and in the QC rubric (the vision gate FAILs an image whose head angle does not match the assigned one)."
+  "_axes_doc": "THREE INDEPENDENT AXES, deliberately non-overlapping so a prompt can carry all three without contradicting itself. face_angle = where the HEAD points (yaw x pitch); this is the axis under Kevin's 2026-08-10 hard rule and it may NEVER repeat for a given persona. gaze = where the EYES point RELATIVE to the head. shot = where the CAMERA is and how much of the scene it takes. The pre-2026-08-10 gaze_values mixed head orientation ('profile', 'over-shoulder') into the eye axis, which is why they had to be rewritten: face_angle cannot be enforced against a vocabulary that already secretly encodes it.",
+  "face_angle_rule": "HARD RULE (Kevin, 2026-08-10): never generate the same face angle twice for one model. Per persona, every id in face_angle_values may be used at most ONCE, ever - hero and inline count separately. 21 angles per persona x 200 personas = 4200 unique hero images before the bank can repeat anything. Enforced in persona_picker.py (selection refuses a used angle and skips exhausted personas), in article_images.py (--face-angle is mandatory with --persona-ref and is rejected if already used), and in the QC rubric (the vision gate FAILs an image whose head angle does not match the assigned one)."
 }

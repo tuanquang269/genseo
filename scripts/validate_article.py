@@ -318,9 +318,39 @@ def main():
     # mechanical enforced it. This is that enforcement. Hero/cover is set as article.image (NOT body),
     # and publisher spacer imgs are display:none, so real in-body <img> = actual inline product images.
     real_imgs=[i for i in imgs if 'display:none' not in i.lower() and 'spacer' not in i.lower()]
-    if len(real_imgs)<MIN_INLINE_IMAGES:
-        fails.append(f"only {len(real_imgs)} inline body image(s) — need ≥{MIN_INLINE_IMAGES} "
-                     f"(1 lifestyle image per product; hero/cover doesn't count). Generate product images (SKILL STEP 5).")
+    # In a .md draft the FIRST image tag is the hero: shopify_publisher.do_publish promotes it to
+    # article.image and STRIPS it from the body. So a draft needs hero + MIN_INLINE_IMAGES tags to
+    # land MIN_INLINE_IMAGES inline. Counting a draft's tags against the post-publish floor was off
+    # by one and passed drafts that published one image short of the rule this gate exists for.
+    md_draft=draft_mode and path.endswith(".md")
+    need=MIN_INLINE_IMAGES+1 if md_draft else MIN_INLINE_IMAGES
+    if len(real_imgs)<need:
+        fails.append(f"only {len(real_imgs)} body image tag(s) — need ≥{need} "
+                     f"({MIN_INLINE_IMAGES} inline, 1 lifestyle image per product"
+                     f"{' + the hero, which the publisher strips out of the body' if md_draft else ''}"
+                     f"). Generate product images (SKILL STEP 5).")
+
+    # Every referenced local image must EXIST ON DISK, and be a file the QC gate passed.
+    # Until 2026-08-13 this gate counted markdown tags and nothing else, so run 20260813-0847
+    # printed "✓ PASS" on a draft whose hero was quarantined and whose other 3 image files had
+    # never been written. A tag is a promise; the file is the delivery. Only the instruction-level
+    # "abort if image generation fails" stood between that draft and a live page full of broken
+    # images — which is exactly the instruction-only pattern this whole file exists to replace.
+    if draft_mode:
+        base=os.path.dirname(os.path.abspath(path))
+        bad=[]
+        for src in re.findall(r'<img[^>]*\bsrc=["\']([^"\']+)["\']', html):
+            if re.match(r'(?i)https?://|data:', src):
+                continue
+            p=src if os.path.isabs(src) else os.path.join(base, src)
+            if not os.path.exists(p):
+                bad.append(f"{src} → no such file")
+            elif os.path.getsize(p)==0:
+                bad.append(f"{src} → 0 bytes")
+            elif "QC-FAILED" in os.path.basename(p).upper():
+                bad.append(f"{src} → quarantined by vision QC, must never be published")
+        if bad:
+            fails.append("image file(s) the draft references are not deliverable: "+"; ".join(bad))
 
     # link liveness (products, collections, author pages)
     urls=set(re.findall(r'https://wellnessnest\.co/(?:products|collections|blogs)/[a-z0-9-]+', html))

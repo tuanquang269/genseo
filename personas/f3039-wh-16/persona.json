@@ -50,21 +50,24 @@
    "face_angle_reads": "frontal",
    "eyes_open": true,
    "head_upright": true,
-   "head_size_reads": "fills-frame",
+   "head_size_reads": "portrait",
    "mouth_or_face_prop": false,
+   "face_paint_or_costume_head": false,
    "studio_or_press_context": false,
    "official_or_representative_capacity": false,
    "identifying_text_in_frame": false,
    "minor_in_frame": false,
-   "apparent_ethnicity": "white",
+   "apparent_ethnicity": "white European appearance",
    "ethnicity_group": "white",
-   "notes": "Close-up portrait of a smiling woman."
-  }
+   "notes": "Contemporary color close-up portrait of one smiling woman.",
+   "_model": "cx/gpt-5.6-luna"
+  },
+  "rubric_refreshed": "2026-08-14"
  },
- "approved_by": null,
- "approved_date": null,
+ "approved_by": "claude (delegated by Kevin for ~/genseo/personas/ only, 2026-08-12)",
+ "approved_date": "2026-08-12",
  "camera_notes": "indoor/ambient available light, real skin texture \u2014 always camera-match; ALWAYS feed THIS ref.jpg, never a previous gen (each gen is another lossy re-reading; chaining them compounds the drift in everything BUT the identity, which ima2 holds onto \u2014 measured 2026-08-10)",
  "usage": "female-audience articles (FusiForce, FloraFresh, ShilaSource); persona is VISUAL ONLY, never named in copy (byline stays the roster author)",
- "status": "pending",
+ "status": "active",
  "flag_reason": null
 }

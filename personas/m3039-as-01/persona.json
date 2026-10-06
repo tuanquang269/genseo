@@ -2,9 +2,9 @@
  "schema_version": 2,
  "handle": "m3039-as-01",
  "pool_id": "m3039",
- "cell_id": "m3039-as",
+ "cell_id": "m2029-as",
  "gender": "male",
- "age_band": "30-39",
+ "age_band": "20-29",
  "ethnicity_key": "as",
  "ethnicity_note": "sourced for cell m3039-as (Asian American (incl. South Asian)); the vision gate placed it there by how the photograph READS, which is what a coverage target can measure and is not a claim about the person \u2014 confirm by eye before first use",
  "demo": "US man ~25-35, South Asian \u2014 candid available-light photograph",
@@ -51,20 +51,31 @@
    "eyes_open": true,
    "head_upright": true,
    "head_size_reads": "portrait",
-   "mouth_or_face_prop": false,
+   "mouth_or_face_prop": true,
+   "face_paint_or_costume_head": false,
    "studio_or_press_context": false,
    "official_or_representative_capacity": false,
    "identifying_text_in_frame": false,
    "minor_in_frame": false,
    "apparent_ethnicity": "South Asian",
-   "ethnicity_group": "asian",
-   "notes": "Man holding a spoon and a cup of food outdoors at night."
-  }
+   "ethnicity_group": "other",
+   "notes": "Contemporary nighttime candid photograph; spoon held near mouth.",
+   "_model": "cx/gpt-5.6-luna"
+  },
+  "rubric_refreshed": "2026-08-14"
  },
- "approved_by": null,
- "approved_date": null,
+ "approved_by": "kevin",
+ "approved_date": "2026-08-13",
  "camera_notes": "indoor/ambient available light, real skin texture \u2014 always camera-match; ALWAYS feed THIS ref.jpg, never a previous gen (each gen is another lossy re-reading; chaining them compounds the drift in everything BUT the identity, which ima2 holds onto \u2014 measured 2026-08-10)",
  "usage": "male-audience articles (ShilaSource, FusiForce, Turkesterone); persona is VISUAL ONLY, never named in copy (byline stays the roster author)",
- "status": "pending",
- "flag_reason": null
+ "status": "active",
+ "flag_reason": null,
+ "recell_history": [
+  {
+   "date": "2026-08-14",
+   "from": "m3039-as",
+   "to": "m2029-as",
+   "because": "vision reads 20-29, centres 24"
+  }
+ ]
 }

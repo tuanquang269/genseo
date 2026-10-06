@@ -38,7 +38,7 @@
   "vision": {
    "is_camera_photograph": true,
    "person_count": 1,
-   "apparent_age_min": 30,
+   "apparent_age_min": 35,
    "apparent_age_max": 45,
    "apparent_gender": "male",
    "face_clearly_visible": true,
@@ -52,19 +52,22 @@
    "head_upright": true,
    "head_size_reads": "portrait",
    "mouth_or_face_prop": false,
+   "face_paint_or_costume_head": false,
    "studio_or_press_context": false,
    "official_or_representative_capacity": false,
    "identifying_text_in_frame": false,
    "minor_in_frame": false,
-   "apparent_ethnicity": "White",
+   "apparent_ethnicity": "white European-appearing",
    "ethnicity_group": "white",
-   "notes": "Bald man with glasses standing in front of a fenced enclosure containing a brown horse."
-  }
+   "notes": "Contemporary outdoor photograph of one adult man beside a horse.",
+   "_model": "cx/gpt-5.6-luna"
+  },
+  "rubric_refreshed": "2026-08-14"
  },
- "approved_by": null,
- "approved_date": null,
+ "approved_by": "kevin",
+ "approved_date": "2026-08-13",
  "camera_notes": "indoor/ambient available light, real skin texture \u2014 always camera-match; ALWAYS feed THIS ref.jpg, never a previous gen (each gen is another lossy re-reading; chaining them compounds the drift in everything BUT the identity, which ima2 holds onto \u2014 measured 2026-08-10)",
  "usage": "male-audience articles (ShilaSource, FusiForce, Turkesterone); persona is VISUAL ONLY, never named in copy (byline stays the roster author)",
- "status": "pending",
+ "status": "active",
  "flag_reason": null
 }

@@ -2,9 +2,9 @@
  "schema_version": 2,
  "handle": "f4049-wh-11",
  "pool_id": "f4049",
- "cell_id": "f4049-wh",
+ "cell_id": "f5059-wh",
  "gender": "female",
- "age_band": "40-49",
+ "age_band": "50-59",
  "ethnicity_key": "wh",
  "ethnicity_note": "sourced for cell f4049-wh (white non-Hispanic); the vision gate placed it there by how the photograph READS, which is what a coverage target can measure and is not a claim about the person \u2014 confirm by eye before first use",
  "demo": "US woman ~45-55, White \u2014 candid available-light photograph",
@@ -39,7 +39,7 @@
    "is_camera_photograph": true,
    "person_count": 1,
    "apparent_age_min": 45,
-   "apparent_age_max": 55,
+   "apparent_age_max": 60,
    "apparent_gender": "female",
    "face_clearly_visible": true,
    "face_obscured": false,
@@ -47,24 +47,35 @@
    "visible_text_or_watermark": false,
    "recognizable_public_figure": false,
    "is_monochrome_or_period": false,
-   "face_angle_reads": "frontal",
+   "face_angle_reads": "three-quarter",
    "eyes_open": true,
    "head_upright": true,
    "head_size_reads": "fills-frame",
    "mouth_or_face_prop": false,
+   "face_paint_or_costume_head": false,
    "studio_or_press_context": false,
    "official_or_representative_capacity": false,
    "identifying_text_in_frame": false,
    "minor_in_frame": false,
-   "apparent_ethnicity": "White",
+   "apparent_ethnicity": "white European appearance",
    "ethnicity_group": "white",
-   "notes": "Close-up portrait of a woman with glasses standing against a brick wall."
-  }
+   "notes": "Contemporary close-up portrait of one adult woman wearing glasses.",
+   "_model": "cx/gpt-5.6-luna"
+  },
+  "rubric_refreshed": "2026-08-14"
  },
- "approved_by": null,
- "approved_date": null,
+ "approved_by": "claude (delegated by Kevin for ~/genseo/personas/ only, 2026-08-12)",
+ "approved_date": "2026-08-12",
  "camera_notes": "indoor/ambient available light, real skin texture \u2014 always camera-match; ALWAYS feed THIS ref.jpg, never a previous gen (each gen is another lossy re-reading; chaining them compounds the drift in everything BUT the identity, which ima2 holds onto \u2014 measured 2026-08-10)",
  "usage": "female-audience articles (MenoMate, FusiForce, ShilaSource, FloraFresh); persona is VISUAL ONLY, never named in copy (byline stays the roster author)",
- "status": "pending",
- "flag_reason": null
+ "status": "active",
+ "flag_reason": null,
+ "recell_history": [
+  {
+   "date": "2026-08-14",
+   "from": "f4049-wh",
+   "to": "f5059-wh",
+   "because": "vision reads 45-60, centres 52"
+  }
+ ]
 }

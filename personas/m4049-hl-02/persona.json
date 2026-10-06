@@ -2,9 +2,9 @@
  "schema_version": 2,
  "handle": "m4049-hl-02",
  "pool_id": "m4049",
- "cell_id": "m4049-hl",
+ "cell_id": "m3039-hl",
  "gender": "male",
- "age_band": "40-49",
+ "age_band": "30-39",
  "ethnicity_key": "hl",
  "ethnicity_note": "sourced for cell m4049-hl (Hispanic/Latino); the vision gate placed it there by how the photograph READS, which is what a coverage target can measure and is not a claim about the person \u2014 confirm by eye before first use",
  "demo": "US man ~35-50, Latino or mixed race \u2014 candid available-light photograph",
@@ -38,8 +38,8 @@
   "vision": {
    "is_camera_photograph": true,
    "person_count": 1,
-   "apparent_age_min": 35,
-   "apparent_age_max": 50,
+   "apparent_age_min": 25,
+   "apparent_age_max": 35,
    "apparent_gender": "male",
    "face_clearly_visible": true,
    "face_obscured": false,
@@ -52,19 +52,30 @@
    "head_upright": true,
    "head_size_reads": "portrait",
    "mouth_or_face_prop": false,
+   "face_paint_or_costume_head": false,
    "studio_or_press_context": false,
    "official_or_representative_capacity": false,
    "identifying_text_in_frame": false,
    "minor_in_frame": false,
-   "apparent_ethnicity": "Latino or mixed race",
+   "apparent_ethnicity": "Latino or Hispanic",
    "ethnicity_group": "hispanic",
-   "notes": "Man in tuxedo holding roses."
-  }
+   "notes": "Adult man in formalwear holding a large bouquet.",
+   "_model": "cx/gpt-5.6-luna"
+  },
+  "rubric_refreshed": "2026-08-14"
  },
- "approved_by": null,
- "approved_date": null,
+ "approved_by": "kevin",
+ "approved_date": "2026-08-13",
  "camera_notes": "indoor/ambient available light, real skin texture \u2014 always camera-match; ALWAYS feed THIS ref.jpg, never a previous gen (each gen is another lossy re-reading; chaining them compounds the drift in everything BUT the identity, which ima2 holds onto \u2014 measured 2026-08-10)",
  "usage": "male-audience articles (ShilaSource, FusiForce); persona is VISUAL ONLY, never named in copy (byline stays the roster author)",
- "status": "pending",
- "flag_reason": null
+ "status": "active",
+ "flag_reason": null,
+ "recell_history": [
+  {
+   "date": "2026-08-14",
+   "from": "m4049-hl",
+   "to": "m3039-hl",
+   "because": "vision reads 25-40, centres 32"
+  }
+ ]
 }
