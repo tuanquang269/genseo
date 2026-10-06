@@ -1,0 +1,109 @@
+{
+  "template": "listicle",
+  "posture": "hybrid",
+  "store": "wellnessnest",
+  "slug": "fusiforce-creatine-gummies-listicle",
+  "template_suffix": "genseo-landing-v1",
+  "title": "5 Reasons Creatine Is Worth a Look After 40",
+  "title_highlight": "5 Reasons",
+  "meta_description": "What the research says about creatine after 40: muscle creatine stores, lean mass with strength training, why a loading phase is optional, and why daily consistency matters most.",
+  "byline": {"name": "Dr. Marcus Hale", "role": "Wellness Nest editorial team"},
+  "updated": "October 6, 2026",
+  "summary": "Creatine monohydrate is one of the most-researched supplements in sports nutrition. Here is what the studies found, what they did not test, and the one habit that decides whether it does anything for you.",
+  "announcement": "Wellness Nest Guide · Updated October 6, 2026",
+  "items": [
+    {
+      "title": "It's one of the most-studied supplements in sports nutrition",
+      "body": "<p>The International Society of Sports Nutrition reviewed the creatine research and concluded that creatine monohydrate raises the creatine stored in muscle and supports high-intensity exercise and lean mass gains during training. The same review found that short- and long-term use appeared safe and well tolerated in healthy people (<a href=\"https://doi.org/10.1186/s12970-017-0173-z\">Kreider et al., 2017</a>).</p><p>If you take medication or have a kidney condition, check with your doctor before you start.</p>",
+      "evidence": "Position stand, J Int Soc Sports Nutr 2017 (human research review)"
+    },
+    {
+      "title": "It tops up the creatine stored in your muscles",
+      "body": "<p>In a classic study of 31 men, muscle creatine rose by about 20% after a six-day high-dose \"loading\" week. A group taking a small daily amount reached a similar 20% rise more gradually, over 28 days (<a href=\"https://doi.org/10.1152/jappl.1996.81.1.232\">Hultman et al., 1996</a>).</p><p>That study used creatine powder and measured muscle creatine levels, not strength.</p>",
+      "evidence": "Human trial, J Appl Physiol 1996",
+      "chart": {
+        "title": "Muscle creatine: two routes to the same level",
+        "bars": [
+          {"label": "Before supplementing", "value": 100, "display": "baseline"},
+          {"label": "Loading week (6 days)", "value": 120, "display": "≈ +20%", "highlight": true},
+          {"label": "Small daily amount (28 days)", "value": 120, "display": "≈ +20% (slower)", "highlight": true}
+        ],
+        "source": "Hultman et al., J Appl Physiol 1996 (n = 31 men). Bars show the approximate rise reported in the abstract."
+      }
+    },
+    {
+      "title": "With strength training, it's linked to more lean mass in older adults",
+      "body": "<p>A meta-analysis of 22 randomized trials with 721 older adults (average ages 57 to 70) found that creatine plus resistance training produced about 1.37 kg more lean mass than training alone, along with greater gains in chest-press and leg-press strength (<a href=\"https://doi.org/10.2147/OAJSM.S123529\">Chilibeck et al., 2017</a>).</p><p>The training mattered: creatine was studied alongside lifting, not instead of it.</p>",
+      "evidence": "Meta-analysis of randomized trials, Open Access J Sports Med 2017",
+      "image": "tmp_images/landing-fusiforce-creatine-gummies-listicle/lift-hands-plain.webp",
+      "alt": "An older adult's hands gripping a light dumbbell on a home gym bench"
+    },
+    {
+      "title": "You don't need a loading phase",
+      "body": "<p>Loading fills muscles faster, but a steady small daily amount gets you to a similar place within a few weeks (<a href=\"https://doi.org/10.1186/s12970-021-00412-w\">Antonio et al., 2021</a>). We compare both approaches in our guide: <a href=\"https://wellnessnest.co/blogs/news/creatine-gummies-loading-phase-is-it-needed-us-2026\">Creatine gummies loading phase: is it needed?</a></p>",
+      "evidence": "Research review, J Int Soc Sports Nutr 2021"
+    },
+    {
+      "title": "It only works if you take it every day",
+      "body": "<p>In the same 1996 study, muscle creatine stayed up while people kept taking a small daily amount. When they stopped, it drifted back to where it started within about 30 days (<a href=\"https://doi.org/10.1152/jappl.1996.81.1.232\">Hultman et al., 1996</a>).</p><p>So the real question isn't which week you start. It's whether you'll still be taking it in month three.</p>",
+      "evidence": "Human trial, J Appl Physiol 1996"
+    }
+  ],
+  "bridge": {
+    "eyebrow": "The part most people skip",
+    "heading": "Convenience is part of consistency",
+    "body": "<p>Creatine is usually sold as a powder: scoop it, mix it, shake it, rinse the bottle. It clumps, it gets gritty, and it's one more thing to pack when you travel. Those small hassles are exactly how a daily habit turns into an every-other-week habit.</p><p>If the format is what keeps you from taking it daily, change the format. FusiForce is one option: creatine monohydrate in a chewable gummy, so there's nothing to measure or mix.</p>",
+    "image": "tmp_images/landing-fusiforce-creatine-gummies-listicle/shaker-friction.webp",
+    "alt": "An open shaker bottle with clumps of powder, a scoop and a spill of powder on a kitchen counter"
+  },
+  "expert": {
+    "heading": "[[PLACEHOLDER: expert review heading — only if a credentialed reviewer has actually reviewed this page]]",
+    "body": "[[PLACEHOLDER: reviewer name, credential and a short note on what they checked. Remove this whole block if there is no real reviewer.]]",
+    "quote": "[[PLACEHOLDER: real, attributable quote from the reviewer — do not write one]]",
+    "attribution": "[[PLACEHOLDER: reviewer name, credential]]"
+  },
+  "offer": {
+    "badge": "FusiForce Creatine Gummies",
+    "headline": "Creatine you don't have to mix",
+    "subhead": "Chewable creatine monohydrate gummies. Green Apple or Blueberry.",
+    "cta": {"text": "See serving & ingredients", "href": "https://wellnessnest.co/products/fusiforce-creatine-gummies"},
+    "fine_print": [
+      "$69.99 · First order covered by our 90-Day Money-Back Guarantee (terms: wellnessnest.co/policies/refund-policy).",
+      "[[PLACEHOLDER: current discount or subscription price — confirm in Shopify before this goes live; no countdown timer]]"
+    ]
+  },
+  "product": {
+    "name": "FusiForce Creatine Monohydrate Gummies 5,000 mg",
+    "image": "https://cdn.shopify.com/s/files/1/0810/1563/6283/files/creatine_gummies.webp?v=1772185175&width=800",
+    "bullets": ["5,000 mg creatine monohydrate per 3-gummy serving", "Plus 25 mg Panax ginseng extract (10% ginsenosides)", "Green Apple or Blueberry"],
+    "source": "https://wellnessnest.co/products/fusiforce-creatine-gummies (product page, fetched 2026-10-06)"
+  },
+  "checklist": {
+    "heading": "How to pick a creatine supplement",
+    "intro": "Whichever brand you choose, check for these:",
+    "items": [
+      "Creatine monohydrate, the form used in the studies above",
+      "The amount of creatine per serving printed clearly on the label",
+      "A format you'll actually take every day",
+      "A written refund policy you can read before you buy"
+    ]
+  },
+  "faq": [
+    {"q": "How many gummies are in a serving?", "a": "Three. The full serving details are on the <a href=\"https://wellnessnest.co/products/fusiforce-creatine-gummies\">product page</a>."},
+    {"q": "Do I need a loading phase?", "a": "No. Loading gets muscle creatine up faster, but a steady daily amount reaches a similar level within a few weeks. <a href=\"https://wellnessnest.co/blogs/news/creatine-gummies-loading-phase-is-it-needed-us-2026\">Our loading-phase guide</a> explains both."},
+    {"q": "Is creatine safe to take long term?", "a": "The ISSN position stand found short- and long-term use appeared safe and well tolerated in healthy people. If you take medication or have a kidney condition, ask your doctor first."},
+    {"q": "What if it isn't for me?", "a": "Your first order is covered by our 90-Day Money-Back Guarantee. <a href=\"https://wellnessnest.co/policies/refund-policy\">Read the terms</a>."}
+  ],
+  "final_cta": {
+    "heading": "Make the daily part easy",
+    "body": "See the full serving, ingredients and flavors on the product page.",
+    "cta": {"text": "See serving & ingredients", "href": "https://wellnessnest.co/products/fusiforce-creatine-gummies"}
+  },
+  "sources": [
+    {"label": "Kreider RB et al. ISSN position stand: safety and efficacy of creatine supplementation. J Int Soc Sports Nutr 2017. doi:10.1186/s12970-017-0173-z", "url": "https://doi.org/10.1186/s12970-017-0173-z"},
+    {"label": "Hultman E et al. Muscle creatine loading in men. J Appl Physiol 1996. doi:10.1152/jappl.1996.81.1.232", "url": "https://doi.org/10.1152/jappl.1996.81.1.232"},
+    {"label": "Chilibeck PD et al. Effect of creatine supplementation during resistance training on lean tissue mass and muscular strength in older adults: a meta-analysis. Open Access J Sports Med 2017. doi:10.2147/OAJSM.S123529", "url": "https://doi.org/10.2147/OAJSM.S123529"},
+    {"label": "Antonio J et al. Common questions and misconceptions about creatine supplementation. J Int Soc Sports Nutr 2021. doi:10.1186/s12970-021-00412-w", "url": "https://doi.org/10.1186/s12970-021-00412-w"}
+  ],
+  "sticky_cta": {"label": "FusiForce Creatine Gummies", "text": "See serving & ingredients", "href": "https://wellnessnest.co/products/fusiforce-creatine-gummies"}
+}

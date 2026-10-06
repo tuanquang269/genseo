@@ -47,6 +47,15 @@ unconfirmed claims before publish (SEL 2026-10-06: Google calls manual fact-chec
 the Mini; push the Mini's unpushed commits (or rsync `personas/index.json`, `PUBLISHED_ARTICLES_TRACKER.csv`,
 `daily-tickets.md`) so both Macs share persona + tracker state again.
 
+## 0.5 · Landing pages (listicle / advertorial) — NOT part of the 5/day (2026-10-06)
+
+Sales-style pages built from the omnicreatine reference layouts, re-skinned with `brand/<store>.json`.
+They are Shopify **pages**, never blog articles: no daily-tickets.md entry, no live-count guard, no tracker row,
+and they cannot appear in `/blogs/news.atom`, so they never count toward or block the 5 articles/day.
+Run: `scripts/run_landing_headless.sh <listicle|advertorial> <store> "<brief>"` or `--next` (queue `landing-tickets.md`).
+Default output is a local preview; `GENSEO_LANDING_DRAFT=1` adds an UNPUBLISHED page; live needs Kevin's GO
+(`GENSEO_LANDING_LIVE_OK=1 … --live`, refused while placeholders remain). Details: `skills/genseo-landing-pages/SKILL.md`.
+
 ## 1 · The daily loop
 
 Do these in order. Stop at the first hard stop and report it. One article per day is the

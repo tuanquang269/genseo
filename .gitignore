@@ -30,3 +30,7 @@ personas/_quarantine-bad-attrib/
 
 # per-Mac runtime state (locks, published-by-<host>.log, one-shot plists)
 state/
+
+# landing previews: full-size PNG screenshots stay local (JPG copies are committed)
+landing_drafts/*/*.png
+landing_drafts/*/cdn_map.json
