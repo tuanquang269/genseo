@@ -4,6 +4,8 @@
    data-accurate HTML chart cards that sit in the reference's chart image slots. Scoped by the build. */
 *,*:before,*:after{box-sizing:border-box}
 :root{font-family:var(--rb-f);color:var(--rb-c-dark);-webkit-font-smoothing:antialiased;line-height:1.4}
+/* live-theme QA 2026-10-06: theme sets h1-h6/button fonts directly (Helvetica on h3) → inherit the replica font */
+h1,h2,h3,h4,h5,h6,button,input,select,textarea{font-family:inherit}
 img{max-width:100%;height:auto;border:0}
 a{color:inherit}
 .rblit__body a,.rble__quote a,.rbq-an a,.rblha__summary a,.rblh__body a{color:#265392;text-decoration:underline;text-underline-offset:2px}

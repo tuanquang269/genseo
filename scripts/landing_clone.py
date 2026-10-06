@@ -252,11 +252,13 @@ def render_listicle(spec, imgs):
     out.append(sec("listicle-offer",
         f'<div class="rblof" id="gsl-offer"><div class="rblof__pill">{E(of["pill"])}</div><div class="rblof__card">'
         f'<div class="rblof__media"><img src="{of["image"]}" alt="{E(of.get("alt",""))}" loading="lazy" width="800" height="800"></div>'
-        f'<div class="rblof__content"><h2 class="rblof__title"><span class="rblof__accent">{E(of["accent"])}</span>{E(of["title"])}</h2>'
+        f'<div class="rblof__content"><h2 class="rblof__title"><span class="rblof__accent">{E(of["accent"])}</span> {E(of["title"])}</h2>'
         f'<div class="rblof__sub"><p>{E(of["sub"])}</p></div><div class="rblof__cta-wrap"><a class="rblof__cta" href="{E(of["href"])}">{E(of["cta"])}</a>{deal}</div>'
         f'<div class="rblof__meta">{risk}<p class="rblof__guarantee">{E(of["guarantee"])}</p></div></div></div></div>'))
     ft = spec.get("footer", {})
-    out.append(sec("listicle-footer", f'<div class="rblft"><p class="rblft__disclaimer">{E(ft.get("disclaimer",""))}</p><p class="rblft__copyright">{E(ft.get("copyright",""))}</p></div>'))
+    # theme chrome kept (takeover false) → the theme footer already prints the copyright; keep only the FDA line
+    copy = f'<p class="rblft__copyright">{E(ft.get("copyright",""))}</p>' if spec.get("takeover") else ""
+    out.append(sec("listicle-footer", f'<div class="rblft"><p class="rblft__disclaimer">{E(ft.get("disclaimer",""))}</p>{copy}</div>'))
     return "".join(out)
 
 
