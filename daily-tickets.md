@@ -427,7 +427,7 @@ Kevin's standing greenlight for mined queues (2026-08-13) + 5/day GO cover the R
   source URL · fetched & confirmed (Y/N). Any claim not confirmed from a fetched source is deleted from the draft.
 - Byline: roster.json only. Blog id 104008483131. Publish `--live`.
 
-- [ ] **#MB1006-1 — vaginal probiotics after antibiotics** — `Vaginal Probiotics After Antibiotics: When to Start (US 2026)`
+- [DONE 2026-10-06 https://wellnessnest.co/blogs/news/probiotics-after-antibiotics-for-women-when-to-start-us] **#MB1006-1 — vaginal probiotics after antibiotics** — `Vaginal Probiotics After Antibiotics: When to Start (US 2026)`
   - **Primary keyword:** `probiotics after antibiotics for women` · **Secondary:** vaginal probiotics after antibiotics, when to take probiotics after antibiotics, yeast infection after antibiotics, how long after antibiotics to take probiotics
   - **Template:** EDITORIAL · **Gate:** topic_fitness PASS [brand]
   - **Products:** `/products/florafresh-vaginal-probiotics-gummies` ($40.99). Collections: `/collections/womens-essentials-collection`, `/collections/best-seller`.
