@@ -3943,7 +3943,7 @@ Template rotation after #50 COMPARISON / #49 STORY: **LISTICLE → EDITORIAL →
 - **Author:** Dr. Marcus Hale, bio verbatim from roster.json.
 - **Never mention or link MuscleMax.**
 
-## [ ] Ticket #60 — NEW ARTICLE (type: COMPARISON)
+## [BLOCKED 2026-10-06 qc-reroll-budget-spent: inline persona f3039-wh-05 front+chin-up rendered chin-dipped/turned 3/3 rolls; hero+inline2+inline3 PASS kept in tmp_images/florafresh-and-cranberry-can-you-take-both-us-2026/; no draft written; reservation seq=92 released] Ticket #60 — NEW ARTICLE (type: COMPARISON)
 
 - **Primary keyword:** `florafresh and cranberry`
 - **Secondary:** can you take probiotics and cranberry together, vaginal probiotic with cranberry pills, cranberry vs probiotic for women
