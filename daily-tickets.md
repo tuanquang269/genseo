@@ -439,7 +439,7 @@ Kevin's standing greenlight for mined queues (2026-08-13) + 5/day GO cover the R
   - **Products:** `/products/shilasource-himalayan-shilajit-resin` ($59.99) hero; `/products/pure-shilajit-gold-resin` ($75) inline. Collections: `/collections/shilajit-wellness-stack`, `/collections/mens-essential-collection`.
   - **Angle:** the practical method (tool/scoop, pea-size portion, water temperature, stirring, taste fixes, storage). LINK — do not restate — how-much-shilajit-per-day (dose) and when-to-take-shilajit (timing). Don't lead on lab-tested/COA as the advantage.
 
-- [ ] **#MB1006-3 — creatine gummies loading phase** — `Creatine Gummies Loading Phase: Is It Needed? (US 2026)`
+- [DONE 2026-10-06 https://wellnessnest.co/blogs/news/creatine-gummies-loading-phase-is-it-needed-us-2026] **#MB1006-3 — creatine gummies loading phase** — `Creatine Gummies Loading Phase: Is It Needed? (US 2026)`
   - **Primary keyword:** `creatine loading phase gummies` · **Secondary:** do you need to load creatine, creatine loading phase, how many creatine gummies to load, creatine saturation
   - **Template:** STORY · **Gate:** topic_fitness PASS [brand]
   - **Products:** `/products/fusiforce-creatine-gummies` ($69.99). Collections: `/collections/mens-essential-collection`, `/collections/best-seller`.
