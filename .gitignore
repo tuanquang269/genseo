@@ -34,3 +34,7 @@ state/
 # landing previews: full-size PNG screenshots stay local (JPG copies are committed)
 landing_drafts/*/*.png
 landing_drafts/*/cdn_map.json
+
+# local secrets (Shopify CLI control app etc.)
+.env
+landing_drafts/*/img/

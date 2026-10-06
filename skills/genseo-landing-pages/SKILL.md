@@ -10,6 +10,31 @@ These are Shopify **pages** (`/pages/<handle>`), not blog articles. They live ou
 and they can never show up in `/blogs/news.atom`, so they never count toward (or block) the 5/day target.
 Queue: `landing-tickets.md`. Runner: `scripts/run_landing_headless.sh`. Section map + schema: `templates/landing/README.md`.
 
+## Templates = EXACT replicas of the reference pages (Kevin 2026-10-06, priority)
+`"engine": "ref"` specs render with `scripts/landing_clone.py` (landing_render.py / landing_publisher.py dispatch to it):
+- **listicle** = omnicreatine `/pages/10-reasons-why-creatine-is-for-skinny-people`; **advertorial** = `/pages/advv-1`
+  (local clone `~/PATI/work/omnicreatine-local-clone`, `python3 -m http.server 8790`). Same section order, markup,
+  class names, spacing and type scale. Change only copy, product data, images and brand tokens. Don't simplify.
+  - listicle: top bar (`rbltb`) → hero article card + byline (`rblha`) → rows 01–07 alternating (`rblit--v2`; rows 02 + 04
+    are the chart slots) → 08 expert/proof (`rble--v2`) → offer card (`rblof`) → footer (`rblft`).
+  - advertorial: header → hero (`rblh`) → rows 1–4 (`rblit`) → 5 expert/proof (`rble`) → featured product (gallery +
+    `rbp-head` + `nw-bundle` Subscribe & Save → real `/cart/add` form with variant/qty/selling_plan + icon row + buy-once)
+    → 3 review cards (`rblr`) → FAQ accordion + tall image (`rbq`) → footer.
+- CSS = the reference's own section files (`templates/landing/ref/css/`) + `ref/extra.css`, scoped under `.gsl-ref`,
+  palette/font swapped to the brand. Icons from `ref/svg.json`. It ships inline in the theme template
+  `templates/page.gsl-ref-<kind>[-takeover]-v1.liquid` (+ small JS); the page body is markup only.
+- Every image slot is cropped from a GenSeo-generated square (`article_images.py --square --qc`, no faces) to the
+  reference slot (rows 616×590 desktop / 1:1 mobile, expert 616×560, hero 616×700, FAQ 720×1036), webp < 80 KB.
+  Real PDP pack shots only where the reference shows the product (offer card, product gallery) and only clean ones
+  (no faces, no claim overlays). Chart slots = data-accurate HTML charts (`chart` / `chart.kind: "stats"`), not images.
+- Reviews/rating: Trustpilot (`trustpilot.com/review/wellnessnest.co`, parse `__NEXT_DATA__` — needs a real browser,
+  curl/WebFetch get a bot wall): 4–5★ only, verbatim, first name + initial as shown, TrustScore + count exactly as
+  displayed. No reviewer → the expert slot carries a real Trustpilot review. Countdown/sell-out only with a real
+  `topbar.deadline`. Listicle keeps theme chrome; advertorial = takeover (`"takeover": true`) with header/footer replicas.
+- Before reporting: side-by-side reference vs ours at 1440 + 375 (`scripts/landing_compare_shot.mjs <url> <out.png> <width>` + `scripts/landing_sbs.py <ref.png> <ours.png> <out.jpg> <colw>`).
+- Throwaway handles via `"handle"` (e.g. `gsl-preview-<x>-t1`); `--draft --install-template` adds the template to the
+  live theme only if that key does not exist yet (never overwrites). Unpublished pages 404 on the storefront.
+
 ## Vault doctrine this skill follows (read when in doubt; vault wins over this file)
 - `~/.claude/skills/claude-design-dtc-listicle-advertorial/SKILL.md` + **`PATI-ADAPTATION.md`** (Kevin's Claude Design
   listicle/advertorial skill; the PATI overlay wins): source discipline, funnel order, layout system, sticky reveal,
@@ -36,11 +61,14 @@ testimonials, no sticky). Surface the choice to Kevin; never silently downgrade 
    as yellow chips, and `--live` refuses any page that still has one.
 2. **Testimonials, star ratings, "X customers", expert quotes**: placeholders unless the spec block carries a
    `source` (review app export, signed expert review). Do not copy PDP social-proof numbers onto a page.
-3. **AgeAura = NMN + TMG only.** Never Urolithin A or peptides; `brand/ageaura.json` `forbidden_terms` fails the gate.
+3. **AgeAura = the NMN + TMG Complex only** (`/products/ageaura-pure-nmn-tmg-nad-complex`, Kevin 2026-10-06). No other
+   AgeAura handle, bundle (`-p2`) or collection link; never Urolithin A or peptides. `brand/ageaura.json`
+   (`allowed_products`, `forbidden_terms`) + `validate_landing.py` block them in any store's page.
 4. **No faces** in any image. Use `scripts/article_images.py` with `--qc` (same pipeline + QC as articles),
    `--product-ref <handle>` (no `:index`) for any image showing a pack, `--ugc` for lifestyle shots, and put
    "no people's faces" in the NEGATIVE. Never `--persona-ref`, never `persona_picker.py`. Run in the foreground.
-5. **No fake urgency.** The reference pages use countdown timers and "sell-out risk" lines; we don't.
+5. **No fake urgency.** The reference pages use countdown timers and "sell-out risk" lines; we render them only with a
+   real promo deadline (`topbar.deadline`), otherwise the top bar shows labels only and the offer has no timer.
 6. **FE-22 (ShilaSource):** never bring back lab / fulvic % / heavy-metal claims or the removed testimonials.
 7. **Funnel order** (hybrid/editorial): the numbered findings never name or link the product; the `bridge` runs
    daily use → format friction → "convenience is part of consistency" → product as ONE option; CTAs invite

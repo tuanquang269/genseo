@@ -384,6 +384,9 @@ def liquid_template(brand, takeover=False):
 
 
 def render(spec_path):
+    if json.load(open(spec_path)).get("engine") == "ref":   # reference replicas (Kevin 2026-10-06) -> landing_clone.py
+        import subprocess
+        sys.exit(subprocess.run([sys.executable, os.path.join(ROOT, "scripts", "landing_clone.py"), spec_path]).returncode)
     spec = json.load(open(spec_path))
     brand = load_brand(spec["store"])
     r = R(brand)

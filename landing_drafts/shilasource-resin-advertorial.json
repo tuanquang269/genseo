@@ -1,167 +1,271 @@
 {
-  "template": "advertorial",
-  "store": "wellnessnest",
-  "slug": "shilasource-resin-advertorial",
+ "engine": "ref",
+ "template": "advertorial",
+ "posture": "advertorial",
+ "store": "wellnessnest",
+ "slug": "shilasource-resin-advertorial",
+ "handle": "gsl-preview-shilasource-adv-t1",
+ "template_suffix": "gsl-ref-advertorial-takeover-v1",
+ "takeover": true,
+ "reference": "http://localhost:8790/pages/advv-1/",
+ "title": "4 Things to Know Before You Try Shilajit Resin",
+ "meta_description": "Shilajit resin, explained plainly: what it is, how to take it, what the studies on purified shilajit actually tested, and ShilaSource purchase options.",
+ "byline": {
+  "name": "Dr. Marcus Hale"
+ },
+ "updated": "Oct 6, 2026",
+ "header": {
+  "logo": "https://wellnessnest.co/cdn/shop/files/WNN_Main_Logo_eb77747f-0bd5-4316-a9ba-92349ddbe5cc.png?width=320",
+  "shop_text": "Shop Now"
+ },
+ "hero": {
   "title": "4 Things to Know Before You Try Shilajit Resin",
-  "meta_description": "Shilajit resin, explained plainly: what it is, how to take it, what the studies on purified shilajit actually tested, and ShilaSource purchase options.",
-  "byline": {
-    "name": "Dr. Marcus Hale"
+  "body_html": "What it is, how to take it and what the research actually tested, <strong>plus the current ShilaSource purchase options.</strong>",
+  "cta": "See ShilaSource Options",
+  "guarantee": "90-Day Money-Back Guarantee",
+  "image": "tmp_images/landing-shilasource-resin-advertorial/sq-hero.webp",
+  "alt": "ShilaSource canister and amber jar of shilajit resin on a sunlit rock on a mountain trail"
+ },
+ "items": [
+  {
+   "title": "It's a resin, not a powder",
+   "body": "<p>Shilajit is a sticky, tar-like substance traditionally used in Ayurveda. ShilaSource comes as a resin in a jar: you take a small portion and dissolve it in warm water or tea instead of swallowing a capsule.</p>",
+   "image": "tmp_images/landing-shilasource-resin-advertorial/sq-row1.webp",
+   "alt": "A spoon lifting a small portion of glossy dark shilajit resin from the ShilaSource jar"
   },
-  "updated": "October 6, 2026",
-  "announcement": "First order covered by our 90-Day Money-Back Guarantee",
-  "hero": {
-    "image": "tmp_images/landing-shilasource-resin-advertorial/hero.webp",
-    "alt": "ShilaSource canister and amber jar of shilajit resin on a kitchen counter next to a mug of tea",
-    "eyebrow": "Shilajit resin, explained plainly",
-    "subhead": "What it is, how to take it, what the research actually tested, and how to buy ShilaSource without overpaying.",
-    "cta": {
-      "text": "See ShilaSource options",
-      "href": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin"
-    },
-    "trust_line": "90-Day Money-Back Guarantee on your first order. See the refund policy for terms."
+  {
+   "title": "It dissolves in warm water or tea",
+   "body": "<p>Follow the directions on the package; it tells you how much to take and how often. Most people dissolve their serving in warm water or tea. Our step-by-step guide covers it: <a href=\"https://wellnessnest.co/blogs/news/how-to-take-shilajit-resin-dissolve-it-right-us-2026\">How to take shilajit resin</a>.</p>",
+   "image": "tmp_images/landing-shilasource-resin-advertorial/sq-row2.webp",
+   "alt": "A glass mug of warm water with a dab of resin dissolving, the ShilaSource jar beside it"
   },
-  "items": [
-    {
-      "title": "It's a resin, not a powder",
-      "body": "<p>Shilajit is a sticky, tar-like substance traditionally used in Ayurveda. ShilaSource comes as a resin in a jar: you take a small portion and dissolve it in warm water or tea instead of swallowing a capsule.</p>",
-      "image": "tmp_images/landing-shilasource-resin-advertorial/resin-spoon.webp",
-      "alt": "A spoon lifting a small portion of glossy dark shilajit resin from the ShilaSource jar"
-    },
-    {
-      "title": "Your serving is on the label",
-      "body": "<p>Follow the directions on the package; it tells you how much to take and how often. Most people dissolve their serving in warm water or tea. Our step-by-step guide covers it: <a href=\"https://wellnessnest.co/blogs/news/how-to-take-shilajit-resin-dissolve-it-right-us-2026\">How to take shilajit resin</a>.</p>",
-      "image": "tmp_images/landing-shilasource-resin-advertorial/desk-routine.webp",
-      "alt": "ShilaSource canister and jar on a home office desk beside a mug of warm water"
-    },
-    {
-      "title": "What the research tested, and what it didn't",
-      "body": "<p>In a 90-day placebo-controlled trial, healthy men aged 45 to 55 taking purified shilajit twice daily had higher total and free testosterone and DHEAS than the placebo group (<a href=\"https://doi.org/10.1111/and.12482\">Pandit et al., 2016</a>).</p><p>In another trial, 63 recreationally active young men took a lower or higher daily amount for 8 weeks. Among the stronger half of participants, the higher-dose group lost less strength after a fatiguing leg workout (<a href=\"https://doi.org/10.1186/s12970-019-0270-2\">Keller et al., 2019</a>).</p><p><strong>Both studies used a purified, standardized extract, not ShilaSource resin,</strong> so they don't show that our jar will do the same.</p>",
-      "evidence": "Human randomized trials, Andrologia 2016 and J Int Soc Sports Nutr 2019 (purified extract)"
-    },
-    {
-      "title": "Pick the option that fits how you'll use it",
-      "body": "<p>You can buy one jar or subscribe. The current options are listed on the <a href=\"https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin\">product page</a> and below. If you're trying it for the first time, the 90-Day Money-Back Guarantee covers your first order (<a href=\"https://wellnessnest.co/policies/refund-policy\">terms</a>).</p>"
-    }
-  ],
-  "expert": {
-    "heading": "[[PLACEHOLDER: expert review heading — only if a credentialed reviewer has actually reviewed this page]]",
-    "body": "[[PLACEHOLDER: reviewer name, credential and what they checked. Remove this block if there is no real reviewer.]]",
-    "quote": "[[PLACEHOLDER: real, attributable quote from the reviewer — do not write one]]",
-    "attribution": "[[PLACEHOLDER: reviewer name, credential]]"
+  {
+   "title": "What the research tested (and didn't)",
+   "body": "<p>In a 90-day placebo-controlled trial, healthy men aged 45 to 55 taking purified shilajit twice daily had higher total and free testosterone and DHEAS than the placebo group (<a href=\"https://doi.org/10.1111/and.12482\">Pandit et al., 2016</a>).</p><p>In another trial, 63 recreationally active young men took a lower or higher daily amount for 8 weeks. Among the stronger half of participants, the higher-dose group lost less strength after a fatiguing leg workout (<a href=\"https://doi.org/10.1186/s12970-019-0270-2\">Keller et al., 2019</a>).</p><p><strong>Both studies used a purified, standardized extract, not ShilaSource resin,</strong> so they don't show that our jar will do the same.</p>",
+   "image": "tmp_images/landing-shilasource-resin-advertorial/sq-row3.webp",
+   "alt": "Himalayan peaks at sunrise above a rocky ridge"
   },
-  "product": {
-    "name": "ShilaSource Himalayan Shilajit Resin",
-    "image": "https://cdn.shopify.com/s/files/1/0810/1563/6283/files/hf_20260310_083540_d6a11011-bb2f-4a3d-9174-836563132b39.webp?v=1773131913&width=800",
-    "blurb": "Himalayan shilajit resin in a 30 g jar. Dissolve your serving in warm water or tea, following the directions on the package.",
-    "bullets": [
-      "30 g jar; the featured package lists 75 servings",
-      "Resin form, no capsules",
-      "Questions? support@wellnessnest.co"
-    ],
-    "options": [
-      {
-        "label": "One-time purchase",
-        "note": "1 jar",
-        "price": "$59.99"
-      },
-      {
-        "label": "Subscribe",
-        "note": "1 jar every 4 weeks",
-        "price": "$39.99",
-        "highlight": true
-      },
-      {
-        "label": "Subscribe, 3 jars",
-        "note": "3 jars every 12 weeks",
-        "price": "$116.97"
-      }
-    ],
-    "rating_line": "[[PLACEHOLDER: star rating + review count from the live review app — do not invent]]",
-    "cta": {
-      "text": "See ShilaSource options",
-      "href": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin"
-    },
-    "fine_print": [
-      "First order covered by our 90-Day Money-Back Guarantee. Prices as listed on the product page on October 6, 2026."
-    ],
-    "source": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin (product page, fetched 2026-10-06)"
-  },
-  "testimonials_heading": "What Customers Say",
-  "testimonials": [
-    {
-      "title": "[[PLACEHOLDER: review title]]",
-      "quote": "[[PLACEHOLDER: verified customer review pulled from the review app, used with permission]]",
-      "name": "[[PLACEHOLDER: first name + last initial]]",
-      "detail": "[[PLACEHOLDER: Verified buyer]]"
-    },
-    {
-      "title": "[[PLACEHOLDER: review title]]",
-      "quote": "[[PLACEHOLDER: verified customer review]]",
-      "name": "[[PLACEHOLDER: name]]",
-      "detail": "[[PLACEHOLDER: Verified buyer]]"
-    },
-    {
-      "title": "[[PLACEHOLDER: review title]]",
-      "quote": "[[PLACEHOLDER: verified customer review]]",
-      "name": "[[PLACEHOLDER: name]]",
-      "detail": "[[PLACEHOLDER: Verified buyer]]"
-    }
-  ],
-  "faq": [
-    {
-      "q": "How do I take shilajit resin?",
-      "a": "Follow the directions on the package. Most people dissolve their serving in warm (not boiling) water or tea. Our guide walks through it: <a href=\"https://wellnessnest.co/blogs/news/how-to-take-shilajit-resin-dissolve-it-right-us-2026\">How to take shilajit resin</a>."
-    },
-    {
-      "q": "Will it raise my testosterone?",
-      "a": "We don't claim that. One 90-day study of a purified shilajit extract in men aged 45 to 55 reported higher testosterone than placebo, but that was a different product and a single study."
-    },
-    {
-      "q": "Can I take it with other supplements or medication?",
-      "a": "Talk to your doctor first, especially if you take medication, are pregnant or nursing, or have a medical condition."
-    },
-    {
-      "q": "How long does a jar last?",
-      "a": "The featured package lists 75 servings per jar. How long that lasts depends on the serving on your label."
-    },
-    {
-      "q": "Can I change or cancel a subscription?",
-      "a": "[[PLACEHOLDER: subscription management / cancellation terms from the live subscription app]]"
-    }
-  ],
-  "sources": [
-    {
-      "label": "Pandit S et al. Clinical evaluation of purified Shilajit on testosterone levels in healthy volunteers. Andrologia 2016.",
-      "url": "https://doi.org/10.1111/and.12482"
-    },
-    {
-      "label": "Keller JL et al. The effects of Shilajit supplementation on fatigue-induced decreases in muscular strength. J Int Soc Sports Nutr 2019.",
-      "url": "https://doi.org/10.1186/s12970-019-0270-2"
-    }
-  ],
-  "sticky_cta": {
-    "label": "ShilaSource Shilajit Resin",
-    "text": "See options",
-    "href": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin"
-  },
-  "posture": "advertorial",
-  "template_suffix": "genseo-landing-takeover-v1",
-  "checklist": {
-    "heading": "Before you buy any shilajit resin",
-    "intro": "Whichever brand you choose, check for these:",
-    "items": [
-      "Serving directions printed on the package",
-      "A support inbox you can actually reach (ours: support@wellnessnest.co)",
-      "A written money-back guarantee",
-      "No promises of medical results"
-    ]
-  },
-  "final_cta": {
-    "heading": "See if ShilaSource fits your routine",
-    "body": "Compare the one-time and subscription options on the product page.",
-    "cta": {
-      "text": "See ShilaSource options",
-      "href": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin"
-    }
+  {
+   "title": "Pick the option that fits your routine",
+   "body": "<p>You can buy one jar or subscribe. The current options are listed on the <a href=\"https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin\">product page</a> and below. If you're trying it for the first time, the 90-Day Money-Back Guarantee covers your first order (<a href=\"https://wellnessnest.co/policies/refund-policy\">terms</a>).</p>",
+   "image": "tmp_images/landing-shilasource-resin-advertorial/sq-row4.webp",
+   "alt": "Three amber ShilaSource jars and the black canister on a pantry shelf"
   }
+ ],
+ "expert": {
+  "title": "TrustScore 4.2 from 1,142 Trustpilot Reviews",
+  "stars": 5,
+  "quote": "fast and easy and the Shilajit I ordered is high Quality",
+  "author": "A Ginter · Wellness Nest customer on Trustpilot",
+  "source": "https://www.trustpilot.com/review/wellnessnest.co (5-star review titled 'recommended company', published 2026-02-09; TrustScore 4.2 and 1,142 reviews as displayed 2026-10-06)",
+  "image": "tmp_images/landing-shilasource-resin-advertorial/sq-expert.webp",
+  "alt": "The ShilaSource canister and jar on a sunny windowsill beside a mug of tea"
+ },
+ "product": {
+  "name": "ShilaSource Himalayan Shilajit Resin",
+  "rating_line": "4.2 · 1,142 reviews",
+  "rating_stars": 4,
+  "rating_source": "https://www.trustpilot.com/review/wellnessnest.co (store-level TrustScore and review count as displayed 2026-10-06)",
+  "desc": "Himalayan shilajit resin in a 30 g jar. Dissolve your serving in warm water or tea, following the directions on the package. The featured package lists 75 servings.",
+  "tps": [
+   "90-day money-back guarantee (first order)",
+   "Free shipping on orders over $70",
+   "Subscribe and save on every delivery",
+   "Questions? support@wellnessnest.co"
+  ],
+  "options_title": "Subscribe & Save:",
+  "options": [
+   {
+    "title": "1 Jar",
+    "sub": "4-week refill",
+    "badge": "33% OFF",
+    "compare": "$59.99",
+    "price": "$39.99",
+    "variant_id": 51117944340795,
+    "qty": 1,
+    "selling_plan": 9850323259
+   },
+   {
+    "title": "3 Jars",
+    "sub": "12-week refill",
+    "badge": "35% OFF",
+    "compare": "$179.97",
+    "price": "$116.97",
+    "variant_id": 51117944340795,
+    "qty": 3,
+    "selling_plan": 9850356027,
+    "tag": "BEST VALUE"
+   }
+  ],
+  "cta": "GET STARTED NOW",
+  "icon_row": [
+   "Renews until canceled",
+   "Free shipping over $70",
+   "90-Day Money-Back Guarantee"
+  ],
+  "buy_once": {
+   "text": "Buy once for $59.99",
+   "note": "One jar, no subscription.",
+   "variant_id": 51117944340795
+  },
+  "gallery": [
+   {
+    "image": "https://cdn.shopify.com/s/files/1/0810/1563/6283/files/hf_20260310_083540_d6a11011-bb2f-4a3d-9174-836563132b39.webp?v=1773131913&width=800",
+    "alt": "ShilaSource canister and amber jar"
+   },
+   {
+    "image": "https://cdn.shopify.com/s/files/1/0810/1563/6283/files/hf_20260310_081638_67dbfbc6-916f-4760-91a3-15e8a1a1a71f.webp?v=1774169481&width=700",
+    "alt": "ShilaSource canister and jar in front of mountains"
+   },
+   {
+    "image": "https://cdn.shopify.com/s/files/1/0810/1563/6283/files/Wm1.webp?v=1775804367&width=800",
+    "alt": "ShilaSource jar with resin pieces and plants"
+   },
+   {
+    "image": "tmp_images/landing-shilasource-resin-advertorial/sq-hero.webp",
+    "alt": "ShilaSource on a mountain trail rock"
+   },
+   {
+    "image": "tmp_images/landing-shilasource-resin-advertorial/sq-row4.webp",
+    "alt": "Three ShilaSource jars on a shelf"
+   }
+  ],
+  "url": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin",
+  "source": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin (one-time $59.99; subscription $39.99 every 4 weeks for one jar; $116.97 every 12 weeks for three jars; 'Subscriptions renew automatically at the selected cadence until canceled.'; fetched 2026-10-06). % OFF and per-jar price computed from those prices."
+ },
+ "testimonials_heading": "What Our Customers Say",
+ "testimonials": [
+  {
+   "title": "Wellness Nest Himalayan Shilajit is awesome",
+   "stars": 4,
+   "quote": "Wellness Nest Himalayan Shilajit is a vital part of my morning coffee. I love the nutrients and energy it gives me. I kept the wood stick vs brass spoon because I hate the smell of brass. Been using for two years and they offer good deals! I love this product and brand.",
+   "name": "Jodi",
+   "details": [
+    "Trustpilot · Dec 5, 2025",
+    "Country: US"
+   ],
+   "source": "https://www.trustpilot.com/review/wellnessnest.co"
+  },
+  {
+   "title": "Thanks Adela",
+   "stars": 5,
+   "quote": "Thanks Adela \nExcellent service as ever .. 3 monthly subscription always arrives on time",
+   "name": "Lisa A.",
+   "details": [
+    "Trustpilot · Mar 5, 2026",
+    "Country: GB"
+   ],
+   "source": "https://www.trustpilot.com/review/wellnessnest.co"
+  },
+  {
+   "title": "Very easy to deal with",
+   "stars": 5,
+   "quote": "Very easy to deal with. Great range of products and staff (Adela) had my issue resolved in minutes.",
+   "name": "Martin M.",
+   "details": [
+    "Trustpilot · Feb 20, 2026",
+    "Country: GB"
+   ],
+   "source": "https://www.trustpilot.com/review/wellnessnest.co"
+  }
+ ],
+ "testimonials_source_html": "",
+ "faq": [
+  {
+   "q": "How do I take shilajit resin?",
+   "a": "Follow the directions on the package. Most people dissolve their serving in warm (not boiling) water or tea. Our guide walks through it: <a href=\"https://wellnessnest.co/blogs/news/how-to-take-shilajit-resin-dissolve-it-right-us-2026\">How to take shilajit resin</a>."
+  },
+  {
+   "q": "Will it raise my testosterone?",
+   "a": "We don't claim that. One 90-day study of a purified shilajit extract in men aged 45 to 55 reported higher testosterone than placebo, but that was a different product and a single study."
+  },
+  {
+   "q": "Can I take it with other supplements or medication?",
+   "a": "Talk to your doctor first, especially if you take medication, are pregnant or nursing, or have a medical condition."
+  },
+  {
+   "q": "Can I change or cancel a subscription?",
+   "a": "Subscriptions renew automatically at the selected cadence until canceled. Review the checkout and subscription terms for cancellation instructions, or email <a href=\"mailto:support@wellnessnest.co\">support@wellnessnest.co</a>. (Source: the <a href=\"https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin\">product page</a>.)"
+  }
+ ],
+ "faq_image": "tmp_images/landing-shilasource-resin-advertorial/sq-faq.webp",
+ "faq_alt": "The open ShilaSource jar on linen with a small spoon of resin",
+ "faq_cta": {
+  "text": "Try ShilaSource Today",
+  "guarantee": "90-Day Money-Back Guarantee"
+ },
+ "footer": {
+  "columns": [
+   {
+    "heading": "Shop",
+    "links": [
+     {
+      "text": "Shop Now",
+      "href": "#featured-product"
+     },
+     {
+      "text": "All Products",
+      "href": "https://wellnessnest.co/collections/all"
+     }
+    ]
+   },
+   {
+    "heading": "Learn",
+    "links": [
+     {
+      "text": "Our Blog",
+      "href": "https://wellnessnest.co/blogs/news"
+     },
+     {
+      "text": "How to Take Shilajit Resin",
+      "href": "https://wellnessnest.co/blogs/news/how-to-take-shilajit-resin-dissolve-it-right-us-2026"
+     }
+    ]
+   },
+   {
+    "heading": "Connect",
+    "links": [
+     {
+      "text": "Contact Us",
+      "href": "mailto:support@wellnessnest.co"
+     },
+     {
+      "text": "Account Login",
+      "href": "https://wellnessnest.co/account"
+     }
+    ]
+   }
+  ],
+  "logo": "https://wellnessnest.co/cdn/shop/files/WNN_Main_Logo_eb77747f-0bd5-4316-a9ba-92349ddbe5cc.png?width=500",
+  "copyright": "© 2026 Wellness Nest. All rights reserved.",
+  "legal": [
+   {
+    "text": "Terms",
+    "href": "https://wellnessnest.co/policies/terms-of-service"
+   },
+   {
+    "text": "Privacy",
+    "href": "https://wellnessnest.co/policies/privacy-policy"
+   },
+   {
+    "text": "Refunds",
+    "href": "https://wellnessnest.co/policies/refund-policy"
+   },
+   {
+    "text": "Shipping Policy",
+    "href": "https://wellnessnest.co/policies/shipping-policy"
+   }
+  ],
+  "disclaimer": "These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease."
+ },
+ "sources": [
+  {
+   "label": "Pandit S et al. Clinical evaluation of purified Shilajit on testosterone levels in healthy volunteers. Andrologia 2016.",
+   "url": "https://doi.org/10.1111/and.12482"
+  },
+  {
+   "label": "Keller JL et al. The effects of Shilajit supplementation on fatigue-induced decreases in muscular strength. J Int Soc Sports Nutr 2019.",
+   "url": "https://doi.org/10.1186/s12970-019-0270-2"
+  }
+ ]
 }

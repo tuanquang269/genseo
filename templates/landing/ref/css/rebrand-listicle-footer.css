@@ -1,0 +1,2 @@
+.rblft{background:linear-gradient(176deg,#0d1e39,#193b68);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px 40px;text-align:center}.rblft__disclaimer,.rblft__copyright{font-family:var(--rb-f);font-weight:var(--rb-fw-r);font-size:16px;line-height:1.5;margin:0}.rblft__disclaimer{color:var(--rb-c-white)}.rblft__copyright{color:#fffc}@media(max-width:749px){.rblft{padding:24px 16px;gap:12px}.rblft__disclaimer,.rblft__copyright{font-size:14px}}
+

@@ -3,6 +3,7 @@
 
   /usr/bin/python3 scripts/landing_publisher.py landing_drafts/<slug>.json            # local preview only (default)
   /usr/bin/python3 scripts/landing_publisher.py landing_drafts/<slug>.json --draft    # Shopify page, published:false
+  ... --draft --install-template   # also adds templates/page.<suffix>.liquid to the live theme if (and only if) it does not exist
   GENSEO_LANDING_LIVE_OK=1 /usr/bin/python3 scripts/landing_publisher.py <spec> --live   # visible page (Kevin GO only)
 
 Why a Shopify PAGE and not a blog article (decision 2026-10-06):
@@ -58,20 +59,37 @@ def main():
     body = open(os.path.join(out_dir, "body.html")).read()
     cache_p = os.path.join(out_dir, "cdn_map.json")
     cache = json.load(open(cache_p)) if os.path.exists(cache_p) else {}
-    for local in sorted(set(re.findall(r'src="(/[^"]+\.(?:webp|png|jpe?g))"', body))):
+    for local in sorted(set(re.findall(r'(?:src|srcset|data-gslfp-thumb)="(/[^"]+\.(?:webp|png|jpe?g))"', body))):
         if local not in cache:
             url = upload_image_to_shopify_files(shop, token, local)
             if not url:
                 sys.exit(f"✗ image upload failed: {local}")
             cache[local] = url
-        body = body.replace(f'src="{local}"', f'src="{cache[local]}"')
+        body = body.replace(f'="{local}"', f'="{cache[local]}"')
     json.dump(cache, open(cache_p, "w"), indent=1)
-    if re.search(r'src="/', body):
+    if re.search(r'(?:src|srcset|data-gslfp-thumb)="/', body):
         sys.exit("✗ local image paths remain after upload")
     rec_p = os.path.join(out_dir, "shopify.json")
     rec = json.load(open(rec_p)) if os.path.exists(rec_p) else {}
     suffix = spec.get("template_suffix", "genseo-landing-v1")
     tkey = f"templates/page.{suffix}.liquid"
+    if mode == "draft" and "--install-template" in sys.argv:
+        # NEW theme file only (Kevin 2026-10-06): GET first; if the key exists, never overwrite — bump the suffix.
+        hdr_r = {"X-Shopify-Access-Token": token}
+        tid = json.load(urllib.request.urlopen(urllib.request.Request(
+            f"https://{shop}/admin/api/{api}/themes.json?role=main", headers=hdr_r), timeout=30))["themes"][0]["id"]
+        try:
+            urllib.request.urlopen(urllib.request.Request(
+                f"https://{shop}/admin/api/{api}/themes/{tid}/assets.json?asset[key]={tkey}", headers=hdr_r), timeout=30)
+            print(f"= {tkey} already exists in theme {tid}: NOT overwritten (bump template_suffix to ship a change)")
+        except urllib.error.HTTPError as e:
+            if e.code != 404:
+                raise
+            val = open(os.path.join(ROOT, "templates", "landing", f"page.{suffix}.liquid")).read()
+            urllib.request.urlopen(urllib.request.Request(f"https://{shop}/admin/api/{api}/themes/{tid}/assets.json", method="PUT",
+                data=json.dumps({"asset": {"key": tkey, "value": val}}).encode(),
+                headers={**hdr_r, "Content-Type": "application/json"}), timeout=60)
+            print(f"+ installed NEW {tkey} in live theme {tid} (new file; no existing theme file touched)")
     if mode == "live":
         hdr_r = {"X-Shopify-Access-Token": token}
         themes = json.load(urllib.request.urlopen(urllib.request.Request(
@@ -90,7 +108,7 @@ def main():
                 data=json.dumps({"asset": {"key": tkey, "value": val}}).encode(),
                 headers={**hdr_r, "Content-Type": "application/json"}), timeout=60)
             print(f"installed {tkey} in theme {tid}")
-    page = {"title": spec["title"], "handle": spec["slug"], "body_html": body, "published": mode == "live",
+    page = {"title": spec["title"], "handle": spec.get("handle", spec["slug"]), "body_html": body, "published": mode == "live",
             "template_suffix": suffix}
     if spec.get("meta_description"):
         page["metafields"] = [{"namespace": "global", "key": "description_tag",

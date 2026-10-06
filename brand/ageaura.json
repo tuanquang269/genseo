@@ -3,8 +3,7 @@
   "extends": "wellnessnest",
   "name": "AgeAura (a Wellness Nest product line)",
   "domain": "https://wellnessnest.co",
-  "collection": "https://wellnessnest.co/collections/ageaura",
-  "notes": "AgeAura is a vendor label on the SAME wellnessnest.co storefront/theme, so it inherits every Wellness Nest token. Scope is NMN + TMG ONLY (4 live products, all NMN+TMG, vault 2026-09-14). Never mention, link or picture Urolithin A or peptides.",
+  "notes": "AgeAura is a vendor label on the SAME wellnessnest.co storefront/theme, so it inherits every Wellness Nest token. Kevin 2026-10-06: AgeAura promotes ONLY the NMN + TMG Complex PDP https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex. No other AgeAura handle, bundle or collection link (validate_landing.py blocks them). Never mention, link or picture Urolithin A or peptides.",
   "colors": {
     "ink": "#2e2a39",
     "bg_soft": "#f5f5f7",
@@ -13,9 +12,18 @@
   "voice": {
     "summary": "Calm, evidence-led longevity voice for adults 40+. Trials first, honest about what NAD+ research has not shown yet; house honesty pattern on what the PDP does and does not publish (mg per capsule)."
   },
-  "forbidden_terms": ["urolithin", "musclemax", "peptide"],
+  "forbidden_terms": [
+    "urolithin",
+    "musclemax",
+    "peptide",
+    "ageaura-pure-nmn-tmg-p2",
+    "rejuvenation duo",
+    "collections/ageaura"
+  ],
   "product_lines": {
-    "ageaura-pure-nmn-tmg-nad-complex": "AgeAura Pure NMN + TMG NAD+ Complex (white capsule bottle)",
-    "ageaura-pure-nmn-tmg-p2": "AgeAura Pure NMN + TMG - Rejuvenation Duo"
-  }
+    "ageaura-pure-nmn-tmg-nad-complex": "AgeAura Pure NMN + TMG NAD+ Complex (white capsule bottle)"
+  },
+  "allowed_products": [
+    "ageaura-pure-nmn-tmg-nad-complex"
+  ]
 }

@@ -23,6 +23,8 @@ BANNED = ["when it comes to", "furthermore,", "navigating the", "elevate your", 
           "by leveraging", "miracle", "cure", "guaranteed results", "doctor recommended"]
 UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0 Safari/537.36"
 REQ = {"listicle": ["title", "items", "offer", "product"], "advertorial": ["title", "hero", "items", "product", "faq"]}
+# engine "ref" (scripts/landing_clone.py, reference replicas) adds: testimonials/expert need a "source"; review
+# stars/TrustScore must be copied from the source as displayed (no rounding) — the claims log records them.
 
 
 def strings(o, path=""):
@@ -67,13 +69,23 @@ def main():
     if not re.fullmatch(r"[a-z0-9-]{3,80}", spec.get("slug", "")):
         errs.append("slug must be a lowercase handle")
     blob = json.dumps(spec).lower()
+    # AgeAura (Kevin 2026-10-06): only the NMN + TMG Complex may be named or linked, in ANY store's page
+    AGEAURA_OK = {"ageaura-pure-nmn-tmg-nad-complex"}
+    for h in sorted(set((re.findall(r"products/(ageaura[a-z0-9-]*)", blob) + re.findall(r"(ageaura-pure-[a-z0-9-]+)", blob))) - AGEAURA_OK):
+        errs.append(f"AgeAura handle '{h}' is not allowed: AgeAura promotes only ageaura-pure-nmn-tmg-nad-complex")
+    if brand.get("allowed_products"):
+        for h in sorted(set(re.findall(r"wellnessnest\.co/products/([a-z0-9-]+)", blob))):
+            if h not in brand["allowed_products"]:
+                errs.append(f"product link /products/{h} is not in {brand['name']} allowed_products {brand['allowed_products']}")
+        if "/collections/" in blob:
+            errs.append(f"{brand['name']}: collection links are not allowed (single-product scope)")
     for term in brand.get("forbidden_terms", []):
         if term in blob:
             errs.append(f"forbidden term for {brand['name']}: '{term}'")
     for path, s in strings(spec):
         low = s.lower()
         for b in BANNED:
-            if re.search(r"(?<![a-z])" + re.escape(b) + r"(?![a-z])", low) and not path.endswith(("url", "href", "image")):
+            if re.search(r"(?<![a-z])" + re.escape(b) + r"(?![a-z])", low) and not path.endswith(("url", "href", "image", "disclaimer")):
                 errs.append(f"banned phrase '{b}' in {path}")
     # numbers need a source link (or a placeholder) in the same block
     blocks = [("items[%d]" % i, it) for i, it in enumerate(spec.get("items", []))]
@@ -115,6 +127,8 @@ def main():
         if "/cdn/" in u:
             continue
         code = http_ok(u)
+        if code in (301, 302, 303) and re.search(r"wellnessnest\.co/(account|cart)(/|$)", u):
+            continue   # account/cart legitimately redirect to login/checkout
         if code != 200:
             errs.append(f"link {u} -> HTTP {code}")
     claims = os.path.splitext(os.path.abspath(a[0]))[0] + ".claims.md"

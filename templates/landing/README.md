@@ -1,3 +1,15 @@
+# Landing templates
+
+**Current engine (2026-10-06): reference replicas** — `engine: "ref"` specs → `scripts/landing_clone.py`.
+- `ref/css/*.css` — the reference's own section CSS (copied from `~/PATI/work/omnicreatine-local-clone/assets/omnicreatine.com/cdn/shop/t/56/assets/`, sourcemap comments stripped).
+- `ref/extra.css` — what Dawn base.css gave the reference + the static featured-product grid/gallery, header/footer replicas, HTML chart cards, Montserrat metric tweak.
+- `ref/svg.json` — the reference's inline SVG icons (stars, badge, arrows, shield, ticks).
+- `page.gsl-ref-listicle-v1.liquid` / `page.gsl-ref-advertorial-takeover-v1.liquid` — generated (CSS scoped to `.gsl-ref`, brand palette, JS for gallery / bundle form / reviews dots / real-deadline countdown) — installed in the live theme 2026-10-06 as NEW files. Change → bump `-v2`.
+- Spec samples: `landing_drafts/fusiforce-creatine-gummies-listicle.json` (listicle), `landing_drafts/shilasource-resin-advertorial.json` (advertorial). Keys: `topbar`, `hero`, `byline`, `items[]` (`image` square or `chart`), `bridge` (row 07), `expert` (+`source`), `offer`, `product` (`gallery[]`, `options[]` with `variant_id`/`qty`/`selling_plan`, `icon_row`, `buy_once`, `rating_line` + `rating_source`), `testimonials[]` (+`source`), `faq[]`, `faq_image`, `faq_cta`, `header`, `footer`.
+
+---
+Legacy v1 engine (`landing_render.py`, `page.genseo-landing-*-v1.liquid`) below — kept for reference, not installed.
+
 # GenSeo landing templates: `listicle` and `advertorial`
 
 Renderer: `scripts/landing_render.py` · gate: `scripts/validate_landing.py` · publish/preview: `scripts/landing_publisher.py`
