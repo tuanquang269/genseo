@@ -433,7 +433,7 @@ Kevin's standing greenlight for mined queues (2026-08-13) + 5/day GO cover the R
   - **Products:** `/products/florafresh-vaginal-probiotics-gummies` ($40.99). Collections: `/collections/womens-essentials-collection`, `/collections/best-seller`.
   - **Angle:** timing (spacing the dose from the antibiotic, continuing after the course), what the evidence does and does not show for preventing post-antibiotic yeast/BV, when to call a clinician. Link existing: yeast-infection-vs-bv, vaginal-probiotics-how-long-until-they-work, probiotics-for-bv. No drug/cure claims (FDA structure/function only).
 
-- [ ] **#MB1006-2 — how to take shilajit resin** — `How to Take Shilajit Resin: Dissolve It Right (US 2026)`
+- [DONE 2026-10-06 https://wellnessnest.co/blogs/news/how-to-take-shilajit-resin-dissolve-it-right-us-2026] **#MB1006-2 — how to take shilajit resin** — `How to Take Shilajit Resin: Dissolve It Right (US 2026)`
   - **Primary keyword:** `how to take shilajit resin` · **Secondary:** how to dissolve shilajit resin, shilajit resin in warm water, pea size shilajit, shilajit resin under tongue
   - **Template:** LISTICLE (step-by-step) · **Gate:** topic_fitness REVIEW [covered-segment] → greenlit (no "how to take" title exists)
   - **Products:** `/products/shilasource-himalayan-shilajit-resin` ($59.99) hero; `/products/pure-shilajit-gold-resin` ($75) inline. Collections: `/collections/shilajit-wellness-stack`, `/collections/mens-essential-collection`.
