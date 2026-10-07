@@ -45,13 +45,20 @@ if [ "$ROLE" = "standby" ] && [ "${GENSEO_NO_DELAY:-0}" != "1" ]; then
   say "standby: waiting ${DELAY} min so a healthy peer Mac goes first"; sleep $(( DELAY * 60 ))
 fi
 
-fails=0
-for i in $(seq 1 "$MAX_RUNS"); do
+fails=0; pw=0; PEER_MAX_WAITS="${GENSEO_PEER_MAX_WAITS:-6}"
+for i in $(seq 1 $(( MAX_RUNS + ${GENSEO_PEER_MAX_WAITS:-6} ))); do
   n="$(live_count)"
   if [ "$n" -lt 0 ]; then say "live feed unreadable — fail closed, exit"; exit 1; fi
   if [ "$n" -ge "$TARGET" ]; then say "DONE: $n/$TARGET live for $DAY (ICT)"; exit 0; fi
   peer="$($PY "$G/scripts/genseo_published_today.py" --peer-active "$PEER_WIN" --local-log "$MINE" 2>/dev/null)"; rc=$?
-  if [ "$rc" = 3 ]; then say "$peer — other Mac is publishing, standing down at $n/$TARGET"; exit 0; fi
+  if [ "$rc" = 3 ]; then
+    # 2026-10-07 fix: standing down for good let a peer that died after 1 post leave the day at 1/5.
+    # Wait out the peer window and re-check; if the peer publishes nothing more, this Mac takes over.
+    pw=$((pw+1))
+    if [ "$pw" -gt "$PEER_MAX_WAITS" ]; then say "$peer — peer still active after $PEER_MAX_WAITS waits, standing down at $n/$TARGET"; exit 0; fi
+    say "$peer — other Mac is publishing; wait ${PEER_WIN} min ($pw/$PEER_MAX_WAITS) then re-check (take over if it went quiet)"
+    sleep $(( PEER_WIN * 60 )); continue
+  fi
   open=$(grep -cE '^(- \[ \]|## \[ \])' "$G/daily-tickets.md" 2>/dev/null || true)
   if [ "${open:-0}" -eq 0 ]; then say "ticket queue EMPTY at $n/$TARGET — hard stop (no empty-queue model burn); refill daily-tickets.md"; exit 0; fi
   before="$(live_urls | sort)"
