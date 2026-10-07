@@ -457,8 +457,32 @@ Kevin's standing greenlight for mined queues (2026-08-13) + 5/day GO cover the R
   - **Products:** `/products/turkesterone-advanced-formula` ($75). Collections: `/collections/mens-essential-collection`, `/collections/best-seller`.
   - **Angle:** cycling is a bro-science carry-over from hormonal compounds; no human trial tested on/off cycles of turkesterone — say that plainly, give the conservative label-led approach. LINK turkesterone-side-effects, turkesterone-timing, turkesterone-benefits-dosing — don't restate.
 
-- [ ] **#MB1006-6 — vaginal probiotics during your period** (buffer) — `Vaginal Probiotics During Your Period: Keep Taking Them? (US 2026)`
+- [DONE 2026-10-07 https://wellnessnest.co/blogs/news/probiotics-during-your-period-keep-taking-them-us-2026] **#MB1006-6 — vaginal probiotics during your period** (buffer) — `Vaginal Probiotics During Your Period: Keep Taking Them? (US 2026)`
   - **Primary keyword:** `probiotics during period` · **Secondary:** vaginal probiotics on period, menstruation vaginal ph, florafresh during period, probiotics for period odor
   - **Template:** STORY · **Gate:** topic_fitness PASS [brand]
   - **Products:** `/products/florafresh-vaginal-probiotics-gummies` ($40.99). Collections: `/collections/womens-essentials-collection`, `/collections/best-seller`.
   - **Angle:** menstrual blood raises vaginal pH; oral probiotics keep going through the cycle; what's normal vs a reason to see a clinician. Run only if #MB1006-1 shipped and the angles don't overlap.
+
+- [ ] **#MB1007-1 — creatine gummies and hair loss** — `Do Creatine Gummies Cause Hair Loss? What the DHT Study Says (US 2026)`
+  - **Primary keyword:** `creatine gummies hair loss` · **Secondary:** does creatine cause hair loss, creatine dht, creatine baldness, creatine and hair thinning
+  - **Template:** EDITORIAL · **Gate:** topic_fitness PASS [brand] · dedupe: no hair-loss title live (checked 2026-10-07)
+  - **Products:** `/products/fusiforce-creatine-gummies` only. Collections: `/collections/mens-essential-collection`, `/collections/best-seller`.
+  - **Angle:** the one 2009 rugby-player study (van der Merwe) reported a DHT rise, never measured hair; later trials (e.g. 2025 RCT on hair/DHT) only if fetched & confirmed. Say plainly what is and isn't known; no medical claims. LINK creatine-gummies-side-effects, creatine-gummies-dosage — don't restate.
+
+- [ ] **#MB1007-2 — nmn and resveratrol together** — `NMN and Resveratrol Together: What the Evidence Shows (US 2026)`
+  - **Primary keyword:** `nmn and resveratrol` · **Secondary:** nmn resveratrol stack, take nmn with resveratrol, resveratrol with fat, nmn tmg resveratrol
+  - **Template:** EDITORIAL · **Gate:** topic_fitness PASS [brand] · dedupe: no resveratrol title live
+  - **Products:** `/products/ageaura-pure-nmn-tmg-nad-complex` ONLY (its label has 100 mg trans-resveratrol). Collections: `/collections/best-seller` twice. NO p2, NO /collections/ageaura, NO Urolithin.
+  - **Angle:** why the stack is popular (sirtuin rationale = mechanism, not proof), no human trial of the combination (say so), resveratrol human data only if fetched. LINK nmn-and-tmg-together, how-much-nmn-per-day — don't restate.
+
+- [ ] **#MB1007-3 — does nmn break a fast** — `Does NMN Break a Fast? Timing for Fasting Days (US 2026)`
+  - **Primary keyword:** `does nmn break a fast` · **Secondary:** nmn while fasting, nmn intermittent fasting, take nmn on empty stomach, nmn calories
+  - **Template:** LISTICLE · **Gate:** topic_fitness PASS [brand] · dedupe: no NMN-fasting title live (when-to-take-nmn covers time of day only — LINK it, don't restate)
+  - **Products:** `/products/ageaura-pure-nmn-tmg-nad-complex` ONLY. Collections: `/collections/best-seller` twice. NO p2, NO /collections/ageaura, NO Urolithin.
+  - **Angle:** calories/insulin of a capsule (only label facts), no trial on NMN during fasting (say so), Yamaguchi 2024 dosed before breakfast; label says 2 capsules daily.
+
+- [ ] **#MB1007-4 — creatine gummies and caffeine** — `Creatine Gummies and Caffeine: Can You Take Both? (US 2026)`
+  - **Primary keyword:** `creatine and caffeine` · **Secondary:** creatine gummies with coffee, does caffeine cancel creatine, creatine pre workout caffeine
+  - **Template:** COMPARISON · **Gate:** topic_fitness PASS [brand] · dedupe: no caffeine title live
+  - **Products:** `/products/fusiforce-creatine-gummies` only. Collections: `/collections/mens-essential-collection`, `/collections/best-seller`.
+  - **Angle:** the 1996 Vandenberghe interference finding vs later studies — only cite if fetched & confirmed; practical spacing; LINK best-time-to-take-creatine, creatine-gummies-dosage.
