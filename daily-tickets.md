@@ -475,7 +475,7 @@ Kevin's standing greenlight for mined queues (2026-08-13) + 5/day GO cover the R
   - **Products:** `/products/ageaura-pure-nmn-tmg-nad-complex` ONLY (its label has 100 mg trans-resveratrol). Collections: `/collections/best-seller` twice. NO p2, NO /collections/ageaura, NO Urolithin.
   - **Angle:** why the stack is popular (sirtuin rationale = mechanism, not proof), no human trial of the combination (say so), resveratrol human data only if fetched. LINK nmn-and-tmg-together, how-much-nmn-per-day — don't restate.
 
-- [ ] **#MB1007-3 — does nmn break a fast** — `Does NMN Break a Fast? Timing for Fasting Days (US 2026)`
+- [DONE 2026-10-07 https://wellnessnest.co/blogs/news/does-nmn-break-a-fast-6-rules-for-fasting-days-us-2026] **#MB1007-3 — does nmn break a fast** — `Does NMN Break a Fast? Timing for Fasting Days (US 2026)`
   - **Primary keyword:** `does nmn break a fast` · **Secondary:** nmn while fasting, nmn intermittent fasting, take nmn on empty stomach, nmn calories
   - **Template:** LISTICLE · **Gate:** topic_fitness PASS [brand] · dedupe: no NMN-fasting title live (when-to-take-nmn covers time of day only — LINK it, don't restate)
   - **Products:** `/products/ageaura-pure-nmn-tmg-nad-complex` ONLY. Collections: `/collections/best-seller` twice. NO p2, NO /collections/ageaura, NO Urolithin.
