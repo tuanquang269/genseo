@@ -61,6 +61,9 @@ for i in $(seq 1 $(( MAX_RUNS + ${GENSEO_PEER_MAX_WAITS:-6} ))); do
   fi
   open=$(grep -cE '^(- \[ \]|## \[ \])' "$G/daily-tickets.md" 2>/dev/null || true)
   if [ "${open:-0}" -eq 0 ]; then say "ticket queue EMPTY at $n/$TARGET — hard stop (no empty-queue model burn); refill daily-tickets.md"; exit 0; fi
+  if ! lint="$($PY "$G/scripts/lint_tickets.py" "$G/daily-tickets.md" 2>&1)"; then
+    say "ticket lint FAILED (banned AgeAura/Urolithin link in an open ticket) — fix daily-tickets.md; stopping"; echo "$lint" >> "$LOG"; exit 1
+  fi
   before="$(live_urls | sort)"
   say "run $i: live $n/$TARGET, $open open ticket(s) → run_ticket_headless.sh"
   perl -e 'alarm 5400; exec @ARGV' /bin/bash "$G/scripts/run_ticket_headless.sh"; rrc=$?

@@ -20,6 +20,7 @@ identically. Refuses to overwrite an existing ticket file (won't clobber the cro
 Usage: build_catalog_tickets.py [out.md] [--min-sku 3]
 """
 import json, os, re, sys, urllib.request
+import brand_rules as br
 from collections import defaultdict
 
 ROOT = "/Users/kevinkreative/genseo"
@@ -100,6 +101,8 @@ def catalog():
             n = e['node']
             if (n['totalInventory'] or 0) <= 0:
                 continue
+            if not br.product_allowed(n['handle']):
+                continue
             ven = (n['vendor'] or '').strip()
             k = tf._norm(ven)
             if not k:
@@ -121,6 +124,8 @@ def catalog():
 def collection_handle(brand):
     """the brand's own collection handle if the store has one (else None)."""
     bn = tf._norm(brand)
+    if not br.collection_allowed(bn):
+        return None
     for c in brt.COLLECTIONS:
         if tf._norm(c) == bn or bn in tf._norm(c):
             return c

@@ -352,6 +352,14 @@ def main():
         if bad:
             fails.append("image file(s) the draft references are not deliverable: "+"; ".join(bad))
 
+    # brand link rules (Kevin 2026-10-07): AgeAura = NMN + TMG NAD+ Complex only; no /collections/ageaura
+    try:
+        import brand_rules as _br
+        _v=_br.violations(html)
+        if _v: fails.append("brand rule — banned link(s)/mentions: "+"; ".join(_v[:6]))
+    except ImportError:
+        fails.append("brand_rules.py missing — cannot check AgeAura link rule (fail closed)")
+
     # link liveness (products, collections, author pages)
     urls=set(re.findall(r'https://wellnessnest\.co/(?:products|collections|blogs)/[a-z0-9-]+', html))
     dead=[u for u in urls if not http_ok(u)]

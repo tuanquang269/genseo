@@ -421,7 +421,7 @@ Kevin's standing greenlight for mined queues (2026-08-13) + 5/day GO cover the R
   hands/POV/flat-lay/scene). Reason: `personas/index.json` on this Mac is stale vs the Mini (angles spent
   Aug 16–Oct 5 are unknown here), so any persona pick risks re-spending an angle — Kevin's hard rule. Do NOT run
   `persona_picker.py pick` in this batch. QC must FAIL any image with a recognizable human face.
-- **AgeAura = NMN + TMG only.** Never mention, link or picture Urolithin A.
+- **AgeAura = NMN + TMG only.** Never mention, link or picture Urolithin A. Link ONLY `/products/ageaura-pure-nmn-tmg-nad-complex` — never `ageaura-pure-nmn-tmg-p2`, the Essential Longevity Duo or `/collections/ageaura` (use `/collections/best-seller`). Enforced by `lint_tickets.py` + `validate_article.py`.
 - **Fact-check log (Google: manual fact-checking of AI content is "critical", SEL 2026-10-06):** before publish,
   write `~/genseo/logs/claims/<slug>.md` — one row per factual claim (number, study, mechanism, dose): claim ·
   source URL · fetched & confirmed (Y/N). Any claim not confirmed from a fetched source is deleted from the draft.
