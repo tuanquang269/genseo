@@ -463,7 +463,7 @@ Kevin's standing greenlight for mined queues (2026-08-13) + 5/day GO cover the R
   - **Products:** `/products/florafresh-vaginal-probiotics-gummies` ($40.99). Collections: `/collections/womens-essentials-collection`, `/collections/best-seller`.
   - **Angle:** menstrual blood raises vaginal pH; oral probiotics keep going through the cycle; what's normal vs a reason to see a clinician. Run only if #MB1006-1 shipped and the angles don't overlap.
 
-- [ ] **#MB1007-1 — creatine gummies and hair loss** — `Do Creatine Gummies Cause Hair Loss? What the DHT Study Says (US 2026)`
+- [DONE 2026-10-07 https://wellnessnest.co/blogs/news/creatine-gummies-and-hair-loss-what-the-dht-data-shows-us] **#MB1007-1 — creatine gummies and hair loss** — `Do Creatine Gummies Cause Hair Loss? What the DHT Study Says (US 2026)`
   - **Primary keyword:** `creatine gummies hair loss` · **Secondary:** does creatine cause hair loss, creatine dht, creatine baldness, creatine and hair thinning
   - **Template:** EDITORIAL · **Gate:** topic_fitness PASS [brand] · dedupe: no hair-loss title live (checked 2026-10-07)
   - **Products:** `/products/fusiforce-creatine-gummies` only. Collections: `/collections/mens-essential-collection`, `/collections/best-seller`.
