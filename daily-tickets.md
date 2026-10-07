@@ -469,7 +469,7 @@ Kevin's standing greenlight for mined queues (2026-08-13) + 5/day GO cover the R
   - **Products:** `/products/fusiforce-creatine-gummies` only. Collections: `/collections/mens-essential-collection`, `/collections/best-seller`.
   - **Angle:** the one 2009 rugby-player study (van der Merwe) reported a DHT rise, never measured hair; later trials (e.g. 2025 RCT on hair/DHT) only if fetched & confirmed. Say plainly what is and isn't known; no medical claims. LINK creatine-gummies-side-effects, creatine-gummies-dosage — don't restate.
 
-- [ ] **#MB1007-2 — nmn and resveratrol together** — `NMN and Resveratrol Together: What the Evidence Shows (US 2026)`
+- [DONE 2026-10-07 https://wellnessnest.co/blogs/news/nmn-and-resveratrol-what-the-evidence-shows-us-2026] **#MB1007-2 — nmn and resveratrol together** — `NMN and Resveratrol Together: What the Evidence Shows (US 2026)`
   - **Primary keyword:** `nmn and resveratrol` · **Secondary:** nmn resveratrol stack, take nmn with resveratrol, resveratrol with fat, nmn tmg resveratrol
   - **Template:** EDITORIAL · **Gate:** topic_fitness PASS [brand] · dedupe: no resveratrol title live
   - **Products:** `/products/ageaura-pure-nmn-tmg-nad-complex` ONLY (its label has 100 mg trans-resveratrol). Collections: `/collections/best-seller` twice. NO p2, NO /collections/ageaura, NO Urolithin.
