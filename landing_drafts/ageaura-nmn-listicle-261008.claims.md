@@ -58,3 +58,6 @@ sq-row4b (research papers; used on row 06). QC PASS (article_images.py --qc). Al
 - Offer price: $59.46 = PDP selling plan "1 product every 4 weeks at 15% discount" on $69.95 (/products/ageaura-pure-nmn-tmg-nad-complex.js, 2026-10-08). Shown as Subscribe & Save vs the one-time price; no compare_at is invented.
 - Offer bullets = label facts only (500 mg NMN + 250 mg TMG per serving; quercetin, trans-resveratrol, apigenin, folate, spermidine; 60 vegan capsules / 30 servings) + the real guarantee.
 - Chart: Huang 2022 values unchanged (Day 30 +11.3%, Day 60 +38% NMN, placebo +14.3%).
+
+## 2026-10-08 15:51 ICT request (restore pack claims)
+- AgeAura (NMN+TMG Complex): no "85+ minerals", fulvic acid or lab-tested claim is printed on its pack or PDP, so nothing was added. Page moved to template gsl-ref-listicle-v4 (v2 + mobile-only layer), Kevin-approved 2026-10-08.

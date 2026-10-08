@@ -1,5 +1,5 @@
 {
- "url": "https://wellnessnest.co/pages/gsl-preview-fusiforce-creatine-listicle-261008?v=1791446373104",
+ "url": "https://wellnessnest.co/pages/creatine-gummies-research?v=1791452587512",
  "desktop": {
   "http": 200,
   "title": "7 Facts About Creatine Without the Scoop – Wellness Nest",
@@ -8,6 +8,7 @@
   "gsl_ref": true,
   "premium_markup": true,
   "premium_css_applied": "24px",
+  "premium_kicker_radius": "999px",
   "premium_css_in_dom": true,
   "offer_text": "⚡️ FUSIFORCE CREATINE GUMMIES Creatine Monohydrate in a Chewable Gummy 4.2 TrustScore · 1,144 reviews on Trustpilot $49.99 $69.99 SAVE $20 with Subscribe & Save, delivered every 4 weeks. Or $69.99 one-time. 5,000 mg crea",
   "old_v2_offer_copy": false,
@@ -15,7 +16,7 @@
   "imgs": 15,
   "broken": [],
   "overflow": false,
-  "height": 9065
+  "height": 9121
  },
  "mobile": {
   "http": 200,
@@ -25,6 +26,7 @@
   "gsl_ref": true,
   "premium_markup": true,
   "premium_css_applied": "20px",
+  "premium_kicker_radius": "999px",
   "premium_css_in_dom": true,
   "offer_text": "⚡️ FUSIFORCE CREATINE GUMMIES Creatine Monohydrate in a Chewable Gummy 4.2 TrustScore · 1,144 reviews on Trustpilot $49.99 $69.99 SAVE $20 with Subscribe & Save, delivered every 4 weeks. Or $69.99 one-time. 5,000 mg crea",
   "old_v2_offer_copy": false,
@@ -32,11 +34,11 @@
   "imgs": 15,
   "broken": [],
   "overflow": false,
-  "height": 12394,
+  "height": 12260,
   "sticky_check": {
-   "top": "off(scrollY=0 vh=812 offerTop=9083 bridgeTop=7202 rows=8 cls=gslp-sticky)",
+   "top": "off(scrollY=0 vh=812 offerTop=8872 bridgeTop=6995 rows=8 cls=gslp-sticky)",
    "after_bridge": true,
-   "on_offer": "off(scrollY=9233 vh=812 offerTop=-150 bridgeTop=-2031 rows=8 cls=gslp-sticky)"
+   "on_offer": "off(scrollY=9022 vh=812 offerTop=-150 bridgeTop=-2027 rows=8 cls=gslp-sticky)"
   }
  }
 }

@@ -112,7 +112,9 @@ sys.path.insert(0, "scripts"); os.environ["GENSEO_PUBLISHER_REEXEC"] = "1"
 import genseo_config as cfg
 from shopify_auth import pick
 if not os.path.exists(sys.argv[1]): print("nopage"); sys.exit()
-pid = json.load(open(sys.argv[1]))["page_id"]
+rec = json.load(open(sys.argv[1])); pid = rec["page_id"]
+if rec.get("mode") == "live":   # Kevin-GO live page (the daily lane can never set mode=live): never re-hide it
+    print(f"{pid} LIVE-KEVIN-GO-NOT-TOUCHED {rec.get('handle')}"); sys.exit()
 shop, tok, _ = pick({"write_online_store_pages"})
 H = {"X-Shopify-Access-Token": tok, "Content-Type": "application/json"}
 u = f"https://{shop}/admin/api/{cfg.API}/pages/{pid}.json"

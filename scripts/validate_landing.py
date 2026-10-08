@@ -201,8 +201,8 @@ def main():
         taste.append(f"offer.cta '{cta}' is more than 3 words (taste: CTA must never wrap)")
     # Premium listicle layer (Kevin 2026-10-08 visual overhaul, templates/landing/ref/premium.css): structure + pack-label gate.
     if spec.get("style") == "premium":
-        if spec.get("template_suffix") != "gsl-ref-listicle-v2":
-            errs.append("style premium needs template_suffix gsl-ref-listicle-v2 (the v1 theme file has no premium CSS)")
+        if spec.get("template_suffix") not in ("gsl-ref-listicle-v2", "gsl-ref-listicle-v3", "gsl-ref-listicle-v4"):   # v3/v4 = v2 + mobile-only layer
+            errs.append("style premium needs template_suffix gsl-ref-listicle-v2/-v3/-v4 (the v1 theme file has no premium CSS)")
         if not hero.get("image"):
             taste.append("premium hero needs hero.image (product shot above the fold, Kevin 2026-10-08)")
         if (spec.get("offer") or {}).get("price") and not (spec.get("offer") or {}).get("price_source"):

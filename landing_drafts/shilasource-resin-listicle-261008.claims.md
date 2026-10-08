@@ -18,7 +18,14 @@ Study facts from Europe PMC abstracts (REST, 2026-10-08).
 | "Questions about batch testing? Wellness Nest support answers them." | Trustpilot review by Sue (AU, 2026-03-04): support replied within hours to a Certificate of Analysis request | state/trustpilot/wellnessnest.json id 69a7e1c6034b5ce74072c814 |
 | Reviews: expert A Ginter 5★ (2026-02-09); cards Sue 5★, Marie Petuelle Mombrun 4★ (verified), Miloslav Kral 5★ | state/trustpilot/wellnessnest.json | Verbatim |
 
+## Restored claims: Kevin-approved 2026-10-08, pending manual update
+Kevin approved (15:51 ICT) restoring the pack claims exactly as printed (asterisks kept), nothing new invented; Kevin will manually update the copy afterwards.
+| Copy (where) | Source (verbatim) | Status |
+|---|---|---|
+| Offer bullet "70% Fulvic Acid* · Lab-Tested for Purity* (as printed on the pack)"; bridge "Its pack states 70% Fulvic Acid* and Lab-Tested for Purity*."; trust tile "70% Fulvic Acid* · Lab-Tested for Purity*, per pack" | Real pack label OCR (product_refs/shilasource-resin label json): "70% Fulvic Acid*", "Lab-Tested for Purity*" | Kevin-approved 2026-10-08, pending manual update. Note: the only documentation found is archived batch AHS2401 (June 2024); it does not verify current lots. |
+
 ## Deliberately NOT used
-- "70% Fulvic Acid" / lab-tested-for-purity claims in copy: the only documentation is archived batch AHS2401 (June 2024), which does not verify current lots (the claim still appears on the real pack in product photos, as on the PDP).
+- (moved) "70% Fulvic Acid*" / "Lab-Tested for Purity*": now in copy, see Restored claims above. Caveat kept on record: the only documentation is archived batch AHS2401 (June 2024), which does not verify current lots.
+- "85+ minerals" / trace minerals: not printed on the resin pack or PDP, so not added.
 - compare_at_price $99.98 (no strike-through against it); PDP survey claims; testosterone or strength claims for ShilaSource itself (all trials used other purified extracts).
 - No dosage-with-units in body copy (doses only in chart source lines and offer card). No AgeAura/Urolithin. No faces.

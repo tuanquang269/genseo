@@ -17,7 +17,14 @@ Kevin 2026-10-08 14:27 ICT asked for "ShilaSource Shilajit Gummies". No ShilaSou
 | Price $39.99 Subscribe & Save every 4 weeks (1 pouch), $59.99 one-time | PDP text "One-time purchase is $59.99. Current recurring options are $39.99 every 4 weeks for 1 pouch"; .js plan 9850290491 = 3999 | 2026-10-08 |
 | Reviews: expert Claudia Elena 5★ (BE, 2025-11-20, mentions Himalayan Shilajit Gummies, no effect claim); cards J collister, Carlee Buford, Νεκτάριος Πιτσιούγκας (5★) | state/trustpilot/wellnessnest.json | Verbatim |
 
+## Restored claims: Kevin-approved 2026-10-08, pending manual update
+Kevin approved (15:51 ICT) restoring the pack claims exactly as printed, nothing new invented; Kevin will manually update the copy afterwards.
+| Copy (where) | Source (verbatim) | Status |
+|---|---|---|
+| Offer bullet "75% Fulvic Acid · 85+ Trace Minerals (as printed on the pack)"; bridge "Its pack lists 75% Fulvic Acid and 85+ Trace Minerals; ..."; trust tile "85+ Trace Minerals · 75% Fulvic Acid, per pack" | Real pack label OCR (product_refs gummies label json): "75% Fulvic Acid", "85+ Trace Minerals" | Kevin-approved 2026-10-08, pending manual update. Note: the PDP itself avoids fulvic claims without documentation; no lab document for these figures was found. |
+
 ## Deliberately NOT used
-- Pack claims "75% Fulvic Acid", "85+ Trace Minerals", "60-DAY SUPPLY" (facts say 30 servings of 2 gummies = 30 days; the pack's 60-day line contradicts it) — not in copy (they remain visible on the real pack in photos). PDP explicitly avoids vegan/third-party/fulvic claims without documentation; so do we.
+- (moved) "75% Fulvic Acid" / "85+ Trace Minerals": now in copy, see Restored claims above.
+- Pack claim "60-DAY SUPPLY" stays out (facts say 30 servings of 2 gummies = 30 days; the pack's 60-day line contradicts it). Vegan / third-party / lab-tested claims stay out: not printed on this pack or PDP.
 - Stephen A McCloskey review ("excellent sources of energy and stamina"): product-effect claim, skipped.
 - compare_at_price $99.98 (no strike-through against it). No dosage-with-units in body copy. No AgeAura/Urolithin. No faces.

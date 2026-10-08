@@ -31,6 +31,8 @@ for (const [name, vp, mobile] of [["desktop", { width: 1440, height: 900 }, fals
       title: document.title, status_text: document.body.innerText.slice(0, 80),
       body_class: document.body.className.slice(0, 160),
       gsl_ref: !!q(".gsl-ref"), premium_markup: !!hero, premium_css_applied: hero ? getComputedStyle(hero).borderRadius : null,
+      // v3 (2026-10-08) makes the mobile hero full-bleed (radius 0): the pill kicker radius is the premium probe there
+      premium_kicker_radius: q(".gslp-kicker") ? getComputedStyle(q(".gslp-kicker")).borderRadius : null,
       premium_css_in_dom: [...document.querySelectorAll("style")].some(s => s.textContent.includes("--gp-forest")),
       offer_text: offer ? offer.innerText.replace(/\s+/g, " ").slice(0, 220) : null,
       old_v2_offer_copy: document.body.innerText.includes("Two Ingredients"),

@@ -4,8 +4,8 @@
  "posture": "hybrid",
  "store": "wellnessnest",
  "slug": "fusiforce-creatine-listicle-261008",
- "handle": "gsl-preview-fusiforce-creatine-listicle-261008",
- "template_suffix": "gsl-ref-listicle-v2",
+ "handle": "creatine-gummies-research",
+ "template_suffix": "gsl-ref-listicle-v4",
  "takeover": false,
  "created": "2026-10-08",
  "daily": false,
@@ -152,7 +152,7 @@
  ],
  "bridge": {
   "title": "The best form is the one you take",
-  "body": "<p>Creatine works through steady daily intake, so the format you will keep using matters most.</p><p>One option: FusiForce Creatine Monohydrate Gummies put creatine monohydrate in a chewable green apple or blueberry gummy, with Panax ginseng extract on the same label.</p><p>Taking medication or managing a health condition? Check with your doctor first.</p>",
+  "body": "<p>Creatine works through steady daily intake, so the format you will keep using matters most.</p><p>One option: FusiForce Creatine Monohydrate Gummies put creatine monohydrate in a chewable green apple or blueberry gummy, with Panax ginseng extract on the same label. The product page says it is lab-tested after cooking in ISO 17025-accredited facilities.</p><p>Taking medication or managing a health condition? Check with your doctor first.</p>",
   "image": "tmp_images/landing-fusiforce-creatine-listicle-261008/ledge.webp",
   "alt": "The FusiForce creatine gummies pouch on an oak counter beside a glass of water"
  },
@@ -213,6 +213,7 @@
   },
   "bullets": [
    "<b>5,000 mg creatine monohydrate</b> per 3-gummy serving",
+   "Lab-tested after cooking in ISO 17025-accredited facilities (product page)",
    "Plus Panax ginseng root extract (10% ginsenosides)",
    "Green Apple or Blueberry · 90 gummies per pouch",
    "90-day money-back guarantee on your first order"
@@ -275,10 +276,10 @@
   },
   {
    "icon": "leaf",
-   "html": "<b>Monohydrate</b> <small>in a chewable gummy</small>"
+   "html": "<b>Lab-tested</b> <small>after cooking, per product page</small>"
   }
  ],
- "trust_source": "TrustScore/count: state/trustpilot/wellnessnest.json (trustpilot.com/review/wellnessnest.co, read 2026-10-08). Guarantee + free-shipping threshold: /policies/refund-policy and the site ticker. Monohydrate: PDP title + pack label.",
+ "trust_source": "TrustScore/count: state/trustpilot/wellnessnest.json (trustpilot.com/review/wellnessnest.co, read 2026-10-08). Guarantee + free-shipping threshold: /policies/refund-policy and the site ticker. Lab-tested: PDP description 'lab-tested after cooking in ISO 17025-accredited facilities' (Kevin-approved 2026-10-08, pending manual update).",
  "sticky_cta": {
   "name": "FusiForce Creatine Gummies",
   "note": "From $49.99",
@@ -290,5 +291,8 @@
   "tmp_images/landing-fusiforce-creatine-listicle-261008/offer.webp",
   "tmp_images/landing-fusiforce-creatine-listicle-261008/dark.webp",
   "tmp_images/landing-fusiforce-creatine-listicle-261008/ledge.webp"
- ]
+ ],
+ "mobile_layer_approved": "Kevin 2026-10-08 15:51 ICT (v4 = v2 + mobile-only layer)",
+ "live": true,
+ "live_approved": "Kevin 2026-10-08 15:51 ICT"
 }

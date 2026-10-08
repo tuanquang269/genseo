@@ -1,5 +1,5 @@
 {
- "url": "https://wellnessnest.co/pages/gsl-preview-shilasource-resin-listicle-261008?v=1791447706337",
+ "url": "https://wellnessnest.co/pages/shilajit-resin-research?v=1791452613858",
  "desktop": {
   "http": 200,
   "title": "7 Things to Know Before You Try Shilajit Resin – Wellness Nest",
@@ -8,6 +8,7 @@
   "gsl_ref": true,
   "premium_markup": true,
   "premium_css_applied": "24px",
+  "premium_kicker_radius": "999px",
   "premium_css_in_dom": true,
   "offer_text": "⚡️ SHILASOURCE SHILAJIT RESIN Himalayan Resin for a Warm Daily Drink 4.2 TrustScore · 1,144 reviews on Trustpilot $39.99 $59.99 SAVE $20 with Subscribe & Save, delivered every 4 weeks. Or $59.99 one-time. 1.06 oz (30 g) ",
   "old_v2_offer_copy": false,
@@ -15,7 +16,7 @@
   "imgs": 15,
   "broken": [],
   "overflow": false,
-  "height": 9058
+  "height": 9105
  },
  "mobile": {
   "http": 200,
@@ -25,6 +26,7 @@
   "gsl_ref": true,
   "premium_markup": true,
   "premium_css_applied": "20px",
+  "premium_kicker_radius": "999px",
   "premium_css_in_dom": true,
   "offer_text": "⚡️ SHILASOURCE SHILAJIT RESIN Himalayan Resin for a Warm Daily Drink 4.2 TrustScore · 1,144 reviews on Trustpilot $39.99 $59.99 SAVE $20 with Subscribe & Save, delivered every 4 weeks. Or $59.99 one-time. 1.06 oz (30 g) ",
   "old_v2_offer_copy": false,
@@ -32,11 +34,11 @@
   "imgs": 15,
   "broken": [],
   "overflow": false,
-  "height": 12329,
+  "height": 11988,
   "sticky_check": {
-   "top": "off(scrollY=0 vh=812 offerTop=9039 bridgeTop=7106 rows=8 cls=gslp-sticky)",
+   "top": "off(scrollY=0 vh=812 offerTop=8743 bridgeTop=6927 rows=8 cls=gslp-sticky)",
    "after_bridge": true,
-   "on_offer": "off(scrollY=9189 vh=812 offerTop=-150 bridgeTop=-2083 rows=8 cls=gslp-sticky)"
+   "on_offer": "off(scrollY=8893 vh=812 offerTop=-150 bridgeTop=-1966 rows=8 cls=gslp-sticky)"
   }
  }
 }

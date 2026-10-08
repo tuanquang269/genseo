@@ -111,7 +111,7 @@ def scope_css(css, scope=".gsl-ref"):
     return "".join(out)
 
 
-def build_css(kind, brand, premium=False):
+def build_css(kind, brand, premium=False, mobile_v3=False):
     # The gsl-ref-* theme template is ONE shared file installed in the live theme with the base store's palette, so a
     # sub-brand spec (AgeAura "extends" wellnessnest) must render with that same palette — otherwise the preview and
     # templates/landing/page.<suffix>.liquid drift from what the live page actually shows (fixed 2026-10-08).
@@ -124,6 +124,8 @@ def build_css(kind, brand, premium=False):
     raw += open(os.path.join(REF, "extra.css")).read()
     if premium:   # 2026-10-08 visual overhaul (template gsl-ref-listicle-v2); see the header of premium.css
         raw += "\n" + open(os.path.join(REF, "premium.css")).read()
+    if mobile_v3:   # template gsl-ref-listicle-v3/-v4 (Kevin 2026-10-08 15:51): v2 + a mobile-only layer, desktop unchanged
+        raw += "\n" + open(os.path.join(REF, f"mobile-{mobile_v3}.css")).read()
     raw = raw.replace('"Satoshi", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif', font)
     raw = re.sub(r'Satoshi Variable,\s*Satoshi,\s*sans-serif|Satoshi,\s*sans-serif', "var(--rb-f)", raw)
     raw = raw.replace('var(--rb-f, "Satoshi Variable", "Satoshi", sans-serif)', "var(--rb-f)")
@@ -538,7 +540,7 @@ def main():
     body = brand_swap(f'<div class="gsl-ref gsl-ref--{kind}">\n{inner}</div>\n', pal)
     js = brand_swap(JS, pal)   # lives in the theme template (Shopify page bodies are not a place for scripts)
     open(os.path.join(out_dir, "body.html"), "w").write(body)
-    css = build_css(kind, vis, premium=spec.get("style") == "premium")
+    css = build_css(kind, vis, premium=spec.get("style") == "premium", mobile_v3={"gsl-ref-listicle-v3": "v3", "gsl-ref-listicle-v4": "v4"}.get(spec.get("template_suffix")))
     open(os.path.join(out_dir, "page.css"), "w").write(css)
     font_link = brand.get("fonts", {}).get("preview_font_link", "")
     hide = open(os.path.join(ROOT, "templates", "landing", "hide_theme_chrome.html")).read().replace("{% layout none %}", "layout-none") if spec.get("takeover") else ""   # a Liquid tag inside a CSS comment would still execute

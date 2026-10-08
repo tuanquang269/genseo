@@ -1,0 +1,36 @@
+/* gsl-ref-listicle-v4 = v2 + this MOBILE-ONLY layer (Kevin 2026-10-08 15:51 ICT; v3 lost head-to-heads on 2 pages:
+   CTA-before-image broke the flow and tighter paddings read denser). Every rule sits inside max-width:749px, so
+   desktop renders exactly like v2. Hero keeps product image BEFORE the CTA but compacts everything above it so the
+   CTA lands inside 375x812 under the theme header; the summary moves under the CTA. Rows get MORE air, not less. */
+@media(max-width:749px){
+  .rbltb{min-height:0!important}
+  .rbltb__labels{flex-direction:row!important;justify-content:center!important;padding:7px 12px!important}
+  .rbltb__labels span:nth-child(n+2){display:none!important}
+  .gslp-hero{padding:12px 12px 0}
+  .gslp-hero__in{padding:18px 16px 22px;gap:12px}
+  .gslp-kicker{font-size:11px;padding:5px 11px}
+  .gslp-hero .rblha__title{font-size:28px;line-height:1.14}
+  .gslp-hero .rblha__author{gap:10px!important}
+  .gslp-hero .rblha__avatar{width:32px!important;height:32px!important}
+  .gslp-hero .rblha__author-text{gap:2px!important}
+  .gslp-hero .rblha__author-name{font-size:13px!important;line-height:1.3!important}
+  .gslp-hero .rblha__updated{font-size:12px!important;line-height:1.3!important}
+  .gslp-hero__media{order:4;aspect-ratio:4/3}
+  .gslp-btn{order:5;min-height:52px}
+  .gslp-hero__dek{order:6;font-size:15.5px;line-height:1.55}
+  .gslp-trust{padding:14px 12px 0}
+  .rb-section--listicle-image-text .rblit--v2{padding:40px 22px}
+  .rblit__inner{gap:20px!important}
+  .rblit__title{font-size:26px!important;line-height:1.2!important}
+  .rblit__body,.rblit__body p{font-size:17px!important;line-height:1.68!important}
+  .rblit__body p{margin:0 0 16px!important}
+  .rblit__media:has(> picture),.rblit__media:has(> img){aspect-ratio:3/2!important}
+  .gslp-ev{margin-top:16px}
+  .gslp-callout .rblit__inner{padding:26px 20px}
+  .gslc{padding:22px 18px 18px!important}
+  .gslc__title{font-size:19px!important;line-height:1.3!important}
+  .rble--v2 .rble__title{font-size:27px!important}
+  .rble--v2 .rble__media{height:230px!important}
+  .rblof{padding:44px 14px!important}
+  .rblof__title{font-size:29px!important}
+}

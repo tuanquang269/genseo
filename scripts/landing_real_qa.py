@@ -90,7 +90,8 @@ def main():
                     f = facts[vp]
                     check(f"{vp}_http", f["http"] == 200, str(f["http"]))
                     if spec.get("style") == "premium":
-                        check(f"{vp}_premium_css", f["premium_markup"] and f["premium_css_applied"] not in (None, "0px"), str(f["premium_css_applied"]))
+                        ok_r = f["premium_css_applied"] not in (None, "0px") or (spec.get("template_suffix") in ("gsl-ref-listicle-v3", "gsl-ref-listicle-v4") and vp == "mobile" and f.get("premium_kicker_radius") not in (None, "0px"))
+                        check(f"{vp}_premium_css", f["premium_markup"] and ok_r, f"hero {f['premium_css_applied']} kicker {f.get('premium_kicker_radius')}")
                     title = re.sub(r"<[^>]+>", "", (spec.get("offer") or {}).get("title", ""))
                     check(f"{vp}_offer_is_current", (title or "") in (f["offer_text"] or ""), f"offer box shows: {(f['offer_text'] or '')[:90]}")
                     check(f"{vp}_no_overflow", not f["overflow"], "")

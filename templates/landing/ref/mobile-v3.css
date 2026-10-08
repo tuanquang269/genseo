@@ -1,0 +1,42 @@
+/* gsl-ref-listicle-v3 = v2 + this MOBILE-ONLY layer (Kevin 2026-10-08 15:51 ICT). Every rule sits inside
+   max-width:749px, so desktop renders exactly like v2. Goals: hero CTA inside the 375x812 fold under the theme
+   header; less nested-card density (hero card goes full-bleed, lighter tiles); calmer, shorter rhythm. */
+@media(max-width:749px){
+  /* topbar: one line (the guarantee is repeated in the trust strip right under the hero) */
+  .rbltb__labels{flex-direction:row!important;justify-content:center!important;padding:7px 12px!important}
+  .rbltb__labels span:nth-child(n+2){display:none!important}
+  /* hero: full-bleed white, copy -> dek -> CTA first, product image right after the CTA */
+  .gslp-hero{padding:0;background:#fff}
+  .gslp-hero__in{padding:18px 20px 24px;gap:12px;border-radius:0;box-shadow:none}
+  .gslp-kicker{font-size:11px;padding:5px 11px}
+  .gslp-hero .rblha__title{font-size:28px;line-height:1.14}
+  .gslp-hero .rblha__author{gap:10px!important}
+  .gslp-hero .rblha__avatar{width:32px!important;height:32px!important}
+  .gslp-hero .rblha__author-text{gap:2px!important}
+  .gslp-hero .rblha__author-name{font-size:13px!important;line-height:1.3!important}
+  .gslp-hero .rblha__updated{font-size:12px!important;line-height:1.3!important}
+  .gslp-hero__dek{order:4;font-size:16px;line-height:1.5}
+  .gslp-btn{order:5;min-height:52px}
+  .gslp-hero__media{order:6;aspect-ratio:4/3;margin-top:4px}
+  /* trust strip: lighter 2x2, no heavy tiles */
+  .gslp-trust{padding:6px 16px 0;background:#fff}
+  .gslp-trust ul{gap:6px 10px}
+  .gslp-trust li{padding:8px 10px!important;font-size:12.5px;background:var(--gp-bone)!important;border:0!important;box-shadow:none!important;border-radius:12px}
+  /* rows: one clear rhythm, smaller titles, shorter images, more side air */
+  .rb-section--listicle-image-text .rblit--v2{padding:30px 20px}
+  .rblit__inner{gap:16px!important}
+  .rblit__title{font-size:25px!important;line-height:1.2!important}
+  .rblit__body,.rblit__body p{font-size:17px!important;line-height:1.6!important}
+  .rblit__media:has(> picture),.rblit__media:has(> img){aspect-ratio:3/2!important}
+  .rblit__media{border-radius:16px!important;box-shadow:none!important}
+  .gslp-ev{margin-top:12px}
+  .gslp-callout .rblit__inner{padding:20px 16px}
+  .gslc{padding:18px 14px 14px!important;box-shadow:none!important}
+  .gslc__title{font-size:19px!important}
+  /* expert band + offer */
+  .rble--v2 .rble__title{font-size:26px!important}
+  .rble--v2 .rble__media{height:220px!important}
+  .rblof{padding:32px 12px!important}
+  .rblof__title{font-size:28px!important}
+  .rblof__media{aspect-ratio:4/3!important}
+}

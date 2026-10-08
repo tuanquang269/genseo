@@ -4,8 +4,8 @@
  "posture": "hybrid",
  "store": "wellnessnest",
  "slug": "shilasource-resin-listicle-261008",
- "handle": "gsl-preview-shilasource-resin-listicle-261008",
- "template_suffix": "gsl-ref-listicle-v2",
+ "handle": "shilajit-resin-research",
+ "template_suffix": "gsl-ref-listicle-v4",
  "takeover": false,
  "created": "2026-10-08",
  "daily": false,
@@ -158,7 +158,7 @@
  ],
  "bridge": {
   "title": "Pick the format you will keep",
-  "body": "<p>Every trial here tested daily use over weeks or months. A routine you can keep matters more than any single serving.</p><p>One option: ShilaSource Himalayan Shilajit Resin, a resin you dissolve in a warm drink. Questions about batch testing? Wellness Nest support answers them.</p><p>Taking medication or managing a health condition? Check with your doctor first.</p>",
+  "body": "<p>Every trial here tested daily use over weeks or months. A routine you can keep matters more than any single serving.</p><p>One option: ShilaSource Himalayan Shilajit Resin, a resin you dissolve in a warm drink. Its pack states 70% Fulvic Acid* and Lab-Tested for Purity*.</p><p>Taking medication or managing a health condition? Check with your doctor first.</p>",
   "image": "tmp_images/landing-shilasource-resin-listicle-261008/ledge.webp",
   "alt": "The ShilaSource shilajit resin tube and jar on a stone counter beside a cup of tea"
  },
@@ -219,8 +219,8 @@
    "note": "with Subscribe & Save, delivered every 4 weeks. Or $59.99 one-time."
   },
   "bullets": [
-   "<b>1.06 oz (30 g) jar</b> of Himalayan shilajit resin",
-   "The package states 75 servings per jar",
+   "<b>1.06 oz (30 g) jar</b> of Himalayan shilajit resin, 75 servings as labeled",
+   "70% Fulvic Acid* · Lab-Tested for Purity* (as printed on the pack)",
    "Dissolve in warm water or tea, as the label directs",
    "90-day money-back guarantee on your first order"
   ],
@@ -281,10 +281,10 @@
   },
   {
    "icon": "leaf",
-   "html": "<b>75 servings</b> <small>per jar, as labeled</small>"
+   "html": "<b>70% Fulvic Acid*</b> <small>Lab-Tested for Purity*, per pack</small>"
   }
  ],
- "trust_source": "TrustScore/count: state/trustpilot/wellnessnest.json (trustpilot.com/review/wellnessnest.co, read 2026-10-08). Guarantee + free-shipping threshold: /policies/refund-policy and the site ticker. 75 servings: pack label + PDP text.",
+ "trust_source": "TrustScore/count: state/trustpilot/wellnessnest.json (trustpilot.com/review/wellnessnest.co, read 2026-10-08). Guarantee + free-shipping threshold: /policies/refund-policy and the site ticker. Pack label text '70% Fulvic Acid*', 'Lab-Tested for Purity*' (Kevin-approved 2026-10-08, pending manual update).",
  "sticky_cta": {
   "name": "ShilaSource Shilajit Resin",
   "note": "From $39.99",
@@ -296,5 +296,8 @@
   "tmp_images/landing-shilasource-resin-listicle-261008/offer.webp",
   "tmp_images/landing-shilasource-resin-listicle-261008/dark.webp",
   "tmp_images/landing-shilasource-resin-listicle-261008/ledge.webp"
- ]
+ ],
+ "mobile_layer_approved": "Kevin 2026-10-08 15:51 ICT (v4 = v2 + mobile-only layer)",
+ "live": true,
+ "live_approved": "Kevin 2026-10-08 15:51 ICT"
 }

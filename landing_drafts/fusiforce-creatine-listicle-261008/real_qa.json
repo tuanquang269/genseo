@@ -3,15 +3,15 @@
  "checks": {
   "template_in_main_theme": {
    "ok": true,
-   "info": "templates/page.gsl-ref-listicle-v2.liquid in theme 183190880571 (WN Shopify Theme - 02072026)"
+   "info": "templates/page.gsl-ref-listicle-v4.liquid in theme 183190880571 (WN Shopify Theme - 02072026)"
   },
   "template_matches_local": {
    "ok": true,
-   "info": "live eb61b67a3c31 vs local eb61b67a3c31 (a CSS change needs a NEW suffix; never overwrite)"
+   "info": "live a7fd3caa44fd vs local a7fd3caa44fd (a CSS change needs a NEW suffix; never overwrite)"
   },
   "template_suffix": {
    "ok": true,
-   "info": "page 'gsl-ref-listicle-v2' vs spec 'gsl-ref-listicle-v2'"
+   "info": "page 'gsl-ref-listicle-v4' vs spec 'gsl-ref-listicle-v4'"
   },
   "body_text_matches_local": {
    "ok": true,
@@ -23,7 +23,7 @@
   },
   "hidden_again": {
    "ok": true,
-   "info": "published_at=None"
+   "info": "published_at=2026-10-08T02:39:49-07:00"
   },
   "desktop_http": {
    "ok": true,
@@ -31,7 +31,7 @@
   },
   "desktop_premium_css": {
    "ok": true,
-   "info": "24px"
+   "info": "hero 24px kicker 999px"
   },
   "desktop_offer_is_current": {
    "ok": true,
@@ -51,7 +51,7 @@
   },
   "mobile_premium_css": {
    "ok": true,
-   "info": "20px"
+   "info": "hero 20px kicker 999px"
   },
   "mobile_offer_is_current": {
    "ok": true,
@@ -67,13 +67,13 @@
   },
   "sticky_cta": {
    "ok": true,
-   "info": "{\"top\": \"off(scrollY=0 vh=812 offerTop=9083 bridgeTop=7202 rows=8 cls=gslp-sticky)\", \"after_bridge\": true, \"on_offer\": \"off(scrollY=9233 vh=812 offerTop=-150 bridgeTop=-2031 rows=8 cls=gslp-sticky)\"}"
+   "info": "{\"top\": \"off(scrollY=0 vh=812 offerTop=8872 bridgeTop=6995 rows=8 cls=gslp-sticky)\", \"after_bridge\": true, \"on_offer\": \"off(scrollY=9022 vh=812 offerTop=-150 bridgeTop=-2027 rows=8 cls=gslp-sticky)\"}"
   }
  },
  "fails": [],
- "was_hidden": true,
+ "was_hidden": false,
  "storefront": {
-  "url": "https://wellnessnest.co/pages/gsl-preview-fusiforce-creatine-listicle-261008?v=1791446373104",
+  "url": "https://wellnessnest.co/pages/creatine-gummies-research?v=1791452587512",
   "desktop": {
    "http": 200,
    "title": "7 Facts About Creatine Without the Scoop – Wellness Nest",
@@ -82,6 +82,7 @@
    "gsl_ref": true,
    "premium_markup": true,
    "premium_css_applied": "24px",
+   "premium_kicker_radius": "999px",
    "premium_css_in_dom": true,
    "offer_text": "⚡️ FUSIFORCE CREATINE GUMMIES Creatine Monohydrate in a Chewable Gummy 4.2 TrustScore · 1,144 reviews on Trustpilot $49.99 $69.99 SAVE $20 with Subscribe & Save, delivered every 4 weeks. Or $69.99 one-time. 5,000 mg crea",
    "old_v2_offer_copy": false,
@@ -89,7 +90,7 @@
    "imgs": 15,
    "broken": [],
    "overflow": false,
-   "height": 9065
+   "height": 9121
   },
   "mobile": {
    "http": 200,
@@ -99,6 +100,7 @@
    "gsl_ref": true,
    "premium_markup": true,
    "premium_css_applied": "20px",
+   "premium_kicker_radius": "999px",
    "premium_css_in_dom": true,
    "offer_text": "⚡️ FUSIFORCE CREATINE GUMMIES Creatine Monohydrate in a Chewable Gummy 4.2 TrustScore · 1,144 reviews on Trustpilot $49.99 $69.99 SAVE $20 with Subscribe & Save, delivered every 4 weeks. Or $69.99 one-time. 5,000 mg crea",
    "old_v2_offer_copy": false,
@@ -106,11 +108,11 @@
    "imgs": 15,
    "broken": [],
    "overflow": false,
-   "height": 12394,
+   "height": 12260,
    "sticky_check": {
-    "top": "off(scrollY=0 vh=812 offerTop=9083 bridgeTop=7202 rows=8 cls=gslp-sticky)",
+    "top": "off(scrollY=0 vh=812 offerTop=8872 bridgeTop=6995 rows=8 cls=gslp-sticky)",
     "after_bridge": true,
-    "on_offer": "off(scrollY=9233 vh=812 offerTop=-150 bridgeTop=-2031 rows=8 cls=gslp-sticky)"
+    "on_offer": "off(scrollY=9022 vh=812 offerTop=-150 bridgeTop=-2027 rows=8 cls=gslp-sticky)"
    }
   }
  },

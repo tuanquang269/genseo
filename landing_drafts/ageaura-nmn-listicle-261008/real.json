@@ -1,0 +1,44 @@
+{
+ "url": "https://wellnessnest.co/pages/nmn-after-40-research?v=1791451881625",
+ "desktop": {
+  "http": 200,
+  "title": "7 Things Research Shows About NMN After 40 – Wellness Nest",
+  "status_text": "Skip to content\n\n↩️ 90-Day Refund Policy — Eligibility Applies\n\n🚚 Free Shipping",
+  "body_class": "gradient link-btns--glow action-btns--glow",
+  "gsl_ref": true,
+  "premium_markup": true,
+  "premium_css_applied": "24px",
+  "premium_kicker_radius": "999px",
+  "premium_css_in_dom": true,
+  "offer_text": "⚡️ AGEAURA NMN + TMG COMPLEX NMN + TMG in One Daily Serving 4.2 TrustScore · 1,144 reviews on Trustpilot $59.46 $69.95 SAVE 15% with Subscribe & Save, delivered every 4 weeks. Or $69.95 one-time. 500 mg NMN + 250 mg TMG ",
+  "old_v2_offer_copy": false,
+  "sticky": true,
+  "imgs": 15,
+  "broken": [],
+  "overflow": false,
+  "height": 9082
+ },
+ "mobile": {
+  "http": 200,
+  "title": "7 Things Research Shows About NMN After 40 – Wellness Nest",
+  "status_text": "Skip to content\n\n↩️ 90-Day Refund Policy — Eligibility Applies\n\n🚚 Free Shipping",
+  "body_class": "gradient link-btns--glow action-btns--glow",
+  "gsl_ref": true,
+  "premium_markup": true,
+  "premium_css_applied": "20px",
+  "premium_kicker_radius": "999px",
+  "premium_css_in_dom": true,
+  "offer_text": "⚡️ AGEAURA NMN + TMG COMPLEX NMN + TMG in One Daily Serving 4.2 TrustScore · 1,144 reviews on Trustpilot $59.46 $69.95 SAVE 15% with Subscribe & Save, delivered every 4 weeks. Or $69.95 one-time. 500 mg NMN + 250 mg TMG ",
+  "old_v2_offer_copy": false,
+  "sticky": true,
+  "imgs": 15,
+  "broken": [],
+  "overflow": false,
+  "height": 11791,
+  "sticky_check": {
+   "top": "off(scrollY=0 vh=812 offerTop=8535 bridgeTop=6673 rows=8 cls=gslp-sticky)",
+   "after_bridge": true,
+   "on_offer": "off(scrollY=8685 vh=812 offerTop=-150 bridgeTop=-2012 rows=8 cls=gslp-sticky)"
+  }
+ }
+}

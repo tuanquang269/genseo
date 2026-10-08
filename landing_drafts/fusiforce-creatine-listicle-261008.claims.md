@@ -19,10 +19,17 @@ All study facts read from Europe PMC abstracts (REST API, 2026-10-08). Numbers c
 | 90-day money-back guarantee (first order), free shipping $70+ | /policies/refund-policy, site ticker | fetched 2026-10-08 |
 | TrustScore 4.2 / 1,144 reviews; expert quote Sesseobe Nicaise Deeo 5★ (verified, 2025-11-07); cards Miloslav Kral, Mel Barrett, Lesley Pegrum (5★) | state/trustpilot/wellnessnest.json (fetched 2026-10-08T04:16Z), review ids in URLs | Verbatim text + name; store-level service/quality reviews |
 
+## Restored claims: Kevin-approved 2026-10-08, pending manual update
+Kevin approved (15:51 ICT) restoring the lab-tested claim, exact PDP wording, nothing new invented; Kevin will manually update the copy afterwards.
+| Copy (where) | Source (verbatim) | Status |
+|---|---|---|
+| Offer bullet "Lab-tested after cooking in ISO 17025-accredited facilities (product page)"; bridge "The product page says it is lab-tested after cooking in ISO 17025-accredited facilities."; trust tile "Lab-tested · after cooking, per product page" | PDP description (/products/fusiforce-creatine-gummies.js, re-read 2026-10-08): "The formula is lab‑tested after cooking in ISO 17025–accredited facilities" (only the en dash rendered as a hyphen) | Kevin-approved 2026-10-08, pending manual update |
+- "85+ minerals" / fulvic acid: not on the FusiForce pack or PDP, so not added.
+
 ## Deliberately NOT used
 - compare_at_price $114.73 (no strike-through against it; it is ~1.6x the one-time price and not a price the product sells at). The PDP buy box also shows "$114.73" struck next to the 12-week plan and "One-time purchase • $209.97" (3 units): confusing, flagged to Kevin, not mirrored.
 - Panax ginseng amount: the PDP supplement-facts images disagree (25 mg vs 50 mg; 3 vs 4 gummies per serving), so no ginseng mg is printed.
-- PDP marketing claims ("8 of 10 Amazon brands failed" etc.), pack claims (lean muscle growth, energy, cognitive function) — not independently verified.
+- PDP marketing claims ("8 of 10 Amazon brands failed", Eurofins / COA-per-batch lines etc.), pack claims (lean muscle growth, energy, cognitive function) — not independently verified.
 - Body copy carries no dosage-with-units (PATI #6); doses appear only in the offer card and chart source lines.
 - No AgeAura / Urolithin mention. No faces in any image.
 

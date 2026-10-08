@@ -34,12 +34,18 @@ SRC = {
 }
 TRUST_SRC = "TrustScore/count: state/trustpilot/wellnessnest.json (trustpilot.com/review/wellnessnest.co, read 2026-10-08). Guarantee + free-shipping threshold: /policies/refund-policy and the site ticker."
 def img(slug, n): return f"tmp_images/landing-{slug}/{n}.webp"
+LIVE = {"fusiforce-creatine-listicle-261008": "creatine-gummies-research",
+        "shilasource-resin-listicle-261008": "shilajit-resin-research",
+        "shilajit-gummies-listicle-261008": "shilajit-gummies-research"}
 def page(slug, product_handle, pname, d):
     s = copy.deepcopy(base)
     for k in ("live", "live_approved"): s.pop(k, None)
     pdp = f"https://wellnessnest.co/products/{product_handle}"
-    s.update({"store": "wellnessnest", "slug": slug, "handle": f"gsl-preview-{slug}", "created": "2026-10-08", "daily": False,
-              "title": d["title"], "meta_description": d["meta"], "style": "premium", "template_suffix": "gsl-ref-listicle-v2"})
+    live_handle = LIVE.get(slug)   # Kevin GO 2026-10-08 15:51 ICT: clean customer-facing handle (301 from the gsl-preview handle)
+    if live_handle:
+        s.update({"live": True, "live_approved": "Kevin 2026-10-08 15:51 ICT"})
+    s.update({"store": "wellnessnest", "slug": slug, "handle": live_handle or f"gsl-preview-{slug}", "created": "2026-10-08", "daily": False,
+              "title": d["title"], "meta_description": d["meta"], "style": "premium", "template_suffix": d.get("suffix", "gsl-ref-listicle-v4")})
     s["hero"] = {"accent": d["accent"], "title": d["htitle"], "summary_html": "<strong>Summary:</strong> " + d["summary"],
                  "kicker": f"Evidence review · {len(d['sources'])} studies cited", "image": img(slug, d.get("hero_img", "hero")), "alt": d["hero_alt"],
                  "chip": d["chip"], "cta": {"label": "SEE INGREDIENTS", "href": pdp},
@@ -101,18 +107,18 @@ page(FF, "fusiforce-creatine-gummies", "FusiForce Creatine Monohydrate Gummies",
   {"title": "Well tolerated in healthy adults", "body": f"<p>The {A(KREIDER, 'ISSN position stand')} concludes that creatine is safe and well tolerated in healthy people, in studies lasting up to five years.</p><p>Taking medication or managing a kidney condition? Ask your doctor first. Daily use is what the research tested.</p>",
    "evidence": "Position stand, J Int Soc Sports Nutr 2017", "source": KREIDER, "image": img(FF, "row7"), "alt": "A glass of water and a small dish of pale green gummies on a travertine counter", "evidence_label": "Position stand · Kreider et al., JISSN 2017"}],
  "bridge_title": "The best form is the one you take",
- "bridge": "<p>Creatine works through steady daily intake, so the format you will keep using matters most.</p><p>One option: FusiForce Creatine Monohydrate Gummies put creatine monohydrate in a chewable green apple or blueberry gummy, with Panax ginseng extract on the same label.</p><p>Taking medication or managing a health condition? Check with your doctor first.</p>",
+ "bridge": "<p>Creatine works through steady daily intake, so the format you will keep using matters most.</p><p>One option: FusiForce Creatine Monohydrate Gummies put creatine monohydrate in a chewable green apple or blueberry gummy, with Panax ginseng extract on the same label. The product page says it is lab-tested after cooking in ISO 17025-accredited facilities.</p><p>Taking medication or managing a health condition? Check with your doctor first.</p>",
  "ledge_alt": "The FusiForce creatine gummies pouch on an oak counter beside a glass of water",
  "expert_id": "690df5b7c3d5e30ef725b48d", "dark_alt": "The FusiForce creatine gummies pouch on a travertine podium against deep green",
  "review_ids": ["69281b1420fb2a718fed2339", "6a8df7438bab5ca2e585cf7f", "69341178ff47bac5ca887d02"],
  "offer": {"pill": "⚡️ FUSIFORCE CREATINE GUMMIES", "accent": "Creatine Monohydrate", "title": "in a Chewable Gummy", "sub": "Creatine monohydrate in a green apple or blueberry gummy. $69.99 on the product page.",
   "alt": "FusiForce Creatine Monohydrate Gummies pouch on stacked travertine discs", "now": "$49.99", "was": "$69.99", "tag": "Save $20",
   "note": "with Subscribe & Save, delivered every 4 weeks. Or $69.99 one-time.",
-  "bullets": ["<b>5,000 mg creatine monohydrate</b> per 3-gummy serving", "Plus Panax ginseng root extract (10% ginsenosides)", "Green Apple or Blueberry · 90 gummies per pouch", "90-day money-back guarantee on your first order"],
+  "bullets": ["<b>5,000 mg creatine monohydrate</b> per 3-gummy serving", "Lab-tested after cooking in ISO 17025-accredited facilities (product page)", "Plus Panax ginseng root extract (10% ginsenosides)", "Green Apple or Blueberry · 90 gummies per pouch", "90-day money-back guarantee on your first order"],
   "price_source": "PDP /products/fusiforce-creatine-gummies.js 2026-10-08: price 69.99 (both variants); selling plan 'Deliver every 4 weeks' 28.58% = $49.99 (plan 9850224955), shown in the PDP buy box as 'Billed every 4 weeks $49.99'. compare_at_price 114.73 deliberately NOT used (no strike-through against it). Bullets: PDP title/description '5,000 mg per 3-gummy serving', 'Panax ginseng (10% ginsenosides)', variants, pack '90 GUMMIES'."},
  "product_image": "https://wellnessnest.co/cdn/shop/files/" , "product_bullets": ["5,000 mg creatine monohydrate per serving (3 gummies)", "Panax ginseng root extract (10% ginsenosides)", "Green Apple and Blueberry flavors, 90 gummies per pouch"],
  "sources": [ANTONIO, HULTMAN, PEREIRA, CHILI, LIN, KREIDER],
- "trust4": "<b>Monohydrate</b> <small>in a chewable gummy</small>", "trust4_src": "Monohydrate: PDP title + pack label.", "sticky": "FusiForce Creatine Gummies"})
+ "trust4": "<b>Lab-tested</b> <small>after cooking, per product page</small>", "trust4_src": "Lab-tested: PDP description 'lab-tested after cooking in ISO 17025-accredited facilities' (Kevin-approved 2026-10-08, pending manual update).", "sticky": "FusiForce Creatine Gummies"})
 
 # ---------------------------------------------------------------- ShilaSource resin
 SR = "shilasource-resin-listicle-261008"
@@ -145,18 +151,18 @@ page(SR, "shilasource-himalayan-shilajit-resin", "ShilaSource Himalayan Shilajit
   {"title": "How resin is usually taken", "body": f"<p>Resin is usually dissolved: a {A(HOWTO, 'pea-size piece')} stirred into warm, not boiling, water or tea until no dark lumps remain.</p><p>The serving on your own jar's label is the one to use. Labels differ between brands.</p>",
    "evidence": "Wellness Nest usage guide (Oct 2026)", "source": HOWTO, "image": img(SR, "row7"), "alt": "A cup of warm tea with a piece of dark resin dissolving into amber swirls", "evidence_label": "Usage guide · Wellness Nest, Oct 2026"}],
  "bridge_title": "Pick the format you will keep",
- "bridge": "<p>Every trial here tested daily use over weeks or months. A routine you can keep matters more than any single serving.</p><p>One option: ShilaSource Himalayan Shilajit Resin, a resin you dissolve in a warm drink. Questions about batch testing? Wellness Nest support answers them.</p><p>Taking medication or managing a health condition? Check with your doctor first.</p>",
+ "bridge": "<p>Every trial here tested daily use over weeks or months. A routine you can keep matters more than any single serving.</p><p>One option: ShilaSource Himalayan Shilajit Resin, a resin you dissolve in a warm drink. Its pack states 70% Fulvic Acid* and Lab-Tested for Purity*.</p><p>Taking medication or managing a health condition? Check with your doctor first.</p>",
  "ledge_alt": "The ShilaSource shilajit resin tube and jar on a stone counter beside a cup of tea",
  "expert_id": "698a106be72503d576b56410", "dark_alt": "The ShilaSource shilajit resin tube and jar on a slate podium in warm light",
  "review_ids": ["69a7e1c6034b5ce74072c814", "69cfdb42313f8a8159e4feb4", "69281b1420fb2a718fed2339"],
  "offer": {"pill": "⚡️ SHILASOURCE SHILAJIT RESIN", "accent": "Himalayan Resin", "title": "for a Warm Daily Drink", "sub": "Himalayan shilajit resin you dissolve in water or tea. $59.99 on the product page.",
   "alt": "ShilaSource Himalayan Shilajit Resin tube and jar on stacked travertine discs", "now": "$39.99", "was": "$59.99", "tag": "Save $20",
   "note": "with Subscribe & Save, delivered every 4 weeks. Or $59.99 one-time.",
-  "bullets": ["<b>1.06 oz (30 g) jar</b> of Himalayan shilajit resin", "The package states 75 servings per jar", "Dissolve in warm water or tea, as the label directs", "90-day money-back guarantee on your first order"],
+  "bullets": ["<b>1.06 oz (30 g) jar</b> of Himalayan shilajit resin, 75 servings as labeled", "70% Fulvic Acid* · Lab-Tested for Purity* (as printed on the pack)", "Dissolve in warm water or tea, as the label directs", "90-day money-back guarantee on your first order"],
   "price_source": "PDP text 2026-10-08: 'Subscription: $39.99 charged every 4 weeks for one jar; $116.97 every 12 weeks for three jars', one-time $59.99; /products/shilasource-himalayan-shilajit-resin.js plan 9850323259 = 3999. compare_at 99.98 NOT used. Bullets: pack label 1.06oz (30g), 75 SERVINGS; PDP 'featured package states 75 servings'."},
  "product_image": "", "product_bullets": ["1.06 oz (30 g) jar; the package states 75 servings", "Taken dissolved in warm (not boiling) water or tea, following the label"],
  "sources": [STOHS, PANDIT, KELLER, PINGALI, SAPER, YADAV],
- "trust4": "<b>75 servings</b> <small>per jar, as labeled</small>", "trust4_src": "75 servings: pack label + PDP text.", "sticky": "ShilaSource Shilajit Resin"})
+ "trust4": "<b>70% Fulvic Acid*</b> <small>Lab-Tested for Purity*, per pack</small>", "trust4_src": "Pack label text '70% Fulvic Acid*', 'Lab-Tested for Purity*' (Kevin-approved 2026-10-08, pending manual update).", "sticky": "ShilaSource Shilajit Resin"})
 
 # ---------------------------------------------------------------- Shilajit gummies
 SG = "shilajit-gummies-listicle-261008"
@@ -189,15 +195,15 @@ page(SG, "premium-himalayan-shilajit-gummies", "Premium Himalayan Shilajit Gummi
   {"title": "Ask about batch lab testing", "body": f"<p>Ayurvedic products can carry heavy metals. A {A(SAPER, 'JAMA study')} found lead, mercury or arsenic in 20.7% of Ayurvedic products bought online.</p><p>Before buying any shilajit product, ask the seller whether a lab report exists for your batch.</p>",
    "evidence": "Product testing study, JAMA 2008", "source": SAPER, "image": img(SG, "row7"), "alt": "Laboratory glassware and a blank clipboard on a travertine bench", "evidence_label": "Product testing · Saper et al., JAMA 2008"}],
  "bridge_title": "If a gummy fits your routine",
- "bridge": "<p>The trials tested daily use for weeks or months. A pre-measured gummy takes the guesswork out of each serving.</p><p>One option: Premium Himalayan Shilajit Gummies pair shilajit extract with ashwagandha, gokshura, black musli and four more botanicals. Its extract per serving is lower than in the trials above.</p><p>Taking medication? Check with your doctor first.</p>",
+ "bridge": "<p>The trials tested daily use for weeks or months. A pre-measured gummy takes the guesswork out of each serving.</p><p>One option: Premium Himalayan Shilajit Gummies pair shilajit extract with ashwagandha, gokshura, black musli and four more botanicals. Its pack lists 75% Fulvic Acid and 85+ Trace Minerals; its extract per serving is lower than in the trials above.</p><p>Taking medication? Check with your doctor first.</p>",
  "ledge_alt": "The shilajit gummies pouch on a travertine shelf beside a glass of water",
  "expert_id": "691f0f09c54c63dff6a97114", "dark_alt": "The shilajit gummies pouch on a travertine podium against deep green",
  "review_ids": ["698ae799ef38ae92b56412c4", "695555ad937e0e68e1689468", "699e2077993dde2ca3ba9ebb"],
  "offer": {"pill": "⚡️ HIMALAYAN SHILAJIT GUMMIES", "accent": "Shilajit + 7 Botanicals", "title": "in Two Gummies a Day", "sub": "A chewable shilajit and botanical blend. $59.99 on the product page.",
   "alt": "Premium Himalayan Shilajit Gummies pouch on stacked travertine discs", "now": "$39.99", "was": "$59.99", "tag": "Save $20",
   "note": "with Subscribe & Save, delivered every 4 weeks. Or $59.99 one-time.",
-  "bullets": ["<b>150 mg shilajit extract (10:1)</b> per 2-gummy serving", "With ashwagandha, ginger, black musli, gokshura, kaunch, ginseng and akarkara", "60 gummies · 30 servings per pouch", "90-day money-back guarantee on your first order"],
+  "bullets": ["<b>150 mg shilajit extract (10:1)</b> per 2-gummy serving", "75% Fulvic Acid · 85+ Trace Minerals (as printed on the pack)", "With ashwagandha, ginger, black musli, gokshura, kaunch, ginseng and akarkara", "60 gummies · 30 servings per pouch", "90-day money-back guarantee on your first order"],
   "price_source": "PDP text 2026-10-08: 'One-time purchase is $59.99. Current recurring options are $39.99 every 4 weeks for 1 pouch, or $116.97 every 12 weeks for 3 pouches'; .js plan 9850290491 = 3999. compare_at 99.98 NOT used. Bullets: PDP supplement facts (2 gummies, 30 servings; shilajit resin from 150 mg of 10:1 extract; ashwagandha, ginger, black musli, gokshura, kaunch, ginseng, akarkara) + pack '60 GUMMIES'."},
  "product_image": "", "product_bullets": ["Shilajit resin from 150 mg of 10:1 extract (1,500 mg equivalent) per 2-gummy serving", "Ashwagandha, ginger, black musli, gokshura, kaunch, ginseng and akarkara on the same label", "60 gummies, 30 servings per pouch"],
  "sources": [PANDIT, KELLER, PINGALI, CHANDRA, SAPER],
- "trust4": "<b>60 gummies</b> <small>30 servings per pouch</small>", "trust4_src": "Pack label + PDP supplement facts.", "sticky": "Shilajit Gummies"})
+ "trust4": "<b>85+ Trace Minerals</b> <small>75% Fulvic Acid, per pack</small>", "trust4_src": "Pack label text '85+ Trace Minerals', '75% Fulvic Acid' (Kevin-approved 2026-10-08, pending manual update).", "sticky": "Shilajit Gummies"})

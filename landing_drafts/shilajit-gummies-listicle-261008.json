@@ -4,8 +4,8 @@
  "posture": "hybrid",
  "store": "wellnessnest",
  "slug": "shilajit-gummies-listicle-261008",
- "handle": "gsl-preview-shilajit-gummies-listicle-261008",
- "template_suffix": "gsl-ref-listicle-v2",
+ "handle": "shilajit-gummies-research",
+ "template_suffix": "gsl-ref-listicle-v4",
  "takeover": false,
  "created": "2026-10-08",
  "daily": false,
@@ -157,7 +157,7 @@
  ],
  "bridge": {
   "title": "If a gummy fits your routine",
-  "body": "<p>The trials tested daily use for weeks or months. A pre-measured gummy takes the guesswork out of each serving.</p><p>One option: Premium Himalayan Shilajit Gummies pair shilajit extract with ashwagandha, gokshura, black musli and four more botanicals. Its extract per serving is lower than in the trials above.</p><p>Taking medication? Check with your doctor first.</p>",
+  "body": "<p>The trials tested daily use for weeks or months. A pre-measured gummy takes the guesswork out of each serving.</p><p>One option: Premium Himalayan Shilajit Gummies pair shilajit extract with ashwagandha, gokshura, black musli and four more botanicals. Its pack lists 75% Fulvic Acid and 85+ Trace Minerals; its extract per serving is lower than in the trials above.</p><p>Taking medication? Check with your doctor first.</p>",
   "image": "tmp_images/landing-shilajit-gummies-listicle-261008/ledge.webp",
   "alt": "The shilajit gummies pouch on a travertine shelf beside a glass of water"
  },
@@ -218,6 +218,7 @@
   },
   "bullets": [
    "<b>150 mg shilajit extract (10:1)</b> per 2-gummy serving",
+   "75% Fulvic Acid · 85+ Trace Minerals (as printed on the pack)",
    "With ashwagandha, ginger, black musli, gokshura, kaunch, ginseng and akarkara",
    "60 gummies · 30 servings per pouch",
    "90-day money-back guarantee on your first order"
@@ -276,10 +277,10 @@
   },
   {
    "icon": "leaf",
-   "html": "<b>60 gummies</b> <small>30 servings per pouch</small>"
+   "html": "<b>85+ Trace Minerals</b> <small>75% Fulvic Acid, per pack</small>"
   }
  ],
- "trust_source": "TrustScore/count: state/trustpilot/wellnessnest.json (trustpilot.com/review/wellnessnest.co, read 2026-10-08). Guarantee + free-shipping threshold: /policies/refund-policy and the site ticker. Pack label + PDP supplement facts.",
+ "trust_source": "TrustScore/count: state/trustpilot/wellnessnest.json (trustpilot.com/review/wellnessnest.co, read 2026-10-08). Guarantee + free-shipping threshold: /policies/refund-policy and the site ticker. Pack label text '85+ Trace Minerals', '75% Fulvic Acid' (Kevin-approved 2026-10-08, pending manual update).",
  "sticky_cta": {
   "name": "Shilajit Gummies",
   "note": "From $39.99",
@@ -291,5 +292,8 @@
   "tmp_images/landing-shilajit-gummies-listicle-261008/offer.webp",
   "tmp_images/landing-shilajit-gummies-listicle-261008/dark.webp",
   "tmp_images/landing-shilajit-gummies-listicle-261008/ledge.webp"
- ]
+ ],
+ "mobile_layer_approved": "Kevin 2026-10-08 15:51 ICT (v4 = v2 + mobile-only layer)",
+ "live": true,
+ "live_approved": "Kevin 2026-10-08 15:51 ICT"
 }
