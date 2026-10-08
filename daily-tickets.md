@@ -531,7 +531,7 @@ blog 104008483131, publish `--live`, claims log), PLUS the 2026-10-08 guideline 
   - **Angle:** no human study tests turkesterone + alcohol (say so); what alcohol itself does to muscle protein synthesis and recovery (fetched sources only, e.g. Parr 2014 PLoS One if confirmed); practical spacing; label caution. LINK turkesterone-side-effects, turkesterone-timing — don't restate.
   - **Fan-out answers to cover:** can I take it the morning after drinking; does alcohol cancel results; liver concerns.
 
-- [ ] **#MB1008-4 — creatine gummies expire / storage** — `Do Creatine Gummies Expire? Heat, Storage and Shelf Life (US 2026)`
+- [DONE 2026-10-08 https://wellnessnest.co/blogs/news/do-creatine-gummies-expire-6-storage-facts-us-2026] **#MB1008-4 — creatine gummies expire / storage** — `Do Creatine Gummies Expire? Heat, Storage and Shelf Life (US 2026)`
   - **Primary keyword:** `do creatine gummies expire` · **Secondary:** creatine gummies melted, creatine gummies storage, creatine gummies in a hot car, creatine gummies shelf life
   - **Template:** LISTICLE · **Gate:** topic_fitness PASS [brand] · dedupe: no storage/expiry title live
   - **Products:** `/products/fusiforce-creatine-gummies` ($69.99). Collections: `/collections/mens-essential-collection`, `/collections/best-seller`.
