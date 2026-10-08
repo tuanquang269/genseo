@@ -510,7 +510,7 @@ blog 104008483131, publish `--live`, claims log), PLUS the 2026-10-08 guideline 
   - **Angle:** the 1996 Vandenberghe interference finding vs later studies — only cite if fetched & confirmed; practical spacing; LINK best-time-to-take-creatine, creatine-gummies-dosage.
   - **Fan-out answers to cover:** does caffeine cancel creatine; can I take creatine gummies with coffee; spacing; who should limit caffeine.
 
-- [ ] **#MB1008-1 — ageaura nmn tmg ingredients** — `AgeAura NMN + TMG Ingredients: What Each One Does (US 2026)`
+- [DONE 2026-10-08 https://wellnessnest.co/blogs/news/ageaura-nmn-tmg-ingredients-what-each-one-does-us] **#MB1008-1 — ageaura nmn tmg ingredients** — `AgeAura NMN + TMG Ingredients: What Each One Does (US 2026)`
   - **Primary keyword:** `ageaura nmn tmg ingredients` · **Secondary:** ageaura nmn tmg review, is ageaura legit, what is in ageaura nmn, nmn tmg complex ingredients
   - **Template:** EDITORIAL (brand-validation page, SEO_EEAT §4) · **Gate:** topic_fitness PASS [brand] · dedupe: no ingredients/legit page live
   - **Products:** `/products/ageaura-pure-nmn-tmg-nad-complex` ($69.95) ONLY. Collections: `/collections/best-seller` (twice). No other AgeAura product or AgeAura collection link (brand_rules.py gate).
