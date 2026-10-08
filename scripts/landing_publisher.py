@@ -40,6 +40,11 @@ def main():
         sys.exit(__doc__)
     spec_path = os.path.abspath(args[0])
     spec = json.load(open(spec_path))
+    daily = os.environ.get("GENSEO_LANDING_DAILY") == "1"
+    if daily and mode == "live":
+        sys.exit("✗ --live refused in the daily landing lane: daily pages are drafts for Kevin to approve.")
+    if daily and not spec.get("handle", "").startswith("gsl-preview-"):
+        sys.exit("✗ daily landing lane: spec handle must start with gsl-preview- (guard + preview toggle key on it)")
     if mode == "live" and os.environ.get("GENSEO_LANDING_LIVE_OK") != "1":
         sys.exit("✗ --live refused: landing pages go live only on Kevin's explicit GO (set GENSEO_LANDING_LIVE_OK=1 for that run).")
     vargs = ["scripts/validate_landing.py", spec_path] + (["--strict"] if mode == "live" else [])
@@ -127,6 +132,11 @@ def main():
         req = urllib.request.Request(f"https://{shop}/admin/api/{api}/pages/{rec['page_id']}.json",
                                      data=json.dumps({"page": page}).encode(), headers=hdr, method="PUT")
     else:
+        if daily:  # NEW page in the daily lane: re-check today's quota on Shopify right before creating it
+            g = subprocess.run([PY, os.path.join(ROOT, "scripts", "landing_guard.py")], cwd=ROOT, capture_output=True, text=True)
+            print(g.stdout.strip())
+            if g.returncode != 0:
+                sys.exit(f"✗ landing_guard exit {g.returncode}: today's gsl- landing draft already exists (or Shopify unreadable) — not creating another page")
         req = urllib.request.Request(f"https://{shop}/admin/api/{api}/pages.json",
                                      data=json.dumps({"page": page}).encode(), headers=hdr, method="POST")
     res = json.load(urllib.request.urlopen(req, timeout=60))["page"]

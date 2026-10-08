@@ -8,7 +8,7 @@ description: Build an on-brand GenSeo landing page (template "listicle" or "adve
 These are Shopify **pages** (`/pages/<handle>`), not blog articles. They live outside the daily
 5/day article flow: no ticket in `daily-tickets.md`, no `genseo_published_today.py` guard, no tracker CSV row,
 and they can never show up in `/blogs/news.atom`, so they never count toward (or block) the 5/day target.
-Queue: `landing-tickets.md`. Runner: `scripts/run_landing_headless.sh`. Section map + schema: `templates/landing/README.md`.
+Queue: `landing-tickets.md` (manual) / `daily-landing-tickets.md` (daily lane, own 1/day guard — see the end of this file). Runner: `scripts/run_landing_headless.sh`. Section map + schema: `templates/landing/README.md`.
 
 ## Templates = EXACT replicas of the reference pages (Kevin 2026-10-06, priority)
 `"engine": "ref"` specs render with `scripts/landing_clone.py` (landing_render.py / landing_publisher.py dispatch to it):
@@ -112,3 +112,24 @@ testimonials, no sticky). Surface the choice to Kevin; never silently downgrade 
    the live theme, and `--install-template` uploads it from `templates/landing/` (needs write_themes). Bump the
    suffix on any template change. Iterate on a throwaway handle first (GemPages caches per URL).
 10. Commit `landing_drafts/<slug>.json`, `.claims.md`, `<slug>/body.html`, screenshots. `tmp_images/` is not versioned.
+
+## Daily listicle lane (Kevin 2026-10-08) — 1 UNPUBLISHED draft per day, Kevin approves
+- launchd `com.pati.genseo-landing` 08:15 + 16:15 catch-up → `scripts/run_landing_daily.sh` (MacBook = standby,
+  waits 75 min; Mini = primary; plists in `deploy/com.pati.genseo-landing.{macbook,mini}.plist`). Kill switch:
+  `touch state/landing-daily.disabled`.
+- Guard: `scripts/landing_guard.py` counts Shopify pages with a `gsl-` handle CREATED today (ICT). ≥1 → stand down;
+  Shopify unreadable → fail closed. `landing_publisher.py` (env `GENSEO_LANDING_DAILY=1`) re-checks it right before
+  POSTing a new page, refuses `--live`, and requires a `gsl-preview-` handle.
+- Queue `daily-landing-tickets.md` ← `scripts/build_landing_tickets.py` (live products.json → real single SKUs that pass
+  `brand_rules` + have `product_refs/<handle>.png` + an entry in `templates/landing/listicle-angles.json`; LRU product
+  rotation, no repeat inside 6 days; least-used angle) → `lint_tickets.py`.
+- Reviews: `scripts/trustpilot_reviews.mjs` → `state/trustpilot/wellnessnest.json` (4–5★ only, verbatim, TrustScore +
+  count as displayed). The agent quotes only from that file; missing → placeholder, never invented.
+- Agent: `run_landing_headless.sh --queue daily-landing-tickets.md --next` with the DAILY rules (ref listicle,
+  `gsl-ref-listicle-v1`, slug `<short>-listicle-<yymmdd>`, handle `gsl-preview-<slug>`, Dr. Marcus Hale, fresh
+  no-face `--square --qc` images uploaded by the publisher with the CLI app token).
+- Wrapper post-checks on its own: validate_landing.py, landing_qa.mjs (desktop.png 1440 + mobile.png 375, overflow),
+  page must be unpublished (force-hidden + logged if not), ticket re-tagged `[DRAFT <day> page <id>]` /
+  `[DRAFT-QA-FAIL …]` / `[FAILED …]`, outputs committed. Logs: `logs/landing-daily/<day>.log`.
+- Review a draft: unpublished pages 404 on the storefront. Short look on the live theme:
+  `landing_preview_toggle.py on <page_id>` (gsl-preview- handles only) → check → `landing_preview_toggle.py off <page_id>`.

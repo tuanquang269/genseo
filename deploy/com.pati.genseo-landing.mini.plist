@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- GenSeo daily listicle landing DRAFT (1/day, never published). mini = primary.
+     install: cp deploy/com.pati.genseo-landing.mini.plist ~/Library/LaunchAgents/com.pati.genseo-landing.plist
+              launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.pati.genseo-landing.plist -->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.pati.genseo-landing</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>/Users/kevinkreative/genseo/scripts/run_landing_daily.sh</string>
+    </array>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>GENSEO_HOST_ROLE</key><string>primary</string>
+        <key>GENSEO_LANDING_STANDBY_DELAY_MIN</key><string>75</string>
+        <key>GENSEO_LANDING_WAIT_ARTICLES_MIN</key><string>180</string>
+        <key>GENSEO_NO_FACE</key><string>1</string>
+    </dict>
+    <key>StartCalendarInterval</key>
+    <array>
+        <dict><key>Hour</key><integer>8</integer><key>Minute</key><integer>15</integer></dict>
+        <dict><key>Hour</key><integer>16</integer><key>Minute</key><integer>15</integer></dict>
+    </array>
+    <key>RunAtLoad</key>
+    <false/>
+    <key>StandardOutPath</key>
+    <string>/Users/kevinkreative/genseo/logs/launchd-landing.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/kevinkreative/genseo/logs/launchd-landing.err.log</string>
+</dict>
+</plist>

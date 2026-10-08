@@ -1,0 +1,62 @@
+{
+ "_note": "Listicle angles per Wellness Nest product for the daily landing builder (scripts/build_landing_tickets.py). An angle is a BRIEF, not copy: the agent must source every claim it writes (PubMed/Europe PMC/DOI, live PDP) or cut it. AgeAura = NMN + TMG Complex only (no Urolithin, no p2/duo). Add/edit angles freely; the builder rotates products (LRU, no repeat inside the window) and angles per product.",
+ "fusiforce-creatine-gummies": {
+  "store": "wellnessnest", "short": "fusiforce", "audience": "adults who lift or want to stay strong",
+  "angles": [
+   "N reasons creatine is worth a look after 40 (research on lean mass + strength with training; daily consistency)",
+   "N things to check before you buy creatine gummies (form = monohydrate, amount per serving on the label, daily habit)",
+   "N research-backed reasons women are trying creatine (what trials in women measured, and what they did not)",
+   "Creatine without the scoop: N things to know if powder never stuck for you"
+  ]
+ },
+ "ageaura-pure-nmn-tmg-nad-complex": {
+  "store": "ageaura", "short": "ageaura-nmn", "audience": "adults 40+ curious about NAD+",
+  "angles": [
+   "N things the research says (and does not say yet) about NMN and NAD+ after 40",
+   "Why NMN is often paired with TMG: N things to know before you try an NAD+ supplement",
+   "N questions to ask before you buy an NMN supplement (form, what is on the panel, what human trials tested)"
+  ]
+ },
+ "florafresh-vaginal-probiotics-gummies": {
+  "store": "wellnessnest", "short": "florafresh", "audience": "women looking into vaginal probiotics",
+  "angles": [
+   "N things to know about vaginal probiotics before you try one (which strains were studied, what was measured)",
+   "N reasons a daily probiotic gummy is easier to stick with (consistency, format, what the label should show)"
+  ]
+ },
+ "shilasource-himalayan-shilajit-resin": {
+  "store": "wellnessnest", "short": "shilasource", "audience": "adults new to shilajit",
+  "angles": [
+   "N things to know before you try shilajit resin (how it is taken, what the few human studies tested, what they did not)",
+   "Shilajit resin, honestly: N questions first-time buyers ask"
+  ]
+ },
+ "pure-shilajit-gold-resin": {
+  "store": "wellnessnest", "short": "shilajit-gold", "audience": "adults comparing shilajit formats",
+  "angles": [
+   "Resin vs capsules vs gummies: N things to compare before you pick a shilajit format",
+   "N things to know about taking shilajit resin daily (pea-size serving, dissolving it, consistency)"
+  ]
+ },
+ "premium-himalayan-shilajit-gummies": {
+  "store": "wellnessnest", "short": "shilajit-gummies", "audience": "adults who want shilajit without the resin",
+  "angles": [
+   "N reasons people choose shilajit gummies over resin (taste, dosing, routine) and what to check on the label",
+   "N things to know about shilajit before you buy gummies (what research used, what it did not test)"
+  ]
+ },
+ "turkesterone-advanced-formula": {
+  "store": "wellnessnest", "short": "turkesterone", "audience": "lifters researching turkesterone",
+  "angles": [
+   "N honest facts about turkesterone (what has been studied in humans, what is still animal or lab data)",
+   "N things to check before you buy a turkesterone supplement (extract, label amounts, realistic expectations)"
+  ]
+ },
+ "shilajit-shockwave": {
+  "store": "wellnessnest", "short": "shockwave", "audience": "adults who want an easy daily shilajit routine",
+  "angles": [
+   "N things to know about shilajit drops before you try them (format, how to take, what research tested)",
+   "Shilajit as drops: N reasons the format can make a daily routine easier"
+  ]
+ }
+}
