@@ -131,6 +131,8 @@ def main():
         page["metafields"] = [{"namespace": "global", "key": "description_tag",
                                "value": spec["meta_description"], "type": "single_line_text_field"}]
     hdr = {"X-Shopify-Access-Token": token, "Content-Type": "application/json"}
+    if rec.get("mode") == "live" and mode != "live":   # Kevin-approved live page: a --draft re-push would set published:false
+        sys.exit(f"✗ page {rec.get('page_id')} is LIVE (Kevin GO): refusing a {mode} push that would hide it. Use --live with GENSEO_LANDING_LIVE_OK=1.")
     if rec.get("page_id"):
         page["id"] = rec["page_id"]
         req = urllib.request.Request(f"https://{shop}/admin/api/{api}/pages/{rec['page_id']}.json",

@@ -64,8 +64,8 @@ def main():
     check("images_on_cdn", srcs and all(s.startswith("https://cdn.shopify.com/") for s in srcs), f"{len(srcs)} srcs")
     res["was_hidden"] = not page.get("published_at")
     if window:
-        if not page["handle"].startswith("gsl-preview-"):
-            check("window_allowed", False, f"handle {page['handle']} is not gsl-preview-: no live window")
+        if res["was_hidden"] and not page["handle"].startswith("gsl-preview-"):
+            check("window_allowed", False, f"hidden page {page['handle']} is not gsl-preview-: no live window")
         else:
             url = f"{STORE_URL}/pages/{page['handle']}"
             tog = lambda s: subprocess.run([sys.executable, os.path.join(ROOT, "scripts", "landing_preview_toggle.py"), s, str(pid)],

@@ -23,7 +23,7 @@
   },
   "hidden_again": {
    "ok": true,
-   "info": "published_at=None"
+   "info": "published_at=2026-10-08T00:29:41-07:00"
   },
   "desktop_http": {
    "ok": true,
@@ -71,9 +71,9 @@
   }
  },
  "fails": [],
- "was_hidden": true,
+ "was_hidden": false,
  "storefront": {
-  "url": "https://wellnessnest.co/pages/gsl-preview-ageaura-nmn-listicle-261008?v=1791442797706",
+  "url": "https://wellnessnest.co/pages/nmn-after-40-research?v=1791444598764",
   "desktop": {
    "http": 200,
    "title": "7 Things Research Shows About NMN After 40 – Wellness Nest",

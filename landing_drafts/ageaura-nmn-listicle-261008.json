@@ -4,7 +4,7 @@
  "posture": "hybrid",
  "store": "ageaura",
  "slug": "ageaura-nmn-listicle-261008",
- "handle": "gsl-preview-ageaura-nmn-listicle-261008",
+ "handle": "nmn-after-40-research",
  "template_suffix": "gsl-ref-listicle-v2",
  "takeover": false,
  "created": "2026-10-08",
@@ -292,5 +292,7 @@
   "tmp_images/landing-ageaura-nmn-listicle-261008/v3-gen-offer.webp",
   "tmp_images/landing-ageaura-nmn-listicle-261008/v3-gen-dark.webp",
   "tmp_images/landing-ageaura-nmn-listicle-261008/v3-gen-ledge.webp"
- ]
+ ],
+ "live": true,
+ "live_approved": "Kevin 2026-10-08 14:27 ICT"
 }
