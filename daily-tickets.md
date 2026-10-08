@@ -503,7 +503,7 @@ blog 104008483131, publish `--live`, claims log), PLUS the 2026-10-08 guideline 
 - **Brand gate:** AgeAura = `/products/ageaura-pure-nmn-tmg-nad-complex` ONLY — never p2, the Essential Longevity
   Duo or `/collections/ageaura`; never mention Urolithin. `validate_article.py` hard-fails these (brand_rules.py).
 
-- [ ] **#MB1007-4 — creatine gummies and caffeine** — `Creatine Gummies and Caffeine: Can You Take Both? (US 2026)`
+- [DONE 2026-10-08 https://wellnessnest.co/blogs/news/creatine-and-caffeine-can-you-take-both-us-2026] **#MB1007-4 — creatine gummies and caffeine** — `Creatine Gummies and Caffeine: Can You Take Both? (US 2026)`
   - **Primary keyword:** `creatine and caffeine` · **Secondary:** creatine gummies with coffee, does caffeine cancel creatine, creatine pre workout caffeine
   - **Template:** COMPARISON · **Gate:** topic_fitness PASS [brand] · dedupe: no caffeine title live
   - **Products:** `/products/fusiforce-creatine-gummies` only. Collections: `/collections/mens-essential-collection`, `/collections/best-seller`.
