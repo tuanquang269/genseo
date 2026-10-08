@@ -524,7 +524,7 @@ blog 104008483131, publish `--live`, claims log), PLUS the 2026-10-08 guideline 
   - **Angle:** what is known about probiotics and hormonal contraception (fetched sources only; say plainly where there is no evidence of interaction), why antibiotics — not probiotics — are the classic contraception question, hormonal shifts and vaginal pH. No medical claims; tell readers to ask their prescriber. LINK probiotics-after-antibiotics-for-women, vaginal-probiotics-side-effects — don't restate.
   - **Fan-out answers to cover:** do probiotics make the pill less effective; IUD users; when to take them; signs to see a clinician.
 
-- [ ] **#MB1008-3 — turkesterone and alcohol** — `Turkesterone and Alcohol: What to Know Before You Drink (US 2026)`
+- [DONE 2026-10-08 https://wellnessnest.co/blogs/news/turkesterone-and-alcohol-6-things-to-know-us-2026] **#MB1008-3 — turkesterone and alcohol** — `Turkesterone and Alcohol: What to Know Before You Drink (US 2026)`
   - **Primary keyword:** `turkesterone and alcohol` · **Secondary:** can you drink on turkesterone, turkesterone alcohol liver, alcohol and muscle protein synthesis
   - **Template:** LISTICLE · **Gate:** topic_fitness PASS [brand] · dedupe: no alcohol title live
   - **Products:** `/products/turkesterone-advanced-formula` ($75). Collections: `/collections/mens-essential-collection`, `/collections/best-seller`.
