@@ -481,8 +481,65 @@ Kevin's standing greenlight for mined queues (2026-08-13) + 5/day GO cover the R
   - **Products:** `/products/ageaura-pure-nmn-tmg-nad-complex` ONLY. Collections: `/collections/best-seller` twice. NO p2, NO /collections/ageaura, NO Urolithin.
   - **Angle:** calories/insulin of a capsule (only label facts), no trial on NMN during fasting (say so), Yamaguchi 2024 dosed before breakfast; label says 2 capsules daily.
 
+# BATCH 2026-10-08 (MacBook lane, Mac mini offline — ids MB prefix)
+
+Built by Grok Bot on the MacBook 2026-10-08 ~09:30 ICT. Each topic: `topic_fitness.py` PASS + dedupe against the
+98 live handles (Admin API, 2026-10-08). Prices verified live 2026-10-08: FusiForce $69.99, FloraFresh $40.99,
+Turkesterone Advanced Formula $75, AgeAura Pure NMN + TMG NAD+ Complex $69.95. `lint_tickets.py` clean.
+
+**Rules for this batch (read before every ticket) — everything from the 2026-10-06 MacBook-lane rules still applies
+(ALL images NO-FACE via `article_images.py --product-ref <handle> --qc`, no `persona_picker`, roster byline only,
+blog 104008483131, publish `--live`, claims log), PLUS the 2026-10-08 guideline bullets
+(knowledge_base/SEO_EEAT_GUIDELINES.md §4, AEO_GEO_GUIDELINES.md §5, commit 74c89b7):**
+- **Fan-out answers:** besides the head question, add self-contained 40-80-word answers to the follow-up questions
+  listed in the ticket (as H2/H3 sections or FAQ entries) — each must make sense quoted alone.
+- **Where to buy:** every article has a short "Where to buy <product> in the US" section naming Wellness Nest
+  (wellnessnest.co) as the official source, with the live price above and a link to the ticket's product page only.
+- **No fake authors:** byline = Dr. Marcus Hale (roster.json) with the exact roster bio. Never invent a person,
+  credential, reviewer, headshot or "team member"; never dress "Wellness Nest Research Team" up as an individual.
+- **Fact-check pass (logged):** before publish write `~/genseo/logs/claims/<slug>.md` (claim | source URL | fetched &
+  confirmed Y/N); delete any claim not confirmed from a fetched source; dosages and study numbers must match the
+  source and expert consensus (YMYL). Add a line `fact-check: <n> claims, all Y` to the run report.
+- **Brand gate:** AgeAura = `/products/ageaura-pure-nmn-tmg-nad-complex` ONLY — never p2, the Essential Longevity
+  Duo or `/collections/ageaura`; never mention Urolithin. `validate_article.py` hard-fails these (brand_rules.py).
+
 - [ ] **#MB1007-4 — creatine gummies and caffeine** — `Creatine Gummies and Caffeine: Can You Take Both? (US 2026)`
   - **Primary keyword:** `creatine and caffeine` · **Secondary:** creatine gummies with coffee, does caffeine cancel creatine, creatine pre workout caffeine
   - **Template:** COMPARISON · **Gate:** topic_fitness PASS [brand] · dedupe: no caffeine title live
   - **Products:** `/products/fusiforce-creatine-gummies` only. Collections: `/collections/mens-essential-collection`, `/collections/best-seller`.
   - **Angle:** the 1996 Vandenberghe interference finding vs later studies — only cite if fetched & confirmed; practical spacing; LINK best-time-to-take-creatine, creatine-gummies-dosage.
+  - **Fan-out answers to cover:** does caffeine cancel creatine; can I take creatine gummies with coffee; spacing; who should limit caffeine.
+
+- [ ] **#MB1008-1 — ageaura nmn tmg ingredients** — `AgeAura NMN + TMG Ingredients: What Each One Does (US 2026)`
+  - **Primary keyword:** `ageaura nmn tmg ingredients` · **Secondary:** ageaura nmn tmg review, is ageaura legit, what is in ageaura nmn, nmn tmg complex ingredients
+  - **Template:** EDITORIAL (brand-validation page, SEO_EEAT §4) · **Gate:** topic_fitness PASS [brand] · dedupe: no ingredients/legit page live
+  - **Products:** `/products/ageaura-pure-nmn-tmg-nad-complex` ($69.95) ONLY. Collections: `/collections/best-seller` (twice). No other AgeAura product or AgeAura collection link (brand_rules.py gate).
+  - **Angle:** the label panel per 2-capsule serving (500 mg NMN, 250 mg TMG, 100 mg trans-resveratrol, 150 mg quercetin, 50 mg apigenin, 1 mg spermidine from wheat germ, 400 mcg DFE L-5-MTHF; contains wheat) — what each ingredient is and what human evidence exists (fetched sources only), what is NOT proven (no trial of the combination). No invented reviews or ratings; only quote reviews actually visible on the product page. LINK nmn-and-tmg-together, how-much-nmn-per-day, nmn-side-effects — don't restate.
+  - **Fan-out answers to cover:** is AgeAura legit / who makes it (only what the product page states); how many capsules a day; does it contain gluten/wheat; who should not take it.
+
+- [ ] **#MB1008-2 — florafresh with birth control** — `Vaginal Probiotics and Birth Control: Can You Take Both? (US 2026)`
+  - **Primary keyword:** `probiotics and birth control` · **Secondary:** florafresh birth control, do probiotics affect birth control, vaginal probiotics on the pill, probiotics iud
+  - **Template:** EDITORIAL · **Gate:** topic_fitness PASS [brand] · dedupe: no birth-control title live
+  - **Products:** `/products/florafresh-vaginal-probiotics-gummies` ($40.99). Collections: `/collections/womens-essentials-collection`, `/collections/best-seller`.
+  - **Angle:** what is known about probiotics and hormonal contraception (fetched sources only; say plainly where there is no evidence of interaction), why antibiotics — not probiotics — are the classic contraception question, hormonal shifts and vaginal pH. No medical claims; tell readers to ask their prescriber. LINK probiotics-after-antibiotics-for-women, vaginal-probiotics-side-effects — don't restate.
+  - **Fan-out answers to cover:** do probiotics make the pill less effective; IUD users; when to take them; signs to see a clinician.
+
+- [ ] **#MB1008-3 — turkesterone and alcohol** — `Turkesterone and Alcohol: What to Know Before You Drink (US 2026)`
+  - **Primary keyword:** `turkesterone and alcohol` · **Secondary:** can you drink on turkesterone, turkesterone alcohol liver, alcohol and muscle protein synthesis
+  - **Template:** LISTICLE · **Gate:** topic_fitness PASS [brand] · dedupe: no alcohol title live
+  - **Products:** `/products/turkesterone-advanced-formula` ($75). Collections: `/collections/mens-essential-collection`, `/collections/best-seller`.
+  - **Angle:** no human study tests turkesterone + alcohol (say so); what alcohol itself does to muscle protein synthesis and recovery (fetched sources only, e.g. Parr 2014 PLoS One if confirmed); practical spacing; label caution. LINK turkesterone-side-effects, turkesterone-timing — don't restate.
+  - **Fan-out answers to cover:** can I take it the morning after drinking; does alcohol cancel results; liver concerns.
+
+- [ ] **#MB1008-4 — creatine gummies expire / storage** — `Do Creatine Gummies Expire? Heat, Storage and Shelf Life (US 2026)`
+  - **Primary keyword:** `do creatine gummies expire` · **Secondary:** creatine gummies melted, creatine gummies storage, creatine gummies in a hot car, creatine gummies shelf life
+  - **Template:** LISTICLE · **Gate:** topic_fitness PASS [brand] · dedupe: no storage/expiry title live
+  - **Products:** `/products/fusiforce-creatine-gummies` ($69.99). Collections: `/collections/mens-essential-collection`, `/collections/best-seller`.
+  - **Angle:** creatine monohydrate stability vs creatinine conversion (fetched sources only), why gummy format adds heat/moisture issues, what the label/expiry date means, practical storage. LINK creatine-gummies-dosage, creatine-gummies-side-effects — don't restate.
+  - **Fan-out answers to cover:** are melted gummies still safe/effective; fridge or not; travel in summer.
+
+- [ ] **#MB1008-5 — nmn and alcohol** (buffer) — `NMN and Alcohol: Can You Drink While Taking NMN? (US 2026)`
+  - **Primary keyword:** `nmn and alcohol` · **Secondary:** nmn hangover, nmn after drinking, alcohol nad+ depletion
+  - **Template:** EDITORIAL · **Gate:** topic_fitness PASS [brand] · dedupe: no alcohol title live
+  - **Products:** `/products/ageaura-pure-nmn-tmg-nad-complex` ($69.95) ONLY. Collections: `/collections/best-seller` (twice). No other AgeAura product or AgeAura collection link (brand_rules.py gate).
+  - **Angle:** alcohol metabolism uses NAD+ (fetched biochemistry source), no human trial of NMN for hangover or alcohol (say so), label caution. Run only if <5 live today. LINK when-to-take-nmn, nmn-side-effects — don't restate.
