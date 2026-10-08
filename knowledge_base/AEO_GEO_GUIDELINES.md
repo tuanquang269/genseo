@@ -69,3 +69,13 @@ Use these phrases naturally where appropriate:
 - "buy online in the US", "order in the US"
 - "fast delivery", "local shipping", "authentic imports"
 - "US gym-goers", "US fitness community"
+
+---
+
+## 5. Dated Learnings (Search Engine Land digest review)
+- **2026-10-08 — Answer the fan-out sub-questions** (SEL ~2026-09-30, Ahrefs data): Only ~38% of AI Overview citations rank in the top 10 and ~31% rank 11–100, because Google fans out related searches. Write focused, self-contained answers to follow-up questions (for example NMN + TMG timing, dose per serving, stacking, who it suits), even when the head keyword is out of reach.
+- **2026-10-08 — Keep revenue pages fresh** (SEL early Oct 2026): AI-cited URLs average ~26% fresher than organic results. Refresh the top revenue posts monthly with a dated update that adds new data or answers.
+- **2026-10-08 — Be the clear place to buy** (SEL 2026-09-30): AI shopping answers favor big retailers, most of all on named-product queries, and being cited is not the same as being recommended. Product content needs comparison and "where to buy" sections that name Wellness Nest as the official source. Calling Wellness Nest an independent US brand may help, since adding "independent" to a prompt more than doubled small-store picks.
+- **2026-10-08 — Earned mentions drive AI citations** (SEL 2026-09-30, early Oct 2026): ~84% of AI citations come from earned media, and the number and depth of mentions matter more than sentiment. YouTube gave the biggest third-party lift (~2.8x). Pair owned pages with creator/YouTube content and genuine third-party coverage. On Reddit, only answer fresh threads (under ~20 days) helpfully and without promotion.
+- **2026-10-08 — Measure AI visibility as a rate** (SEL early Oct 2026): Same-day AI Mode citations overlap only ~9%, and AI Overviews and AI Mode share only ~14% of citations. Track each platform separately, run each prompt several times, report the brand mention rate as a range over 2–4 weeks, and track share of voice, since many citations never name the brand.
+- **2026-10-08 — Reviews back up AI answers** (SEL ~2026-10-05, SOCi): 81% of AI users check reviews or social before acting on an AI recommendation. Keep real reviews visible on product pages and reflect them in FAQs.
