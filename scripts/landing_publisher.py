@@ -72,15 +72,16 @@ def main():
     body = open(os.path.join(out_dir, "body.html")).read()
     cache_p = os.path.join(out_dir, "cdn_map.json")
     cache = json.load(open(cache_p)) if os.path.exists(cache_p) else {}
-    for local in sorted(set(re.findall(r'(?:src|srcset|data-gslfp-thumb)="(/[^"]+\.(?:webp|png|jpe?g))"', body))):
+    # absolute crops (/Users/...) and repo-relative spec images (tmp_images/... e.g. an offer pack shot) both go to Files
+    for local in sorted(set(re.findall(r'(?:src|srcset|data-gslfp-thumb)="((?:/|tmp_images/)[^"]+\.(?:webp|png|jpe?g))"', body))):
         if local not in cache:
-            url = upload_image_to_shopify_files(f_shop, f_token, local)
+            url = upload_image_to_shopify_files(f_shop, f_token, local if local.startswith("/") else os.path.join(ROOT, local))
             if not url:
                 sys.exit(f"✗ image upload failed: {local}")
             cache[local] = url
         body = body.replace(f'="{local}"', f'="{cache[local]}"')
     json.dump(cache, open(cache_p, "w"), indent=1)
-    if re.search(r'(?:src|srcset|data-gslfp-thumb)="/', body):
+    if re.search(r'(?:src|srcset|data-gslfp-thumb)="(?:/|tmp_images/)', body):
         sys.exit("✗ local image paths remain after upload")
     rec_p = os.path.join(out_dir, "shopify.json")
     rec = json.load(open(rec_p)) if os.path.exists(rec_p) else {}

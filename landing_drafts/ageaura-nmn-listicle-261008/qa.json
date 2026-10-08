@@ -4,16 +4,19 @@
   "375": {
    "overflow": false,
    "smallTargets": 0,
+   "brokenImages": [],
    "headings": ""
   },
   "768": {
    "overflow": false,
    "smallTargets": 0,
+   "brokenImages": [],
    "headings": ""
   },
   "1440": {
    "overflow": false,
    "smallTargets": 0,
+   "brokenImages": [],
    "headings": ""
   }
  },

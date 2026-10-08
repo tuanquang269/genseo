@@ -40,7 +40,7 @@
   },
   {
    "title": "In a two-month trial, NAD+ did rise",
-   "body": "<p>A <a href=\"https://doi.org/10.3389/fragi.2022.851698\" target=\"_blank\" rel=\"noopener\">double-blind, placebo-controlled trial</a> gave 66 adults aged 40–65 a daily dose of NMN or a placebo for two months. The NMN group's NAD<sup>+</sup>/NADH ratio rose through the trial; the placebo group's barely moved.</p><p>That's the clearest part of the NMN story: oral NMN does change blood NAD<sup>+</sup> markers in a controlled trial. What it means for how you feel day to day is a separate question — this trial measured a blood ratio, not energy, strength, or mood.</p>",
+   "body": "<p>A <a href=\"https://doi.org/10.3389/fragi.2022.851698\" target=\"_blank\" rel=\"noopener\">double-blind, placebo-controlled trial</a> gave 66 adults aged 40–65 a daily dose of NMN or a placebo for two months. The NMN group's NAD<sup>+</sup>/NADH ratio was up about 11% at day 30 and 38% at day 60; the placebo group showed no change at day 30 and a 14.3% rise by day 60.</p><p>That's the clearest part of the NMN story: oral NMN does change blood NAD<sup>+</sup> markers in a controlled trial. What it means for how you feel day to day is a separate question — this trial measured a blood ratio, not energy, strength, or mood.</p>",
    "evidence": "Human trial (RCT), Front Aging 2022",
    "source": "https://doi.org/10.3389/fragi.2022.851698",
    "chart": {
@@ -66,8 +66,8 @@
    }
   },
   {
-   "title": "Older men walked a little faster",
-   "body": "<p>A <a href=\"https://doi.org/10.1007/s11357-024-01204-1\" target=\"_blank\" rel=\"noopener\">12-week, placebo-controlled trial</a> in older adults gave a daily amount of NMN against a dummy pill. The main test — a stepping drill — showed no difference between groups. But on a secondary measure, a short 4-meter walk, the NMN group was significantly faster than placebo by week 12, and blood NAD<sup>+</sup> markers were higher too. Sleep-quality scores improved slightly as well.</p><p>Worth flagging plainly: the trial's own primary outcome (the stepping test) did not separate the groups. The walking-speed and sleep results are secondary findings in one small study, not a settled result.</p>",
+   "title": "Older adults kept a quicker walking pace",
+   "body": "<p>A <a href=\"https://doi.org/10.1007/s11357-024-01204-1\" target=\"_blank\" rel=\"noopener\">12-week, placebo-controlled trial</a> in older adults gave a daily amount of NMN against a dummy pill. The main test — a stepping drill — showed no difference between groups. But on a secondary measure, a short 4-meter walk, the NMN group was significantly faster than placebo by week 12, and blood NAD<sup>+</sup> markers were higher too. The NMN group also scored better on a sleep-quality questionnaire at week 12.</p><p>Worth flagging plainly: the trial's own primary outcome (the stepping test) did not separate the groups. The walking-speed and sleep results are secondary findings in one small study, not a settled result.</p>",
    "evidence": "Human trial (RCT), Geroscience 2024",
    "source": "https://doi.org/10.1007/s11357-024-01204-1",
    "image": "tmp_images/landing-ageaura-nmn-listicle-261008/sq-row3.webp",
@@ -101,10 +101,11 @@
   },
   {
    "title": "Why TMG so often rides along with NMN",
-   "body": "<p>Converting NMN toward NAD<sup>+</sup> uses up methyl groups in the body. TMG (trimethylglycine, also called betaine) is a methyl donor — a separate, older line of research shows TMG supplementation lowers fasting homocysteine, a marker tied to methylation activity, in healthy adults within weeks.</p><p>The logic for pairing the two is mechanistic: TMG may help keep methylation running smoothly while NMN is being used. That logic has not itself been tested as a combined trial (see the next point).</p>",
+   "body": "<p>The usual rationale: when the body turns over NAD<sup>+</sup>, the leftover nicotinamide is cleared partly by methylation — the walking trial above measured those methylated breakdown products (2-PY and 4-PY) rising with NMN (<a href=\"https://doi.org/10.1007/s11357-024-01204-1\" target=\"_blank\" rel=\"noopener\">Morifuji et al., 2024</a>). TMG (trimethylglycine, also called betaine) is a methyl donor: in healthy adults, daily betaine lowered fasting homocysteine, a methylation marker, within six weeks (<a href=\"https://doi.org/10.1093/jn/133.12.4135\" target=\"_blank\" rel=\"noopener\">Olthof et al., 2003</a>).</p><p>So the case for pairing is a mechanistic one: TMG may help keep methylation supplied while NMN is in use. That reasoning has not itself been tested as a combined trial (see the next point).</p>",
    "evidence": "Human trial (RCT, TMG only), J Nutr 2003",
    "image": "tmp_images/landing-ageaura-nmn-listicle-261008/sq-row5.webp",
-   "alt": "A spinach and chickpea salad bowl with a small glass of orange juice on a wooden table"
+   "alt": "A spinach and chickpea salad bowl with a small glass of orange juice on a wooden table",
+   "source": "https://doi.org/10.1093/jn/133.12.4135"
   },
   {
    "title": "No trial has tested NMN and TMG together",
@@ -118,30 +119,30 @@
    "body": "<p>Every trial cited here (see the <a href=\"#sources\">sources below</a>) dosed participants every day for weeks or months straight. None tested occasional or “when I remember” use. If a NAD<sup>+</sup> supplement sits unopened half the week, it isn't being used the way any of these trials actually measured it.</p><p>That makes the format you pick a practical question, not just a comfort one: whatever makes the daily habit easiest to keep is doing real work.</p>",
    "evidence": "Study-design pattern across the trials above",
    "source": "https://doi.org/10.3389/fragi.2022.851698",
-   "image": "tmp_images/landing-ageaura-nmn-listicle-261008/sq-bridge.webp",
-   "alt": "A weekly pill organizer with some compartments filled, next to a glass of water on a kitchen counter"
+   "image": "tmp_images/landing-ageaura-nmn-listicle-261008/sq-row7.webp",
+   "alt": "A mug of coffee and a glass of water on a kitchen counter in early-morning window light"
   }
  ],
  "bridge": {
   "title": "Convenience is part of consistency",
-  "body": "<p>None of the trials above tested a supplement that was easy to skip. They tested a dose taken every day. So the practical question isn't just “which formula” — it's which one you'll actually keep taking.</p><p>One option built around a once-daily capsule routine is Wellness Nest's AgeAura Pure NMN + TMG NAD+ Complex, which pairs NMN with TMG on the same label in two capsules a day. It's one way to handle the daily-habit part; it is not a verdict on whether NMN or TMG works for you — that's still a conversation for your own health history and, ideally, your doctor.</p>",
+  "body": "<p>None of the trials above tested a supplement that was easy to skip. They tested a dose taken every day. So the practical question isn't just “which formula” — it's which one you'll actually keep taking.</p><p>One option is Wellness Nest's AgeAura Pure NMN + TMG NAD+ Complex, which puts NMN and TMG on the same label in one daily two-capsule serving. It's one way to handle the daily-habit part; it is not a verdict on whether NMN or TMG works for you — that's still a conversation for your own health history and, ideally, your doctor.</p>",
   "image": "tmp_images/landing-ageaura-nmn-listicle-261008/sq-bridge.webp",
   "alt": "A weekly pill organizer with some compartments filled, next to a glass of water on a kitchen counter"
  },
  "expert": {
   "title": "TrustScore 4.2 from 1,144 Trustpilot Reviews",
   "stars": 5,
-  "quote": "Its made me feel so much better. I'd recommend to anyone give it a try, see how you feel after a month xx",
-  "author": "Elaine Goddard · Wellness Nest customer on Trustpilot",
-  "source": "https://www.trustpilot.com/review/wellnessnest.co (5-star review published 2025-11-02; TrustScore 4.2 and 1,144 reviews as refreshed in state/trustpilot/wellnessnest.json on 2026-10-08). This review is about Wellness Nest generally, not AgeAura specifically — no AgeAura-tagged 4–5★ review was in the file at fetch time.",
+  "quote": "Thanks Adela \nExcellent service as ever .. 3 monthly subscription always arrives on time",
+  "author": "Lisa Acton · Wellness Nest customer on Trustpilot",
+  "source": "https://www.trustpilot.com/reviews/69a9b43fff0a1314dbd8a581 (5-star review, published 2026-03-05, verbatim; TrustScore 4.2 and 1,144 reviews as displayed on trustpilot.com/review/wellnessnest.co, read 2026-10-08). A service/subscription review about Wellness Nest, not a product-effect claim.",
   "image": "tmp_images/landing-ageaura-nmn-listicle-261008/sq-expert.webp",
   "alt": "The white AgeAura Pure NMN + TMG NAD+ Complex capsule bottle on a bathroom counter in soft morning light"
  },
  "offer": {
   "pill": "⚡️ AGEAURA NMN + TMG COMPLEX",
-  "accent": "One Capsule Bottle, Two Ingredients on the Label",
-  "title": "NMN + TMG, Once a Day",
-  "sub": "A daily NMN + TMG capsule formula. $69.95 on the product page.",
+  "accent": "Two Ingredients, One Label",
+  "title": "NMN + TMG in One Daily Serving",
+  "sub": "A daily two-capsule NMN + TMG formula. $69.95 on the product page.",
   "cta": "SEE SERVING & INGREDIENTS",
   "href": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex",
   "meta": [
@@ -149,13 +150,13 @@
    "<b>FREE</b> shipping $70+"
   ],
   "guarantee": "Your first order is covered by our 90-Day Money-Back Guarantee.",
-  "image": "https://cdn.shopify.com/s/files/1/0810/1563/6283/files/ageaura_nmn_tmg_x_2.webp?v=1784009886&width=500",
-  "alt": "AgeAura Pure NMN + TMG NAD+ Complex capsule bottle",
+  "image": "https://cdn.shopify.com/s/files/1/0810/1563/6283/files/pack-ref.webp?v=1791435163",
+  "alt": "AgeAura Pure NMN + TMG NAD+ Complex capsule bottle (60 vegan capsules)",
   "source": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex (price $69.95, fetched 2026-10-08); refund + free-shipping threshold from the PDP's 90-Day Guarantee accordion, /policies/refund-policy, and the site ticker banner"
  },
  "product": {
   "name": "AgeAura Pure NMN + TMG NAD+ Complex",
-  "image": "https://cdn.shopify.com/s/files/1/0810/1563/6283/files/ageaura_nmn_tmg_x_2.webp?v=1784009886&width=500",
+  "image": "https://cdn.shopify.com/s/files/1/0810/1563/6283/files/pack-ref.webp?v=1791435163",
   "bullets": [
    "500 mg NMN (β-Nicotinamide Mononucleotide) per daily serving (2 capsules)",
    "250 mg TMG (Betaine Anhydrous / Trimethylglycine) per daily serving",

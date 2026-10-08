@@ -11,9 +11,18 @@ const report = { file, widths: {} };
 for (const w of [375, 768, 1440]) {
   const p = await browser.newPage({ viewport: { width: w, height: 900 } });
   await p.goto(url); await p.waitForTimeout(800);
+  // full-page shots: force lazy images to load (otherwise everything below the fold is a blank slot)
+  await p.evaluate(async () => {
+    document.querySelectorAll("img[loading=lazy]").forEach(i => i.loading = "eager");
+    for (let y = 0; y < document.body.scrollHeight; y += 600) { window.scrollTo(0, y); await new Promise(r => setTimeout(r, 60)); }
+    window.scrollTo(0, 0);
+    await Promise.all([...document.images].map(i => i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; setTimeout(r, 8000); })));
+  });
+  await p.waitForTimeout(300);
   report.widths[w] = await p.evaluate(() => ({
     overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth,
     smallTargets: [...document.querySelectorAll(".gsl-landing a[target=_blank]")].filter(a => a.getBoundingClientRect().height < 44).length,
+    brokenImages: [...document.querySelectorAll(".gsl-ref img, .gsl-landing img")].filter(i => !i.naturalWidth).map(i => i.currentSrc || i.src).slice(0, 5),
     headings: [...document.querySelectorAll(".gsl-landing h1,.gsl-landing h2")].map(h => h.tagName).join("").replace(/H2+/g, "H2…"),
   }));
   if (w === 1440) await p.screenshot({ path: path.join(dir, "desktop.png"), fullPage: true });

@@ -25,3 +25,14 @@
 - No mention of Urolithin A or peptides (forbidden for AgeAura per `brand/ageaura.json`).
 - No countdown timer or scarcity line (`topbar.deadline` left null).
 - No numbered item names or links the product; product first appears in the bridge, per hybrid posture.
+
+## v2 — Grok Bot review edits (2026-10-08 ~11:55 ICT), re-verified against the sources
+| Block | Change | Verified |
+|---|---|---|
+| Row 02 | "placebo barely moved" → NMN +11.3% (d30) / +38% (d60) vs placebo no change (d30) / +14.3% (d60) | Huang 2022 abstract (Europe PMC) |
+| Row 03 | title "Older men…" → "Older adults…" (trial = 60 older adults, not men only); sleep wording = better PSQI scores at week 12 | Morifuji 2024 abstract |
+| Row 05 | unsourced "NMN uses up methyl groups" → nicotinamide cleared partly by methylation, 2-PY/4-PY measured (Morifuji 2024); betaine lowered fasting homocysteine within 6 weeks (Olthof 2003), both linked inline | Europe PMC abstracts |
+| Bridge/offer | "once-daily capsule routine" → "one daily two-capsule serving" | PDP: "Each daily serving (2 capsules) contains: 500mg NMN … 250mg TMG" |
+| 08 expert slot | general "made me feel so much better" review (implied effect on an AgeAura page) → 5★ service/subscription review by Lisa Acton (GB, 2026-03-05), verbatim | state/trustpilot/wellnessnest.json (__NEXT_DATA__, read 2026-10-08), review id 69a9b43fff0a1314dbd8a581 |
+| Row 07 image | was a duplicate of the bridge image → fresh no-face scene `sq-row7` (article_images.py --square --ugc --qc, QC PASS) | — |
+| Offer/product image | PDP image 0 is a composite with a hand + benefit-claim overlays → curated real pack crop `product_refs/ageaura-pure-nmn-tmg-nad-complex.png` (no overlays; every PDP image carries text/hands/faces) | product_refs json: cropped from the live PDP |

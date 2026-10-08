@@ -112,7 +112,11 @@ def scope_css(css, scope=".gsl-ref"):
 
 
 def build_css(kind, brand):
-    pal = palette(brand)
+    # The gsl-ref-* theme template is ONE shared file installed in the live theme with the base store's palette, so a
+    # sub-brand spec (AgeAura "extends" wellnessnest) must render with that same palette — otherwise the preview and
+    # templates/landing/page.<suffix>.liquid drift from what the live page actually shows (fixed 2026-10-08).
+    vis = load_brand(brand["extends"]) if brand.get("extends") else brand
+    pal = palette(vis)
     font = brand.get("fonts", {}).get("body", "Montserrat, sans-serif")
     raw = ""
     for f in CSS_FILES[kind]:
@@ -434,12 +438,16 @@ def main():
     os.makedirs(out_dir, exist_ok=True)
     imgs = Imgs(out_dir)
     kind = spec["template"]
-    pal = palette(brand)
+    # The gsl-ref-* theme template is ONE shared file installed in the live theme with the base store's palette, so a
+    # sub-brand spec (AgeAura "extends" wellnessnest) must render with that same palette — otherwise the preview and
+    # templates/landing/page.<suffix>.liquid drift from what the live page actually shows (fixed 2026-10-08).
+    vis = load_brand(brand["extends"]) if brand.get("extends") else brand
+    pal = palette(vis)
     inner = render_listicle(spec, imgs) if kind == "listicle" else render_advertorial(spec, imgs, brand)
     body = brand_swap(f'<div class="gsl-ref gsl-ref--{kind}">\n{inner}</div>\n', pal)
     js = brand_swap(JS, pal)   # lives in the theme template (Shopify page bodies are not a place for scripts)
     open(os.path.join(out_dir, "body.html"), "w").write(body)
-    css = build_css(kind, brand)
+    css = build_css(kind, vis)
     open(os.path.join(out_dir, "page.css"), "w").write(css)
     font_link = brand.get("fonts", {}).get("preview_font_link", "")
     hide = open(os.path.join(ROOT, "templates", "landing", "hide_theme_chrome.html")).read().replace("{% layout none %}", "layout-none") if spec.get("takeover") else ""   # a Liquid tag inside a CSS comment would still execute
