@@ -517,7 +517,7 @@ blog 104008483131, publish `--live`, claims log), PLUS the 2026-10-08 guideline 
   - **Angle:** the label panel per 2-capsule serving (500 mg NMN, 250 mg TMG, 100 mg trans-resveratrol, 150 mg quercetin, 50 mg apigenin, 1 mg spermidine from wheat germ, 400 mcg DFE L-5-MTHF; contains wheat) — what each ingredient is and what human evidence exists (fetched sources only), what is NOT proven (no trial of the combination). No invented reviews or ratings; only quote reviews actually visible on the product page. LINK nmn-and-tmg-together, how-much-nmn-per-day, nmn-side-effects — don't restate.
   - **Fan-out answers to cover:** is AgeAura legit / who makes it (only what the product page states); how many capsules a day; does it contain gluten/wheat; who should not take it.
 
-- [ ] **#MB1008-2 — florafresh with birth control** — `Vaginal Probiotics and Birth Control: Can You Take Both? (US 2026)`
+- [DONE 2026-10-08 https://wellnessnest.co/blogs/news/probiotics-and-birth-control-can-you-take-both-us-2026] **#MB1008-2 — florafresh with birth control** — `Vaginal Probiotics and Birth Control: Can You Take Both? (US 2026)`
   - **Primary keyword:** `probiotics and birth control` · **Secondary:** florafresh birth control, do probiotics affect birth control, vaginal probiotics on the pill, probiotics iud
   - **Template:** EDITORIAL · **Gate:** topic_fitness PASS [brand] · dedupe: no birth-control title live
   - **Products:** `/products/florafresh-vaginal-probiotics-gummies` ($40.99). Collections: `/collections/womens-essentials-collection`, `/collections/best-seller`.
