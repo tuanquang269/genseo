@@ -57,11 +57,13 @@ def main():
     from shopify_publisher import upload_image_to_shopify_files
     from shopify_auth import pick
     api = cfg.API
-    # CLI control app for theme + pages (write_themes/write_online_store_pages); Files upload needs write_files,
-    # which the CLI app lacks today -> GenSeo publisher token as fallback (pick() decides per job).
-    shop, token, src = pick({"write_themes", "write_online_store_pages", "read_themes"})
-    f_shop, f_token, f_src = pick({"write_files"})
-    print(f"auth: theme+pages via {src} · Files via {f_src}")
+    # One token for the whole job (plan 2026-10-06, switched 2026-10-08 once Kevin granted write_files): template,
+    # page and Files image uploads all run on Kevin's CLI control app '0ps Dashboard' (client-credentials).
+    # pick() falls back to the GenSeo publisher token only if the CLI app ever loses one of these scopes
+    # (or GENSEO_FORCE_PUBLISHER_TOKEN=1).
+    shop, token, src = pick({"write_themes", "read_themes", "write_online_store_pages", "write_files"})
+    f_shop, f_token, f_src = shop, token, src
+    print(f"auth: template+pages+Files via {src}")
     body = open(os.path.join(out_dir, "body.html")).read()
     cache_p = os.path.join(out_dir, "cdn_map.json")
     cache = json.load(open(cache_p)) if os.path.exists(cache_p) else {}

@@ -2,6 +2,8 @@
 """Pick the Admin API token for a job (Kevin 2026-10-06): prefer Kevin's CLI control app (client-credentials,
 scripts/shopify_app_token.py) when its granted scopes cover the job; otherwise fall back to the GenSeo publisher
 token (genseo_config). Tokens are never printed.
+2026-10-08: the CLI app ('0ps Dashboard') now has write_files too, so landing template + pages + Files image uploads
+all resolve to "cli-app"; the GenSeo article pipeline does not use pick() and is unchanged.
     from shopify_auth import pick
     shop, token, source = pick({"write_themes", "write_online_store_pages"})
 """

@@ -51,4 +51,5 @@ if __name__ == "__main__":
     print("shop:", shop)
     print("token: obtained (not printed), prefix", tok[:6])
     print("scopes:", scope)
-    print("write_themes:", "write_themes" in scope.split(","), "| write_content:", "write_content" in scope.split(","))
+    have = scope.split(",")
+    print(" | ".join(f"{k}: {k in have}" for k in ("write_themes", "write_online_store_pages", "write_content", "write_files")))
