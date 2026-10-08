@@ -10,8 +10,8 @@
  "created": "2026-10-08",
  "daily": true,
  "reference": "http://localhost:8790/pages/10-reasons-why-creatine-is-for-skinny-people/",
- "title": "7 Things the Research Says (and Doesn't Yet) About NMN and NAD+ After 40",
- "meta_description": "What the human trials on NMN actually measured after 40: NAD+ levels, walking speed, sleep quality, and the outcomes that did not move — plus why NMN is often paired with TMG.",
+ "title": "7 Things Research Shows About NMN After 40",
+ "meta_description": "What human NMN trials measured after 40: NAD+ levels, walking speed, sleep, and the outcomes that did not move. Plus why NMN is often paired with TMG.",
  "topbar": {
   "labels": [
    "Wellness Nest Guide 📖",
@@ -21,8 +21,8 @@
  },
  "hero": {
   "accent": "7 Things",
-  "title": "the Research Says (and Doesn't Yet) About NMN and NAD+ After 40",
-  "summary_html": "<strong>Summary:</strong> NMN is one of the most talked-about longevity ingredients, and human trials are still catching up to the hype. Here is what the trials actually measured, what moved and what didn't, and why NMN is so often sold alongside TMG."
+  "title": "Research Shows About NMN After 40",
+  "summary_html": "<strong>Summary:</strong> NMN is everywhere in longevity talk. Here is what human trials measured, what moved, what didn't, and why NMN is so often paired with TMG."
  },
  "byline": {
   "name": "Dr. Marcus Hale",
@@ -32,102 +32,102 @@
  "updated": "Oct 8, 2026",
  "items": [
   {
-   "title": "NMN is a building block, not NAD+ itself",
-   "body": "<p>NMN (nicotinamide mononucleotide) is a small molecule your body can convert into NAD<sup>+</sup>, a coenzyme every cell needs to make energy and repair DNA. Taking NMN is a bet that more of the building block means more of the finished coenzyme — which is testable, and several trials have tested exactly that.</p><p>It's a precursor claim, not a finished-product claim. The question worth asking is whether swallowing NMN actually raises NAD<sup>+</sup> in people, and by how much.</p>",
+   "title": "NMN is a NAD+ building block",
+   "body": "<p>NMN (nicotinamide mononucleotide) is a molecule your body can turn into NAD<sup>+</sup>, a coenzyme your cells use to make energy.</p><p>So the real question is simple: does swallowing NMN raise NAD<sup>+</sup> in people? Several trials tested exactly that.</p>",
    "evidence": "Mechanism, PDP ingredients panel",
-   "image": "tmp_images/landing-ageaura-nmn-listicle-261008/sq-row1.webp",
-   "alt": "A glass of water and an empty ceramic dish on a kitchen counter in soft morning light"
+   "image": "tmp_images/landing-ageaura-nmn-listicle-261008/sq-row1b.webp",
+   "alt": "Morning routine at a kitchen table: a glass of water and two plain white capsules in a small dish"
   },
   {
-   "title": "In a two-month trial, NAD+ did rise",
-   "body": "<p>A <a href=\"https://doi.org/10.3389/fragi.2022.851698\" target=\"_blank\" rel=\"noopener\">double-blind, placebo-controlled trial</a> gave 66 adults aged 40–65 a daily dose of NMN or a placebo for two months. The NMN group's NAD<sup>+</sup>/NADH ratio was up about 11% at day 30 and 38% at day 60; the placebo group showed no change at day 30 and a 14.3% rise by day 60.</p><p>That's the clearest part of the NMN story: oral NMN does change blood NAD<sup>+</sup> markers in a controlled trial. What it means for how you feel day to day is a separate question — this trial measured a blood ratio, not energy, strength, or mood.</p>",
+   "title": "NAD+ rose 38% in 60 days",
+   "body": "<p>In a <a href=\"https://doi.org/10.3389/fragi.2022.851698\" target=\"_blank\" rel=\"noopener\">placebo-controlled trial</a> of 66 adults aged 40 to 65, the NMN group's blood NAD<sup>+</sup>/NADH was up 11% at day 30 and 38% at day 60.</p><p>Placebo rose 14.3% by day 60. Note what was measured: a blood marker, not energy or mood.</p>",
    "evidence": "Human trial (RCT), Front Aging 2022",
    "source": "https://doi.org/10.3389/fragi.2022.851698",
    "chart": {
     "kind": "stats",
-    "title": "NAD+/NADH ratio, change from baseline",
+    "title": "Blood NAD+/NADH, change from baseline",
     "stats": [
      {
       "value": "+11.3%",
-      "label": "NMN group, day 30",
+      "label": "NMN, day 30",
       "highlight": true
      },
      {
       "value": "+38%",
-      "label": "NMN group, day 60",
+      "label": "NMN, day 60",
       "highlight": true
      },
      {
       "value": "+14.3%",
-      "label": "placebo group, day 60"
+      "label": "Placebo, day 60"
      }
     ],
-    "source": "Huang H et al., “A Multicentre, Randomised, Double Blind, Parallel Design, Placebo Controlled Study to Evaluate the Efficacy and Safety of Uthever (NMN Supplement)…” Front Aging 2022. 66 adults aged 40–65, 300 mg/day NMN vs placebo, 60 days. doi:10.3389/fragi.2022.851698"
+    "source": "Huang et al., Front Aging 2022. 66 adults aged 40 to 65, 60 days, NMN vs placebo."
    }
   },
   {
-   "title": "Older adults kept a quicker walking pace",
-   "body": "<p>A <a href=\"https://doi.org/10.1007/s11357-024-01204-1\" target=\"_blank\" rel=\"noopener\">12-week, placebo-controlled trial</a> in older adults gave a daily amount of NMN against a dummy pill. The main test — a stepping drill — showed no difference between groups. But on a secondary measure, a short 4-meter walk, the NMN group was significantly faster than placebo by week 12, and blood NAD<sup>+</sup> markers were higher too. The NMN group also scored better on a sleep-quality questionnaire at week 12.</p><p>Worth flagging plainly: the trial's own primary outcome (the stepping test) did not separate the groups. The walking-speed and sleep results are secondary findings in one small study, not a settled result.</p>",
+   "title": "Faster walking in older adults",
+   "body": "<p>In a <a href=\"https://doi.org/10.1007/s11357-024-01204-1\" target=\"_blank\" rel=\"noopener\">12-week trial</a> of older adults, the NMN group finished a 4-meter walk faster than placebo and had higher blood NAD<sup>+</sup>. Sleep scores improved too.</p><p>Honest caveat: the main outcome, a stepping test, showed no difference. Walking and sleep were secondary results in one small study.</p>",
    "evidence": "Human trial (RCT), Geroscience 2024",
    "source": "https://doi.org/10.1007/s11357-024-01204-1",
-   "image": "tmp_images/landing-ageaura-nmn-listicle-261008/sq-row3.webp",
-   "alt": "A pair of walking shoes and a rolled yoga mat by a front door in bright daylight"
+   "image": "tmp_images/landing-ageaura-nmn-listicle-261008/sq-row3b.webp",
+   "alt": "Two older adults walking briskly on a leafy park path, seen from behind"
   },
   {
-   "title": "The bigger picture is more mixed",
-   "body": "<p>A <a href=\"https://doi.org/10.1080/10408398.2024.2387324\" target=\"_blank\" rel=\"noopener\">2025 meta-analysis</a> pooled a dozen randomized trials of people taking NMN. It confirmed the NAD<sup>+</sup>-raising effect holds up across studies — that part replicates. But most of the outcomes people actually care about, like fasting glucose and cholesterol, did not differ significantly between NMN and placebo groups.</p><p>The reviewers' own conclusion: an exaggeration of NMN's benefits may exist in the field, and more, larger trials are needed before claiming metabolic benefits as settled.</p>",
+   "title": "The bigger picture is mixed",
+   "body": "<p>A <a href=\"https://doi.org/10.1080/10408398.2024.2387324\" target=\"_blank\" rel=\"noopener\">2025 meta-analysis</a> pooled 12 randomized trials with 513 people. NMN reliably raised blood NAD<sup>+</sup>.</p><p>But most health markers, like fasting glucose and cholesterol, did not beat placebo. The authors warn that NMN's benefits may be exaggerated.</p>",
    "evidence": "Meta-analysis (12 RCTs, 513 people), Crit Rev Food Sci Nutr 2025",
    "source": "https://doi.org/10.1080/10408398.2024.2387324",
    "chart": {
     "kind": "stats",
-    "title": "Meta-analysis of 12 RCTs, 513 participants",
+    "title": "Meta-analysis: 12 trials, 513 people",
     "stats": [
      {
       "value": "12",
-      "label": "randomized trials pooled",
+      "label": "Trials pooled",
       "highlight": true
      },
      {
       "value": "513",
-      "label": "total participants"
+      "label": "Participants"
      },
      {
-      "value": "NAD↑, most else n.s.",
-      "label": "blood NAD+ rose; glucose/lipids mostly unchanged vs placebo"
+      "value": "NAD+ ↑",
+      "label": "Most markers unchanged"
      }
     ],
-    "source": "Zhang J, Poon ETC, Wong SHS. “Efficacy of oral nicotinamide mononucleotide supplementation on glucose and lipid metabolism for adults: a systematic review with meta-analysis on randomized controlled trials.” Crit Rev Food Sci Nutr 2025;65(22):4382–4400. doi:10.1080/10408398.2024.2387324"
+    "source": "Zhang, Poon, Wong. Crit Rev Food Sci Nutr 2025;65(22):4382-4400."
    }
   },
   {
-   "title": "Why TMG so often rides along with NMN",
-   "body": "<p>The usual rationale: when the body turns over NAD<sup>+</sup>, the leftover nicotinamide is cleared partly by methylation — the walking trial above measured those methylated breakdown products (2-PY and 4-PY) rising with NMN (<a href=\"https://doi.org/10.1007/s11357-024-01204-1\" target=\"_blank\" rel=\"noopener\">Morifuji et al., 2024</a>). TMG (trimethylglycine, also called betaine) is a methyl donor: in healthy adults, daily betaine lowered fasting homocysteine, a methylation marker, within six weeks (<a href=\"https://doi.org/10.1093/jn/133.12.4135\" target=\"_blank\" rel=\"noopener\">Olthof et al., 2003</a>).</p><p>So the case for pairing is a mechanistic one: TMG may help keep methylation supplied while NMN is in use. That reasoning has not itself been tested as a combined trial (see the next point).</p>",
+   "title": "Why TMG is paired with NMN",
+   "body": "<p>Your body clears leftover nicotinamide partly by methylation. In the <a href=\"https://doi.org/10.1007/s11357-024-01204-1\" target=\"_blank\" rel=\"noopener\">walking trial</a>, those methylated by-products rose with NMN.</p><p>TMG (betaine) is a methyl donor. In healthy adults, daily betaine lowered homocysteine, a methylation marker, within six weeks (<a href=\"https://doi.org/10.1093/jn/133.12.4135\" target=\"_blank\" rel=\"noopener\">Olthof 2003</a>).</p>",
    "evidence": "Human trial (RCT, TMG only), J Nutr 2003",
    "image": "tmp_images/landing-ageaura-nmn-listicle-261008/sq-row5.webp",
-   "alt": "A spinach and chickpea salad bowl with a small glass of orange juice on a wooden table",
+   "alt": "A leafy spinach and chickpea salad bowl on a wooden table",
    "source": "https://doi.org/10.1093/jn/133.12.4135"
   },
   {
-   "title": "No trial has tested NMN and TMG together",
-   "body": "<p>Here is the honest gap: every trial above tested NMN alone, or TMG alone. We found no published, peer-reviewed human trial that dosed NMN and TMG together as a single combined intervention and measured the outcome. The pairing is a formulation choice built on each ingredient's separate evidence, not a tested combination in its own right.</p><p>That doesn't make the pairing wrong — it makes it unproven as a pair, which is different from unproven at all. Worth knowing before you decide how much weight to put on “complex” formulas generally.</p>",
+   "title": "No combined trial yet",
+   "body": "<p>Every trial here tested NMN alone or TMG alone. We found no published human trial of the two combined.</p><p>So the pairing rests on each ingredient's separate evidence. Unproven as a pair is not the same as unproven at all.</p>",
    "evidence": "Evidence gap — literature search, no combined-trial citation to give",
-   "image": "tmp_images/landing-ageaura-nmn-listicle-261008/sq-row6.webp",
-   "alt": "A magnifying glass resting on an open blank notebook page next to a cup of tea"
+   "image": "tmp_images/landing-ageaura-nmn-listicle-261008/sq-row4b.webp",
+   "alt": "A stack of printed research papers, a highlighter and reading glasses: checking the published trials"
   },
   {
-   "title": "Whatever you choose, daily use is what the trials modeled",
-   "body": "<p>Every trial cited here (see the <a href=\"#sources\">sources below</a>) dosed participants every day for weeks or months straight. None tested occasional or “when I remember” use. If a NAD<sup>+</sup> supplement sits unopened half the week, it isn't being used the way any of these trials actually measured it.</p><p>That makes the format you pick a practical question, not just a comfort one: whatever makes the daily habit easiest to keep is doing real work.</p>",
+   "title": "Trials tested daily use",
+   "body": "<p>Every trial above dosed people daily for weeks or months (see <a href=\"#sources\">sources</a>). None tested taking it now and then.</p><p>So the best format is the one you will actually take every day.</p>",
    "evidence": "Study-design pattern across the trials above",
    "source": "https://doi.org/10.3389/fragi.2022.851698",
    "image": "tmp_images/landing-ageaura-nmn-listicle-261008/sq-row7.webp",
-   "alt": "A mug of coffee and a glass of water on a kitchen counter in early-morning window light"
+   "alt": "A daily morning routine on the kitchen counter: coffee and a glass of water"
   }
  ],
  "bridge": {
   "title": "Convenience is part of consistency",
-  "body": "<p>None of the trials above tested a supplement that was easy to skip. They tested a dose taken every day. So the practical question isn't just “which formula” — it's which one you'll actually keep taking.</p><p>One option is Wellness Nest's AgeAura Pure NMN + TMG NAD+ Complex, which puts NMN and TMG on the same label in one daily two-capsule serving. It's one way to handle the daily-habit part; it is not a verdict on whether NMN or TMG works for you — that's still a conversation for your own health history and, ideally, your doctor.</p>",
+  "body": "<p>The trials tested a daily habit, not an occasional one. The practical question is which routine you will keep.</p><p>One option: AgeAura Pure NMN + TMG NAD+ Complex puts NMN and TMG on one label, in one daily two-capsule serving.</p><p>Taking medication or managing a health condition? Check with your doctor first.</p>",
   "image": "tmp_images/landing-ageaura-nmn-listicle-261008/sq-bridge.webp",
-  "alt": "A weekly pill organizer with some compartments filled, next to a glass of water on a kitchen counter"
+  "alt": "A weekly pill organizer next to a glass of water: building a daily routine"
  },
  "expert": {
   "title": "TrustScore 4.2 from 1,144 Trustpilot Reviews",
@@ -136,14 +136,14 @@
   "author": "Lisa Acton · Wellness Nest customer on Trustpilot",
   "source": "https://www.trustpilot.com/reviews/69a9b43fff0a1314dbd8a581 (5-star review, published 2026-03-05, verbatim; TrustScore 4.2 and 1,144 reviews as displayed on trustpilot.com/review/wellnessnest.co, read 2026-10-08). A service/subscription review about Wellness Nest, not a product-effect claim.",
   "image": "tmp_images/landing-ageaura-nmn-listicle-261008/sq-expert.webp",
-  "alt": "The white AgeAura Pure NMN + TMG NAD+ Complex capsule bottle on a bathroom counter in soft morning light"
+  "alt": "The white AgeAura Pure NMN + TMG NAD+ Complex bottle on a bathroom counter"
  },
  "offer": {
   "pill": "⚡️ AGEAURA NMN + TMG COMPLEX",
   "accent": "Two Ingredients, One Label",
   "title": "NMN + TMG in One Daily Serving",
   "sub": "A daily two-capsule NMN + TMG formula. $69.95 on the product page.",
-  "cta": "SEE SERVING & INGREDIENTS",
+  "cta": "SEE INGREDIENTS",
   "href": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex",
   "meta": [
    "<b>90-Day</b> Guarantee",

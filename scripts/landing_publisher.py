@@ -22,7 +22,7 @@ GemPages caches rendered HTML per URL: iterate on a throwaway handle, publish th
 Re-running updates the same page (id stored in landing_drafts/<slug>/shopify.json) — never a duplicate.
 --live is refused unless GENSEO_LANDING_LIVE_OK=1 AND validate_landing.py --strict passes (0 placeholders).
 """
-import json, os, re, subprocess, sys, urllib.error, urllib.request
+import hashlib, json, os, re, subprocess, sys, urllib.error, urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PY = "/usr/bin/python3"
@@ -74,12 +74,15 @@ def main():
     cache = json.load(open(cache_p)) if os.path.exists(cache_p) else {}
     # absolute crops (/Users/...) and repo-relative spec images (tmp_images/... e.g. an offer pack shot) both go to Files
     for local in sorted(set(re.findall(r'(?:src|srcset|data-gslfp-thumb)="((?:/|tmp_images/)[^"]+\.(?:webp|png|jpe?g))"', body))):
-        if local not in cache:
-            url = upload_image_to_shopify_files(f_shop, f_token, local if local.startswith("/") else os.path.join(ROOT, local))
+        # keyed by path + content hash: a re-rendered crop with the same file name (new image, v2 edit) must re-upload
+        lp = local if local.startswith("/") else os.path.join(ROOT, local)
+        key = f"{local}#{hashlib.sha1(open(lp, 'rb').read()).hexdigest()[:12]}"
+        if key not in cache:
+            url = upload_image_to_shopify_files(f_shop, f_token, lp)
             if not url:
                 sys.exit(f"✗ image upload failed: {local}")
-            cache[local] = url
-        body = body.replace(f'="{local}"', f'="{cache[local]}"')
+            cache[key] = url
+        body = body.replace(f'="{local}"', f'="{cache[key]}"')
     json.dump(cache, open(cache_p, "w"), indent=1)
     if re.search(r'(?:src|srcset|data-gslfp-thumb)="(?:/|tmp_images/)', body):
         sys.exit("✗ local image paths remain after upload")

@@ -36,3 +36,15 @@
 | 08 expert slot | general "made me feel so much better" review (implied effect on an AgeAura page) → 5★ service/subscription review by Lisa Acton (GB, 2026-03-05), verbatim | state/trustpilot/wellnessnest.json (__NEXT_DATA__, read 2026-10-08), review id 69a9b43fff0a1314dbd8a581 |
 | Row 07 image | was a duplicate of the bridge image → fresh no-face scene `sq-row7` (article_images.py --square --ugc --qc, QC PASS) | — |
 | Offer/product image | PDP image 0 is a composite with a hand + benefit-claim overlays → curated real pack crop `product_refs/ageaura-pure-nmn-tmg-nad-complex.png` (no overlays; every PDP image carries text/hands/faces) | product_refs json: cropped from the live PDP |
+
+## v3 edits (2026-10-08, benchmark round 1 vs reference listicle)
+Copy tightened for scannability/mobile (no claim added; every number keeps its source link):
+- H1 → "7 Things Research Shows About NMN After 40"; summary 41 → 27 words; item titles ≤ 34 chars.
+- Row 02 title "NAD+ rose 38% in 60 days" = Huang 2022 NAD+/NADH +38% at day 60 vs baseline (placebo +14.3%), abstract.
+- Row 03 "finished a 4-meter walk faster than placebo" = Morifuji 2024 secondary outcome; primary (stepping test) n.s. stated.
+- Row 04 chart label "Most markers unchanged" = Zhang 2025 meta-analysis (glucose/lipid outcomes mostly n.s.; NAD+ up).
+- Row 05 trimmed; Olthof 2003 homocysteine statement unchanged.
+- Bridge: doctor line kept as its own sentence. Offer CTA "SEE INGREDIENTS".
+- All em/en dashes removed (incl. chart sources and source labels: page ranges use "-").
+Images: new no-face, no-product scenes sq-row1b (water + plain unbranded capsules), sq-row3b (older adults walking, from behind),
+sq-row4b (research papers; used on row 06). QC PASS (article_images.py --qc). Alts describe the scene.

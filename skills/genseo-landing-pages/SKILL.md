@@ -133,3 +133,16 @@ testimonials, no sticky). Surface the choice to Kevin; never silently downgrade 
   `[DRAFT-QA-FAIL …]` / `[FAILED …]`, outputs committed. Logs: `logs/landing-daily/<day>.log`.
 - Review a draft: unpublished pages 404 on the storefront. Short look on the live theme:
   `landing_preview_toggle.py on <page_id>` (gsl-preview- handles only) → check → `landing_preview_toggle.py off <page_id>`.
+
+### Benchmark vs the reference listicle (2026-10-08)
+- `node scripts/landing_bench_extract.mjs <url|preview.html> state/bench/<name>` → 1440/375 full-page shots + text + DOM
+  measurements (H1 lines, paragraph words, screens tall, small text, dashes, CTA wrap, image alts…).
+- `/usr/bin/python3 scripts/landing_bench_jev.py state/bench/ref.json state/bench/<name>.json --label rN --calls 4 --cap 0.30`
+  → blind A/B (random order) JEV jev-latest scores on 12 criteria (design-taste-frontend + DTC), averaged;
+  ledger in `state/bench/jev-ledger.json`. JEV is text-only: screenshots go in as measurements, not pixels.
+- Reference: `python3 -m http.server 8790 -d ~/PATI/work/omnicreatine-local-clone` →
+  /pages/10-reasons-why-creatine-is-for-skinny-people/ (already extracted to state/bench/ref.json).
+- Lessons now enforced by validate_landing.py for `"daily": true` (warnings otherwise): no em/en dashes, H1 ≤ 48
+  chars, summary ≤ 32 words, item titles ≤ 34 chars, paragraphs ≤ 40 words, ≤ 520 chars per row, short chart
+  labels, CTA ≤ 3 words. Renderer: chart text ≥ 13px, portrait offer pack capped at 440px, crops always < 80 KB.
+  Publisher: CDN cache keyed by content hash, so re-rendered images re-upload.

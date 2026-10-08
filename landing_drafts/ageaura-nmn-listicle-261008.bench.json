@@ -1,0 +1,611 @@
+{
+ "r0": {
+  "avg": {
+   "ref": {
+    "hook_headline": 6.59,
+    "scannability": 8.73,
+    "proof_credibility": 3.37,
+    "offer_cta": 5.3,
+    "mobile_readability": 7.13,
+    "image_relevance": 4.42,
+    "brand_consistency": 6.15,
+    "trust_signals": 4.22,
+    "no_ai_slop": 1.43,
+    "typography_hierarchy": 4.91,
+    "hero_discipline": 3.99,
+    "persuasion_flow": 4.99,
+    "OVERALL": 5.1
+   },
+   "new": {
+    "hook_headline": 7.35,
+    "scannability": 6.6,
+    "proof_credibility": 9.82,
+    "offer_cta": 5.98,
+    "mobile_readability": 2.88,
+    "image_relevance": 4.18,
+    "brand_consistency": 6.84,
+    "trust_signals": 9.19,
+    "no_ai_slop": 4.76,
+    "typography_hierarchy": 6.26,
+    "hero_discipline": 4.47,
+    "persuasion_flow": 7.21,
+    "OVERALL": 6.29
+   }
+  },
+  "raw": {
+   "ref": {
+    "hook_headline": [
+     6.675,
+     6.65,
+     6.324999999999999,
+     6.7
+    ],
+    "scannability": [
+     8.575000000000001,
+     8.65,
+     8.875,
+     8.825
+    ],
+    "proof_credibility": [
+     3.95,
+     3.9000000000000004,
+     2.9,
+     2.725
+    ],
+    "offer_cta": [
+     5.375,
+     5.05,
+     5.3500000000000005,
+     5.425
+    ],
+    "mobile_readability": [
+     6.5,
+     6.775,
+     7.725,
+     7.5249999999999995
+    ],
+    "image_relevance": [
+     5.125,
+     5.05,
+     3.75,
+     3.775
+    ],
+    "brand_consistency": [
+     6.15,
+     6.475,
+     6.0,
+     5.9750000000000005
+    ],
+    "trust_signals": [
+     4.525,
+     4.6000000000000005,
+     3.875,
+     3.9000000000000004
+    ],
+    "no_ai_slop": [
+     1.825,
+     1.85,
+     0.9750000000000001,
+     1.075
+    ],
+    "typography_hierarchy": [
+     6.0,
+     6.625,
+     3.625,
+     3.375
+    ],
+    "hero_discipline": [
+     4.55,
+     5.05,
+     3.2750000000000004,
+     3.075
+    ],
+    "persuasion_flow": [
+     5.25,
+     5.300000000000001,
+     4.699999999999999,
+     4.725
+    ]
+   },
+   "new": {
+    "hook_headline": [
+     7.45,
+     7.4750000000000005,
+     7.199999999999999,
+     7.275
+    ],
+    "scannability": [
+     6.0,
+     5.75,
+     7.325,
+     7.325
+    ],
+    "proof_credibility": [
+     9.85,
+     9.875,
+     9.775,
+     9.775
+    ],
+    "offer_cta": [
+     6.375,
+     6.800000000000001,
+     5.575,
+     5.175
+    ],
+    "mobile_readability": [
+     2.6,
+     2.625,
+     3.225,
+     3.075
+    ],
+    "image_relevance": [
+     5.3500000000000005,
+     5.3500000000000005,
+     3.025,
+     2.9749999999999996
+    ],
+    "brand_consistency": [
+     7.55,
+     7.7,
+     6.2749999999999995,
+     5.85
+    ],
+    "trust_signals": [
+     9.45,
+     9.45,
+     8.875,
+     8.975
+    ],
+    "no_ai_slop": [
+     5.074999999999999,
+     5.125,
+     4.45,
+     4.4
+    ],
+    "typography_hierarchy": [
+     4.8,
+     5.875,
+     7.7,
+     6.65
+    ],
+    "hero_discipline": [
+     4.325,
+     4.375,
+     4.725,
+     4.475
+    ],
+    "persuasion_flow": [
+     7.2250000000000005,
+     7.35,
+     7.125,
+     7.1499999999999995
+    ]
+   }
+  },
+  "orders_ref_is_A": [
+   true,
+   true,
+   false,
+   false
+  ],
+  "worse_criteria": [
+   "scannability",
+   "mobile_readability",
+   "image_relevance"
+  ],
+  "model": "jev-1.13.0"
+ },
+ "r1": {
+  "avg": {
+   "ref": {
+    "hook_headline": 6.7,
+    "scannability": 8.01,
+    "proof_credibility": 3.74,
+    "offer_cta": 5.29,
+    "mobile_readability": 6.54,
+    "image_relevance": 3.76,
+    "brand_consistency": 6.02,
+    "trust_signals": 4.14,
+    "no_ai_slop": 1.62,
+    "typography_hierarchy": 4.47,
+    "hero_discipline": 3.93,
+    "persuasion_flow": 5.04,
+    "OVERALL": 4.94
+   },
+   "new": {
+    "hook_headline": 6.99,
+    "scannability": 8.7,
+    "proof_credibility": 9.73,
+    "offer_cta": 5.44,
+    "mobile_readability": 5.51,
+    "image_relevance": 5.4,
+    "brand_consistency": 6.54,
+    "trust_signals": 8.88,
+    "no_ai_slop": 6.36,
+    "typography_hierarchy": 7.22,
+    "hero_discipline": 6.82,
+    "persuasion_flow": 7.57,
+    "OVERALL": 7.1
+   }
+  },
+  "raw": {
+   "ref": {
+    "hook_headline": [
+     6.949999999999999,
+     6.550000000000001,
+     6.65,
+     6.65
+    ],
+    "scannability": [
+     7.9,
+     8.4,
+     7.8500000000000005,
+     7.9
+    ],
+    "proof_credibility": [
+     3.525,
+     4.425,
+     3.4000000000000004,
+     3.5999999999999996
+    ],
+    "offer_cta": [
+     5.425,
+     5.1,
+     5.375,
+     5.25
+    ],
+    "mobile_readability": [
+     6.775,
+     5.825,
+     6.725,
+     6.825
+    ],
+    "image_relevance": [
+     3.65,
+     4.5,
+     3.5,
+     3.4000000000000004
+    ],
+    "brand_consistency": [
+     6.15,
+     6.324999999999999,
+     5.775,
+     5.825
+    ],
+    "trust_signals": [
+     3.95,
+     4.625,
+     4.0,
+     3.975
+    ],
+    "no_ai_slop": [
+     1.875,
+     1.7000000000000002,
+     1.4249999999999998,
+     1.4749999999999999
+    ],
+    "typography_hierarchy": [
+     4.625,
+     5.3500000000000005,
+     3.9000000000000004,
+     4.0
+    ],
+    "hero_discipline": [
+     3.85,
+     4.6000000000000005,
+     3.4000000000000004,
+     3.875
+    ],
+    "persuasion_flow": [
+     4.7749999999999995,
+     5.375,
+     5.074999999999999,
+     4.925
+    ]
+   },
+   "new": {
+    "hook_headline": [
+     7.075,
+     7.05,
+     6.825,
+     7.0
+    ],
+    "scannability": [
+     8.774999999999999,
+     8.525,
+     8.725000000000001,
+     8.774999999999999
+    ],
+    "proof_credibility": [
+     9.675,
+     9.775,
+     9.7,
+     9.75
+    ],
+    "offer_cta": [
+     5.725,
+     6.175000000000001,
+     4.725,
+     5.125
+    ],
+    "mobile_readability": [
+     5.85,
+     5.2,
+     5.525,
+     5.475
+    ],
+    "image_relevance": [
+     5.300000000000001,
+     6.574999999999999,
+     4.7749999999999995,
+     4.95
+    ],
+    "brand_consistency": [
+     6.2,
+     7.35,
+     6.375,
+     6.2250000000000005
+    ],
+    "trust_signals": [
+     8.6,
+     9.325,
+     8.625,
+     8.95
+    ],
+    "no_ai_slop": [
+     6.5,
+     6.825,
+     6.1,
+     6.0
+    ],
+    "typography_hierarchy": [
+     7.6,
+     5.45,
+     7.975,
+     7.875
+    ],
+    "hero_discipline": [
+     7.175000000000001,
+     6.775,
+     6.5,
+     6.825
+    ],
+    "persuasion_flow": [
+     7.65,
+     7.375,
+     7.625,
+     7.625
+    ]
+   }
+  },
+  "orders_ref_is_A": [
+   false,
+   true,
+   false,
+   false
+  ],
+  "worse_criteria": [
+   "mobile_readability"
+  ],
+  "model": "jev-1.13.0"
+ },
+ "r1-confirm": {
+  "avg": {
+   "ref": {
+    "hook_headline": 6.85,
+    "scannability": 8.14,
+    "proof_credibility": 3.89,
+    "offer_cta": 5.28,
+    "mobile_readability": 6.42,
+    "image_relevance": 4.03,
+    "brand_consistency": 6.13,
+    "trust_signals": 4.33,
+    "no_ai_slop": 1.61,
+    "typography_hierarchy": 5.1,
+    "hero_discipline": 4.02,
+    "persuasion_flow": 5.09,
+    "OVERALL": 5.07
+   },
+   "new": {
+    "hook_headline": 7.02,
+    "scannability": 8.64,
+    "proof_credibility": 9.71,
+    "offer_cta": 5.62,
+    "mobile_readability": 5.51,
+    "image_relevance": 5.99,
+    "brand_consistency": 6.71,
+    "trust_signals": 8.95,
+    "no_ai_slop": 6.45,
+    "typography_hierarchy": 7.35,
+    "hero_discipline": 6.8,
+    "persuasion_flow": 7.58,
+    "OVERALL": 7.19
+   }
+  },
+  "raw": {
+   "ref": {
+    "hook_headline": [
+     6.925,
+     6.75,
+     6.800000000000001,
+     6.8999999999999995,
+     6.8999999999999995
+    ],
+    "scannability": [
+     7.975,
+     8.375,
+     8.25,
+     8.125,
+     7.975
+    ],
+    "proof_credibility": [
+     3.65,
+     4.45,
+     4.275,
+     3.4749999999999996,
+     3.5999999999999996
+    ],
+    "offer_cta": [
+     5.550000000000001,
+     5.175,
+     5.25,
+     5.074999999999999,
+     5.324999999999999
+    ],
+    "mobile_readability": [
+     7.0,
+     5.9750000000000005,
+     5.550000000000001,
+     6.625,
+     6.975
+    ],
+    "image_relevance": [
+     3.75,
+     4.45,
+     4.875,
+     3.5,
+     3.5749999999999997
+    ],
+    "brand_consistency": [
+     6.15,
+     6.375,
+     6.2250000000000005,
+     5.85,
+     6.05
+    ],
+    "trust_signals": [
+     4.050000000000001,
+     4.875,
+     4.525,
+     4.0,
+     4.2
+    ],
+    "no_ai_slop": [
+     1.7999999999999998,
+     1.825,
+     1.275,
+     1.4249999999999998,
+     1.7249999999999999
+    ],
+    "typography_hierarchy": [
+     4.35,
+     6.3,
+     6.625,
+     3.9250000000000003,
+     4.3
+    ],
+    "hero_discipline": [
+     3.65,
+     4.925,
+     4.625,
+     3.125,
+     3.775
+    ],
+    "persuasion_flow": [
+     4.85,
+     5.525,
+     5.2749999999999995,
+     5.0249999999999995,
+     4.7749999999999995
+    ]
+   },
+   "new": {
+    "hook_headline": [
+     7.0,
+     7.025,
+     7.1499999999999995,
+     6.975,
+     6.949999999999999
+    ],
+    "scannability": [
+     8.8,
+     8.5,
+     8.6,
+     8.65,
+     8.65
+    ],
+    "proof_credibility": [
+     9.625,
+     9.775,
+     9.775,
+     9.75,
+     9.625
+    ],
+    "offer_cta": [
+     5.6000000000000005,
+     6.025,
+     5.775,
+     5.0249999999999995,
+     5.699999999999999
+    ],
+    "mobile_readability": [
+     6.05,
+     5.05,
+     5.0,
+     5.525,
+     5.949999999999999
+    ],
+    "image_relevance": [
+     5.575,
+     6.8999999999999995,
+     6.550000000000001,
+     5.3500000000000005,
+     5.550000000000001
+    ],
+    "brand_consistency": [
+     6.4,
+     7.55,
+     7.199999999999999,
+     5.825,
+     6.574999999999999
+    ],
+    "trust_signals": [
+     8.725000000000001,
+     9.325,
+     9.275,
+     8.625,
+     8.774999999999999
+    ],
+    "no_ai_slop": [
+     6.5,
+     6.800000000000001,
+     6.475,
+     6.0,
+     6.475
+    ],
+    "typography_hierarchy": [
+     7.9,
+     6.4,
+     6.875,
+     7.8500000000000005,
+     7.7
+    ],
+    "hero_discipline": [
+     7.199999999999999,
+     6.925,
+     6.05,
+     6.825,
+     7.025
+    ],
+    "persuasion_flow": [
+     7.675,
+     7.4750000000000005,
+     7.5,
+     7.6,
+     7.625
+    ]
+   }
+  },
+  "orders_ref_is_A": [
+   false,
+   true,
+   true,
+   false,
+   false
+  ],
+  "worse_criteria": [
+   "mobile_readability"
+  ],
+  "model": "jev-1.13.0"
+ }
+}

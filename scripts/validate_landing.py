@@ -9,7 +9,9 @@ number in copy carries a source link or a placeholder, testimonials/expert quote
 placeholders or carry a "source", byline is on roster.json, all wellnessnest.co links 200,
 images exist (local) or are https and < 80 KB as served with Accept: image/webp, no dosage-with-units
 outside the product/offer card, no product named in the numbered findings for posture hybrid/editorial
-(vault skill claude-design-dtc-listicle-advertorial + PATI-ADAPTATION.md), claims log landing_drafts/<slug>.claims.md exists (versioned next to the spec).
+(vault skill claude-design-dtc-listicle-advertorial + PATI-ADAPTATION.md), taste rules from the
+2026-10-08 benchmark (no em/en dashes, paragraphs <= 40 words, H1 <= 55 chars, CTA <= 3 words; errors when
+"daily": true), claims log landing_drafts/<slug>.claims.md exists (versioned next to the spec).
 """
 import json, os, re, sys, urllib.request
 
@@ -165,6 +167,38 @@ def main():
                     errs.append(f"{path}: image fetch failed {e}")
             elif os.path.exists(os.path.join(ROOT, s_)) and os.path.getsize(os.path.join(ROOT, s_)) > 80 * 1024:
                 errs.append(f"{path}: local image > 80 KB")
+    # design-taste-frontend + DTC benchmark (2026-10-08, state/bench): scannable, mobile-first copy.
+    # Errors for daily-lane specs ("daily": true), warnings for hand-built pages.
+    taste = errs if spec.get("daily") else warns
+    VIS = re.compile(r"(\.(url|href|image|evidence|source)$)|^\.(reference|handle|slug|template|template_suffix|engine|created|store|posture)$")
+    for path, s_ in strings(spec):
+        if (VIS.search(path) and not path.endswith(".chart.source")) or path.startswith(".product.source"):
+            continue
+        if re.search("[\u2014\u2013]", s_):
+            taste.append(f"em/en dash in visible copy {path} (taste rule: use a comma, colon, period or 'to')")
+    def words(h):
+        return len(re.sub(r"<[^>]+>", " ", h).split())
+    for name, blk in [("items[%d]" % i, it) for i, it in enumerate(spec.get("items", []))] + [("bridge", spec.get("bridge") or {})]:
+        for j, para in enumerate(re.findall(r"<p>(.*?)</p>", blk.get("body", ""), re.S)):
+            if words(para) > 40:
+                taste.append(f"{name}.body p[{j}] has {words(para)} words (max 40; aim 15-30 for mobile scanning)")
+        if len(re.sub(r"<[^>]+>", "", blk.get("body", ""))) > 520:
+            taste.append(f"{name}.body is {len(re.sub(r'<[^>]+>', '', blk.get('body', '')))} chars (max 520 per row)")
+        for st in (blk.get("chart") or {}).get("stats", []):
+            if len(st.get("label", "")) > 24 or len(st.get("value", "")) > 8:
+                taste.append(f"{name}.chart stat '{st.get('value')}/{st.get('label')}' too long (value <= 8, label <= 24 chars)")
+    for i, it in enumerate(spec.get("items", [])):
+        if len(it.get("title", "")) > 34:
+            taste.append(f"items[{i}].title is {len(it['title'])} chars (max 34: 2 lines on mobile)")
+    hero = spec.get("hero") or {}
+    h1 = (hero.get("accent", "") + " " + hero.get("title", "")).strip()
+    if len(h1) > 48:
+        taste.append(f"H1 is {len(h1)} chars (max 48 so it fits 2 lines desktop / 3 lines mobile)")
+    if words(hero.get("summary_html", "")) > 32:
+        taste.append(f"hero summary is {words(hero.get('summary_html', ''))} words (max 32)")
+    cta = (spec.get("offer") or {}).get("cta", "")
+    if len(cta.split()) > 3:
+        taste.append(f"offer.cta '{cta}' is more than 3 words (taste: CTA must never wrap)")
     n_ph = len(PH_RE.findall(json.dumps(spec)))
     if strict and n_ph:
         errs.append(f"--strict: {n_ph} placeholder(s) remain — fill them with sourced facts or remove the block")

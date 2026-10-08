@@ -141,10 +141,13 @@ def crop_to(src, aspect, width, out, max_kb=78):
     height = int(round(width / aspect))
     im = im.resize((width, height), Image.LANCZOS)
     os.makedirs(os.path.dirname(out), exist_ok=True)
-    for q in (82, 76, 70, 64, 58, 52, 46):
+    for q in (82, 76, 70, 64, 58, 52, 46, 40, 34):
         im.save(out, "WEBP", quality=q, method=6)
         if os.path.getsize(out) <= max_kb * 1024:
             break
+    while os.path.getsize(out) > max_kb * 1024 and im.width > 400:   # high-detail scenes (foliage): shrink, never ship > 80 KB
+        im = im.resize((int(im.width * 0.88), int(im.height * 0.88)), Image.LANCZOS)
+        im.save(out, "WEBP", quality=46, method=6)
     return width, height
 
 
@@ -179,11 +182,17 @@ def stars(n=5, svg="star", total=5):
     return "".join(on if i < n else off for i in range(total))
 
 
+# 2026-10-08 benchmark (design-taste + mobile readability): no visible text under 13px, and a portrait
+# pack shot must not fill 1.5 screens on mobile. Inline so the installed v1 theme template stays untouched.
+SRC_CSS = "font-size:13px"
+OFFER_IMG_CSS = "max-height:440px;width:auto;max-width:100%;margin:0 auto;display:block;object-fit:contain"
+
+
 def chart_html(ch):
     if ch.get("kind") == "stats":
-        tiles = "".join(f'<div class="gslc__stat{" is-hl" if t.get("highlight") else ""}"><b>{E(t["value"])}</b><span>{E(t["label"])}</span></div>' for t in ch["stats"])
+        tiles = "".join(f'<div class="gslc__stat{" is-hl" if t.get("highlight") else ""}"><b>{E(t["value"])}</b><span style="font-size:13px">{E(t["label"])}</span></div>' for t in ch["stats"])
         return (f'<div class="gslc gslc--stats" role="img" aria-label="{E(ch["title"])}"><p class="gslc__title">{E(ch["title"])}</p>'
-                f'<div class="gslc__stats">{tiles}</div><p class="gslc__src">{E(ch["source"])}</p></div>')
+                f'<div class="gslc__stats">{tiles}</div><p class="gslc__src" style="{SRC_CSS}">{E(ch["source"])}</p></div>')
     mx = max(b["value"] for b in ch["bars"]) or 1
     cols, labels = "", ""
     for b in ch["bars"]:
@@ -196,7 +205,7 @@ def chart_html(ch):
     return (f'<div class="gslc" role="img" aria-label="{E(ch["title"])}"><p class="gslc__title">{E(ch["title"])}</p>'
             + (f'<div class="gslc__legend">{legend}</div>' if legend else "")
             + f'<div class="gslc__plot">{cols}</div><div class="gslc__labels">{labels}</div>'
-            f'<p class="gslc__src">{E(ch["source"])}</p></div>')
+            f'<p class="gslc__src" style="{SRC_CSS}">{E(ch["source"])}</p></div>')
 
 
 def sec(kind, inner, extra=""):
@@ -255,7 +264,7 @@ def render_listicle(spec, imgs):
     deal = f'<p class="rblof__deal">DEAL ENDING IN: <b data-rblof-timer data-deadline="{E(tb["deadline"])}">--:--:--</b></p>' if tb.get("deadline") else ""
     out.append(sec("listicle-offer",
         f'<div class="rblof" id="gsl-offer"><div class="rblof__pill">{E(of["pill"])}</div><div class="rblof__card">'
-        f'<div class="rblof__media"><img src="{of["image"]}" alt="{E(of.get("alt",""))}" loading="lazy" width="800" height="800"></div>'
+        f'<div class="rblof__media"><img src="{of["image"]}" alt="{E(of.get("alt",""))}" loading="lazy" width="800" height="800" style="{OFFER_IMG_CSS}"></div>'
         f'<div class="rblof__content"><h2 class="rblof__title"><span class="rblof__accent">{E(of["accent"])}</span> {E(of["title"])}</h2>'
         f'<div class="rblof__sub"><p>{E(of["sub"])}</p></div><div class="rblof__cta-wrap"><a class="rblof__cta" href="{E(of["href"])}">{E(of["cta"])}</a>{deal}</div>'
         f'<div class="rblof__meta">{risk}<p class="rblof__guarantee">{E(of["guarantee"])}</p></div></div></div></div>'))
