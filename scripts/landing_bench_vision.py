@@ -49,8 +49,8 @@ def side(a, b, gap=16):
 
 
 def fold(prefix):
-    d = Image.open(prefix + "-desktop.png").convert("RGB").crop((0, 0, 1440, 900)).resize((560, 350), Image.LANCZOS)
-    m = Image.open(prefix + "-mobile.png").convert("RGB").crop((0, 0, 375, 812)).resize((162, 350), Image.LANCZOS)
+    d = Image.open(prefix + "-desktop.png").convert("RGB"); d = d.crop((0, 0, d.width, round(d.width * 900 / 1440))).resize((560, 350), Image.LANCZOS)
+    m = Image.open(prefix + "-mobile.png").convert("RGB"); m = m.crop((0, 0, m.width, round(m.width * 812 / 375))).resize((162, 350), Image.LANCZOS)   # dpr-aware (storefront shots are 2x)
     return side(d, m, 8)
 
 

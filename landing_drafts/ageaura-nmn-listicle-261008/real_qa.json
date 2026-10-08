@@ -1,0 +1,118 @@
+{
+ "page_id": 166104760635,
+ "checks": {
+  "template_in_main_theme": {
+   "ok": true,
+   "info": "templates/page.gsl-ref-listicle-v2.liquid in theme 183190880571 (WN Shopify Theme - 02072026)"
+  },
+  "template_matches_local": {
+   "ok": true,
+   "info": "live eb61b67a3c31 vs local eb61b67a3c31 (a CSS change needs a NEW suffix; never overwrite)"
+  },
+  "template_suffix": {
+   "ok": true,
+   "info": "page 'gsl-ref-listicle-v2' vs spec 'gsl-ref-listicle-v2'"
+  },
+  "body_text_matches_local": {
+   "ok": true,
+   "info": "Shopify body_html visible text vs local body.html (old body pushed?)"
+  },
+  "images_on_cdn": {
+   "ok": true,
+   "info": "20 srcs"
+  },
+  "hidden_again": {
+   "ok": true,
+   "info": "published_at=None"
+  },
+  "desktop_http": {
+   "ok": true,
+   "info": "200"
+  },
+  "desktop_premium_css": {
+   "ok": true,
+   "info": "24px"
+  },
+  "desktop_offer_is_current": {
+   "ok": true,
+   "info": "offer box shows: ⚡️ AGEAURA NMN + TMG COMPLEX NMN + TMG in One Daily Serving 4.2 TrustScore · 1,144 reviews"
+  },
+  "desktop_no_overflow": {
+   "ok": true,
+   "info": ""
+  },
+  "desktop_images_ok": {
+   "ok": true,
+   "info": "[]"
+  },
+  "mobile_http": {
+   "ok": true,
+   "info": "200"
+  },
+  "mobile_premium_css": {
+   "ok": true,
+   "info": "20px"
+  },
+  "mobile_offer_is_current": {
+   "ok": true,
+   "info": "offer box shows: ⚡️ AGEAURA NMN + TMG COMPLEX NMN + TMG in One Daily Serving 4.2 TrustScore · 1,144 reviews"
+  },
+  "mobile_no_overflow": {
+   "ok": true,
+   "info": ""
+  },
+  "mobile_images_ok": {
+   "ok": true,
+   "info": "[]"
+  },
+  "sticky_cta": {
+   "ok": true,
+   "info": "{\"top\": \"off(scrollY=0 vh=812 offerTop=8876 bridgeTop=6924 rows=8 cls=gslp-sticky)\", \"after_bridge\": true, \"on_offer\": \"off(scrollY=9026 vh=812 offerTop=-150 bridgeTop=-2102 rows=8 cls=gslp-sticky)\"}"
+  }
+ },
+ "fails": [],
+ "was_hidden": true,
+ "storefront": {
+  "url": "https://wellnessnest.co/pages/gsl-preview-ageaura-nmn-listicle-261008?v=1791442797706",
+  "desktop": {
+   "http": 200,
+   "title": "7 Things Research Shows About NMN After 40 – Wellness Nest",
+   "status_text": "Skip to content\n\n↩️ 90-Day Refund Policy — Eligibility Applies\n\n🚚 Free Shipping",
+   "body_class": "gradient link-btns--glow action-btns--glow",
+   "gsl_ref": true,
+   "premium_markup": true,
+   "premium_css_applied": "24px",
+   "premium_css_in_dom": true,
+   "offer_text": "⚡️ AGEAURA NMN + TMG COMPLEX NMN + TMG in One Daily Serving 4.2 TrustScore · 1,144 reviews on Trustpilot $59.46 $69.95 SAVE 15% with Subscribe & Save, delivered every 4 weeks. Or $69.95 one-time. 500 mg NMN + 250 mg TMG ",
+   "old_v2_offer_copy": false,
+   "sticky": true,
+   "imgs": 15,
+   "broken": [],
+   "overflow": false,
+   "height": 9082
+  },
+  "mobile": {
+   "http": 200,
+   "title": "7 Things Research Shows About NMN After 40 – Wellness Nest",
+   "status_text": "Skip to content\n\n↩️ 90-Day Refund Policy — Eligibility Applies\n\n🚚 Free Shipping",
+   "body_class": "gradient link-btns--glow action-btns--glow",
+   "gsl_ref": true,
+   "premium_markup": true,
+   "premium_css_applied": "20px",
+   "premium_css_in_dom": true,
+   "offer_text": "⚡️ AGEAURA NMN + TMG COMPLEX NMN + TMG in One Daily Serving 4.2 TrustScore · 1,144 reviews on Trustpilot $59.46 $69.95 SAVE 15% with Subscribe & Save, delivered every 4 weeks. Or $69.95 one-time. 500 mg NMN + 250 mg TMG ",
+   "old_v2_offer_copy": false,
+   "sticky": true,
+   "imgs": 15,
+   "broken": [],
+   "overflow": false,
+   "height": 12149,
+   "sticky_check": {
+    "top": "off(scrollY=0 vh=812 offerTop=8876 bridgeTop=6924 rows=8 cls=gslp-sticky)",
+    "after_bridge": true,
+    "on_offer": "off(scrollY=9026 vh=812 offerTop=-150 bridgeTop=-2102 rows=8 cls=gslp-sticky)"
+   }
+  }
+ },
+ "verdict": "PASS"
+}

@@ -152,3 +152,10 @@ testimonials, no sticky). Surface the choice to Kevin; never silently downgrade 
 - Keys: hero.kicker/image/chip/cta/source/focal_y, trust[] + trust_source, items[].evidence_label, items[].layout "callout", expert.reviews[] (real 4-5★ Trustpilot + URL), offer.rating_html/price{now,was,tag,note}/bullets/price_source, sticky_cta, pack_images[]. Model: landing_drafts/ageaura-nmn-listicle-261008.json.
 - Images: one art direction for the whole page. Pack shots are generated with the real cutout as `--ref`, gated by `landing_label_gate.py` and a mark zoom check, with `landing_pack_shots.py` composites as the fallback (scripts/tools/README.md).
 - Visual benchmark: `scripts/landing_bench_vision.py state/bench/live state/bench/<new> --label <x> --calls 6` runs a blind A/B in random order with two vision judges (gem9: gemini-3.1-pro-low + gpt-5.6-luna, $0) on 7 criteria. Reference = the LIVE omnicreatine listicle (state/bench/live-*.png). v3 result: new 7.21 vs live 5.50, ahead on all 7 criteria.
+
+### Approval = the REAL Shopify render (2026-10-08)
+Kevin saw an old offer box in his preview while the local v3 screenshots looked right, so screenshots for approval now always come from the storefront. `scripts/landing_real_qa.py <spec>` does two things:
+- **Read-only parity checks:** the MAIN theme holds `templates/page.<suffix>.liquid` byte-identical to the local copy; `template_suffix` matches; the page's visible text equals local `body.html`; all images are on the Shopify CDN.
+- **Storefront screenshots:** `landing_live_shot.mjs` takes them in a ~40 s gsl-preview window (fresh context, `?v=` cache-buster), then hides the page again in a finally block.
+
+`run_landing_daily.sh` runs it after every daily draft and tags the ticket DRAFT-QA-FAIL if it fails. Set `GENSEO_LANDING_REAL_QA_WINDOW=0` to keep parity but skip the window.

@@ -2,6 +2,9 @@
 # GenSeo DAILY listicle landing page — ONE unpublished Shopify draft per day for Kevin to approve (Kevin 2026-10-08).
 # NEVER publishes: landing_publisher.py --draft only (published:false), --live is refused in this lane, and the
 # wrapper re-checks the page afterwards and force-hides it if anything ever made it visible.
+# REAL render QA (Kevin 2026-10-08): landing_real_qa.py checks theme/template/body parity read-only, then screenshots the
+# REAL storefront in a ~40 s gsl-preview window (on -> screenshot -> off in a finally) so approval never rests on a local
+# render. GENSEO_LANDING_REAL_QA_WINDOW=0 keeps the parity checks but skips the window.
 # launchd com.pati.genseo-landing: 08:15 + 16:15 catch-up, on WHICHEVER Mac is online (deploy/com.pati.genseo-landing.*.plist).
 #
 # One-page-per-day guarantee across the two Macs (they share no writable state -> Shopify is the shared state):
@@ -96,6 +99,12 @@ d=json.load(open(sys.argv[1])); bad=[w for w,r in d["widths"].items() if r["over
 print("ok" if not bad else "overflow@"+",".join(bad))' "$OUT/qa.json" 2>/dev/null || echo "qa-error")"
 [ $Q != 0 ] && QOK="qa-error"
 for f in desktop mobile; do [ -f "$OUT/$f.png" ] && sips -s format jpeg -s formatOptions 70 "$OUT/$f.png" --out "$OUT/$f.jpg" >/dev/null 2>&1; done
+# what Kevin will actually see: the real Shopify storefront render (not preview.html)
+RQ="skip"
+if [ -f "$OUT/shopify.json" ]; then
+  if $PY scripts/landing_real_qa.py "$SPEC" >> "$LOG" 2>&1; then RQ=ok; else RQ=fail; fi
+  for f in desktop mobile offer; do [ -f "$OUT/real-$f.png" ] && sips -s format jpeg -s formatOptions 70 "$OUT/real-$f.png" --out "$OUT/real-$f.jpg" >/dev/null 2>&1; done
+fi
 # the page must exist and be UNPUBLISHED; anything visible gets hidden on the spot
 PSTATE="$($PY - "$OUT/shopify.json" <<'PY'
 import json, os, sys, urllib.request
@@ -115,17 +124,17 @@ else:
     print(f"{pid} unpublished {p['handle']}")
 PY
 )"
-say "spec $SPEC · validate rc=$V · qa=$QOK · page: ${PSTATE:-unknown}"
+say "spec $SPEC · validate rc=$V · qa=$QOK · real-render=$RQ · page: ${PSTATE:-unknown}"
 case "$PSTATE" in
   nopage|"") tag "FAILED $DAY no Shopify draft (validate rc=$V, qa=$QOK; see $RUNLOG)"; R=1;;
   *) PID="${PSTATE%% *}"
-     if [ $V = 0 ] && [ "$QOK" = ok ]; then tag "DRAFT $DAY page $PID"; R=0; else tag "DRAFT-QA-FAIL $DAY page $PID validate=$V qa=$QOK"; R=2; fi
+     if [ $V = 0 ] && [ "$QOK" = ok ] && [ "$RQ" = ok ]; then tag "DRAFT $DAY page $PID"; R=0; else tag "DRAFT-QA-FAIL $DAY page $PID validate=$V qa=$QOK real=$RQ"; R=2; fi
      echo "$(date '+%FT%T%z') $PID $SPEC" >> "$MINE"
      say "ADMIN: https://admin.shopify.com/store/wellnessnest1/content/pages/$PID (unpublished draft — Kevin approves)";;
 esac
 FILES=("$QUEUE" "$SPEC")
-for f in "${SPEC%.json}.claims.md" "$OUT/body.html" "$OUT/page.css" "$OUT/preview.html" "$OUT/shopify.json" "$OUT/qa.json" "$OUT/desktop.jpg" "$OUT/mobile.jpg"; do [ -f "$f" ] && FILES+=("$f"); done
+for f in "${SPEC%.json}.claims.md" "$OUT/body.html" "$OUT/page.css" "$OUT/preview.html" "$OUT/shopify.json" "$OUT/qa.json" "$OUT/desktop.jpg" "$OUT/mobile.jpg" "$OUT/real_qa.json" "$OUT/real-desktop.jpg" "$OUT/real-mobile.jpg" "$OUT/real-offer.jpg"; do [ -f "$f" ] && FILES+=("$f"); done
 for i in 1 2 3 4 5 6; do [ -e .git/index.lock ] && sleep 10 || break; done
-git add -- "${FILES[@]}" >> "$LOG" 2>&1 && git commit -q -m "landing daily $DAY: $SLUG (UNPUBLISHED draft ${PID:-none}, validate=$V qa=$QOK)" -- "${FILES[@]}" >> "$LOG" 2>&1 \
+git add -- "${FILES[@]}" >> "$LOG" 2>&1 && git commit -q -m "landing daily $DAY: $SLUG (UNPUBLISHED draft ${PID:-none}, validate=$V qa=$QOK real=$RQ)" -- "${FILES[@]}" >> "$LOG" 2>&1 \
   && say "committed $(git rev-parse --short HEAD)" || say "WARN: commit failed (see log)"
 exit $R
