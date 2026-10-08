@@ -1,0 +1,23 @@
+# Claims log — shilajit-gummies-listicle-261008 (listicle, Wellness Nest) — 2026-10-08
+
+Kevin 2026-10-08 14:27 ICT asked for "ShilaSource Shilajit Gummies". No ShilaSource-branded gummy exists on wellnessnest.co (checked products.json 2026-10-08); the active shilajit gummy is
+"Premium Himalayan Shilajit Gummies" (/products/premium-himalayan-shilajit-gummies), used here and flagged to Kevin. Unpublished draft, handle gsl-preview-shilajit-gummies-listicle-261008.
+
+| Claim (as written on page) | Source | How verified |
+|---|---|---|
+| Human trials used purified, standardized extracts in capsules, not gummies | Keller 2019 doi:10.1186/s12970-019-0270-2 (PrimaVie); Pingali 2022 doi:10.1016/j.phymed.2022.154334 ("standardized aqueous extract"); Pandit 2016 ("purified Shilajit") | Abstracts (Europe PMC 2026-10-08) |
+| 90-day RCT, men 45 to 55, purified shilajit twice daily; total + free testosterone rose vs placebo (chart: 90 days, 45 to 55, T ↑) | Pandit S et al., Andrologia 2016, doi:10.1111/and.12482 | Abstract |
+| Labels list extract or raw-resin equivalent via a ratio such as 10:1; trials report extract amounts | Product supplement facts ("Shilajit resin from 150 mg of 10:1 extract"), Pandit/Keller/Pingali report mg of extract | PDP facts image + abstracts |
+| Keller 2019: 63 men, 8 weeks; stronger half higher dose 8.9% vs placebo 16.0% (lower dose 17.0%) | doi:10.1186/s12970-019-0270-2 | Abstract |
+| Ashwagandha: 60-day RCT, root extract lowered stress scores and cortisol vs placebo | Chandrasekhar K et al., Indian J Psychol Med 2012;34(3):255-62, doi:10.4103/0253-7176.106022 | Abstract (64 adults, 300 mg twice daily; P<0.0001 scales, cortisol P=0.0006) |
+| No published trial of shilajit gummies or shilajit + these herbs | Absence claim: Europe PMC search 2026-10-08 | No such trial found |
+| Heavy metals: 20.7% of Ayurvedic products bought online contained lead, mercury or arsenic | Saper RB et al., JAMA 2008, doi:10.1001/jama.300.8.915 | Abstract |
+| Bridge: shilajit extract + ashwagandha, gokshura, black musli + four more botanicals (ginger, kaunch, ginseng, akarkara); "Its extract per serving is lower than in the trials above" (150 mg vs 250-500 mg/day in Pandit/Keller/Pingali) | PDP supplement facts 2026-10-08 | Facts image OCR |
+| Offer: 150 mg shilajit extract (10:1) per 2-gummy serving; 60 gummies, 30 servings | PDP supplement facts (serving 2 gummies, 30 servings) + pack "60 GUMMIES" | 2026-10-08 |
+| Price $39.99 Subscribe & Save every 4 weeks (1 pouch), $59.99 one-time | PDP text "One-time purchase is $59.99. Current recurring options are $39.99 every 4 weeks for 1 pouch"; .js plan 9850290491 = 3999 | 2026-10-08 |
+| Reviews: expert Claudia Elena 5★ (BE, 2025-11-20, mentions Himalayan Shilajit Gummies, no effect claim); cards J collister, Carlee Buford, Νεκτάριος Πιτσιούγκας (5★) | state/trustpilot/wellnessnest.json | Verbatim |
+
+## Deliberately NOT used
+- Pack claims "75% Fulvic Acid", "85+ Trace Minerals", "60-DAY SUPPLY" (facts say 30 servings of 2 gummies = 30 days; the pack's 60-day line contradicts it) — not in copy (they remain visible on the real pack in photos). PDP explicitly avoids vegan/third-party/fulvic claims without documentation; so do we.
+- Stephen A McCloskey review ("excellent sources of energy and stamina"): product-effect claim, skipped.
+- compare_at_price $99.98 (no strike-through against it). No dosage-with-units in body copy. No AgeAura/Urolithin. No faces.

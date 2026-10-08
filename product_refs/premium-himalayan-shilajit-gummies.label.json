@@ -1,0 +1,27 @@
+{
+ "handle": "premium-himalayan-shilajit-gummies",
+ "source": "read off the live PDP pack shot (image 0, /products/premium-himalayan-shilajit-gummies.js) 2026-10-08 via label_ocr.swift",
+ "required": [
+  "PREMIUM HIMALAYAN",
+  "SHILAJIT GUMMIES",
+  "wellness",
+  "nest",
+  "DIETARY SUPPLEMENT"
+ ],
+ "optional": [
+  "ASHWAGANDHA",
+  "GOKSHURA",
+  "BLACK MUSLI",
+  "1500mg Shilajit",
+  "75% Fulvic Acid",
+  "85+ Trace Minerals",
+  "60 GUMMIES",
+  "60-DAY SUPPLY",
+  "Shilajit",
+  "Fulvic",
+  "Acid",
+  "Trace",
+  "Minerals"
+ ],
+ "mark": "lowercase two-line 'wellness / nest' wordmark (white 'wellness', green 'nest') centred under the green mountain line art on the black pouch top (compare at >= 2x with product_refs/premium-himalayan-shilajit-gummies-cutout.png)"
+}

@@ -1,0 +1,42 @@
+{
+ "url": "https://wellnessnest.co/pages/gsl-preview-shilajit-gummies-listicle-261008?v=1791447749975",
+ "desktop": {
+  "http": 200,
+  "title": "7 Things to Check Before Buying Shilajit Gummies – Wellness Nest",
+  "status_text": "Skip to content\n\n↩️ 90-Day Refund Policy — Eligibility Applies\n\n🚚 Free Shipping",
+  "body_class": "gradient link-btns--glow action-btns--glow",
+  "gsl_ref": true,
+  "premium_markup": true,
+  "premium_css_applied": "24px",
+  "premium_css_in_dom": true,
+  "offer_text": "⚡️ HIMALAYAN SHILAJIT GUMMIES Shilajit + 7 Botanicals in Two Gummies a Day 4.2 TrustScore · 1,144 reviews on Trustpilot $39.99 $59.99 SAVE $20 with Subscribe & Save, delivered every 4 weeks. Or $59.99 one-time. 150 mg sh",
+  "old_v2_offer_copy": false,
+  "sticky": true,
+  "imgs": 15,
+  "broken": [],
+  "overflow": false,
+  "height": 9062
+ },
+ "mobile": {
+  "http": 200,
+  "title": "7 Things to Check Before Buying Shilajit Gummies – Wellness Nest",
+  "status_text": "Skip to content\n\n↩️ 90-Day Refund Policy — Eligibility Applies\n\n🚚 Free Shipping",
+  "body_class": "gradient link-btns--glow action-btns--glow",
+  "gsl_ref": true,
+  "premium_markup": true,
+  "premium_css_applied": "20px",
+  "premium_css_in_dom": true,
+  "offer_text": "⚡️ HIMALAYAN SHILAJIT GUMMIES Shilajit + 7 Botanicals in Two Gummies a Day 4.2 TrustScore · 1,144 reviews on Trustpilot $39.99 $59.99 SAVE $20 with Subscribe & Save, delivered every 4 weeks. Or $59.99 one-time. 150 mg sh",
+  "old_v2_offer_copy": false,
+  "sticky": true,
+  "imgs": 15,
+  "broken": [],
+  "overflow": false,
+  "height": 12196,
+  "sticky_check": {
+   "top": "off(scrollY=0 vh=812 offerTop=8885 bridgeTop=6997 rows=8 cls=gslp-sticky)",
+   "after_bridge": true,
+   "on_offer": "off(scrollY=9035 vh=812 offerTop=-150 bridgeTop=-2038 rows=8 cls=gslp-sticky)"
+  }
+ }
+}

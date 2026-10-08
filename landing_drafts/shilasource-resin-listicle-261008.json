@@ -1,0 +1,300 @@
+{
+ "engine": "ref",
+ "template": "listicle",
+ "posture": "hybrid",
+ "store": "wellnessnest",
+ "slug": "shilasource-resin-listicle-261008",
+ "handle": "gsl-preview-shilasource-resin-listicle-261008",
+ "template_suffix": "gsl-ref-listicle-v2",
+ "takeover": false,
+ "created": "2026-10-08",
+ "daily": false,
+ "reference": "http://localhost:8790/pages/10-reasons-why-creatine-is-for-skinny-people/",
+ "title": "7 Things to Know Before You Try Shilajit Resin",
+ "meta_description": "What shilajit is, what the human trials tested (testosterone, strength, bone density), what they did not, why purity matters, and how resin is taken.",
+ "topbar": {
+  "labels": [
+   "Wellness Nest Guide 📖",
+   "90-Day Money-Back Guarantee on first orders"
+  ],
+  "deadline": null
+ },
+ "hero": {
+  "accent": "7 Things",
+  "title": "to Know Before You Try Shilajit Resin",
+  "summary_html": "<strong>Summary:</strong> What shilajit is, what the few human trials tested, what they did not, and how to choose and take a resin.",
+  "kicker": "Evidence review · 6 studies cited",
+  "image": "tmp_images/landing-shilasource-resin-listicle-261008/hero.webp",
+  "alt": "ShilaSource Himalayan Shilajit Resin tube and jar on a dark travertine podium",
+  "chip": "75 servings per jar (label)",
+  "cta": {
+   "label": "SEE INGREDIENTS",
+   "href": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin"
+  },
+  "image_note": "Generated with the real pack as reference (ima2, article_images.py --qc, cutout of PDP image 0), label gate PASS (scripts/landing_label_gate.py vs product_refs/shilasource-himalayan-shilajit-resin.label.json), mark zoom-checked at 2x, 2026-10-08.",
+  "source": "Chip = PDP pack label '75 SERVINGS' (PDP text: 'featured package states 75 servings'), read 2026-10-08.",
+  "focal_y": 0.3
+ },
+ "byline": {
+  "name": "Dr. Marcus Hale",
+  "role": "Wellness Nest editorial team",
+  "avatar": "tmp_images/landing-ageaura-nmn-listicle-261008/sq-avatar.webp"
+ },
+ "updated": "Oct 8, 2026",
+ "items": [
+  {
+   "title": "It's a resin from mountain rock",
+   "body": "<p>Shilajit is a dark, sticky, mineral-rich resin that seeps from mountain rock. It has a long history in Ayurvedic tradition.</p><p>A <a href=\"https://doi.org/10.1002/ptr.5018\" target=\"_blank\" rel=\"noopener\">2014 safety review</a> names fulvic acid and dibenzo-α-pyrones as key compounds, and notes that well-controlled human studies are relatively few.</p>",
+   "evidence": "Review, Phytother Res 2014",
+   "source": "https://doi.org/10.1002/ptr.5018",
+   "image": "tmp_images/landing-shilasource-resin-listicle-261008/row1.webp",
+   "alt": "Dark mineral resin seeping from a crack in layered mountain rock",
+   "evidence_label": "Safety review · Stohs, Phytother Res 2014"
+  },
+  {
+   "title": "Men 45 to 55: testosterone rose",
+   "body": "<p>In a <a href=\"https://doi.org/10.1111/and.12482\" target=\"_blank\" rel=\"noopener\">90-day placebo-controlled trial</a>, healthy men aged 45 to 55 took purified shilajit twice a day.</p><p>Total testosterone, free testosterone and DHEAS rose significantly versus placebo, while LH and FSH stayed steady. A purified extract, tested in men only.</p>",
+   "evidence": "Human RCT, Andrologia 2016",
+   "source": "https://doi.org/10.1111/and.12482",
+   "image": "tmp_images/landing-shilasource-resin-listicle-261008/row2.webp",
+   "alt": "Leather hiking boots and a trekking pole on a granite boulder above a misty valley",
+   "evidence_label": "Human RCT · Pandit et al., Andrologia 2016"
+  },
+  {
+   "title": "Strength held up better",
+   "body": "<p>In an <a href=\"https://doi.org/10.1186/s12970-019-0270-2\" target=\"_blank\" rel=\"noopener\">8-week trial</a>, 63 active men took a lower dose, a higher dose or placebo, then did a hard leg-fatigue test.</p><p>Among the stronger half, the higher-dose group lost 8.9% of strength versus 16.0% on placebo. The lower dose matched placebo.</p>",
+   "evidence": "Human RCT, J Int Soc Sports Nutr 2019",
+   "source": "https://doi.org/10.1186/s12970-019-0270-2",
+   "chart": {
+    "kind": "bars",
+    "title": "Strength lost after fatigue (lower is better)",
+    "legend": [
+     {
+      "label": "Higher dose",
+      "highlight": true
+     },
+     {
+      "label": "Lower dose / placebo"
+     }
+    ],
+    "bars": [
+     {
+      "label": "Higher dose",
+      "value": 8.9,
+      "display": "8.9%",
+      "highlight": true,
+      "inbar": "Best"
+     },
+     {
+      "label": "Lower dose",
+      "value": 17.0,
+      "display": "17.0%"
+     },
+     {
+      "label": "Placebo",
+      "value": 16.0,
+      "display": "16.0%"
+     }
+    ],
+    "source": "Keller et al., JISSN 2019. 63 men, 8 weeks, 500 vs 250 mg/day PrimaVie shilajit vs placebo; adjusted mean % decline in MVIC, upper-50th-percentile strength subgroup."
+   },
+   "evidence_label": "Human RCT · Keller et al., JISSN 2019"
+  },
+  {
+   "title": "Bone density in women 45 to 65",
+   "body": "<p>A <a href=\"https://doi.org/10.1016/j.phymed.2022.154334\" target=\"_blank\" rel=\"noopener\">48-week trial</a> followed 60 postmenopausal women with low bone density. They took a shilajit extract at one of two doses, or placebo.</p><p>Bone density kept falling on placebo, but the loss was smaller with the extract, more so at the higher dose. One trial, one specific extract.</p>",
+   "evidence": "Human RCT, Phytomedicine 2022",
+   "source": "https://doi.org/10.1016/j.phymed.2022.154334",
+   "image": "tmp_images/landing-shilasource-resin-listicle-261008/row4.webp",
+   "alt": "Walking shoes and a linen jacket on a sunlit stone garden bench",
+   "evidence_label": "Human RCT · Pingali & Nutalapati, 2022"
+  },
+  {
+   "title": "Purity matters with resins",
+   "body": "<p>Ayurvedic products can carry heavy metals. A <a href=\"https://doi.org/10.1001/jama.300.8.915\" target=\"_blank\" rel=\"noopener\">JAMA study</a> tested 193 Ayurvedic products bought online: 20.7% contained lead, mercury or arsenic.</p><p>So ask any shilajit seller about lab testing for your batch, not just a general claim.</p>",
+   "evidence": "Product testing study, JAMA 2008",
+   "source": "https://doi.org/10.1001/jama.300.8.915",
+   "chart": {
+    "kind": "stats",
+    "title": "Ayurvedic products bought online",
+    "stats": [
+     {
+      "value": "193",
+      "label": "Products tested",
+      "highlight": true
+     },
+     {
+      "value": "20.7%",
+      "label": "Lead, mercury or arsenic"
+     },
+     {
+      "value": "75%",
+      "label": "Of those claimed GMP"
+     }
+    ],
+    "source": "Saper RB et al. JAMA 2008;300(8):915-923. X-ray fluorescence testing of 193 products bought online in 2005."
+   },
+   "evidence_label": "Product testing · Saper et al., JAMA 2008"
+  },
+  {
+   "title": "The resin form is barely studied",
+   "body": "<p>The controlled trials above used purified, standardized extracts in capsules. Resin itself has far less evidence.</p><p>The one resin study we found was a <a href=\"https://doi.org/10.7759/cureus.102372\" target=\"_blank\" rel=\"noopener\">28-day pilot</a> in 25 men with no placebo group. Promising, but not proof.</p>",
+   "evidence": "Evidence gap: Europe PMC search 2026-10-08; only resin study = open-label pilot, Cureus 2026",
+   "source": "https://doi.org/10.7759/cureus.102372",
+   "image": "tmp_images/landing-shilasource-resin-listicle-261008/row6.webp",
+   "alt": "Research papers, reading glasses and an amber dish with a drop of resin on slate",
+   "evidence_label": "Literature check · resin: one open-label pilot only",
+   "layout": "callout"
+  },
+  {
+   "title": "How resin is usually taken",
+   "body": "<p>Resin is usually dissolved: a <a href=\"https://wellnessnest.co/blogs/news/how-to-take-shilajit-resin-dissolve-it-right-us-2026\" target=\"_blank\" rel=\"noopener\">pea-size piece</a> stirred into warm, not boiling, water or tea until no dark lumps remain.</p><p>The serving on your own jar's label is the one to use. Labels differ between brands.</p>",
+   "evidence": "Wellness Nest usage guide (Oct 2026)",
+   "source": "https://wellnessnest.co/blogs/news/how-to-take-shilajit-resin-dissolve-it-right-us-2026",
+   "image": "tmp_images/landing-shilasource-resin-listicle-261008/row7.webp",
+   "alt": "A cup of warm tea with a piece of dark resin dissolving into amber swirls",
+   "evidence_label": "Usage guide · Wellness Nest, Oct 2026"
+  }
+ ],
+ "bridge": {
+  "title": "Pick the format you will keep",
+  "body": "<p>Every trial here tested daily use over weeks or months. A routine you can keep matters more than any single serving.</p><p>One option: ShilaSource Himalayan Shilajit Resin, a resin you dissolve in a warm drink. Questions about batch testing? Wellness Nest support answers them.</p><p>Taking medication or managing a health condition? Check with your doctor first.</p>",
+  "image": "tmp_images/landing-shilasource-resin-listicle-261008/ledge.webp",
+  "alt": "The ShilaSource shilajit resin tube and jar on a stone counter beside a cup of tea"
+ },
+ "expert": {
+  "title": "TrustScore 4.2 from 1,144 Trustpilot Reviews",
+  "stars": 5,
+  "quote": "fast and easy and the Shilajit I ordered is high Quality",
+  "author": "A Ginter · Wellness Nest customer on Trustpilot",
+  "source": "https://www.trustpilot.com/reviews/698a106be72503d576b56410 (5-star review, published 2026-02-09, verbatim; TrustScore 4.2 and 1,144 reviews as displayed on trustpilot.com/review/wellnessnest.co, read 2026-10-08). Store-level review, not a product-effect claim.",
+  "image": "tmp_images/landing-shilasource-resin-listicle-261008/dark.webp",
+  "alt": "The ShilaSource shilajit resin tube and jar on a slate podium in warm light",
+  "reviews": [
+   {
+    "stars": 5,
+    "quote": "Jamie replied very quickly when I asked for a Certificate of Analysis. There was no hesitation, and the reply was within a few hours.  Impressive! Thank you :)",
+    "name": "Sue",
+    "meta": "AU · Mar 2026",
+    "url": "https://www.trustpilot.com/reviews/69a7e1c6034b5ce74072c814"
+   },
+   {
+    "stars": 4,
+    "quote": "Receive product  on. Time\n And having  good quality product",
+    "name": "Marie Petuelle Mombrun",
+    "meta": "US · Apr 2026",
+    "url": "https://www.trustpilot.com/reviews/69cfdb42313f8a8159e4feb4",
+    "verified": true
+   },
+   {
+    "stars": 5,
+    "quote": "Great products and really great client service. My request was solved within a minutes.",
+    "name": "Miloslav Kral",
+    "meta": "SK · Nov 2025",
+    "url": "https://www.trustpilot.com/reviews/69281b1420fb2a718fed2339"
+   }
+  ],
+  "reviews_source": "Verbatim 4-5 star Trustpilot reviews from state/trustpilot/wellnessnest.json (ids in URLs); 'Verified' only where Trustpilot marks the review verified. Service/quality reviews, no product-effect claims."
+ },
+ "offer": {
+  "pill": "⚡️ SHILASOURCE SHILAJIT RESIN",
+  "accent": "Himalayan Resin",
+  "title": "for a Warm Daily Drink",
+  "sub": "Himalayan shilajit resin you dissolve in water or tea. $59.99 on the product page.",
+  "cta": "SEE INGREDIENTS",
+  "href": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin",
+  "meta": [
+   "<b>90-Day</b> Guarantee",
+   "<b>FREE</b> shipping $70+"
+  ],
+  "guarantee": "Your first order is covered by our 90-Day Money-Back Guarantee.",
+  "image": "tmp_images/landing-shilasource-resin-listicle-261008/offer.webp",
+  "alt": "ShilaSource Himalayan Shilajit Resin tube and jar on stacked travertine discs",
+  "source": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin (fetched 2026-10-08); refund + free-shipping threshold from /policies/refund-policy and the site ticker banner",
+  "rating_html": "<b>4.2</b> TrustScore · 1,144 reviews on Trustpilot",
+  "price": {
+   "now": "$39.99",
+   "was": "$59.99",
+   "tag": "Save $20",
+   "note": "with Subscribe & Save, delivered every 4 weeks. Or $59.99 one-time."
+  },
+  "bullets": [
+   "<b>1.06 oz (30 g) jar</b> of Himalayan shilajit resin",
+   "The package states 75 servings per jar",
+   "Dissolve in warm water or tea, as the label directs",
+   "90-day money-back guarantee on your first order"
+  ],
+  "price_source": "PDP text 2026-10-08: 'Subscription: $39.99 charged every 4 weeks for one jar; $116.97 every 12 weeks for three jars', one-time $59.99; /products/shilasource-himalayan-shilajit-resin.js plan 9850323259 = 3999. compare_at 99.98 NOT used. Bullets: pack label 1.06oz (30g), 75 SERVINGS; PDP 'featured package states 75 servings'."
+ },
+ "product": {
+  "name": "ShilaSource Himalayan Shilajit Resin",
+  "image": "tmp_images/landing-shilasource-resin-listicle-261008/offer.webp",
+  "bullets": [
+   "1.06 oz (30 g) jar; the package states 75 servings",
+   "Taken dissolved in warm (not boiling) water or tea, following the label"
+  ],
+  "source": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin (PDP + supplement facts, fetched 2026-10-08)"
+ },
+ "footer": {
+  "disclaimer": "These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease.",
+  "copyright": "© 2026 Wellness Nest. All rights reserved."
+ },
+ "sources": [
+  {
+   "label": "Stohs SJ. Safety and efficacy of shilajit (mumie, moomiyo). Phytother Res 2014;28(4):475-479. doi:10.1002/ptr.5018",
+   "url": "https://doi.org/10.1002/ptr.5018"
+  },
+  {
+   "label": "Pandit S et al. Clinical evaluation of purified Shilajit on testosterone levels in healthy volunteers. Andrologia 2016;48(5):570-575. doi:10.1111/and.12482",
+   "url": "https://doi.org/10.1111/and.12482"
+  },
+  {
+   "label": "Keller JL, Housh TJ, Hill EC, Smith CM, Schmidt RJ, Johnson GO. The effects of Shilajit supplementation on fatigue-induced decreases in muscular strength and serum hydroxyproline levels. J Int Soc Sports Nutr 2019;16(1):3. doi:10.1186/s12970-019-0270-2",
+   "url": "https://doi.org/10.1186/s12970-019-0270-2"
+  },
+  {
+   "label": "Pingali U, Nutalapati C. Shilajit extract reduces oxidative stress, inflammation, and bone loss to dose-dependently preserve bone mineral density in postmenopausal women with osteopenia: a randomized, double-blind, placebo-controlled trial. Phytomedicine 2022;105:154334. doi:10.1016/j.phymed.2022.154334",
+   "url": "https://doi.org/10.1016/j.phymed.2022.154334"
+  },
+  {
+   "label": "Saper RB et al. Lead, mercury, and arsenic in US- and Indian-manufactured Ayurvedic medicines sold via the Internet. JAMA 2008;300(8):915-923. doi:10.1001/jama.300.8.915",
+   "url": "https://doi.org/10.1001/jama.300.8.915"
+  },
+  {
+   "label": "Yadav D et al. Safety and Efficacy of TruBlk Shilajit Resin Supplementation on Physical Performance and Blood Biomarkers in Healthy Adults: A 28-Day Open-Label Pilot Study. Cureus 2026;18(1):e102372. doi:10.7759/cureus.102372",
+   "url": "https://doi.org/10.7759/cureus.102372"
+  }
+ ],
+ "style": "premium",
+ "trust": [
+  {
+   "icon": "stars",
+   "html": "<b>4.2 TrustScore</b> <small>1,144 Trustpilot reviews</small>"
+  },
+  {
+   "icon": "shield",
+   "html": "<b>90-day</b> <small>money-back guarantee</small>"
+  },
+  {
+   "icon": "truck",
+   "html": "<b>Free shipping</b> <small>on orders $70+</small>"
+  },
+  {
+   "icon": "leaf",
+   "html": "<b>75 servings</b> <small>per jar, as labeled</small>"
+  }
+ ],
+ "trust_source": "TrustScore/count: state/trustpilot/wellnessnest.json (trustpilot.com/review/wellnessnest.co, read 2026-10-08). Guarantee + free-shipping threshold: /policies/refund-policy and the site ticker. 75 servings: pack label + PDP text.",
+ "sticky_cta": {
+  "name": "ShilaSource Shilajit Resin",
+  "note": "From $39.99",
+  "cta": "SEE INGREDIENTS",
+  "href": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin"
+ },
+ "pack_images": [
+  "tmp_images/landing-shilasource-resin-listicle-261008/hero.webp",
+  "tmp_images/landing-shilasource-resin-listicle-261008/offer.webp",
+  "tmp_images/landing-shilasource-resin-listicle-261008/dark.webp",
+  "tmp_images/landing-shilasource-resin-listicle-261008/ledge.webp"
+ ]
+}

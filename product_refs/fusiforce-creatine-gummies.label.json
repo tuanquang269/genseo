@@ -1,0 +1,23 @@
+{
+ "handle": "fusiforce-creatine-gummies",
+ "source": "read off the live PDP pack shot (image 0, /products/fusiforce-creatine-gummies.js) 2026-10-08 via label_ocr.swift",
+ "required": [
+  "FusiForce",
+  "Creatine",
+  "Monohydrate",
+  "Gummies",
+  "90",
+  "Dietary Supplement"
+ ],
+ "optional": [
+  "Wellness",
+  "Nest",
+  "Green Apple flavor",
+  "Promotes Lean Muscle Growth*",
+  "Enhances Recovery*",
+  "Boosts Energy Levels",
+  "Supports Cognitive Function*",
+  "GUMMIES"
+ ],
+ "mark": "Wellness Nest pouch mark: white vertical 'Wellness Nest' wordmark running up the left side of the lime-green pouch, with the white two-stroke S-curved W mark below it at the lower left (compare at >= 2x with product_refs/fusiforce-creatine-gummies-cutout.png)"
+}

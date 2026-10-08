@@ -1,0 +1,294 @@
+{
+ "engine": "ref",
+ "template": "listicle",
+ "posture": "hybrid",
+ "store": "wellnessnest",
+ "slug": "fusiforce-creatine-listicle-261008",
+ "handle": "gsl-preview-fusiforce-creatine-listicle-261008",
+ "template_suffix": "gsl-ref-listicle-v2",
+ "takeover": false,
+ "created": "2026-10-08",
+ "daily": false,
+ "reference": "http://localhost:8790/pages/10-reasons-why-creatine-is-for-skinny-people/",
+ "title": "7 Facts About Creatine Without the Scoop",
+ "meta_description": "Creatine without the scoop: what research shows, the first creatine gummy trial, results with training after 50 and in women, and what to check on a label.",
+ "topbar": {
+  "labels": [
+   "Wellness Nest Guide 📖",
+   "90-Day Money-Back Guarantee on first orders"
+  ],
+  "deadline": null
+ },
+ "hero": {
+  "accent": "7 Facts",
+  "title": "About Creatine Without the Scoop",
+  "summary_html": "<strong>Summary:</strong> What creatine research shows, what a gummy trial found, and what to check if powder never stuck for you.",
+  "kicker": "Evidence review · 6 studies cited",
+  "image": "tmp_images/landing-fusiforce-creatine-listicle-261008/hero.webp",
+  "alt": "FusiForce Creatine Monohydrate Gummies pouch on a travertine podium with green apples",
+  "chip": "90 gummies · 2 flavors",
+  "cta": {
+   "label": "SEE INGREDIENTS",
+   "href": "https://wellnessnest.co/products/fusiforce-creatine-gummies"
+  },
+  "image_note": "Generated with the real pack as reference (ima2, article_images.py --qc, cutout of PDP image 0), label gate PASS (scripts/landing_label_gate.py vs product_refs/fusiforce-creatine-gummies.label.json), mark zoom-checked at 2x, 2026-10-08.",
+  "source": "Chip = PDP pack label (90 GUMMIES) and PDP variants Green Apple + Blueberry, read 2026-10-08.",
+  "focal_y": 0.3
+ },
+ "byline": {
+  "name": "Dr. Marcus Hale",
+  "role": "Wellness Nest editorial team",
+  "avatar": "tmp_images/landing-ageaura-nmn-listicle-261008/sq-avatar.webp"
+ },
+ "updated": "Oct 8, 2026",
+ "items": [
+  {
+   "title": "Monohydrate is the studied form",
+   "body": "<p>Most creatine research uses one form: creatine monohydrate. A <a href=\"https://doi.org/10.1186/s12970-021-00412-w\" target=\"_blank\" rel=\"noopener\">2021 expert review</a> counts more than 500 peer-reviewed papers on creatine supplementation.</p><p>No other form has been shown to beat it. So the first word to look for on any label, powder or gummy, is monohydrate.</p>",
+   "evidence": "Expert review, J Int Soc Sports Nutr 2021",
+   "source": "https://doi.org/10.1186/s12970-021-00412-w",
+   "image": "tmp_images/landing-fusiforce-creatine-listicle-261008/row1.webp",
+   "alt": "A wooden scoop of white powder beside a glass of water and a green apple",
+   "evidence_label": "Expert review · Antonio et al., JISSN 2021"
+  },
+  {
+   "title": "A small daily amount works too",
+   "body": "<p>You don't need a loading phase. In a <a href=\"https://doi.org/10.1152/jappl.1996.81.1.232\" target=\"_blank\" rel=\"noopener\">classic muscle biopsy study</a>, a high-dose load raised muscle creatine about 20% in 6 days.</p><p>A low daily dose reached the same 20% rise by day 28, just more slowly. Steady daily intake gets you there.</p>",
+   "evidence": "Human study, J Appl Physiol 1996",
+   "source": "https://doi.org/10.1152/jappl.1996.81.1.232",
+   "chart": {
+    "kind": "bars",
+    "title": "Rise in muscle creatine",
+    "legend": [
+     {
+      "label": "Low daily dose",
+      "highlight": true
+     },
+     {
+      "label": "High-dose load"
+     }
+    ],
+    "bars": [
+     {
+      "label": "Day 6, high-dose load",
+      "value": 20,
+      "display": "≈20%"
+     },
+     {
+      "label": "Day 28, low daily dose",
+      "value": 20,
+      "display": "≈20%",
+      "highlight": true,
+      "inbar": "Daily"
+     }
+    ],
+    "source": "Hultman et al., J Appl Physiol 1996. 31 men; 20 g/day for 6 days vs 3 g/day for 28 days, muscle total creatine."
+   },
+   "evidence_label": "Human study · Hultman et al., J Appl Physiol 1996"
+  },
+  {
+   "title": "Gummies were tested in a trial",
+   "body": "<p>Does creatine still work in a gummy? A <a href=\"https://doi.org/10.3390/jfmk11010105\" target=\"_blank\" rel=\"noopener\">10-week randomized trial</a> gave 32 female beach volleyball athletes creatine gummies daily or no supplement.</p><p>The gummy group jumped higher and changed direction faster. Lean mass did not differ between groups. One small trial, but a real one.</p>",
+   "evidence": "Randomized controlled trial, J Funct Morphol Kinesiol 2026",
+   "source": "https://doi.org/10.3390/jfmk11010105",
+   "image": "tmp_images/landing-fusiforce-creatine-listicle-261008/row3.webp",
+   "alt": "A volleyball resting on sand beside a net post at sunset",
+   "evidence_label": "Randomized trial · Pereira et al., 2026"
+  },
+  {
+   "title": "With training, more lean mass",
+   "body": "<p>A <a href=\"https://doi.org/10.2147/OAJSM.S123529\" target=\"_blank\" rel=\"noopener\">meta-analysis of 22 trials</a> pooled 721 adults with average ages of 57 to 70. All did resistance training two to three times a week.</p><p>Adding creatine gave 1.37 kg more lean mass than training alone, plus stronger chest and leg presses. The key word is training.</p>",
+   "evidence": "Meta-analysis (22 RCTs, 721 adults), Open Access J Sports Med 2017",
+   "source": "https://doi.org/10.2147/OAJSM.S123529",
+   "chart": {
+    "kind": "stats",
+    "title": "Older adults who trained: 22 trials",
+    "stats": [
+     {
+      "value": "22",
+      "label": "Trials pooled",
+      "highlight": true
+     },
+     {
+      "value": "721",
+      "label": "Adults, avg age 57 to 70"
+     },
+     {
+      "value": "+1.37 kg",
+      "label": "Lean mass vs placebo"
+     }
+    ],
+    "source": "Chilibeck PD et al. Open Access J Sports Med 2017;8:213-226. Creatine vs placebo during resistance training."
+   },
+   "evidence_label": "Meta-analysis of 22 RCTs · Chilibeck et al., 2017"
+  },
+  {
+   "title": "Women see small, real gains",
+   "body": "<p>Evidence in women has been thinner. A <a href=\"https://doi.org/10.3389/fnut.2026.1921827\" target=\"_blank\" rel=\"noopener\">2026 meta-analysis</a> gathered 34 studies of women who exercise or train, with 692 participants.</p><p>It found small positive effects on strength and power. The authors rate certainty as low, so expect modest changes, not dramatic ones.</p>",
+   "evidence": "Systematic review and meta-analysis, Front Nutr 2026",
+   "source": "https://doi.org/10.3389/fnut.2026.1921827",
+   "image": "tmp_images/landing-fusiforce-creatine-listicle-261008/row5.webp",
+   "alt": "Light sage dumbbells, a rolled linen mat and a water bottle by a window",
+   "evidence_label": "Meta-analysis (34 studies in women) · Lin et al., 2026"
+  },
+  {
+   "title": "No head-to-head with powder",
+   "body": "<p>The gummy trial compared creatine gummies with no supplement. We found no published trial comparing gummies with powder directly.</p><p>So the case for gummies rests on the same monohydrate research, plus convenience. The amount per serving is what to check.</p>",
+   "evidence": "Evidence gap: Europe PMC search 2026-10-08, no gummy vs powder trial to cite",
+   "image": "tmp_images/landing-fusiforce-creatine-listicle-261008/row6.webp",
+   "alt": "Printed research papers, reading glasses and a green apple on linen",
+   "evidence_label": "Literature check · no gummy vs powder trial found",
+   "layout": "callout"
+  },
+  {
+   "title": "Well tolerated in healthy adults",
+   "body": "<p>The <a href=\"https://doi.org/10.1186/s12970-017-0173-z\" target=\"_blank\" rel=\"noopener\">ISSN position stand</a> concludes that creatine is safe and well tolerated in healthy people, in studies lasting up to five years.</p><p>Taking medication or managing a kidney condition? Ask your doctor first. Daily use is what the research tested.</p>",
+   "evidence": "Position stand, J Int Soc Sports Nutr 2017",
+   "source": "https://doi.org/10.1186/s12970-017-0173-z",
+   "image": "tmp_images/landing-fusiforce-creatine-listicle-261008/row7.webp",
+   "alt": "A glass of water and a small dish of pale green gummies on a travertine counter",
+   "evidence_label": "Position stand · Kreider et al., JISSN 2017"
+  }
+ ],
+ "bridge": {
+  "title": "The best form is the one you take",
+  "body": "<p>Creatine works through steady daily intake, so the format you will keep using matters most.</p><p>One option: FusiForce Creatine Monohydrate Gummies put creatine monohydrate in a chewable green apple or blueberry gummy, with Panax ginseng extract on the same label.</p><p>Taking medication or managing a health condition? Check with your doctor first.</p>",
+  "image": "tmp_images/landing-fusiforce-creatine-listicle-261008/ledge.webp",
+  "alt": "The FusiForce creatine gummies pouch on an oak counter beside a glass of water"
+ },
+ "expert": {
+  "title": "TrustScore 4.2 from 1,144 Trustpilot Reviews",
+  "stars": 5,
+  "quote": "What made my experience great?\nI can say the product's quality.",
+  "author": "Sesseobe Nicaise Deeo · Wellness Nest customer on Trustpilot",
+  "source": "https://www.trustpilot.com/reviews/690df5b7c3d5e30ef725b48d (5-star review, published 2025-11-07, verbatim; TrustScore 4.2 and 1,144 reviews as displayed on trustpilot.com/review/wellnessnest.co, read 2026-10-08). Store-level review, not a product-effect claim.",
+  "image": "tmp_images/landing-fusiforce-creatine-listicle-261008/dark.webp",
+  "alt": "The FusiForce creatine gummies pouch on a travertine podium against deep green",
+  "reviews": [
+   {
+    "stars": 5,
+    "quote": "Great products and really great client service. My request was solved within a minutes.",
+    "name": "Miloslav Kral",
+    "meta": "SK · Nov 2025",
+    "url": "https://www.trustpilot.com/reviews/69281b1420fb2a718fed2339"
+   },
+   {
+    "stars": 5,
+    "quote": "Henry was very responsive and helpful when there was a problem that needed resolving",
+    "name": "Mel Barrett",
+    "meta": "GB · Aug 2026",
+    "url": "https://www.trustpilot.com/reviews/6a8df7438bab5ca2e585cf7f"
+   },
+   {
+    "stars": 5,
+    "quote": "The response was fast, helpful and understanding. Jamie was kind and helpful",
+    "name": "Lesley Pegrum",
+    "meta": "GB · Dec 2025",
+    "url": "https://www.trustpilot.com/reviews/69341178ff47bac5ca887d02"
+   }
+  ],
+  "reviews_source": "Verbatim 4-5 star Trustpilot reviews from state/trustpilot/wellnessnest.json (ids in URLs); 'Verified' only where Trustpilot marks the review verified. Service/quality reviews, no product-effect claims."
+ },
+ "offer": {
+  "pill": "⚡️ FUSIFORCE CREATINE GUMMIES",
+  "accent": "Creatine Monohydrate",
+  "title": "in a Chewable Gummy",
+  "sub": "Creatine monohydrate in a green apple or blueberry gummy. $69.99 on the product page.",
+  "cta": "SEE INGREDIENTS",
+  "href": "https://wellnessnest.co/products/fusiforce-creatine-gummies",
+  "meta": [
+   "<b>90-Day</b> Guarantee",
+   "<b>FREE</b> shipping $70+"
+  ],
+  "guarantee": "Your first order is covered by our 90-Day Money-Back Guarantee.",
+  "image": "tmp_images/landing-fusiforce-creatine-listicle-261008/offer.webp",
+  "alt": "FusiForce Creatine Monohydrate Gummies pouch on stacked travertine discs",
+  "source": "https://wellnessnest.co/products/fusiforce-creatine-gummies (fetched 2026-10-08); refund + free-shipping threshold from /policies/refund-policy and the site ticker banner",
+  "rating_html": "<b>4.2</b> TrustScore · 1,144 reviews on Trustpilot",
+  "price": {
+   "now": "$49.99",
+   "was": "$69.99",
+   "tag": "Save $20",
+   "note": "with Subscribe & Save, delivered every 4 weeks. Or $69.99 one-time."
+  },
+  "bullets": [
+   "<b>5,000 mg creatine monohydrate</b> per 3-gummy serving",
+   "Plus Panax ginseng root extract (10% ginsenosides)",
+   "Green Apple or Blueberry · 90 gummies per pouch",
+   "90-day money-back guarantee on your first order"
+  ],
+  "price_source": "PDP /products/fusiforce-creatine-gummies.js 2026-10-08: price 69.99 (both variants); selling plan 'Deliver every 4 weeks' 28.58% = $49.99 (plan 9850224955), shown in the PDP buy box as 'Billed every 4 weeks $49.99'. compare_at_price 114.73 deliberately NOT used (no strike-through against it). Bullets: PDP title/description '5,000 mg per 3-gummy serving', 'Panax ginseng (10% ginsenosides)', variants, pack '90 GUMMIES'."
+ },
+ "product": {
+  "name": "FusiForce Creatine Monohydrate Gummies",
+  "image": "tmp_images/landing-fusiforce-creatine-listicle-261008/offer.webp",
+  "bullets": [
+   "5,000 mg creatine monohydrate per serving (3 gummies)",
+   "Panax ginseng root extract (10% ginsenosides)",
+   "Green Apple and Blueberry flavors, 90 gummies per pouch"
+  ],
+  "source": "https://wellnessnest.co/products/fusiforce-creatine-gummies (PDP + supplement facts, fetched 2026-10-08)"
+ },
+ "footer": {
+  "disclaimer": "These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease.",
+  "copyright": "© 2026 Wellness Nest. All rights reserved."
+ },
+ "sources": [
+  {
+   "label": "Antonio J et al. Common questions and misconceptions about creatine supplementation: what does the scientific evidence really show? J Int Soc Sports Nutr 2021;18(1):13. doi:10.1186/s12970-021-00412-w",
+   "url": "https://doi.org/10.1186/s12970-021-00412-w"
+  },
+  {
+   "label": "Hultman E, Söderlund K, Timmons JA, Cederblad G, Greenhaff PL. Muscle creatine loading in men. J Appl Physiol 1996;81(1):232-237. doi:10.1152/jappl.1996.81.1.232",
+   "url": "https://doi.org/10.1152/jappl.1996.81.1.232"
+  },
+  {
+   "label": "Pereira F, Forbes SC, Romano V, Christopher P, Santana JC, Antonio J. Effects of Creatine Monohydrate Gummies on Performance and Body Composition in Female Beach Volleyball Athletes. J Funct Morphol Kinesiol 2026;11(1):105. doi:10.3390/jfmk11010105",
+   "url": "https://doi.org/10.3390/jfmk11010105"
+  },
+  {
+   "label": "Chilibeck PD, Kaviani M, Candow DG, Zello GA. Effect of creatine supplementation during resistance training on lean tissue mass and muscular strength in older adults: a meta-analysis. Open Access J Sports Med 2017;8:213-226. doi:10.2147/OAJSM.S123529",
+   "url": "https://doi.org/10.2147/OAJSM.S123529"
+  },
+  {
+   "label": "Lin Y, Zhu W, Hong B. Effects of creatine supplementation on exercise performance, physiological outcomes, and body composition in females engaged in exercise or training: a systematic review and multilevel meta-analysis. Front Nutr 2026;13:1921827. doi:10.3389/fnut.2026.1921827",
+   "url": "https://doi.org/10.3389/fnut.2026.1921827"
+  },
+  {
+   "label": "Kreider RB et al. International Society of Sports Nutrition position stand: safety and efficacy of creatine supplementation in exercise, sport, and medicine. J Int Soc Sports Nutr 2017;14:18. doi:10.1186/s12970-017-0173-z",
+   "url": "https://doi.org/10.1186/s12970-017-0173-z"
+  }
+ ],
+ "style": "premium",
+ "trust": [
+  {
+   "icon": "stars",
+   "html": "<b>4.2 TrustScore</b> <small>1,144 Trustpilot reviews</small>"
+  },
+  {
+   "icon": "shield",
+   "html": "<b>90-day</b> <small>money-back guarantee</small>"
+  },
+  {
+   "icon": "truck",
+   "html": "<b>Free shipping</b> <small>on orders $70+</small>"
+  },
+  {
+   "icon": "leaf",
+   "html": "<b>Monohydrate</b> <small>in a chewable gummy</small>"
+  }
+ ],
+ "trust_source": "TrustScore/count: state/trustpilot/wellnessnest.json (trustpilot.com/review/wellnessnest.co, read 2026-10-08). Guarantee + free-shipping threshold: /policies/refund-policy and the site ticker. Monohydrate: PDP title + pack label.",
+ "sticky_cta": {
+  "name": "FusiForce Creatine Gummies",
+  "note": "From $49.99",
+  "cta": "SEE INGREDIENTS",
+  "href": "https://wellnessnest.co/products/fusiforce-creatine-gummies"
+ },
+ "pack_images": [
+  "tmp_images/landing-fusiforce-creatine-listicle-261008/hero.webp",
+  "tmp_images/landing-fusiforce-creatine-listicle-261008/offer.webp",
+  "tmp_images/landing-fusiforce-creatine-listicle-261008/dark.webp",
+  "tmp_images/landing-fusiforce-creatine-listicle-261008/ledge.webp"
+ ]
+}
