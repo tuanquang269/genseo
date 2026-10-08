@@ -111,7 +111,7 @@ def scope_css(css, scope=".gsl-ref"):
     return "".join(out)
 
 
-def build_css(kind, brand):
+def build_css(kind, brand, premium=False):
     # The gsl-ref-* theme template is ONE shared file installed in the live theme with the base store's palette, so a
     # sub-brand spec (AgeAura "extends" wellnessnest) must render with that same palette — otherwise the preview and
     # templates/landing/page.<suffix>.liquid drift from what the live page actually shows (fixed 2026-10-08).
@@ -122,6 +122,8 @@ def build_css(kind, brand):
     for f in CSS_FILES[kind]:
         raw += open(os.path.join(REF, "css", f)).read() + "\n"
     raw += open(os.path.join(REF, "extra.css")).read()
+    if premium:   # 2026-10-08 visual overhaul (template gsl-ref-listicle-v2); see the header of premium.css
+        raw += "\n" + open(os.path.join(REF, "premium.css")).read()
     raw = raw.replace('"Satoshi", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif', font)
     raw = re.sub(r'Satoshi Variable,\s*Satoshi,\s*sans-serif|Satoshi,\s*sans-serif', "var(--rb-f)", raw)
     raw = raw.replace('var(--rb-f, "Satoshi Variable", "Satoshi", sans-serif)', "var(--rb-f)")
@@ -131,13 +133,13 @@ def build_css(kind, brand):
 
 
 # ---------- images ----------
-def crop_to(src, aspect, width, out, max_kb=78):
+def crop_to(src, aspect, width, out, max_kb=78, fy=0.5):
     im = Image.open(os.path.join(ROOT, src) if not os.path.isabs(src) else src).convert("RGB")
     w, h = im.size
     if w / h > aspect:
         nw = int(h * aspect); x = (w - nw) // 2; im = im.crop((x, 0, x + nw, h))
     else:
-        nh = int(w / aspect); y = (h - nh) // 2; im = im.crop((0, y, w, y + nh))
+        nh = int(w / aspect); y = int((h - nh) * fy); im = im.crop((0, y, w, y + nh))
     height = int(round(width / aspect))
     im = im.resize((width, height), Image.LANCZOS)
     os.makedirs(os.path.dirname(out), exist_ok=True)
@@ -156,15 +158,16 @@ class Imgs:
     def __init__(self, out_dir):
         self.dir = os.path.join(out_dir, "img")
 
-    def slot(self, src, name, d_aspect, d_w, m_aspect=None, m_w=750):
+    def slot(self, src, name, d_aspect, d_w, m_aspect=None, m_w=750, fy=0.5):
+        """fy = vertical focal point for crops (0 top .. 1 bottom); pack shots use ~0.15 so the cap is never cut."""
         if not src:
             return None
         if src.startswith("http"):
             return {"d": src, "m": src, "dw": d_w, "dh": int(d_w / d_aspect)}
         d = os.path.join(self.dir, f"{name}-d.webp")
-        dw, dh = crop_to(src, d_aspect, d_w, d)
+        dw, dh = crop_to(src, d_aspect, d_w, d, fy=fy)
         m = os.path.join(self.dir, f"{name}-m.webp")
-        crop_to(src, m_aspect or d_aspect, m_w, m)
+        crop_to(src, m_aspect or d_aspect, m_w, m, fy=fy)
         return {"d": d, "m": m, "dw": dw, "dh": dh}
 
 
@@ -199,13 +202,29 @@ def chart_html(ch):
         hpct = max(8, int(round(100 * b["value"] / mx * 0.78)))
         hl = " is-hl" if b.get("highlight") else ""
         cols += (f'<div class="gslc__col"><span class="gslc__val">{E(b.get("display", str(b["value"])))}</span>'
-                 f'<span class="gslc__bar{hl}" style="height:{hpct}%"></span></div>')
+                 f'<span class="gslc__bar{hl}" style="height:{hpct}%">{("<b>" + E(b["inbar"]) + "</b>") if b.get("inbar") else ""}</span></div>')
         labels += f'<span>{E(b["label"])}</span>'
     legend = "".join(f'<span><i class="{ "is-hl" if l.get("highlight") else "" }"></i>{E(l["label"])}</span>' for l in ch.get("legend", []))
     return (f'<div class="gslc" role="img" aria-label="{E(ch["title"])}"><p class="gslc__title">{E(ch["title"])}</p>'
             + (f'<div class="gslc__legend">{legend}</div>' if legend else "")
             + f'<div class="gslc__plot">{cols}</div><div class="gslc__labels">{labels}</div>'
             f'<p class="gslc__src" style="{SRC_CSS}">{E(ch["source"])}</p></div>')
+
+
+ICO = {
+    "check": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor" stroke="none" opacity=".14"/><path d="M7.5 12.5l3 3 6-6.5"/></svg>',
+    "shield": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5l8 3.5v6c0 5-3.4 8.4-8 9.9C7.4 20.4 4 17 4 12V6l8-3.5z"/><path d="M8.8 12.2l2.2 2.2 4.3-4.6"/></svg>',
+    "truck": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 6.5h11v9h-11z"/><path d="M13.5 9.5h4l3 3v3h-7z"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg>',
+    "leaf": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 19c0-8 5-13 15-14-1 10-6 15-14 15"/><path d="M5 19l7-7"/></svg>',
+    "flask": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3h6M10 3v6L4.5 18.5A2 2 0 0 0 6.2 21.5h11.6a2 2 0 0 0 1.7-3L14 9V3"/><path d="M7.5 15h9"/></svg>',
+    "arrow": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
+    "verified": '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.4 1.8 3-.2.9 2.9 2.5 1.7-1 2.8 1 2.8-2.5 1.7-.9 2.9-3-.2L12 22l-2.4-1.8-3 .2-.9-2.9-2.5-1.7 1-2.8-1-2.8 2.5-1.7.9-2.9 3 .2z" opacity=".9"/><path d="M8.5 12.3l2.3 2.3 4.7-4.9" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+}
+STAR_G = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#2f8a3b" d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7-4.4 6.4-.8z"/></svg>'
+
+
+def gstars(n=5):
+    return f'<span class="gslp-stars" aria-label="{n} out of 5 stars">' + STAR_G * int(n) + '</span>'
 
 
 def sec(kind, inner, extra=""):
@@ -227,12 +246,34 @@ def render_listicle(spec, imgs):
     h = spec["hero"]; by = spec.get("byline", {})
     av = imgs.slot(by.get("avatar"), "avatar", 1.0, 96, 1.0, 96)
     av_html = f'<img src="{av["d"]}" alt="{E(by.get("name",""))}" width="48" height="48" loading="eager">' if av else ""
-    out.append(sec("listicle-hero-article",
-        f'<div class="rblha"><div class="rblha__card"><h1 class="rblha__title"><span class="rblha__accent">{E(h["accent"])}</span> {E(h["title"])}</h1>'
-        f'<div class="rblha__author"><div class="rblha__avatar">{av_html}</div><div class="rblha__author-text">'
-        f'<p class="rblha__author-name">By <b>{E(by.get("name",""))}{(" | " + E(by["role"])) if by.get("role") else ""}</b></p>'
-        f'<p class="rblha__updated">Last Updated {E(spec.get("updated",""))}</p></div></div></div>'
-        f'<div class="rblha__summary"><p>{h["summary_html"]}</p></div></div>'))
+    premium = spec.get("style") == "premium"
+    if premium and h.get("image"):
+        him = imgs.slot(h["image"], "hero", 1.0, 1000, 5 / 4, 750, fy=h.get("focal_y", 0.5))
+        cta = h.get("cta") or {}
+        chip = f'<span class="gslp-hero__chip">{E(h["chip"])}</span>' if h.get("chip") else ""
+        kicker = f'<p class="gslp-kicker">{E(h["kicker"])}</p>' if h.get("kicker") else ""
+        btn = (f'<a class="gslp-btn" href="{E(cta["href"])}">{E(cta["label"])}{ICO["arrow"]}</a>') if cta.get("href") else ""
+        out.append(sec("listicle-hero-article gslp-hero",
+            f'<div class="gslp-hero__in"><div class="gslp-hero__copy">{kicker}'
+            f'<h1 class="rblha__title"><span class="rblha__accent">{E(h["accent"])}</span> {E(h["title"])}</h1>'
+            f'<div class="rblha__author"><div class="rblha__avatar">{av_html}</div><div class="rblha__author-text">'
+            f'<p class="rblha__author-name">By <b>{E(by.get("name",""))}{(" | " + E(by["role"])) if by.get("role") else ""}</b></p>'
+            f'<p class="rblha__updated">Last Updated {E(spec.get("updated",""))}</p></div></div>'
+            f'<p class="gslp-hero__dek">{h["summary_html"]}</p>{btn}</div>'
+            f'<div class="gslp-hero__media">{picture(him, h.get("alt",""), 1000, 1000, eager=True)}{chip}</div></div>'))
+        if spec.get("trust"):
+            lis = ""
+            for t in spec["trust"]:
+                icon = f'<i class="gslp-trust__stars">{gstars(5)}</i>' if t.get("icon") == "stars" else ICO.get(t.get("icon", "check"), ICO["check"])
+                lis += f'<li>{icon}<span>{t["html"]}</span></li>'
+            out.append(sec("listicle-trust gslp-trust", f'<ul>{lis}</ul>'))
+    else:
+      out.append(sec("listicle-hero-article",
+          f'<div class="rblha"><div class="rblha__card"><h1 class="rblha__title"><span class="rblha__accent">{E(h["accent"])}</span> {E(h["title"])}</h1>'
+          f'<div class="rblha__author"><div class="rblha__avatar">{av_html}</div><div class="rblha__author-text">'
+          f'<p class="rblha__author-name">By <b>{E(by.get("name",""))}{(" | " + E(by["role"])) if by.get("role") else ""}</b></p>'
+          f'<p class="rblha__updated">Last Updated {E(spec.get("updated",""))}</p></div></div></div>'
+          f'<div class="rblha__summary"><p>{h["summary_html"]}</p></div></div>'))
     rows = list(spec["items"]) + ([dict(spec["bridge"], _bridge=True)] if spec.get("bridge") else [])
     for i, it in enumerate(rows):
         side = "left" if i % 2 == 0 else "right"
@@ -242,10 +283,12 @@ def render_listicle(spec, imgs):
         else:
             im = imgs.slot(it.get("image"), f"row{i+1}", 616 / 590, 924, 1.0, 750)
             media = picture(im, it.get("alt", it["title"]), 616, 590)
-        out.append(sec("listicle-image-text",
+        ev = (f'<p class="gslp-ev">{ICO["flask"]}{E(it["evidence_label"])}</p>') if premium and it.get("evidence_label") else ""
+        variant = (" gslp-band" if it.get("chart") else "") + (" gslp-callout" if it.get("layout") == "callout" else "") if premium else ""
+        out.append(sec("listicle-image-text" + variant,
             f'<div class="rblit rblit--image-{side} rblit--v2"><div class="rblit__inner"><div class="rblit__content">'
             f'<div class="rblit__header"><div class="rblit__eyebrow" aria-label="Section {n}"><span>{n}</span></div>'
-            f'<h2 class="rblit__title">{E(it["title"])}</h2></div><div class="rblit__body">{it["body"]}</div></div>'
+            f'<h2 class="rblit__title">{E(it["title"])}</h2></div><div class="rblit__body">{it["body"]}{ev}</div></div>'
             f'<div class="rblit__media-wrap"><div class="rblit__media">{media}</div></div></div></div>'))
     ex = spec.get("expert")
     if ex:
@@ -256,23 +299,56 @@ def render_listicle(spec, imgs):
             f'<div class="rble__eyebrow" aria-label="Section {n}"><span>{n}</span></div><h2 class="rble__title">{E(ex["title"])}</h2></div>'
             f'<div class="rble__review"><div class="rble__stars" aria-label="{ex.get("stars",5)} star review">{stars(ex.get("stars",5))}</div>'
             f'<div class="rble__quote"><p>“{E(ex["quote"])}”</p></div><div class="rble__author">{SVG["badge"]}<p>{E(ex["author"])}</p></div></div></div>'
-            f'<div class="rble__media">{picture(im, ex.get("alt", ex["title"]), 616, 560)}</div></div></div>'))
+            f'<div class="rble__media">{picture(im, ex.get("alt", ex["title"]), 616, 560)}</div></div>'
+            + (revs_html(ex.get("reviews", [])) if premium else "") + '</div>'))
     of = spec["offer"]
+    # premium: a local (generated, label-gated) pack shot is cropped square like every other slot
+    oim = imgs.slot(of["image"], "offer", 1.0, 1000, 1.0, 750) if premium and not of["image"].startswith("http") else None
     risk = ""
     if of.get("meta"):
         risk = (f'<div class="rblof__risk"><p>{of["meta"][0]}</p><span class="rblof__divider"></span><p>{of["meta"][1]}</p></div>')
     deal = f'<p class="rblof__deal">DEAL ENDING IN: <b data-rblof-timer data-deadline="{E(tb["deadline"])}">--:--:--</b></p>' if tb.get("deadline") else ""
     out.append(sec("listicle-offer",
         f'<div class="rblof" id="gsl-offer"><div class="rblof__pill">{E(of["pill"])}</div><div class="rblof__card">'
-        f'<div class="rblof__media"><img src="{of["image"]}" alt="{E(of.get("alt",""))}" loading="lazy" width="800" height="800" style="{OFFER_IMG_CSS}"></div>'
-        f'<div class="rblof__content"><h2 class="rblof__title"><span class="rblof__accent">{E(of["accent"])}</span> {E(of["title"])}</h2>'
-        f'<div class="rblof__sub"><p>{E(of["sub"])}</p></div><div class="rblof__cta-wrap"><a class="rblof__cta" href="{E(of["href"])}">{E(of["cta"])}</a>{deal}</div>'
+        + (f'<div class="rblof__media">{picture(oim, of.get("alt",""), 1000, 1000)}</div>' if oim else
+           f'<div class="rblof__media"><img src="{of["image"]}" alt="{E(of.get("alt",""))}" loading="lazy" width="800" height="800" style="{OFFER_IMG_CSS}"></div>')
+        + f'<div class="rblof__content"><h2 class="rblof__title"><span class="rblof__accent">{E(of["accent"])}</span> {E(of["title"])}</h2>'
+        + (offer_extras(of) if premium else f'<div class="rblof__sub"><p>{E(of["sub"])}</p></div>') + f'<div class="rblof__cta-wrap"><a class="rblof__cta" href="{E(of["href"])}">{E(of["cta"])}</a>{deal}</div>'
         f'<div class="rblof__meta">{risk}<p class="rblof__guarantee">{E(of["guarantee"])}</p></div></div></div></div>'))
     ft = spec.get("footer", {})
     # theme chrome kept (takeover false) → the theme footer already prints the copyright; keep only the FDA line
     copy = f'<p class="rblft__copyright">{E(ft.get("copyright",""))}</p>' if spec.get("takeover") else ""
     out.append(sec("listicle-footer", f'<div class="rblft"><p class="rblft__disclaimer">{E(ft.get("disclaimer",""))}</p>{copy}</div>'))
+    st = spec.get("sticky_cta")
+    if premium and st and spec.get("bridge"):
+        thumb = st.get("image") or (oim["m"] if oim else of["image"])
+        out.append(f'<div class="gslp-sticky" data-gslp-sticky role="region" aria-label="{E(st["name"])}"><img src="{thumb}" alt="" width="40" height="40" loading="lazy">'
+                   f'<div class="gslp-sticky__t"><b>{E(st["name"])}</b>{E(st["note"])}</div><a href="{E(st["href"])}">{E(st["cta"])}</a></div>\n')
     return "".join(out)
+
+
+def revs_html(revs):
+    if not revs:
+        return ""
+    cards = ""
+    for r in revs:
+        ver = f'<span class="gslp-rev__ver">{ICO["verified"]}Verified</span>' if r.get("verified") else ""
+        cards += (f'<figure class="gslp-rev"><div class="gslp-rev__stars">{STAR_G * int(r.get("stars", 5))}</div>'
+                  f'<q>{E(r["quote"])}</q><figcaption class="gslp-rev__by"><span><b>{E(r["name"])}</b> · {E(r.get("meta", ""))}</span>{ver}</figcaption></figure>')
+    return f'<div class="gslp-reviews">{cards}</div>'
+
+
+def offer_extras(of):
+    pr = of.get("price") or {}
+    rating = f'<p class="gslp-rating">{gstars(5)}<span>{of["rating_html"]}</span></p>' if of.get("rating_html") else ""
+    price = ""
+    if pr.get("now"):
+        price = (f'<div class="gslp-price"><span class="gslp-price__now">{E(pr["now"])}</span>'
+                 + (f'<span class="gslp-price__was">{E(pr["was"])}</span>' if pr.get("was") else "")
+                 + (f'<span class="gslp-price__tag">{E(pr["tag"])}</span>' if pr.get("tag") else "")
+                 + (f'<p class="gslp-price__note">{E(pr["note"])}</p>' if pr.get("note") else "") + '</div>')
+    bullets = "".join(f'<li>{ICO["check"]}<span>{b}</span></li>' for b in of.get("bullets", []))
+    return rating + price + (f'<ul class="gslp-bullets">{bullets}</ul>' if bullets else "")
 
 
 # ---------- advertorial (reference: /pages/advv-1) ----------
@@ -428,7 +504,13 @@ tr.addEventListener('scroll',function(){requestAnimationFrame(upd)},{passive:tru
 [].forEach.call(r.querySelectorAll('[data-deadline]'),function(el){var end=new Date(el.getAttribute('data-deadline'));if(isNaN(end))return;
 function t(){var s=Math.max(0,Math.floor((end-new Date())/1000)),h=String(Math.floor(s/3600)).padStart(2,'0'),m=String(Math.floor(s%3600/60)).padStart(2,'0'),ss=String(s%60).padStart(2,'0');
 var H=el.querySelector('[data-rbltb-h]');if(H){H.textContent=h;el.querySelector('[data-rbltb-m]').textContent=m;el.querySelector('[data-rbltb-s]').textContent=ss}else{el.textContent=h+':'+m+':'+ss}}t();setInterval(t,1000)});
-})();</script>"""
+})();
+(function(){var bar=document.querySelector('[data-gslp-sticky]');if(!bar)return;
+var rows=document.querySelectorAll('.rb-section--listicle-image-text');var bridge=rows[rows.length-1];var offer=document.getElementById('gsl-offer');
+var last=0;function chk(){var now=Date.now();if(now-last<120)return;last=now;var vh=window.innerHeight;
+var past=bridge&&bridge.getBoundingClientRect().top<vh*0.8&&(window.scrollY||document.documentElement.scrollTop)>200;var r=offer&&offer.getBoundingClientRect();var inOffer=r&&r.top<vh&&r.bottom>0;
+bar.classList.toggle('is-on',!!(past&&!inOffer));}
+document.addEventListener('scroll',chk,{capture:true,passive:true});window.addEventListener('resize',chk);setInterval(chk,400);chk();})();</script>"""
 
 
 def load_brand(store):
@@ -456,7 +538,7 @@ def main():
     body = brand_swap(f'<div class="gsl-ref gsl-ref--{kind}">\n{inner}</div>\n', pal)
     js = brand_swap(JS, pal)   # lives in the theme template (Shopify page bodies are not a place for scripts)
     open(os.path.join(out_dir, "body.html"), "w").write(body)
-    css = build_css(kind, vis)
+    css = build_css(kind, vis, premium=spec.get("style") == "premium")
     open(os.path.join(out_dir, "page.css"), "w").write(css)
     font_link = brand.get("fonts", {}).get("preview_font_link", "")
     hide = open(os.path.join(ROOT, "templates", "landing", "hide_theme_chrome.html")).read().replace("{% layout none %}", "layout-none") if spec.get("takeover") else ""   # a Liquid tag inside a CSS comment would still execute

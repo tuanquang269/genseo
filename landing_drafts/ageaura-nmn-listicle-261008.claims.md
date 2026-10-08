@@ -48,3 +48,13 @@ Copy tightened for scannability/mobile (no claim added; every number keeps its s
 - All em/en dashes removed (incl. chart sources and source labels: page ranges use "-").
 Images: new no-face, no-product scenes sq-row1b (water + plain unbranded capsules), sq-row3b (older adults walking, from behind),
 sq-row4b (research papers; used on row 06). QC PASS (article_images.py --qc). Alts describe the scene.
+
+## v4 — visual overhaul (2026-10-08, template gsl-ref-listicle-v2 / style premium)
+- Hero now shows the product (Kevin's explicit ask: "product above the fold"). Posture = Kevin's call (PATI-ADAPTATION #1); the DTC skill default would keep the pack below the bridge.
+- Pack shots (hero, offer, expert, bridge) are GENERATED with the real bottle cutout as the reference (product_refs/ageaura-pure-nmn-tmg-nad-complex-cutout.png, lifted from the PDP image). Kevin asked for generated premium shots, so this deviates from PATI-ADAPTATION #7 ("the real pack"). Every one passed: vision QC, landing_label_gate.py (all 12 label strings OCR'd letter-perfect) and a 2x zoom check of the mark (one pointed leaf + two S-curves = the real pack). Fallback composites of the real cutout are in tmp_images (v3-*-pack.webp).
+- Row images: one art direction (ivory/sand/sage, morning light, travertine + linen). No faces (row 3 couple is from behind, heads out of frame).
+- Trust strip: 4.2 TrustScore · 1,144 reviews (state/trustpilot/wellnessnest.json); 90-day money-back guarantee on the first order + free shipping $70+ (wellnessnest.co policy pages, as in v3); vegan capsules (label).
+- Review cards: 3 extra real 5-star Trustpilot reviews, quoted verbatim with their URLs (Tonya, Jindřich Pavlíček, Martin Mc Cartney JNR) + the existing Lisa Acton review.
+- Offer price: $59.46 = PDP selling plan "1 product every 4 weeks at 15% discount" on $69.95 (/products/ageaura-pure-nmn-tmg-nad-complex.js, 2026-10-08). Shown as Subscribe & Save vs the one-time price; no compare_at is invented.
+- Offer bullets = label facts only (500 mg NMN + 250 mg TMG per serving; quercetin, trans-resveratrol, apigenin, folate, spermidine; 60 vegan capsules / 30 servings) + the real guarantee.
+- Chart: Huang 2022 values unchanged (Day 30 +11.3%, Day 60 +38% NMN, placebo +14.3%).

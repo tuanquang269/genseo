@@ -13,7 +13,7 @@ outside the product/offer card, no product named in the numbered findings for po
 2026-10-08 benchmark (no em/en dashes, paragraphs <= 40 words, H1 <= 55 chars, CTA <= 3 words; errors when
 "daily": true), claims log landing_drafts/<slug>.claims.md exists (versioned next to the spec).
 """
-import json, os, re, sys, urllib.request
+import subprocess, json, os, re, sys, urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "scripts"))
@@ -199,6 +199,28 @@ def main():
     cta = (spec.get("offer") or {}).get("cta", "")
     if len(cta.split()) > 3:
         taste.append(f"offer.cta '{cta}' is more than 3 words (taste: CTA must never wrap)")
+    # Premium listicle layer (Kevin 2026-10-08 visual overhaul, templates/landing/ref/premium.css): structure + pack-label gate.
+    if spec.get("style") == "premium":
+        if spec.get("template_suffix") != "gsl-ref-listicle-v2":
+            errs.append("style premium needs template_suffix gsl-ref-listicle-v2 (the v1 theme file has no premium CSS)")
+        if not hero.get("image"):
+            taste.append("premium hero needs hero.image (product shot above the fold, Kevin 2026-10-08)")
+        if (spec.get("offer") or {}).get("price") and not (spec.get("offer") or {}).get("price_source"):
+            errs.append("offer.price needs offer.price_source (the PDP /products/<handle>.js selling plan; no invented anchors)")
+        for i, r in enumerate((spec.get("expert") or {}).get("reviews", [])):
+            if int(r.get("stars", 0)) < 4 or "trustpilot.com/reviews/" not in r.get("url", ""):
+                errs.append(f"expert.reviews[{i}] must be a real 4-5 star Trustpilot review with its trustpilot.com/reviews/ URL")
+        ph = re.search(r"/products/([a-z0-9-]+)", json.dumps(spec))
+        lj = ph and os.path.join(ROOT, "product_refs", ph.group(1) + ".label.json")
+        packs = spec.get("pack_images") or []
+        if lj and os.path.exists(lj) and not packs:
+            taste.append("product has a label json: list every generated pack shot in pack_images so the label gate runs")
+        for im in packs:
+            if lj and os.path.exists(lj):
+                g = subprocess.run([sys.executable, os.path.join(ROOT, "scripts", "landing_label_gate.py"), os.path.join(ROOT, im), "--handle", ph.group(1)],
+                                   capture_output=True, text=True)
+                if g.returncode != 0:
+                    errs.append(f"pack_images {im}: label gate FAIL ({(g.stdout.strip().splitlines() or ['?'])[-1][:120]})")
     n_ph = len(PH_RE.findall(json.dumps(spec)))
     if strict and n_ph:
         errs.append(f"--strict: {n_ph} placeholder(s) remain — fill them with sourced facts or remove the block")
