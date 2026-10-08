@@ -98,6 +98,7 @@ wasted image-generation + writing cost of a doomed article.)
   2. **"People Also Ask" questions** — harvest these to seed your FAQ section
   3. **Content gaps** the competitors missed that you can fill better
 - **Read Knowledge Base:** Read `~/genseo/knowledge_base/SEO_EEAT_GUIDELINES.md` and `AEO_GEO_GUIDELINES.md`.
+> **Official-source GEO rules (2026-10-08):** AEO_GEO_GUIDELINES.md §6 overrides §1–§5 when they conflict (no fan-out variant pages, no unverifiable superlatives/store claims, real authors, no fake freshness, facts in text). After writing each article, run `python3 scripts/geo_official_lint.py <article.html>` (WARN-only, never blocks) and fix the warnings you can. Daily official-doc changes: vault `90-sources/geo-official/digests/`.
 - **Build an Outline** that covers what the SERP shows plus gaps, following this skeleton:
   - H1: Main benefit + keyword + "the US"
   - H2: Direct answer / short definition (the AEO answer block)
