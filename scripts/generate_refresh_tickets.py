@@ -132,7 +132,7 @@ def generate_tickets(csv_path, output_path):
             try:
                 block = br.prepare_ticket(block)
             except br.GuardError as e:
-                print(f"ageaura guard: skipped refresh ticket {c['link']}: {e}")
+                print(f"brand guard: skipped refresh ticket {c['link']}: {e}")
                 continue
             f.write(block)
             ticket_num += 1

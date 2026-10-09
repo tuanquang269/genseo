@@ -172,7 +172,7 @@ def analyze_and_build(t1_rows, t2_rows, shopify_map):
             try:
                 f.write(br.prepare_ticket(block))
             except br.GuardError as e:
-                print(f"ageaura guard: skipped refresh ticket: {e}")
+                print(f"brand guard: skipped refresh ticket: {e}")
                 return
             ticket_num += 1
 

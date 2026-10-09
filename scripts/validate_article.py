@@ -353,11 +353,12 @@ def main():
         if bad:
             fails.append("image file(s) the draft references are not deliverable: "+"; ".join(bad))
 
-    # brand link rules (Kevin 2026-10-07, SKU audit 2026-10-09): AgeAura = the Pure NMN + TMG
+    # brand rules (Kevin 2026-10-07, SKU audit 2026-10-09): AgeAura = the Pure NMN + TMG
     # NAD Complex only. Any other AgeAura handle, and a bare "AgeAura" with no NMN + TMG
-    # product, are hard fails (scripts/brand_rules.py).
+    # product, are hard fails. FloraFresh claims follow its Supplement Facts label, never the
+    # PDP description (Kevin 2026-10-09; scripts/brand_rules.py + florafresh_rules.py).
     _v=_br.violations(html)
-    if _v: fails.append("brand rule — banned link(s)/mentions: "+"; ".join(_v[:6]))
+    if _v: fails.append("brand rule — banned link(s)/mentions/claims: "+"; ".join(_v[:6]))
 
     # link liveness (products, collections, author pages)
     urls=set(re.findall(r'https://wellnessnest\.co/(?:products|collections|blogs)/[a-z0-9-]+', html))

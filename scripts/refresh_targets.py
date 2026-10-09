@@ -99,7 +99,7 @@ def main():
         try:
             L.extend(br.prepare_ticket("\n".join(block)).splitlines())
         except br.GuardError as e:
-            print(f"ageaura guard: skipped refresh target {t['page']}: {e}")
+            print(f"brand guard: skipped refresh target {t['page']}: {e}")
     open(out, "w").write("\n".join(L))
     print(f"refresh targets: {len(targets)} pages with genuine fixable upside -> {os.path.basename(out)}")
     for t in targets[:12]:

@@ -11,8 +11,9 @@ Candidates: board/ideas.csv rows with status=idea first, then templates/article-
 (priority, then the family with the fewest live articles). Each must pass, in order, against the store
 read live at run time:
   1 complete brief: product, primary, secondary, intent, angle, title <= 60 chars, known segment + template
-  2 brand_rules (AgeAura = NMN + TMG Complex only, no Urolithin) + the bank's banned terms, on the brief
-    and on the rendered ticket
+  2 brand_rules (AgeAura = NMN + TMG Complex only, no Urolithin; FloraFresh formula = its Supplement Facts
+    label, never the PDP description) + the bank's banned terms, on the brief and on the rendered ticket.
+    A FloraFresh ticket also carries florafresh_rules.TICKET_LINE (the label formula)
   3 hero and inline products live and in stock (products.json); a live collection to link
   4 not a covered topic (queue header rule 6: MenoMate / meal plans, shilajit foundations, ...)
   5 not already in daily-tickets.md, any status: same primary, title overlap, or same family + segment
@@ -38,6 +39,7 @@ from concurrent.futures import ThreadPoolExecutor
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "scripts"))
 import brand_rules as br  # noqa: E402
+import florafresh_rules as ff  # noqa: E402
 import topic_fitness as tf  # noqa: E402
 
 SITE = "https://wellnessnest.co"
@@ -687,6 +689,8 @@ def render(c, tid, ctx, info):
     if c["inline"]:
         out.append("  - **Inline (comparison only):** " + ", ".join(
             f"`/products/{h}` ({bank['products'][h]['name']}, {money(prods[h]['price'])})" for h in c["inline"]))
+    if ff.HANDLE in [c["product"]] + c["inline"]:
+        out.append("  - " + ff.TICKET_LINE)
     out += [f"  - **Collection links (≥2, verify live):** {coll}", f"  - **Angle:** {c['angle']}"]
     if c["fanout"]:
         out.append("  - **Fan-out answers to cover:** " + "; ".join(c["fanout"]))
@@ -938,6 +942,7 @@ def self_test():
             "**Collection links", "**Angle:**", "**Author:**", "**Dedup note:**")))
         t("rendered ticket counts as open for the wrapper", OPEN_RX.match(text) is not None)
         t("rendered ticket is brand-clean", not banned(text, bank), banned(text, bank))
+        t("FloraFresh ticket carries the Supplement Facts label formula", ff.TICKET_LINE in text)
         header = batch_header(ctx, ["CA1009-4", "CA1009-4"])
         t("batch header is brand-clean and sets no image override",
           not banned(header, bank) and "ALL images NO-FACE" not in header)
@@ -949,6 +954,10 @@ def self_test():
          dict(product="ageaura-pure-nmn-tmg-p2", primary="nmn morning or night",
               title="NMN: Morning or Night? (US 2026)"), "brand_rules"),
         ("Urolithin in the angle", ctx, dict(angle="Compare it with Urolithin A."), "banned"),
+        ("FloraFresh 15 billion CFU in the secondary (label: 1 billion)", ctx,
+         dict(secondary=["15 billion cfu probiotic"]), "banned"),
+        ("FloraFresh formula cited from the PDP", ctx,
+         dict(evidence="FloraFresh CFU and strains from the live PDP."), "banned"),
         ("sold-out hero product", ctx, dict(product="shilajit-shockwave", primary="shilajit shockwave for athletes",
                                             title="Shilajit Shockwave for Athletes (US 2026)", segment="athletes"),
          "sold out"),
@@ -984,6 +993,7 @@ def self_test():
         text = render(nmn, "CA1009-5", ctx, info)
         t("AgeAura ticket: best-seller twice as a browse link, no AgeAura collection",
           "`/collections/best-seller` twice (browse link" in text and "/collections/ageaura" not in text)
+        t("AgeAura ticket: no FloraFresh formula line", ff.TICKET_LINE not in text)
 
     mk = [("1", "probiotic", "LISTICLE"), ("2", "probiotic", "COMPARISON"), ("3", "turkesterone", "EDITORIAL"),
           ("4", "creatine", "LISTICLE"), ("5", "creatine", "LISTICLE"), ("6", "nmn", "EDITORIAL")]

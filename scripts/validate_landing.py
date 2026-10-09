@@ -4,7 +4,8 @@
   /usr/bin/python3 scripts/validate_landing.py landing_drafts/<slug>.json [--strict]
 
 --strict (required by landing_publisher.py --live): zero placeholders allowed.
-Checks: schema, forbidden terms per store (AgeAura: urolithin/peptide), banned filler, every
+Checks: schema, brand_rules.spec_violations (AgeAura = the NMN + TMG SKU only; FloraFresh formula = its
+Supplement Facts label, never the PDP description), forbidden terms per store (AgeAura: urolithin/peptide), banned filler, every
 number in copy carries a source link or a placeholder, testimonials/expert quotes are either
 placeholders or carry a "source", byline is on roster.json, all wellnessnest.co links 200,
 images exist (local) or are https and < 80 KB as served with Accept: image/webp, no dosage-with-units
@@ -72,9 +73,9 @@ def main():
     if not re.fullmatch(r"[a-z0-9-]{3,80}", spec.get("slug", "")):
         errs.append("slug must be a lowercase handle")
     blob = json.dumps(spec)
-    # One allowlist (Kevin 2026-10-09): Urolithin and any non-NMN+TMG AgeAura SKU, in any store's page.
-    for v in br.violations(blob):
-        errs.append("AgeAura guard: " + v)
+    # Kevin 2026-10-09, any store's page: Urolithin and any non-NMN+TMG AgeAura SKU; FloraFresh claims off its label.
+    for v in br.spec_violations(spec):
+        errs.append("brand guard: " + v)
     blob = blob.lower()
     if brand.get("allowed_products"):
         for h in sorted(set(re.findall(r"wellnessnest\.co/products/([a-z0-9-]+)", blob))):

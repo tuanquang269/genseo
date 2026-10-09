@@ -108,7 +108,7 @@ def main():
             dropped_noise += 1
             continue
         if br.assess(q).action == "deny":
-            buckets["ageaura-sku"] = buckets.get("ageaura-sku", 0) + 1
+            buckets["brand-guard"] = buckets.get("brand-guard", 0) + 1
             continue
         v, code, why = tf.assess(q, articles=arts, collections=colls)  # no pos: ranking guard off (see note)
         buckets[code] = buckets.get(code, 0) + 1

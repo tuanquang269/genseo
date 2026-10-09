@@ -169,7 +169,7 @@ for i, art in enumerate(articles[:120]):
     try:
         out_lines.append(br.prepare_ticket(block))
     except br.GuardError as e:
-        print(f"ageaura guard: skipped 120-ticket keyword {art['keywords'][0]!r}: {e}")
+        print(f"brand guard: skipped 120-ticket keyword {art['keywords'][0]!r}: {e}")
         continue
 
 output_path = "/Users/kevinkreative/genseo/2ndRound_120_tickets.md"
