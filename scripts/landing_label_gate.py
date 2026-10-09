@@ -11,6 +11,7 @@ zoom check is still required (crop_zoom at >= 2x next to the real pack) before s
 """
 import difflib, json, os, re, subprocess, sys, tempfile
 from PIL import Image
+import brand_rules
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -21,9 +22,13 @@ def norm(s):
 
 def main():
     args = [x for x in sys.argv[1:] if not x.startswith("--")]
-    handle = sys.argv[sys.argv.index("--handle") + 1] if "--handle" in sys.argv else "ageaura-pure-nmn-tmg-nad-complex"
+    handle = sys.argv[sys.argv.index("--handle") + 1] if "--handle" in sys.argv else brand_rules.AGEAURA_OK
     if handle in args:
         args.remove(handle)
+    try:
+        handle, _how = brand_rules.resolve_handle(handle)
+    except brand_rules.GuardError as e:
+        sys.exit("✗ AgeAura guard: " + str(e))
     spec = json.load(open(os.path.join(ROOT, "product_refs", f"{handle}.label.json")))
     im = Image.open(args[0]).convert("RGB")
     im = im.resize((im.width * 2, im.height * 2), Image.LANCZOS)

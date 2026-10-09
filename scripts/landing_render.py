@@ -22,6 +22,7 @@ format friction -> "convenience is part of consistency" -> product as one option
 sticky bar only appears once the bridge scrolls in (CSS position:sticky at the end of that zone, no JS).
 """
 import html, json, os, re, sys
+import brand_rules
 
 GRID_CSS = ("<style id=\"gsl-base\">.gsl-landing *{box-sizing:border-box}.gsl-landing img{max-width:100%}"
             ".gsl-landing a:focus-visible{outline:3px solid #1e3a29;outline-offset:2px}"
@@ -384,7 +385,11 @@ def liquid_template(brand, takeover=False):
 
 
 def render(spec_path):
-    if json.load(open(spec_path)).get("engine") == "ref":   # reference replicas (Kevin 2026-10-06) -> landing_clone.py
+    raw = open(spec_path).read()
+    bad = brand_rules.violations(raw)
+    if bad:
+        sys.exit("✗ AgeAura guard: " + "; ".join(bad))
+    if json.loads(raw).get("engine") == "ref":   # reference replicas (Kevin 2026-10-06) -> landing_clone.py
         import subprocess
         sys.exit(subprocess.run([sys.executable, os.path.join(ROOT, "scripts", "landing_clone.py"), spec_path]).returncode)
     spec = json.load(open(spec_path))

@@ -6,6 +6,7 @@ collection links, content angle/intent, comparison-table subject, assigned autho
 brands to feature, dedup note. Sourced from sg_demand_runway.csv, deduped vs ALL_ARTICLES.csv.
 """
 import csv, re
+import brand_rules as br
 
 ROOT="/Users/kevinkreative/genseo"
 
@@ -156,6 +157,13 @@ def main():
     for r in uniq: by_theme.setdefault(r['theme'],[]).append(r)
 
     tickets=sorted(uniq,key=lambda x:-x['imp'])[:120]
+    kept_tickets=[]
+    for r in tickets:
+        if br.assess(r['query']).action == "deny":
+            print(f"ageaura guard: skipped query {r['query']!r}")
+            continue
+        kept_tickets.append(r)
+    tickets=kept_tickets
 
     def tc(q):
         small={'in','of','the','for','a','to','vs','and','with'}
@@ -184,28 +192,37 @@ def main():
         q=r['query']
         colls=r['colls'] or ["protein-powder"]
         coll_links=" , ".join(f"/collections/{c}" for c in colls[:2])
-        secs=[x['query'] for x in by_theme[r['theme']] if x['query']!=q][:3]
+        secs=[x['query'] for x in by_theme[r['theme']]
+              if x['query']!=q and br.assess(x['query']).action != "deny"][:3]
         sec_str=", ".join([q]+secs)
         author=AUTHORS[r['author_key']]
         pb=brands_for(q, r['table'])
         pb_str=", ".join(f"{n}" + (f" (/collections/{c})" if c else " (link products)") for n,c in pb) if pb else "no specific priority brand fits — use the best products you stock"
         angle=angle_for(q, r['pos'])
 
-        L.append(f"### 📝 Ticket #{i+1} — {r['theme']}: {tc(q)}")
-        L.append(f"- **Primary keyword**: `{q}`  (SG: {r['imp']} imp/90d @ pos {r['pos']})")
-        L.append(f"- **Secondary keywords**: `{sec_str}`")
-        L.append(f"- **Angle**: {angle}")
-        L.append(f"- **MUST link these collections (≥2)**: `{coll_links}`")
-        L.append(f"- **Priority brands to feature** (naturally, if relevant): {pb_str}")
-        L.append(f"- **Comparison table subject**: {r['table']}")
-        L.append(f"- **Assigned author**: {author}")
-        L.append(f"- **Dedup**: we already have articles near this keyword — take the angle above, do NOT rewrite an existing one (STEP 0 will verify).")
-        L.append(f"- **Action**: [ ] PENDING")
-        L.append("**🤖 Auto-Publish Trigger Prompt:**")
-        L.append("```markdown")
-        L.append(f"/genseo-auto-publish CREATE A [NEW ARTICLE]. Title Focus: \"A Creative and Engaging SEO Title for '{tc(q)}' in the US\". Target Keywords: {sec_str}. ANGLE: {angle} MUST link collections: {coll_links}. Feature priority brands first if relevant: {pb_str}. Comparison table: {r['table']}. Author: {author}. Default BLOG_ID is 104008483131.")
-        L.append("```")
-        L.append("")
+        block=[
+            f"### 📝 Ticket #{i+1} — {r['theme']}: {tc(q)}",
+            f"- **Primary keyword**: `{q}`  (SG: {r['imp']} imp/90d @ pos {r['pos']})",
+            f"- **Secondary keywords**: `{sec_str}`",
+            f"- **Angle**: {angle}",
+            f"- **MUST link these collections (≥2)**: `{coll_links}`",
+            f"- **Priority brands to feature** (naturally, if relevant): {pb_str}",
+            f"- **Comparison table subject**: {r['table']}",
+            f"- **Assigned author**: {author}",
+            f"- **Dedup**: we already have articles near this keyword — take the angle above, do NOT rewrite an existing one (STEP 0 will verify).",
+            f"- **Action**: [ ] PENDING",
+            "**🤖 Auto-Publish Trigger Prompt:**",
+            "```markdown",
+            f"/genseo-auto-publish CREATE A [NEW ARTICLE]. Title Focus: \"A Creative and Engaging SEO Title for '{tc(q)}' in the US\". Target Keywords: {sec_str}. ANGLE: {angle} MUST link collections: {coll_links}. Feature priority brands first if relevant: {pb_str}. Comparison table: {r['table']}. Author: {author}. Default BLOG_ID is 104008483131.",
+            "```",
+            "",
+        ]
+        try:
+            block=br.prepare_ticket("\n".join(block)).splitlines()
+        except br.GuardError as e:
+            print(f"ageaura guard: skipped ticket {q!r}: {e}")
+            continue
+        L.extend(block)
 
     import sys, os
     _pos = [a for i,a in enumerate(sys.argv[1:],1)

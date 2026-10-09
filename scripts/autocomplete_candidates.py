@@ -16,6 +16,7 @@ Usage: autocomplete_candidates.py [out.txt] [--depth 1|2]
 import json, os, re, sys, time, urllib.parse, urllib.request
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import topic_fitness as tf
+import brand_rules as br
 
 ROOT = "/Users/kevinkreative/genseo"
 MODIFIERS = ["us", "review", "best", "worth it", ""]   # commercial/review intent seeds
@@ -105,6 +106,9 @@ def main():
             continue
         if is_noise(q):
             dropped_noise += 1
+            continue
+        if br.assess(q).action == "deny":
+            buckets["ageaura-sku"] = buckets.get("ageaura-sku", 0) + 1
             continue
         v, code, why = tf.assess(q, articles=arts, collections=colls)  # no pos: ranking guard off (see note)
         buckets[code] = buckets.get(code, 0) + 1

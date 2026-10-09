@@ -14,6 +14,7 @@ Output is webp < 80 KB (website-images-under-80kb).
 """
 import argparse, os, sys
 from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageStat
+import brand_rules
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -27,6 +28,8 @@ def main():
     ap.add_argument("--dark", action="store_true", help="scene is dark: lower the pack exposure a touch")
     ap.add_argument("--size", type=int, default=1200)
     a = ap.parse_args()
+    if not brand_rules.asset_path_allowed(a.cut):
+        sys.exit("✗ AgeAura guard: refusing pack cutout " + a.cut)
     bg = Image.open(a.bg).convert("RGB")
     if bg.width != a.size:
         bg = bg.resize((a.size, round(bg.height * a.size / bg.width)), Image.LANCZOS)

@@ -23,6 +23,7 @@ Re-running updates the same page (id stored in landing_drafts/<slug>/shopify.jso
 --live is refused unless GENSEO_LANDING_LIVE_OK=1 AND validate_landing.py --strict passes (0 placeholders).
 """
 import hashlib, json, os, re, subprocess, sys, urllib.error, urllib.request
+import brand_rules
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PY = "/usr/bin/python3"
@@ -40,6 +41,9 @@ def main():
         sys.exit(__doc__)
     spec_path = os.path.abspath(args[0])
     spec = json.load(open(spec_path))
+    bad = brand_rules.violations(json.dumps(spec))
+    if bad:
+        sys.exit("✗ AgeAura guard: " + "; ".join(bad))
     daily = os.environ.get("GENSEO_LANDING_DAILY") == "1"
     if daily and mode == "live":
         sys.exit("✗ --live refused in the daily landing lane: daily pages are drafts for Kevin to approve.")

@@ -121,9 +121,19 @@ def main():
         print(f"queue already has an open ticket: {open_lines[0]}")
         return
     window = int(os.environ.get("GENSEO_LANDING_NO_REPEAT_DAYS", "6"))
-    angles = json.load(open(ANGLES))
+    raw_angles = json.load(open(ANGLES))
+    angles = {}
+    for key, meta in raw_angles.items():
+        if key.startswith("_") or br.product_allowed(key):
+            angles[key] = meta
+        else:
+            print(f"ageaura guard: dropped landing angle key {key}")
     h, meta, angle, age, stale, why = pick(live_products(), angles, history(), window)
     line = f"- [ ] listicle | {meta['store']} | product={h} · angle: {angle} · audience: {meta.get('audience', '')} (added {today()})"
+    try:
+        line = br.prepare_ticket(line)
+    except br.GuardError as e:
+        sys.exit(f"✗ brand_rules rejected the ticket: {e}")
     v = br.violations(line)
     if v:
         sys.exit(f"✗ brand_rules rejected the ticket: {v}")

@@ -11,6 +11,7 @@ Usage: python3 scripts/build_ctr_tickets.py <output.md>
 import json, os, sys, urllib.request, collections, datetime
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import brand_rules as br
 from gsc_fetcher import get_service
 
 SITE = 'https://wellnessnest.co/'
@@ -117,6 +118,11 @@ def main():
             rtype, rid, title, extra = 'page', res[0]['id'], res[0]['title'], ''
         else:
             skipped.append(f"{path} (unknown type)"); continue
+        if br.assess(f"{url}\n{title}").action == "deny":
+            skipped.append(f"{path} (AgeAura guard)"); continue
+        top = [r for r in top if br.assess(r['keys'][1]).action != "deny"]
+        if not top:
+            skipped.append(f"{path} (AgeAura guard: only banned queries)"); continue
         tickets.append(dict(missed=missed, url=url, pos=pos, imp=imp, clk=clk, top=top,
                             rtype=rtype, rid=rid, title=title, extra=extra))
 
@@ -148,7 +154,7 @@ SERP title + meta description. **Nothing else.**
             qlines = '\n'.join(f"  - `{r['keys'][1]}` — pos {r['position']:.1f}, {r['impressions']} imp, {r['clicks']} clicks"
                                for r in t['top'])
             kw = t['top'][0]['keys'][1]
-            f.write(f"""## Ticket {i} — [PENDING]
+            block = f"""## Ticket {i} — [PENDING]
 - **URL**: {t['url']}
 - **Type/ID**: {t['rtype']} {t['rid']}
 - **Now**: pos {t['pos']:.1f} · {t['imp']} imp · {t['clk']} clicks (28d SG) · missing ~{t['missed']:.0f} clicks/28d
@@ -163,7 +169,13 @@ python3 /Users/kevinkreative/genseo/scripts/update_title_meta.py --type {t['rtyp
 - **Result**: (record new title after ✓)
 
 ---
-""")
+"""
+            try:
+                block = br.prepare_ticket(block)
+            except br.GuardError as e:
+                print(f"  skipped at write: {t['url']} ({e})")
+                continue
+            f.write(block)
     print(f"✓ {len(tickets)} tickets -> {out_path}")
     for s in skipped: print(f"  skipped: {s}")
 

@@ -31,6 +31,7 @@ import os
 import re
 import subprocess
 import sys
+import brand_rules
 
 import shutil as _shutil
 
@@ -429,6 +430,8 @@ def curated_ref(handle):
     the only trustworthy packaging source; the PDP index path is the fallback.
     Returns (png_path, meta_dict) or (None, None)."""
     import json
+    if handle and not brand_rules.product_allowed(handle):
+        return None, None
     png = os.path.join(CURATED_ROOT, f"{handle}.png")
     if not os.path.exists(png):
         return None, None
@@ -447,13 +450,21 @@ def fetch_product_ref(handle_spec):
     import json
     import urllib.request
     from PIL import Image
-    handle, _, idx = handle_spec.partition(":")
+    raw, _, idx = handle_spec.partition(":")
+    try:
+        handle, how = brand_rules.resolve_handle(raw)
+    except brand_rules.GuardError as e:
+        sys.exit(f"✗ AgeAura guard: {e}")
+    if how == "force":
+        print(f"  AgeAura guard: '{raw}' locked to {handle}", flush=True)
     idx = int(idx or 0)
     png, _meta = curated_ref(handle)
     if png:
         if idx:
             print(f"  (ignoring :{idx} — using the curated pack ref for {handle})", flush=True)
         return png
+    if not brand_rules.product_allowed(handle):
+        sys.exit(f"✗ AgeAura guard: refusing PDP download for {handle}")
     print(f"  ⚠ no curated pack ref for {handle} — falling back to PDP image [{idx}]. "
           f"VERIFY the package is actually in that image before trusting the output.", flush=True)
     dest = os.path.join(OUT_ROOT, f"ref_{re.sub(r'[^a-z0-9-]', '-', handle)}_{idx}.png")
@@ -550,6 +561,10 @@ def main():
                          "FAIL prints the reason and exits 2 so the caller can re-roll")
     ap.add_argument("--square", action="store_true", help="1024x1024 instead of 1536x1024 landscape")
     a = ap.parse_args()
+    try:
+        a.prompt, a.product_ref = brand_rules.prepare_image_request(a.prompt, a.product_ref)
+    except brand_rules.GuardError as e:
+        sys.exit(f"✗ AgeAura guard: {e}")
 
     for spec in a.product_ref:
         a.ref.append(fetch_product_ref(spec))

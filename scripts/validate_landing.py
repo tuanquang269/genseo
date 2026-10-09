@@ -17,6 +17,7 @@ import subprocess, json, os, re, sys, urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "scripts"))
+import brand_rules as br  # noqa: E402
 from landing_render import load_brand, PH_RE  # noqa: E402
 
 BANNED = ["when it comes to", "furthermore,", "navigating the", "elevate your", "game-changer", "game changer",
@@ -70,11 +71,11 @@ def main():
             errs.append(f"missing required field: {k}")
     if not re.fullmatch(r"[a-z0-9-]{3,80}", spec.get("slug", "")):
         errs.append("slug must be a lowercase handle")
-    blob = json.dumps(spec).lower()
-    # AgeAura (Kevin 2026-10-06): only the NMN + TMG Complex may be named or linked, in ANY store's page
-    AGEAURA_OK = {"ageaura-pure-nmn-tmg-nad-complex"}
-    for h in sorted(set((re.findall(r"products/(ageaura[a-z0-9-]*)", blob) + re.findall(r"(ageaura-pure-[a-z0-9-]+)", blob))) - AGEAURA_OK):
-        errs.append(f"AgeAura handle '{h}' is not allowed: AgeAura promotes only ageaura-pure-nmn-tmg-nad-complex")
+    blob = json.dumps(spec)
+    # One allowlist (Kevin 2026-10-09): Urolithin and any non-NMN+TMG AgeAura SKU, in any store's page.
+    for v in br.violations(blob):
+        errs.append("AgeAura guard: " + v)
+    blob = blob.lower()
     if brand.get("allowed_products"):
         for h in sorted(set(re.findall(r"wellnessnest\.co/products/([a-z0-9-]+)", blob))):
             if h not in brand["allowed_products"]:
