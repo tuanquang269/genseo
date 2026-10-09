@@ -20,3 +20,7 @@ coagulans SNZ-1969, Vitamin C, pineapple fruit powder. Remove the Lactobacillus 
 the label formula. Row 06 no longer mentions "a prebiotic, or D-mannose". The bridge says plainly that FloraFresh's probiotic
 (B. coagulans SNZ-1969) is not the strain pair the cited trials tested. The offer now has a formula bullet. "Sugar-free" was
 swapped for "Vegan and gluten-free, per the Supplement Facts label". Details are in `florafresh-listicle-261009.claims.md`.
+
+## LIVE 2026-10-09 13:07 ICT (Kevin GO 13:05 ICT)
+- Page 166124093755 published at https://wellnessnest.co/pages/vaginal-probiotic-research (template gsl-ref-listicle-v4, the 10-08 live-listicle standard); 301 /pages/gsl-preview-florafresh-listicle-261009 -> /pages/vaginal-probiotic-research (redirect 735916097851).
+- The PDP description mismatch above is still open: the product page was NOT edited.

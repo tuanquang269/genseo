@@ -3,15 +3,15 @@
  "checks": {
   "template_in_main_theme": {
    "ok": true,
-   "info": "templates/page.gsl-ref-listicle-v2.liquid in theme 183190880571 (WN Shopify Theme - 02072026)"
+   "info": "templates/page.gsl-ref-listicle-v4.liquid in theme 183190880571 (WN Shopify Theme - 02072026)"
   },
   "template_matches_local": {
    "ok": true,
-   "info": "live eb61b67a3c31 vs local eb61b67a3c31 (a CSS change needs a NEW suffix; never overwrite)"
+   "info": "live a7fd3caa44fd vs local a7fd3caa44fd (a CSS change needs a NEW suffix; never overwrite)"
   },
   "template_suffix": {
    "ok": true,
-   "info": "page 'gsl-ref-listicle-v2' vs spec 'gsl-ref-listicle-v2'"
+   "info": "page 'gsl-ref-listicle-v4' vs spec 'gsl-ref-listicle-v4'"
   },
   "body_text_matches_local": {
    "ok": true,
@@ -20,9 +20,101 @@
   "images_on_cdn": {
    "ok": true,
    "info": "20 srcs"
+  },
+  "hidden_again": {
+   "ok": true,
+   "info": "published_at=2026-10-08T23:07:21-07:00"
+  },
+  "desktop_http": {
+   "ok": true,
+   "info": "200"
+  },
+  "desktop_premium_css": {
+   "ok": true,
+   "info": "hero 24px kicker 999px"
+  },
+  "desktop_offer_is_current": {
+   "ok": true,
+   "info": "offer box shows: ⚡️ FLORAFRESH PROBIOTIC GUMMIES Two Gummies in One Daily Habit 4.2 TrustScore · 1,144 revi"
+  },
+  "desktop_no_overflow": {
+   "ok": true,
+   "info": ""
+  },
+  "desktop_images_ok": {
+   "ok": true,
+   "info": "[]"
+  },
+  "mobile_http": {
+   "ok": true,
+   "info": "200"
+  },
+  "mobile_premium_css": {
+   "ok": true,
+   "info": "hero 20px kicker 999px"
+  },
+  "mobile_offer_is_current": {
+   "ok": true,
+   "info": "offer box shows: ⚡️ FLORAFRESH PROBIOTIC GUMMIES Two Gummies in One Daily Habit 4.2 TrustScore · 1,144 revi"
+  },
+  "mobile_no_overflow": {
+   "ok": true,
+   "info": ""
+  },
+  "mobile_images_ok": {
+   "ok": true,
+   "info": "[]"
+  },
+  "sticky_cta": {
+   "ok": true,
+   "info": "{\"top\": \"off(scrollY=0 vh=832 offerTop=8813 bridgeTop=6991 rows=8 cls=gslp-sticky)\", \"after_bridge\": true, \"on_offer\": \"off(scrollY=8963 vh=832 offerTop=-150 bridgeTop=-1972 rows=8 cls=gslp-sticky)\"}"
   }
  },
  "fails": [],
- "was_hidden": true,
+ "was_hidden": false,
+ "storefront": {
+  "url": "https://wellnessnest.co/pages/vaginal-probiotic-research?v=1791526050739",
+  "desktop": {
+   "http": 200,
+   "title": "7 Things to Know Before You Try a Vaginal Probiotic – Wellness Nest",
+   "status_text": "Skip to content\n\n↩️ 90-Day Refund Policy — Eligibility Applies\n\n🚚 Free Shipping",
+   "body_class": "gradient link-btns--glow action-btns--glow",
+   "gsl_ref": true,
+   "premium_markup": true,
+   "premium_css_applied": "24px",
+   "premium_kicker_radius": "999px",
+   "premium_css_in_dom": true,
+   "offer_text": "⚡️ FLORAFRESH PROBIOTIC GUMMIES Two Gummies in One Daily Habit 4.2 TrustScore · 1,144 reviews on Trustpilot $23.91 $40.99 SAVE 41% with Subscribe & Save, delivered every 4 weeks. Or $40.99 one-time. 2 gummies daily, best",
+   "old_v2_offer_copy": false,
+   "sticky": true,
+   "imgs": 15,
+   "broken": [],
+   "overflow": false,
+   "height": 9032
+  },
+  "mobile": {
+   "http": 200,
+   "title": "7 Things to Know Before You Try a Vaginal Probiotic – Wellness Nest",
+   "status_text": "Skip to content\n\n↩️ 90-Day Refund Policy — Eligibility Applies\n\n🚚 Free Shipping",
+   "body_class": "gradient link-btns--glow action-btns--glow",
+   "gsl_ref": true,
+   "premium_markup": true,
+   "premium_css_applied": "20px",
+   "premium_kicker_radius": "999px",
+   "premium_css_in_dom": true,
+   "offer_text": "⚡️ FLORAFRESH PROBIOTIC GUMMIES Two Gummies in One Daily Habit 4.2 TrustScore · 1,144 reviews on Trustpilot $23.91 $40.99 SAVE 41% with Subscribe & Save, delivered every 4 weeks. Or $40.99 one-time. 2 gummies daily, best",
+   "old_v2_offer_copy": false,
+   "sticky": true,
+   "imgs": 15,
+   "broken": [],
+   "overflow": false,
+   "height": 12111,
+   "sticky_check": {
+    "top": "off(scrollY=0 vh=832 offerTop=8813 bridgeTop=6991 rows=8 cls=gslp-sticky)",
+    "after_bridge": true,
+    "on_offer": "off(scrollY=8963 vh=832 offerTop=-150 bridgeTop=-1972 rows=8 cls=gslp-sticky)"
+   }
+  }
+ },
  "verdict": "PASS"
 }

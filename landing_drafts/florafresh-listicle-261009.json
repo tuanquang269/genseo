@@ -4,8 +4,8 @@
  "posture": "hybrid",
  "store": "wellnessnest",
  "slug": "florafresh-listicle-261009",
- "handle": "gsl-preview-florafresh-listicle-261009",
- "template_suffix": "gsl-ref-listicle-v2",
+ "handle": "vaginal-probiotic-research",
+ "template_suffix": "gsl-ref-listicle-v4",
  "takeover": false,
  "created": "2026-10-09",
  "daily": true,
@@ -278,5 +278,8 @@
   "note": "From $23.91",
   "cta": "SEE INGREDIENTS",
   "href": "https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies"
- }
+ },
+ "mobile_layer_approved": "Kevin 2026-10-08 15:51 ICT (v4 = v2 + mobile-only layer; standard for live listicles since 2026-10-08)",
+ "live": true,
+ "live_approved": "Kevin 2026-10-09 13:05 ICT"
 }

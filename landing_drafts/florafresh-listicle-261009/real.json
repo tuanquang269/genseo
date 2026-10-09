@@ -1,0 +1,44 @@
+{
+ "url": "https://wellnessnest.co/pages/vaginal-probiotic-research?v=1791526050739",
+ "desktop": {
+  "http": 200,
+  "title": "7 Things to Know Before You Try a Vaginal Probiotic – Wellness Nest",
+  "status_text": "Skip to content\n\n↩️ 90-Day Refund Policy — Eligibility Applies\n\n🚚 Free Shipping",
+  "body_class": "gradient link-btns--glow action-btns--glow",
+  "gsl_ref": true,
+  "premium_markup": true,
+  "premium_css_applied": "24px",
+  "premium_kicker_radius": "999px",
+  "premium_css_in_dom": true,
+  "offer_text": "⚡️ FLORAFRESH PROBIOTIC GUMMIES Two Gummies in One Daily Habit 4.2 TrustScore · 1,144 reviews on Trustpilot $23.91 $40.99 SAVE 41% with Subscribe & Save, delivered every 4 weeks. Or $40.99 one-time. 2 gummies daily, best",
+  "old_v2_offer_copy": false,
+  "sticky": true,
+  "imgs": 15,
+  "broken": [],
+  "overflow": false,
+  "height": 9032
+ },
+ "mobile": {
+  "http": 200,
+  "title": "7 Things to Know Before You Try a Vaginal Probiotic – Wellness Nest",
+  "status_text": "Skip to content\n\n↩️ 90-Day Refund Policy — Eligibility Applies\n\n🚚 Free Shipping",
+  "body_class": "gradient link-btns--glow action-btns--glow",
+  "gsl_ref": true,
+  "premium_markup": true,
+  "premium_css_applied": "20px",
+  "premium_kicker_radius": "999px",
+  "premium_css_in_dom": true,
+  "offer_text": "⚡️ FLORAFRESH PROBIOTIC GUMMIES Two Gummies in One Daily Habit 4.2 TrustScore · 1,144 reviews on Trustpilot $23.91 $40.99 SAVE 41% with Subscribe & Save, delivered every 4 weeks. Or $40.99 one-time. 2 gummies daily, best",
+  "old_v2_offer_copy": false,
+  "sticky": true,
+  "imgs": 15,
+  "broken": [],
+  "overflow": false,
+  "height": 12111,
+  "sticky_check": {
+   "top": "off(scrollY=0 vh=832 offerTop=8813 bridgeTop=6991 rows=8 cls=gslp-sticky)",
+   "after_bridge": true,
+   "on_offer": "off(scrollY=8963 vh=832 offerTop=-150 bridgeTop=-1972 rows=8 cls=gslp-sticky)"
+  }
+ }
+}
