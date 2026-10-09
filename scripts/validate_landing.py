@@ -13,12 +13,15 @@ outside the product/offer card, no product named in the numbered findings for po
 (vault skill claude-design-dtc-listicle-advertorial + PATI-ADAPTATION.md), taste rules from the
 2026-10-08 benchmark (no em/en dashes, paragraphs <= 40 words, H1 <= 55 chars, CTA <= 3 words; errors when
 "daily": true), claims log landing_drafts/<slug>.claims.md exists (versioned next to the spec).
+Premium pack_images (or a spec that claims a label-gate pass) fail closed when the label JSON is
+missing, OCR fails, or the host has no macOS Vision. That is not a skip. See docs/LABEL_OCR_GATE.md.
 """
-import subprocess, json, os, re, sys, urllib.request
+import json, os, re, sys, urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "scripts"))
 import brand_rules as br  # noqa: E402
+import landing_label_gate as llg  # noqa: E402
 from landing_render import load_brand, PH_RE  # noqa: E402
 
 BANNED = ["when it comes to", "furthermore,", "navigating the", "elevate your", "game-changer", "game changer",
@@ -215,14 +218,14 @@ def main():
         ph = re.search(r"/products/([a-z0-9-]+)", json.dumps(spec))
         lj = ph and os.path.join(ROOT, "product_refs", ph.group(1) + ".label.json")
         packs = spec.get("pack_images") or []
-        if lj and os.path.exists(lj) and not packs:
+        claimed = llg.claims_label_whitelist(spec)
+        if lj and os.path.exists(lj) and not packs and not claimed:
             taste.append("product has a label json: list every generated pack shot in pack_images so the label gate runs")
-        for im in packs:
-            if lj and os.path.exists(lj):
-                g = subprocess.run([sys.executable, os.path.join(ROOT, "scripts", "landing_label_gate.py"), os.path.join(ROOT, im), "--handle", ph.group(1)],
-                                   capture_output=True, text=True)
-                if g.returncode != 0:
-                    errs.append(f"pack_images {im}: label gate FAIL ({(g.stdout.strip().splitlines() or ['?'])[-1][:120]})")
+        # pack_images, or copy that claims a label-gate pass, fails closed when the
+        # whitelist is missing or landing_label_gate.py does not exit 0. A missing
+        # file is not a skip. Scene-only specs (no pack_images, no claim) are.
+        if claimed:
+            errs.extend(llg.whitelist_pack_errors(spec, ROOT))
     n_ph = len(PH_RE.findall(json.dumps(spec)))
     if strict and n_ph:
         errs.append(f"--strict: {n_ph} placeholder(s) remain — fill them with sourced facts or remove the block")

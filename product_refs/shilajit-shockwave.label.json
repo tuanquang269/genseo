@@ -1,0 +1,22 @@
+{
+ "handle": "shilajit-shockwave",
+ "source": "macOS Vision label_ocr.swift on product_refs/shilajit-shockwave.png, 2026-10-09. A native read and the gate's 2x read agreed on wellness, nest, SHILAJIT, SHOCKWAVE, EXPERIENCE FOCUSED ENERGY, and PEAK PERFORMANCE. They did not agree on the mark after PERFORMANCE or a leading ampersand, so those marks are not required. The volume line was read as \"1 il oz | 30 ml\" and then as \"1 1l oz\" / \"30 ml\"; both were omitted, not corrected to 1 fl oz. No milligram token was read. Do not add one.",
+ "accepted_ocr": [
+  "wellness",
+  "nest",
+  "SHILAJIT",
+  "SHOCKWAVE",
+  "EXPERIENCE FOCUSED ENERGY",
+  "PEAK PERFORMANCE"
+ ],
+ "required": [
+  "wellness",
+  "nest",
+  "SHILAJIT",
+  "SHOCKWAVE",
+  "EXPERIENCE FOCUSED ENERGY",
+  "PEAK PERFORMANCE"
+ ],
+ "optional": [],
+ "mark": "Not confirmed by this OCR pass. Zoom product_refs/shilajit-shockwave.png at >= 2x before shipping."
+}

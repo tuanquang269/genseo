@@ -1,0 +1,26 @@
+{
+ "handle": "florafresh-vaginal-probiotics-gummies",
+ "source": "Front-of-pouch OCR only. macOS Vision label_ocr.swift on product_refs/florafresh-vaginal-probiotics-gummies.png, 2026-10-09. required and accepted_ocr are confidence-1.00 lines copied verbatim. Misreads were omitted, not corrected (Weliness; Pineapple favor; garbled benefit lines). This file is not the Supplement Facts panel. Strain and CFU stay in scripts/florafresh_rules.py. Do not add a CFU or strain here unless a later OCR read shows that text letter-perfect.",
+ "accepted_ocr": [
+  "FloraFresh",
+  "Vaginal",
+  "Probiotic",
+  "Gummies",
+  "60",
+  "DIETARY",
+  "GUMMIES",
+  "SUPPLEMENT"
+ ],
+ "required": [
+  "FloraFresh",
+  "Vaginal",
+  "Probiotic",
+  "Gummies",
+  "60",
+  "DIETARY",
+  "GUMMIES",
+  "SUPPLEMENT"
+ ],
+ "optional": [],
+ "mark": "Not confirmed by this OCR pass (the wordmark line was read as Weliness and was not corrected). Zoom product_refs/florafresh-vaginal-probiotics-gummies.png at >= 2x before shipping."
+}

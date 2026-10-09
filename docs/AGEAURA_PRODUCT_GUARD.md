@@ -13,7 +13,7 @@ python3 -m unittest tests/test_ageaura_guard.py
 python3 scripts/llms_txt_draft.py --from-product-refs
 ```
 
-The llms command writes a local draft only. It does not upload.
+The llms command writes a local draft only. It does not upload. FloraFresh, FusiForce, and shilajit-gummies formula lines are included only when they match the label source of truth (`scripts/llms_formula.py`, `docs/LABEL_OCR_GATE.md`). The Urolithin A PDP is omitted.
 
 ## Left for a Kevin GO
 

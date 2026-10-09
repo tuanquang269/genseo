@@ -1,0 +1,15 @@
+# Wellness Nest — llms.txt draft (local only, not published)
+# AgeAura promotes one SKU: the Pure NMN + TMG NAD Complex. Every other AgeAura handle is omitted.
+# Formula lines are included only when they match the label source of truth.
+
+- [AgeAura Pure NMN + TMG NAD+ Complex](https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex)
+- https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies
+  FloraFresh: per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 1 billion CFU, Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain); sweetened with maltitol and isomalt, so not sugar-free; label badges Allergen Free, Vegan, Halal, Gluten Free
+- https://wellnessnest.co/products/fusiforce-creatine-gummies
+  FusiForce Creatine Monohydrate Gummies, 90 gummies (pack label).
+- https://wellnessnest.co/products/premium-himalayan-shilajit-gummies
+  Premium Himalayan Shilajit Gummies, 60 gummies, 60-day supply (pack label).
+- https://wellnessnest.co/products/pure-shilajit-gold-resin
+- https://wellnessnest.co/products/shilajit-shockwave
+- https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin
+- https://wellnessnest.co/products/turkesterone-advanced-formula
