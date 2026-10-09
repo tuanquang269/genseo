@@ -19,7 +19,9 @@ Read `skills/genseo-landing-pages/SKILL.md` and `templates/landing/README.md` in
 - **Brand files** `brand/<store>.json` carry tokens, voice and `forbidden_terms`; AgeAura allows only
   `ageaura-pure-nmn-tmg-nad-complex`. `validate_landing.py` blocks banned handles and terms, and any FloraFresh
   formula claim its Supplement Facts label does not support (`scripts/florafresh_rules.py`; the PDP description is
-  wrong until Kevin's GO).
+  wrong until Kevin's GO). FusiForce pack count and doses follow
+  `product_refs/fusiforce-creatine-gummies.label.json` (90 gummies, creatine monohydrate; no 84, no milligram
+  amount, no serving count, no ginseng unless that token is in the file — `scripts/fusiforce_rules.py`).
 - **No invented facts:** every number, study, price, rating and review comes from a page fetched this run, else
   `[[PLACEHOLDER: …]]` or cut. Reviews only verbatim from Trustpilot as displayed.
 - **Theme:** `--install-template` only adds a missing template key, never overwrites. Any other theme change needs

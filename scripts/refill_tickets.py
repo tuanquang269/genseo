@@ -12,8 +12,11 @@ Candidates: board/ideas.csv rows with status=idea first, then templates/article-
 read live at run time:
   1 complete brief: product, primary, secondary, intent, angle, title <= 60 chars, known segment + template
   2 brand_rules (AgeAura = NMN + TMG Complex only, no Urolithin; FloraFresh formula = its Supplement Facts
-    label, never the PDP description) + the bank's banned terms, on the brief and on the rendered ticket.
-    A FloraFresh ticket also carries florafresh_rules.TICKET_LINE (the label formula)
+    label, never the PDP description; FusiForce pack count = 90 gummies from its label whitelist, no
+    milligram amount, serving count, or ginseng unless that token is in the whitelist) + the bank's banned
+    terms, on the brief and on the rendered ticket.
+    A FloraFresh ticket also carries florafresh_rules.TICKET_LINE (the label formula).
+    A FusiForce ticket also carries fusiforce_rules.TICKET_LINE (the pack label).
   3 hero and inline products live and in stock (products.json); a live collection to link
   4 not a covered topic (queue header rule 6: MenoMate / meal plans, shilajit foundations, ...)
   5 not already in daily-tickets.md, any status: same primary, title overlap, or same family + segment
@@ -40,6 +43,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "scripts"))
 import brand_rules as br  # noqa: E402
 import florafresh_rules as ff  # noqa: E402
+import fusiforce_rules as fu  # noqa: E402
 import topic_fitness as tf  # noqa: E402
 
 SITE = "https://wellnessnest.co"
@@ -691,6 +695,8 @@ def render(c, tid, ctx, info):
             f"`/products/{h}` ({bank['products'][h]['name']}, {money(prods[h]['price'])})" for h in c["inline"]))
     if ff.HANDLE in [c["product"]] + c["inline"]:
         out.append("  - " + ff.TICKET_LINE)
+    if fu.HANDLE in [c["product"]] + c["inline"]:
+        out.append("  - " + fu.TICKET_LINE)
     out += [f"  - **Collection links (≥2, verify live):** {coll}", f"  - **Angle:** {c['angle']}"]
     if c["fanout"]:
         out.append("  - **Fan-out answers to cover:** " + "; ".join(c["fanout"]))

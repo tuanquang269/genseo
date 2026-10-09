@@ -19,6 +19,9 @@ the wrapper counts open tickets with `grep -cE '^(- \[ \]|## \[ \])'`. Zero open
 - FloraFresh tickets take strain, CFU and sugar facts from its Supplement Facts label (Bacillus coagulans SNZ-1969,
   1 billion CFU per 2 gummies, not sugar-free), never from the PDP description, which is wrong until Kevin's GO;
   `refill_tickets.py` adds the label line under the hero product (`docs/FLORAFRESH_FORMULA_GUARD.md`).
+- FusiForce tickets take the pack count from `product_refs/fusiforce-creatine-gummies.label.json` (creatine
+  monohydrate, 90 gummies). Do not state 84, a milligram amount, a serving count, or ginseng unless that token is
+  in the file. `refill_tickets.py` adds the pack-label line (`docs/FUSIFORCE_LABEL_GUARD.md`).
 
 ## Ticket format (what `refill_tickets.py` renders)
 ```

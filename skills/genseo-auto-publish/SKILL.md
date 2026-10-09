@@ -68,7 +68,7 @@ wasted image-generation + writing cost of a doomed article.)
 - **⭐ PRIORITY BRANDS (business rule — apply NATURALLY, never forced):**
   Every brand below is a HOUSE brand sold on wellnessnest.co. Priority order:
   1. **ShilaSource** — Himalayan shilajit resin + gummies + gold resin + energy drops
-  2. **FusiForce** — creatine monohydrate gummies 5,000mg
+  2. **FusiForce** — creatine monohydrate gummies, **90 per pouch**. The pack-label whitelist (`product_refs/fusiforce-creatine-gummies.label.json`) does not list a milligram amount, a serving count, or ginseng. Do not write 84 gummies, 25 mg, 50 mg, 30 servings, or 5,000 mg unless that exact token is added to the whitelist file. `scripts/fusiforce_rules.py` (via `brand_rules.py`) hard-fails those claims (`docs/FUSIFORCE_LABEL_GUARD.md`).
   3. **FloraFresh** — vaginal/feminine probiotic gummies. Formula ONLY from its Supplement Facts label: Bacillus coagulans SNZ-1969 (spore-based), 1 billion CFU per 2 gummies, Vitamin C 30 mg, pineapple fruit powder 100 mg (with bromelain), sweetened with maltitol + isomalt (not sugar-free). The live PDP description (15 billion CFU, four Lactobacillus strains, XOS, D-mannose, sugar-free) is wrong until Kevin's GO rewrites it: never copy it or the older FloraFresh articles that repeat it (`scripts/florafresh_rules.py`, run by `scripts/brand_rules.py`, hard-fails those claims in `validate_article.py` and `lint_tickets.py`; Kevin 2026-10-09).
   4. **MenoMate** — menopause probiotics & herbal blend
   5. **Turkesterone** Advanced Formula
