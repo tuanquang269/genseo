@@ -543,3 +543,50 @@ blog 104008483131, publish `--live`, claims log), PLUS the 2026-10-08 guideline 
   - **Template:** EDITORIAL · **Gate:** topic_fitness PASS [brand] · dedupe: no alcohol title live
   - **Products:** `/products/ageaura-pure-nmn-tmg-nad-complex` ($69.95) ONLY. Collections: `/collections/best-seller` (twice). No other AgeAura product or AgeAura collection link (brand_rules.py gate).
   - **Angle:** alcohol metabolism uses NAD+ (fetched biochemistry source), no human trial of NMN for hangover or alcohol (say so), label caution. Run only if <5 live today. LINK when-to-take-nmn, nmn-side-effects — don't restate.
+
+# BATCH 2026-10-09 (MacBook lane, Mac mini offline — ids MB prefix)
+
+Built by Grok Bot on the MacBook 2026-10-09 ~09:45 ICT after the 08:43 run stopped at 1/5 on an empty queue (Kevin GO: 5/day).
+Each topic: `topic_fitness.py` PASS + dedupe against the 103 live handles (sitemap_articles_1.xml, 2026-10-09) +
+STEP 0 `suggest.json` (0 article matches). Prices verified live 2026-10-09 (products.json): FusiForce $69.99,
+FloraFresh $40.99, Turkesterone Advanced Formula $75, AgeAura Pure NMN + TMG NAD+ Complex $69.95.
+
+**Rules for this batch — identical to the 2026-10-08 batch rules above** (ALL images NO-FACE via
+`article_images.py --product-ref <handle> --qc`, no `persona_picker`, roster byline only, blog 104008483131, publish
+`--live`, claims log with delete-if-unconfirmed, fan-out answers, "Where to buy" section, brand gate: AgeAura =
+`/products/ageaura-pure-nmn-tmg-nad-complex` ONLY, never p2 / Duo / `/collections/ageaura`, no non-NMN/TMG longevity ingredients).
+
+- [DONE 2026-10-09 https://wellnessnest.co/blogs/news/creatine-gummies-on-rest-days-keep-taking-them-us-2026] **#MB1009-1 — creatine gummies on rest days** — `Creatine Gummies on Rest Days: Keep Taking Them? (US 2026)`
+  - **Primary keyword:** `creatine gummies on rest days` · **Secondary:** do you take creatine on rest days, creatine rest day timing, skipping creatine on off days, creatine every day
+  - **Template:** EDITORIAL · **Gate:** topic_fitness PASS [brand] · dedupe: no rest-day title live (best-time-to-take-creatine covers pre/post workout only — LINK it, don't restate)
+  - **Products:** `/products/fusiforce-creatine-gummies` ($69.99) only. Collections: `/collections/mens-essential-collection`, `/collections/best-seller`.
+  - **Angle:** muscle creatine saturation is maintained by daily intake, not by training days (fetched sources only, e.g. ISSN position stand if confirmed); what happens if you skip a few days (washout timeline only if sourced); practical rest-day routine with food. LINK creatine-gummies-dosage, how-long-does-creatine-take-to-work — don't restate.
+  - **Fan-out answers to cover:** what time on a rest day; does missing a day reset progress; with or without food; weekends/travel.
+
+- [ ] **#MB1009-2 — how long does turkesterone take to work** — `How Long Does Turkesterone Take to Work? A Realistic Timeline (US 2026)`
+  - **Primary keyword:** `how long does turkesterone take to work` · **Secondary:** turkesterone results timeline, turkesterone results after 4 weeks, when will I notice turkesterone, turkesterone before and after
+  - **Template:** STORY · **Gate:** topic_fitness PASS [brand] · dedupe: no timeline title live
+  - **Products:** `/products/turkesterone-advanced-formula` ($75). Collections: `/collections/mens-essential-collection`, `/collections/best-seller`.
+  - **Angle:** the few human trials and their durations (fetched sources only; say plainly that human evidence is thin and no trial of this formula exists); what can realistically be tracked week by week (training log, recovery feel) without promising results; no invented testimonials or before/after numbers. LINK turkesterone-benefits-dosing, turkesterone-cycle, turkesterone-timing — don't restate.
+  - **Fan-out answers to cover:** what if I notice nothing after 4 weeks; does it work without training; how long to take it; who should not take it.
+
+- [ ] **#MB1009-3 — best time to take vaginal probiotics** — `Best Time to Take Vaginal Probiotics: Morning, Night or With Food? (US 2026)`
+  - **Primary keyword:** `best time to take vaginal probiotics` · **Secondary:** when to take florafresh, vaginal probiotics morning or night, probiotics with or without food, take probiotics on empty stomach
+  - **Template:** LISTICLE · **Gate:** topic_fitness PASS [brand] · dedupe: no timing title for vaginal probiotics live (vaginal-probiotics-how-long-until-they-work covers onset — LINK it, don't restate)
+  - **Products:** `/products/florafresh-vaginal-probiotics-gummies` ($40.99). Collections: `/collections/womens-essentials-collection`, `/collections/best-seller`.
+  - **Angle:** what the evidence says on meal timing and probiotic survival (fetched sources only; say where evidence is thin), consistency beats clock time, label directions first, spacing from antibiotics (LINK probiotics-after-antibiotics-for-women). No medical/cure claims (FDA structure/function only).
+  - **Fan-out answers to cover:** morning or night; with breakfast or empty stomach; can I take it with other supplements; what if I miss a dose.
+
+- [ ] **#MB1009-4 — nmn and exercise** — `NMN and Exercise: Take It Before or After a Workout? (US 2026)`
+  - **Primary keyword:** `nmn and exercise` · **Secondary:** nmn before workout, nmn for endurance, nmn after workout, nmn and muscle
+  - **Template:** EDITORIAL · **Gate:** topic_fitness PASS [brand] · dedupe: no exercise/workout title live (nmn-and-creatine-together covers the stack; when-to-take-nmn covers time of day — LINK both, don't restate)
+  - **Products:** `/products/ageaura-pure-nmn-tmg-nad-complex` ($69.95) ONLY. Collections: `/collections/best-seller` (twice). No other AgeAura product or AgeAura collection link (brand_rules.py gate). NMN + TMG only.
+  - **Angle:** human trials that tested NMN with exercise outcomes (e.g. the 2021 amateur-runner trial — only if fetched & confirmed); what they did and did not show; no human evidence on pre- vs post-workout timing (say so); label: 2 capsules daily. LINK how-much-nmn-per-day, nmn-side-effects — don't restate.
+  - **Fan-out answers to cover:** before or after training; on rest days; does it replace pre-workout (no); can older adults who exercise take it (ask a clinician).
+
+- [ ] **#MB1009-5 — creatine gummies and alcohol** (buffer — run only if <5 live today) — `Creatine Gummies and Alcohol: What Happens If You Drink? (US 2026)`
+  - **Primary keyword:** `creatine and alcohol` · **Secondary:** can you drink on creatine, creatine gummies hangover, alcohol and muscle recovery, creatine dehydration alcohol
+  - **Template:** LISTICLE · **Gate:** topic_fitness PASS [brand] · dedupe: no creatine-alcohol title live
+  - **Products:** `/products/fusiforce-creatine-gummies` ($69.99) only. Collections: `/collections/mens-essential-collection`, `/collections/best-seller`.
+  - **Angle:** no human trial tests creatine + alcohol directly (say so); what alcohol does to recovery/muscle protein synthesis (fetched sources only); hydration myths around creatine; practical spacing. LINK creatine-gummies-side-effects, creatine-and-caffeine — don't restate.
+  - **Fan-out answers to cover:** morning after drinking; does alcohol cancel creatine; kidney/liver concerns (ask a clinician).
