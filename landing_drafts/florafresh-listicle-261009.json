@@ -1,0 +1,281 @@
+{
+ "engine": "ref",
+ "template": "listicle",
+ "posture": "hybrid",
+ "store": "wellnessnest",
+ "slug": "florafresh-listicle-261009",
+ "handle": "gsl-preview-florafresh-listicle-261009",
+ "template_suffix": "gsl-ref-listicle-v2",
+ "takeover": false,
+ "created": "2026-10-09",
+ "daily": true,
+ "reference": "http://localhost:8790/pages/10-reasons-why-creatine-is-for-skinny-people/",
+ "title": "7 Things to Know Before You Try a Vaginal Probiotic",
+ "meta_description": "Which vaginal probiotic strains were studied, what the trials measured on swabs, where results were null, and what to check on a label before you try one.",
+ "topbar": {
+  "labels": [
+   "Wellness Nest Guide 📖",
+   "90-Day Money-Back Guarantee on first orders"
+  ],
+  "deadline": null
+ },
+ "hero": {
+  "accent": "7 Things",
+  "title": "to Know Before a Vaginal Probiotic",
+  "summary_html": "<strong>Summary:</strong> Which strains were studied, what the swabs measured, where results were null, and what to check on a label.",
+  "kicker": "Evidence review · 4 studies cited",
+  "image": "tmp_images/landing-florafresh-listicle-261009/hero.webp",
+  "alt": "FloraFresh Vaginal Probiotic Gummies pouch on a travertine podium with pineapple gummies and eucalyptus",
+  "chip": "60 gummies · 30-day supply",
+  "cta": {
+   "label": "SEE INGREDIENTS",
+   "href": "https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies"
+  },
+  "image_note": "Generated with the real pack as reference (ima2, article_images.py --product-ref florafresh-vaginal-probiotics-gummies --square --qc), QC PASS, label read against product_refs pack, 2026-10-09.",
+  "source": "Chip '60 gummies · 30-day supply' = pack label (60 GUMMIES) + PDP FAQ ('60 Premium Gummies', 'Full 30-Day Supply'), read 2026-10-09.",
+  "focal_y": 0.15
+ },
+ "byline": {
+  "name": "Dr. Marcus Hale",
+  "role": "Wellness Nest editorial team",
+  "avatar": "tmp_images/landing-florafresh-listicle-261009/avatar.webp"
+ },
+ "updated": "Oct 9, 2026",
+ "items": [
+  {
+   "title": "Lactobacillus leads healthy flora",
+   "body": "<p>In <a href=\"https://doi.org/10.1073/pnas.1002611107\" target=\"_blank\" rel=\"noopener\">396 women with no symptoms</a>, vaginal bacteria fell into five community types. Four were led by one Lactobacillus species, such as L. crispatus or L. gasseri.</p><p>The fifth had fewer lactic acid bacteria and more anaerobes. Making lactic acid looked like the shared job of healthy communities.</p>",
+   "evidence": "Microbiome survey, PNAS 2011",
+   "source": "https://doi.org/10.1073/pnas.1002611107",
+   "image": "tmp_images/landing-florafresh-listicle-261009/row1.webp",
+   "alt": "An open blank notebook, a pencil and a glass of water on a travertine counter",
+   "evidence_label": "Microbiome survey · Ravel et al., PNAS 2011"
+  },
+  {
+   "title": "Flora shifted in 64 healthy women",
+   "body": "<p>In a <a href=\"https://doi.org/10.1016/s0928-8244(02)00465-0\" target=\"_blank\" rel=\"noopener\">placebo-controlled trial</a>, 64 healthy women took two oral Lactobacillus strains daily for 60 days. On microscopy, 37% moved to normal lactobacilli flora, vs 13% on placebo.</p><p>Note what was measured: swabs under a microscope and cultures, not odor or comfort. The women had no symptoms at the start.</p>",
+   "evidence": "Human trial (RCT), FEMS Immunol Med Microbiol 2003",
+   "source": "https://doi.org/10.1016/s0928-8244(02)00465-0",
+   "chart": {
+    "kind": "bars",
+    "title": "Moved to normal lactobacilli flora",
+    "legend": [
+     {
+      "label": "Two strains daily",
+      "highlight": true
+     },
+     {
+      "label": "Placebo"
+     }
+    ],
+    "bars": [
+     {
+      "label": "Strains",
+      "value": 37,
+      "display": "37%",
+      "highlight": true,
+      "inbar": "GR-1 + RC-14"
+     },
+     {
+      "label": "Placebo",
+      "value": 13,
+      "display": "13%"
+     }
+    ],
+    "source": "Reid et al., FEMS Immunol Med Microbiol 2003. 64 healthy women, 60 days, oral GR-1 + RC-14 vs placebo."
+   },
+   "evidence_label": "Human RCT · Reid et al., 2003"
+  },
+  {
+   "title": "Trials test named strain pairs",
+   "body": "<p>All three trials here used one strain pair: L. rhamnosus GR-1 plus RC-14. <a href=\"https://doi.org/10.1016/s0928-8244(02)00465-0\" target=\"_blank\" rel=\"noopener\">Reid 2003</a> names RC-14 L. fermentum; <a href=\"https://doi.org/10.1016/j.ejogrb.2012.12.031\" target=\"_blank\" rel=\"noopener\">Vujic 2013</a> names it L. reuteri.</p><p>The code, not the species, marks the tested strain. A label that lists species names only cannot be matched to these trials.</p>",
+   "evidence": "Strain naming across the trials cited",
+   "source": "https://doi.org/10.1016/j.ejogrb.2012.12.031",
+   "image": "tmp_images/landing-florafresh-listicle-261009/row3.webp",
+   "alt": "Tortoiseshell reading glasses on a blank ivory card beside a cup of herbal tea",
+   "evidence_label": "Study design · strain-specific trials"
+  },
+  {
+   "title": "A larger trial in women with BV",
+   "body": "<p>In a <a href=\"https://doi.org/10.1016/j.ejogrb.2012.12.031\" target=\"_blank\" rel=\"noopener\">double-blind trial</a>, 544 women diagnosed with BV or another vaginal infection took the two strains orally for 6 weeks. A cytologist read their swabs.</p><p>Balanced flora returned in 61.5% vs 26.9% on placebo. At 12 weeks it was 51.1% vs 20.8%. The abstract reports swabs, not odor or comfort.</p>",
+   "evidence": "Human trial (RCT), Eur J Obstet Gynecol Reprod Biol 2013",
+   "source": "https://doi.org/10.1016/j.ejogrb.2012.12.031",
+   "chart": {
+    "kind": "stats",
+    "title": "544 women, swabs read by a cytologist",
+    "stats": [
+     {
+      "value": "544",
+      "label": "Women randomized"
+     },
+     {
+      "value": "61.5%",
+      "label": "Balanced, probiotic",
+      "highlight": true
+     },
+     {
+      "value": "26.9%",
+      "label": "Balanced, placebo"
+     }
+    ],
+    "source": "Vujic et al., Eur J Obstet Gynecol Reprod Biol 2013;168:75-79."
+   },
+   "evidence_label": "Double-blind RCT · Vujic et al., 2013"
+  },
+  {
+   "title": "In pregnancy, results were null",
+   "body": "<p>In a <a href=\"https://doi.org/10.1111/1471-0528.15675\" target=\"_blank\" rel=\"noopener\">UK trial</a>, pregnant women took the same two strains daily from early pregnancy. BV rates at 18 to 20 weeks did not differ: 15% vs 9% on placebo.</p><p>Microbiome makeup did not change either. Pregnant or trying? Talk to your doctor before you start any supplement.</p>",
+   "evidence": "Human trial (RCT), BJOG 2020",
+   "source": "https://doi.org/10.1111/1471-0528.15675",
+   "image": "tmp_images/landing-florafresh-listicle-261009/row5.webp",
+   "alt": "A folded knit blanket and a mug of tea on a linen armchair by a window",
+   "evidence_label": "Double-blind RCT · Husain et al., BJOG 2020"
+  },
+  {
+   "title": "What these trials did not test",
+   "body": "<p>Every trial here tested capsules of one strain pair. None tested a gummy, a prebiotic, or D-mannose alongside them.</p><p>None of the abstracts reports odor as an outcome; results came from swabs. Not tested is not disproven, but it is not proof either.</p>",
+   "evidence": "Evidence gap, read from the abstracts cited (capsules, swab outcomes)",
+   "image": "tmp_images/landing-florafresh-listicle-261009/row6.webp",
+   "alt": "Printed research papers, a pencil and a cup of tea on natural linen",
+   "evidence_label": "Evidence gap · capsule trials, swab outcomes",
+   "layout": "callout"
+  },
+  {
+   "title": "Trials tested daily use",
+   "body": "<p>Every trial above dosed women daily, from 6 weeks up to the rest of pregnancy (see <a href=\"#sources\">sources</a>). None tested taking it now and then.</p><p>So the best format is the one you will actually take every day.</p>",
+   "evidence": "Study-design pattern across the trials above",
+   "source": "https://doi.org/10.1016/s0928-8244(02)00465-0",
+   "image": "tmp_images/landing-florafresh-listicle-261009/row7.webp",
+   "alt": "A calm travertine kitchen counter with a glass of water and sliced pineapple on linen",
+   "evidence_label": "Design pattern across every trial cited"
+  }
+ ],
+ "bridge": {
+  "title": "Convenience is part of consistency",
+  "body": "<p>The trials tested a daily habit, not an occasional one. The practical question is which routine you will keep.</p><p>One option: FloraFresh Vaginal Probiotic Gummies, a pineapple-flavored gummy taken as two a day with a meal.</p><p>Pregnant, taking medication or managing a health condition? Check with your doctor first.</p>",
+  "image": "tmp_images/landing-florafresh-listicle-261009/bridge.webp",
+  "alt": "The FloraFresh pouch on a stone shelf beside a glass of water and two gummies"
+ },
+ "expert": {
+  "title": "TrustScore 4.2 from 1,144 Trustpilot Reviews",
+  "stars": 5,
+  "quote": "right on time with subscription  Don't have to worry about ordering it",
+  "author": "Tonya · Wellness Nest customer on Trustpilot",
+  "source": "https://www.trustpilot.com/reviews/6abe1771497e18bd92cada2f (5-star review, verified, published 2026-10-01, verbatim; TrustScore 4.2 and 1,144 reviews from state/trustpilot/wellnessnest.json, trustpilot.com/review/wellnessnest.co, fetched 2026-10-09). A subscription/service review about Wellness Nest, not a product-effect claim.",
+  "image": "tmp_images/landing-florafresh-listicle-261009/expert.webp",
+  "alt": "The FloraFresh pouch on a travertine podium against deep sage-green linen",
+  "reviews": [
+   {
+    "stars": 4,
+    "quote": "Receive product  on. Time  And having  good quality product",
+    "name": "Marie Petuelle Mombrun",
+    "meta": "US · Apr 2026",
+    "verified": true,
+    "url": "https://www.trustpilot.com/reviews/69cfdb42313f8a8159e4feb4"
+   },
+   {
+    "stars": 5,
+    "quote": "Great products and really great client service. My request was solved within a minutes.",
+    "name": "Miloslav Kral",
+    "meta": "SK · Nov 2025",
+    "url": "https://www.trustpilot.com/reviews/69281b1420fb2a718fed2339"
+   },
+   {
+    "stars": 5,
+    "quote": "Very nice customer service from Adela at Wellness Nest. She responded immediately and was very kind.",
+    "name": "EVA ROSBORG",
+    "meta": "DK · Nov 2025",
+    "url": "https://www.trustpilot.com/reviews/6929778e554edf24f69501e2"
+   }
+  ],
+  "reviews_source": "Verbatim 4-5 star Trustpilot reviews from state/trustpilot/wellnessnest.json (ids in URLs; Marie's line break shown as a space). 'Verified' only where Trustpilot marks it (Marie). Buying/service reviews, no product-effect claims."
+ },
+ "offer": {
+  "pill": "⚡️ FLORAFRESH PROBIOTIC GUMMIES",
+  "accent": "Two Gummies",
+  "title": "in One Daily Habit",
+  "sub": "A pineapple-flavored daily gummy. $40.99 one-time on the product page.",
+  "cta": "SEE INGREDIENTS",
+  "href": "https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies",
+  "meta": [
+   "<b>90-Day</b> Guarantee",
+   "<b>FREE</b> shipping $70+"
+  ],
+  "guarantee": "Your first order is covered by our 90-Day Money-Back Guarantee.",
+  "image": "tmp_images/landing-florafresh-listicle-261009/offer.webp",
+  "alt": "FloraFresh Vaginal Probiotic Gummies pouch on stacked travertine discs with gummies and pineapple",
+  "source": "https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies (price $40.99, fetched 2026-10-09); refund terms from /policies/refund-policy (90-Day MBG, first order of each product), free-shipping threshold from the site ticker",
+  "rating_html": "<b>4.2</b> TrustScore · 1,144 reviews on Trustpilot",
+  "price": {
+   "now": "$23.91",
+   "was": "$40.99",
+   "tag": "Save 41%",
+   "note": "with Subscribe & Save, delivered every 4 weeks. Or $40.99 one-time."
+  },
+  "bullets": [
+   "<b>2 gummies daily</b>, best taken with meals",
+   "60 gummies · 30-day supply · pineapple flavor",
+   "Vegan, gluten-free and sugar-free formula",
+   "90-day money-back guarantee on your first order"
+  ],
+  "price_source": "PDP /products/florafresh-vaginal-probiotics-gummies.js 2026-10-09: price 40.99; selling plan 9849831739 'Every 4 weeks' 41.67% off, allocation price 23.91. compare_at 57.99 deliberately not used. Bullets = PDP FAQ (directions, 60 gummies, 30-day supply) + description (vegan, gluten-free, sugar-free) + refund policy."
+ },
+ "product": {
+  "name": "FloraFresh Vaginal Probiotic Gummies",
+  "image": "tmp_images/landing-florafresh-listicle-261009/pack-ref.webp",
+  "bullets": [
+   "Take 2 gummies daily with water, best with meals",
+   "60 gummies, a 30-day supply, pineapple flavor",
+   "[[PLACEHOLDER: confirm the probiotic panel. PDP description says four Lactobacillus species, 15 billion CFU, XOS, D-Mannose, Vitamin C; the Supplement Facts image says SNZ-1969 Bacillus coagulans 1B CFU, Vitamin C, pineapple powder]]"
+  ],
+  "source": "https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies (description, FAQ and Supplement Facts image FloraFresh_Supplement_Fact.webp, fetched 2026-10-09)"
+ },
+ "footer": {
+  "disclaimer": "These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease.",
+  "copyright": "© 2026 Wellness Nest. All rights reserved."
+ },
+ "sources": [
+  {
+   "label": "Ravel J et al. Vaginal microbiome of reproductive-age women. Proc Natl Acad Sci U S A 2011;108 Suppl 1:4680-4687. doi:10.1073/pnas.1002611107",
+   "url": "https://doi.org/10.1073/pnas.1002611107"
+  },
+  {
+   "label": "Reid G et al. Oral use of Lactobacillus rhamnosus GR-1 and L. fermentum RC-14 significantly alters vaginal flora: randomized, placebo-controlled trial in 64 healthy women. FEMS Immunol Med Microbiol 2003;35:131-134. doi:10.1016/s0928-8244(02)00465-0",
+   "url": "https://doi.org/10.1016/s0928-8244(02)00465-0"
+  },
+  {
+   "label": "Vujic G et al. Efficacy of orally applied probiotic capsules for bacterial vaginosis and other vaginal infections: a double-blind, randomized, placebo-controlled study. Eur J Obstet Gynecol Reprod Biol 2013;168:75-79. doi:10.1016/j.ejogrb.2012.12.031",
+   "url": "https://doi.org/10.1016/j.ejogrb.2012.12.031"
+  },
+  {
+   "label": "Husain S et al. Effects of oral probiotic supplements on vaginal microbiota during pregnancy: a randomised, double-blind, placebo-controlled trial with microbiome analysis. BJOG 2020;127:275-284. doi:10.1111/1471-0528.15675",
+   "url": "https://doi.org/10.1111/1471-0528.15675"
+  }
+ ],
+ "style": "premium",
+ "trust": [
+  {
+   "icon": "stars",
+   "html": "<b>4.2 TrustScore</b> <small>1,144 Trustpilot reviews</small>"
+  },
+  {
+   "icon": "shield",
+   "html": "<b>90-day</b> <small>money-back guarantee</small>"
+  },
+  {
+   "icon": "truck",
+   "html": "<b>Free shipping</b> <small>on orders $70+</small>"
+  },
+  {
+   "icon": "leaf",
+   "html": "<b>Vegan gummies</b> <small>pineapple flavor</small>"
+  }
+ ],
+ "trust_source": "TrustScore/count: state/trustpilot/wellnessnest.json (fetched 2026-10-09). Guarantee: /policies/refund-policy. Free shipping $70+: site ticker. Vegan + pineapple: PDP description and pack label.",
+ "sticky_cta": {
+  "name": "FloraFresh Gummies",
+  "note": "From $23.91",
+  "cta": "SEE INGREDIENTS",
+  "href": "https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies"
+ }
+}
