@@ -1815,6 +1815,8 @@
    "handle": "m3039-as-02",
    "pool_id": "m3039",
    "status": "active",
+   "exaggerated_expression": true,
+   "usable_as_identity_reference": false,
    "ref": "/Users/kevinkreative/genseo/personas/m3039-as-02/ref.jpg",
    "identity_key": "openimages:ed350228988684b6",
    "used_count": 1,
