@@ -9,6 +9,11 @@ Successful **live** publishes and article updates call `scripts/indexnow_ping.py
 from `scripts/shopify_publisher.py`. A draft publish does not ping (the URL is not
 public yet).
 
+Every path (the publisher and `indexnow_ping.py --send` / `--dry-run`) first runs
+`brand_rules.indexnow_urls()`. A URL that names Urolithin A, another AgeAura SKU, or
+`/collections/ageaura` logs `SKIPPED (AgeAura guard)` and is never sent
+(`docs/AGEAURA_PRODUCT_GUARD.md`).
+
 | Env | Role |
 |---|---|
 | `INDEXNOW_KEY` | 8–128 characters, only `A–Z`, `a–z`, `0–9`, and `-`. Unset or still `YOUR_*` → log `SKIPPED` and send nothing. |
@@ -74,7 +79,11 @@ Default output:
 The generator reads `brand/wellnessnest.json` and `brand/ageaura.json`. **AgeAura is
 the NMN + TMG NAD+ Complex only** (`/products/ageaura-pure-nmn-tmg-nad-complex`).
 Other AgeAura handles, `/collections/ageaura`, Urolithin, and peptide URLs are
-dropped even if a sitemap lists them. Collection and article URLs are included only
+dropped even if a sitemap lists them. Every entry and the finished draft go through
+`brand_rules.violations()`, which also runs the FloraFresh label guard
+(`docs/FLORAFRESH_FORMULA_GUARD.md`): an article whose label names AgeAura without
+NMN + TMG is dropped, and the script refuses to write a draft that carries the
+wrong PDP formula. Collection and article URLs are included only
 when a local list (`existing_articles.json`, `existing_collections.json`,
 `ALL_ARTICLES.csv`) or a sitemap supplies them. The script does not invent
 collection handles.
@@ -84,6 +93,9 @@ for any house-catalog product the sitemap left out. A HEAD 200 is listed
 (the ShilaSource resin handle was missing from the sitemap on 2026-10-09 and
 still returned 200). There is no upload flag. Article labels are title-cased
 slugs until `existing_articles.json` or `ALL_ARTICLES.csv` is present.
+
+`scripts/llms_txt_draft.py` (from the AgeAura guard) is a smaller tool: it prints a
+product-only list from handles or `product_refs/`. Both scripts use `brand_rules`.
 
 Use the drafts as a content map to review (products, collections, articles).
 If you later want crawlers to see it, host it somewhere that does not clobber
@@ -109,8 +121,11 @@ after any future storefront change.
    - If the homepage has no `Organization` / `WebSite` node, add that in the theme
      only after `python3 scripts/backup_before_changes.py`.
    - Do not paste `<script type="application/ld+json">` into markdown drafts.
-4. **Key file and llms.txt on the storefront.** Hosting either one is a storefront
-   change. Drafts and the ping code are in git; the live files are not updated.
+4. **IndexNow key file, `INDEXNOW_KEY`, and llms.txt on the storefront.** Host the key
+   file on `wellnessnest.co` and export `INDEXNOW_KEY` on the Mac that publishes (steps
+   above); until then every ping logs `SKIPPED`. Hosting the key file or an llms.txt is
+   a storefront change. Drafts and the ping code are in git; the live files are not
+   updated.
 5. **AgeAura SKUs other than NMN + TMG.** On 2026-10-09
    `https://wellnessnest.co/products/ageaura-pure-urolithin-a` still returned
    HTTP 200. The draft does not list it. Unpublishing that PDP (and any peptide

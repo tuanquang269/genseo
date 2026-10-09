@@ -8,8 +8,10 @@ That URL is Shopify's agent-commerce file (UCP and the Shop skill). Uploading
 these drafts over it would remove those instructions. The generator does not
 POST, PUT, or edit Shopify.
 
-AgeAura in these drafts is the NMN + TMG NAD+ Complex only. Collection handles
-are listed only when a sitemap or local collection file supplied them.
+AgeAura in these drafts is the NMN + TMG NAD+ Complex only. FloraFresh is named and
+linked, never described with the wrong PDP formula (the generator refuses to write
+one; the Supplement Facts label is the source). Collection handles are listed only
+when a sitemap or local collection file supplied them.
 
 Regenerate after the catalog or sitemap changes. Setup steps and the IndexNow env
 vars: `docs/indexnow-and-llms-txt.md`.
