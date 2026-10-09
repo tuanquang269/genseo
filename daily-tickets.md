@@ -538,7 +538,7 @@ blog 104008483131, publish `--live`, claims log), PLUS the 2026-10-08 guideline 
   - **Angle:** creatine monohydrate stability vs creatinine conversion (fetched sources only), why gummy format adds heat/moisture issues, what the label/expiry date means, practical storage. LINK creatine-gummies-dosage, creatine-gummies-side-effects — don't restate.
   - **Fan-out answers to cover:** are melted gummies still safe/effective; fridge or not; travel in summer.
 
-- [ ] **#MB1008-5 — nmn and alcohol** (buffer) — `NMN and Alcohol: Can You Drink While Taking NMN? (US 2026)`
+- [DONE 2026-10-09 https://wellnessnest.co/blogs/news/nmn-and-alcohol-can-you-drink-while-taking-nmn-us] **#MB1008-5 — nmn and alcohol** (buffer) — `NMN and Alcohol: Can You Drink While Taking NMN? (US 2026)`
   - **Primary keyword:** `nmn and alcohol` · **Secondary:** nmn hangover, nmn after drinking, alcohol nad+ depletion
   - **Template:** EDITORIAL · **Gate:** topic_fitness PASS [brand] · dedupe: no alcohol title live
   - **Products:** `/products/ageaura-pure-nmn-tmg-nad-complex` ($69.95) ONLY. Collections: `/collections/best-seller` (twice). No other AgeAura product or AgeAura collection link (brand_rules.py gate).
