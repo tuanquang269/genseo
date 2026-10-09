@@ -16,6 +16,10 @@ FloraFresh copy follows its Supplement Facts label (Bacillus coagulans SNZ-1969,
 holds those facts; assess() denies any FloraFresh claim it rejects, so every
 caller below enforces both brands. Landing specs use spec_violations().
 
+Local llms.txt drafts omit denied handles. A FloraFresh, FusiForce, or
+shilajit-gummies formula line is included only when it matches the label source
+of truth (scripts/llms_formula.py). Other handles get a URL and no invented formula.
+
 This module is the only allow/deny list. Ticket builders, landing builders,
 image prompts, the publisher, llms.txt drafts, and IndexNow call it.
 Do not copy the handle into another file.
@@ -25,6 +29,7 @@ import os
 import re
 
 import florafresh_rules as florafresh
+import llms_formula
 
 AGEAURA_OK = "ageaura-pure-nmn-tmg-nad-complex"
 AGEAURA_OK_URL = "https://wellnessnest.co/products/" + AGEAURA_OK
@@ -325,11 +330,27 @@ def handles_from_product_refs(refs_dir):
     return handles
 
 
+def assert_llms_text(text):
+    """Raise GuardError when a local llms.txt draft is not safe to keep.
+
+    The draft must not name Urolithin A, and it must pass the same violations()
+    gate as publishable copy. Formula lines that do not match a label are omitted
+    before this runs; they are never written through.
+    """
+    if re.search(r"urolithin", text or "", re.I):
+        raise GuardError(["llms.txt draft included a Urolithin A product; refusing to write it"])
+    bad = violations(text)
+    if bad:
+        raise GuardError(bad)
+
+
 def llms_txt_draft(handles):
     """Local llms.txt body. Denied handles are omitted, never written.
 
     Returns (text, rejected_handles). A bare ``ageaura`` handle is rewritten to
-    the allowed SKU. The returned text itself passes violations().
+    the allowed SKU. FloraFresh, FusiForce, and shilajit-gummies formula lines are
+    appended only when llms_formula.formula_line() matches the label source of
+    truth. The returned text itself passes assert_llms_text().
     """
     kept = []
     rejected = []
@@ -345,6 +366,7 @@ def llms_txt_draft(handles):
     lines = [
         "# Wellness Nest — llms.txt draft (local only, not published)",
         "# AgeAura promotes one SKU: the Pure NMN + TMG NAD Complex. Every other AgeAura handle is omitted.",
+        "# Formula lines are included only when they match the label source of truth.",
         "",
     ]
     for handle in kept:
@@ -352,10 +374,11 @@ def llms_txt_draft(handles):
             lines.append("- [" + AGEAURA_PRODUCT_LABEL + "](" + AGEAURA_OK_URL + ")")
         else:
             lines.append("- https://wellnessnest.co/products/" + handle)
+        formula = llms_formula.formula_line(handle)
+        if formula:
+            lines.append("  " + formula)
     text = "\n".join(lines) + "\n"
-    bad = violations(text)
-    if bad:
-        raise GuardError(bad)
+    assert_llms_text(text)
     return text, rejected
 
 

@@ -1,0 +1,30 @@
+{
+ "handle": "pure-shilajit-gold-resin",
+ "source": "macOS Vision label_ocr.swift on product_refs/pure-shilajit-gold-resin.png, 2026-10-09. required and accepted_ocr are confidence-1.00 lines copied verbatim. Second-jar misreads were omitted, not corrected (tor Purity; Dietary Sepplements; 1.06 oz (S0g)-75 serviogs). No milligram serving was read. Do not add one.",
+ "accepted_ocr": [
+  "wellness",
+  "nest",
+  "Himalayan",
+  "Shilajit",
+  "75% Fulvic",
+  "Lab-Tested",
+  "Acid",
+  "Pure Shilajit Gold Resin",
+  "1.06 oz (30g) - 75 servings",
+  "Dietary Supplements"
+ ],
+ "required": [
+  "wellness",
+  "nest",
+  "Himalayan",
+  "Shilajit",
+  "75% Fulvic",
+  "Lab-Tested",
+  "Acid",
+  "Pure Shilajit Gold Resin",
+  "1.06 oz (30g) - 75 servings",
+  "Dietary Supplements"
+ ],
+ "optional": [],
+ "mark": "Not confirmed by this OCR pass. Zoom product_refs/pure-shilajit-gold-resin.png at >= 2x before shipping."
+}

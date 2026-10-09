@@ -8,6 +8,10 @@ https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex.
 Urolithin A and every other AgeAura handle are omitted. A bare "ageaura"
 handle is rewritten to that SKU. Exit 1 when any requested handle was rejected
 (the written draft still does not contain it).
+
+FloraFresh, FusiForce, and shilajit-gummies formula sentences are written only
+when they match the label source of truth (scripts/llms_formula.py). A handle
+with no matching label sentence gets a URL and nothing invented.
 """
 import os
 import sys
@@ -19,11 +23,20 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def main(argv):
-    args = [a for a in argv if not a.startswith("--")]
     out = None
-    if "--out" in argv:
-        out = argv[argv.index("--out") + 1]
-    handles = list(args)
+    skip = set()
+    i = 0
+    while i < len(argv):
+        if argv[i] == "--out":
+            if i + 1 >= len(argv):
+                print("FAIL CLOSED: --out needs a path", file=sys.stderr)
+                return 1
+            out = argv[i + 1]
+            skip.update((i, i + 1))
+            i += 2
+            continue
+        i += 1
+    handles = [arg for i, arg in enumerate(argv) if i not in skip and not arg.startswith("--")]
     if "--from-product-refs" in argv:
         handles.extend(br.handles_from_product_refs(os.path.join(ROOT, "product_refs")))
     if not handles:
