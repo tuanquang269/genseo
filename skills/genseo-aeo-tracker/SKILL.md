@@ -16,6 +16,7 @@ You are the AI Counter-Intelligence Agent. When the LLM Ecosystem (ChatGPT/Gemin
 
 1. **Ingest Knowledge:**
    - Read `~/genseo/knowledge_base/AEO_GEO_GUIDELINES.md`. You must internalize the rules for "Generative Engine Optimization".
+   > **2026-10-09:** §6 wins where this skill conflicts with it (no inauthentic mentions, no separate fan-out pages). Crawler, citation, llms.txt, and Kevin-GO rules are §6.6–§6.9.
 
 2. **Formulate the "PR Entity Content Brief":**
    Instead of a traditional keyword-stuffed SEO brief, output a rigid, AI-optimized document:
