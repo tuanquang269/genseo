@@ -604,3 +604,150 @@ FloraFresh $40.99, Turkesterone Advanced Formula $75, AgeAura Pure NMN + TMG NAD
   - **Products:** `/products/florafresh-vaginal-probiotics-gummies` ($40.99). Collections: `/collections/womens-essentials-collection`, `/collections/best-seller`.
   - **Angle:** storage and heat (label directions first; fetched sources only on probiotic heat stability, say where evidence is thin), keeping a daily routine across time zones, TSA/carry-on practicalities, what to do if you miss doses. No medical, infection-treatment or cure claims (FDA structure/function only).
   - **Fan-out answers to cover:** fridge or not; hot car or checked bag; time zones; can I take it with travel meds (ask a clinician).
+
+# BATCH 2026-10-09 (refill_tickets.py — ids #CA1009-1…#CA1009-10)
+
+Built by `scripts/refill_tickets.py` at 2026-10-09 11:08 ICT from `templates/article-topic-bank.json` + `board/ideas.csv`
+(search volume: No data — GSC/Ads not used). Every ticket passed, against the live store at build time:
+brand_rules + `lint_tickets.py` · hero product live and in stock · not a covered topic (header rule 6) ·
+not already queued · not live (108 published articles: blog listing + sitemap + Atom; one article per brand + segment) ·
+`topic_fitness.py` strict on primary and title · STEP 0 suggest.json.
+A `topic_fitness` REVIEW [covered-segment] verdict is allowed under Kevin's standing greenlight for mined queues (2026-08-13).
+A topic is a brief, not copy: source every claim or cut it.
+
+**Rules for this batch:** from the 2026-10-08 batch rules — fan-out answers, a "Where to buy <product> in the US"
+section (live price, the ticket's product link only), roster.json byline only (never an invented person or
+credential), the logged fact-check pass (`logs/claims/<slug>.md`; delete unconfirmed claims), the brand gate.
+Blog 104008483131, publish `--live`. Images: no batch-wide override — runner rule D decides per host (the MacBook
+plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check the PDP while writing.
+
+- [ ] **#CA1009-1 — turkesterone for athletes** — `Turkesterone for Athletes: What Drug Tests Check (US 2026)`
+  - **Primary keyword:** `turkesterone for athletes` · **Secondary:** is turkesterone banned, turkesterone drug test, turkesterone wada, turkesterone ncaa
+  - **Search intent:** tested or competitive athlete deciding whether a turkesterone product is safe to take in season
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-09 11:08 ICT)
+  - **Hero product:** `/products/turkesterone-advanced-formula` (Turkesterone Advanced Formula, $75, in stock 2026-10-09)
+  - **Collection links (≥2, verify live):** `/collections/mens-essential-collection` (contains it), `/collections/shilajit-wellness-stack` (contains it)
+  - **Angle:** The athlete's real question is drug-test risk, not muscle. Check every label ingredient (turkesterone, KSM-66 ashwagandha, tongkat ali, colostrum, BioPerine) against the current WADA Prohibited List and Monitoring Program and the NCAA banned classes at write time; say plainly what is prohibited, monitored or neither, and that no sport certification is claimed unless the PDP shows one. Performance evidence only from fetched human trials.
+  - **Fan-out answers to cover:** is turkesterone banned by WADA; will turkesterone show up on a drug test; is colostrum allowed for tested athletes; what certification should a tested athlete look for
+  - **Evidence to fetch & confirm (claims log):** WADA Prohibited List + Monitoring Program (current year) and the NCAA banned-drug classes — fetch the official pages at write time; WADA's published position on colostrum; Turkesterone Advanced panel from the live PDP.
+  - **Link, don't restate:** `/blogs/news/turkesterone-side-effects-4-ingredients-to-check-us-2026`, `/blogs/news/turkesterone-vs-ecdysterone-which-is-worth-it-us-2026`, `/blogs/news/turkesterone-benefits-dosing-whats-real-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** turkesterone + athletes checked 2026-10-09 against 108 live articles (blog listing + sitemap + Atom) and all 47 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#CA1009-2 — vaginal probiotic dosage** — `Vaginal Probiotic Dosage: How Many CFU a Day? (US 2026)`
+  - **Primary keyword:** `vaginal probiotic dosage` · **Secondary:** how many cfu for vaginal health, vaginal probiotic cfu, 15 billion cfu probiotic, how many vaginal probiotics a day
+  - **Search intent:** buyer comparing CFU numbers on labels and unsure how much is enough
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-09 11:08 ICT)
+  - **Hero product:** `/products/florafresh-vaginal-probiotics-gummies` (FloraFresh Vaginal Probiotics Gummies, $40.99, in stock 2026-10-09)
+  - **Collection links (≥2, verify live):** `/collections/womens-essentials-collection` (contains it), `/collections/best-seller` (contains it)
+  - **Angle:** Explain what CFU means (live organisms at manufacture vs at expiry), what daily doses the oral vaginal-health trials used, and why strain identity matters more than a bigger number. Compare common label ranges in a table and place FloraFresh honestly, using only the CFU and strains its PDP states. No cure or treatment claims.
+  - **Fan-out answers to cover:** is 15 billion CFU enough; can you take too many probiotics; should CFU be guaranteed through expiry; do more strains mean better results
+  - **Evidence to fetch & confirm (claims log):** Oral Lactobacillus vaginal-health trials that state CFU per day — fetch each before citing; FloraFresh CFU and strains from the live PDP.
+  - **Link, don't restate:** `/blogs/news/vaginal-probiotics-which-strains-actually-work-us-2026`, `/blogs/news/florafresh-vs-generic-probiotics-4-strain-facts-us-2026`, `/blogs/news/vaginal-probiotics-side-effects-normal-vs-stop-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** probiotic + dosage checked 2026-10-09 against 108 live articles (blog listing + sitemap + Atom) and all 47 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#CA1009-3 — where to buy creatine gummies** — `Where to Buy Creatine Gummies: 5 Label Checks (US 2026)`
+  - **Primary keyword:** `where to buy creatine gummies` · **Secondary:** best place to buy creatine gummies, creatine gummies in stores, do creatine gummies have creatine, creatine gummies price
+  - **Search intent:** buyer choosing a creatine gummy brand who has heard some gummies are under-dosed
+  - **Template:** LISTICLE · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-09 11:08 ICT)
+  - **Hero product:** `/products/fusiforce-creatine-gummies` (FusiForce Creatine Gummies, $69.99, in stock 2026-10-09)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** Five checks before buying anywhere: creatine monohydrate named on the panel, grams per serving and gummies per serving, count per bottle (days of supply), sugar per serving, and price per 5 g dose. Apply them to FusiForce honestly — disclose any mismatch between the front label and the panel (e.g. gummy count) instead of hiding it. Cite independent tests of creatine gummies only from a fetched source, and never imply FusiForce was tested unless that source says so.
+  - **Fan-out answers to cover:** can you buy creatine gummies in stores; do creatine gummies actually contain creatine; how many gummies equal 5 g of creatine; how much should creatine gummies cost per day
+  - **Evidence to fetch & confirm (claims log):** FusiForce panel (creatine per serving, serving size, count) from the live PDP; any third-party test of creatine gummies only from a fetched primary report.
+  - **Link, don't restate:** `/blogs/news/creatine-gummies-vs-powder-which-should-you-actually-take`, `/blogs/news/creatine-gummies-dosage-how-many-a-day-us-2026`, `/blogs/news/do-creatine-gummies-expire-6-storage-facts-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** creatine + buy checked 2026-10-09 against 108 live articles (blog listing + sitemap + Atom) and all 47 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#CA1009-4 — where to buy nmn** — `Where to Buy NMN in the US: FDA Status Explained (2026)`
+  - **Primary keyword:** `where to buy nmn` · **Secondary:** can you still buy nmn, is nmn legal in the us, nmn fda, nmn amazon
+  - **Search intent:** US buyer who saw NMN disappear from big marketplaces and wants to know whether and where it can still be bought
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-09 11:08 ICT)
+  - **Hero product:** `/products/ageaura-pure-nmn-tmg-nad-complex` (AgeAura Pure NMN + TMG NAD+ Complex, $69.95, in stock 2026-10-09)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` twice (browse link — AgeAura Pure NMN + TMG NAD+ Complex is not in it, never claim it is) · no other AgeAura product and no AgeAura collection link (brand_rules)
+  - **Angle:** Explain the regulatory story buyers ran into — FDA's 2022 position that NMN was excluded from the dietary-supplement definition, marketplaces pulling listings, and FDA's later reversal — with dates and wording confirmed from official pages fetched at write time. Then what to check before buying anywhere (NMN per serving, the full panel, price per 500 mg serving) and Wellness Nest as the official source for AgeAura NMN + TMG at the live price.
+  - **Fan-out answers to cover:** is NMN legal to buy in the US; why did Amazon stop selling NMN; is NMN still sold as a supplement; what should an NMN label show
+  - **Evidence to fetch & confirm (claims log):** FDA statements on NMN (the 2022 exclusion and the later reversal) — fetch fda.gov / regulations.gov / Federal Register and confirm dates before citing; AgeAura panel (NMN and TMG per 2 capsules) from the live PDP.
+  - **Link, don't restate:** `/blogs/news/how-much-nmn-per-day-what-trials-used-us-2026`, `/blogs/news/ageaura-nmn-tmg-ingredients-what-each-one-does-us`, `/blogs/news/nmn-capsules-vs-powder-vs-sublingual-best-form-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** nmn + buy checked 2026-10-09 against 108 live articles (blog listing + sitemap + Atom) and all 47 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#CA1009-5 — shilajit price** — `Shilajit Price: Cost Per Serving by Form (US 2026)`
+  - **Primary keyword:** `shilajit price` · **Secondary:** how much does shilajit cost, shilajit cost per serving, is shilajit expensive, cheap shilajit
+  - **Search intent:** price-checking buyer comparing resin, gummies, gold resin and drops before buying
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-09 11:08 ICT)
+  - **Hero product:** `/products/shilasource-himalayan-shilajit-resin` (ShilaSource Himalayan Shilajit Resin, $59.99, in stock 2026-10-09)
+  - **Inline (comparison only):** `/products/premium-himalayan-shilajit-gummies` (Premium Himalayan Shilajit Gummies, $59.99), `/products/pure-shilajit-gold-resin` (Pure Shilajit Gold Resin, $75), `/products/shilajit-shockwave` (Shilajit Shockwave, $79.99)
+  - **Collection links (≥2, verify live):** `/collections/shilajit-wellness-stack` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** Do the per-serving math from live PDP prices and serving counts (resin, gummies, gold resin, Shockwave drops, and the resin subscription price), show it as a table, and explain why the cheapest per serving is not always the cheapest per month (dose, wastage, format). Where a PDP publishes no serving count, say so instead of guessing. Explain why suspiciously cheap shilajit is a red flag by linking the fake-shilajit article — do not lead on lab testing.
+  - **Fan-out answers to cover:** how much does a month of shilajit cost; why is real shilajit expensive; is resin cheaper than gummies; is the subscription worth it
+  - **Evidence to fetch & confirm (claims log):** Live PDP price and serving size for every product compared, re-checked at write time (prices change); never estimate a serving count the PDP does not state.
+  - **Link, don't restate:** `/blogs/news/where-to-buy-wellness-nest-shilajit-in-the-us-2026`, `/blogs/news/shilajit-gold-resin-review-is-75-worth-it-us-2026`, `/blogs/news/how-much-shilajit-per-day-dosage-by-form-us-2026`, `/blogs/news/fake-shilajit-6-signs-yours-isnt-real-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** shilajit + price checked 2026-10-09 against 108 live articles (blog listing + sitemap + Atom) and all 47 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#CA1009-6 — where to buy turkesterone** — `Where to Buy Turkesterone in the US: What to Check (2026)`
+  - **Primary keyword:** `where to buy turkesterone` · **Secondary:** best place to buy turkesterone, turkesterone in stores, is my turkesterone real, turkesterone price
+  - **Search intent:** buyer choosing where to buy turkesterone and worried about under-dosed products
+  - **Template:** LISTICLE · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-09 11:08 ICT)
+  - **Hero product:** `/products/turkesterone-advanced-formula` (Turkesterone Advanced Formula, $75, in stock 2026-10-09)
+  - **Collection links (≥2, verify live):** `/collections/mens-essential-collection` (contains it), `/collections/shilajit-wellness-stack` (contains it)
+  - **Angle:** What to check before buying anywhere: turkesterone per serving and what the extract is standardized to, every other ingredient with its dose (no proprietary blend), price per serving, and returns. Cite independent analyses of turkesterone products only from a fetched source. Apply the checks to Turkesterone Advanced honestly; Wellness Nest as the official source at the live price.
+  - **Fan-out answers to cover:** can you buy turkesterone in stores; how do you know turkesterone is real; how much should turkesterone cost; what should a turkesterone label show
+  - **Evidence to fetch & confirm (claims log):** Turkesterone Advanced panel from the live PDP; any independent product analysis only from a fetched primary source.
+  - **Link, don't restate:** `/blogs/news/turkesterone-side-effects-4-ingredients-to-check-us-2026`, `/blogs/news/turkesterone-benefits-dosing-whats-real-us-2026`, `/blogs/news/turkesterone-for-beginners-5-checks-before-you-start`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** turkesterone + buy checked 2026-10-09 against 108 live articles (blog listing + sitemap + Atom) and all 47 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#CA1009-7 — nmn for seniors** — `NMN for Seniors: What Trials in Adults 65+ Show (US 2026)`
+  - **Primary keyword:** `nmn for seniors` · **Secondary:** nmn for older adults, nmn for elderly, nmn over 65, nmn muscle strength aging
+  - **Search intent:** adult 65+ (or a family member) asking whether NMN has been tested at their age
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-09 11:08 ICT)
+  - **Hero product:** `/products/ageaura-pure-nmn-tmg-nad-complex` (AgeAura Pure NMN + TMG NAD+ Complex, $69.95, in stock 2026-10-09)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` twice (browse link — AgeAura Pure NMN + TMG NAD+ Complex is not in it, never claim it is) · no other AgeAura product and no AgeAura collection link (brand_rules)
+  - **Angle:** Compare the human trials that enrolled older adults (dose, duration, what moved: blood NAD+, gait speed, grip, fatigue) in a table, and say plainly what has not been shown. Medication and clinician check, label dose vs trial doses. Link the men-over-50 page instead of restating it.
+  - **Fan-out answers to cover:** is NMN safe for seniors; what dose did trials in older adults use; does NMN improve muscle strength in older adults; morning or afternoon for older adults
+  - **Evidence to fetch & confirm (claims log):** Igarashi et al. 2022, npj Aging (older men, 12 weeks) and Kim et al. 2022, Nutrients (older adults, morning vs afternoon intake) — fetch and confirm before citing.
+  - **Link, don't restate:** `/blogs/news/ageaura-nmn-for-men-over-50-what-to-expect-us-2026`, `/blogs/news/how-much-nmn-per-day-what-trials-used-us-2026`, `/blogs/news/nmn-side-effects-6-checks-before-you-start-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** nmn + seniors checked 2026-10-09 against 108 live articles (blog listing + sitemap + Atom) and all 47 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#CA1009-8 — where to buy vaginal probiotics** — `Where to Buy Vaginal Probiotics in the US: 5 Checks (2026)`
+  - **Primary keyword:** `where to buy vaginal probiotics` · **Secondary:** best place to buy vaginal probiotics, vaginal probiotics at a pharmacy, vaginal probiotics online, vaginal probiotics price
+  - **Search intent:** buyer deciding between pharmacy, marketplace and brand-direct vaginal probiotics
+  - **Template:** LISTICLE · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-09 11:08 ICT)
+  - **Hero product:** `/products/florafresh-vaginal-probiotics-gummies` (FloraFresh Vaginal Probiotics Gummies, $40.99, in stock 2026-10-09)
+  - **Collection links (≥2, verify live):** `/collections/womens-essentials-collection` (contains it), `/collections/best-seller` (contains it)
+  - **Angle:** Five checks before buying anywhere: strains named to strain level, CFU guaranteed through expiry, storage needs, format (gummies vs capsules — link, don't restate) and price per day. Apply them to FloraFresh honestly (PDP facts only); Wellness Nest as the official source at the live price. No cure or treatment claims.
+  - **Fan-out answers to cover:** can you buy vaginal probiotics at a pharmacy; do vaginal probiotics need refrigeration; how much do vaginal probiotics cost per month; what should a vaginal probiotic label show
+  - **Evidence to fetch & confirm (claims log):** FloraFresh strains, CFU and storage from the live PDP; any retailer price only from a page fetched at write time.
+  - **Link, don't restate:** `/blogs/news/florafresh-gummies-vs-capsules-5-format-facts-us-2026`, `/blogs/news/vaginal-probiotics-which-strains-actually-work-us-2026`, `/blogs/news/florafresh-vs-generic-probiotics-4-strain-facts-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** probiotic + buy checked 2026-10-09 against 108 live articles (blog listing + sitemap + Atom) and all 47 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#CA1009-9 — shilajit for athletes** — `Shilajit for Athletes: What a Strength Trial Found (US 2026)`
+  - **Primary keyword:** `shilajit for athletes` · **Secondary:** shilajit for strength, shilajit muscle fatigue, shilajit workout, shilajit for performance
+  - **Search intent:** lifter or athlete weighing shilajit for training and recovery
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-09 11:08 ICT)
+  - **Hero product:** `/products/shilasource-himalayan-shilajit-resin` (ShilaSource Himalayan Shilajit Resin, $59.99, in stock 2026-10-09)
+  - **Collection links (≥2, verify live):** `/collections/shilajit-wellness-stack` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** Lead with the 8-week trial in recreationally active men (purified shilajit at two doses; strength retention after a fatiguing protocol): what it found, what it did not, and that it used a specific purified extract — never imply ShilaSource is equivalent. Then dose and timing around training, and what tested athletes should check (no sport certification is claimed unless the PDP shows one).
+  - **Fan-out answers to cover:** does shilajit increase strength; how much shilajit did the trial use; when should athletes take shilajit; is shilajit allowed in tested sport
+  - **Evidence to fetch & confirm (claims log):** Keller et al. 2019, J Int Soc Sports Nutr (shilajit and fatigue-induced strength loss) — fetch and confirm doses and outcomes; ShilaSource serving facts from the live PDP.
+  - **Link, don't restate:** `/blogs/news/shilajit-and-creatine-can-you-take-both-daily-us-2026`, `/blogs/news/how-much-shilajit-per-day-dosage-by-form-us-2026`, `/blogs/news/fake-shilajit-6-signs-yours-isnt-real-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** shilajit + athletes checked 2026-10-09 against 108 live articles (blog listing + sitemap + Atom) and all 47 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#CA1009-10 — creatine gummies for beginners** — `Creatine Gummies for Beginners: Your First 30 Days (US 2026)`
+  - **Primary keyword:** `creatine gummies for beginners` · **Secondary:** how to start creatine gummies, creatine for beginners, first time taking creatine, creatine gummies first week
+  - **Search intent:** first-time creatine buyer who wants a simple start plan
+  - **Template:** LISTICLE · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-09 11:08 ICT)
+  - **Hero product:** `/products/fusiforce-creatine-gummies` (FusiForce Creatine Gummies, $69.99, in stock 2026-10-09)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** A first-30-days plan: the daily dose in gummies, no loading needed, any time of day but every day, water, and what to expect in weeks 1-4 (scale weight, no 'pump'), plus the myths beginners worry about. This is the hub for the live creatine series — link each detail page instead of restating it.
+  - **Fan-out answers to cover:** how many creatine gummies should a beginner take; do beginners need a loading phase; will creatine make me gain weight; can women take creatine gummies
+  - **Evidence to fetch & confirm (claims log):** ISSN position stand on creatine (Kreider et al. 2017, J Int Soc Sports Nutr) — fetch before citing; FusiForce serving facts from the live PDP.
+  - **Link, don't restate:** `/blogs/news/creatine-gummies-dosage-how-many-a-day-us-2026`, `/blogs/news/best-time-to-take-creatine-before-or-after-us-2026`, `/blogs/news/creatine-gummies-side-effects-4-real-3-myths-us-2026`, `/blogs/news/creatine-gummies-loading-phase-is-it-needed-us-2026`, `/blogs/news/how-long-does-creatine-take-to-work-week-by-week-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** creatine + beginners checked 2026-10-09 against 108 live articles (blog listing + sitemap + Atom) and all 47 tickets in this file; STEP 0 re-checks at write time
