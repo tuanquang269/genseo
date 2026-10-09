@@ -1,0 +1,160 @@
+# Wellness Nest
+
+> Draft content map for Kevin to review (2026-10-09, scripts/build_llms_txt.py). Not uploaded. Do not replace https://wellnessnest.co/llms.txt — that URL is Shopify's agent-commerce file (UCP and Shop skill) and stays as Shopify serves it.
+
+Wellness Nest (https://wellnessnest.co) is the US online store of GlobalEcomCom LLC dba Wellness Nest. House supplement lines in this draft include ShilaSource, FusiForce, FloraFresh, Turkesterone Advanced Formula, and AgeAura. AgeAura here means one product only: the NMN + TMG NAD+ Complex (https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex).
+
+## Products
+
+- [AgeAura Pure NMN + TMG NAD+ Complex](https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex): AgeAura Pure NMN + TMG NAD+ Complex (white capsule bottle)
+- [FusiForce Creatine Monohydrate Gummies 5,000 mg](https://wellnessnest.co/products/fusiforce-creatine-gummies): FusiForce Creatine Monohydrate Gummies 5,000 mg (bright-green stand-up pouch)
+- [ShilaSource Himalayan Shilajit Resin](https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin): ShilaSource Himalayan Shilajit Resin (matte black canister + amber glass jar, gold lid)
+- [Himalayan Pure Shilajit Gold Resin](https://wellnessnest.co/products/pure-shilajit-gold-resin)
+- [Premium Himalayan Shilajit Gummies](https://wellnessnest.co/products/premium-himalayan-shilajit-gummies)
+- [Shilajit Shockwave Energy Drops](https://wellnessnest.co/products/shilajit-shockwave)
+- [FloraFresh Vaginal Probiotic Gummies](https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies): FloraFresh Vaginal Probiotic Gummies (dusty-pink pouch)
+- [Turkesterone Advanced Formula](https://wellnessnest.co/products/turkesterone-advanced-formula)
+- [Florafresh 3 Month Reserve](https://wellnessnest.co/products/florafresh-3-month-reserve)
+- [Florafresh 6 Month Reserve](https://wellnessnest.co/products/florafresh-6-month-reserve)
+- [Florafresh Single Bottle](https://wellnessnest.co/products/florafresh-single-bottle)
+- [Fusiforce 12 Month Reserve](https://wellnessnest.co/products/fusiforce-12-month-reserve)
+- [Fusiforce 3 Month Half Reserve](https://wellnessnest.co/products/fusiforce-3-month-half-reserve)
+- [Fusiforce 6 Month Reserve](https://wellnessnest.co/products/fusiforce-6-month-reserve)
+- [Shilajit Gummies Single Jar](https://wellnessnest.co/products/shilajit-gummies-single-jar)
+- [Shilajit Gummies Two Jar Pack](https://wellnessnest.co/products/shilajit-gummies-two-jar-pack)
+- [Shilasource 12 Month Reserve](https://wellnessnest.co/products/shilasource-12-month-reserve)
+- [Shilasource 3 Month Reserve](https://wellnessnest.co/products/shilasource-3-month-reserve)
+- [Shilasource 6 Month Reserve](https://wellnessnest.co/products/shilasource-6-month-reserve)
+
+## Collections
+
+- [Best Seller](https://wellnessnest.co/collections/best-seller)
+- [Men's Essential Collection](https://wellnessnest.co/collections/mens-essential-collection)
+- [Shilajit Wellness Stack](https://wellnessnest.co/collections/shilajit-wellness-stack)
+- [Women's Essentials Collection](https://wellnessnest.co/collections/womens-essentials-collection)
+
+## Articles
+
+Article labels are title-cased URL slugs, not the on-page headlines.
+
+- [1 Introduction To Shilajit History Origins And Cultural Significance In Ayurveda](https://wellnessnest.co/blogs/news/1-introduction-to-shilajit-history-origins-and-cultural-significance-in-ayurveda)
+- [2 What Is Ayuveda](https://wellnessnest.co/blogs/news/2-what-is-ayuveda)
+- [Ageaura NMN TMG Ingredients What Each One Does Us](https://wellnessnest.co/blogs/news/ageaura-nmn-tmg-ingredients-what-each-one-does-us)
+- [Barbara Oneill Shilajit The Videos Are Ai Fakes](https://wellnessnest.co/blogs/news/barbara-oneill-shilajit-the-videos-are-ai-fakes)
+- [Best Shilajit Gummies 6 Us Labels Compared 2026](https://wellnessnest.co/blogs/news/best-shilajit-gummies-6-us-labels-compared-2026)
+- [Best Time To Take Creatine Before Or After Us 2026](https://wellnessnest.co/blogs/news/best-time-to-take-creatine-before-or-after-us-2026)
+- [Creatine And Caffeine Can You Take Both Us 2026](https://wellnessnest.co/blogs/news/creatine-and-caffeine-can-you-take-both-us-2026)
+- [Creatine For Women Over 40 What Changes In The Us](https://wellnessnest.co/blogs/news/creatine-for-women-over-40-what-changes-in-the-us)
+- [Creatine Gummies And Hair Loss What The Dht Data Shows Us](https://wellnessnest.co/blogs/news/creatine-gummies-and-hair-loss-what-the-dht-data-shows-us)
+- [Creatine Gummies Dosage How Many A Day Us 2026](https://wellnessnest.co/blogs/news/creatine-gummies-dosage-how-many-a-day-us-2026)
+- [Creatine Gummies For Women 6 Things To Know Us 2026](https://wellnessnest.co/blogs/news/creatine-gummies-for-women-6-things-to-know-us-2026)
+- [Creatine Gummies Loading Phase Is It Needed Us 2026](https://wellnessnest.co/blogs/news/creatine-gummies-loading-phase-is-it-needed-us-2026)
+- [Creatine Gummies Side Effects 4 Real 3 Myths Us 2026](https://wellnessnest.co/blogs/news/creatine-gummies-side-effects-4-real-3-myths-us-2026)
+- [Creatine Gummies Vs Powder Which Should You Actually Take](https://wellnessnest.co/blogs/news/creatine-gummies-vs-powder-which-should-you-actually-take)
+- [Dad Bod Chronicles](https://wellnessnest.co/blogs/news/dad-bod-chronicles)
+- [Dad Bod To Rad Bod](https://wellnessnest.co/blogs/news/dad-bod-to-rad-bod)
+- [Discovering The Power Of Shilajit Benefits For Health Wellness And Vitality](https://wellnessnest.co/blogs/news/discovering-the-power-of-shilajit-benefits-for-health-wellness-and-vitality)
+- [Do Creatine Gummies Expire 6 Storage Facts Us 2026](https://wellnessnest.co/blogs/news/do-creatine-gummies-expire-6-storage-facts-us-2026)
+- [Does NMN Break A Fast 6 Rules For Fasting Days Us 2026](https://wellnessnest.co/blogs/news/does-nmn-break-a-fast-6-rules-for-fasting-days-us-2026)
+- [Fake Shilajit 6 Signs Yours Isnt Real Us 2026](https://wellnessnest.co/blogs/news/fake-shilajit-6-signs-yours-isnt-real-us-2026)
+- [Fasted Training For Weight Loss Might Do More Harm Than Good](https://wellnessnest.co/blogs/news/fasted-training-for-weight-loss-might-do-more-harm-than-good)
+- [Florafresh For Women Over 50 What Changes Us 2026](https://wellnessnest.co/blogs/news/florafresh-for-women-over-50-what-changes-us-2026)
+- [Florafresh Gummies Vs Capsules 5 Format Facts Us 2026](https://wellnessnest.co/blogs/news/florafresh-gummies-vs-capsules-5-format-facts-us-2026)
+- [Florafresh Vs Generic Probiotics 4 Strain Facts Us 2026](https://wellnessnest.co/blogs/news/florafresh-vs-generic-probiotics-4-strain-facts-us-2026)
+- [For How Long Can We Take Shilajit](https://wellnessnest.co/blogs/news/for-how-long-can-we-take-shilajit)
+- [From Stiff To Strong Overcoming Joint Pain During Menopause](https://wellnessnest.co/blogs/news/from-stiff-to-strong-overcoming-joint-pain-during-menopause)
+- [From Stiff To Strong Overcoming Joint Pain During Menopause 1](https://wellnessnest.co/blogs/news/from-stiff-to-strong-overcoming-joint-pain-during-menopause-1)
+- [Fusiforce Creatine Gummies For Men Over 50 Us 2026](https://wellnessnest.co/blogs/news/fusiforce-creatine-gummies-for-men-over-50-us-2026)
+- [How Fasting Can Support You Through Menopause What You Need To Know](https://wellnessnest.co/blogs/news/how-fasting-can-support-you-through-menopause-what-you-need-to-know)
+- [How Long Does Creatine Take To Work Week By Week Us 2026](https://wellnessnest.co/blogs/news/how-long-does-creatine-take-to-work-week-by-week-us-2026)
+- [How Long Does NMN Take To Work Week 1 To 12 Us 2026](https://wellnessnest.co/blogs/news/how-long-does-nmn-take-to-work-week-1-to-12-us-2026)
+- [How Much NMN Per Day What Trials Used Us 2026](https://wellnessnest.co/blogs/news/how-much-nmn-per-day-what-trials-used-us-2026)
+- [How Much Shilajit Per Day Dosage By Form Us 2026](https://wellnessnest.co/blogs/news/how-much-shilajit-per-day-dosage-by-form-us-2026)
+- [How Shilajit Is Sourced Sustainable Sourcing And Quality Control In Shilajit Production](https://wellnessnest.co/blogs/news/how-shilajit-is-sourced-sustainable-sourcing-and-quality-control-in-shilajit-production)
+- [How To Choose Shilajit Gummies 7 Checks Us 2026](https://wellnessnest.co/blogs/news/how-to-choose-shilajit-gummies-7-checks-us-2026)
+- [How To Take Shilajit Resin Dissolve It Right Us 2026](https://wellnessnest.co/blogs/news/how-to-take-shilajit-resin-dissolve-it-right-us-2026)
+- [Intro Menomate Meal Plan](https://wellnessnest.co/blogs/news/intro-menomate-meal-plan)
+- [Mastering Menopause Natural Ways To Balance Your Hormones And Boost Vitality](https://wellnessnest.co/blogs/news/mastering-menopause-natural-ways-to-balance-your-hormones-and-boost-vitality)
+- [Menomate Meal Plan Set 1 Week 1](https://wellnessnest.co/blogs/news/menomate-meal-plan-set-1-week-1)
+- [Menomate Meal Plan Set 1 Week 2](https://wellnessnest.co/blogs/news/menomate-meal-plan-set-1-week-2)
+- [Menomate Meal Plan Set 1 Week 3](https://wellnessnest.co/blogs/news/menomate-meal-plan-set-1-week-3)
+- [Menomate Meal Plan Set 1 Week 4](https://wellnessnest.co/blogs/news/menomate-meal-plan-set-1-week-4)
+- [My Father Did Everything The Urologist Told Him For Nine Years At 71 He Was Still Getting Up Four Times A Night](https://wellnessnest.co/blogs/news/my-father-did-everything-the-urologist-told-him-for-nine-years-at-71-he-was-still-getting-up-four-times-a-night)
+- [NMN And Creatine Together Safe Daily Stack Us 2026](https://wellnessnest.co/blogs/news/nmn-and-creatine-together-safe-daily-stack-us-2026)
+- [NMN And Resveratrol What The Evidence Shows Us 2026](https://wellnessnest.co/blogs/news/nmn-and-resveratrol-what-the-evidence-shows-us-2026)
+- [NMN And TMG Together Why The Pairing Matters Us 2026](https://wellnessnest.co/blogs/news/nmn-and-tmg-together-why-the-pairing-matters-us-2026)
+- [NMN Capsules Vs Powder Vs Sublingual Best Form Us 2026](https://wellnessnest.co/blogs/news/nmn-capsules-vs-powder-vs-sublingual-best-form-us-2026)
+- [NMN For Women What The All Female Trial Missed Us 2026](https://wellnessnest.co/blogs/news/nmn-for-women-what-the-all-female-trial-missed-us-2026)
+- [NMN Side Effects 6 Checks Before You Start Us 2026](https://wellnessnest.co/blogs/news/nmn-side-effects-6-checks-before-you-start-us-2026)
+- [NMN Vs Nr What 6 Human Trials Say Us 2026](https://wellnessnest.co/blogs/news/nmn-vs-nr-what-6-human-trials-say-us-2026)
+- [Probiotics After Antibiotics For Women When To Start Us](https://wellnessnest.co/blogs/news/probiotics-after-antibiotics-for-women-when-to-start-us)
+- [Probiotics And Birth Control Can You Take Both Us 2026](https://wellnessnest.co/blogs/news/probiotics-and-birth-control-can-you-take-both-us-2026)
+- [Probiotics During Your Period Keep Taking Them Us 2026](https://wellnessnest.co/blogs/news/probiotics-during-your-period-keep-taking-them-us-2026)
+- [Probiotics For Bv Do They Actually Work Us 2026](https://wellnessnest.co/blogs/news/probiotics-for-bv-do-they-actually-work-us-2026)
+- [Seen Us In The News Here S The Truth 1](https://wellnessnest.co/blogs/news/seen-us-in-the-news-here-s-the-truth-1)
+- [Shed The Menopause Pounds Secrets To Keeping Weight Off For Good](https://wellnessnest.co/blogs/news/shed-the-menopause-pounds-secrets-to-keeping-weight-off-for-good)
+- [Shilajit And Creatine Can You Take Both Daily Us 2026](https://wellnessnest.co/blogs/news/shilajit-and-creatine-can-you-take-both-daily-us-2026)
+- [Shilajit Benefits For Men 4 Claims Ranked Us 2026](https://wellnessnest.co/blogs/news/shilajit-benefits-for-men-4-claims-ranked-us-2026)
+- [Shilajit Energy Drops 7 Ways To Use Them In The Us](https://wellnessnest.co/blogs/news/shilajit-energy-drops-7-ways-to-use-them-in-the-us)
+- [Shilajit For Beginners 5 Checks Before Your First Pouch](https://wellnessnest.co/blogs/news/shilajit-for-beginners-5-checks-before-your-first-pouch)
+- [Shilajit For Women What Changes After 45 Us 2026](https://wellnessnest.co/blogs/news/shilajit-for-women-what-changes-after-45-us-2026)
+- [Shilajit Fulvic Acid For Better And Glowing Skin](https://wellnessnest.co/blogs/news/shilajit-fulvic-acid-for-better-and-glowing-skin)
+- [Shilajit Gold Resin Review Is 75 Worth It Us 2026](https://wellnessnest.co/blogs/news/shilajit-gold-resin-review-is-75-worth-it-us-2026)
+- [Shilajit Resin Vs Gummies Which Works Better Us 2026](https://wellnessnest.co/blogs/news/shilajit-resin-vs-gummies-which-works-better-us-2026)
+- [Shilajit Shockwave Review 1 Drop Or 1 Ml Us 2026](https://wellnessnest.co/blogs/news/shilajit-shockwave-review-1-drop-or-1-ml-us-2026)
+- [Shilajit Side Effects 7 Signs To Watch For Us 2026](https://wellnessnest.co/blogs/news/shilajit-side-effects-7-signs-to-watch-for-us-2026)
+- [Shilajit Why Lab Testing Matters](https://wellnessnest.co/blogs/news/shilajit-why-lab-testing-matters)
+- [Taming The Storm Managing Emotional Rage During Menopause](https://wellnessnest.co/blogs/news/taming-the-storm-managing-emotional-rage-during-menopause)
+- [The 5 Worst Menopause Symptoms](https://wellnessnest.co/blogs/news/the-5-worst-menopause-symptoms)
+- [The Dad Bod Explained](https://wellnessnest.co/blogs/news/the-dad-bod-explained)
+- [The Menomate Journey Month 2 Week 6 How Black Cohosh Can Naturally Balance Your Hormones And End Hot Flash Chaos](https://wellnessnest.co/blogs/news/the-menomate-journey-month-2-week-6-how-black-cohosh-can-naturally-balance-your-hormones-and-end-hot-flash-chaos)
+- [The Menomate Journey Month 2 Week 7 How Dim Can Reset Your Hormones And Stop The Rollercoaster For Good](https://wellnessnest.co/blogs/news/the-menomate-journey-month-2-week-7-how-dim-can-reset-your-hormones-and-stop-the-rollercoaster-for-good)
+- [The Menomate Journey Month 2 Week 8 How Curry Leaf Can Slow Down Aging And Give You Energy That Lasts All Day](https://wellnessnest.co/blogs/news/the-menomate-journey-month-2-week-8-how-curry-leaf-can-slow-down-aging-and-give-you-energy-that-lasts-all-day)
+- [The Menomate Meal Plan Set 2 Week 1 How Calcium Can Reduce Hot Flashes Night Sweats And Mood Swings](https://wellnessnest.co/blogs/news/the-menomate-meal-plan-set-2-week-1-how-calcium-can-reduce-hot-flashes-night-sweats-and-mood-swings)
+- [Traditional Uses Of Shilajit Ancient Practices And Modern Applications In Ayurveda](https://wellnessnest.co/blogs/news/traditional-uses-of-shilajit-ancient-practices-and-modern-applications-in-ayurveda)
+- [Turkesterone And Alcohol 6 Things To Know Us 2026](https://wellnessnest.co/blogs/news/turkesterone-and-alcohol-6-things-to-know-us-2026)
+- [Turkesterone Benefits Dosing Whats Real Us 2026](https://wellnessnest.co/blogs/news/turkesterone-benefits-dosing-whats-real-us-2026)
+- [Turkesterone Creatine 6 Things To Know Us 2026](https://wellnessnest.co/blogs/news/turkesterone-creatine-6-things-to-know-us-2026)
+- [Turkesterone Cycle Do You Need Breaks Us 2026](https://wellnessnest.co/blogs/news/turkesterone-cycle-do-you-need-breaks-us-2026)
+- [Turkesterone For Beginners 5 Checks Before You Start](https://wellnessnest.co/blogs/news/turkesterone-for-beginners-5-checks-before-you-start)
+- [Turkesterone For Men Over 40 5 Honest Checks Us 2026](https://wellnessnest.co/blogs/news/turkesterone-for-men-over-40-5-honest-checks-us-2026)
+- [Turkesterone For Women 3 Trials 85 Men 0 Women Us 2026](https://wellnessnest.co/blogs/news/turkesterone-for-women-3-trials-85-men-0-women-us-2026)
+- [Turkesterone Side Effects 4 Ingredients To Check Us 2026](https://wellnessnest.co/blogs/news/turkesterone-side-effects-4-ingredients-to-check-us-2026)
+- [Turkesterone Timing Food Protein Or Fasted Us 2026](https://wellnessnest.co/blogs/news/turkesterone-timing-food-protein-or-fasted-us-2026)
+- [Turkesterone Vs Ecdysterone Which Is Worth It Us 2026](https://wellnessnest.co/blogs/news/turkesterone-vs-ecdysterone-which-is-worth-it-us-2026)
+- [Types Of Shilajit Products Comparison Of Resin Capsules Liquid Drops And Gummies](https://wellnessnest.co/blogs/news/types-of-shilajit-products-comparison-of-resin-capsules-liquid-drops-and-gummies)
+- [Vaginal Probiotics How Long Until They Work Us 2026](https://wellnessnest.co/blogs/news/vaginal-probiotics-how-long-until-they-work-us-2026)
+- [Vaginal Probiotics Side Effects Normal Vs Stop Us 2026](https://wellnessnest.co/blogs/news/vaginal-probiotics-side-effects-normal-vs-stop-us-2026)
+- [Vaginal Probiotics Which Strains Actually Work Us 2026](https://wellnessnest.co/blogs/news/vaginal-probiotics-which-strains-actually-work-us-2026)
+- [Wellness Nest Shilajit Reviews What 85 Buyers Report](https://wellnessnest.co/blogs/news/wellness-nest-shilajit-reviews-what-85-buyers-report)
+- [What Is Ayurveda Principles Of Ayurvedic Medicine And Its Holistic Approach](https://wellnessnest.co/blogs/news/what-is-ayurveda-principles-of-ayurvedic-medicine-and-its-holistic-approach)
+- [What Is Shilajit History Chemical Properties Processing](https://wellnessnest.co/blogs/news/what-is-shilajit-history-chemical-properties-processing)
+- [When To Take NMN Morning Or Night Us 2026](https://wellnessnest.co/blogs/news/when-to-take-nmn-morning-or-night-us-2026)
+- [When To Take Shilajit Morning Or Night Us 2026](https://wellnessnest.co/blogs/news/when-to-take-shilajit-morning-or-night-us-2026)
+- [Where To Buy Wellness Nest Shilajit In The Us 2026](https://wellnessnest.co/blogs/news/where-to-buy-wellness-nest-shilajit-in-the-us-2026)
+- [Yeast Infection Vs Bv How To Tell Them Apart Us 2026](https://wellnessnest.co/blogs/news/yeast-infection-vs-bv-how-to-tell-them-apart-us-2026)
+- [Your Ejaculate Didn T Quit It Was Just The First Signal Loud Enough For You To Notice](https://wellnessnest.co/blogs/news/your-ejaculate-didn-t-quit-it-was-just-the-first-signal-loud-enough-for-you-to-notice)
+
+## Optional
+
+- [Wellness Nest home](https://wellnessnest.co/)
+- [Journal](https://wellnessnest.co/blogs/news)
+- [About](https://wellnessnest.co/pages/about)
+- [About Us](https://wellnessnest.co/pages/about-us)
+- [Contact Us](https://wellnessnest.co/pages/contact-us)
+- [Dr. Marcus Hale](https://wellnessnest.co/pages/dr-marcus-hale)
+
+## Notes
+
+These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease.
+
+The short llms.txt lists 40 articles; this file lists 97.
+
+## How this draft was built
+
+- Sitemap fetch: https://wellnessnest.co/sitemap.xml (841 URLs).
+- Articles: no local list found.
+- Collections: no local list found.
+- Catalog products missing from the sitemap but still listed because a public HEAD returned 200: /products/shilasource-himalayan-shilajit-resin.
+- Catalog: brand/wellnessnest.json and brand/ageaura.json (AgeAura = NMN + TMG only).
+- This file is a repo artifact. It was not posted to the store.
