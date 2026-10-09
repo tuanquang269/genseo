@@ -224,9 +224,12 @@ what is on Shopify. The live article itself is fine.
 - GSC: path A (Kevin creates the OAuth desktop client) vs path B (manual Queries CSV export).
 
 **Open product/compliance flags (report, don't fix in an article):**
-FloraFresh — strain-identity contradiction, no Supplement Facts panel, "Treats the root cause"
-/ "Stays & colonizes" disease claims, "Top OB/GYN recommended formula", "100% natural
-ingredients", three inconsistent social-proof counts (71,180+ / 79,239+ / 7,159+).
+FloraFresh — the PDP description contradicts its Supplement Facts label (15 billion CFU, four
+Lactobacillus strains, XOS, D-mannose, "sugar-free" vs Bacillus coagulans SNZ-1969, 1 billion
+CFU, maltitol + isomalt). Kevin confirmed the label on 2026-10-09: our copy follows the label
+and the PDP rewrite waits for his GO (`docs/FLORAFRESH_FORMULA_GUARD.md`). Also "Treats the
+root cause" / "Stays & colonizes" disease claims, "Top OB/GYN recommended formula", "100%
+natural ingredients", three inconsistent social-proof counts (71,180+ / 79,239+ / 7,159+).
 Gold Resin ($75) and Shockwave ($79.99) publish **no milligram serving size at all** while
 both $59.99 SKUs do, and both still carry un-rewritten hype copy. Packaging discrepancies:
 shilajit gummies front "60-DAY SUPPLY" vs panel 30 servings; FusiForce front "90 GUMMIES" vs

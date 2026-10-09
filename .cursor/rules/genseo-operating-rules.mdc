@@ -39,6 +39,11 @@ Also: never `rm` repo files (move them to `_superseded/`); never put CDN URLs in
 - **AgeAura = AgeAura Pure NMN + TMG NAD+ Complex only.** Link only `/products/ageaura-pure-nmn-tmg-nad-complex`.
   Never Urolithin A (not as AgeAura, not at all), never `ageaura-pure-nmn-tmg-p2`, the Essential Longevity Duo,
   "rejuvenation duo", peptides, or `/collections/ageaura` (use `/collections/best-seller` as a browse link).
+- **FloraFresh = its Supplement Facts label formula** (Kevin 2026-10-09; `scripts/florafresh_rules.py`, run by
+  `brand_rules.py`): Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, Vitamin C 30 mg, pineapple fruit
+  powder 100 mg (with bromelain), sweetened with maltitol + isomalt, so never "sugar-free". The live PDP description
+  (15 billion CFU, four Lactobacillus strains, XOS, D-mannose, sugar-free) is wrong until Kevin's GO rewrites it:
+  never take formula facts from it or from older FloraFresh articles. See `docs/FLORAFRESH_FORMULA_GUARD.md`.
 - **Hero products** (house brands sold on wellnessnest.co — follow `lint_tickets.py` and `knowledge_base/`):
   FusiForce creatine gummies `fusiforce-creatine-gummies` · ShilaSource / Himalayan shilajit: resin
   `shilasource-himalayan-shilajit-resin`, gummies `premium-himalayan-shilajit-gummies`, gold resin
@@ -65,7 +70,8 @@ Also: never `rm` repo files (move them to `_superseded/`); never put CDN URLs in
 
 ## Read-only checks a cloud agent can run
 ```bash
-python3 scripts/lint_tickets.py daily-tickets.md        # banned link in an open ticket -> exit 2
+python3 scripts/lint_tickets.py daily-tickets.md        # banned link or claim in an open ticket -> exit 2
+python3 scripts/florafresh_rules.py <draft>.md          # FloraFresh copy vs its Supplement Facts label -> exit 1
 python3 scripts/refill_tickets.py --self-test           # offline fixtures + topic-bank lint
 python3 scripts/refill_tickets.py --count 8 --dry-run   # storefront reads only; queue + board untouched
 python3 scripts/sync_cursor_skills.py --check           # .cursor/skills pointers match skills/

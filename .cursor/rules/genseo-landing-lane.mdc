@@ -17,7 +17,9 @@ Read `skills/genseo-landing-pages/SKILL.md` and `templates/landing/README.md` in
 - **Never auto-live.** Live needs Kevin's explicit GO (`GENSEO_LANDING_LIVE_OK=1 … --live`), refused while
   placeholders remain. A page already live (e.g. `/pages/nmn-after-40-research`) is never hidden or overwritten.
 - **Brand files** `brand/<store>.json` carry tokens, voice and `forbidden_terms`; AgeAura allows only
-  `ageaura-pure-nmn-tmg-nad-complex`. `validate_landing.py` blocks banned handles and terms.
+  `ageaura-pure-nmn-tmg-nad-complex`. `validate_landing.py` blocks banned handles and terms, and any FloraFresh
+  formula claim its Supplement Facts label does not support (`scripts/florafresh_rules.py`; the PDP description is
+  wrong until Kevin's GO).
 - **No invented facts:** every number, study, price, rating and review comes from a page fetched this run, else
   `[[PLACEHOLDER: …]]` or cut. Reviews only verbatim from Trustpilot as displayed.
 - **Theme:** `--install-template` only adds a missing template key, never overwrites. Any other theme change needs
