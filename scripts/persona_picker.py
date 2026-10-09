@@ -43,8 +43,43 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # status -> selection tier. Anything NOT in here is unusable: "pending" (machine-gated by
 # fetch_personas.py but never seen by Kevin) and "retired" (licence or QC failure) both.
 SELECTABLE = {"active": 0, "flagged": 1}   # flagged = last resort, still warned about
+# Faces admitted before the vision rubric asked about expression. m3039-as-02's own QC
+# notes read "Man making a silly face" / "exaggerated facial expression". Keep this
+# identical to fetch_personas.IDENTITY_BLOCKLIST. The handle is refused even when the
+# row's booleans have been cleared.
+IDENTITY_BLOCKLIST = frozenset({"m3039-as-02"})
 INDEX = os.path.join(ROOT, "personas", "index.json")
 TAXONOMY = os.path.join(ROOT, "personas", "taxonomy.json")
+
+
+def identity_refusal(entry, handle=None):
+    """Why this row must not be a hero / identity anchor, or None if it may.
+
+    Missing booleans default to usable. The bank predates the fields, and a missing
+    key is not evidence of a gurn. An explicit exaggerated_expression true, an explicit
+    usable_as_identity_reference false, or IDENTITY_BLOCKLIST, refuses. NO-FACE is not
+    a persona and is not passed here.
+    """
+    entry = entry or {}
+    handle = handle or entry.get("handle") or ""
+    if handle in IDENTITY_BLOCKLIST:
+        return "blocklisted: QC notes a silly/exaggerated face, not an identity anchor"
+    if entry.get("exaggerated_expression") is True:
+        return "exaggerated_expression is true"
+    if entry.get("usable_as_identity_reference") is False:
+        return "usable_as_identity_reference is false"
+    return None
+
+
+def _refuse_identity_hero(hero, entry):
+    """Commit must not record a face the picker is not allowed to issue."""
+    if not hero or hero == "NO-FACE":
+        return
+    why = identity_refusal(entry, hero)
+    if why:
+        sys.exit("✗ %s cannot be a hero / identity reference (%s). "
+                 "Release the reservation if this article never published; "
+                 "do not commit this face." % (hero, why))
 
 
 def _load(path, what):
@@ -264,7 +299,7 @@ def cmd_pick(args):
         print(json.dumps(out, indent=1))
         return out
 
-    cands, pending, exhausted = [], 0, []
+    cands, pending, exhausted, skipped_identity = [], 0, [], []
     for h, e in (index.get("personas") or {}).items():
         if e.get("pool_id") not in pools:
             continue
@@ -276,6 +311,12 @@ def cmd_pick(args):
         if tier is None:
             if e.get("status") == "pending":
                 pending += 1
+            continue
+        why = identity_refusal(e, h)
+        if why:
+            # A gurn that reached status=active is still not a hero. Skipping here, not at
+            # commit, is what keeps the og:image from being issued in the first place.
+            skipped_identity.append(h)
             continue
         if not os.path.exists(e.get("ref") or ""):
             out["warnings"].append("%s: ref.jpg missing on disk, skipped" % h)
@@ -293,6 +334,11 @@ def cmd_pick(args):
                       pools.index(e["pool_id"]),                  # preferred pool first
                       e.get("last_used_seq", 0),                  # LRU
                       h, e))
+    if skipped_identity:
+        out["warnings"].append(
+            "%d persona(s) skipped as hero/identity (exaggerated expression, "
+            "usable_as_identity_reference false, or blocklist): %s"
+            % (len(skipped_identity), ", ".join(sorted(skipped_identity))))
     if pending:
         out["warnings"].append(
             "%d face(s) in these pools are PENDING approval and cannot be used yet" % pending)
@@ -416,6 +462,7 @@ def _close_reservation(index, resv, args):
 
     if hero != "NO-FACE":
         e = (index.get("personas") or {}).get(hero)
+        _refuse_identity_hero(hero, e)
         if not e:
             sys.exit("✗ unknown persona %r — commit refused" % hero)
         issued = [a for a in (r.get("hero_face_angle"), r.get("inline_face_angle")) if a]
@@ -464,6 +511,7 @@ def _legacy_commit(index, args):
         index["recent_shots"] = (list(index.get("recent_shots") or []) + [args.shot])[-6:]
     if args.hero and args.hero != "NO-FACE":
         e = (index.get("personas") or {}).get(args.hero)
+        _refuse_identity_hero(args.hero, e)
         if not e:
             sys.exit("✗ unknown persona %r — commit refused" % args.hero)
         tax = _load(TAXONOMY, "taxonomy")
@@ -545,7 +593,11 @@ def cmd_status(_args):
           % (index.get("no_face_cycle", {}).get("period"),
              index.get("no_face_cycle", {}).get("position")))
     per = len(angle_ids(tax))
-    usable = [e for e in ppl.values() if e.get("status") in SELECTABLE]
+    usable = [e for h, e in ppl.items()
+              if e.get("status") in SELECTABLE and not identity_refusal(e, h)]
+    blocked = sorted(h for h, e in ppl.items() if identity_refusal(e, h))
+    if blocked:
+        print("identity-blocked (not a hero): %s" % ", ".join(blocked))
     spent = sum(len(e.get("angles_used") or []) for e in usable)
     held = sum(len(e.get("angles_reserved") or []) for e in usable)
     print("face angles: %d spent + %d reserved / %d available (%d personas x %d angles); "
@@ -566,13 +618,18 @@ def cmd_status(_args):
     print("%-8s %6s %6s  %s" % ("POOL", "HAVE", "TARGET", "STATUS"))
     for p in tax["rotation_pools"]:
         have = [h for h, e in ppl.items() if e.get("pool_id") == p["pool_id"]]
-        clean = [h for h in have if ppl[h].get("status") == "active"]
+        clean = [h for h in have
+                 if ppl[h].get("status") == "active" and not identity_refusal(ppl[h], h)]
         mark = "OK" if len(clean) >= 3 else ("THIN" if clean else "EMPTY — no usable face")
         # Only "active" and "flagged" can be picked. Folding the unusable states into one
         # "(n flagged)" note read as "there is a fallback here" when there isn't. Name each.
         counts = [(s, len([h for h in have if ppl[h].get("status") == s]))
                   for s in ("flagged", "pending", "retired")]
-        extra = ", ".join("%d %s" % (n, s) for s, n in counts if n)
+        bits = ["%d %s" % (n, s) for s, n in counts if n]
+        n_id = len([h for h in have if identity_refusal(ppl[h], h)])
+        if n_id:
+            bits.append("%d identity-blocked" % n_id)
+        extra = ", ".join(bits)
         print("%-8s %6d %6d  %s%s" % (p["pool_id"], len(have), p["target_count"], mark,
                                       " (%s)" % extra if extra else ""))
 
@@ -606,14 +663,30 @@ def cmd_selftest(_args):
         with open(ref, "wb") as fh:
             fh.write(b"\xff\xd8\xff")
         INDEX = os.path.join(sandbox, "index.json")
-        # ONE persona, deliberately. With two, the LRU tie-break hands the second pick a
-        # different face and the test passes without ever exercising the reservation.
+        # ONE selectable persona, deliberately. With two selectable faces, the LRU tie-break
+        # hands the second pick a different face and the test passes without ever exercising
+        # the reservation. The other three are in the same pool and must be skipped: a gurn,
+        # a row marked unusable as an identity reference, and m3039-as-02 with flags that
+        # look fine (the blocklist still refuses it).
+        def _row(handle, **extra):
+            base = {"handle": handle, "pool_id": pool, "status": "active", "ref": ref,
+                    "used_count": 0, "last_used_seq": 0, "gaze_used": [], "last_gaze": None,
+                    "angles_used": [], "angles_reserved": []}
+            base.update(extra)
+            return base
+
         _atomic_write(INDEX, {
             "seq": 0, "no_face_cycle": {"period": 3, "position": 0},
             "recent_shots": [], "recent_heroes": [],
-            "personas": {"t-01": {"handle": "t-01", "pool_id": pool, "status": "active",
-                                  "ref": ref, "used_count": 0, "last_used_seq": 0,
-                                  "gaze_used": [], "last_gaze": None, "angles_used": []}}})
+            "personas": {
+                "t-01": _row("t-01"),
+                "gurn-01": _row("gurn-01", exaggerated_expression=True,
+                                usable_as_identity_reference=True),
+                "plain-bad": _row("plain-bad", exaggerated_expression=False,
+                                  usable_as_identity_reference=False),
+                "m3039-as-02": _row("m3039-as-02", exaggerated_expression=False,
+                                    usable_as_identity_reference=True),
+            }})
 
         def pick(**kw):
             ns = argparse.Namespace(audience=aud, brand=None, force_face=False)
@@ -648,7 +721,23 @@ def cmd_selftest(_args):
         def angles(out):
             return [out.get("hero_face_angle"), out.get("inline_face_angle")]
 
+        check("missing flags default to a usable identity",
+              identity_refusal({"handle": "t-01", "status": "active"}) is None)
+        check("exaggerated_expression refuses a hero",
+              identity_refusal({"handle": "x", "exaggerated_expression": True}) is not None)
+        check("usable_as_identity_reference false refuses a hero",
+              identity_refusal({"handle": "x", "exaggerated_expression": False,
+                                "usable_as_identity_reference": False}) is not None)
+        check("m3039-as-02 is refused even when both flags say usable",
+              identity_refusal({"handle": "m3039-as-02", "exaggerated_expression": False,
+                                "usable_as_identity_reference": True}) is not None)
+
         p1 = pick()
+        check("pick will not hero a gurn, a non-identity ref, or m3039-as-02",
+              p1["hero"] == "t-01"
+              and any("m3039-as-02" in w and "gurn-01" in w and "plain-bad" in w
+                      for w in (p1.get("warnings") or [])),
+              "hero=%s warnings=%s" % (p1.get("hero"), p1.get("warnings")))
         s1 = state()
         check("pick writes before it prints",
               s1.get("seq") == 1 and "1" in (s1.get("reservations") or {}),
@@ -718,6 +807,28 @@ def cmd_selftest(_args):
         check("releasing the newest reservation rewinds the cycle position",
               state()["no_face_cycle"]["position"] == before,
               "back to %s" % before)
+
+        ang = angles(p2)
+        idx = state()
+        idx.setdefault("reservations", {})["99"] = {
+            "seq": 99, "hero": "m3039-as-02",
+            "hero_face_angle": ang[0], "inline_face_angle": ang[1],
+        }
+        _atomic_write(INDEX, idx)
+        check("commit of blocklisted m3039-as-02 is refused even when its flags look usable",
+              refused(commit, hero="m3039-as-02", face_angle=ang[0],
+                      inline_face_angle=ang[1], expect_seq=99))
+        check("a refused identity commit does not close the reservation",
+              "99" in (state().get("reservations") or {}))
+
+        _atomic_write(INDEX, {
+            "seq": 0, "no_face_cycle": {"period": 3, "position": 1},
+            "recent_shots": [], "recent_heroes": [],
+            "personas": {"gurn-01": _row("gurn-01", exaggerated_expression=True,
+                                         usable_as_identity_reference=False)}})
+        g = pick(force_face=True)
+        check("a pool whose only face is a gurn degrades to NO-FACE",
+              g["hero"] == "NO-FACE", "hero=%s" % g.get("hero"))
     finally:
         INDEX = real_index
         shutil.rmtree(sandbox, ignore_errors=True)

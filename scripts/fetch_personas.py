@@ -1006,6 +1006,8 @@ VISION_RUBRIC = (
     '"head_size_reads": "tiny"|"portrait"|"fills-frame", '
     '"mouth_or_face_prop": true|false, '
     '"face_paint_or_costume_head": true|false, '
+    '"exaggerated_expression": true|false, '
+    '"usable_as_identity_reference": true|false, '
     '"studio_or_press_context": true|false, '
     '"official_or_representative_capacity": true|false, '
     '"identifying_text_in_frame": true|false, "minor_in_frame": true|false, '
@@ -1046,6 +1048,15 @@ VISION_RUBRIC = (
     "of the skull. Ordinary clothing, an ordinary cap or beanie worn normally, ordinary "
     "cosmetics, spectacles and jewellery are NOT this - judge only whether the FACE'S OWN "
     "surface or the HEAD'S OWN outline has been replaced by something worn. "
+    "exaggerated_expression: is the face pulled into a gurn, a silly face, a tongue-out, "
+    "crossed eyes, an extreme grimace, or any expression so far from a resting likeness that "
+    "reproducing it would make the person look like a joke? A smile, a laugh or a speaking "
+    "mouth is NOT this. "
+    "usable_as_identity_reference: could this photograph anchor a consistent likeness of the "
+    "same person across many generated scenes? false when exaggerated_expression is true, and "
+    "false when the face is a performance rather than a likeness (mid-sneeze, a shout, the "
+    "worst instant). true for an ordinary candid expression you would recognise the person by. "
+    "If exaggerated_expression is true, usable_as_identity_reference MUST be false. "
     "studio_or_press_context: true for a seamless studio backdrop, a professional "
     "headshot, a stage or podium, a press conference, a red carpet or any other posed "
     "media-production setting. "
@@ -1185,11 +1196,25 @@ ETHNICITY_GROUP_TO_KEY = {
 # where the skin should be; a wig sits where the hairline should be. Ordinary hats stay allowed
 # for exactly the reason m4049-wh-01's hat was allowed — a hat sits ABOVE the face and leaves the
 # anchor intact.
+#
+# exaggerated_expression / usable_as_identity_reference came off a face that was already ACTIVE
+# and had already been a live hero. m3039-as-02's own QC notes read "Man making an exaggerated
+# facial expression" and the confirming reading "Man making a silly face". Every boolean the
+# rubric had was the right answer — one adult, eyes open, head upright, nothing in the mouth,
+# no paint — and the gate passed him, because a gurn is not an object at the mouth and it is
+# not paint. ima2 anchors identity on ref.jpg, so the joke face is the likeness it will try to
+# hold. A smile, a laugh or a speaking mouth is a resting-enough expression and is NOT this.
+# usable_as_identity_reference is the same fact stated as a permission. persona_picker refuses
+# the handle outright as well: this photograph was admitted before the question existed, and a
+# missing key must keep meaning "not asked" for the rest of the cached bank.
+# Keep IDENTITY_BLOCKLIST identical to persona_picker.IDENTITY_BLOCKLIST.
+IDENTITY_BLOCKLIST = frozenset({"m3039-as-02"})
 VISION_RUBRIC_KEYS_ADDED = ("is_monochrome_or_period", "face_angle_reads",
                             "official_or_representative_capacity",
                             "identifying_text_in_frame", "minor_in_frame",
                             "eyes_open", "head_upright", "head_size_reads",
-                            "mouth_or_face_prop", "face_paint_or_costume_head")
+                            "mouth_or_face_prop", "face_paint_or_costume_head",
+                            "exaggerated_expression", "usable_as_identity_reference")
 # A profile ref makes most of the 21-angle vocabulary unreachable: article_images.py anchors
 # identity on ref.jpg, and asking ima2 for `front-level` from a 90-degree profile is asking it
 # to invent the half of the face it was never shown. f3039-wh-06 is exactly that photograph.
@@ -1517,6 +1542,14 @@ def evaluate_vision(v, cell, undecided=None):
         reasons.append("the face is painted or the head is disguised (face paint, theatrical "
                        "makeup, a mask, a wig or a costume headdress) — it replaces the surface "
                        "ima2 reads identity from, so no prompt clause can recover the person")
+    if v.get("exaggerated_expression") is True:
+        # m3039-as-02: the notes said "silly face" and every other key was still a pass.
+        # ima2 holds the expression it is shown, so a gurn becomes the hero likeness.
+        reasons.append("exaggerated expression (gurn, silly face, tongue-out) — ima2 anchors "
+                       "identity on ref.jpg, so the joke face would ship on every hero")
+    if v.get("usable_as_identity_reference") is False:
+        reasons.append("not usable as an identity reference — the face is a performance, not "
+                       "a likeness the generator can hold")
     if v.get("minor_in_frame") is True:
         # A child cannot consent and their guardian has not been asked, so this one is a floor
         # rather than a preference — the same reasoning as MIN_APPARENT_AGE, arriving by way of
@@ -2105,6 +2138,34 @@ def prior_angle_ledger():
     return out
 
 
+def identity_fields(handle, doc):
+    """(exaggerated_expression, usable_as_identity_reference) for an index row.
+
+    The picker reads index.json and nothing else, so the booleans have to live on the row.
+    Missing keys default to a resting, usable face: readings taken before 2026-10-09 did not
+    ask, and treating absence as a gurn would empty the bank. An explicit bool wins. An
+    exaggerated expression is never an identity reference. IDENTITY_BLOCKLIST wins over both,
+    so re-seeding m3039-as-02 cannot clear the block.
+    """
+    doc = doc or {}
+    vision = ((doc.get("qc") or {}).get("vision") or {})
+    exag = doc.get("exaggerated_expression")
+    if not isinstance(exag, bool):
+        exag = vision.get("exaggerated_expression")
+    usable = doc.get("usable_as_identity_reference")
+    if not isinstance(usable, bool):
+        usable = vision.get("usable_as_identity_reference")
+    if not isinstance(exag, bool):
+        exag = False
+    if not isinstance(usable, bool):
+        usable = True
+    if exag:
+        usable = False
+    if handle in IDENTITY_BLOCKLIST:
+        exag, usable = True, False
+    return exag, usable
+
+
 def seed_row(handle, pool_id, ref, doc, prior):
     """The PENDING index row for a newly admitted face, with any history it already has.
 
@@ -2112,8 +2173,11 @@ def seed_row(handle, pool_id, ref, doc, prior):
     rule is enforced entirely off this list, and a key that only appears after the first commit
     looks identical when it is missing and when the persona is genuinely fresh."""
     rec = prior.get(identity_key(doc)) or {}
+    exag, usable = identity_fields(handle, doc)
     return {"handle": handle, "pool_id": pool_id, "status": "pending", "ref": ref,
             "identity_key": identity_key(doc),
+            "exaggerated_expression": exag,
+            "usable_as_identity_reference": usable,
             "used_count": int(rec.get("used_count") or 0), "last_used_seq": 0,
             "gaze_used": list(rec.get("gaze_used") or []), "last_gaze": None,
             "angles_used": list(rec.get("angles_used") or []),
@@ -2249,6 +2313,7 @@ def build_persona_doc(handle, cell, cand, lic_id, info, img_meta, vision, raw_ve
     age_est = ""
     if isinstance(vision, dict) and vision.get("apparent_age_min") is not None:
         age_est = " ~%s-%s" % (vision.get("apparent_age_min"), vision.get("apparent_age_max"))
+    exag, usable = identity_fields(handle, {"qc": {"vision": vision if isinstance(vision, dict) else {}}})
     return {
         "schema_version": 2,
         "handle": handle,
@@ -2302,6 +2367,10 @@ def build_persona_doc(handle, cell, cand, lic_id, info, img_meta, vision, raw_ve
         # brand. Only `approve` flips this, and only the picker reads the index copy.
         "status": "pending",
         "flag_reason": None,
+        # Copied onto the index row by seed_row. Defaults are a resting usable face when the
+        # reading predates the keys; the blocklist forces m3039-as-02 unusable.
+        "exaggerated_expression": exag,
+        "usable_as_identity_reference": usable,
     }
 
 
@@ -2607,6 +2676,12 @@ def cmd_approve(args):
     print("✓ %s: %s" % ("REJECTED (retired)" if args.reject else "approved", ", ".join(changed)))
     if not args.reject:
         print("These are now selectable by persona_picker.py.")
+        held = [h for h in changed
+                if identity_fields(h, people.get(h) or {})[0]
+                or not identity_fields(h, people.get(h) or {})[1]]
+        if held:
+            print("EXCEPT not as a hero/identity (exaggerated expression, "
+                  "usable_as_identity_reference false, or blocklist): %s" % ", ".join(held))
 
 
 def cmd_fetch(args):
@@ -3525,6 +3600,7 @@ def cmd_selftest(_args):
             "is_monochrome_or_period": False, "face_angle_reads": "three-quarter",
             "eyes_open": True, "head_upright": True, "head_size_reads": "portrait",
             "mouth_or_face_prop": False, "face_paint_or_costume_head": False,
+            "exaggerated_expression": False, "usable_as_identity_reference": True,
             "studio_or_press_context": False,
             "official_or_representative_capacity": False,
             "identifying_text_in_frame": False, "minor_in_frame": False,
@@ -3554,7 +3630,11 @@ def cmd_selftest(_args):
                           "cigarette / vape / straw at the lips rejected"),
                          ({"face_paint_or_costume_head": True},
                           "face paint / mask / wig / costume headdress rejected — the anchor "
-                          "surface is not the person's own")):
+                          "surface is not the person's own"),
+                         ({"exaggerated_expression": True},
+                          "gurn / silly face rejected even if the second flag was left true"),
+                         ({"usable_as_identity_reference": False},
+                          "not an identity reference rejected")):
         v = dict(good)
         v.update(tweak)
         check(label, evaluate_vision(v, cell) != [])
@@ -3575,6 +3655,10 @@ def cmd_selftest(_args):
                           dict(cell, age_band="50-59", cell_id="m5059-wh")) != []
           and evaluate_vision(dict(good, head_size_reads="fills-frame"), cell) == [])
     check("frontal accepted", evaluate_vision(dict(good, face_angle_reads="frontal"), cell) == [])
+    check("the rubric names a smile as NOT an exaggerated expression",
+          "exaggerated_expression" in VISION_RUBRIC
+          and "usable_as_identity_reference" in VISION_RUBRIC
+          and "A smile" in VISION_RUBRIC)
 
     print("the watermark question asks about overlays, not about text in the world")
     # 2026-08-14: `ANY burned-in text ... anywhere in the frame` made this the single biggest
@@ -4056,6 +4140,22 @@ def cmd_selftest(_args):
           seed_row("f5059-wh-10", "f5059", "/x/ref.jpg",
                    {"source": {"platform": "openimages", "photo_id": "zzz"}},
                    {})["angles_used"] == [])
+    fresh = seed_row("f5059-wh-10", "f5059", "/x/ref.jpg",
+                     {"source": {"platform": "openimages", "photo_id": "zzz"}}, {})
+    check("a new index row defaults to a usable resting face",
+          fresh["exaggerated_expression"] is False and fresh["usable_as_identity_reference"] is True)
+    gurn = seed_row("f5059-wh-11", "f5059", "/x/ref.jpg",
+                    {"qc": {"vision": {"exaggerated_expression": True,
+                                       "usable_as_identity_reference": True}},
+                     "source": {"platform": "openimages", "photo_id": "gurn"}}, {})
+    check("an exaggerated reading is stored unusable even if the second flag was left true",
+          gurn["exaggerated_expression"] is True and gurn["usable_as_identity_reference"] is False)
+    blocked = seed_row("m3039-as-02", "m3039", "/x/ref.jpg",
+                       {"exaggerated_expression": False, "usable_as_identity_reference": True,
+                        "source": {"platform": "openimages", "photo_id": "ed350228988684b6"}}, {})
+    check("re-seeding m3039-as-02 cannot clear the identity block",
+          blocked["exaggerated_expression"] is True
+          and blocked["usable_as_identity_reference"] is False)
 
     print("")
     if failures:

@@ -32,6 +32,7 @@ import re
 import subprocess
 import sys
 import brand_rules
+import persona_picker
 
 import shutil as _shutil
 
@@ -167,6 +168,14 @@ def face_angle_phrase(angle_id, persona_ref):
                  f"and 'flagged' may generate). Nothing but `fetch_personas.py approve {handle} "
                  f"--by <who>` may change that — do not edit index.json by hand, and do not "
                  f"route around this by passing the ref from somewhere else.")
+
+    # Same identity gate as persona_picker.pick. A hand-written --persona-ref never went
+    # through the picker, which is how a gurn that is still status=active would become the
+    # og:image. m3039-as-02 is refused here even if its booleans are cleared.
+    why = persona_picker.identity_refusal(entry, handle)
+    if why:
+        sys.exit(f"✗ persona {handle} cannot anchor a hero / identity reference ({why}).\n"
+                 f"  persona_picker.py will not issue this face. Do not pass its ref by hand.")
 
     if angle_id in (entry.get("angles_used") or []):
         sys.exit(f"✗ persona {handle} has ALREADY used face angle {angle_id!r}. Kevin's hard rule "
