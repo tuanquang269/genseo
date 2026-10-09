@@ -3,7 +3,8 @@
 
 Network happens only when a caller asks to send (a live publish/update, or
 ``--send``). A missing ``INDEXNOW_KEY`` skips with a log line. ``--dry-run`` and
-``INDEXNOW_DRY_RUN=1`` build the JSON body and do not open a socket.
+``INDEXNOW_DRY_RUN=1`` build the JSON body and do not open a socket. A URL that
+``brand_rules`` denies (Urolithin A, another AgeAura SKU) is never sent.
 
 This module does not write the Shopify theme, pages, or robots.txt, and it does
 not upload the key file. Hosting that file is a manual step — see
@@ -18,6 +19,9 @@ import sys
 import urllib.error
 import urllib.parse
 import urllib.request
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import brand_rules
 
 DEFAULT_HOST = "wellnessnest.co"
 DEFAULT_BLOG = "news"
@@ -118,6 +122,14 @@ def build_payload(urls, env=None):
 
 def plan(urls, env=None, force_dry_run=False):
     """Decide skip / dry-run / invalid / send. No I/O."""
+    _kept, blocked = brand_rules.indexnow_urls([u for u in urls if u])
+    if blocked:
+        return {
+            "action": "invalid",
+            "payload": None,
+            "status": None,
+            "message": f"IndexNow Auto-Ping: SKIPPED (AgeAura guard) {', '.join(blocked)}. No request sent.",
+        }
     key = resolve_key(env)
     if not key:
         return {
@@ -279,8 +291,9 @@ def self_check():
         "https://wellnessnest.co/abcdef0123456789.txt"
     ):
         raise SystemExit("self-check failed: dry-run payload")
-    if "urolithin" in json.dumps(dry["payload"]).lower():
-        raise SystemExit("self-check failed: unexpected payload text")
+    guarded = execute(["https://wellnessnest.co/products/ageaura-pure-urolithin-a"], env=env, opener=_boom)
+    if guarded["action"] != "invalid" or guarded["payload"] is not None or calls:
+        raise SystemExit("self-check failed: AgeAura guard did not block a Urolithin URL")
     print("IndexNow self-check: PASS (no network)")
     return 0
 

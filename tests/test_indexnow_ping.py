@@ -122,6 +122,23 @@ class IndexNowPlanTests(unittest.TestCase):
         self.assertEqual(result["action"], "skip")
         self.assertIn("HTTP 404", result["message"])
 
+    def test_brand_guard_blocks_denied_ageaura_urls(self):
+        opener = _Opener()
+        result = indexnow_ping.execute(
+            [URL, "https://wellnessnest.co/products/ageaura-pure-urolithin-a"],
+            env={"INDEXNOW_KEY": KEY},
+            opener=opener,
+        )
+        self.assertEqual(result["action"], "invalid")
+        self.assertIsNone(result["payload"])
+        self.assertEqual(opener.calls, [])
+        self.assertIn("AgeAura guard", result["message"])
+        dry = indexnow_ping.plan(
+            ["https://wellnessnest.co/collections/ageaura"],
+            env={"INDEXNOW_KEY": KEY, "INDEXNOW_DRY_RUN": "1"},
+        )
+        self.assertEqual(dry["action"], "invalid")
+
     def test_foreign_url_is_rejected(self):
         result = indexnow_ping.plan(
             ["https://example.com/blogs/news/x"],
