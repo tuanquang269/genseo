@@ -2,7 +2,7 @@
 """Refill daily-tickets.md with gated, product-mapped PENDING article tickets (Kevin 2026-10-09: the
 queue ran empty and the daily runner stopped at 1/5).
 
-  python3 scripts/refill_tickets.py --count 8 --dry-run     # print the batch + every rejection, write nothing
+  python3 scripts/refill_tickets.py --count 8 --dry-run     # print the batch + every rejection; queue + board untouched
   python3 scripts/refill_tickets.py --count 8               # append a `# BATCH` + update board/ideas.csv
   python3 scripts/refill_tickets.py --if-below 4 --count 6  # no-op while >= 4 tickets are open (wrapper hook)
   python3 scripts/refill_tickets.py --self-test             # offline fixtures: no network, writes nothing
@@ -641,7 +641,9 @@ def select(passed, count, cap):
 
 
 def order(batch, last_template):
-    """Round-robin by family, then never the same template (nor, when avoidable, family) twice running."""
+    """Never the same template twice running whenever the mix allows it (the most frequent remaining template
+    goes first — greedy without that look-ahead strands e.g. two EDITORIALs at the end), then, where that leaves
+    a choice, not the same family twice running; ties keep the round-robin-by-family order."""
     fams = list(dict.fromkeys(c["family"] for c in batch))
     lanes = {f: [c for c in batch if c["family"] == f] for f in fams}
     rr = []
@@ -649,8 +651,11 @@ def order(batch, last_template):
         rr += [lanes[f].pop(0) for f in fams if lanes[f]]
     out, prev_t, prev_f = [], last_template, None
     while rr:
-        i = next((k for k, c in enumerate(rr) if c["template"] != prev_t and c["family"] != prev_f),
-                 next((k for k, c in enumerate(rr) if c["template"] != prev_t), 0))
+        left = {}
+        for c in rr:
+            left[c["template"]] = left.get(c["template"], 0) + 1
+        i = min(range(len(rr)), key=lambda k: (rr[k]["template"] == prev_t, -left[rr[k]["template"]],
+                                               rr[k]["family"] == prev_f, k))
         c = rr.pop(i)
         out.append(c)
         prev_t, prev_f = c["template"], c["family"]
@@ -778,14 +783,14 @@ def refill(a):
     ids = next_ids(text, a.prefix, ctx["day"], len(batch))
     block = batch_header(ctx, ids) + "\n" + "\n\n".join(render(c, tid, ctx, c["info"]) for c, tid in zip(batch, ids)) + "\n"
     if a.dry_run:
-        print(f"---- dry run: {len(batch)} ticket(s), nothing written ----\n{block}")
+        print(f"---- dry run: {len(batch)} ticket(s); queue and board untouched ----\n{block}")
     else:
         append_block(a.queue, block, text)
         write_board(a.board, update_board(rows, queue, list(zip(batch, ids)), rejected, ctx["day"]), fields)
         print(f"✓ appended {len(batch)} ticket(s) to {os.path.relpath(a.queue, ROOT)} — {n_open + len(batch)} open now; "
               f"{os.path.relpath(a.board, ROOT)} updated")
         for c, tid in zip(batch, ids):
-            print(f"  #{tid}  {c['template']:<10}  {c['title']}")
+            print(f"  #{tid:<12} {c['template']:<10}  {c['title']}")
     if len(batch) < a.count:
         print(f"! only {len(batch)} of {a.count} passed — add topics to templates/article-topic-bank.json or board/ideas.csv")
         return 3
@@ -986,6 +991,11 @@ def self_test():
     t("order: no template twice running (incl. the queue's last one)",
       all(x["template"] != y["template"] for x, y in zip([{"template": "LISTICLE"}] + o, o)), [x["template"] for x in o])
     t("order: no family twice running", all(x["family"] != y["family"] for x, y in zip(o, o[1:])), [x["family"] for x in o])
+    mk = [("1", "probiotic", "STORY"), ("2", "creatine", "EDITORIAL"), ("3", "turkesterone", "COMPARISON"),
+          ("4", "shilajit", "LISTICLE"), ("5", "creatine", "EDITORIAL"), ("6", "shilajit", "EDITORIAL")]
+    o = order([{"id": i, "family": f, "template": tp} for i, f, tp in mk], "LISTICLE")
+    t("order: no template twice running when half the batch shares one (no EDITORIAL pair stranded at the end)",
+      all(x["template"] != y["template"] for x, y in zip([{"template": "LISTICLE"}] + o, o)), [x["template"] for x in o])
     sel = select([{"id": str(i), "family": f} for i, f in enumerate(["a", "a", "a", "b"])], 3, 2)
     t("select: family cap first, then fill", [c["id"] for c in sel] == ["0", "1", "3"], [c["id"] for c in sel])
 
@@ -1027,7 +1037,8 @@ def main():
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     ap = argparse.ArgumentParser(description="Refill daily-tickets.md with gated, product-mapped article tickets.")
     ap.add_argument("--count", type=int, default=8, help="new tickets to add (default 8)")
-    ap.add_argument("--dry-run", action="store_true", help="print the batch and every rejection; write nothing")
+    ap.add_argument("--dry-run", action="store_true",
+                    help="print the batch and every rejection; queue and board untouched")
     ap.add_argument("--if-below", type=int, metavar="K", help="do nothing while K or more tickets are open")
     ap.add_argument("--prefix", default=os.environ.get("GENSEO_TICKET_PREFIX", "RF"),
                     help="ticket id prefix, 1-4 capitals: MM Mini wrapper, MB MacBook, CA Cursor cloud (default RF "
