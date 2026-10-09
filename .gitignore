@@ -37,4 +37,6 @@ landing_drafts/*/cdn_map.json
 
 # local secrets (Shopify CLI control app etc.)
 .env
+# IndexNow key file (the body is the secret). Draft llms.txt under deploy/llms-txt/ is not a secret.
+deploy/indexnow/
 landing_drafts/*/img/

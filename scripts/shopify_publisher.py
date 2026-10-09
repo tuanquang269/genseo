@@ -14,6 +14,7 @@ import genseo_config as _gcfg
 import genseo_roster
 import brand_rules
 import florafresh_rules
+import indexnow_ping
 
 CONFIG_PATH = _gcfg.CONFIG_PATH
 API = _gcfg.API
@@ -38,41 +39,28 @@ def _refuse_guarded_draft(title, body):
 
 
 def ping_indexnow(shop, token, blog_id, article_handle):
+    """Ping IndexNow after a public article write.
+
+    ``shop``, ``token``, and ``blog_id`` stay in the signature so publish/update
+    call sites do not change. The public URL uses INDEXNOW_HOST and
+    INDEXNOW_BLOG_HANDLE (default wellnessnest.co / news), the same URL this
+    publisher already prints. The ping does not call the Admin API. With
+    INDEXNOW_KEY unset, or INDEXNOW_DRY_RUN=1, nothing is sent. A URL the
+    brand guard denies (Urolithin A, another AgeAura SKU) is never sent.
+    """
+    del shop, token, blog_id
     tentative = f"https://wellnessnest.co/blogs/news/{article_handle}"
     kept, blocked = brand_rules.indexnow_urls([tentative, article_handle or ""])
     if blocked or not kept:
         print(f"IndexNow Auto-Ping: SKIPPED (AgeAura guard) {article_handle}")
         return
     try:
-        req = urllib.request.Request(f"https://{shop}/admin/api/{API}/blogs/{blog_id}.json", headers={"X-Shopify-Access-Token": token})
-        res = urllib.request.urlopen(req)
-        blog_data = json.loads(res.read())
-        blog_handle = blog_data['blog']['handle']
-        
-        url_to_index = f"https://wellnessnest.co/blogs/{blog_handle}/{article_handle}"
+        url_to_index = indexnow_ping.article_url(article_handle)
         kept, blocked = brand_rules.indexnow_urls([url_to_index])
         if blocked or not kept:
             print(f"IndexNow Auto-Ping: SKIPPED (AgeAura guard) {url_to_index}")
             return
-
-        key = "YOUR_INDEXNOW_KEY"
-        if key.startswith("YOUR_"):
-            print("IndexNow Auto-Ping: SKIPPED (no key configured — run setup_indexnow.py, paste the key here AND set keyLocation to the hosted key page URL)")
-            return
-        ping_payload = {
-            "host": "wellnessnest.co",
-            "key": key,
-            "keyLocation": f"https://wellnessnest.co/{key}.txt",
-            "urlList": [url_to_index]
-        }
-        
-        ping_req = urllib.request.Request("https://api.indexnow.org/indexnow", 
-            data=json.dumps(ping_payload).encode('utf-8'), 
-            headers={"Content-Type": "application/json; charset=utf-8"}, 
-            method='POST')
-        ping_res = urllib.request.urlopen(ping_req)
-        if ping_res.getcode() in [200, 202]:
-            print(f"IndexNow Auto-Ping: SUCCESS ({ping_res.getcode()}) for {url_to_index}")
+        indexnow_ping.execute([url_to_index])
     except Exception as e:
         print(f"IndexNow Auto-Ping: FAILED -> {e}")
 

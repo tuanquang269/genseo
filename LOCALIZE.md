@@ -31,7 +31,7 @@ grep -rn "{{[A-Z_]*}}\|1000000000\|your-store\|yourdomain\|Author One\|REPLACE M
 | `183190880571` | theme ID (main theme) | các script `*_theme.py` |
 | `100000000099` | article ID mẫu trong test/self-check | vài script |
 | `wellnessnest.co` | domain thật | `scripts/validate_article.py` và một số script khác |
-| `YOUR_INDEXNOW_KEY` | key IndexNow | `scripts/shopify_publisher.py`, `setup_indexnow.py` |
+| `YOUR_INDEXNOW_KEY` | removed from source. Set env `INDEXNOW_KEY` (do not commit the key). See `docs/indexnow-and-llms-txt.md` | `scripts/indexnow_ping.py` |
 | `YOUR_MERCHANT_ID` | Merchant Center ID | `scripts/mc_diagnostics.py` |
 
 Chi tiết từng bước: `SETUP.md`.

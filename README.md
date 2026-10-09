@@ -59,7 +59,9 @@ agent nào đọc được skill/prompt. Bản gốc chạy trên Antigravity (v
 | Script | Việc |
 |---|---|
 | `validate_article.py` | **cổng chất lượng**: ≥900 từ, có bảng, giá SGD, ≥2 link collection, tác giả thật, FAQ, không link 404, ≥3 ảnh inline, độ khớp chủ đề, title ≤60 ký tự |
-| `shopify_publisher.py` | publish/update: HTML, schema, ảnh CDN, IndexNow ping |
+| `shopify_publisher.py` | publish/update: HTML, schema, ảnh CDN, IndexNow ping (only if `INDEXNOW_KEY` is set) |
+| `indexnow_ping.py` | IndexNow dry-run / send. No key → skip. Does not upload the key file |
+| `build_llms_txt.py` | write `deploy/llms-txt/` drafts from the catalog or sitemap. Does not upload |
 | `repair_schema.py` | dựng lại JSON-LD **từ HTML đã render** — idempotent, không quan tâm bài được publish bằng đường nào |
 | `gsc_fetcher.py` | lấy data Search Console (query/page/country) |
 | `seo_drift.py` | snapshot + diff các element SEO để phát hiện regression |

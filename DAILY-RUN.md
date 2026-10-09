@@ -186,7 +186,7 @@ based and every house brand already has a page. Do not wait on it.
 | google-ads MCP | Not connected headless | Kevin runs the mining recipe in the app |
 | NCBI eutils | IP-blocked | Cite from evidence already banked in tracker rows |
 | `scripts/get_internal_links.py` | Returns empty | Pick internal links by hand from `ALL_ARTICLES.csv` |
-| IndexNow | Key unconfigured | Skip the ping; note it in the log |
+| IndexNow | `INDEXNOW_KEY` unset until Kevin hosts the key file | Skip the ping (the publisher logs `SKIPPED`). Do not paste a key into source. See `docs/indexnow-and-llms-txt.md` |
 | `hermes cron status` | Reports on the **active profile**, not the one you meant | Check the profile you care about: `launchctl list \| grep gateway-eugene-schwartz` plus the age of `~/.hermes/profiles/eugene-schwartz/cron/ticker_heartbeat` |
 
 ---
