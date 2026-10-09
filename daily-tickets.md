@@ -570,7 +570,7 @@ FloraFresh $40.99, Turkesterone Advanced Formula $75, AgeAura Pure NMN + TMG NAD
   - **Angle:** the few human trials and their durations (fetched sources only; say plainly that human evidence is thin and no trial of this formula exists); what can realistically be tracked week by week (training log, recovery feel) without promising results; no invented testimonials or before/after numbers. LINK turkesterone-benefits-dosing, turkesterone-cycle, turkesterone-timing — don't restate.
   - **Fan-out answers to cover:** what if I notice nothing after 4 weeks; does it work without training; how long to take it; who should not take it.
 
-- [ ] **#MB1009-3 — best time to take vaginal probiotics** — `Best Time to Take Vaginal Probiotics: Morning, Night or With Food? (US 2026)`
+- [DONE 2026-10-09 https://wellnessnest.co/blogs/news/best-time-to-take-vaginal-probiotics-6-rules-us-2026] **#MB1009-3 — best time to take vaginal probiotics** — `Best Time to Take Vaginal Probiotics: Morning, Night or With Food? (US 2026)`
   - **Primary keyword:** `best time to take vaginal probiotics` · **Secondary:** when to take florafresh, vaginal probiotics morning or night, probiotics with or without food, take probiotics on empty stomach
   - **Template:** LISTICLE · **Gate:** topic_fitness PASS [brand] · dedupe: no timing title for vaginal probiotics live (vaginal-probiotics-how-long-until-they-work covers onset — LINK it, don't restate)
   - **Products:** `/products/florafresh-vaginal-probiotics-gummies` ($40.99). Collections: `/collections/womens-essentials-collection`, `/collections/best-seller`.
@@ -590,3 +590,17 @@ FloraFresh $40.99, Turkesterone Advanced Formula $75, AgeAura Pure NMN + TMG NAD
   - **Products:** `/products/fusiforce-creatine-gummies` ($69.99) only. Collections: `/collections/mens-essential-collection`, `/collections/best-seller`.
   - **Angle:** no human trial tests creatine + alcohol directly (say so); what alcohol does to recovery/muscle protein synthesis (fetched sources only); hydration myths around creatine; practical spacing. LINK creatine-gummies-side-effects, creatine-and-caffeine — don't restate.
   - **Fan-out answers to cover:** morning after drinking; does alcohol cancel creatine; kidney/liver concerns (ask a clinician).
+
+- [ ] **#MB1009-6 — nmn and coffee** (buffer — run only if <5 live today) — `NMN and Coffee: Can You Take Them Together? (US 2026)`
+  - **Primary keyword:** `nmn and coffee` · **Secondary:** nmn with coffee in the morning, nmn and caffeine, does coffee affect nmn, nmn before or after coffee
+  - **Template:** EDITORIAL · **Gate:** topic_fitness PASS [brand] · dedupe: no coffee/caffeine NMN title live (when-to-take-nmn covers time of day; does-nmn-break-a-fast covers fasting — LINK both, don't restate)
+  - **Products:** `/products/ageaura-pure-nmn-tmg-nad-complex` ($69.95) ONLY. Collections: `/collections/best-seller` (twice). No other AgeAura product or AgeAura collection link (brand_rules.py gate). NMN + TMG only.
+  - **Angle:** no human trial tests NMN with coffee or caffeine (say so plainly); what is known about caffeine and NAD+ only if a fetched source confirms it, otherwise drop it; practical morning routine (label: 2 capsules daily, with or without coffee per label directions). No anti-aging, disease or cure claims (FDA structure/function only). LINK when-to-take-nmn-morning-or-night, how-much-nmn-per-day, nmn-side-effects — don't restate.
+  - **Fan-out answers to cover:** same time as coffee or wait; black coffee vs with milk; decaf; does coffee cancel NMN (no evidence either way — say so).
+
+- [ ] **#MB1009-7 — vaginal probiotics while traveling** (buffer — run only if <5 live today) — `Vaginal Probiotics While Traveling: Keep Them Working on the Road (US 2026)`
+  - **Primary keyword:** `vaginal probiotics while traveling` · **Secondary:** probiotics travel heat, do probiotic gummies need refrigeration, probiotics on a plane, travel routine probiotics women
+  - **Template:** LISTICLE · **Gate:** topic_fitness PASS [brand] · dedupe: no travel title for vaginal probiotics live (best-time-to-take-vaginal-probiotics covers timing; how-long-until-they-work covers onset — LINK both, don't restate)
+  - **Products:** `/products/florafresh-vaginal-probiotics-gummies` ($40.99). Collections: `/collections/womens-essentials-collection`, `/collections/best-seller`.
+  - **Angle:** storage and heat (label directions first; fetched sources only on probiotic heat stability, say where evidence is thin), keeping a daily routine across time zones, TSA/carry-on practicalities, what to do if you miss doses. No medical, infection-treatment or cure claims (FDA structure/function only).
+  - **Fan-out answers to cover:** fridge or not; hot car or checked bag; time zones; can I take it with travel meds (ask a clinician).
