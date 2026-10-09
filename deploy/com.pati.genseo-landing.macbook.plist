@@ -16,7 +16,7 @@
     <dict>
         <key>GENSEO_HOST_ROLE</key><string>standby</string>
         <key>GENSEO_LANDING_STANDBY_DELAY_MIN</key><string>75</string>
-        <key>GENSEO_LANDING_WAIT_ARTICLES_MIN</key><string>180</string>
+        <key>GENSEO_LANDING_ARTICLE_YIELD_MIN</key><string>30</string>
         <key>GENSEO_NO_FACE</key><string>1</string>
     </dict>
     <key>StartCalendarInterval</key>
