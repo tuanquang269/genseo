@@ -9,16 +9,21 @@ Sources fetched this run: live PDP `/products/florafresh-vaginal-probiotics-gumm
 | Reid names RC-14 "L. fermentum"; Vujic + Husain name it "L. reuteri" | Reid 2003 / Vujic 2013 / Husain 2020 titles + abstracts | Europe PMC |
 | 544 women diagnosed with BV / vaginal infection, double-blind, oral capsules 6 weeks; cytologist swab reads; 61.5% vs 26.9%; 12 weeks 51.1% vs 20.8% (p<0.001) | Vujic 2013, doi:10.1016/j.ejogrb.2012.12.031 (PMID 23395559) | Europe PMC abstract |
 | Pregnancy trial (UK), GR-1 + RC-14 daily from 9-14 weeks to end of pregnancy; BV 15% (19/123) vs 9% (10/115) at 18-20 weeks, no difference; no change in microbiome composition | Husain 2020, doi:10.1111/1471-0528.15675 (PMID 30932317) | Europe PMC abstract |
-| Evidence gap: all 3 trials = capsules; no gummy, prebiotic or D-mannose arm; no abstract reports odor | the 3 abstracts above + Europe PMC searches (D-mannose + probiotic + vaginal RCT; gummy probiotic vaginal RCT: no matching trial) | Europe PMC search 2026-10-09 |
+| Evidence gap: all 3 trials = capsules of one Lactobacillus strain pair; no gummy or spore-based (Bacillus coagulans) arm; no abstract reports odor | the 3 abstracts above + Europe PMC searches (D-mannose + probiotic + vaginal RCT; gummy probiotic vaginal RCT: no matching trial) | Europe PMC search 2026-10-09 |
 | Price $40.99 one-time; S&S "Every 4 weeks" $23.91 (41.67% off, shown "Save 41%") | PDP .js selling plan 9849831739 | curl 2026-10-09 |
-| 2 gummies daily with water, best with meals; 60 gummies; 30-day supply; pineapple flavor; vegan, gluten-free, sugar-free | PDP FAQ + description + pack label | PDP HTML + OCR of product_refs pack |
+| 2 gummies daily with water, best with meals; 60 gummies; 30-day supply; pineapple flavor | PDP FAQ + pack label | PDP HTML + OCR of product_refs pack |
+| Vegan, gluten-free (offer bullet + trust strip) | Supplement Facts image badges (VEGAN, GLUTEN FREE) | image read 2026-10-09; "sugar-free" dropped: PDP description only, not on the label |
+| Formula (offer bullet + product card + bridge + row 06): per 2-gummy serving, SNZ-1969 Probiotic Blend (Bacillus coagulans, spore-based) 1B CFU, Vitamin C 30mg, Pineapple Fruit Powder 100mg | Supplement Facts image FloraFresh_Supplement_Fact.webp | **Kevin confirmed 2026-10-09** the label is the correct formula |
 | 90-Day Money-Back Guarantee, first order of each product | /policies/refund-policy | fetched |
 | Free shipping on orders over $70 | site ticker on PDP | PDP HTML |
 | TrustScore 4.2, 1,144 reviews | state/trustpilot/wellnessnest.json | file, fetched 2026-10-09 |
 | Reviews (verbatim): Tonya 5★ US verified 2026-10-01 (6abe1771497e18bd92cada2f); Marie Petuelle Mombrun 4★ US verified 2026-04-03 (69cfdb42313f8a8159e4feb4); Miloslav Kral 5★ SK 2025-11-27 (69281b1420fb2a718fed2339); EVA ROSBORG 5★ DK 2025-11-28 (6929778e554edf24f69501e2) | trustpilot.com/reviews/<id> | file |
 
-## Placeholders (1)
-- product.bullets[2]: probiotic panel. **Conflict on the live PDP:** the description says "15 billion CFU from four clinically studied Lactobacillus strains" (L. rhamnosus, reuteri, salivarius, gasseri) + XOS + D-Mannose + Vitamin C. The Supplement Facts image (FloraFresh_Supplement_Fact.webp) says Vitamin C 30mg, Pineapple Fruit Powder 100mg, **SNZ-1969 Probiotic Blend (Bacillus coagulans, spore-based) 1B CFU**, and no Lactobacillus, XOS or D-mannose. Kevin/ops must confirm the real panel before `--live`. Because of this, no ingredient amount, CFU or strain appears anywhere on the page.
+## Placeholders (0)
+- product.bullets[2] (probiotic panel) RESOLVED 2026-10-09: Kevin confirmed the Supplement Facts label is the correct formula (Bacillus coagulans SNZ-1969, 1B CFU, + Vitamin C + pineapple fruit powder). Filled from the label. The PDP description's formula (15B CFU, four Lactobacillus strains, XOS, D-Mannose) is WRONG and appears nowhere on this page; row 06 no longer mentions prebiotic/D-mannose, and 'sugar-free' (description only) was dropped.
+
+## For Kevin's review (store NOT edited, needs your separate OK)
+- PDP /products/florafresh-vaginal-probiotics-gummies **description** says "15 billion CFU from four clinically studied Lactobacillus strains" (L. rhamnosus, reuteri, salivarius, gasseri) + XOS + D-Mannose + Vitamin C, and "sugar-free". The Supplement Facts image (correct, per Kevin) says SNZ-1969 Bacillus coagulans 1B CFU + Vitamin C 30mg + Pineapple Fruit Powder 100mg, no Lactobacillus / XOS / D-Mannose, and shows no sugar-free badge. The product page description should be corrected to match the label.
 
 ## Deliberately left out
 - PDP social proof: "79,239+ women", "71,180+ happy ladies", "4.8/5 based on 7,139 reviews", "7,159+ raw reviews", the 93% / 89% / 91% / 95% "after 2 weeks" stats, "Top OB/GYN recommended formula", the "medical advisory board" doctors, the Facebook-style testimonials, the "how we compare" chart. Not sourced; not allowed.

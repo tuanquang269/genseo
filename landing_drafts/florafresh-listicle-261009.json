@@ -133,7 +133,7 @@
   },
   {
    "title": "What these trials did not test",
-   "body": "<p>Every trial here tested capsules of one strain pair. None tested a gummy, a prebiotic, or D-mannose alongside them.</p><p>None of the abstracts reports odor as an outcome; results came from swabs. Not tested is not disproven, but it is not proof either.</p>",
+   "body": "<p>Every trial here tested capsules of one Lactobacillus strain pair. None tested a gummy or a spore-based probiotic such as Bacillus coagulans.</p><p>None of the abstracts reports odor as an outcome; results came from swabs. Not tested is not disproven, but it is not proof either.</p>",
    "evidence": "Evidence gap, read from the abstracts cited (capsules, swab outcomes)",
    "image": "tmp_images/landing-florafresh-listicle-261009/row6.webp",
    "alt": "Printed research papers, a pencil and a cup of tea on natural linen",
@@ -152,7 +152,7 @@
  ],
  "bridge": {
   "title": "Convenience is part of consistency",
-  "body": "<p>The trials tested a daily habit, not an occasional one. The practical question is which routine you will keep.</p><p>One option: FloraFresh Vaginal Probiotic Gummies, a pineapple-flavored gummy taken as two a day with a meal.</p><p>Pregnant, taking medication or managing a health condition? Check with your doctor first.</p>",
+  "body": "<p>The trials tested a daily habit, not an occasional one. The practical question is which routine you will keep.</p><p>One option: FloraFresh Vaginal Probiotic Gummies, a pineapple-flavored gummy taken as two a day with a meal. Its probiotic is Bacillus coagulans SNZ-1969, not the strains tested above.</p><p>Pregnant, taking medication or managing a health condition? Check with your doctor first.</p>",
   "image": "tmp_images/landing-florafresh-listicle-261009/bridge.webp",
   "alt": "The FloraFresh pouch on a stone shelf beside a glass of water and two gummies"
  },
@@ -214,11 +214,12 @@
   },
   "bullets": [
    "<b>2 gummies daily</b>, best taken with meals",
+   "<b>1 billion CFU</b> Bacillus coagulans SNZ-1969, plus Vitamin C and pineapple powder",
    "60 gummies · 30-day supply · pineapple flavor",
-   "Vegan, gluten-free and sugar-free formula",
+   "Vegan and gluten-free, per the Supplement Facts label",
    "90-day money-back guarantee on your first order"
   ],
-  "price_source": "PDP /products/florafresh-vaginal-probiotics-gummies.js 2026-10-09: price 40.99; selling plan 9849831739 'Every 4 weeks' 41.67% off, allocation price 23.91. compare_at 57.99 deliberately not used. Bullets = PDP FAQ (directions, 60 gummies, 30-day supply) + description (vegan, gluten-free, sugar-free) + refund policy."
+  "price_source": "PDP /products/florafresh-vaginal-probiotics-gummies.js 2026-10-09: price 40.99; selling plan 9849831739 'Every 4 weeks' 41.67% off, allocation price 23.91. compare_at 57.99 deliberately not used. Bullets = PDP FAQ (directions, 60 gummies, 30-day supply) + Supplement Facts label badges (vegan, gluten-free; 'sugar-free' dropped 2026-10-09: description-only, not on the label) + refund policy. Formula bullet = Supplement Facts image FloraFresh_Supplement_Fact.webp (per 2 gummies: SNZ-1969 Bacillus coagulans 1B CFU, Vitamin C 30mg, Pineapple Fruit Powder 100mg), confirmed by Kevin 2026-10-09."
  },
  "product": {
   "name": "FloraFresh Vaginal Probiotic Gummies",
@@ -226,9 +227,9 @@
   "bullets": [
    "Take 2 gummies daily with water, best with meals",
    "60 gummies, a 30-day supply, pineapple flavor",
-   "[[PLACEHOLDER: confirm the probiotic panel. PDP description says four Lactobacillus species, 15 billion CFU, XOS, D-Mannose, Vitamin C; the Supplement Facts image says SNZ-1969 Bacillus coagulans 1B CFU, Vitamin C, pineapple powder]]"
+   "Each 2-gummy serving: 1 billion CFU Bacillus coagulans SNZ-1969 (a spore-based probiotic), plus Vitamin C and pineapple fruit powder"
   ],
-  "source": "https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies (description, FAQ and Supplement Facts image FloraFresh_Supplement_Fact.webp, fetched 2026-10-09)"
+  "source": "https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies (FAQ + Supplement Facts image FloraFresh_Supplement_Fact.webp: serving 2 gummies; Vitamin C 30mg; Pineapple Fruit Powder 100mg; SNZ-1969 Probiotic Blend, Bacillus coagulans, spore-based, 1B CFU; formula confirmed by Kevin 2026-10-09)"
  },
  "footer": {
   "disclaimer": "These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease.",
@@ -271,7 +272,7 @@
    "html": "<b>Vegan gummies</b> <small>pineapple flavor</small>"
   }
  ],
- "trust_source": "TrustScore/count: state/trustpilot/wellnessnest.json (fetched 2026-10-09). Guarantee: /policies/refund-policy. Free shipping $70+: site ticker. Vegan + pineapple: PDP description and pack label.",
+ "trust_source": "TrustScore/count: state/trustpilot/wellnessnest.json (fetched 2026-10-09). Guarantee: /policies/refund-policy. Free shipping $70+: site ticker. Vegan + pineapple: Supplement Facts label (VEGAN badge, Pineapple Fruit Powder) and pack label.",
  "sticky_cta": {
   "name": "FloraFresh Gummies",
   "note": "From $23.91",
