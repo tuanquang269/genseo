@@ -18,6 +18,7 @@ Usage: refresh_targets.py [out.md] [--min-imp 150]
 """
 import datetime, os, re, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import brand_rules as br
 from gsc_fetcher import get_service
 
 SITE = "https://wellnessnest.co/"
@@ -57,10 +58,14 @@ def main():
     for page, p in pages.items():
         if p['imp'] < min_imp:
             continue
+        if br.assess(page).action == "deny":
+            continue
         avgpos = p['wpos'] / p['imp']
-        climb = [(q, i, c, ps) for q, i, c, ps in p['q'] if CLIMB_LO <= ps <= CLIMB_HI and i >= 10]
+        climb = [(q, i, c, ps) for q, i, c, ps in p['q']
+                 if CLIMB_LO <= ps <= CLIMB_HI and i >= 10 and br.assess(q).action != "deny"]
         ctr = [(q, i, c, ps) for q, i, c, ps in p['q']
-               if CTR_LO <= ps < CTR_HI and i >= 20 and (c / i if i else 0) < CTR_FLOOR]
+               if CTR_LO <= ps < CTR_HI and i >= 20 and (c / i if i else 0) < CTR_FLOOR
+               and br.assess(q).action != "deny"]
         climb_imp = sum(i for _, i, _, _ in climb)
         ctr_imp = sum(i for _, i, _, _ in ctr)
         if not climb and not ctr:
@@ -78,19 +83,23 @@ def main():
          "Verify a page owns the query itself before editing — this file already did that.*", ""]
     for i, t in enumerate(targets, 1):
         slug = t['page'].split('/nutrition/')[-1].split('/')[-1]
-        L.append(f"## Refresh #{i} — {slug[:70]}")
-        L.append(f"- **URL**: {t['page']}")
-        L.append(f"- **Real page totals**: {t['imp']} imp / {t['clk']} clk / avg pos {t['avgpos']:.1f} "
-                 f"| fixable-imp score {t['score']}")
+        block = [f"## Refresh #{i} — {slug[:70]}",
+                 f"- **URL**: {t['page']}",
+                 f"- **Real page totals**: {t['imp']} imp / {t['clk']} clk / avg pos {t['avgpos']:.1f} "
+                 f"| fixable-imp score {t['score']}"]
         if t['climb']:
-            L.append(f"- **CLIMB (pos 8–20, add depth append-only)** — {t['climb_imp']} imp:")
+            block.append(f"- **CLIMB (pos 8–20, add depth append-only)** — {t['climb_imp']} imp:")
             for q, im, c, ps in t['climb']:
-                L.append(f"    - `{q}`  ({im} imp, {c} clk, pos {ps})")
+                block.append(f"    - `{q}`  ({im} imp, {c} clk, pos {ps})")
         if t['ctr']:
-            L.append(f"- **CTR (pos 2–7, weak click-through, sharpen meta)** — {t['ctr_imp']} imp:")
+            block.append(f"- **CTR (pos 2–7, weak click-through, sharpen meta)** — {t['ctr_imp']} imp:")
             for q, im, c, ps in t['ctr']:
-                L.append(f"    - `{q}`  ({im} imp, {c} clk, pos {ps}, CTR {c/im*100:.1f}%)")
-        L.append("")
+                block.append(f"    - `{q}`  ({im} imp, {c} clk, pos {ps}, CTR {c/im*100:.1f}%)")
+        block.append("")
+        try:
+            L.extend(br.prepare_ticket("\n".join(block)).splitlines())
+        except br.GuardError as e:
+            print(f"ageaura guard: skipped refresh target {t['page']}: {e}")
     open(out, "w").write("\n".join(L))
     print(f"refresh targets: {len(targets)} pages with genuine fixable upside -> {os.path.basename(out)}")
     for t in targets[:12]:

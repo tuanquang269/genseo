@@ -2,6 +2,7 @@ import pandas as pd
 import sys, os, datetime
 
 sys.path.append(os.path.expanduser("/Users/kevinkreative/genseo/scripts/"))
+import brand_rules as br
 import gsc_fetcher
 
 file_path = "~/path/to/your/keyword-report.xlsx"
@@ -67,6 +68,8 @@ seen = set()
 deduped = []
 all_keywords.sort(key=lambda x: x["impr"], reverse=True)
 for item in all_keywords:
+    if br.assess(str(item["q"])).action == "deny":
+        continue
     if item["q"] not in seen:
         seen.add(item["q"])
         deduped.append(item)
@@ -94,7 +97,7 @@ for item in deduped:
 articles = []
 for topic_cat, kws in clusters.items():
     for i in range(0, len(kws), 4):
-        chunk = kws[i:i+4]
+        chunk = [k for k in kws[i:i+4] if br.assess(k).action != "deny"]
         if len(chunk) < 2: continue
         
         has_cannibalization = False
@@ -123,18 +126,21 @@ for i, art in enumerate(articles[:90]):
         
     main_kw = art["keywords"][0].title()
     all_kws_str = ", ".join(art["keywords"])
-
-    action = "[NEW ARTICLE]"
-    ranked_url = "None"
-            
-    out_lines.append(f"### 📝 Ticket #{i+1} - {art['category']}")
-    out_lines.append(f"- **Primary Keyword**: `{art['keywords'][0]}`")
-    out_lines.append(f"- **Secondary Keywords**: `{all_kws_str}`")
-    out_lines.append(f"- **Action**: {action}")
-    out_lines.append(f"**🤖 Auto-Publish Trigger Prompt:**")
-    out_lines.append("```markdown")
-    out_lines.append(f"/genseo-auto-publish CREATE A [NEW ARTICLE]. Title Focus: \"The Ultimate Guide to {main_kw} in the US\". Target Keywords: {all_kws_str}. Default BLOG_ID is 104008483131.")
-    out_lines.append("```\n")
+    block = "\n".join([
+        f"### 📝 Ticket #{i+1} - {art['category']}",
+        f"- **Primary Keyword**: `{art['keywords'][0]}`",
+        f"- **Secondary Keywords**: `{all_kws_str}`",
+        "- **Action**: [NEW ARTICLE]",
+        "**🤖 Auto-Publish Trigger Prompt:**",
+        "```markdown",
+        f"/genseo-auto-publish CREATE A [NEW ARTICLE]. Title Focus: \"The Ultimate Guide to {main_kw} in the US\". Target Keywords: {all_kws_str}. Default BLOG_ID is 104008483131.",
+        "```\n",
+    ])
+    try:
+        out_lines.append(br.prepare_ticket(block))
+    except br.GuardError as e:
+        print(f"ageaura guard: skipped 90-ticket keyword {art['keywords'][0]!r}: {e}")
+        continue
 
 with open("/Users/kevinkreative/genseo/GENSEO_30_DAY_SCHEDULE.md", "w") as f:
     f.write("\n".join(out_lines))

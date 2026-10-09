@@ -150,8 +150,8 @@ description to the prompt (prompt text overrides the ref image when they disagre
   stat-percentage badges on the package".
 - Product details beyond the label count too: gummy colour must match the real flavour (FloraFresh
   pineapple = amber, not red/pink).
-- Covered today: florafresh · fusiforce · ageaura-nmn-tmg · ageaura-urolithin-a · shilajit-shockwave
-  · turkesterone. Any new SKU = curate first, generate second.
+- Covered today: florafresh · fusiforce · ageaura-pure-nmn-tmg-nad-complex · shilajit-shockwave
+  · turkesterone. AgeAura image prompts use that one handle only — never `ageaura-pure-urolithin-a` or any other AgeAura SKU (`scripts/brand_rules.py` refuses the prompt). Any new SKU = curate first, generate second.
 
 ## Persona bank (the face lane — Kevin's chosen posture)
 

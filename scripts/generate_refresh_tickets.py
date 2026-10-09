@@ -1,6 +1,7 @@
 import csv
 import sys
 from datetime import datetime
+import brand_rules as br
 
 def generate_tickets(csv_path, output_path):
     candidates = []
@@ -25,6 +26,8 @@ def generate_tickets(csv_path, output_path):
                 keyword = row.get('Keyword', '').strip()
                 
                 if not link or not keyword or impressions < 5:
+                    continue
+                if br.assess(link).action == "deny" or br.assess(keyword).action == "deny":
                     continue
                     
                 ctr = (clicks / impressions) * 100 if impressions > 0 else 0
@@ -107,20 +110,31 @@ def generate_tickets(csv_path, output_path):
                     f.write("## 🪤 Tier 3: The CTR Trap (Pos 1 - 5, Low CTR)\n")
                     f.write("*Ranking well but ignored by users. Needs aggressive Headline rewrites and Meta Description optimization.*\n\n")
             
-            f.write(f"### 📝 Ticket #{ticket_num} - {c['action']}\n")
-            f.write(f"- **Target URL**: {c['link']}\n")
-            f.write(f"- **Primary Keyword**: `{c['keyword']}`\n")
-            f.write(f"- **Diagnostic**: {c['diagnostic']}\n")
-            f.write(f"- **Action**: [PENDING]\n")
-            f.write("**🤖 Auto-Publish Trigger Prompt:**\n")
-            f.write("```markdown\n")
-            
             if c['action'] == "[HEADLINE REWRITE]":
-                f.write(f"/genseo-auto-publish [REFRESH EXISTING]. The article {c['link']} suffers terrible CTR. Execute a {c['action']} targeting \"{c['keyword']}\" to aggressively match search intent and drive clicks. Default BLOG_ID is 104008483131.\n")
+                prompt = (f"/genseo-auto-publish [REFRESH EXISTING]. The article {c['link']} suffers terrible CTR. "
+                          f"Execute a {c['action']} targeting \"{c['keyword']}\" to aggressively match search intent and drive clicks. "
+                          "Default BLOG_ID is 104008483131.\n")
             else:
-                f.write(f"/genseo-auto-publish [REFRESH EXISTING]. The article {c['link']} suffers decay or is stuck. Execute a {c['action']} targeting \"{c['keyword']}\". Restructure headings, add updated tables, and ensure strong internal linking. Default BLOG_ID is 104008483131.\n")
-                
-            f.write("```\n\n")
+                prompt = (f"/genseo-auto-publish [REFRESH EXISTING]. The article {c['link']} suffers decay or is stuck. "
+                          f"Execute a {c['action']} targeting \"{c['keyword']}\". Restructure headings, add updated tables, and ensure strong internal linking. "
+                          "Default BLOG_ID is 104008483131.\n")
+            block = (
+                f"### 📝 Ticket #{ticket_num} - {c['action']}\n"
+                f"- **Target URL**: {c['link']}\n"
+                f"- **Primary Keyword**: `{c['keyword']}`\n"
+                f"- **Diagnostic**: {c['diagnostic']}\n"
+                f"- **Action**: [PENDING]\n"
+                "**🤖 Auto-Publish Trigger Prompt:**\n"
+                "```markdown\n"
+                + prompt
+                + "```\n\n"
+            )
+            try:
+                block = br.prepare_ticket(block)
+            except br.GuardError as e:
+                print(f"ageaura guard: skipped refresh ticket {c['link']}: {e}")
+                continue
+            f.write(block)
             ticket_num += 1
 
 if __name__ == "__main__":

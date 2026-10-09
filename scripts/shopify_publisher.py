@@ -12,6 +12,7 @@ import html as html_mod          # `html` alone would shadow the many local html
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import genseo_config as _gcfg
 import genseo_roster
+import brand_rules
 
 CONFIG_PATH = _gcfg.CONFIG_PATH
 API = _gcfg.API
@@ -20,7 +21,25 @@ ORG_NAME = "Wellness Nest"
 ORG_LOGO = "https://wellnessnest.co/cdn/shop/files/WNN_Main_Logo_eb77747f-0bd5-4316-a9ba-92349ddbe5cc.png"
 FALLBACK_AUTHOR = "Wellness Nest Editorial Team"
 
+def _refuse_ageaura_draft(title, body):
+    """Stop a publish/update that would promote Urolithin A or any other AgeAura SKU."""
+    try:
+        brand_rules.assert_publishable(title, body)
+    except brand_rules.GuardError as e:
+        print("✗ ABORT: AgeAura guard. This draft names Urolithin A, another AgeAura SKU, "
+              "or AgeAura without the Pure NMN + TMG product.")
+        for reason in e.reasons[:8]:
+            print(f"  {reason}")
+        print(f"  Allowed AgeAura product: {brand_rules.AGEAURA_OK_URL}")
+        sys.exit(2)
+
+
 def ping_indexnow(shop, token, blog_id, article_handle):
+    tentative = f"https://wellnessnest.co/blogs/news/{article_handle}"
+    kept, blocked = brand_rules.indexnow_urls([tentative, article_handle or ""])
+    if blocked or not kept:
+        print(f"IndexNow Auto-Ping: SKIPPED (AgeAura guard) {article_handle}")
+        return
     try:
         req = urllib.request.Request(f"https://{shop}/admin/api/{API}/blogs/{blog_id}.json", headers={"X-Shopify-Access-Token": token})
         res = urllib.request.urlopen(req)
@@ -28,6 +47,10 @@ def ping_indexnow(shop, token, blog_id, article_handle):
         blog_handle = blog_data['blog']['handle']
         
         url_to_index = f"https://wellnessnest.co/blogs/{blog_handle}/{article_handle}"
+        kept, blocked = brand_rules.indexnow_urls([url_to_index])
+        if blocked or not kept:
+            print(f"IndexNow Auto-Ping: SKIPPED (AgeAura guard) {url_to_index}")
+            return
 
         key = "YOUR_INDEXNOW_KEY"
         if key.startswith("YOUR_"):
@@ -606,6 +629,8 @@ def do_publish(file_path, blog_id, live=False):
         print("  Fix the draft and re-run. Refusing to publish an 'Generated Article'.")
         sys.exit(2)
 
+    _refuse_ageaura_draft(title, md_text)
+
     # ── Strip H1 title + any leaked front-matter from body (theme renders title separately) ──
     # Remove a leading YAML front-matter block (--- ... ---) or a leaked key: "value" header.
     md_text = re.sub(r'\A\s*---\s*\n.*?\n---\s*\n', '', md_text, count=1, flags=re.S)
@@ -805,6 +830,8 @@ def do_update(file_path, blog_id, article_id, replace_cover=False, no_carry_cred
         print("  First line MUST be `# Your Title Here` (no YAML front-matter). Refusing to update.")
         sys.exit(2)
 
+    _refuse_ageaura_draft(title, md_text)
+
     # ── TITLE GUARD: changing a ranking page's title resets its relevance signals.
     # Mechanical enforcement (skill instructions alone proved unreliable, Jun 2026):
     # a different title is applied ONLY when it's a pure year-bump of the live title,
@@ -827,6 +854,8 @@ def do_update(file_path, blog_id, article_id, replace_cover=False, no_carry_cred
             print(f"  draft: {title}")
             print(f"  → KEEPING the live title (body update proceeds). Only CTR-diagnosed refreshes may change titles.")
             title = live_title
+
+    _refuse_ageaura_draft(title, md_text)
 
     # ── Strip H1 title + leaked front-matter from body ──
     md_text = re.sub(r'\A\s*---\s*\n.*?\n---\s*\n', '', md_text, count=1, flags=re.S)

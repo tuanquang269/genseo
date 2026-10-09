@@ -153,7 +153,7 @@ def render_ticket(c, num):
     pb_str = ", ".join(f"{n} (/collections/{coll})" if coll else f"{n} (link products)" for n, coll in pbs) \
              or "no specific priority brand fits — use the best products you stock"
     author = brt.AUTHORS[c['author_key']]
-    return [
+    lines = [
         f"### 📝 Ticket #{num} — Brand Review: {tc(c['brand'])} US",
         f"- **Brand focus**: `{c['brand']}`  ({c['instock']} in-stock SKU; latent brand-search demand — we have no page yet)",
         f"- **Angle**: {ANGLE}",
@@ -174,6 +174,7 @@ def render_ticket(c, num):
         "```",
         "",
     ]
+    return br.prepare_ticket("\n".join(lines)).splitlines()
 
 
 def build_candidates():

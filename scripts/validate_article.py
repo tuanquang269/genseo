@@ -12,6 +12,7 @@ import sys, os, re, glob, json, subprocess, tempfile, urllib.request, urllib.err
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import genseo_roster
+import brand_rules as _br
 
 # Single source of truth: roster.json (see scripts/genseo_roster.py). Empty roster
 # blocks publishing by design — fill roster.json with real, consenting people.
@@ -352,13 +353,11 @@ def main():
         if bad:
             fails.append("image file(s) the draft references are not deliverable: "+"; ".join(bad))
 
-    # brand link rules (Kevin 2026-10-07): AgeAura = NMN + TMG NAD+ Complex only; no /collections/ageaura
-    try:
-        import brand_rules as _br
-        _v=_br.violations(html)
-        if _v: fails.append("brand rule — banned link(s)/mentions: "+"; ".join(_v[:6]))
-    except ImportError:
-        fails.append("brand_rules.py missing — cannot check AgeAura link rule (fail closed)")
+    # brand link rules (Kevin 2026-10-07, SKU audit 2026-10-09): AgeAura = the Pure NMN + TMG
+    # NAD Complex only. Any other AgeAura handle, and a bare "AgeAura" with no NMN + TMG
+    # product, are hard fails (scripts/brand_rules.py).
+    _v=_br.violations(html)
+    if _v: fails.append("brand rule — banned link(s)/mentions: "+"; ".join(_v[:6]))
 
     # link liveness (products, collections, author pages)
     urls=set(re.findall(r'https://wellnessnest\.co/(?:products|collections|blogs)/[a-z0-9-]+', html))

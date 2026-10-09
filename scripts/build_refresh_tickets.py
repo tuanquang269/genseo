@@ -3,6 +3,7 @@ import sys
 import json
 import datetime
 import urllib.request
+import brand_rules as br
 from googleapiclient.discovery import build
 from google.oauth2.credentials import Credentials
 from google.auth.transport.requests import Request
@@ -108,6 +109,8 @@ def analyze_and_build(t1_rows, t2_rows, shopify_map):
         
         # Tier 1: The Bleeding Giants (Decay Analysis)
         # Dropped > 30% in impressions, DROPPED > 1.0 spots, and past impressions > 150
+        if br.assess(f"{url}\n{top_query}").action == "deny":
+            continue
         if q_data_t2['impressions'] > 150 and q_data_t1['impressions'] < (q_data_t2['impressions'] * 0.70):
             if q_data_t1['position'] > q_data_t2['position'] + 1.0:
                 tier1_decay.append({
@@ -139,6 +142,9 @@ def analyze_and_build(t1_rows, t2_rows, shopify_map):
     # Process Tier 4 Cannibalization (Filter list)
     cannibals_out = []
     for kw, urls in tier4_cannibal.items():
+        if br.assess(kw).action == "deny":
+            continue
+        urls = [u for u in urls if br.assess(u['url']).action != "deny"]
         if len(urls) > 1: # More than 1 URL fighting for same keyword
             urls.sort(key=lambda x: x['imp'], reverse=True)
             cannibals_out.append({
@@ -160,46 +166,62 @@ def analyze_and_build(t1_rows, t2_rows, shopify_map):
         f.write("> **System:** Analyzed Last 90 days vs Previous 90 days. Filtered specifically for SGP traffic to eliminate global seasonality noise.\n\n")
         
         ticket_num = 1
-        
+
+        def emit(block):
+            nonlocal ticket_num
+            try:
+                f.write(br.prepare_ticket(block))
+            except br.GuardError as e:
+                print(f"ageaura guard: skipped refresh ticket: {e}")
+                return
+            ticket_num += 1
+
         # TIER 1
         f.write("## 🚨 Tier 1: The Bleeding Giants (Severe Position & Traffic Decay)\n")
         if not tier1_decay: f.write("*No bleeding URLs detected.* \n\n")
         for item in tier1_decay[:5]:
-            f.write(f"### 📝 Ticket #{ticket_num} - [DEEP REFRESH]\n")
-            f.write(f"- **Target URL**: {item['url']}\n- **Primary Keyword**: `{item['kw']}`\n- **Diagnostic**: {item['reason']}\n")
-            f.write("**🤖 Auto-Publish Trigger Prompt:**\n```markdown\n")
-            f.write(f"/genseo-auto-publish [REFRESH EXISTING]. The article {item['url']} suffers severe decay. Execute a [DEEP REFRESH] targeting \"{item['kw']}\". Restructure headings and add updated tables. Default BLOG_ID is {BLOG_ID}. ARTICLE_ID is {item['article_id']}.\n```\n\n")
-            ticket_num += 1
+            emit(
+                f"### 📝 Ticket #{ticket_num} - [DEEP REFRESH]\n"
+                f"- **Target URL**: {item['url']}\n- **Primary Keyword**: `{item['kw']}`\n- **Diagnostic**: {item['reason']}\n"
+                "**🤖 Auto-Publish Trigger Prompt:**\n```markdown\n"
+                f"/genseo-auto-publish [REFRESH EXISTING]. The article {item['url']} suffers severe decay. Execute a [DEEP REFRESH] targeting \"{item['kw']}\". Restructure headings and add updated tables. Default BLOG_ID is {BLOG_ID}. ARTICLE_ID is {item['article_id']}.\n```\n\n"
+            )
 
         # TIER 2
         f.write("## 🍏 Tier 2: Striking Distance (Page 2 Low-Hanging Fruits)\n")
         if not tier2_low_hanging: f.write("*No stable page 2 URLs detected.* \n\n")
         for item in tier2_low_hanging[:5]:
-            f.write(f"### 📝 Ticket #{ticket_num} - [SURGICAL PATCH - ENTITY]\n")
-            f.write(f"- **Target URL**: {item['url']}\n- **Primary Keyword**: `{item['kw']}`\n- **Diagnostic**: {item['reason']}\n")
-            f.write("**🤖 Auto-Publish Trigger Prompt:**\n```markdown\n")
-            f.write(f"/genseo-auto-publish [REFRESH EXISTING]. The article {item['url']} is stuck on Page 2. Execute a [SURGICAL PATCH - ENTITY] targeting \"{item['kw']}\". Add FAQs and LSI keywords without rewriting the core body. Default BLOG_ID is {BLOG_ID}. ARTICLE_ID is {item['article_id']}.\n```\n\n")
-            ticket_num += 1
-            
+            emit(
+                f"### 📝 Ticket #{ticket_num} - [SURGICAL PATCH - ENTITY]\n"
+                f"- **Target URL**: {item['url']}\n- **Primary Keyword**: `{item['kw']}`\n- **Diagnostic**: {item['reason']}\n"
+                "**🤖 Auto-Publish Trigger Prompt:**\n```markdown\n"
+                f"/genseo-auto-publish [REFRESH EXISTING]. The article {item['url']} is stuck on Page 2. Execute a [SURGICAL PATCH - ENTITY] targeting \"{item['kw']}\". Add FAQs and LSI keywords without rewriting the core body. Default BLOG_ID is {BLOG_ID}. ARTICLE_ID is {item['article_id']}.\n```\n\n"
+            )
+
         # TIER 3
         f.write("## 🪤 Tier 3: The CTR Trap (Top 10 but ignored)\n")
         if not tier3_ctr_trap: f.write("*No terrible CTR anomalies detected.* \n\n")
         for item in tier3_ctr_trap[:5]:
-            f.write(f"### 📝 Ticket #{ticket_num} - [HEADLINE REWRITE]\n")
-            f.write(f"- **Target URL**: {item['url']}\n- **Primary Keyword**: `{item['kw']}`\n- **Diagnostic**: {item['reason']}\n")
-            f.write("**🤖 Auto-Publish Trigger Prompt:**\n```markdown\n")
-            f.write(f"/genseo-auto-publish [REFRESH EXISTING]. The article {item['url']} suffers terrible CTR. Execute a [HEADLINE REWRITE] targeting \"{item['kw']}\" to aggressively match search intent and drive clicks. Default BLOG_ID is {BLOG_ID}. ARTICLE_ID is {item['article_id']}.\n```\n\n")
-            ticket_num += 1
+            emit(
+                f"### 📝 Ticket #{ticket_num} - [HEADLINE REWRITE]\n"
+                f"- **Target URL**: {item['url']}\n- **Primary Keyword**: `{item['kw']}`\n- **Diagnostic**: {item['reason']}\n"
+                "**🤖 Auto-Publish Trigger Prompt:**\n```markdown\n"
+                f"/genseo-auto-publish [REFRESH EXISTING]. The article {item['url']} suffers terrible CTR. Execute a [HEADLINE REWRITE] targeting \"{item['kw']}\" to aggressively match search intent and drive clicks. Default BLOG_ID is {BLOG_ID}. ARTICLE_ID is {item['article_id']}.\n```\n\n"
+            )
 
         # TIER 4
         f.write("## 👻 Tier 4: The Cannibalization Zones (URL Conflict)\n")
         if not cannibals_out: f.write("*No severe cannibalizations detected.* \n\n")
-        for idx, item in enumerate(cannibals_out[:5]):
-            f.write(f"### 📝 Ticket #{ticket_num} - [MERGE OR KILL]\n")
-            f.write(f"- **Cannibalized Keyword**: `{item['kw']}`\n- **Diagnostic**: {item['reason']}\n")
-            for u in item['urls']: f.write(f"  - Conflict URL: {u['url']} (Impressions: {u['imp']}, Pos: {u['pos']:.1f})\n")
-            f.write("**🤖 Auto-Publish Trigger Prompt:**\n*(A human needs to decide which URL to keep as Pillar, then instruct Agent to merge the content and redirect the loser.)*\n\n")
-            ticket_num += 1
+        for item in cannibals_out[:5]:
+            conflicts = "".join(
+                f"  - Conflict URL: {u['url']} (Impressions: {u['imp']}, Pos: {u['pos']:.1f})\n" for u in item['urls']
+            )
+            emit(
+                f"### 📝 Ticket #{ticket_num} - [MERGE OR KILL]\n"
+                f"- **Cannibalized Keyword**: `{item['kw']}`\n- **Diagnostic**: {item['reason']}\n"
+                + conflicts
+                + "**🤖 Auto-Publish Trigger Prompt:**\n*(A human needs to decide which URL to keep as Pillar, then instruct Agent to merge the content and redirect the loser.)*\n\n"
+            )
             
     print(f"Schedule generated at: {OUTPUT_FILE}")
     print(f"Total Refresh Tickets: {ticket_num - 1}")

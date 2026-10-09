@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Fail (exit 2) if any OPEN ticket in daily-tickets.md specifies a banned link (brand_rules)."""
+"""Fail (exit 2) if any OPEN ticket names a banned AgeAura SKU or a bare AgeAura with no NMN + TMG product.
+
+The allow/deny list lives in brand_rules.py. Builders must prepare_ticket() before appending
+so an ambiguous AgeAura line is locked to ageaura-pure-nmn-tmg-nad-complex instead of failing here.
+"""
 import sys, os, re
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import brand_rules as br

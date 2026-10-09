@@ -26,6 +26,7 @@ Usage:
   topic_fitness.py --self-check
 """
 import json, re, sys
+import brand_rules as br
 
 ROOT = "/Users/kevinkreative/genseo"
 MIN_IMP = 20          # below this SG demand, not worth a dedicated page
@@ -37,9 +38,11 @@ RANK_FLOOR = 8        # if we already rank SG pos <= this, a NEW page cannibalis
 # as stocked entities. (Donor retailer's 60-brand list removed 2026-08-07.)
 STOCKED_BRANDS = {
  'shilasource','shilajit','fusiforce','florafresh','menomate','turkesterone',
- 'ageaura','wellness nest','wellnessnest','nmn','tmg','urolithin','longevity peptides',
+ 'ageaura','wellness nest','wellnessnest','nmn','tmg',
  'creatine gummies','vaginal probiotic','feminine probiotic','menopause probiotic',
 }
+# Urolithin A and longevity peptides are not stocked promotion targets. AgeAura is the
+# NMN + TMG Complex only — brand_rules.assess() FAIL-closes any topic that names another SKU.
 _DONOR_BRANDS_REMOVED = {
  'mutant','pvl','pure vita labs','ghost','jnx','pure protein','dymatize','pb2','optimum nutrition','myprotein',
  'muscletech','musclepharm','cellucor','kaged','labrada','allmax','applied nutrition','isopure',
@@ -127,6 +130,11 @@ def assess(topic, sg_imp=None, articles=None, collections=None, pos=None):
     pos (optional) = our current avg SG rank for the query; ranking page-1 already means a new
     article would cannibalise the page that's already winning."""
     t = topic.lower().strip()
+
+    if br.assess(topic).action == "deny":
+        return ('FAIL', 'ageaura-sku',
+                'AgeAura promotes only the Pure NMN + TMG NAD Complex (' + br.AGEAURA_OK
+                + '); this topic names a banned SKU')
 
     if sg_imp is not None and sg_imp < MIN_IMP:
         return 'FAIL', 'demand', f'SG demand {sg_imp} imp < floor {MIN_IMP} — no audience'
@@ -237,6 +245,8 @@ def self_check():
         ("meiji high protein milk nutrition facts", None, arts, 'REVIEW'),  # not a stocked brand -> human decides
         ("FloraFresh Vaginal Probiotics US", None, [], 'FAIL', 2.6),  # we already rank pos 2.6 -> cannibalise
         ("MenoMate Menopause Probiotic Review", None, [], 'PASS', 17.1),  # weak rank + stocked brand -> genuine
+        ("Urolithin A benefits review", None, [], 'FAIL'),                 # banned AgeAura SKU
+        ("AgeAura review", None, [], 'PASS'),                              # brand is allowed; ticket builder locks the SKU
     ]
     ok = True
     for topic, imp, a, want, *rest in cases:

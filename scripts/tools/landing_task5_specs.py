@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Task 5 (Kevin 2026-10-08 14:27 ICT): build the 3 Wellness Nest listicle specs from the AgeAura v3 skeleton.
 Facts: PDP /products/<h>.js + PDP text (2026-10-08), Europe PMC abstracts, state/trustpilot/wellnessnest.json (verbatim)."""
-import json, copy, os, datetime
+import json, copy, os, sys, datetime
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import brand_rules
 ROOT = os.path.expanduser("~/genseo")
 base = json.load(open(f"{ROOT}/landing_drafts/ageaura-nmn-listicle-261008.json"))
 TP = {r["id"]: r for r in json.load(open(f"{ROOT}/state/trustpilot/wellnessnest.json"))["reviews"]}
@@ -38,6 +40,10 @@ LIVE = {"fusiforce-creatine-listicle-261008": "creatine-gummies-research",
         "shilasource-resin-listicle-261008": "shilajit-resin-research",
         "shilajit-gummies-listicle-261008": "shilajit-gummies-research"}
 def page(slug, product_handle, pname, d):
+    try:
+        product_handle, _how = brand_rules.resolve_handle(product_handle)
+    except brand_rules.GuardError as e:
+        raise SystemExit("✗ AgeAura guard: " + str(e))
     s = copy.deepcopy(base)
     for k in ("live", "live_approved"): s.pop(k, None)
     pdp = f"https://wellnessnest.co/products/{product_handle}"
@@ -73,6 +79,9 @@ def page(slug, product_handle, pname, d):
     s["trust_source"] = TRUST_SRC + " " + d["trust4_src"]
     s["sticky_cta"] = {"name": d["sticky"], "note": f"From {o['now']}", "cta": "SEE INGREDIENTS", "href": pdp}
     s["pack_images"] = [img(slug, d.get(k + "_img", k)) for k in ("hero", "offer", "dark", "ledge")]
+    bad = brand_rules.violations(json.dumps(s))
+    if bad:
+        raise SystemExit("✗ AgeAura guard: refusing to write " + slug + ": " + "; ".join(bad))
     json.dump(s, open(f"{ROOT}/landing_drafts/{slug}.json", "w"), indent=1, ensure_ascii=False)
     print("wrote", slug)
 

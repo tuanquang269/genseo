@@ -46,6 +46,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 # Imported, never re-implemented: same generator binary, same prompt bank, same
 # QC gate as the blog lane. Copying these would let the ad lane quietly fall
 # behind the next fix to the packaging rubric.
+import brand_rules  # noqa: E402
 from article_images import (  # noqa: E402
     HERO_NEG,
     NO_FACE_CLAUSE,
@@ -134,6 +135,10 @@ def normalise(src_png, dst_png, tw, th):
 
 
 def build_prompt(a, geom):
+    try:
+        a.prompt, a.product_ref = brand_rules.prepare_image_request(a.prompt, a.product_ref)
+    except brand_rules.GuardError as e:
+        sys.exit(f"✗ AgeAura guard: {e}")
     prompt = a.prompt
     refs = list(a.ref)
     for spec in a.product_ref:

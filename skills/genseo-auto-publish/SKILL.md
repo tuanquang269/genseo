@@ -72,9 +72,7 @@ wasted image-generation + writing cost of a doomed article.)
   3. **FloraFresh** — vaginal/feminine probiotics (gummies + prebiotic+probiotic)
   4. **MenoMate** — menopause probiotics & herbal blend
   5. **Turkesterone** Advanced Formula
-  6. **AgeAura** — NMN + TMG NAD+ Complex ONLY (`/products/ageaura-pure-nmn-tmg-nad-complex`). Never
-     Urolithin A, peptides, `ageaura-pure-nmn-tmg-p2`/duos or `/collections/ageaura` (Kevin 2026-10-07;
-     `brand_rules.py` hard-fails them in `validate_article.py` and `lint_tickets.py`)
+  6. **AgeAura** — longevity line on the same store. Promote ONLY AgeAura Pure NMN + TMG NAD Complex (`/products/ageaura-pure-nmn-tmg-nad-complex`). Never Urolithin A, peptides, bundles, `ageaura-pure-nmn-tmg-p2`, `/collections/ageaura`, or any other AgeAura SKU (`scripts/brand_rules.py` hard-fails them in `validate_article.py` and `lint_tickets.py`; Kevin 2026-10-07, re-audited 2026-10-09).
   ⛔ **NEVER mention or link MuscleMax** (competitor, not ours). ⛔ Never link any
   product/brand not sold on wellnessnest.co (404 links fail the gate). "Naturally"
   means a creatine article leads with FusiForce because FusiForce IS creatine —
