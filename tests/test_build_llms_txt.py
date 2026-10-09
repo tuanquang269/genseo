@@ -14,6 +14,7 @@ sys.path.insert(0, os.path.join(ROOT, "scripts"))
 
 import build_llms_txt  # noqa: E402
 import brand_rules  # noqa: E402
+import florafresh_rules  # noqa: E402
 
 
 FIXTURE = textwrap.dedent("""\
@@ -66,6 +67,14 @@ class LlmsDraftTests(unittest.TestCase):
         self.assertIn("/policies/refund-policy", blob)
         self.assertNotIn("bfcm-sale-page", blob)
         self.assertIn("Not uploaded", blob)
+
+    def test_omitted_catalog_note_passes_florafresh_guard(self):
+        _llms, full, _doc = self._from_fixture()
+        note = next(line for line in full.splitlines() if "absent from the sitemap and omitted" in line)
+        self.assertIn("/products/florafresh-vaginal-probiotics-gummies", note)
+        self.assertIn("/products/turkesterone-advanced-formula", note)
+        self.assertEqual(florafresh_rules.violations(note), [])
+        self.assertEqual(brand_rules.violations(full), [])
 
     def test_offline_catalog_does_not_invent_collections(self):
         llms, _full, doc = build_llms_txt.build_document(ROOT, generated_on="2026-10-09")

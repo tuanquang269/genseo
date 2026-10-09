@@ -328,6 +328,10 @@ def _order_products(rows, catalog):
     return sorted(rows, key=lambda row: (rank.get(row["handle"], 10_000), row["handle"]))
 
 
+def _product_paths(handles):
+    return ", ".join(f"/products/{h}" for h in handles)
+
+
 def assemble(catalog, sitemap_urls=None, local_articles=None, local_collections=None, fetched_products=False):
     sitemap_urls = sitemap_urls or []
     products = []
@@ -557,14 +561,16 @@ def build_document(root, sitemap_urls=None, articles_path=None, collections_path
             else:
                 omitted.append(handle)
         products = _order_products(products, catalog)
+        # Paths, not bare handles: florafresh_rules reads a bare FloraFresh handle as copy, so a
+        # neighbour such as turkesterone-advanced-formula would read as a formula cited from the PDP.
         if kept:
             sources.append(
-                "Catalog handles missing from the sitemap but still listed because a public "
-                "HEAD returned 200: " + ", ".join(kept) + "."
+                "Catalog products missing from the sitemap but still listed because a public "
+                "HEAD returned 200: " + _product_paths(kept) + "."
             )
         if omitted:
             sources.append(
-                "Catalog handles absent from the sitemap and omitted: " + ", ".join(omitted) + "."
+                "Catalog products absent from the sitemap and omitted: " + _product_paths(omitted) + "."
             )
     if not assembled["articles"]:
         articles_note = (
@@ -596,7 +602,11 @@ def build_document(root, sitemap_urls=None, articles_path=None, collections_path
     }
     llms, full = render(doc)
     if _banned_text(llms) or _banned_text(full):
-        raise RuntimeError("refusing to write llms draft that trips AgeAura / Urolithin rules")
+        reasons = brand_rules.violations(llms + "\n" + full)
+        raise RuntimeError(
+            "refusing to write llms draft that trips the brand guard (AgeAura / Urolithin / FloraFresh label)"
+            + (": " + "; ".join(reasons) if reasons else "")
+        )
     return llms, full, doc
 
 
