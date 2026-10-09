@@ -577,7 +577,7 @@ FloraFresh $40.99, Turkesterone Advanced Formula $75, AgeAura Pure NMN + TMG NAD
   - **Angle:** what the evidence says on meal timing and probiotic survival (fetched sources only; say where evidence is thin), consistency beats clock time, label directions first, spacing from antibiotics (LINK probiotics-after-antibiotics-for-women). No medical/cure claims (FDA structure/function only).
   - **Fan-out answers to cover:** morning or night; with breakfast or empty stomach; can I take it with other supplements; what if I miss a dose.
 
-- [ ] **#MB1009-4 — nmn and exercise** — `NMN and Exercise: Take It Before or After a Workout? (US 2026)`
+- [DONE 2026-10-09 https://wellnessnest.co/blogs/news/nmn-and-exercise-before-or-after-a-workout-us-2026] **#MB1009-4 — nmn and exercise** — `NMN and Exercise: Take It Before or After a Workout? (US 2026)`
   - **Primary keyword:** `nmn and exercise` · **Secondary:** nmn before workout, nmn for endurance, nmn after workout, nmn and muscle
   - **Template:** EDITORIAL · **Gate:** topic_fitness PASS [brand] · dedupe: no exercise/workout title live (nmn-and-creatine-together covers the stack; when-to-take-nmn covers time of day — LINK both, don't restate)
   - **Products:** `/products/ageaura-pure-nmn-tmg-nad-complex` ($69.95) ONLY. Collections: `/collections/best-seller` (twice). No other AgeAura product or AgeAura collection link (brand_rules.py gate). NMN + TMG only.
