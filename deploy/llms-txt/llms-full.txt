@@ -39,7 +39,6 @@ Article labels are title-cased URL slugs, not the on-page headlines.
 
 - [1 Introduction To Shilajit History Origins And Cultural Significance In Ayurveda](https://wellnessnest.co/blogs/news/1-introduction-to-shilajit-history-origins-and-cultural-significance-in-ayurveda)
 - [2 What Is Ayuveda](https://wellnessnest.co/blogs/news/2-what-is-ayuveda)
-- [Ageaura NMN For Men Over 50 What To Expect Us 2026](https://wellnessnest.co/blogs/news/ageaura-nmn-for-men-over-50-what-to-expect-us-2026)
 - [Ageaura NMN TMG Ingredients What Each One Does Us](https://wellnessnest.co/blogs/news/ageaura-nmn-tmg-ingredients-what-each-one-does-us)
 - [Barbara Oneill Shilajit The Videos Are Ai Fakes](https://wellnessnest.co/blogs/news/barbara-oneill-shilajit-the-videos-are-ai-fakes)
 - [Best Shilajit Gummies 6 Us Labels Compared 2026](https://wellnessnest.co/blogs/news/best-shilajit-gummies-6-us-labels-compared-2026)
@@ -149,13 +148,13 @@ Article labels are title-cased URL slugs, not the on-page headlines.
 
 These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease.
 
-The short llms.txt lists 40 articles; this file lists 98.
+The short llms.txt lists 40 articles; this file lists 97.
 
 ## How this draft was built
 
 - Sitemap fetch: https://wellnessnest.co/sitemap.xml (841 URLs).
 - Articles: no local list found.
 - Collections: no local list found.
-- Catalog handles missing from the sitemap but still listed because a public HEAD returned 200: shilasource-himalayan-shilajit-resin.
+- Catalog products missing from the sitemap but still listed because a public HEAD returned 200: /products/shilasource-himalayan-shilajit-resin.
 - Catalog: brand/wellnessnest.json and brand/ageaura.json (AgeAura = NMN + TMG only).
 - This file is a repo artifact. It was not posted to the store.
