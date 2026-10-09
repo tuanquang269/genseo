@@ -2,6 +2,8 @@
 # GenSeo daily batch — runs on WHICHEVER Mac is online (Kevin 2026-10-06: no automation may depend on one Mac).
 # launchd com.pati.genseo-daily: 07:30 batch + 14:47 catch-up (same slots as the Mini).
 # Loops run_ticket_headless.sh (one ticket per call) until today's ICT live count reaches GENSEO_DAILY_TARGET.
+# GENSEO_AUTO_REFILL=1: when fewer tickets are open than are still to publish today, scripts/refill_tickets.py
+# tops daily-tickets.md up once per run (gated, lint-checked; docs/TICKET_REFILL.md). Default off.
 #
 # Double-publish prevention (the two Macs share NO writable state: vault Syncthing is MacBook->Mini one-way,
 # ticket files are per-Mac, the Mini's repo commits are unpushed) — so the PUBLIC SITE is the shared state:
@@ -21,6 +23,9 @@ ROLE="${GENSEO_HOST_ROLE:-primary}"
 DELAY="${GENSEO_STANDBY_DELAY_MIN:-20}"
 PEER_WIN="${GENSEO_PEER_WINDOW_MIN:-50}"
 MAX_RUNS="${GENSEO_MAX_RUNS:-9}"
+REFILL="${GENSEO_AUTO_REFILL:-0}"
+REFILL_BUFFER="${GENSEO_REFILL_BUFFER:-3}"
+REFILL_PREFIX="${GENSEO_TICKET_PREFIX:-$([ "$ROLE" = standby ] && echo MB || echo MM)}"
 HOST="$(hostname -s)"; DAY="$(date +%F)"
 LOGDIR="$G/logs/daily"; mkdir -p "$LOGDIR" "$G/state"
 LOG="$LOGDIR/$DAY.log"
@@ -45,7 +50,7 @@ if [ "$ROLE" = "standby" ] && [ "${GENSEO_NO_DELAY:-0}" != "1" ]; then
   say "standby: waiting ${DELAY} min so a healthy peer Mac goes first"; sleep $(( DELAY * 60 ))
 fi
 
-fails=0; pw=0; PEER_MAX_WAITS="${GENSEO_PEER_MAX_WAITS:-6}"
+fails=0; pw=0; refilled=0; PEER_MAX_WAITS="${GENSEO_PEER_MAX_WAITS:-6}"
 for i in $(seq 1 $(( MAX_RUNS + ${GENSEO_PEER_MAX_WAITS:-6} ))); do
   n="$(live_count)"
   if [ "$n" -lt 0 ]; then say "live feed unreadable — fail closed, exit"; exit 1; fi
@@ -60,6 +65,21 @@ for i in $(seq 1 $(( MAX_RUNS + ${GENSEO_PEER_MAX_WAITS:-6} ))); do
     sleep $(( PEER_WIN * 60 )); continue
   fi
   open=$(grep -cE '^(- \[ \]|## \[ \])' "$G/daily-tickets.md" 2>/dev/null || true)
+  need=$(( TARGET - n ))
+  if [ "$REFILL" = "1" ] && [ "$refilled" = 0 ] && [ "${open:-0}" -lt "$need" ]; then
+    refilled=1
+    say "${open:-0} open ticket(s) for $need still to publish today → refill_tickets.py (prefix $REFILL_PREFIX)"
+    perl -e 'alarm 600; exec @ARGV' "$PY" "$G/scripts/refill_tickets.py" --if-below "$need" \
+      --count $(( need - ${open:-0} + REFILL_BUFFER )) --prefix "$REFILL_PREFIX" >> "$LOG" 2>&1; frc=$?
+    case "$frc" in
+      0) ;;
+      3) say "refill: fewer topics passed than asked — add topics to templates/article-topic-bank.json or board/ideas.csv" ;;
+      *) say "refill failed (exit $frc) — see $LOG" ;;
+    esac
+    git -C "$G" add -- daily-tickets.md board/ideas.csv 2>/dev/null \
+      && git -C "$G" commit -q -m "queue: refill_tickets.py on $HOST" -- daily-tickets.md board/ideas.csv >/dev/null 2>&1
+    open=$(grep -cE '^(- \[ \]|## \[ \])' "$G/daily-tickets.md" 2>/dev/null || true)
+  fi
   if [ "${open:-0}" -eq 0 ]; then say "ticket queue EMPTY at $n/$TARGET — hard stop (no empty-queue model burn); refill daily-tickets.md"; exit 0; fi
   if ! lint="$($PY "$G/scripts/lint_tickets.py" "$G/daily-tickets.md" 2>&1)"; then
     say "ticket lint FAILED (banned AgeAura/Urolithin link in an open ticket) — fix daily-tickets.md; stopping"; echo "$lint" >> "$LOG"; exit 1
