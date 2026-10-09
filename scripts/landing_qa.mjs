@@ -24,6 +24,14 @@ for (const w of [375, 768, 1440]) {
     smallTargets: [...document.querySelectorAll(".gsl-landing a[target=_blank]")].filter(a => a.getBoundingClientRect().height < 44).length,
     brokenImages: [...document.querySelectorAll(".gsl-ref img, .gsl-landing img")].filter(i => !i.naturalWidth).map(i => i.currentSrc || i.src).slice(0, 5),
     headings: [...document.querySelectorAll(".gsl-landing h1,.gsl-landing h2")].map(h => h.tagName).join("").replace(/H2+/g, "H2…"),
+    clipped: [...document.querySelectorAll(".gsl-ref *")].filter(e => {   // text cut off: own text wider than its box (offer pill 2026-10-09), scrollers excluded
+      if (![...e.childNodes].some(n => n.nodeType === 3 && n.textContent.trim())) return false;
+      const cs = getComputedStyle(e), r = e.getBoundingClientRect(); if (!r.width || cs.display === "none" || cs.visibility === "hidden" || cs.textOverflow === "ellipsis") return false;   // hidden sticky bar / deliberate ellipsis
+      for (let a = e; a && a !== document.body; a = a.parentElement) if (/auto|scroll/.test(getComputedStyle(a).overflowX)) return false;   // swipe carousels are meant to run off-screen
+      return e.scrollWidth > e.clientWidth + 1 || r.right > innerWidth + 1 || r.left < -1; }).map(e => (e.className || e.tagName) + ": " + e.textContent.trim().slice(0, 40)).slice(0, 5),
+    palette: (() => { const q = s => document.querySelector(s), c = (s, p) => q(s) ? getComputedStyle(q(s))[p] : null;   // effective colors, for the pack-palette gate
+      return { cta_bg: c(".gslp-hero .gslp-btn", "backgroundColor"), accent: c(".gslp-hero .rblha__accent", "color"), kicker: c(".gslp-kicker", "color"),
+               topbar_bg: c(".rbltb", "backgroundColor"), pill_bg: c(".rblof__pill", "backgroundColor"), offer_cta_bg: c(".rblof a[href*='/products/']", "backgroundColor") }; })(),
   }));
   if (w === 1440) await p.screenshot({ path: path.join(dir, "desktop.png"), fullPage: true });
   if (w === 375) await p.screenshot({ path: path.join(dir, "mobile.png"), fullPage: true });

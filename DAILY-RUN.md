@@ -58,6 +58,8 @@ Default output is a local preview; `GENSEO_LANDING_DRAFT=1` adds an UNPUBLISHED 
 Daily lane (`scripts/run_landing_daily.sh`, launchd 08:15 + 16:15, 1 UNPUBLISHED listicle draft/day): it gives this
 Mac's article batch (`state/daily.lock`) at most a 30-min courtesy yield, then builds alongside it — it never waits out
 the whole batch, and it never touches the article publisher.
+**Pack palette (Kevin 2026-10-09):** every landing page wears its hero product's packaging colors (`scripts/landing_palette.py`,
+applied in the page body at render, never in the shared theme template). The palette gate + clipped-text check fail a draft that doesn't match.
 
 ## 1 · The daily loop
 

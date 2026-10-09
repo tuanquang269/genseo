@@ -45,6 +45,14 @@
    "ok": true,
    "info": "[]"
   },
+  "desktop_no_clipped_text": {
+   "ok": true,
+   "info": ""
+  },
+  "desktop_palette_matches_pack": {
+   "ok": true,
+   "info": "{\"cta_bg\": \"rgb(86, 27, 38)\", \"accent\": \"rgb(164, 73, 88)\", \"kicker\": \"rgb(164, 73, 88)\", \"topbar_bg\": \"rgb(86, 27, 38)\", \"pill_bg\": \"rgb(86, 27, 38)\", \"offer_c"
+  },
   "mobile_http": {
    "ok": true,
    "info": "200"
@@ -65,15 +73,23 @@
    "ok": true,
    "info": "[]"
   },
+  "mobile_no_clipped_text": {
+   "ok": true,
+   "info": ""
+  },
+  "mobile_palette_matches_pack": {
+   "ok": true,
+   "info": "{\"cta_bg\": \"rgb(86, 27, 38)\", \"accent\": \"rgb(164, 73, 88)\", \"kicker\": \"rgb(164, 73, 88)\", \"topbar_bg\": \"rgb(86, 27, 38)\", \"pill_bg\": \"rgb(86, 27, 38)\", \"offer_c"
+  },
   "sticky_cta": {
    "ok": true,
-   "info": "{\"top\": \"off(scrollY=0 vh=832 offerTop=8813 bridgeTop=6991 rows=8 cls=gslp-sticky)\", \"after_bridge\": true, \"on_offer\": \"off(scrollY=8963 vh=832 offerTop=-150 bridgeTop=-1972 rows=8 cls=gslp-sticky)\"}"
+   "info": "{\"top\": \"off(scrollY=0 vh=812 offerTop=8813 bridgeTop=6991 rows=8 cls=gslp-sticky)\", \"after_bridge\": true, \"on_offer\": \"off(scrollY=8963 vh=812 offerTop=-150 bridgeTop=-1972 rows=8 cls=gslp-sticky)\"}"
   }
  },
  "fails": [],
  "was_hidden": false,
  "storefront": {
-  "url": "https://wellnessnest.co/pages/vaginal-probiotic-research?v=1791526050739",
+  "url": "https://wellnessnest.co/pages/vaginal-probiotic-research?v=1791526809724",
   "desktop": {
    "http": 200,
    "title": "7 Things to Know Before You Try a Vaginal Probiotic – Wellness Nest",
@@ -90,7 +106,16 @@
    "imgs": 15,
    "broken": [],
    "overflow": false,
-   "height": 9032
+   "height": 9032,
+   "clipped": [],
+   "palette": {
+    "cta_bg": "rgb(86, 27, 38)",
+    "accent": "rgb(164, 73, 88)",
+    "kicker": "rgb(164, 73, 88)",
+    "topbar_bg": "rgb(86, 27, 38)",
+    "pill_bg": "rgb(86, 27, 38)",
+    "offer_cta_bg": "rgb(86, 27, 38)"
+   }
   },
   "mobile": {
    "http": 200,
@@ -109,10 +134,19 @@
    "broken": [],
    "overflow": false,
    "height": 12111,
+   "clipped": [],
+   "palette": {
+    "cta_bg": "rgb(86, 27, 38)",
+    "accent": "rgb(164, 73, 88)",
+    "kicker": "rgb(164, 73, 88)",
+    "topbar_bg": "rgb(86, 27, 38)",
+    "pill_bg": "rgb(86, 27, 38)",
+    "offer_cta_bg": "rgb(86, 27, 38)"
+   },
    "sticky_check": {
-    "top": "off(scrollY=0 vh=832 offerTop=8813 bridgeTop=6991 rows=8 cls=gslp-sticky)",
+    "top": "off(scrollY=0 vh=812 offerTop=8813 bridgeTop=6991 rows=8 cls=gslp-sticky)",
     "after_bridge": true,
-    "on_offer": "off(scrollY=8963 vh=832 offerTop=-150 bridgeTop=-1972 rows=8 cls=gslp-sticky)"
+    "on_offer": "off(scrollY=8963 vh=812 offerTop=-150 bridgeTop=-1972 rows=8 cls=gslp-sticky)"
    }
   }
  },

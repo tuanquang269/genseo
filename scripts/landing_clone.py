@@ -189,6 +189,12 @@ def stars(n=5, svg="star", total=5):
 
 # 2026-10-08 benchmark (design-taste + mobile readability): no visible text under 13px, and a portrait
 # pack shot must not fill 1.5 screens on mobile. Inline so the installed v1 theme template stays untouched.
+# Page-level layout fixes for specs created >= 2026-10-09, shipped in the page body (the installed templates stay as they
+# are). Offer pill: the template keeps it on one line (nowrap) inside max-width:calc(100% - 34px), so a long product
+# name was clipped on phones ("⚡️ FLORAFRESH PROBIOTIC GUMMIES", 2026-10-09): let it shrink and wrap, centered.
+PAGE_FIX_CSS = ("@media(max-width:749px){.gsl-ref.gsl-ref .rblof__pill{height:auto!important;min-height:34px;white-space:normal!important;"
+                "text-align:center;justify-content:center;line-height:1.25;padding:7px 14px!important;font-size:12.5px!important;"
+                "letter-spacing:.04em;width:max-content;max-width:calc(100% - 28px)!important;overflow:visible}}")
 SRC_CSS = "font-size:13px"
 OFFER_IMG_CSS = "max-height:440px;width:auto;max-width:100%;margin:0 auto;display:block;object-fit:contain"
 
@@ -539,8 +545,18 @@ def main():
     inner = render_listicle(spec, imgs) if kind == "listicle" else render_advertorial(spec, imgs, brand)
     body = brand_swap(f'<div class="gsl-ref gsl-ref--{kind}">\n{inner}</div>\n', pal)
     js = brand_swap(JS, pal)   # lives in the theme template (Shopify page bodies are not a place for scripts)
-    open(os.path.join(out_dir, "body.html"), "w").write(body)
     css = build_css(kind, vis, premium=spec.get("style") == "premium", mobile_v3={"gsl-ref-listicle-v3": "v3", "gsl-ref-listicle-v4": "v4"}.get(spec.get("template_suffix")))
+    # Packaging palette (Kevin 2026-10-09): the page wears the hero product's pack colors. Delivered in the PAGE BODY
+    # (<style id="gsl-pal">, class gsl-pal), never in the shared theme template, so every other live page is untouched.
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import landing_palette
+    pack_pal = landing_palette.resolve(spec)
+    if spec.get("created", "") >= landing_palette.AUTO_FROM:
+        body = body.replace('<div class="gsl-ref gsl-ref--', f'<style id="gsl-fix">{PAGE_FIX_CSS}</style>\n<div class="gsl-ref gsl-ref--', 1)
+    if pack_pal:
+        body = landing_palette.apply_to_body(body, css, pack_pal)
+    json.dump({k: v for k, v in (pack_pal or {"palette": "house"}).items()}, open(os.path.join(out_dir, "palette.json"), "w"), indent=1)
+    open(os.path.join(out_dir, "body.html"), "w").write(body)
     open(os.path.join(out_dir, "page.css"), "w").write(css)
     font_link = brand.get("fonts", {}).get("preview_font_link", "")
     hide = open(os.path.join(ROOT, "templates", "landing", "hide_theme_chrome.html")).read().replace("{% layout none %}", "layout-none") if spec.get("takeover") else ""   # a Liquid tag inside a CSS comment would still execute

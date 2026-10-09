@@ -105,11 +105,12 @@ fi
 SLUG="$($PY -c 'import json,sys;print(json.load(open(sys.argv[1]))["slug"])' "$SPEC")"; OUT="landing_drafts/$SLUG"
 $PY scripts/validate_landing.py "$SPEC" >> "$LOG" 2>&1; V=$?
 $PY scripts/landing_render.py "$SPEC" >> "$LOG" 2>&1
+$PY scripts/landing_palette.py check "$SPEC" >> "$LOG" 2>&1; PAL=$?   # packaging palette gate (Kevin 2026-10-09)
 QA="$(NODE_PATH="$(npm root -g)" node scripts/landing_qa.mjs "$OUT/preview.html" 2>>"$LOG")"; Q=$?
 echo "$QA" > "$OUT/qa.json"
 QOK="$($PY -c 'import json,sys
-d=json.load(open(sys.argv[1])); bad=[w for w,r in d["widths"].items() if r["overflow"]]
-print("ok" if not bad else "overflow@"+",".join(bad))' "$OUT/qa.json" 2>/dev/null || echo "qa-error")"
+d=json.load(open(sys.argv[1])); bad=[w for w,r in d["widths"].items() if r["overflow"]]; cl=[w for w,r in d["widths"].items() if r.get("clipped")]
+print("ok" if not bad and not cl else ("overflow@"+",".join(bad) if bad else "clipped@"+",".join(cl)))' "$OUT/qa.json" 2>/dev/null || echo "qa-error")"
 [ $Q != 0 ] && QOK="qa-error"
 for f in desktop mobile; do [ -f "$OUT/$f.png" ] && sips -s format jpeg -s formatOptions 70 "$OUT/$f.png" --out "$OUT/$f.jpg" >/dev/null 2>&1; done
 # what Kevin will actually see: the real Shopify storefront render (not preview.html)
@@ -139,17 +140,18 @@ else:
     print(f"{pid} unpublished {p['handle']}")
 PY
 )"
-say "spec $SPEC · validate rc=$V · qa=$QOK · real-render=$RQ · page: ${PSTATE:-unknown}"
+PQ=ok; [ "$PAL" != 0 ] && PQ=fail
+say "spec $SPEC · validate rc=$V · qa=$QOK · palette=$PQ · real-render=$RQ · page: ${PSTATE:-unknown}"
 case "$PSTATE" in
   nopage|"") tag "FAILED $DAY no Shopify draft (validate rc=$V, qa=$QOK; see $RUNLOG)"; R=1;;
   *) PID="${PSTATE%% *}"
-     if [ $V = 0 ] && [ "$QOK" = ok ] && [ "$RQ" = ok ]; then tag "DRAFT $DAY page $PID"; R=0; else tag "DRAFT-QA-FAIL $DAY page $PID validate=$V qa=$QOK real=$RQ"; R=2; fi
+     if [ $V = 0 ] && [ "$QOK" = ok ] && [ "$PQ" = ok ] && [ "$RQ" = ok ]; then tag "DRAFT $DAY page $PID"; R=0; else tag "DRAFT-QA-FAIL $DAY page $PID validate=$V qa=$QOK palette=$PQ real=$RQ"; R=2; fi
      echo "$(date '+%FT%T%z') $PID $SPEC" >> "$MINE"
      say "ADMIN: https://admin.shopify.com/store/wellnessnest1/content/pages/$PID (unpublished draft — Kevin approves)";;
 esac
 FILES=("$QUEUE" "$SPEC")
-for f in "${SPEC%.json}.claims.md" "$OUT/body.html" "$OUT/page.css" "$OUT/preview.html" "$OUT/shopify.json" "$OUT/qa.json" "$OUT/desktop.jpg" "$OUT/mobile.jpg" "$OUT/real_qa.json" "$OUT/real-desktop.jpg" "$OUT/real-mobile.jpg" "$OUT/real-offer.jpg"; do [ -f "$f" ] && FILES+=("$f"); done
+for f in "${SPEC%.json}.claims.md" "$OUT/body.html" "$OUT/palette.json" "$OUT/page.css" "$OUT/preview.html" "$OUT/shopify.json" "$OUT/qa.json" "$OUT/desktop.jpg" "$OUT/mobile.jpg" "$OUT/real_qa.json" "$OUT/real-desktop.jpg" "$OUT/real-mobile.jpg" "$OUT/real-offer.jpg"; do [ -f "$f" ] && FILES+=("$f"); done
 for i in 1 2 3 4 5 6; do [ -e .git/index.lock ] && sleep 10 || break; done
-git add -- "${FILES[@]}" >> "$LOG" 2>&1 && git commit -q -m "landing daily $DAY: $SLUG (UNPUBLISHED draft ${PID:-none}, validate=$V qa=$QOK real=$RQ)" -- "${FILES[@]}" >> "$LOG" 2>&1 \
+git add -- "${FILES[@]}" >> "$LOG" 2>&1 && git commit -q -m "landing daily $DAY: $SLUG (UNPUBLISHED draft ${PID:-none}, validate=$V qa=$QOK palette=$PQ real=$RQ)" -- "${FILES[@]}" >> "$LOG" 2>&1 \
   && say "committed $(git rev-parse --short HEAD)" || say "WARN: commit failed (see log)"
 exit $R

@@ -56,6 +56,9 @@ def main():
         sys.exit("✗ validate_landing.py failed — fix the spec first")
     if run("scripts/landing_render.py", spec_path) != 0:
         sys.exit("✗ render failed")
+    # packaging-palette gate (Kevin 2026-10-09): page colors must match the hero product's pack; hard for specs >= 2026-10-09
+    if run("scripts/landing_palette.py", "check", spec_path) != 0:
+        sys.exit("✗ landing_palette.py check failed — the page palette does not match the product packaging")
     out_dir = os.path.join(os.path.dirname(spec_path), spec["slug"])
     print(f"PREVIEW: file://{out_dir}/preview.html")
     if mode == "preview":

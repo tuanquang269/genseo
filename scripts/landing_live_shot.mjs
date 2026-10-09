@@ -39,6 +39,14 @@ for (const [name, vp, mobile] of [["desktop", { width: 1440, height: 900 }, fals
       sticky: !!q("[data-gslp-sticky]"),
       imgs: document.images.length, broken: [...document.images].filter(i => i.getAttribute("src") && i.complete && !i.naturalWidth).map(i => i.src).slice(0, 5),   // theme placeholders with src="" are not ours
       overflow: document.documentElement.scrollWidth > innerWidth + 1, height: document.documentElement.scrollHeight,
+      clipped: [...document.querySelectorAll(".gsl-ref *")].filter(e => {   // text cut off: own text wider than its box (offer pill 2026-10-09), scrollers excluded
+      if (![...e.childNodes].some(n => n.nodeType === 3 && n.textContent.trim())) return false;
+      const cs = getComputedStyle(e), r = e.getBoundingClientRect(); if (!r.width || cs.display === "none" || cs.visibility === "hidden" || cs.textOverflow === "ellipsis") return false;   // hidden sticky bar / deliberate ellipsis
+      for (let a = e; a && a !== document.body; a = a.parentElement) if (/auto|scroll/.test(getComputedStyle(a).overflowX)) return false;   // swipe carousels are meant to run off-screen
+      return e.scrollWidth > e.clientWidth + 1 || r.right > innerWidth + 1 || r.left < -1; }).map(e => (e.className || e.tagName) + ": " + e.textContent.trim().slice(0, 40)).slice(0, 5),
+    palette: (() => { const q = s => document.querySelector(s), c = (s, p) => q(s) ? getComputedStyle(q(s))[p] : null;   // effective colors, for the pack-palette gate
+      return { cta_bg: c(".gslp-hero .gslp-btn", "backgroundColor"), accent: c(".gslp-hero .rblha__accent", "color"), kicker: c(".gslp-kicker", "color"),
+               topbar_bg: c(".rbltb", "backgroundColor"), pill_bg: c(".rblof__pill", "backgroundColor"), offer_cta_bg: c(".rblof a[href*='/products/']", "backgroundColor") }; })(),
     };
   });
   facts[name] = { http: resp.status(), ...f };

@@ -96,6 +96,21 @@ def main():
                     check(f"{vp}_offer_is_current", (title or "") in (f["offer_text"] or ""), f"offer box shows: {(f['offer_text'] or '')[:90]}")
                     check(f"{vp}_no_overflow", not f["overflow"], "")
                     check(f"{vp}_images_ok", not f["broken"], str(f["broken"][:2]))
+                    if "clipped" in f:
+                        check(f"{vp}_no_clipped_text", not f["clipped"], "; ".join(f["clipped"][:3]))
+                    pal_p = os.path.join(out, "palette.json")
+                    pal = json.load(open(pal_p)) if os.path.exists(pal_p) else {}
+                    if pal.get("hue") is not None and f.get("palette"):   # pack palette (2026-10-09): what the storefront REALLY paints
+                        import landing_palette as LP
+                        bad = []
+                        for k in ("cta_bg", "accent", "topbar_bg"):
+                            v = f["palette"].get(k)
+                            if not v:
+                                continue
+                            L, C, h = LP.lch(LP.parse_color(v)[0])
+                            if C < 0.012 or LP.hue_dist(h, pal["hue"]) > LP.HUE_TOL:
+                                bad.append(f"{k} {v} hue {h:.0f} vs pack {pal['hue']:.0f}")
+                        check(f"{vp}_palette_matches_pack", not bad, "; ".join(bad) or json.dumps(f["palette"])[:160])
                 sc = facts["mobile"].get("sticky_check")
                 if spec.get("sticky_cta"):
                     check("sticky_cta", sc and sc["top"] is not True and sc["after_bridge"] is True and sc["on_offer"] is not True, json.dumps(sc)[:200])

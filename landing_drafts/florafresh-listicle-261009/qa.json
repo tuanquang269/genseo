@@ -5,19 +5,46 @@
    "overflow": false,
    "smallTargets": 0,
    "brokenImages": [],
-   "headings": ""
+   "headings": "",
+   "clipped": [],
+   "palette": {
+    "cta_bg": "rgb(86, 27, 38)",
+    "accent": "rgb(164, 73, 88)",
+    "kicker": "rgb(164, 73, 88)",
+    "topbar_bg": "rgb(86, 27, 38)",
+    "pill_bg": "rgb(86, 27, 38)",
+    "offer_cta_bg": "rgb(86, 27, 38)"
+   }
   },
   "768": {
    "overflow": false,
    "smallTargets": 0,
    "brokenImages": [],
-   "headings": ""
+   "headings": "",
+   "clipped": [],
+   "palette": {
+    "cta_bg": "rgb(86, 27, 38)",
+    "accent": "rgb(164, 73, 88)",
+    "kicker": "rgb(164, 73, 88)",
+    "topbar_bg": "rgb(86, 27, 38)",
+    "pill_bg": "rgb(86, 27, 38)",
+    "offer_cta_bg": "rgb(86, 27, 38)"
+   }
   },
   "1440": {
    "overflow": false,
    "smallTargets": 0,
    "brokenImages": [],
-   "headings": ""
+   "headings": "",
+   "clipped": [],
+   "palette": {
+    "cta_bg": "rgb(86, 27, 38)",
+    "accent": "rgb(164, 73, 88)",
+    "kicker": "rgb(164, 73, 88)",
+    "topbar_bg": "rgb(86, 27, 38)",
+    "pill_bg": "rgb(86, 27, 38)",
+    "offer_cta_bg": "rgb(86, 27, 38)"
+   }
   }
  },
  "stickyAtTop": null,
