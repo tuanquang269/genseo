@@ -563,7 +563,7 @@ FloraFresh $40.99, Turkesterone Advanced Formula $75, AgeAura Pure NMN + TMG NAD
   - **Angle:** muscle creatine saturation is maintained by daily intake, not by training days (fetched sources only, e.g. ISSN position stand if confirmed); what happens if you skip a few days (washout timeline only if sourced); practical rest-day routine with food. LINK creatine-gummies-dosage, how-long-does-creatine-take-to-work — don't restate.
   - **Fan-out answers to cover:** what time on a rest day; does missing a day reset progress; with or without food; weekends/travel.
 
-- [ ] **#MB1009-2 — how long does turkesterone take to work** — `How Long Does Turkesterone Take to Work? A Realistic Timeline (US 2026)`
+- [DONE 2026-10-09 https://wellnessnest.co/blogs/news/how-long-does-turkesterone-take-to-work-us-2026] **#MB1009-2 — how long does turkesterone take to work** — `How Long Does Turkesterone Take to Work? A Realistic Timeline (US 2026)`
   - **Primary keyword:** `how long does turkesterone take to work` · **Secondary:** turkesterone results timeline, turkesterone results after 4 weeks, when will I notice turkesterone, turkesterone before and after
   - **Template:** STORY · **Gate:** topic_fitness PASS [brand] · dedupe: no timeline title live
   - **Products:** `/products/turkesterone-advanced-formula` ($75). Collections: `/collections/mens-essential-collection`, `/collections/best-seller`.
