@@ -1,0 +1,72 @@
+---
+description: GenSeo (wellnessnest.co) operating rules for every agent — hard rules, brand locks, the two daily lanes, and what a cloud agent may and may not do
+alwaysApply: true
+---
+
+# GenSeo — operating rules for Cursor agents
+
+This repo writes to the LIVE Shopify store wellnessnest.co. `AGENTS.md` (6 hard rules) is the authority and
+`DAILY-RUN.md` is the daily runbook; this file is the Cursor summary plus the brand locks and the cloud-agent
+boundary. Skills: `.cursor/skills/genseo-*` are pointers — always read the canonical `skills/genseo-*/SKILL.md`
+in full before acting on one.
+
+## Paths
+`/Users/kevinkreative/genseo` and `~/genseo` in scripts, skills and tickets mean this repo root (`/workspace` on a
+Cursor Cloud VM). Several scripts hard-code the Mac path (`genseo_roster.py`, `topic_fitness.py` caches,
+`refresh_article_cache.py`), so on a cloud VM they read nothing or fail — that is expected, not a bug to patch.
+
+## Cloud-agent boundary (default; only an explicit request from Kevin widens it)
+- **Allowed:** article drafts, ticket and ideas-board edits, read-only checks against the public storefront
+  (`/products.json`, sitemaps, `search/suggest.json`), code, docs, PRs.
+- **Not allowed:** `shopify_publisher.py` (publish/update), `repair_schema.py`, `fix_untitled.py --apply`,
+  `find_dupes.py --apply`, `collection_seo.py`/`push_collection.py`, landing publishers, theme or store-setting
+  edits, any Shopify MCP / GraphQL / REST write, paid APIs, image generation, `persona_picker.py`, creating
+  accounts, committing secrets (`.env`, `~/.genseo/*`, tokens, credentials).
+- Publishing, images and every gate that needs Mac-only state (roster path, Admin API caches, ima2 OAuth) stay on
+  the Macs. Hand work over as a ticket in `daily-tickets.md` or a draft in `published_drafts/` (gitignored).
+
+## Hard rules (AGENTS.md)
+1. No publish without `python3 scripts/validate_article.py <draft>.md --draft` → `✓ PASS`. Never edit a gate
+   script to make something pass.
+2. Publish/update only through `scripts/shopify_publisher.py` (it attaches the JSON-LD). Never hand-write JSON-LD.
+3. Bylines only from `roster.json`; never invent a person, reviewer or credential (Dr./MD/PhD/RD/CISSN).
+4. Link only products/collections that are live (`https://wellnessnest.co/products/<handle>.js`).
+5. Refresh is append-only and never retitles a ranking page. Unattended runs never modify a live post.
+6. Bulk writes: `backup_before_changes.py` → `--dry-run` → read → `--apply`. Never 301 a URL that still returns 200.
+Also: never `rm` repo files (move them to `_superseded/`); never put CDN URLs in drafts.
+
+## Brand locks (Kevin 2026-10-07; enforced by `scripts/brand_rules.py`, `validate_article.py`, `lint_tickets.py`)
+- **AgeAura = AgeAura Pure NMN + TMG NAD+ Complex only.** Link only `/products/ageaura-pure-nmn-tmg-nad-complex`.
+  Never Urolithin A (not as AgeAura, not at all), never `ageaura-pure-nmn-tmg-p2`, the Essential Longevity Duo,
+  "rejuvenation duo", peptides, or `/collections/ageaura` (use `/collections/best-seller` as a browse link).
+- **Hero products** (house brands sold on wellnessnest.co — follow `lint_tickets.py` and `knowledge_base/`):
+  FusiForce creatine gummies `fusiforce-creatine-gummies` · ShilaSource / Himalayan shilajit: resin
+  `shilasource-himalayan-shilajit-resin`, gummies `premium-himalayan-shilajit-gummies`, gold resin
+  `pure-shilajit-gold-resin`, Shockwave drops `shilajit-shockwave` · FloraFresh
+  `florafresh-vaginal-probiotics-gummies` · Turkesterone Advanced `turkesterone-advanced-formula` · AgeAura NMN + TMG
+  `ageaura-pure-nmn-tmg-nad-complex`. MenoMate is not on sale: no new MenoMate articles.
+- Never mention or link MuscleMax or any product the store does not sell.
+- No COA / "lab-tested" / "clinically tested" as the lead advantage (house rule `no-coa-competitive-advantage`).
+- Every claim (dose, study, number, mechanism) must come from a source actually fetched, logged in
+  `logs/claims/<slug>.md`; unconfirmed claims are deleted, not softened. FDA structure/function language only.
+- Articles need ≥2 live `/collections/` links; a collection the product is not in is a browse link only — never
+  claim membership.
+
+## The two daily lanes
+- **Articles — 5/day (`GENSEO_DAILY_TARGET`).** `deploy/grokbot-genseo-daily.sh` (launchd 07:30 + 14:47 ICT, on
+  whichever Mac is online) loops `scripts/run_ticket_headless.sh`: one open `- [ ]` ticket of `daily-tickets.md`
+  per run, through the `genseo-auto-publish` skill (STEP 0 suggest.json dedup → STEP 0.5 `topic_fitness.py` →
+  write → gate → publish). The public site is the double-publish lock (`genseo_published_today.py`). The wrapper
+  hard-stops when no ticket is open, so keep the queue stocked with `scripts/refill_tickets.py`
+  (`docs/TICKET_REFILL.md`). Mac Mini = primary (`#NN` ids); MacBook = standby (`#MBmmdd-N`, all images no-face).
+- **Landing pages — 1 unpublished draft/day, never counted in the 5.** `scripts/build_landing_tickets.py` →
+  `daily-landing-tickets.md` → `scripts/run_landing_daily.sh`; `gsl-preview-*` pages that Kevin approves. Skill
+  `genseo-landing-pages`.
+
+## Read-only checks a cloud agent can run
+```bash
+python3 scripts/lint_tickets.py daily-tickets.md        # banned link in an open ticket -> exit 2
+python3 scripts/refill_tickets.py --self-test           # offline fixtures + topic-bank lint
+python3 scripts/refill_tickets.py --count 8 --dry-run   # storefront reads only; queue + board untouched
+python3 scripts/sync_cursor_skills.py --check           # .cursor/skills pointers match skills/
+```

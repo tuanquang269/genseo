@@ -72,7 +72,9 @@ wasted image-generation + writing cost of a doomed article.)
   3. **FloraFresh** — vaginal/feminine probiotics (gummies + prebiotic+probiotic)
   4. **MenoMate** — menopause probiotics & herbal blend
   5. **Turkesterone** Advanced Formula
-  6. **AgeAura** — longevity line on the same store (NMN+TMG · Urolithin A · Longevity Peptides)
+  6. **AgeAura** — NMN + TMG NAD+ Complex ONLY (`/products/ageaura-pure-nmn-tmg-nad-complex`). Never
+     Urolithin A, peptides, `ageaura-pure-nmn-tmg-p2`/duos or `/collections/ageaura` (Kevin 2026-10-07;
+     `brand_rules.py` hard-fails them in `validate_article.py` and `lint_tickets.py`)
   ⛔ **NEVER mention or link MuscleMax** (competitor, not ours). ⛔ Never link any
   product/brand not sold on wellnessnest.co (404 links fail the gate). "Naturally"
   means a creatine article leads with FusiForce because FusiForce IS creatine —
@@ -360,8 +362,11 @@ EOF
 
 ### TICKET REFILL: when the queue runs low (< 3 pending `[ ]` tickets)
 
-Mine the Google Ads account for the next batch — the recipe (GAQL slices, term-pattern →
-article-type map, ticket checklist, hard rules incl. verbatim `campaign.name`) is codified in
+First: `python3 scripts/refill_tickets.py --count 8 --dry-run`, then without `--dry-run` — gated,
+product-mapped tickets from `templates/article-topic-bank.json` + `board/ideas.csv`
+(`docs/TICKET_REFILL.md`). When it exits 3 (sources ran dry), mine the Google Ads account for the
+next batch — the recipe (GAQL slices, term-pattern → article-type map, ticket checklist, hard
+rules incl. verbatim `campaign.name`) is codified in
 `references/ads-article-mining.md`. Its two goldmine classes: paid-but-not-converting terms
 (organic arbitrage) and converting query patterns (compound proven intent). Append the new
 batch to `daily-tickets.md` as `# Batch N` with the evidence header; never overwrite old

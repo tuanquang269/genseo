@@ -81,6 +81,7 @@ python3 scripts/verify_published.py <ID> <BLOG> # spot-check 1 bài mới nhất
 
 ### E. Sinh ticket mới (khi hết việc)
 ```bash
+python3 scripts/refill_tickets.py --count 8 --dry-run  # nạp lại daily-tickets.md từ topic bank + board (đã qua gate); bỏ --dry-run để ghi — docs/TICKET_REFILL.md
 python3 scripts/build_catalog_tickets.py    # brand mình bán mà chưa có bài
 python3 scripts/build_ctr_tickets.py        # bài rank tốt nhưng CTR kém
 python3 scripts/refresh_targets.py          # bài cần refresh (attribution theo page)
