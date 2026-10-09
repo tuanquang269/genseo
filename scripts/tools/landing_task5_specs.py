@@ -79,9 +79,9 @@ def page(slug, product_handle, pname, d):
     s["trust_source"] = TRUST_SRC + " " + d["trust4_src"]
     s["sticky_cta"] = {"name": d["sticky"], "note": f"From {o['now']}", "cta": "SEE INGREDIENTS", "href": pdp}
     s["pack_images"] = [img(slug, d.get(k + "_img", k)) for k in ("hero", "offer", "dark", "ledge")]
-    bad = brand_rules.violations(json.dumps(s))
+    bad = brand_rules.spec_violations(s)
     if bad:
-        raise SystemExit("✗ AgeAura guard: refusing to write " + slug + ": " + "; ".join(bad))
+        raise SystemExit("✗ brand guard: refusing to write " + slug + ": " + "; ".join(bad))
     json.dump(s, open(f"{ROOT}/landing_drafts/{slug}.json", "w"), indent=1, ensure_ascii=False)
     print("wrote", slug)
 

@@ -138,7 +138,7 @@ def build_prompt(a, geom):
     try:
         a.prompt, a.product_ref = brand_rules.prepare_image_request(a.prompt, a.product_ref)
     except brand_rules.GuardError as e:
-        sys.exit(f"✗ AgeAura guard: {e}")
+        sys.exit(f"✗ brand guard: {e}")
     prompt = a.prompt
     refs = list(a.ref)
     for spec in a.product_ref:

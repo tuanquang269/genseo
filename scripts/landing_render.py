@@ -386,9 +386,9 @@ def liquid_template(brand, takeover=False):
 
 def render(spec_path):
     raw = open(spec_path).read()
-    bad = brand_rules.violations(raw)
+    bad = brand_rules.spec_violations(json.loads(raw))
     if bad:
-        sys.exit("✗ AgeAura guard: " + "; ".join(bad))
+        sys.exit("✗ brand guard: " + "; ".join(bad))
     if json.loads(raw).get("engine") == "ref":   # reference replicas (Kevin 2026-10-06) -> landing_clone.py
         import subprocess
         sys.exit(subprocess.run([sys.executable, os.path.join(ROOT, "scripts", "landing_clone.py"), spec_path]).returncode)

@@ -23,7 +23,8 @@ python3 scripts/refill_tickets.py --if-below 5 --count 8  # do nothing while 5 o
 
 ## What every ticket passed
 
-brand_rules (AgeAura = NMN + TMG Complex only, no Urolithin, no banned links) → hero product live and in stock,
+brand_rules (AgeAura = NMN + TMG Complex only, no Urolithin, no banned links; FloraFresh claims only from its
+Supplement Facts label, never the PDP description) → hero product live and in stock,
 plus a live collection to link → not a covered topic (queue header rule 6) → not already in `daily-tickets.md`
 in any status → not already live (same family + segment, title overlap ≥ `topic_fitness.DUP_JACCARD`, same
 slug; checked against the full blog listing with full titles, plus `existing_articles.json` and the tracker CSVs

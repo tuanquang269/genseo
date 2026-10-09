@@ -41,9 +41,9 @@ def main():
         sys.exit(__doc__)
     spec_path = os.path.abspath(args[0])
     spec = json.load(open(spec_path))
-    bad = brand_rules.violations(json.dumps(spec))
+    bad = brand_rules.spec_violations(spec)
     if bad:
-        sys.exit("✗ AgeAura guard: " + "; ".join(bad))
+        sys.exit("✗ brand guard: " + "; ".join(bad))
     daily = os.environ.get("GENSEO_LANDING_DAILY") == "1"
     if daily and mode == "live":
         sys.exit("✗ --live refused in the daily landing lane: daily pages are drafts for Kevin to approve.")

@@ -15,12 +15,14 @@ only, no Urolithin), a curated packaging ref in product_refs/<handle>.png and an
 templates/landing/listicle-angles.json. Rotation: least-recently-used product, never one used in the last
 GENSEO_LANDING_NO_REPEAT_DAYS days (default 6) — history = every dated line in the queue + landing_drafts/*.json.
 Angle: the least-used angle for that product. The new line must pass brand_rules + lint_tickets.py.
+FloraFresh lines also carry florafresh_rules.LANDING_NOTE (formula from the Supplement Facts label, never the PDP).
 """
 import datetime as dt, json, os, re, subprocess, sys, urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "scripts"))
 import brand_rules as br  # noqa: E402
+import florafresh_rules as ff  # noqa: E402
 
 QUEUE = os.path.join(ROOT, "daily-landing-tickets.md")
 ANGLES = os.path.join(ROOT, "templates", "landing", "listicle-angles.json")
@@ -129,7 +131,10 @@ def main():
         else:
             print(f"ageaura guard: dropped landing angle key {key}")
     h, meta, angle, age, stale, why = pick(live_products(), angles, history(), window)
-    line = f"- [ ] listicle | {meta['store']} | product={h} · angle: {angle} · audience: {meta.get('audience', '')} (added {today()})"
+    line = f"- [ ] listicle | {meta['store']} | product={h} · angle: {angle} · audience: {meta.get('audience', '')}"
+    if h == ff.HANDLE:
+        line += " · " + ff.LANDING_NOTE
+    line += f" (added {today()})"
     try:
         line = br.prepare_ticket(line)
     except br.GuardError as e:

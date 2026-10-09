@@ -45,8 +45,9 @@ Queue: `landing-tickets.md` (manual) / `daily-landing-tickets.md` (daily lane, o
   suffix, GemPages per-URL render cache → throwaway handle, theme-protected asset names.
 - Vault: `30-creative/32-copy/7-advertorial-listicle-presell-framework.md` (32.7 content structure),
   `10-foundations/65-shopify-dev-docs-map.md`, `20-brands/1-wellnessnest.md` + `21-wellnessnest-products/*`.
-  Where 32.7 suggests Urolithin A for AgeAura or "purity testing" as the ShilaSource origin story, Kevin's newer
-  rules win (AgeAura = NMN + TMG only; FE-22 / no-COA).
+  Where 32.7 suggests Urolithin A for AgeAura or "purity testing" as the ShilaSource origin story, or a product note
+  repeats FloraFresh's PDP formula, Kevin's newer rules win (AgeAura = NMN + TMG only; FE-22 / no-COA; FloraFresh =
+  its Supplement Facts label).
 
 ## Posture (Kevin's call — PATI-ADAPTATION #1)
 `posture` in the spec: **hybrid** (listicle default — editorial findings, product only from the bridge on, sticky bar
@@ -64,6 +65,11 @@ testimonials, no sticky). Surface the choice to Kevin; never silently downgrade 
 3. **AgeAura = the NMN + TMG Complex only** (`/products/ageaura-pure-nmn-tmg-nad-complex`, Kevin 2026-10-06). No other
    AgeAura handle, bundle (`-p2`) or collection link; never Urolithin A or peptides. `brand/ageaura.json`
    (`allowed_products`, `forbidden_terms`) + `validate_landing.py` block them in any store's page.
+   **FloraFresh = its Supplement Facts label** (Kevin 2026-10-09): Bacillus coagulans SNZ-1969, 1 billion CFU per
+   2 gummies, Vitamin C 30 mg, pineapple fruit powder 100 mg (with bromelain), maltitol + isomalt (not sugar-free).
+   The live PDP description (15 billion CFU, four Lactobacillus strains, XOS, D-mannose, sugar-free) is wrong until
+   Kevin's GO rewrites it, so for FloraFresh the PDP gives price, offer and directions, never the formula.
+   `validate_landing.py` fails any FloraFresh claim the label does not support (`scripts/florafresh_rules.py`).
 4. **No faces** in any image. Use `scripts/article_images.py` with `--qc` (same pipeline + QC as articles),
    `--product-ref <handle>` (no `:index`) for any image showing a pack, `--ugc` for lifestyle shots, and put
    "no people's faces" in the NEGATIVE. Never `--persona-ref`, never `persona_picker.py`. Run in the foreground.
@@ -86,7 +92,8 @@ testimonials, no sticky). Surface the choice to Kevin; never silently downgrade 
 ## Workflow
 1. **Brief → product facts.** `curl -s -A "Mozilla/5.0" https://wellnessnest.co/products/<handle>.js` → title,
    price, variants, images[0] (real packaging for the product/offer block). Read the vault product note
-   `~/PATI/LLM-Wiki/20-brands/21-wellnessnest-products/<product>.md` if present.
+   `~/PATI/LLM-Wiki/20-brands/21-wellnessnest-products/<product>.md` if present. FloraFresh formula facts come
+   from its Supplement Facts label only (`python3 scripts/florafresh_rules.py --brief`), never the PDP description.
 2. **Evidence.** 3–6 sources max. Confirm every figure in the abstract (Europe PMC REST:
    `https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI:<doi>&resultType=core&format=json`).
 3. **Spec.** Write `landing_drafts/<slug>.json` (schema in `templates/landing/README.md`; copy a sample:

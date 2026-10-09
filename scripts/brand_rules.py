@@ -1,4 +1,5 @@
-"""AgeAura promotion guard (Kevin 2026-10-06, re-audited 2026-10-09).
+"""Brand guard: AgeAura promotion (Kevin 2026-10-06, re-audited 2026-10-09) and the
+FloraFresh formula (Kevin 2026-10-09).
 
 AgeAura may promote exactly one SKU:
 
@@ -10,12 +11,20 @@ Urolithin A, every other AgeAura handle (p2, duos, peptides), and
 product is not a second SKU: callers either reject it or lock it to the
 allowed product via prepare_ticket / prepare_image_request.
 
+FloraFresh copy follows its Supplement Facts label (Bacillus coagulans SNZ-1969,
+1 billion CFU per 2 gummies), not the wrong PDP description. florafresh_rules.py
+holds those facts; assess() denies any FloraFresh claim it rejects, so every
+caller below enforces both brands. Landing specs use spec_violations().
+
 This module is the only allow/deny list. Ticket builders, landing builders,
 image prompts, the publisher, llms.txt drafts, and IndexNow call it.
 Do not copy the handle into another file.
 """
+import json
 import os
 import re
+
+import florafresh_rules as florafresh
 
 AGEAURA_OK = "ageaura-pure-nmn-tmg-nad-complex"
 AGEAURA_OK_URL = "https://wellnessnest.co/products/" + AGEAURA_OK
@@ -23,6 +32,7 @@ AGEAURA_PRODUCT_LABEL = "AgeAura Pure NMN + TMG NAD+ Complex"
 LOCK_LINE = (
     "AgeAura product (only): " + AGEAURA_PRODUCT_LABEL + " (" + AGEAURA_OK_URL + ")."
 )
+_FORCE_REASON = "AgeAura named without the Pure NMN + TMG NAD Complex (" + AGEAURA_OK + ")"
 
 _ASSET_SUFFIX = re.compile(r"-(?:cutout|label|ref|pack)$", re.I)
 _PRODUCT_PATH = re.compile(r"/products/([a-z0-9-]+)", re.I)
@@ -121,10 +131,22 @@ def _visible(text):
 def assess(text):
     """Classify promotion copy.
 
-    deny  — Urolithin A, another AgeAura SKU, a banned bundle, or /collections/ageaura
-    force — the brand is named and the Pure NMN + TMG product is not
+    deny  — Urolithin A, another AgeAura SKU, a banned bundle, /collections/ageaura,
+            or a FloraFresh formula claim its Supplement Facts label does not support
+    force — AgeAura is named and the Pure NMN + TMG product is not
     allow — no AgeAura, or AgeAura is tied to that one product
     """
+    decision = _ageaura_decision(text)
+    ff_bad = florafresh.violations(text)
+    if not ff_bad:
+        return decision
+    reasons = list(decision.reasons) if decision.action == "deny" else []
+    if decision.action == "force":
+        reasons.append(_FORCE_REASON)
+    return Decision("deny", None, tuple(_dedupe(reasons + ff_bad)))
+
+
+def _ageaura_decision(text):
     text = text or ""
     reasons = []
     handles = []
@@ -141,10 +163,7 @@ def assess(text):
         reasons.append("other AgeAura bundle")
     if _PEPTIDE.search(text):
         reasons.append("AgeAura peptides")
-    deduped = []
-    for reason in reasons:
-        if reason not in deduped:
-            deduped.append(reason)
+    deduped = _dedupe(reasons)
     if deduped:
         return Decision("deny", None, tuple(deduped))
     if _AGEAURA.search(_visible(text)) and not mentions_allowed_product(text):
@@ -161,16 +180,37 @@ def violations(text):
     """Hard-fail strings for lint and the article/landing gates.
 
     Ambiguous AgeAura is a violation until prepare_ticket / prepare_promotion
-    locks the copy to the allowed SKU. Denied SKUs stay violations either way.
+    locks the copy to the allowed SKU. Denied SKUs and FloraFresh formula claims
+    stay violations either way.
     """
-    decision = assess(text)
+    return _decision_violations(assess(text))
+
+
+def spec_violations(spec):
+    """violations() for a landing spec (the parsed JSON).
+
+    AgeAura reads the whole spec, as the gates always did. FloraFresh is checked field
+    by field, so source notes and the citation list may record what the wrong PDP says;
+    product, offer, sticky_cta, and trust copy counts as a FloraFresh claim.
+    """
+    out = _decision_violations(_ageaura_decision(json.dumps(spec)))
+    return _dedupe(out + florafresh.spec_violations(spec))
+
+
+def _decision_violations(decision):
     if decision.action == "allow":
         return []
     if decision.action == "force":
-        return [
-            "AgeAura named without the Pure NMN + TMG NAD Complex (" + AGEAURA_OK + ")"
-        ]
+        return [_FORCE_REASON]
     return list(decision.reasons)
+
+
+def _dedupe(items):
+    out = []
+    for item in items:
+        if item not in out:
+            out.append(item)
+    return out
 
 
 def resolve_handle(handle):

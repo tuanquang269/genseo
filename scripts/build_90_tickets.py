@@ -139,7 +139,7 @@ for i, art in enumerate(articles[:90]):
     try:
         out_lines.append(br.prepare_ticket(block))
     except br.GuardError as e:
-        print(f"ageaura guard: skipped 90-ticket keyword {art['keywords'][0]!r}: {e}")
+        print(f"brand guard: skipped 90-ticket keyword {art['keywords'][0]!r}: {e}")
         continue
 
 with open("/Users/kevinkreative/genseo/GENSEO_30_DAY_SCHEDULE.md", "w") as f:

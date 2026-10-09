@@ -69,7 +69,7 @@ wasted image-generation + writing cost of a doomed article.)
   Every brand below is a HOUSE brand sold on wellnessnest.co. Priority order:
   1. **ShilaSource** — Himalayan shilajit resin + gummies + gold resin + energy drops
   2. **FusiForce** — creatine monohydrate gummies 5,000mg
-  3. **FloraFresh** — vaginal/feminine probiotics (gummies + prebiotic+probiotic)
+  3. **FloraFresh** — vaginal/feminine probiotic gummies. Formula ONLY from its Supplement Facts label: Bacillus coagulans SNZ-1969 (spore-based), 1 billion CFU per 2 gummies, Vitamin C 30 mg, pineapple fruit powder 100 mg (with bromelain), sweetened with maltitol + isomalt (not sugar-free). The live PDP description (15 billion CFU, four Lactobacillus strains, XOS, D-mannose, sugar-free) is wrong until Kevin's GO rewrites it: never copy it or the older FloraFresh articles that repeat it (`scripts/florafresh_rules.py`, run by `scripts/brand_rules.py`, hard-fails those claims in `validate_article.py` and `lint_tickets.py`; Kevin 2026-10-09).
   4. **MenoMate** — menopause probiotics & herbal blend
   5. **Turkesterone** Advanced Formula
   6. **AgeAura** — longevity line on the same store. Promote ONLY AgeAura Pure NMN + TMG NAD Complex (`/products/ageaura-pure-nmn-tmg-nad-complex`). Never Urolithin A, peptides, bundles, `ageaura-pure-nmn-tmg-p2`, `/collections/ageaura`, or any other AgeAura SKU (`scripts/brand_rules.py` hard-fails them in `validate_article.py` and `lint_tickets.py`; Kevin 2026-10-07, re-audited 2026-10-09).

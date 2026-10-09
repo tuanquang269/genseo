@@ -119,10 +119,10 @@ def main():
         else:
             skipped.append(f"{path} (unknown type)"); continue
         if br.assess(f"{url}\n{title}").action == "deny":
-            skipped.append(f"{path} (AgeAura guard)"); continue
+            skipped.append(f"{path} (brand guard)"); continue
         top = [r for r in top if br.assess(r['keys'][1]).action != "deny"]
         if not top:
-            skipped.append(f"{path} (AgeAura guard: only banned queries)"); continue
+            skipped.append(f"{path} (brand guard: only banned queries)"); continue
         tickets.append(dict(missed=missed, url=url, pos=pos, imp=imp, clk=clk, top=top,
                             rtype=rtype, rid=rid, title=title, extra=extra))
 

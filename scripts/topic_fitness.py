@@ -12,6 +12,8 @@ winner and is not already covered.
 Verdicts: PASS (exit 0), REVIEW (exit 2 — allowed but flagged), FAIL (exit 1 — do not create).
 
 Rules (a heuristic gate — tune the lists as data grows):
+  FAIL  brand_rules: a FloraFresh formula claim its Supplement Facts label does not support
+        [florafresh-formula], or an AgeAura SKU other than the NMN + TMG Complex [ageaura-sku]
   FAIL  near-duplicate of an existing live article (we already have the page)
   FAIL  bare category head-term a COLLECTION owns ("best protein powder us") -> the
         collection page should win it, a new article would cannibalise it
@@ -27,6 +29,7 @@ Usage:
 """
 import json, re, sys
 import brand_rules as br
+import florafresh_rules as ff
 
 ROOT = "/Users/kevinkreative/genseo"
 MIN_IMP = 20          # below this SG demand, not worth a dedicated page
@@ -130,6 +133,12 @@ def assess(topic, sg_imp=None, articles=None, collections=None, pos=None):
     pos (optional) = our current avg SG rank for the query; ranking page-1 already means a new
     article would cannibalise the page that's already winning."""
     t = topic.lower().strip()
+
+    ff_bad = ff.violations(topic)
+    if ff_bad:
+        return ('FAIL', 'florafresh-formula',
+                'FloraFresh follows its Supplement Facts label (' + ff.STRAIN + ', ' + ff.CFU
+                + ' per 2 gummies), not the PDP description: ' + '; '.join(ff_bad))
 
     if br.assess(topic).action == "deny":
         return ('FAIL', 'ageaura-sku',
@@ -247,6 +256,9 @@ def self_check():
         ("MenoMate Menopause Probiotic Review", None, [], 'PASS', 17.1),  # weak rank + stocked brand -> genuine
         ("Urolithin A benefits review", None, [], 'FAIL'),                 # banned AgeAura SKU
         ("AgeAura review", None, [], 'PASS'),                              # brand is allowed; ticket builder locks the SKU
+        ("FloraFresh 15 billion CFU review", None, [], 'FAIL'),            # wrong PDP figure (label: 1 billion CFU)
+        ("FloraFresh sugar free gummies review", None, [], 'FAIL'),        # label: maltitol + isomalt
+        ("FloraFresh Bacillus coagulans SNZ-1969 review", None, [], 'PASS'),  # the label strain
     ]
     ok = True
     for topic, imp, a, want, *rest in cases:

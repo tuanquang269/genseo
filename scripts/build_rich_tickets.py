@@ -160,7 +160,7 @@ def main():
     kept_tickets=[]
     for r in tickets:
         if br.assess(r['query']).action == "deny":
-            print(f"ageaura guard: skipped query {r['query']!r}")
+            print(f"brand guard: skipped query {r['query']!r}")
             continue
         kept_tickets.append(r)
     tickets=kept_tickets
@@ -220,7 +220,7 @@ def main():
         try:
             block=br.prepare_ticket("\n".join(block)).splitlines()
         except br.GuardError as e:
-            print(f"ageaura guard: skipped ticket {q!r}: {e}")
+            print(f"brand guard: skipped ticket {q!r}: {e}")
             continue
         L.extend(block)
 

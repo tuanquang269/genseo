@@ -564,7 +564,7 @@ def main():
     try:
         a.prompt, a.product_ref = brand_rules.prepare_image_request(a.prompt, a.product_ref)
     except brand_rules.GuardError as e:
-        sys.exit(f"✗ AgeAura guard: {e}")
+        sys.exit(f"✗ brand guard: {e}")
 
     for spec in a.product_ref:
         a.ref.append(fetch_product_ref(spec))

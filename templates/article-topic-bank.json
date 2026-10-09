@@ -188,14 +188,14 @@
    "product": "florafresh-vaginal-probiotics-gummies",
    "primary": "vaginal probiotic dosage",
    "title": "Vaginal Probiotic Dosage: How Many CFU a Day? (US {year})",
-   "secondary": ["how many cfu for vaginal health", "vaginal probiotic cfu", "15 billion cfu probiotic", "how many vaginal probiotics a day"],
+   "secondary": ["how many cfu for vaginal health", "vaginal probiotic cfu", "1 billion cfu probiotic", "how many vaginal probiotics a day"],
    "segment": "dosage",
    "intent": "buyer comparing CFU numbers on labels and unsure how much is enough",
    "template": "COMPARISON",
    "priority": 1,
-   "angle": "Explain what CFU means (live organisms at manufacture vs at expiry), what daily doses the oral vaginal-health trials used, and why strain identity matters more than a bigger number. Compare common label ranges in a table and place FloraFresh honestly, using only the CFU and strains its PDP states. No cure or treatment claims.",
-   "fanout": ["is 15 billion CFU enough", "can you take too many probiotics", "should CFU be guaranteed through expiry", "do more strains mean better results"],
-   "evidence": "Oral Lactobacillus vaginal-health trials that state CFU per day — fetch each before citing; FloraFresh CFU and strains from the live PDP.",
+   "angle": "Explain what CFU means (live organisms at manufacture vs at expiry), what daily doses the oral vaginal-health trials used and with which strains, and why strain identity matters more than a bigger number. Compare common label ranges in a table, then place FloraFresh from its Supplement Facts label only: one spore-based strain (Bacillus coagulans SNZ-1969), 1 billion CFU per 2 gummies, which is not a strain the Lactobacillus trials tested (say so). The live PDP description does not match the label: if they disagree, the label wins, and a draft that cites the PDP formula fails the gate. No cure or treatment claims.",
+   "fanout": ["is 1 billion CFU enough", "can you take too many probiotics", "should CFU be guaranteed through expiry", "do more strains mean better results"],
+   "evidence": "Oral Lactobacillus vaginal-health trials that state CFU per day — fetch each before citing; FloraFresh strain and CFU from its Supplement Facts label, not the PDP description.",
    "link": ["vaginal-probiotics-which-strains-actually-work-us-2026", "florafresh-vs-generic-probiotics-4-strain-facts-us-2026", "vaginal-probiotics-side-effects-normal-vs-stop-us-2026"]
   },
   {
@@ -283,9 +283,9 @@
    "intent": "buyer deciding between pharmacy, marketplace and brand-direct vaginal probiotics",
    "template": "LISTICLE",
    "priority": 2,
-   "angle": "Five checks before buying anywhere: strains named to strain level, CFU guaranteed through expiry, storage needs, format (gummies vs capsules — link, don't restate) and price per day. Apply them to FloraFresh honestly (PDP facts only); Wellness Nest as the official source at the live price. No cure or treatment claims.",
+   "angle": "Five checks before buying anywhere: strains named to strain level, CFU guaranteed through expiry, storage needs, format (gummies vs capsules — link, don't restate) and price per day. Apply them to FloraFresh honestly: strain and CFU from its Supplement Facts label (Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies), price from the live PDP, never the formula in the PDP description; Wellness Nest as the official source at the live price. No cure or treatment claims.",
    "fanout": ["can you buy vaginal probiotics at a pharmacy", "do vaginal probiotics need refrigeration", "how much do vaginal probiotics cost per month", "what should a vaginal probiotic label show"],
-   "evidence": "FloraFresh strains, CFU and storage from the live PDP; any retailer price only from a page fetched at write time.",
+   "evidence": "FloraFresh strain and CFU from its Supplement Facts label, storage from the label or the PDP storage note (never formula facts from the PDP description); any retailer price only from a page fetched at write time.",
    "link": ["florafresh-gummies-vs-capsules-5-format-facts-us-2026", "vaginal-probiotics-which-strains-actually-work-us-2026", "florafresh-vs-generic-probiotics-4-strain-facts-us-2026"]
   },
   {
