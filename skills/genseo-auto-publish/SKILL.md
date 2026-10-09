@@ -362,8 +362,11 @@ EOF
 
 ### TICKET REFILL: when the queue runs low (< 3 pending `[ ]` tickets)
 
-Mine the Google Ads account for the next batch — the recipe (GAQL slices, term-pattern →
-article-type map, ticket checklist, hard rules incl. verbatim `campaign.name`) is codified in
+First: `python3 scripts/refill_tickets.py --count 8 --dry-run`, then without `--dry-run` — gated,
+product-mapped tickets from `templates/article-topic-bank.json` + `board/ideas.csv`
+(`docs/TICKET_REFILL.md`). When it exits 3 (sources ran dry), mine the Google Ads account for the
+next batch — the recipe (GAQL slices, term-pattern → article-type map, ticket checklist, hard
+rules incl. verbatim `campaign.name`) is codified in
 `references/ads-article-mining.md`. Its two goldmine classes: paid-but-not-converting terms
 (organic arbitrage) and converting query patterns (compound proven intent). Append the new
 batch to `daily-tickets.md` as `# Batch N` with the evidence header; never overwrite old

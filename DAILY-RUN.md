@@ -103,6 +103,11 @@ back to Kevin through Eugene.
 
 ## 2 · Mining a ticket when the queue is empty
 
+**First run the gated refill:** `python3 scripts/refill_tickets.py --count 8 --dry-run`, read it, then drop
+`--dry-run`. It appends product-mapped tickets from `templates/article-topic-bank.json` + `board/ideas.csv`
+after the same dedup and fitness gates as below; the daily wrapper can call it on its own
+(`GENSEO_AUTO_REFILL=1`). See `docs/TICKET_REFILL.md`. Mine by hand only when it exits 3 (sources ran dry).
+
 **GSC is unauthorised on this Mac and the google-ads MCP is not connected**, so the two
 normal demand sources are unavailable. Mine at $0 from what is on the machine:
 

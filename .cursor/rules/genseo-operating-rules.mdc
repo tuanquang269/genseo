@@ -67,6 +67,6 @@ Also: never `rm` repo files (move them to `_superseded/`); never put CDN URLs in
 ```bash
 python3 scripts/lint_tickets.py daily-tickets.md        # banned link in an open ticket -> exit 2
 python3 scripts/refill_tickets.py --self-test           # offline fixtures + topic-bank lint
-python3 scripts/refill_tickets.py --count 8 --dry-run   # storefront reads only, writes nothing
+python3 scripts/refill_tickets.py --count 8 --dry-run   # storefront reads only; queue + board untouched
 python3 scripts/sync_cursor_skills.py --check           # .cursor/skills pointers match skills/
 ```
