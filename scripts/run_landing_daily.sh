@@ -14,21 +14,31 @@
 #      Mini (primary) finishes its draft and rule 1 makes this Mac stand down; then re-checks the guard
 #   3. landing_publisher.py (GENSEO_LANDING_DAILY=1) re-runs landing_guard.py right before it POSTs a NEW page
 #   4. local mkdir lock: the 16:15 catch-up never overlaps a still-running 08:15 run on the same Mac
-#   5. polite to the article batch: waits (up to GENSEO_LANDING_WAIT_ARTICLES_MIN, default 180) while this Mac's
-#      daily article batch holds state/daily.lock, so both never fight over ima2 / the model lane
+#   5. this Mac's article batch (state/daily.lock) only gets a short courtesy yield, never the whole day: wait while it
+#      runs, at most GENSEO_LANDING_ARTICLE_YIELD_MIN (default 30) wall-clock minutes, re-checking every
+#      GENSEO_LANDING_POLL_SEC (default 60) s, then re-check rule 1 and build ALONGSIDE it. Overlap is safe: this lane
+#      only ever writes a Shopify PAGE, never a blog article (article publishing stays serialized by daily.lock and the
+#      article lane's own guards); pages never reach /blogs/news.atom (the article live-count + peer guards); and
+#      ima2 serve admits parallel jobs (it renders 3 at a time on its one OAuth session by itself).
 # Kill switch: touch state/landing-daily.disabled (or GENSEO_LANDING_DAILY_ENABLED=0).
 set -uo pipefail
 export PATH="$HOME/.local/bin:$HOME/.npm-global/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 for d in "$HOME"/.nvm/versions/node/*/bin; do [ -d "$d" ] && PATH="$d:$PATH"; done; export PATH
 G="$HOME/genseo"; PY=/usr/bin/python3; cd "$G" || exit 1
 ROLE="${GENSEO_HOST_ROLE:-primary}"; DELAY="${GENSEO_LANDING_STANDBY_DELAY_MIN:-75}"
-WAIT_ART="${GENSEO_LANDING_WAIT_ARTICLES_MIN:-180}"
+YIELD="${GENSEO_LANDING_ARTICLE_YIELD_MIN:-30}"; POLL="${GENSEO_LANDING_POLL_SEC:-60}"
 HOST="$(hostname -s)"; DAY="$(TZ=Asia/Saigon date +%F)"
 LOGDIR="$G/logs/landing-daily"; mkdir -p "$LOGDIR" "$G/state"; LOG="$LOGDIR/$DAY.log"
-LOCK="$G/state/landing-daily.lock"; MINE="$G/state/landing-by-$HOST.log"
+LOCK="$G/state/landing-daily.lock"; MINE="$G/state/landing-by-$HOST.log"; ART_LOCK="$G/state/daily.lock"
 QUEUE="daily-landing-tickets.md"
 ts(){ date '+%F %T'; }
 say(){ echo "[$(ts)] [$HOST/$ROLE] $*" | tee -a "$LOG"; }
+# sleep until the wall clock reaches epoch $1 in <= POLL s steps, ending early once the optional condition command
+# (args 2..) fails; a deadline instead of a count of sleeps, so a Mac that dozes off mid-wait cannot stretch the wait
+wait_until(){ local end=$1 now; shift; while now=$(date +%s); [ "$now" -lt "$end" ] && { [ $# = 0 ] || "$@"; }; do sleep $(( end - now < POLL ? end - now : POLL )); done; }
+# lock younger than grokbot-genseo-daily.sh's own 6 h takeover age; one that vanishes mid-check counts as released
+# (an empty stat inside $(( )) would abort this whole script)
+articles_running(){ local m; m="$(stat -f %m "$ART_LOCK" 2>/dev/null)" && [ $(( $(date +%s) - m )) -lt 21600 ]; }
 
 [ "${GENSEO_LANDING_DAILY_ENABLED:-1}" = "1" ] && [ ! -e "$G/state/landing-daily.disabled" ] || { say "disabled (kill switch) — exit"; exit 0; }
 if ! mkdir "$LOCK" 2>/dev/null; then
@@ -43,17 +53,20 @@ guard; g=$?
 [ $g != 0 ] && { say "guard: Shopify unreadable — fail closed"; exit 1; }
 say "start: no gsl- landing draft yet today ($DAY ICT)"
 if [ "$ROLE" = "standby" ] && [ "${GENSEO_NO_DELAY:-0}" != "1" ]; then
-  say "standby: waiting ${DELAY} min so a healthy peer Mac goes first"; sleep $(( DELAY * 60 ))
+  say "standby: waiting ${DELAY} min so a healthy peer Mac goes first"; wait_until $(( $(date +%s) + DELAY * 60 ))
   guard; g=$?
   [ $g = 3 ] && { say "peer Mac already made today's draft — stand down"; exit 0; }
   [ $g != 0 ] && { say "guard: Shopify unreadable — fail closed"; exit 1; }
 fi
-waited=0
-while [ -d "$G/state/daily.lock" ] && [ $(( $(date +%s) - $(stat -f %m "$G/state/daily.lock") )) -lt 21600 ] && [ "$waited" -lt "$WAIT_ART" ]; do
-  [ "$waited" = 0 ] && say "article batch running on this Mac (state/daily.lock) — waiting up to ${WAIT_ART} min"
-  sleep 300; waited=$((waited+5))
-done
-[ "$waited" -gt 0 ] && { guard; g=$?; [ $g = 3 ] && { say "draft appeared meanwhile — stand down"; exit 0; }; [ $g != 0 ] && { say "guard unreadable — fail closed"; exit 1; }; }
+if articles_running; then
+  say "article batch running on this Mac (state/daily.lock) — yielding up to ${YIELD} min, then building alongside it"
+  wait_until $(( $(date +%s) + YIELD * 60 )) articles_running
+  if articles_running; then say "article batch still running — building alongside it (this lane writes a Shopify page, never a blog article)"
+  else say "article batch finished — building now"; fi
+  guard; g=$?
+  [ $g = 3 ] && { say "draft appeared meanwhile — stand down"; exit 0; }
+  [ $g != 0 ] && { say "guard: Shopify unreadable — fail closed"; exit 1; }
+fi
 
 # reviews (real 4-5★ only); a failure is not fatal — the agent then leaves the review slot as a placeholder
 NODE_PATH="$(npm root -g)" node scripts/trustpilot_reviews.mjs >> "$LOG" 2>&1 || say "WARN: Trustpilot refresh failed — page will carry a review placeholder"

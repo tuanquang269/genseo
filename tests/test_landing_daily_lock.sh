@@ -1,0 +1,136 @@
+#!/bin/bash
+# Offline self-check of scripts/run_landing_daily.sh scheduling + locks: no Shopify, no model, no images, no git.
+#   bash tests/test_landing_daily_lock.sh                                # ~75 s (case 7 waits out a real 1-min yield)
+#   LANDING_WRAPPER=<another copy> bash tests/test_landing_daily_lock.sh  # same cases against another wrapper
+# Every case runs the REAL wrapper under `env -i HOME=<sandbox>`, so its G=$HOME/genseo is a throwaway dir whose
+# scripts/ are stubs: landing_guard.py replays scripted exit codes (state/guard-codes; none left = 0, slot free) and
+# run_landing_headless.sh only records that the agent would start now, with which env, and whether state/daily.lock
+# was held at that moment. No spec is produced, so a run that reaches the agent ends "FAILED: no spec produced".
+set -uo pipefail
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+WRAPPER="${LANDING_WRAPPER:-$ROOT/scripts/run_landing_daily.sh}"
+TMP="$(mktemp -d "${TMPDIR:-/tmp}/landing-lock-test.XXXXXX")" || exit 1
+trap 'kill $(jobs -p) 2>/dev/null; rm -rf "$TMP"' EXIT
+PASS=0; FAIL=0; H=""; S=""; RC=""; T0=0
+
+sandbox(){  # sandbox <name> [guard exit codes...]: fresh fake HOME in $H, its genseo/state in $S
+  H="$TMP/$1"; shift; S="$H/genseo/state"; local sc="$H/genseo/scripts"
+  mkdir -p "$sc" "$S" "$H/genseo/logs"
+  echo "$*" > "$S/guard-codes"
+  cat > "$sc/landing_guard.py" <<'PY'
+import sys
+codes = open("state/guard-codes").read().split()
+open("state/guard-codes", "w").write(" ".join(codes[1:]))
+print("stub landing_guard: exit", codes[0] if codes else 0)
+sys.exit(int(codes[0]) if codes else 0)
+PY
+  cat > "$sc/build_landing_tickets.py" <<'PY'
+q = "daily-landing-tickets.md"
+try:
+    s = open(q).read()
+except FileNotFoundError:
+    s = "# stub queue\n\n"
+if "- [ ] " not in s:
+    open(q, "w").write(s + "- [ ] listicle | wellnessnest | product=stub-product - angle: stub (added 2026-01-01)\n")
+PY
+  echo 'import sys; sys.exit(0)' > "$sc/lint_tickets.py"
+  echo 'console.log("stub trustpilot")' > "$sc/trustpilot_reviews.mjs"
+  cat > "$sc/run_landing_headless.sh" <<'SH'
+{ echo "ts=$(date +%s)"; [ -d state/daily.lock ] && echo "art_lock=held" || echo "art_lock=free"
+  echo "env=daily:${GENSEO_LANDING_DAILY:-} draft:${GENSEO_LANDING_DRAFT:-} live_ok:${GENSEO_LANDING_LIVE_OK:-}"
+  echo "args=$*"; } > state/agent-called
+SH
+}
+run(){  # run <timeout s> [VAR=value ...]: the real wrapper on the current sandbox, with a clean environment
+  local t=$1; shift
+  T0=$(date +%s)
+  env -i HOME="$H" PATH=/usr/bin:/bin:/usr/sbin:/sbin "$@" \
+    /usr/bin/perl -e 'alarm shift; exec @ARGV' "$t" /bin/bash "$WRAPPER" > "$H/out.log" 2>&1
+  RC=$?
+}
+check(){  # check <description> <command...>
+  local d=$1; shift
+  if "$@"; then PASS=$((PASS+1)); echo "  ok    $d"
+  else FAIL=$((FAIL+1)); echo "  FAIL  $d (wrapper rc=$RC)"; tail -4 "$H/out.log" | sed 's/^/        | /'; fi
+}
+not(){ ! "$@"; }
+rc_is(){ [ "$RC" = "$1" ]; }
+logged(){ grep -qF -- "$1" "$H/out.log"; }
+agent_started(){ [ -f "$S/agent-called" ]; }
+agent_saw(){ grep -qxF -- "$1" "$S/agent-called" 2>/dev/null; }
+started_after(){  # started_after <min s> <max s>: the agent started that long after the wrapper did
+  local t; t="$(sed -n 's/^ts=//p' "$S/agent-called" 2>/dev/null)"
+  [ -n "$t" ] && [ $(( t - T0 )) -ge "$1" ] && [ $(( t - T0 )) -le "$2" ]
+}
+
+echo "wrapper: $WRAPPER"
+echo "1. today's draft already exists (guard exit 3) -> stand down, even with the article batch running"
+sandbox exists 3; mkdir "$S/daily.lock"; run 20
+check "exit 0" rc_is 0
+check "logged DONE" logged "today's gsl- landing draft already exists"
+check "agent never started" not agent_started
+
+echo "2. Shopify unreadable (guard exit 1) -> fail closed"
+sandbox unreadable 1; run 20
+check "exit 1" rc_is 1
+check "logged fail closed" logged "fail closed"
+check "agent never started" not agent_started
+
+echo "3. kill switch (state/landing-daily.disabled)"
+sandbox disabled; touch "$S/landing-daily.disabled"; run 20
+check "exit 0" rc_is 0
+check "logged disabled" logged "disabled (kill switch)"
+check "agent never started" not agent_started
+
+echo "4. another landing run holds state/landing-daily.lock -> exit and leave its lock alone"
+sandbox busy; mkdir "$S/landing-daily.lock"; run 20
+check "exit 0" rc_is 0
+check "logged another landing run" logged "another landing run is active"
+check "agent never started" not agent_started
+check "the other run's lock is still there" test -d "$S/landing-daily.lock"
+
+echo "5. article batch running, yield 0 -> builds alongside it at once, in the draft-only lane"
+sandbox alongside; mkdir "$S/daily.lock"; run 30 GENSEO_LANDING_ARTICLE_YIELD_MIN=0
+check "agent started within 10 s" started_after 0 10
+check "while state/daily.lock was held" agent_saw "art_lock=held"
+check "logged building alongside" logged "still running — building alongside it"
+check "GENSEO_LANDING_DAILY=1 + GENSEO_LANDING_DRAFT=1, no GENSEO_LANDING_LIVE_OK" agent_saw "env=daily:1 draft:1 live_ok:"
+check "daily queue, next ticket" agent_saw "args=--queue daily-landing-tickets.md --next"
+check "wrapper carried on after the agent (stub made no spec)" logged "FAILED: no spec produced"
+check "article lock untouched" test -d "$S/daily.lock"
+check "landing lock released" test ! -e "$S/landing-daily.lock"
+
+echo "6. article batch finishes 3 s into a 1-min yield -> builds as soon as the lock clears"
+sandbox clears; mkdir "$S/daily.lock"; ( sleep 3; rmdir "$S/daily.lock" ) &
+run 45 GENSEO_LANDING_ARTICLE_YIELD_MIN=1 GENSEO_LANDING_POLL_SEC=1
+check "agent started 2-15 s in, not after the full minute" started_after 2 15
+check "after the lock cleared" agent_saw "art_lock=free"
+check "logged article batch finished" logged "article batch finished — building now"
+
+echo "7. article batch outlasts a 1-min yield -> builds alongside it after ~60 s"
+sandbox outlasts; mkdir "$S/daily.lock"; run 120 GENSEO_LANDING_ARTICLE_YIELD_MIN=1 GENSEO_LANDING_POLL_SEC=5
+check "agent started 58-90 s in" started_after 58 90
+check "while state/daily.lock was held" agent_saw "art_lock=held"
+check "logged the yield" logged "yielding up to 1 min"
+check "logged building alongside" logged "still running — building alongside it"
+
+echo "8. stale article lock (7 h old, batch long gone) -> no yield at all"
+sandbox stale; mkdir "$S/daily.lock"; touch -t "$(date -v-7H +%Y%m%d%H%M.%S)" "$S/daily.lock"; run 30
+check "agent started within 10 s" started_after 0 10
+check "no yield logged" not logged "yielding"
+
+echo "9. peer Mac made today's draft while this Mac yielded (guard 0, then 3) -> stand down"
+sandbox peer_yield 0 3; mkdir "$S/daily.lock"; run 30 GENSEO_LANDING_ARTICLE_YIELD_MIN=0
+check "exit 0" rc_is 0
+check "logged stand down" logged "draft appeared meanwhile — stand down"
+check "agent never started" not agent_started
+
+echo "10. standby: peer made today's draft during the standby delay (guard 0, then 3) -> stand down"
+sandbox standby 0 3; run 30 GENSEO_HOST_ROLE=standby GENSEO_LANDING_STANDBY_DELAY_MIN=0
+check "exit 0" rc_is 0
+check "logged peer stand down" logged "peer Mac already made today's draft — stand down"
+check "agent never started" not agent_started
+
+echo
+echo "$PASS passed, $FAIL failed"
+[ "$FAIL" = 0 ]

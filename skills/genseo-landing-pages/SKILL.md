@@ -117,6 +117,11 @@ testimonials, no sticky). Surface the choice to Kevin; never silently downgrade 
 - launchd `com.pati.genseo-landing` 08:15 + 16:15 catch-up → `scripts/run_landing_daily.sh` (MacBook = standby,
   waits 75 min; Mini = primary; plists in `deploy/com.pati.genseo-landing.{macbook,mini}.plist`). Kill switch:
   `touch state/landing-daily.disabled`.
+- Article batch on the same Mac (`state/daily.lock`): the lane yields to it at most `GENSEO_LANDING_ARTICLE_YIELD_MIN`
+  (default 30) wall-clock minutes, re-checking every `GENSEO_LANDING_POLL_SEC` (60) s, then re-runs the guard and builds
+  ALONGSIDE it. A page is never a blog article, so article publishing stays serialized by the article lane's own lock +
+  guards. (Until 2026-10-09 it waited up to 180 min via `GENSEO_LANDING_WAIT_ARTICLES_MIN`, which is no longer read; a
+  long article batch then held the day's draft hostage.) Offline self-check: `bash tests/test_landing_daily_lock.sh`.
 - Guard: `scripts/landing_guard.py` counts Shopify pages with a `gsl-` handle CREATED today (ICT). ≥1 → stand down;
   Shopify unreadable → fail closed. `landing_publisher.py` (env `GENSEO_LANDING_DAILY=1`) re-checks it right before
   POSTing a new page, refuses `--live`, and requires a `gsl-preview-` handle.
