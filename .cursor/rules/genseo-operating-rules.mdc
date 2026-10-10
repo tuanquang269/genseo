@@ -44,6 +44,10 @@ Also: never `rm` repo files (move them to `_superseded/`); never put CDN URLs in
   powder 100 mg (with bromelain), sweetened with maltitol + isomalt, so never "sugar-free". The live PDP description
   (15 billion CFU, four Lactobacillus strains, XOS, D-mannose, sugar-free) is wrong until Kevin's GO rewrites it:
   never take formula facts from it or from older FloraFresh articles. See `docs/FLORAFRESH_FORMULA_GUARD.md`.
+- **Premium Himalayan Shilajit Gummies = the pack-label whitelist** (`product_refs/premium-himalayan-shilajit-gummies.label.json`;
+  `scripts/shilajit_gummies_rules.py`, run by `brand_rules.py`): 60 gummies and a 60-day supply. A 30-serving panel is not
+  on that file. Do not state a milligram amount the file does not list (`1500mg Shilajit` is on it; `150 mg` is not).
+  Shockwave, Gold Resin, and ShilaSource resin are separate products. See `docs/SHILAJIT_GUMMIES_LABEL_GUARD.md`.
 - **Hero products** (house brands sold on wellnessnest.co — follow `lint_tickets.py` and `knowledge_base/`):
   FusiForce creatine gummies `fusiforce-creatine-gummies` · ShilaSource / Himalayan shilajit: resin
   `shilasource-himalayan-shilajit-resin`, gummies `premium-himalayan-shilajit-gummies`, gold resin

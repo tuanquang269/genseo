@@ -14,6 +14,7 @@ import genseo_config as _gcfg
 import genseo_roster
 import brand_rules
 import florafresh_rules
+import shilajit_gummies_rules
 
 CONFIG_PATH = _gcfg.CONFIG_PATH
 API = _gcfg.API
@@ -23,17 +24,21 @@ ORG_LOGO = "https://wellnessnest.co/cdn/shop/files/WNN_Main_Logo_eb77747f-0bd5-4
 FALLBACK_AUTHOR = "Wellness Nest Editorial Team"
 
 def _refuse_guarded_draft(title, body):
-    """Stop a publish/update that would promote Urolithin A or any other AgeAura SKU, or that makes
-    a FloraFresh formula claim its Supplement Facts label does not support."""
+    """Stop a publish/update that would promote Urolithin A or any other AgeAura SKU, that makes
+    a FloraFresh formula claim its Supplement Facts label does not support, or that states a
+    Shilajit-gummies pack count or milligram amount the pack label does not list."""
     try:
         brand_rules.assert_publishable(title, body)
     except brand_rules.GuardError as e:
         print("✗ ABORT: brand guard. This draft names Urolithin A, another AgeAura SKU, AgeAura without "
-              "the Pure NMN + TMG product, or a FloraFresh formula that is not on its Supplement Facts label.")
+              "the Pure NMN + TMG product, a FloraFresh formula that is not on its Supplement Facts label, "
+              "or a Premium Himalayan Shilajit Gummies pack-count, serving-count, or milligram claim the "
+              "pack label whitelist does not list.")
         for reason in e.reasons[:8]:
             print(f"  {reason}")
         print(f"  Allowed AgeAura product: {brand_rules.AGEAURA_OK_URL}")
         print(f"  FloraFresh label formula: {florafresh_rules.FORMULA_LINE}")
+        print(f"  Shilajit gummies pack label: {shilajit_gummies_rules.LABEL_LINE}")
         sys.exit(2)
 
 

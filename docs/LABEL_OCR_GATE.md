@@ -52,7 +52,7 @@ The Gold Resin PDP composite also contains a supplement-facts wrap. Vision misre
 - The Urolithin A PDP is omitted. The draft text itself must not contain `urolithin`.
 - FloraFresh states Bacillus coagulans SNZ-1969 and 1 billion CFU, from `florafresh_rules.py`.
 - FusiForce states 90 gummies, from the pack label file. The file does not contain a serving count or a ginseng milligram, so the draft does not state `30 servings`, `84`, `25 mg`, or `50 mg`.
-- Shilajit gummies state 60 gummies and a 60-day supply, from the pack label. They do not state a 30-serving panel.
+- Shilajit gummies state 60 gummies and a 60-day supply, from the pack label. They do not state a 30-serving panel. Article and landing copy for that one product is checked by `scripts/shilajit_gummies_rules.py` (`docs/SHILAJIT_GUMMIES_LABEL_GUARD.md`).
 - Gold Resin, Shockwave, Turkesterone, and ShilaSource get a URL and no formula sentence.
 
 Regenerate with:
