@@ -4,10 +4,17 @@
 #
 # Order:
 #   1. native           caller set USE_NATIVE=1 (~/.claude-genseo loggedIn: true)
+#                       AND neither the writer nor the fallback is a router alias
 #   2. local-9router    GENSEO_LOCAL_ROUTER (default http://127.0.0.1:20128) is up
 #                       AND /v1/models lists GENSEO_WRITER_MODEL
 #   3. hosted-9router   GENSEO_ROUTER_BASE (default https://ai.patigroup.com)
 #                       with NINE_ROUTER_KEY from the env or ~/PATI/LLM-Wiki/.env
+#
+# Router aliases use the prefix PATI- (default writer PATI-Alpha-Plan-Review,
+# fallback PATI-Fable-5). Native Claude Code does not know those ids and returns
+# unrecognized_model (landing 2026-10-10 09:30). When the writer or the fallback
+# matches, USE_NATIVE is ignored and cleared so the router lanes run, including
+# callers that branch on the login flag (run_ticket_headless.sh).
 #
 # Local lane does not export ANTHROPIC_BASE_URL. The Mini's global Claude settings
 # already route at its 9router, and a process env cannot reliably override that.
@@ -25,6 +32,15 @@ genseo_writer_model() {
 
 genseo_writer_fallback() {
   printf '%s' "${GENSEO_WRITER_FALLBACK:-PATI-Fable-5}"
+}
+
+# Exit 0 when $1 is a 9router alias Claude Code native login cannot resolve.
+# The alias family is the PATI- prefix. A later "PATI" substring is not an alias.
+genseo_model_is_router_alias() {
+  case "${1:-}" in
+    PATI-*) return 0 ;;
+  esac
+  return 1
 }
 
 # stdin = /v1/models JSON. Exit 0 when $1 is an exact data[].id or data[].name.
@@ -77,6 +93,12 @@ genseo_select_model_lane() {
   base="${GENSEO_LOCAL_ROUTER:-http://127.0.0.1:20128}"
   base="${base%/}"
   cfg="${GENSEO_CFG:-$HOME/.claude-genseo}"
+
+  # PATI-* is not a native Claude model. Ignore the login flag and clear it so
+  # run_ticket_headless.sh uses the router invocation (context cap, strict MCP).
+  if genseo_model_is_router_alias "$model" || genseo_model_is_router_alias "$GENSEO_WRITER_FALLBACK"; then
+    USE_NATIVE=0
+  fi
 
   if [ "${USE_NATIVE:-0}" = "1" ]; then
     export CLAUDE_CONFIG_DIR="$cfg"

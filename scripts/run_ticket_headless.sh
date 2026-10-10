@@ -30,13 +30,16 @@ if [ -d "$GENSEO_CFG" ]; then
   case "$AUTH_JSON" in *'"loggedIn": true'*|*'"loggedIn":true'*) USE_NATIVE=1;; esac
 fi
 
-# Writing lane when native OAuth is logged out (2026-10-06, probe 2026-10-10). Local 9router is
-# used only when :20128 is up AND /v1/models lists the writer model — the Mini's global
-# settings.json routes that lane, and a process env cannot override it there. A router that is
-# up without the PATI writer alias (MacBook 2026-10-10: only ag/gemini-* ids) falls through to
-# hosted ai.patigroup.com. Key from the env or the vault .env. Never printed. The hosted lane
-# uses lean ~/.claude-genseo (no settings.json): the MacBook's global ~/.claude filled 450k
-# tokens before the first ticket read (2026-10-06 09:57).
+# Writing lane (scripts/genseo_model_lane.sh). A PATI-* writer or fallback never uses native
+# Claude login, even when ~/.claude-genseo is logged in: those ids are unrecognized_model
+# there (landing 2026-10-10 09:30). Otherwise native login wins. Local 9router is used only
+# when :20128 is up AND /v1/models lists the writer model — the Mini's global settings.json
+# routes that lane, and a process env cannot override it there. A router that is up without
+# the PATI writer alias (MacBook 2026-10-10: only ag/gemini-* ids) falls through to hosted
+# ai.patigroup.com. Key from the env or the vault .env. Never printed. The hosted lane uses
+# lean ~/.claude-genseo (no settings.json): the MacBook's global ~/.claude filled 450k
+# tokens before the first ticket read (2026-10-06 09:57). The invocation below follows
+# GENSEO_MODEL_LANE, not the raw login flag.
 # shellcheck source=genseo_model_lane.sh
 . "$HOME/genseo/scripts/genseo_model_lane.sh"
 if ! genseo_select_model_lane; then
@@ -106,9 +109,9 @@ B. FACT-CHECK LOG (Google calls manual fact-checking of AI content critical, SEL
 C. AgeAura = NMN + TMG only. Never mention, link or picture Urolithin A in any article. If the next open ticket is about Urolithin A (or AgeAura Urolithin A), mark it [SKIPPED-UNFIT <date> AgeAura is NMN+TMG only] and take the following ticket instead.
 G. FloraFresh formula = its Supplement Facts label: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, Vitamin C 30 mg, pineapple fruit powder 100 mg (with bromelain), sweetened with maltitol + isomalt (NOT sugar-free). The live PDP description and older FloraFresh articles carry a wrong formula (15 billion CFU, four Lactobacillus strains, XOS, D-mannose, sugar-free): never copy formula facts from them, cite the label. validate_article.py fails any FloraFresh claim the label does not support (python3 scripts/florafresh_rules.py --brief prints the label line).
 S. Shilajit Shockwave pack label is product_refs/shilajit-shockwave.label.json: wellness, nest, SHILAJIT, SHOCKWAVE, EXPERIENCE FOCUSED ENERGY, PEAK PERFORMANCE. That file has no milligram amount, no serving count, and no volume line. Do not state one. python3 scripts/shockwave_rules.py --brief prints the line. Premium Himalayan Shilajit Gummies, Pure Shilajit Gold Resin, and ShilaSource resin are separate products and are not covered by this rule.
-R. Pure Shilajit Gold Resin pack label is product_refs/pure-shilajit-gold-resin.label.json. Repeat only that file's required and optional lines, including the OCR serving line and 75% Fulvic. No milligram amount was read. Do not add one. Do not state a different serving count, volume, weight, or day-supply. python3 scripts/gold_resin_rules.py --brief prints the line. Premium Himalayan Shilajit Gummies, Shilajit Shockwave, and ShilaSource resin are separate products and are not covered by this rule.
-L. ShilaSource Himalayan Shilajit Resin pack label is product_refs/shilasource-himalayan-shilajit-resin.label.json. Repeat only that file's required and optional lines. No milligram amount and no Supplement Facts panel were read into that file. Do not add one. Do not state a serving count, volume, weight, fulvic percentage, mineral count, or day-supply other than those lines. python3 scripts/shilasource_resin_rules.py --brief prints the line. Premium Himalayan Shilajit Gummies, Shilajit Shockwave, and Pure Shilajit Gold Resin are separate products and are not covered by this rule.
-T. Turkesterone Advanced Formula pack label is product_refs/turkesterone-advanced-formula.label.json. Repeat only that file's required and optional lines. No milligram amount and no Supplement Facts panel were read into that file. Do not add one. The capsule badge is the separate lines 60 and Capsules. Do not state a milligram amount, a serving count, a different capsule count, or a day-supply. python3 scripts/turkesterone_rules.py --brief prints the line. Bare turkesterone (the ingredient) is not this SKU. Premium Himalayan Shilajit Gummies, Shilajit Shockwave, Pure Shilajit Gold Resin, and ShilaSource resin are separate products and are not covered by this rule.
+R. Pure Shilajit Gold Resin pack label is product_refs/pure-shilajit-gold-resin.label.json. Repeat only that file'\''s required and optional lines, including the OCR serving line and 75% Fulvic. No milligram amount was read. Do not add one. Do not state a different serving count, volume, weight, or day-supply. python3 scripts/gold_resin_rules.py --brief prints the line. Premium Himalayan Shilajit Gummies, Shilajit Shockwave, and ShilaSource resin are separate products and are not covered by this rule.
+L. ShilaSource Himalayan Shilajit Resin pack label is product_refs/shilasource-himalayan-shilajit-resin.label.json. Repeat only that file'\''s required and optional lines. No milligram amount and no Supplement Facts panel were read into that file. Do not add one. Do not state a serving count, volume, weight, fulvic percentage, mineral count, or day-supply other than those lines. python3 scripts/shilasource_resin_rules.py --brief prints the line. Premium Himalayan Shilajit Gummies, Shilajit Shockwave, and Pure Shilajit Gold Resin are separate products and are not covered by this rule.
+T. Turkesterone Advanced Formula pack label is product_refs/turkesterone-advanced-formula.label.json. Repeat only that file'\''s required and optional lines. No milligram amount and no Supplement Facts panel were read into that file. Do not add one. The capsule badge is the separate lines 60 and Capsules. Do not state a milligram amount, a serving count, a different capsule count, or a day-supply. python3 scripts/turkesterone_rules.py --brief prints the line. Bare turkesterone (the ingredient) is not this SKU. Premium Himalayan Shilajit Gummies, Shilajit Shockwave, Pure Shilajit Gold Resin, and ShilaSource resin are separate products and are not covered by this rule.
 F. Never run Bash commands in the background (no run_in_background, no trailing &): this is a one-shot -p run and it ENDS when you stop talking, killing background image jobs (2026-10-06 10:47 a run exited mid-images). Run image generations in the foreground, one or several per command.
 E. NEVER modify an existing live post: no [REFRESH EXISTING], no shopify_publisher.py update on an article you did not create in this run. If STEP 0/0.5 says refresh or duplicate, mark the ticket SKIPPED and move to the next one.
 D. If the ticket batch header says "ALL images NO-FACE" (MacBook failover lane, or env GENSEO_NO_FACE='"${GENSEO_NO_FACE:-0}"' = 1): that OVERRIDES the HERO / PERSONA ROTATION / FACE ANGLE rules above for this run — do NOT run persona_picker.py at all, never pass --persona-ref, make the hero a NO-FACE real-pack-in-a-real-scene image (--product-ref + --qc, no --ugc) and all 3 inline images no-face (--ugc --qc). Log "persona: none (failover no-face)" in the tracker/report.'
@@ -124,7 +127,9 @@ ALLOWED_TOOLS="Read,Write,Edit,Bash,Glob,Grep,WebFetch,WebSearch"
 
 echo "=== GenSeo ticket run $STAMP ===" >> "$LOGDIR/articles-$STAMP.log"
 genseo_lane_log_line >> "$LOGDIR/articles-$STAMP.log"
-if [ "$USE_NATIVE" = "1" ]; then
+# Native invocation only when the picker kept the login lane. A PATI-* writer
+# clears USE_NATIVE and sets local-9router or hosted-9router instead.
+if [ "${GENSEO_MODEL_LANE:-}" = "native" ]; then
   CLAUDE_CONFIG_DIR="$GENSEO_CFG" "$CLAUDE_BIN" -p "$PROMPT" \
     --model "$GENSEO_WRITER_MODEL" \
     --fallback-model "$GENSEO_WRITER_FALLBACK" \

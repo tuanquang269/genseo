@@ -6,9 +6,11 @@
 # Output: landing_drafts/<slug>.json + .claims.md + <slug>/preview.html (+ an UNPUBLISHED Shopify page only if
 # GENSEO_LANDING_DRAFT=1). It never publishes live, never touches daily-tickets.md, never runs the 5/day guard
 # (Shopify pages are not in /blogs/news.atom, so they cannot affect the daily count either way).
-# Same model lane as run_ticket_headless.sh (scripts/genseo_model_lane.sh): native login if
-# logged in, else local 9router only when /v1/models lists the writer alias, else hosted
-# ai.patigroup.com. A MacBook router that is up with no PATI-* ids is not a writer lane.
+# Same model lane as run_ticket_headless.sh (scripts/genseo_model_lane.sh). A PATI-* writer
+# or fallback is a 9router alias: native Claude login is ignored (unrecognized_model,
+# landing 2026-10-10 09:30). Otherwise native login if logged in. Else local 9router only
+# when /v1/models lists the writer alias, else hosted ai.patigroup.com. A MacBook router
+# that is up with no PATI-* ids is not a writer lane.
 export PATH="$HOME/.local/bin:$HOME/.npm-global/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
 for d in "$HOME"/.nvm/versions/node/*/bin; do [ -d "$d" ] && PATH="$d:$PATH"; done
 export PATH
