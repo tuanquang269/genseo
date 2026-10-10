@@ -30,29 +30,19 @@ if [ -d "$GENSEO_CFG" ]; then
   case "$AUTH_JSON" in *'"loggedIn": true'*|*'"loggedIn":true'*) USE_NATIVE=1;; esac
 fi
 
-# Writing lane when the native OAuth dir is logged out (2026-10-06): the Mini routes through its local
-# 9router (:20128, via its global settings.json — process env cannot override it there). A Mac WITHOUT a
-# local router (the MacBook) uses the HOSTED 9router (ai.patigroup.com — same PATI-* models, no Mini
-# dependency), key read from the env or the vault .env the same way gem9 does. Never printed.
-LANE_ROUTER="local"
-if [ "$USE_NATIVE" != "1" ] && ! curl -s -m 3 -o /dev/null http://127.0.0.1:20128/ 2>/dev/null; then
-  _K="${NINE_ROUTER_KEY:-}"
-  if [ -z "$_K" ] && [ -f "$HOME/PATI/LLM-Wiki/.env" ]; then
-    _K="$(grep -E '^(export )?NINE_ROUTER_KEY=' "$HOME/PATI/LLM-Wiki/.env" | head -1 | sed -E 's/^(export )?NINE_ROUTER_KEY=//; s/^["'"'"']//; s/["'"'"']$//')"
-  fi
-  if [ -n "$_K" ]; then
-    export ANTHROPIC_BASE_URL="${GENSEO_ROUTER_BASE:-https://ai.patigroup.com}"
-    export ANTHROPIC_AUTH_TOKEN="$_K"
-    LANE_ROUTER="hosted"
-    # Lean config dir: the MacBook's global ~/.claude carries MCP servers, plugins, hooks and memory that
-    # filled 450k tokens before the first ticket read and made autocompact thrash (2026-10-06 09:57).
-    # ~/.claude-genseo has no settings.json; the router token makes a /login unnecessary.
-    export CLAUDE_CONFIG_DIR="$GENSEO_CFG"; mkdir -p "$GENSEO_CFG"
-  else
-    echo "[$(date '+%F %T')] FATAL: no local 9router, no native login, no NINE_ROUTER_KEY" >> "$HOME/genseo/logs/articles-retry.log"
-    exit 1
-  fi
-  unset _K
+# Writing lane when native OAuth is logged out (2026-10-06, probe 2026-10-10). Local 9router is
+# used only when :20128 is up AND /v1/models lists the writer model — the Mini's global
+# settings.json routes that lane, and a process env cannot override it there. A router that is
+# up without the PATI writer alias (MacBook 2026-10-10: only ag/gemini-* ids) falls through to
+# hosted ai.patigroup.com. Key from the env or the vault .env. Never printed. The hosted lane
+# uses lean ~/.claude-genseo (no settings.json): the MacBook's global ~/.claude filled 450k
+# tokens before the first ticket read (2026-10-06 09:57).
+# shellcheck source=genseo_model_lane.sh
+. "$HOME/genseo/scripts/genseo_model_lane.sh"
+if ! genseo_select_model_lane; then
+  mkdir -p "$HOME/genseo/logs"
+  echo "[$(date '+%F %T')] FATAL: ${GENSEO_MODEL_LANE_ERROR:-no model lane}" >> "$HOME/genseo/logs/articles-retry.log"
+  exit 1
 fi
 
 CLAUDE_BIN="$HOME/.local/bin/claude"
@@ -129,24 +119,23 @@ D. If the ticket batch header says "ALL images NO-FACE" (MacBook failover lane, 
 ALLOWED_TOOLS="Read,Write,Edit,Bash,Glob,Grep,WebFetch,WebSearch"
 
 echo "=== GenSeo ticket run $STAMP ===" >> "$LOGDIR/articles-$STAMP.log"
+genseo_lane_log_line >> "$LOGDIR/articles-$STAMP.log"
 if [ "$USE_NATIVE" = "1" ]; then
-  echo "(lane: native subscription via CLAUDE_CONFIG_DIR=$GENSEO_CFG)" >> "$LOGDIR/articles-$STAMP.log"
   CLAUDE_CONFIG_DIR="$GENSEO_CFG" "$CLAUDE_BIN" -p "$PROMPT" \
-    --model PATI-Alpha-Plan-Review \
-    --fallback-model PATI-Fable-5 \
+    --model "$GENSEO_WRITER_MODEL" \
+    --fallback-model "$GENSEO_WRITER_FALLBACK" \
     --output-format text \
     --allowed-tools "$ALLOWED_TOOLS" \
     >> "$LOGDIR/articles-$STAMP.log" 2>&1
   RC=$?
 else
-  echo "(lane: 9router $LANE_ROUTER on $(hostname -s) — PATI-Alpha-Plan-Review, fallback PATI-Fable-5)" >> "$LOGDIR/articles-$STAMP.log"
   # 9router's real per-request limit is smaller than the 200k the CLI assumes for the
   # unrecognized model name — three runs died on "input exceeds the context window"
   # (2026-08-09). Cap the window well below it so autocompact fires early enough.
   export CLAUDE_CODE_MAX_CONTEXT_TOKENS=150000
   "$CLAUDE_BIN" -p "$PROMPT" \
-    --model PATI-Alpha-Plan-Review \
-    --fallback-model PATI-Fable-5 \
+    --model "$GENSEO_WRITER_MODEL" \
+    --fallback-model "$GENSEO_WRITER_FALLBACK" \
     --strict-mcp-config \
     --output-format text \
     --allowed-tools "$ALLOWED_TOOLS" \

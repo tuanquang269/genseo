@@ -18,10 +18,12 @@ schedule; the live site decides who publishes.
 |---|---|---|
 | launchd | Mini's existing 07:30 batch + 14:47 catch-up | `com.pati.genseo-daily` 07:30 + 14:47 (`~/Library/LaunchAgents/com.pati.genseo-daily.plist`) |
 | wrapper | `~/bin/grokbot-genseo-daily.sh` | `~/bin/grokbot-genseo-daily.sh` (role `standby`, waits 20 min first) |
-| writer | claude `PATI-Alpha-Plan-Review` → `PATI-Fable-5` via local 9router :20128 | same models via the **hosted** 9router `ai.patigroup.com` (key from vault `.env`, never printed) |
+| writer | `PATI-Alpha-Plan-Review` → `PATI-Fable-5` via local 9router :20128 **only when `/v1/models` lists that alias** | same picker. Hosted `ai.patigroup.com` when local is down **or the local list has no PATI writer alias** (key from vault `.env`, never printed) |
 | images | `GENSEO_IMAGE_BACKEND=gpt` (cx/gpt-image-2.5 via 9router), Grok Imagine fallback | ima2 ChatGPT OAuth lane (`GENSEO_IMA2_PROVIDER=oauth`, `GENSEO_IMA2_MODEL=gpt-6-sol`, $0 subscription) |
 | image QC | gem9 judges | gem9 judges (gem9 defaults to the hosted router, so it works without the Mini) |
 | tickets | Mini `daily-tickets.md` (#NN) | MacBook `daily-tickets.md` (#MBmmdd-N — ids can never collide) |
+
+**Headless model lane (2026-10-10).** `run_ticket_headless.sh` and `run_landing_headless.sh` keep native Claude login first (`~/.claude-genseo`, `loggedIn: true`). Otherwise they use local 9router `:20128` only when `GET /v1/models` includes `GENSEO_WRITER_MODEL` (default `PATI-Alpha-Plan-Review`; `--fallback-model` is `GENSEO_WRITER_FALLBACK`, default `PATI-Fable-5`). MacBook local 9router can be up and still list only `ag/gemini-*` ids. That is not a writer lane: headless falls through to hosted `GENSEO_ROUTER_BASE` (default `https://ai.patigroup.com`) with `NINE_ROUTER_KEY`. The run log records `native`, `local-9router`, or `hosted-9router` and does not print the key.
 
 **Double-publish prevention.** The Macs share no writable state (vault Syncthing is MacBook→Mini
 one-way; the Mini's repo commits are unpushed), so the PUBLIC SITE is the lock:

@@ -6,8 +6,9 @@
 # Output: landing_drafts/<slug>.json + .claims.md + <slug>/preview.html (+ an UNPUBLISHED Shopify page only if
 # GENSEO_LANDING_DRAFT=1). It never publishes live, never touches daily-tickets.md, never runs the 5/day guard
 # (Shopify pages are not in /blogs/news.atom, so they cannot affect the daily count either way).
-# Same model lane as run_ticket_headless.sh: native login dir if logged in, else local 9router (Mini),
-# else hosted 9router ai.patigroup.com with the lean ~/.claude-genseo config (MacBook). Works on either Mac.
+# Same model lane as run_ticket_headless.sh (scripts/genseo_model_lane.sh): native login if
+# logged in, else local 9router only when /v1/models lists the writer alias, else hosted
+# ai.patigroup.com. A MacBook router that is up with no PATI-* ids is not a writer lane.
 export PATH="$HOME/.local/bin:$HOME/.npm-global/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
 for d in "$HOME"/.nvm/versions/node/*/bin; do [ -d "$d" ] && PATH="$d:$PATH"; done
 export PATH
@@ -37,16 +38,11 @@ if [ -d "$GENSEO_CFG" ]; then
   AUTH_JSON="$(CLAUDE_CONFIG_DIR="$GENSEO_CFG" "$HOME/.local/bin/claude" auth status 2>/dev/null || true)"
   case "$AUTH_JSON" in *'"loggedIn": true'*|*'"loggedIn":true'*) USE_NATIVE=1;; esac
 fi
-if [ "$USE_NATIVE" = "1" ]; then
-  export CLAUDE_CONFIG_DIR="$GENSEO_CFG"
-elif ! curl -s -m 3 -o /dev/null http://127.0.0.1:20128/ 2>/dev/null; then
-  _K="${NINE_ROUTER_KEY:-}"
-  if [ -z "$_K" ] && [ -f "$HOME/PATI/LLM-Wiki/.env" ]; then
-    _K="$(grep -E '^(export )?NINE_ROUTER_KEY=' "$HOME/PATI/LLM-Wiki/.env" | head -1 | sed -E 's/^(export )?NINE_ROUTER_KEY=//; s/^["'"'"']//; s/["'"'"']$//')"
-  fi
-  [ -z "$_K" ] && { echo "FATAL: no model lane (no native login, no local 9router, no NINE_ROUTER_KEY)"; exit 1; }
-  export ANTHROPIC_BASE_URL="${GENSEO_ROUTER_BASE:-https://ai.patigroup.com}" ANTHROPIC_AUTH_TOKEN="$_K"
-  export CLAUDE_CONFIG_DIR="$GENSEO_CFG"; mkdir -p "$GENSEO_CFG"; unset _K
+# shellcheck source=genseo_model_lane.sh
+. "$HOME/genseo/scripts/genseo_model_lane.sh"
+if ! genseo_select_model_lane; then
+  echo "FATAL: ${GENSEO_MODEL_LANE_ERROR:-no model lane}"
+  exit 1
 fi
 export CLAUDE_CODE_MAX_CONTEXT_TOKENS=150000
 CLAUDE_BIN="$HOME/.local/bin/claude"; [ -x "$CLAUDE_BIN" ] || CLAUDE_BIN="$(command -v claude)"
@@ -74,7 +70,8 @@ Read /Users/kevinkreative/genseo/skills/genseo-landing-pages/SKILL.md plus the v
 Hard rules: no invented claims, numbers, ratings, reviews, testimonials or expert quotes — anything you cannot source from a page you actually fetched is a [[PLACEHOLDER: ...]] or is cut. AgeAura = NMN + TMG only, never Urolithin A. FloraFresh = its Supplement Facts label formula only (Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, not sugar-free); the live PDP description is wrong (15 billion CFU, Lactobacillus strains, XOS, D-mannose, sugar-free), never copy it. A whitelist pack shot (PACK FACE WHITELIST or pack_images) fails closed when product_refs/<handle>.label.json is missing, OCR fails, or the host has no macOS Vision (swift + scripts/tools/label_ocr.swift): do not treat that as a pass. Skip the label gate only when the image is not a whitelist pack shot. No faces in any image. No countdown timers or fake scarcity. Never publish live, never touch daily-tickets.md or any live article. Run image generations in the foreground (no background jobs).$DAILY_RULES
 Finish with: SPEC: <path>  PREVIEW: <file:// path>  placeholders: <n>  claims: <n>."
 echo "=== landing run $STAMP $TEMPLATE $STORE ===" >> "$LOG"
-"$CLAUDE_BIN" -p "$PROMPT" --model PATI-Alpha-Plan-Review --fallback-model PATI-Fable-5 --strict-mcp-config \
+genseo_lane_log_line >> "$LOG"
+"$CLAUDE_BIN" -p "$PROMPT" --model "$GENSEO_WRITER_MODEL" --fallback-model "$GENSEO_WRITER_FALLBACK" --strict-mcp-config \
   --output-format text --allowed-tools "Read,Write,Edit,Bash,Glob,Grep,WebFetch,WebSearch" >> "$LOG" 2>&1
 RC=$?
 echo "=== exit $RC ===" >> "$LOG"; tail -5 "$LOG"
