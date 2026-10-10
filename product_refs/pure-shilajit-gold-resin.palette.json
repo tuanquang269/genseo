@@ -1,0 +1,23 @@
+{
+ "handle": "pure-shilajit-gold-resin",
+ "kind": "chromatic",
+ "packaging_note": "matte black tube and black jar label; bright GREEN irregular-blob label panel; 'Himalayan' in yellow-gold, 'Shilajit' in white, both with heavy black outline; gold mountain line-art around the tube lid; brushed gold jar lid",
+ "hue": 129.7,
+ "chroma": 0.071,
+ "hex": "#607649",
+ "hue_tolerance": 30,
+ "sources": [
+  "product_refs/pure-shilajit-gold-resin.json color field: matte black tube and black jar label; bright GREEN irregular-blob label panel; 'Himalayan' in yellow-gold, 'Shilajit' in white, both with heavy black outline; gold mountain line-art around the tube lid; brushed gold jar lid",
+  "k-means (scripts/landing_palette.py extract, OKLab, k=6, seed 7) of product_refs/pure-shilajit-gold-resin.png",
+  "The largest cluster is #333431 (chroma 0.005), below 0.035, so it is not the UI hue.",
+  "Clusters from this same run whose hue is more than hue_tolerance from the UI hue: #d5caa7 hue 92.6 chroma 0.048 share 0.097. The gate still uses the heaviest chromatic cluster. Those other clusters are measurements in this file, not a second UI hue."
+ ],
+ "clusters": [
+  {"hex": "#333431", "share": 0.2216, "L": 0.323, "C": 0.005, "h": 121.8},
+  {"hex": "#4b4d42", "share": 0.2147, "L": 0.415, "C": 0.018, "h": 115.6},
+  {"hex": "#171917", "share": 0.1848, "L": 0.21, "C": 0.005, "h": 145.4},
+  {"hex": "#607649", "share": 0.1653, "L": 0.536, "C": 0.071, "h": 129.7},
+  {"hex": "#999768", "share": 0.1166, "L": 0.666, "C": 0.065, "h": 106.0},
+  {"hex": "#d5caa7", "share": 0.097, "L": 0.839, "C": 0.048, "h": 92.6}
+ ]
+}

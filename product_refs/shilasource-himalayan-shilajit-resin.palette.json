@@ -1,0 +1,20 @@
+{
+ "handle": "shilasource-himalayan-shilajit-resin",
+ "kind": "neutral",
+ "packaging_note": "matte black tube with white type; amber/brown glass jar, gold lid, black wraparound label",
+ "hue": null,
+ "house_palette_allowed": true,
+ "sources": [
+  "product_refs/shilasource-himalayan-shilajit-resin.json color field: matte black tube with white type; amber/brown glass jar, gold lid, black wraparound label",
+  "k-means (scripts/landing_palette.py extract, OKLab, k=6, seed 7) of product_refs/shilasource-himalayan-shilajit-resin.png: every cluster is below chroma 0.035, so pack_hue is null"
+ ],
+ "gap": "No chromatic hue was read off this photo (every cluster is below chroma 0.035). The packaging note names amber and gold; those colors did not form a chromatic cluster in this PNG. House Wellness Nest greens remain the renderer fallback for a neutral pack (scripts/landing_palette.py). They are not a color from this photo. A forced chromatic hue is rejected. To stop house greens on this pack, record a grey token map and set house_palette_allowed to false.",
+ "clusters": [
+  {"hex": "#181914", "share": 0.3505, "L": 0.21, "C": 0.01, "h": 116.4},
+  {"hex": "#2e2f29", "share": 0.2137, "L": 0.302, "C": 0.011, "h": 114.7},
+  {"hex": "#56564e", "share": 0.1404, "L": 0.451, "C": 0.013, "h": 106.9},
+  {"hex": "#d1d1c5", "share": 0.1037, "L": 0.857, "C": 0.016, "h": 106.7},
+  {"hex": "#0c0e0a", "share": 0.1032, "L": 0.16, "C": 0.009, "h": 129.1},
+  {"hex": "#8c8b7e", "share": 0.0885, "L": 0.634, "C": 0.019, "h": 103.3}
+ ]
+}

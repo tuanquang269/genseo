@@ -20,6 +20,16 @@ import packaging_palette as pp  # noqa: E402
 
 FF = "florafresh-vaginal-probiotics-gummies"
 NMN = "ageaura-pure-nmn-tmg-nad-complex"
+# Measured from product_refs/<handle>.png (not the cutout). Hex/hue/chroma are the heaviest chromatic cluster.
+CHROMATIC = {
+    "fusiforce-creatine-gummies": ("#97c344", 126.4, 0.161),
+    "premium-himalayan-shilajit-gummies": ("#465e48", 146.9, 0.046),
+    "pure-shilajit-gold-resin": ("#607649", 129.7, 0.071),
+    "shilajit-shockwave": ("#3f452e", 120.1, 0.038),
+    "turkesterone-advanced-formula": ("#2c7f28", 142.5, 0.146),
+}
+SHILA = "shilasource-himalayan-shilajit-resin"
+URO = "ageaura-pure-urolithin-a"
 
 HOUSE = (".gsl-ref{--gp-ink:#12301f;--gp-forest:#17352a;--gp-text:#23382c;--gp-muted:#3f5347;--gp-accent:#2f8a3b;"
          "--gp-sage:#eef4ee;--gp-sage-2:#e2ece2;--gp-bone:#f6f8f5;--gp-line:#d6e2d6}")
@@ -75,26 +85,78 @@ class PaletteFiles(unittest.TestCase):
         for theme_hex in ("#2e2a39", "#f5f5f7", "#e3e3e8", "#54b94a"):
             self.assertNotIn(theme_hex, measured)
 
+    def test_remaining_pack_shots_match_the_png(self):
+        for handle, (hex_color, hue, chroma) in CHROMATIC.items():
+            pal = pp.load(handle)
+            png = os.path.join(ROOT, "product_refs", handle + ".png")
+            clusters = lp.extract([png])
+            photo = lp.pack_hue(clusters)
+            with open(os.path.join(ROOT, "product_refs", handle + ".json"), encoding="utf-8") as fh:
+                note = json.load(fh)["color"]
+            self.assertEqual(pal["kind"], "chromatic", handle)
+            self.assertEqual(pal["packaging_note"], note, handle)
+            self.assertEqual(pal["hex"], hex_color, handle)
+            self.assertEqual(pal["hue"], hue, handle)
+            self.assertEqual(pal["chroma"], chroma, handle)
+            self.assertEqual(pal["hue_tolerance"], lp.HUE_TOL, handle)
+            self.assertEqual(pal["hex"], photo["hex"], handle)
+            self.assertEqual(pal["hue"], photo["hue"], handle)
+            self.assertEqual(pal["chroma"], photo["chroma"], handle)
+            self.assertEqual(pal["clusters"], clusters, handle)
+            self.assertIn(png.replace(ROOT + os.sep, ""), " ".join(pal["sources"]))
+
+    def test_shilasource_file_is_the_measured_neutral_pack(self):
+        pal = pp.load(SHILA)
+        self.assertEqual(pal["kind"], "neutral")
+        self.assertIsNone(pal["hue"])
+        self.assertTrue(pal["house_palette_allowed"])
+        with open(os.path.join(ROOT, "product_refs", SHILA + ".json"), encoding="utf-8") as fh:
+            note = json.load(fh)["color"]
+        self.assertEqual(pal["packaging_note"], note)
+        png = os.path.join(ROOT, "product_refs", SHILA + ".png")
+        clusters = lp.extract([png])
+        self.assertIsNone(lp.pack_hue(clusters))
+        self.assertTrue(all(c["C"] < lp.MIN_CHROMA for c in clusters))
+        self.assertEqual(pal["clusters"], clusters)
+        self.assertNotIn("#54b94a", {c["hex"] for c in clusters})
+
+    def test_cutouts_do_not_contradict_the_png_file(self):
+        for handle in ("fusiforce-creatine-gummies", "premium-himalayan-shilajit-gummies", SHILA, NMN):
+            photo = lp.pack_hue(lp.extract([os.path.join(ROOT, "product_refs", handle + "-cutout.png")]))
+            pal = pp.load(handle)
+            if pal["kind"] == "neutral":
+                self.assertIsNone(photo, handle)
+            else:
+                self.assertLessEqual(lp.hue_dist(photo["hue"], pal["hue"]), pal["hue_tolerance"], handle)
+
     def test_palette_files_are_not_product_handles(self):
         handles = br.handles_from_product_refs(os.path.join(ROOT, "product_refs"))
         self.assertIn(FF, handles)
         self.assertIn(NMN, handles)
-        self.assertNotIn(FF + ".palette", handles)
-        self.assertNotIn(NMN + ".palette", handles)
-        self.assertNotIn("ageaura-pure-urolithin-a.palette", handles)
+        self.assertIn("fusiforce-creatine-gummies", handles)
+        for handle in list(CHROMATIC) + [SHILA, NMN, FF]:
+            self.assertNotIn(handle + ".palette", handles)
+        self.assertNotIn(URO + ".palette", handles)
 
     def test_gaps_skip_committed_files_and_the_denied_sku(self):
         missing = pp.gaps()
-        self.assertNotIn(FF, missing)
-        self.assertNotIn(NMN, missing)
-        self.assertNotIn("ageaura-pure-urolithin-a", missing)
-        self.assertIn("fusiforce-creatine-gummies", missing)
-        self.assertIn("pure-shilajit-gold-resin", missing)
+        self.assertEqual(missing, [])
+        self.assertIsNone(pp.load(URO))
+        self.assertFalse(os.path.exists(os.path.join(ROOT, "product_refs", URO + ".palette.json")))
+        for handle in list(CHROMATIC) + [FF, NMN, SHILA]:
+            self.assertNotIn(handle, missing)
 
 
 class SpecGate(unittest.TestCase):
     def test_live_pages_are_not_new_violations(self):
-        for name in ("florafresh-listicle-261009.json", "ageaura-nmn-listicle-261008.json"):
+        names = (
+            "florafresh-listicle-261009.json",
+            "ageaura-nmn-listicle-261008.json",
+            "fusiforce-creatine-listicle-261008.json",
+            "shilajit-gummies-listicle-261008.json",
+            "shilasource-resin-listicle-261008.json",
+        )
+        for name in names:
             with open(os.path.join(ROOT, "landing_drafts", name), encoding="utf-8") as fh:
                 spec = json.load(fh)
             self.assertEqual(pp.spec_violations(spec), [], name)
@@ -118,10 +180,29 @@ class SpecGate(unittest.TestCase):
         self.assertEqual(pp.spec_violations(house), [])
         self.assertEqual(pp.spec_violations(_spec(NMN)), [])
 
+    def test_chromatic_pack_shots_reject_opt_out_and_a_far_hue(self):
+        for handle, (hex_color, hue, _chroma) in CHROMATIC.items():
+            bad = pp.spec_violations(_spec(handle, palette="off"))
+            self.assertTrue(any("palette off" in item and hex_color in item for item in bad), (handle, bad))
+            far = pp.spec_violations(_spec(handle, palette={"hue": (hue + 90) % 360, "chroma": 0.1}))
+            self.assertTrue(far, handle)
+            near = pp.spec_violations(_spec(handle, palette={"hue": hue, "chroma": 0.1}))
+            self.assertEqual(near, [], handle)
+            self.assertEqual(pp.spec_violations(_spec(handle)), [], handle)
+
+    def test_shilasource_forced_rose_fails_and_house_hue_does_not(self):
+        rose = _spec(SHILA, palette={"hue": 12, "chroma": 0.11})
+        bad = br.spec_violations(rose)
+        self.assertTrue(any("neutral" in item for item in bad), bad)
+        self.assertEqual(pp.spec_violations(_spec(SHILA, palette={"hue": 140, "chroma": 0.1})), [])
+        self.assertEqual(pp.spec_violations(_spec(SHILA)), [])
+
     def test_old_specs_and_missing_files_are_not_guessed(self):
         old = _spec(FF, created="2026-10-08", palette="off")
         self.assertEqual(pp.spec_violations(old), [])
-        self.assertEqual(pp.spec_violations(_spec("fusiforce-creatine-gummies", palette="off")), [])
+        self.assertEqual(pp.spec_violations(_spec("fusiforce-creatine-gummies", created="2026-10-08", palette="off")), [])
+        self.assertEqual(pp.spec_violations(_spec("example-pack", palette="off")), [])
+        self.assertEqual(pp.spec_violations(_spec(URO, palette="off")), [])
         self.assertEqual(pp.spec_violations({"title": "FloraFresh", "template": "listicle"}), [])
 
     def test_unknown_kind_fails_closed(self):
@@ -142,6 +223,35 @@ class RenderGate(unittest.TestCase):
         painted = lp.resolve(_spec(FF, palette={"hue": 140, "chroma": 0.1}))
         self.assertLessEqual(lp.hue_dist(painted["hue"], 12.3), 6)
         self.assertIsNone(lp.resolve(_spec(NMN, palette={"hue": 12, "chroma": 0.11})))
+        for handle, (_hex_color, hue, _chroma) in CHROMATIC.items():
+            painted = lp.resolve(_spec(handle, palette={"hue": (hue + 90) % 360, "chroma": 0.1}))
+            self.assertLessEqual(lp.hue_dist(painted["hue"], hue), 6, handle)
+        self.assertIsNone(lp.resolve(_spec(SHILA, palette={"hue": 12, "chroma": 0.11})))
+
+    def test_painted_pack_pages_pass_and_house_greens_fail_when_the_file_is_chromatic(self):
+        folder = tempfile.mkdtemp()
+        try:
+            body = '<div class="gsl-ref gsl-ref--listicle"></div>'
+            for handle in CHROMATIC:
+                spec = _spec(handle, slug="page")
+                page = os.path.join(folder, "page")
+                painted = lp.resolve(spec)
+                _write_page(page, lp.apply_to_body(body, HOUSE, painted))
+                path = os.path.join(folder, handle + ".json")
+                with open(path, "w", encoding="utf-8") as fh:
+                    json.dump(spec, fh)
+                self.assertEqual(lp.check(path), 0, handle)
+                _write_page(page, body)
+                self.assertEqual(lp.check(path), 1, handle)
+            for handle in (SHILA, NMN):
+                spec = _spec(handle, slug="page")
+                _write_page(os.path.join(folder, "page"), body)
+                path = os.path.join(folder, handle + ".json")
+                with open(path, "w", encoding="utf-8") as fh:
+                    json.dump(spec, fh)
+                self.assertEqual(lp.check(path), 0, handle)
+        finally:
+            shutil.rmtree(folder)
 
     def test_house_greens_fail_on_florafresh_and_pass_on_neutral_ageaura(self):
         folder = tempfile.mkdtemp()
@@ -179,10 +289,15 @@ class RenderGate(unittest.TestCase):
             shutil.rmtree(folder)
 
     def test_live_florafresh_render_still_passes(self):
-        path = os.path.join(ROOT, "landing_drafts", "florafresh-listicle-261009.json")
-        self.assertEqual(lp.check(path), 0)
-        age = os.path.join(ROOT, "landing_drafts", "ageaura-nmn-listicle-261008.json")
-        self.assertEqual(lp.check(age), 0)
+        for name in (
+            "florafresh-listicle-261009.json",
+            "ageaura-nmn-listicle-261008.json",
+            "fusiforce-creatine-listicle-261008.json",
+            "shilajit-gummies-listicle-261008.json",
+            "shilasource-resin-listicle-261008.json",
+        ):
+            path = os.path.join(ROOT, "landing_drafts", name)
+            self.assertEqual(lp.check(path), 0, name)
 
 
 class TicketAndCallSites(unittest.TestCase):
@@ -198,8 +313,12 @@ class TicketAndCallSites(unittest.TestCase):
         rose = "- [ ] advertorial | ageaura | product=%s · palette hue: 12" % NMN
         self.assertTrue(any("neutral" in item for item in br.violations(rose)))
         self.assertEqual(br.violations("The house kit uses #54b94a on articles."), [])
-        self.assertEqual(br.violations(
-            "- [ ] listicle | wellnessnest | product=fusiforce-creatine-gummies · palette: off"), [])
+        fusi = "- [ ] listicle | wellnessnest | product=fusiforce-creatine-gummies · palette: off"
+        self.assertTrue(any("#97c344" in item for item in br.violations(fusi)), br.violations(fusi))
+        self.assertEqual(pp.ticket_violations(
+            "- [ ] listicle | wellnessnest | product=example-pack · palette: off"), [])
+        self.assertIn("#97c344", pp.landing_note("fusiforce-creatine-gummies"))
+        self.assertIn("neutral", pp.landing_note(SHILA).lower())
 
     def test_open_landing_queue_has_no_palette_violation(self):
         with open(os.path.join(ROOT, "daily-landing-tickets.md"), encoding="utf-8") as fh:

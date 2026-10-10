@@ -26,6 +26,7 @@ Read `skills/genseo-landing-pages/SKILL.md` and `templates/landing/README.md` in
   Formula dose its pack-label whitelist does not list (`scripts/turkesterone_rules.py`). UI colors for a listicle/advertorial
   created on or after 2026-10-09 must match `product_refs/<handle>.palette.json` when that file exists
   (`scripts/packaging_palette.py`); a conflicting hue or `palette: off` on a chromatic pack fails closed.
+  Those files exist for every current pack shot except AgeAura Urolithin, which stays without one.
   See `docs/PACKAGING_PALETTE_GUARD.md`.
 - **No invented facts:** every number, study, price, rating and review comes from a page fetched this run, else
   `[[PLACEHOLDER: …]]` or cut. Reviews only verbatim from Trustpilot as displayed.

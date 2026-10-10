@@ -21,9 +21,10 @@ sage hue is outside that tolerance, and when the pack photo's own hue disagrees
 with the file.
 
 Neutral file (AgeAura Pure NMN + TMG, white with dark grey text, no chromatic
-cluster): a forced hue outside the house-green band is a violation. House greens
-stay allowed only while house_palette_allowed is true. That fallback is the
-existing renderer behavior, not a color read off the bottle.
+cluster; ShilaSource resin, same on its pack PNG): a forced hue outside the
+house-green band is a violation. House greens stay allowed only while
+house_palette_allowed is true. That fallback is the existing renderer behavior,
+not a color read off the bottle.
 
 A product with no palette file is a gap (see --gaps). The gate does not guess a
 hue for it. Blog articles are out of scope; they keep the house block kit.

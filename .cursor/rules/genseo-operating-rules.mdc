@@ -68,8 +68,9 @@ Also: never `rm` repo files (move them to `_superseded/`); never put CDN URLs in
 - **Listicle/landing UI colors match the hero pack** (Kevin 2026-10-09; `scripts/packaging_palette.py`, run by
   `brand_rules.py` and `scripts/landing_palette.py`): `product_refs/<handle>.palette.json` is the source of truth.
   FloraFresh is dusty pink / rose `#d17a85`. AgeAura Pure NMN + TMG is a neutral white/grey bottle (no chromatic
-  hue was read). A new listicle/landing that opts out, or forces a hue the file does not list, fails closed.
-  Do not invent a hex for a product with no palette file. See `docs/PACKAGING_PALETTE_GUARD.md`.
+  hue was read). The other Wellness Nest pack shots have measured files in `docs/PACKAGING_PALETTE_GUARD.md`
+  (ShilaSource resin is neutral). AgeAura Urolithin has no palette file. A new listicle/landing that opts out,
+  or forces a hue the file does not list, fails closed. Do not invent a hex for a product with no palette file.
 - **Hero products** (house brands sold on wellnessnest.co — follow `lint_tickets.py` and `knowledge_base/`):
   FusiForce creatine gummies `fusiforce-creatine-gummies` · ShilaSource / Himalayan shilajit: resin
   `shilasource-himalayan-shilajit-resin`, gummies `premium-himalayan-shilajit-gummies`, gold resin
