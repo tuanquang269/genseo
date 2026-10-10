@@ -31,6 +31,8 @@ the wrapper counts open tickets with `grep -cE '^(- \[ \]|## \[ \])'`. Zero open
   `product_refs/shilasource-himalayan-shilajit-resin.label.json` only (`70% Fulvic Acid*`, `1.06oz (30g)`,
   and the split `75` / `SERVINGS` badge; no milligram token). `refill_tickets.py` adds that line
   (`docs/SHILASOURCE_RESIN_LABEL_GUARD.md`).
+- An open landing ticket (`listicle |` / `advertorial |`) that opts out of a committed packaging palette, or
+  forces a hue that file does not list, fails lint. See `docs/PACKAGING_PALETTE_GUARD.md`.
 
 ## Ticket format (what `refill_tickets.py` renders)
 ```

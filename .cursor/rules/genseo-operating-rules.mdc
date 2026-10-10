@@ -59,6 +59,11 @@ Also: never `rm` repo files (move them to `_superseded/`); never put CDN URLs in
   badge is the separate lines `75` and `SERVINGS`. No milligram amount and no Supplement Facts panel were read.
   Do not add one. Do not state a different serving count, volume, weight, fulvic percentage, mineral count, or
   day-supply. Gummies, Shockwave, and Gold Resin are separate products. See `docs/SHILASOURCE_RESIN_LABEL_GUARD.md`.
+- **Listicle/landing UI colors match the hero pack** (Kevin 2026-10-09; `scripts/packaging_palette.py`, run by
+  `brand_rules.py` and `scripts/landing_palette.py`): `product_refs/<handle>.palette.json` is the source of truth.
+  FloraFresh is dusty pink / rose `#d17a85`. AgeAura Pure NMN + TMG is a neutral white/grey bottle (no chromatic
+  hue was read). A new listicle/landing that opts out, or forces a hue the file does not list, fails closed.
+  Do not invent a hex for a product with no palette file. See `docs/PACKAGING_PALETTE_GUARD.md`.
 - **Hero products** (house brands sold on wellnessnest.co — follow `lint_tickets.py` and `knowledge_base/`):
   FusiForce creatine gummies `fusiforce-creatine-gummies` · ShilaSource / Himalayan shilajit: resin
   `shilasource-himalayan-shilajit-resin`, gummies `premium-himalayan-shilajit-gummies`, gold resin
@@ -90,6 +95,7 @@ python3 scripts/florafresh_rules.py <draft>.md          # FloraFresh copy vs its
 python3 scripts/shockwave_rules.py <draft>.md           # Shockwave copy vs its pack-label whitelist -> exit 1
 python3 scripts/gold_resin_rules.py <draft>.md          # Gold Resin copy vs its pack-label whitelist -> exit 1
 python3 scripts/shilasource_resin_rules.py <draft>.md   # ShilaSource resin copy vs its pack-label whitelist -> exit 1
+python3 scripts/packaging_palette.py --spec <landing>.json  # listicle colors vs the pack palette file -> exit 1
 python3 scripts/refill_tickets.py --self-test           # offline fixtures + topic-bank lint
 python3 scripts/refill_tickets.py --count 8 --dry-run   # storefront reads only; queue + board untouched
 python3 scripts/sync_cursor_skills.py --check           # .cursor/skills pointers match skills/

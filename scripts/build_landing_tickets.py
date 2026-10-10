@@ -19,6 +19,8 @@ FloraFresh lines also carry florafresh_rules.LANDING_NOTE (formula from the Supp
 Shilajit Shockwave lines carry shockwave_rules.LANDING_NOTE (identity lines only; no dose the label file omits).
 Pure Shilajit Gold Resin lines carry gold_resin_rules.LANDING_NOTE (the OCR serving line and 75% Fulvic; no milligram and no other dose).
 ShilaSource resin lines carry shilasource_resin_rules.LANDING_NOTE (front-of-pack lines only; no milligram and no other dose).
+A product with product_refs/<handle>.palette.json also carries packaging_palette.landing_note
+(UI colors match that file; do not opt out or force a conflicting hue).
 """
 import datetime as dt, json, os, re, subprocess, sys, urllib.request
 
@@ -27,6 +29,7 @@ sys.path.insert(0, os.path.join(ROOT, "scripts"))
 import brand_rules as br  # noqa: E402
 import florafresh_rules as ff  # noqa: E402
 import gold_resin_rules as gr  # noqa: E402
+import packaging_palette as pp  # noqa: E402
 import shilasource_resin_rules as sr  # noqa: E402
 import shockwave_rules as sw  # noqa: E402
 
@@ -146,6 +149,9 @@ def main():
         line += " · " + gr.LANDING_NOTE
     if h == sr.HANDLE:
         line += " · " + sr.LANDING_NOTE
+    note = pp.landing_note(h)
+    if note:
+        line += " · " + note
     line += f" (added {today()})"
     try:
         line = br.prepare_ticket(line)

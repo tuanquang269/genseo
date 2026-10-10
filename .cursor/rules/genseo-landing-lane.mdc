@@ -22,7 +22,10 @@ Read `skills/genseo-landing-pages/SKILL.md` and `templates/landing/README.md` in
   wrong until Kevin's GO), any Shilajit Shockwave dose its pack-label whitelist does not list
   (`scripts/shockwave_rules.py`), any Pure Shilajit Gold Resin dose its pack-label whitelist does not list
   (`scripts/gold_resin_rules.py`), and any ShilaSource Himalayan Shilajit Resin dose its pack-label
-  whitelist does not list (`scripts/shilasource_resin_rules.py`).
+  whitelist does not list (`scripts/shilasource_resin_rules.py`). UI colors for a listicle/advertorial
+  created on or after 2026-10-09 must match `product_refs/<handle>.palette.json` when that file exists
+  (`scripts/packaging_palette.py`); a conflicting hue or `palette: off` on a chromatic pack fails closed.
+  See `docs/PACKAGING_PALETTE_GUARD.md`.
 - **No invented facts:** every number, study, price, rating and review comes from a page fetched this run, else
   `[[PLACEHOLDER: …]]` or cut. Reviews only verbatim from Trustpilot as displayed.
 - **Theme:** `--install-template` only adds a missing template key, never overwrites. Any other theme change needs

@@ -1,0 +1,21 @@
+{
+ "handle": "ageaura-pure-nmn-tmg-nad-complex",
+ "kind": "neutral",
+ "packaging_note": "white with dark grey text",
+ "hue": null,
+ "house_palette_allowed": true,
+ "sources": [
+  "product_refs/ageaura-pure-nmn-tmg-nad-complex.json color field: white with dark grey text (PDP crop 2026-08-09)",
+  "k-means (scripts/landing_palette.py extract, OKLab, k=6, seed 7) of product_refs/ageaura-pure-nmn-tmg-nad-complex.png: every cluster is below chroma 0.035, so pack_hue is null",
+  "brand/ageaura.json colors (ink #2e2a39, bg_soft #f5f5f7, border #e3e3e8) are theme UI tokens, not measurements from this bottle"
+ ],
+ "gap": "No chromatic hue was read off the bottle. House Wellness Nest greens remain the renderer fallback for a neutral pack (scripts/landing_palette.py). They are not a color from this photo. A forced chromatic hue is rejected. Kevin: to stop house greens on this white bottle, record a grey token map and set house_palette_allowed to false.",
+ "clusters": [
+  {"hex": "#d9d4cf", "share": 0.4038, "L": 0.872, "C": 0.009, "h": 67.7},
+  {"hex": "#e3e0dc", "share": 0.3064, "L": 0.908, "C": 0.006, "h": 75.4},
+  {"hex": "#beb7b0", "share": 0.1206, "L": 0.783, "C": 0.013, "h": 67.6},
+  {"hex": "#94928f", "share": 0.076, "L": 0.661, "C": 0.005, "h": 78.3},
+  {"hex": "#1c1c1c", "share": 0.0478, "L": 0.226, "C": 0.0, "h": 89.9},
+  {"hex": "#605c58", "share": 0.0454, "L": 0.477, "C": 0.008, "h": 67.6}
+ ]
+}
