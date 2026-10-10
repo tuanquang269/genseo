@@ -10,14 +10,18 @@ How it works
   1. PACK COLORS: the committed source of truth is product_refs/<handle>.palette.json when that
      file exists (scripts/packaging_palette.py). k-means (OKLab, k=6) over product_refs/<handle>.png
      (+ any spec "pack_palette_images") is the cross-check and the fallback for a product with no file.
-     Near-white / near-black / transparent pixels are ignored. The "pack hue" is the heaviest chromatic
-     cluster (OKLCh chroma >= 0.035). A pack with < 8 % chromatic pixels is "neutral": the page keeps the
-     house palette unless the palette file says otherwise. A hard-window page fails when the photo hue
-     disagrees with the file, or when the spec opts out of a chromatic file.
-  2. TOKENS: every house-brand color literal in the compiled page CSS (the shared gsl-ref-* theme template, Wellness
+     When both <handle>.png and <handle>-cutout.png exist, the PNG is the measurement. The cutout is
+     used only if that PNG is missing, and the two are not mixed. Near-white / near-black / transparent
+     pixels are ignored. The "pack hue" is the heaviest chromatic cluster (OKLCh chroma >= 0.035). A pack
+     with < 8 % chromatic pixels is "neutral": the page keeps the house palette unless the palette file
+     says otherwise. A hard-window page fails when the photo hue disagrees with the file, or when the
+     spec opts out of a chromatic file.
+  2. TOKENS: every      house-brand color literal in the compiled page CSS (the shared gsl-ref-* theme template, Wellness
      Nest greens, hue 95..170 deg) and in the page body (inline SVG fills) is re-hued to the pack hue. Each new color
      keeps the ORIGINAL relative luminance (WCAG Y), so every text/CTA contrast ratio stays exactly what the
      template already passes; chroma is scaled toward the pack's chroma and clipped to the sRGB gamut.
+     A pale surface (OKLab L > 0.88) is raised until its chroma clears TOKEN_CHROMA, so a low-chroma pack
+     still passes the not-grey floor. The hue does not change.
   3. DELIVERY (no theme edit): landing_clone.py puts the remapped declarations in a <style id="gsl-pal"> at the top
      of the PAGE BODY and adds class gsl-pal to the wrapper. Selectors are re-emitted as .gsl-ref.gsl-pal ... (one
      class more specific than the template) for EVERY declaration of an affected property family, colored or not, so
@@ -40,6 +44,7 @@ AUTO_FROM = "2026-10-09"          # specs created on/after this date get the pac
 HOUSE_HUE = (95.0, 170.0)         # OKLCh hue band of the Wellness Nest greens the template ships with
 HUE_TOL = 30.0                    # gate: max OKLCh hue distance page token -> pack hue
 MIN_CHROMA = 0.035                # chromatic cluster / accent must be at least this colorful
+TOKEN_CHROMA = 0.012              # forest, accent, and sage must clear this or the gate treats them as grey
 FAMILIES = ("color", "background", "border", "outline", "fill", "stroke", "box-shadow", "text-shadow",
             "text-decoration", "caret-color", "accent-color", "column-rule", "--")
 
@@ -195,10 +200,16 @@ def product_handle(spec):
 
 
 def pack_images(spec):
+    """Pack photo for the cross-check.
+
+    product_refs/<handle>.png is the measurement behind product_refs/<handle>.palette.json.
+    A cutout is only the fallback when that PNG is missing. Mixing both would make k-means
+    disagree with the committed file. Spec pack_palette_images are extra shots after that photo.
+    """
     h = product_handle(spec)
     imgs = []
     if h:
-        for suf in ("-cutout.png", ".png"):
+        for suf in (".png", "-cutout.png"):
             p = os.path.join(ROOT, "product_refs", h + suf)
             if os.path.exists(p):
                 imgs.append(p)
@@ -249,11 +260,25 @@ def remap_color(rgb, pal):
         return None
     pc = pal["chroma"]
     c2 = C * max(0.85, min(1.3, pc / REF_CHROMA))
+    pale = L > 0.88
     if L < 0.5:                                  # deep tones stay rich (berry, not brown)
         c2 = max(c2, 0.8 * pc)
-    elif L > 0.88:                               # pale surfaces read as a tint of the pack, not grey
-        c2 = max(c2, min(0.035, 0.3 * pc) * max(0.5, min(1.0, (1 - L) / 0.07)))
-    return make_color(luminance(rgb), c2, pal["hue"])
+    elif pale:                                   # pale surfaces read as a tint of the pack, not grey
+        fade = max(0.5, min(1.0, (1 - L) / 0.07))
+        tint = min(0.035, 0.3 * pc) * fade
+        # A low-chroma pack's 0.3*pc tint can land under TOKEN_CHROMA. The gate would then
+        # fail a page that was painted from that pack's own file. Hold the floor.
+        c2 = max(c2, tint, TOKEN_CHROMA)
+    y = luminance(rgb)
+    out = make_color(y, c2, pal["hue"])
+    if pale:
+        # sRGB rounding can drop a requested 0.012 under the gate. Step up until it clears.
+        for _ in range(8):
+            if lch(out)[1] >= TOKEN_CHROMA or c2 >= 0.035:
+                break
+            c2 = min(0.035, c2 + 0.004)
+            out = make_color(y, c2, pal["hue"])
+    return out
 
 
 def darken_to(rgb, bgs, ratio=4.6):
@@ -414,7 +439,7 @@ def judge(tokens, pal, has_block=True):
             continue
         L, C, h = lch(rgb[k])
         d = hue_dist(h, pal["hue"])
-        ok = d <= HUE_TOL and (C >= 0.012)
+        ok = d <= HUE_TOL and (C >= TOKEN_CHROMA)
         res.append((f"hue{k}", ok, f"{hexc(rgb[k])} hue {h:.0f} vs pack {pal['hue']:.0f} (d={d:.0f}, tol {HUE_TOL:.0f}) C={C:.3f}"))
     if "--gp-accent" in rgb:
         C = lch(rgb["--gp-accent"])[1]

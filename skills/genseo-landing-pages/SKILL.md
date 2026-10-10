@@ -193,7 +193,11 @@ Every listicle/advertorial wears the hero product's PACK colors. A chromatic pac
 - **Source of truth:** `product_refs/<handle>.palette.json`, read by `scripts/packaging_palette.py`. Hexes in that
   file are measurements (k-means of the pack photo, or the packaging note already in `product_refs/<handle>.json`).
   Do not invent a hue for a product with no file. FloraFresh is chromatic dusty pink / rose `#d17a85` (hue 12.3).
-  AgeAura Pure NMN + TMG is neutral (white with dark grey text; no cluster reached chroma 0.035). A hard-window spec
+  AgeAura Pure NMN + TMG is neutral (white with dark grey text; no cluster reached chroma 0.035).
+  FusiForce, Premium Himalayan Shilajit gummies, Pure Shilajit Gold Resin, Shilajit Shockwave, Turkesterone,
+  and ShilaSource resin now have committed files too (ShilaSource is neutral). The cross-check image is
+  `product_refs/<handle>.png`; a cutout is used only when that PNG is missing and is not mixed in.
+  Measured hexes are in `docs/PACKAGING_PALETTE_GUARD.md`. AgeAura Urolithin still has no file. A hard-window spec
   (`created` >= 2026-10-09) fails closed when it sets `palette` off on a chromatic file, forces a hue outside the
   file's tolerance, or forces a chromatic hue on a neutral file. The pack photo failing to match the file is also a
   failure. Products with no palette file are a gap, not a guessed color. See `docs/PACKAGING_PALETTE_GUARD.md`.

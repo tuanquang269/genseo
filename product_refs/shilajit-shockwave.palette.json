@@ -1,0 +1,22 @@
+{
+ "handle": "shilajit-shockwave",
+ "kind": "chromatic",
+ "packaging_note": "black with green accents",
+ "hue": 120.1,
+ "chroma": 0.038,
+ "hex": "#3f452e",
+ "hue_tolerance": 30,
+ "sources": [
+  "product_refs/shilajit-shockwave.json color field: black with green accents",
+  "k-means (scripts/landing_palette.py extract, OKLab, k=6, seed 7) of product_refs/shilajit-shockwave.png",
+  "The largest cluster is #252820 (chroma 0.015), below 0.035, so it is not the UI hue."
+ ],
+ "clusters": [
+  {"hex": "#252820", "share": 0.2946, "L": 0.271, "C": 0.015, "h": 124.1},
+  {"hex": "#3f452e", "share": 0.1788, "L": 0.378, "C": 0.038, "h": 120.1},
+  {"hex": "#12120f", "share": 0.1456, "L": 0.181, "C": 0.006, "h": 107.0},
+  {"hex": "#5b6b4a", "share": 0.1451, "L": 0.505, "C": 0.054, "h": 129.2},
+  {"hex": "#7f9c6e", "share": 0.1289, "L": 0.658, "C": 0.073, "h": 134.3},
+  {"hex": "#c5ce9c", "share": 0.1071, "L": 0.832, "C": 0.067, "h": 116.2}
+ ]
+}

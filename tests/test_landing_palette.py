@@ -51,6 +51,12 @@ class ColorMath(unittest.TestCase):
         for hx in ("#ffffff", "#d42929", "#475569", "#2e2a39", "#000000"):
             self.assertIsNone(lp.remap_color(lp.parse_color(hx)[0], ROSE), hx)
 
+    def test_low_chroma_pale_surface_clears_the_gate_floor(self):
+        pale = lp.remap_color(lp.parse_color("#eef4ee")[0], {"hue": 120.1, "chroma": 0.038})
+        self.assertIsNotNone(pale)
+        self.assertGreaterEqual(lp.lch(pale)[1], lp.TOKEN_CHROMA)
+        self.assertLessEqual(lp.hue_dist(lp.lch(pale)[2], 120.1), 6)
+
 
 class Extraction(unittest.TestCase):
     def setUp(self):
@@ -73,6 +79,13 @@ class Extraction(unittest.TestCase):
         p = os.path.join(self.d, "pack.png")
         solid_png(p, (60, 60, 60))
         self.assertIsNone(lp.pack_hue(lp.extract([p])))
+
+    def test_pack_photo_is_the_png_when_a_cutout_also_exists(self):
+        handle, imgs = lp.pack_images({"product_ref": "fusiforce-creatine-gummies"})
+        self.assertEqual(handle, "fusiforce-creatine-gummies")
+        self.assertEqual(len(imgs), 1)
+        self.assertTrue(imgs[0].endswith("fusiforce-creatine-gummies.png"))
+        self.assertFalse(imgs[0].endswith("-cutout.png"))
 
     def test_real_florafresh_ref_is_rose(self):
         ref = os.path.join(ROOT, "product_refs", "florafresh-vaginal-probiotics-gummies.png")

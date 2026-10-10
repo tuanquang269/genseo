@@ -1,0 +1,21 @@
+{
+ "handle": "fusiforce-creatine-gummies",
+ "kind": "chromatic",
+ "packaging_note": "bright green",
+ "hue": 126.4,
+ "chroma": 0.161,
+ "hex": "#97c344",
+ "hue_tolerance": 30,
+ "sources": [
+  "product_refs/fusiforce-creatine-gummies.json color field: bright green",
+  "k-means (scripts/landing_palette.py extract, OKLab, k=6, seed 7) of product_refs/fusiforce-creatine-gummies.png"
+ ],
+ "clusters": [
+  {"hex": "#97c344", "share": 0.3671, "L": 0.761, "C": 0.161, "h": 126.4},
+  {"hex": "#77a333", "share": 0.2346, "L": 0.661, "C": 0.148, "h": 128.4},
+  {"hex": "#b5d56f", "share": 0.1569, "L": 0.827, "C": 0.134, "h": 123.6},
+  {"hex": "#94af65", "share": 0.1064, "L": 0.716, "C": 0.104, "h": 125.3},
+  {"hex": "#d3ddc0", "share": 0.1055, "L": 0.882, "C": 0.04, "h": 122.7},
+  {"hex": "#567d25", "share": 0.0295, "L": 0.542, "C": 0.124, "h": 130.3}
+ ]
+}

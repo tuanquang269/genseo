@@ -1,0 +1,22 @@
+{
+ "handle": "premium-himalayan-shilajit-gummies",
+ "kind": "chromatic",
+ "packaging_note": "matte black upper third fading into deep green lower two-thirds",
+ "hue": 146.9,
+ "chroma": 0.046,
+ "hex": "#465e48",
+ "hue_tolerance": 30,
+ "sources": [
+  "product_refs/premium-himalayan-shilajit-gummies.json color field: matte black upper third fading into deep green lower two-thirds",
+  "k-means (scripts/landing_palette.py extract, OKLab, k=6, seed 7) of product_refs/premium-himalayan-shilajit-gummies.png",
+  "The largest cluster is #1a1a1b (chroma 0.002), below 0.035, so it is not the UI hue."
+ ],
+ "clusters": [
+  {"hex": "#1a1a1b", "share": 0.325, "L": 0.218, "C": 0.002, "h": 286.2},
+  {"hex": "#313731", "share": 0.219, "L": 0.329, "C": 0.013, "h": 145.3},
+  {"hex": "#465e48", "share": 0.1324, "L": 0.456, "C": 0.046, "h": 146.9},
+  {"hex": "#5d8359", "share": 0.1288, "L": 0.57, "C": 0.076, "h": 142.2},
+  {"hex": "#dcdede", "share": 0.1234, "L": 0.899, "C": 0.002, "h": 197.1},
+  {"hex": "#96ac93", "share": 0.0714, "L": 0.72, "C": 0.043, "h": 141.8}
+ ]
+}
