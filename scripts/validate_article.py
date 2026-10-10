@@ -359,6 +359,8 @@ def main():
     # PDP description (Kevin 2026-10-09; scripts/brand_rules.py + florafresh_rules.py).
     # Shilajit Shockwave doses follow product_refs/shilajit-shockwave.label.json
     # (no milligram token; scripts/shockwave_rules.py).
+    # Pure Shilajit Gold Resin doses follow product_refs/pure-shilajit-gold-resin.label.json
+    # (OCR serving line and 75% Fulvic; no milligram token; scripts/gold_resin_rules.py).
     _v=_br.violations(html)
     if _v: fails.append("brand rule — banned link(s)/mentions/claims: "+"; ".join(_v[:6]))
 

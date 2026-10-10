@@ -17,6 +17,7 @@ GENSEO_LANDING_NO_REPEAT_DAYS days (default 6) — history = every dated line in
 Angle: the least-used angle for that product. The new line must pass brand_rules + lint_tickets.py.
 FloraFresh lines also carry florafresh_rules.LANDING_NOTE (formula from the Supplement Facts label, never the PDP).
 Shilajit Shockwave lines carry shockwave_rules.LANDING_NOTE (identity lines only; no dose the label file omits).
+Pure Shilajit Gold Resin lines carry gold_resin_rules.LANDING_NOTE (the OCR serving line and 75% Fulvic; no milligram and no other dose).
 """
 import datetime as dt, json, os, re, subprocess, sys, urllib.request
 
@@ -24,6 +25,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "scripts"))
 import brand_rules as br  # noqa: E402
 import florafresh_rules as ff  # noqa: E402
+import gold_resin_rules as gr  # noqa: E402
 import shockwave_rules as sw  # noqa: E402
 
 QUEUE = os.path.join(ROOT, "daily-landing-tickets.md")
@@ -138,6 +140,8 @@ def main():
         line += " · " + ff.LANDING_NOTE
     if h == sw.HANDLE:
         line += " · " + sw.LANDING_NOTE
+    if h == gr.HANDLE:
+        line += " · " + gr.LANDING_NOTE
     line += f" (added {today()})"
     try:
         line = br.prepare_ticket(line)
