@@ -17,7 +17,8 @@ Read `skills/genseo-landing-pages/SKILL.md` and `templates/landing/README.md` in
 - **Never auto-live.** Live needs Kevin's explicit GO (`GENSEO_LANDING_LIVE_OK=1 … --live`), refused while
   placeholders remain. A page already live (e.g. `/pages/nmn-after-40-research`) is never hidden or overwritten.
 - **Brand files** `brand/<store>.json` carry tokens, voice and `forbidden_terms`; AgeAura allows only
-  `ageaura-pure-nmn-tmg-nad-complex`. `validate_landing.py` blocks banned handles and terms, any FloraFresh
+  `ageaura-pure-nmn-tmg-nad-complex` (`scripts/ageaura_rules.py` fails closed on `ageaura-pure-urolithin-a`
+  and any other Urolithin A AgeAura handle). `validate_landing.py` blocks banned handles and terms, any FloraFresh
   formula claim its Supplement Facts label does not support (`scripts/florafresh_rules.py`; the PDP description is
   wrong until Kevin's GO), any Shilajit Shockwave dose its pack-label whitelist does not list
   (`scripts/shockwave_rules.py`), any Pure Shilajit Gold Resin dose its pack-label whitelist does not list

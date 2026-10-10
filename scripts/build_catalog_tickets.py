@@ -21,6 +21,7 @@ Usage: build_catalog_tickets.py [out.md] [--min-sku 3]
 """
 import json, os, re, sys, urllib.request
 import brand_rules as br
+import ageaura_rules as ar
 from collections import defaultdict
 
 ROOT = "/Users/kevinkreative/genseo"
@@ -28,9 +29,19 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import topic_fitness as tf
 import build_rich_tickets as brt   # reuse theme_for / brands_for / angle_for / AUTHORS / tc
 
-cfg = json.load(open(os.path.expanduser('~/.genseo/shopify_token.json')))
-SHOP, TOKEN = cfg['shop'], cfg['access_token']
-API = f"https://{SHOP}/admin/api/2026-04"
+
+def _admin():
+    cfg = json.load(open(os.path.expanduser('~/.genseo/shopify_token.json')))
+    shop, token = cfg['shop'], cfg['access_token']
+    return token, "https://%s/admin/api/2026-04" % shop
+
+
+def guard_anchor(handle):
+    """Normalized hero handle. A denied AgeAura handle raises brand_rules.GuardError."""
+    try:
+        return ar.require_target(handle)
+    except ar.AgeAuraProductError as exc:
+        raise br.GuardError(list(exc.reasons))
 
 # brands that are our own house label / not a real third-party brand to review
 # NOTE: this builder was designed for a multi-brand RETAILER (review tickets for
@@ -79,9 +90,10 @@ def tc(q):
 
 
 def gql(q, v=None):
+    token, api = _admin()
     body = json.dumps({"query": q, "variables": v or {}}).encode()
-    r = urllib.request.Request(f"{API}/graphql.json", data=body,
-        headers={"X-Shopify-Access-Token": TOKEN, "Content-Type": "application/json"})
+    r = urllib.request.Request(f"{api}/graphql.json", data=body,
+        headers={"X-Shopify-Access-Token": token, "Content-Type": "application/json"})
     return json.load(urllib.request.urlopen(r))
 
 
@@ -101,7 +113,7 @@ def catalog():
             n = e['node']
             if (n['totalInventory'] or 0) <= 0:
                 continue
-            if not br.product_allowed(n['handle']):
+            if ar.classify_handle(n['handle']) == "deny":
                 continue
             ven = (n['vendor'] or '').strip()
             k = tf._norm(ven)
@@ -138,6 +150,8 @@ ANGLE = ("Brand review / where-to-buy — direct verdict up top (who it's for, i
 
 def render_ticket(c, num):
     """render one PASS candidate as a rich-brief ticket block (list of lines)."""
+    c = dict(c)
+    c['handle'] = guard_anchor(c['handle'])
     links = []
     if c['own_coll']:
         links.append(c['own_coll'])            # the brand's OWN collection — the most relevant link

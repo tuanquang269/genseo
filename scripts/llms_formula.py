@@ -15,6 +15,7 @@ import json
 import os
 import re
 
+import ageaura_rules
 import florafresh_rules as ff
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -89,6 +90,8 @@ def matches_label(handle, sentence, root=None):
 
 def formula_line(handle, root=None):
     """The one sentence a local draft may state, or None when the label does not support one."""
+    if ageaura_rules.classify_handle(handle) == "deny":
+        return None
     if handle == ff.HANDLE:
         line = FLORA_LINE
     elif handle == FUSI:

@@ -238,6 +238,11 @@ both $59.99 SKUs do, and both still carry un-rewritten hype copy. Packaging disc
 shilajit gummies front "60-DAY SUPPLY" vs panel 30 servings; FusiForce front "90 GUMMIES" vs
 panel 28×3=84; FusiForce PDP "25 mg ginseng" vs panel "50 mg".
 
+AgeAura promotion is handle-locked (`scripts/ageaura_rules.py`, `docs/AGEAURA_PRODUCT_GUARD.md`):
+new tickets and landing specs may target only `ageaura-pure-nmn-tmg-nad-complex`.
+`ageaura-pure-urolithin-a` and any other Urolithin A AgeAura handle fail closed in the ticket
+builders and `validate_landing.py`. The live Urolithin PDP is not unpublished by this guard.
+
 **Hero-face gate (applied 2026-10-09):** `fetch_personas.py` records
 `exaggerated_expression` and `usable_as_identity_reference`. Missing keys on older rows
 default to a resting, usable face. `persona_picker.py` will not issue `m3039-as-02`

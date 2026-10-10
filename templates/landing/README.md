@@ -74,3 +74,4 @@ Images: repo-relative `tmp_images/landing-<slug>/<name>.webp` (from `article_ima
 primary `#54b94a` · primary_dark `#3a9e40` · ink `#1e3a29` · text `#222126` · dark_section `#2e2a39` · bg_soft `#f6fbf5`
 · border `#dbeedb` · price_accent `#dd1d1d` · body font Montserrat · headings Helvetica 700 · logo `WNN_Main_Logo` (theme CDN).
 AgeAura overrides: ink `#2e2a39`, bg_soft `#f5f5f7`, border `#e3e3e8`; forbidden: urolithin, peptide, musclemax.
+The only AgeAura product handle a ticket or spec may target is `ageaura-pure-nmn-tmg-nad-complex` (`scripts/ageaura_rules.py`). `ageaura-pure-urolithin-a` fails closed in `build_landing_tickets.py` and `validate_landing.py`.

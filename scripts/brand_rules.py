@@ -63,14 +63,16 @@ shilajit-gummies formula line is included only when it matches the label source
 of truth (scripts/llms_formula.py). Shockwave, Gold Resin, ShilaSource resin,
 and Turkesterone get a URL and no dose sentence.
 
-This module is the only allow/deny list. Ticket builders, landing builders,
-image prompts, the publisher, llms.txt drafts, and IndexNow call it.
-Do not copy the handle into another file.
+The AgeAura handle allow/deny list lives in ageaura_rules.py. This module
+merges it with the other product guards. Ticket builders, landing builders,
+image prompts, the publisher, llms.txt drafts, and IndexNow call this module.
+Do not copy the handle into a third file.
 """
 import json
 import os
 import re
 
+import ageaura_rules
 import florafresh_rules as florafresh
 import gold_resin_rules as gold_resin
 import llms_formula
@@ -79,22 +81,14 @@ import shilasource_resin_rules as shilasource_resin
 import shockwave_rules as shockwave
 import turkesterone_rules as turkesterone
 
-AGEAURA_OK = "ageaura-pure-nmn-tmg-nad-complex"
-AGEAURA_OK_URL = "https://wellnessnest.co/products/" + AGEAURA_OK
-AGEAURA_PRODUCT_LABEL = "AgeAura Pure NMN + TMG NAD+ Complex"
+AGEAURA_OK = ageaura_rules.HANDLE
+AGEAURA_OK_URL = ageaura_rules.PRODUCT_URL
+AGEAURA_PRODUCT_LABEL = ageaura_rules.PRODUCT_LABEL
 LOCK_LINE = (
     "AgeAura product (only): " + AGEAURA_PRODUCT_LABEL + " (" + AGEAURA_OK_URL + ")."
 )
 _FORCE_REASON = "AgeAura named without the Pure NMN + TMG NAD Complex (" + AGEAURA_OK + ")"
 
-_ASSET_SUFFIX = re.compile(r"-(?:cutout|label|ref|pack)$", re.I)
-_PRODUCT_PATH = re.compile(r"/products/([a-z0-9-]+)", re.I)
-_PRODUCT_EQ = re.compile(r"(?:^|[\s|])product=([a-z0-9-]+)", re.I)
-# Product handles only. Campaign slugs such as ageaura-nmn-listicle-261008 are not SKUs.
-_BARE_AGEAURA_PRODUCT = re.compile(
-    r"\b(ageaura-pure-[a-z0-9-]+|ageaura-[a-z0-9-]*(?:urolithin|peptide|duo|bundle)[a-z0-9-]*)\b",
-    re.I,
-)
 _UROLITHIN = re.compile(r"urolithin", re.I)
 _AGEAURA = re.compile(r"ageaura", re.I)
 _COLLECTION = re.compile(r"/collections/ageaura\b", re.I)
@@ -129,19 +123,7 @@ class Decision:
 
 def normalize_handle(handle):
     """Lowercase product handle. Accepts a bare handle, /products/<handle>, or a product URL."""
-    h = (handle or "").strip().lower()
-    if not h:
-        return ""
-    found = _PRODUCT_PATH.search(h)
-    if found:
-        h = found.group(1)
-    elif "://" not in h:
-        h = h.split(":", 1)[0]
-        h = h.strip().strip("/")
-        if h.startswith("products/"):
-            h = h[len("products/"):]
-    h = _ASSET_SUFFIX.sub("", h)
-    return h
+    return ageaura_rules.normalize_handle(handle)
 
 
 def product_allowed(handle):
@@ -149,15 +131,9 @@ def product_allowed(handle):
 
     A bare brand token ``ageaura`` (no product) is not a handle and returns False.
     Call resolve_handle() when that token should be locked to the NMN + TMG SKU.
+    The allow/deny list is ageaura_rules.py.
     """
-    h = normalize_handle(handle)
-    if not h:
-        return True
-    if "urolithin" in h:
-        return False
-    if h == "ageaura" or h.startswith("ageaura-"):
-        return h == AGEAURA_OK
-    return True
+    return ageaura_rules.product_allowed(handle)
 
 
 def collection_allowed(handle):
@@ -212,13 +188,7 @@ def assess(text):
 
 def _ageaura_decision(text):
     text = text or ""
-    reasons = []
-    handles = []
-    for rx in (_PRODUCT_PATH, _BARE_AGEAURA_PRODUCT, _PRODUCT_EQ):
-        handles.extend(m.group(1).lower() for m in rx.finditer(text))
-    for h in sorted(set(handles)):
-        if not product_allowed(h):
-            reasons.append("denied product handle: " + h)
+    reasons = list(ageaura_rules.text_target_violations(text))
     if _UROLITHIN.search(text):
         reasons.append("Urolithin")
     if _COLLECTION.search(text):
@@ -265,6 +235,7 @@ def spec_violations(spec):
     product_refs/<handle>.palette.json.
     """
     out = _decision_violations(_ageaura_decision(json.dumps(spec)))
+    out = _dedupe(out + ageaura_rules.spec_target_violations(spec))
     return _dedupe(out + florafresh.spec_violations(spec) + shockwave.spec_violations(spec)
                    + gold_resin.spec_violations(spec)
                    + shilasource_resin.spec_violations(spec)
@@ -364,17 +335,7 @@ def prepare_image_request(prompt, handle_specs):
 
 def asset_path_allowed(path):
     """False when a pack-shot path is the Urolithin bottle or another AgeAura SKU."""
-    base = os.path.basename(path or "").lower()
-    if "urolithin" in base:
-        return False
-    if "ageaura" not in base:
-        return True
-    stem = _ASSET_SUFFIX.sub("", base.split(".")[0])
-    if stem == AGEAURA_OK or stem.startswith(AGEAURA_OK):
-        return True
-    if stem.startswith("ageaura-pure-") or "urolithin" in stem:
-        return product_allowed(stem)
-    return True
+    return ageaura_rules.asset_path_allowed(path)
 
 
 def indexnow_urls(urls):

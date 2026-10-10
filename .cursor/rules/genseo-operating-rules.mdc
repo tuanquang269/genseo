@@ -37,6 +37,7 @@ Also: never `rm` repo files (move them to `_superseded/`); never put CDN URLs in
 
 ## Brand locks (Kevin 2026-10-07; enforced by `scripts/brand_rules.py`, `validate_article.py`, `lint_tickets.py`)
 - **AgeAura = AgeAura Pure NMN + TMG NAD+ Complex only.** Link only `/products/ageaura-pure-nmn-tmg-nad-complex`.
+  Handle allow/deny: `scripts/ageaura_rules.py` (fail-closed in ticket builders and `validate_landing.py`).
   Never Urolithin A (not as AgeAura, not at all), never `ageaura-pure-nmn-tmg-p2`, the Essential Longevity Duo,
   "rejuvenation duo", peptides, or `/collections/ageaura` (use `/collections/best-seller` as a browse link).
 - **FloraFresh = its Supplement Facts label formula** (Kevin 2026-10-09; `scripts/florafresh_rules.py`, run by
@@ -97,6 +98,7 @@ Also: never `rm` repo files (move them to `_superseded/`); never put CDN URLs in
 
 ## Read-only checks a cloud agent can run
 ```bash
+python3 scripts/ageaura_rules.py --brief                 # AgeAura handle allowlist (do not paste into a ticket)
 python3 scripts/lint_tickets.py daily-tickets.md        # banned link or claim in an open ticket -> exit 2
 python3 scripts/florafresh_rules.py <draft>.md          # FloraFresh copy vs its Supplement Facts label -> exit 1
 python3 scripts/shockwave_rules.py <draft>.md           # Shockwave copy vs its pack-label whitelist -> exit 1

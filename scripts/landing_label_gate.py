@@ -35,6 +35,7 @@ import tempfile
 
 from PIL import Image
 
+import ageaura_rules
 import brand_rules
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -337,7 +338,12 @@ def evaluate(handle, image_path=None, ocr_lines=None, root=None, runner=None, pl
 
     Pass ocr_lines to skip Vision (tests only). None means read the image, and a
     Vision failure raises LabelGateError instead of returning ok.
+    A denied AgeAura handle fails closed even when a label file exists.
     """
+    try:
+        ageaura_rules.require_target(handle)
+    except ageaura_rules.AgeAuraProductError as exc:
+        raise LabelGateError("FAIL CLOSED: " + str(exc))
     spec = load_label_spec(handle, root)
     if ocr_lines is None:
         lines = read_ocr_lines(
@@ -387,6 +393,8 @@ def whitelist_pack_errors(spec, root=None, run_gate=None):
     if not found:
         return ["FAIL CLOSED: pack shot claims a label whitelist but the spec has no /products/<handle>."]
     handle = found.group(1)
+    if ageaura_rules.guard_product_handle(handle) is None:
+        return ["pack_images label gate FAIL CLOSED: " + ageaura_rules.denial_message(handle)]
     if not os.path.isfile(label_json_path(handle, root)):
         return ["pack_images label gate FAIL CLOSED: " + missing_label_note(handle)]
     packs = spec.get("pack_images") or []

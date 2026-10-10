@@ -4,7 +4,9 @@
   /usr/bin/python3 scripts/validate_landing.py landing_drafts/<slug>.json [--strict]
 
 --strict (required by landing_publisher.py --live): zero placeholders allowed.
-Checks: schema, brand_rules.spec_violations (AgeAura = the NMN + TMG SKU only; FloraFresh formula = its
+Checks: schema, ageaura_rules.spec_target_violations (AgeAura product handle allowlist:
+ageaura-pure-nmn-tmg-nad-complex only; ageaura-pure-urolithin-a and any other Urolithin A
+AgeAura handle fail closed), brand_rules.spec_violations (AgeAura = the NMN + TMG SKU only; FloraFresh formula = its
 Supplement Facts label, never the PDP description; Shilajit Shockwave doses = its pack-label whitelist,
 which has no milligram token — scripts/shockwave_rules.py; Pure Shilajit Gold Resin doses = its
 pack-label whitelist, which has the OCR serving line and 75% Fulvic and no milligram token —
@@ -28,6 +30,7 @@ import json, os, re, sys, urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "scripts"))
+import ageaura_rules as ar  # noqa: E402
 import brand_rules as br  # noqa: E402
 import landing_label_gate as llg  # noqa: E402
 from landing_render import load_brand, PH_RE  # noqa: E402
@@ -51,6 +54,11 @@ def strings(o, path=""):
     elif isinstance(o, list):
         for i, v in enumerate(o):
             yield from strings(v, f"{path}[{i}]")
+
+
+def ageaura_target_errors(spec):
+    """Denied AgeAura product handles this landing spec targets. No network."""
+    return ar.spec_target_violations(spec)
 
 
 def http_ok(u):
@@ -85,7 +93,11 @@ def main():
         errs.append("slug must be a lowercase handle")
     blob = json.dumps(spec)
     # Kevin 2026-10-09, any store's page: Urolithin and any non-NMN+TMG AgeAura SKU; FloraFresh claims off its label.
-    for v in br.spec_violations(spec):
+    brand_errs = []
+    for v in ageaura_target_errors(spec) + br.spec_violations(spec):
+        if v not in brand_errs:
+            brand_errs.append(v)
+    for v in brand_errs:
         errs.append("brand guard: " + v)
     blob = blob.lower()
     if brand.get("allowed_products"):
