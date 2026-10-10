@@ -361,6 +361,9 @@ def main():
     # (no milligram token; scripts/shockwave_rules.py).
     # Pure Shilajit Gold Resin doses follow product_refs/pure-shilajit-gold-resin.label.json
     # (OCR serving line and 75% Fulvic; no milligram token; scripts/gold_resin_rules.py).
+    # ShilaSource Himalayan Shilajit Resin doses follow
+    # product_refs/shilasource-himalayan-shilajit-resin.label.json
+    # (front-of-pack lines only; no milligram token; scripts/shilasource_resin_rules.py).
     _v=_br.violations(html)
     if _v: fails.append("brand rule — banned link(s)/mentions/claims: "+"; ".join(_v[:6]))
 

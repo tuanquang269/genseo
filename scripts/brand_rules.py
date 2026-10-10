@@ -1,6 +1,7 @@
 """Brand guard: AgeAura promotion (Kevin 2026-10-06, re-audited 2026-10-09), the
-FloraFresh formula (Kevin 2026-10-09), the Shilajit Shockwave pack label, and the
-Pure Shilajit Gold Resin pack label.
+FloraFresh formula (Kevin 2026-10-09), the Shilajit Shockwave pack label, the
+Pure Shilajit Gold Resin pack label, and the ShilaSource Himalayan Shilajit
+Resin pack label.
 
 AgeAura may promote exactly one SKU:
 
@@ -28,13 +29,23 @@ do not contain. The OCR serving line and 75% Fulvic are allowed only because
 they are in that file. No milligram token was read. Gummies, Shockwave, and
 ShilaSource resin are not this product.
 
-assess() denies any FloraFresh, Shockwave, or Gold Resin claim those modules
-reject, so every caller below enforces them. Landing specs use spec_violations().
+ShilaSource Himalayan Shilajit Resin copy follows
+product_refs/shilasource-himalayan-shilajit-resin.label.json.
+shilasource_resin_rules.py rejects a milligram amount, a serving count, a
+volume, a weight, a fulvic percentage, a mineral count, a day-supply, or any
+other dose that file's required and optional lines do not contain. The fulvic
+line, the net-weight line, and the split servings badge are allowed only
+because they are in that file. No milligram token was read. Gummies, Shockwave,
+and Gold Resin are not this product.
+
+assess() denies any FloraFresh, Shockwave, Gold Resin, or ShilaSource resin
+claim those modules reject, so every caller below enforces them. Landing specs
+use spec_violations().
 
 Local llms.txt drafts omit denied handles. A FloraFresh, FusiForce, or
 shilajit-gummies formula line is included only when it matches the label source
-of truth (scripts/llms_formula.py). Shockwave and Gold Resin get a URL and no
-dose sentence.
+of truth (scripts/llms_formula.py). Shockwave, Gold Resin, and ShilaSource resin
+get a URL and no dose sentence.
 
 This module is the only allow/deny list. Ticket builders, landing builders,
 image prompts, the publisher, llms.txt drafts, and IndexNow call it.
@@ -47,6 +58,7 @@ import re
 import florafresh_rules as florafresh
 import gold_resin_rules as gold_resin
 import llms_formula
+import shilasource_resin_rules as shilasource_resin
 import shockwave_rules as shockwave
 
 AGEAURA_OK = "ageaura-pure-nmn-tmg-nad-complex"
@@ -157,16 +169,18 @@ def assess(text):
     deny  — Urolithin A, another AgeAura SKU, a banned bundle, /collections/ageaura,
             a FloraFresh formula claim its Supplement Facts label does not support,
             a Shilajit Shockwave milligram, serving, or other dose the pack
-            label whitelist does not list, or a Pure Shilajit Gold Resin milligram,
+            label whitelist does not list, a Pure Shilajit Gold Resin milligram,
             serving, volume, weight, day-supply, or other dose its pack-label
-            whitelist does not list
+            whitelist does not list, or a ShilaSource resin milligram, serving,
+            volume, weight, fulvic percentage, mineral count, day-supply, or
+            other dose its pack-label whitelist does not list
     force — AgeAura is named and the Pure NMN + TMG product is not
     allow — no AgeAura, or AgeAura is tied to that one product, and no FloraFresh,
-            Shockwave, or Gold Resin label miss
+            Shockwave, Gold Resin, or ShilaSource resin label miss
     """
     decision = _ageaura_decision(text)
     extra = (florafresh.violations(text) + shockwave.violations(text)
-             + gold_resin.violations(text))
+             + gold_resin.violations(text) + shilasource_resin.violations(text))
     if not extra:
         return decision
     reasons = list(decision.reasons) if decision.action == "deny" else []
@@ -210,8 +224,8 @@ def violations(text):
 
     Ambiguous AgeAura is a violation until prepare_ticket / prepare_promotion
     locks the copy to the allowed SKU. Denied SKUs, FloraFresh formula claims,
-    Shockwave pack-label claims, and Gold Resin pack-label claims stay
-    violations either way.
+    Shockwave pack-label claims, Gold Resin pack-label claims, and ShilaSource
+    resin pack-label claims stay violations either way.
     """
     return _decision_violations(assess(text))
 
@@ -220,13 +234,14 @@ def spec_violations(spec):
     """violations() for a landing spec (the parsed JSON).
 
     AgeAura reads the whole spec, as the gates always did. FloraFresh, Shockwave,
-    and Gold Resin are checked field by field, so source notes and the citation
-    list may record what a PDP says; product, offer, sticky_cta, trust, chip,
-    and bullets count as product claims.
+    Gold Resin, and ShilaSource resin are checked field by field, so source notes
+    and the citation list may record what a PDP says; product, offer, sticky_cta,
+    trust, chip, and bullets count as product claims.
     """
     out = _decision_violations(_ageaura_decision(json.dumps(spec)))
     return _dedupe(out + florafresh.spec_violations(spec) + shockwave.spec_violations(spec)
-                   + gold_resin.spec_violations(spec))
+                   + gold_resin.spec_violations(spec)
+                   + shilasource_resin.spec_violations(spec))
 
 
 def _decision_violations(decision):

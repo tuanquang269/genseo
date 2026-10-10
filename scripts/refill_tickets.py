@@ -14,11 +14,13 @@ read live at run time:
   2 brand_rules (AgeAura = NMN + TMG Complex only, no Urolithin; FloraFresh formula = its Supplement Facts
     label, never the PDP description; Shilajit Shockwave doses = its pack-label whitelist, which has no
     milligram token; Pure Shilajit Gold Resin doses = its pack-label whitelist, which has the OCR
-    serving line and 75% Fulvic and no milligram token) + the bank's banned terms, on the brief and
-    on the rendered ticket.
+    serving line and 75% Fulvic and no milligram token; ShilaSource Himalayan Shilajit Resin doses =
+    its pack-label whitelist, front-of-pack lines only, no milligram token) + the bank's banned terms,
+    on the brief and on the rendered ticket.
     A FloraFresh ticket also carries florafresh_rules.TICKET_LINE (the label formula).
     A Shilajit Shockwave ticket also carries shockwave_rules.TICKET_LINE (the pack label).
-    A Pure Shilajit Gold Resin ticket also carries gold_resin_rules.TICKET_LINE (the pack label)
+    A Pure Shilajit Gold Resin ticket also carries gold_resin_rules.TICKET_LINE (the pack label).
+    A ShilaSource resin ticket also carries shilasource_resin_rules.TICKET_LINE (the pack label)
   3 hero and inline products live and in stock (products.json); a live collection to link
   4 not a covered topic (queue header rule 6: MenoMate / meal plans, shilajit foundations, ...)
   5 not already in daily-tickets.md, any status: same primary, title overlap, or same family + segment
@@ -46,6 +48,7 @@ sys.path.insert(0, os.path.join(ROOT, "scripts"))
 import brand_rules as br  # noqa: E402
 import florafresh_rules as ff  # noqa: E402
 import gold_resin_rules as gr  # noqa: E402
+import shilasource_resin_rules as sr  # noqa: E402
 import shockwave_rules as sw  # noqa: E402
 import topic_fitness as tf  # noqa: E402
 
@@ -702,6 +705,8 @@ def render(c, tid, ctx, info):
         out.append("  - " + sw.TICKET_LINE)
     if gr.HANDLE in [c["product"]] + c["inline"]:
         out.append("  - " + gr.TICKET_LINE)
+    if sr.HANDLE in [c["product"]] + c["inline"]:
+        out.append("  - " + sr.TICKET_LINE)
     out += [f"  - **Collection links (≥2, verify live):** {coll}", f"  - **Angle:** {c['angle']}"]
     if c["fanout"]:
         out.append("  - **Fan-out answers to cover:** " + "; ".join(c["fanout"]))
@@ -956,6 +961,7 @@ def self_test():
         t("FloraFresh ticket carries the Supplement Facts label formula", ff.TICKET_LINE in text)
         t("FloraFresh ticket: no Shockwave pack-label line", sw.TICKET_LINE not in text)
         t("FloraFresh ticket: no Gold Resin pack-label line", gr.TICKET_LINE not in text)
+        t("FloraFresh ticket: no ShilaSource resin pack-label line", sr.TICKET_LINE not in text)
         header = batch_header(ctx, ["CA1009-4", "CA1009-4"])
         t("batch header is brand-clean and sets no image override",
           not banned(header, bank) and "ALL images NO-FACE" not in header)
@@ -1009,6 +1015,7 @@ def self_test():
         t("AgeAura ticket: no FloraFresh formula line", ff.TICKET_LINE not in text)
         t("AgeAura ticket: no Shockwave pack-label line", sw.TICKET_LINE not in text)
         t("AgeAura ticket: no Gold Resin pack-label line", gr.TICKET_LINE not in text)
+        t("AgeAura ticket: no ShilaSource resin pack-label line", sr.TICKET_LINE not in text)
 
     sw_cand = norm_cand(dict(FIX_GOOD, id="sw", product="shilajit-shockwave",
                              primary="shilajit shockwave for athletes",
@@ -1024,6 +1031,7 @@ def self_test():
     sw_text = render(sw_cand, "CA1009-9", ctx, sw_info)
     t("Shockwave ticket carries the pack-label line", sw.TICKET_LINE in sw_text)
     t("Shockwave ticket: no Gold Resin pack-label line", gr.TICKET_LINE not in sw_text)
+    t("Shockwave ticket: no ShilaSource resin pack-label line", sr.TICKET_LINE not in sw_text)
     t("Shockwave ticket is brand-clean", not br.violations(sw_text), br.violations(sw_text))
 
     gr_cand = norm_cand(dict(FIX_GOOD, id="gr", product="pure-shilajit-gold-resin",
@@ -1040,7 +1048,25 @@ def self_test():
     gr_text = render(gr_cand, "CA1009-8", ctx, gr_info)
     t("Gold Resin ticket carries the pack-label line", gr.TICKET_LINE in gr_text)
     t("Gold Resin ticket: no Shockwave pack-label line", sw.TICKET_LINE not in gr_text)
+    t("Gold Resin ticket: no ShilaSource resin pack-label line", sr.TICKET_LINE not in gr_text)
     t("Gold Resin ticket is brand-clean", not br.violations(gr_text), br.violations(gr_text))
+
+    sr_cand = norm_cand(dict(FIX_GOOD, id="sr", product="shilasource-himalayan-shilajit-resin",
+                             primary="shilajit resin for athletes",
+                             title="ShilaSource Resin for Athletes (US 2026)",
+                             secondary=["shilasource resin for training"], segment="athletes",
+                             intent="athlete comparing a resin jar", template="EDITORIAL",
+                             angle="What the jar format changes about a daily routine.",
+                             fanout=["how do you take shilajit resin"],
+                             evidence="Pack label lines only.",
+                             link=[]), ctx["bank"], "topic-bank", 1, 0)
+    sr_info = {"verdict": ("PASS", "brand"), "suggest": "offline",
+               "colls": ["shilajit-wellness-stack", "mens-essential-collection"], "links": []}
+    sr_text = render(sr_cand, "CA1010-1", ctx, sr_info)
+    t("ShilaSource resin ticket carries the pack-label line", sr.TICKET_LINE in sr_text)
+    t("ShilaSource resin ticket: no Shockwave pack-label line", sw.TICKET_LINE not in sr_text)
+    t("ShilaSource resin ticket: no Gold Resin pack-label line", gr.TICKET_LINE not in sr_text)
+    t("ShilaSource resin ticket is brand-clean", not br.violations(sr_text), br.violations(sr_text))
 
     mk = [("1", "probiotic", "LISTICLE"), ("2", "probiotic", "COMPARISON"), ("3", "turkesterone", "EDITORIAL"),
           ("4", "creatine", "LISTICLE"), ("5", "creatine", "LISTICLE"), ("6", "nmn", "EDITORIAL")]

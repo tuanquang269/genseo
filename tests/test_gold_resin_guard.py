@@ -130,7 +130,7 @@ class LabelCopyPasses(unittest.TestCase):
             "Pure Shilajit Gold Resin is not 30 servings and not 1 fl oz.",
             "| Pure Shilajit Gold Resin | jar |\n| Brand X | 500 mg | 30 servings | 30 ml |",
             "Premium Himalayan Shilajit Gummies list 1500 mg, 60 gummies, and a 60-day supply.",
-            "ShilaSource resin, 300 mg per serving, 70% fulvic acid.",
+            "ShilaSource resin, 70% Fulvic Acid, 1.06oz (30g), 75 servings.",
             "FusiForce has 90 gummies and 30 servings.",
             "FloraFresh: Vitamin C 30 mg per 2 gummies, 1 billion CFU.",
             "The trial used 250 mg of purified shilajit. Pure Shilajit Gold Resin is a jar.",
@@ -152,7 +152,7 @@ class LabelCopyPasses(unittest.TestCase):
             "Vitamin C 30 mg and pineapple fruit powder 100 mg.",
             "FusiForce Creatine Monohydrate Gummies, 90 gummies.",
             "Premium Himalayan Shilajit Gummies, 60 gummies, 60-day supply, 1500 mg.",
-            "ShilaSource Himalayan Shilajit Resin, 70% fulvic, 300 mg.",
+            "ShilaSource Himalayan Shilajit Resin, 70% Fulvic Acid, 1.06oz (30g), 75 servings.",
         ])
         self.assertEqual(gr.violations(text), [])
         self.assertEqual(br.violations(text), [])
@@ -166,6 +166,9 @@ class LabelCopyPasses(unittest.TestCase):
         self.assertEqual(sw.violations("Pure Shilajit Gold Resin has 30 servings."), [])
         self.assertEqual(gr.violations("Shilajit Shockwave provides 500 mg and 30 servings."), [])
         self.assertTrue(br.violations("Shilajit Shockwave provides 500 mg and 30 servings."))
+        self.assertEqual(
+            gr.violations("ShilaSource resin, 300 mg per serving, 70% fulvic acid."), [])
+        self.assertTrue(br.violations("ShilaSource resin, 300 mg per serving."))
 
 
 class InventedDosesRejected(unittest.TestCase):
