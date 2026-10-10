@@ -14,8 +14,9 @@ Verdicts: PASS (exit 0), REVIEW (exit 2 — allowed but flagged), FAIL (exit 1 �
 Rules (a heuristic gate — tune the lists as data grows):
   FAIL  brand_rules: a FloraFresh formula claim its Supplement Facts label does not support
         [florafresh-formula], a Shilajit Shockwave milligram, serving, or other dose the
-        pack label does not list [shockwave-label], or an AgeAura SKU other than the
-        NMN + TMG Complex [ageaura-sku]
+        pack label does not list [shockwave-label], a Pure Shilajit Gold Resin milligram,
+        serving, volume, weight, day-supply, or other dose its pack label does not list
+        [gold-resin-label], or an AgeAura SKU other than the NMN + TMG Complex [ageaura-sku]
   FAIL  near-duplicate of an existing live article (we already have the page)
   FAIL  bare category head-term a COLLECTION owns ("best protein powder us") -> the
         collection page should win it, a new article would cannibalise it
@@ -32,6 +33,7 @@ Usage:
 import json, re, sys
 import brand_rules as br
 import florafresh_rules as ff
+import gold_resin_rules as gr
 import shockwave_rules as sw
 
 ROOT = "/Users/kevinkreative/genseo"
@@ -149,6 +151,14 @@ def assess(topic, sg_imp=None, articles=None, collections=None, pos=None):
                 'Shilajit Shockwave follows the pack label (' + sw.LABEL_LINE
                 + '); a milligram amount, serving count, or other dose not in that file fails closed: '
                 + '; '.join(sw_bad))
+
+    gr_bad = gr.violations(topic)
+    if gr_bad:
+        return ('FAIL', gr.CODE,
+                'Pure Shilajit Gold Resin follows the pack label (' + gr.LABEL_LINE
+                + '); a milligram amount, a different serving count, volume, weight, day-supply, '
+                + 'or other dose not in that file fails closed: '
+                + '; '.join(gr_bad))
 
     if br.assess(topic).action == "deny":
         return ('FAIL', 'ageaura-sku',
@@ -271,6 +281,8 @@ def self_check():
         ("FloraFresh Bacillus coagulans SNZ-1969 review", None, [], 'PASS'),  # the label strain
         ("Shilajit Shockwave 500 mg review", None, [], 'FAIL'),                # pack label has no milligram
         ("Shilajit Shockwave review", None, [], 'PASS'),                       # identity only, no invented dose
+        ("Pure Shilajit Gold Resin 500 mg review", None, [], 'FAIL'),          # pack label has no milligram
+        ("Pure Shilajit Gold Resin review", None, [], 'PASS'),                 # whitelist lines only
     ]
     ok = True
     for topic, imp, a, want, *rest in cases:

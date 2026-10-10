@@ -31,4 +31,4 @@ python3 scripts/shockwave_rules.py --spec landing_drafts/<slug>.json
 
 - No Shopify write, no PDP edit, no theme or robots change.
 - The whitelist was not given a milligram, milliliter, or fluid-ounce token.
-- Gummies, Gold Resin, and ShilaSource resin were not given a formula guard in this change.
+- Gummies, Gold Resin, and ShilaSource resin were not given a formula guard in this change. Gold Resin later got its own pack-label guard: `docs/GOLD_RESIN_LABEL_GUARD.md`.
