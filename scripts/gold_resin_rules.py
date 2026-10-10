@@ -101,16 +101,15 @@ _STUDY = re.compile(
 # A letter glued to the digits is not a dose. That keeps the omitted S0g misread
 # from becoming a gram amount. A parenthesized gram amount still matches.
 _NUM = r"(?<![\w.,])(?P<n>\d{1,3}(?:,\d{3})+|\d+(?:\.\d+)?)"
-_INT = r"(?<![\w.,])(?P<n>\d{1,4})"
 _MG = re.compile(_NUM + r"\s*-?\s*(?:mg|milligrams?)\b", re.I)
 _MCG = re.compile(_NUM + r"\s*-?\s*(?:mcg|μg|µg|micrograms?)\b", re.I)
 _GRAM = re.compile(_NUM + r"\s*-?\s*(?:grams?|g)\b", re.I)
 _ML = re.compile(_NUM + r"\s*-?\s*(?:ml|millilit(?:er|re)s?)\b", re.I)
 _FLOZ = re.compile(_NUM + r"\s*-?\s*(?:fl\.?\s*oz|fluid\s+ounces?)\b", re.I)
 _OZ = re.compile(_NUM + r"\s*-?\s*oz\b", re.I)
-_IU = re.compile(_INT + r"\s*-?\s*iu\b", re.I)
-_DROPS = re.compile(_INT + r"\s*-?\s*(?:drops?|droppers?)\b", re.I)
-_SERVINGS = re.compile(_INT + r"\s*-?\s*servings?\b", re.I)
+_IU = re.compile(_NUM + r"\s*-?\s*iu\b", re.I)
+_DROPS = re.compile(_NUM + r"\s*-?\s*(?:drops?|droppers?)\b", re.I)
+_SERVINGS = re.compile(_NUM + r"\s*-?\s*servings?\b", re.I)
 _WORD_NUM = {
     "one": "1", "two": "2", "three": "3", "four": "4", "five": "5",
     "ten": "10", "fifteen": "15", "twenty": "20", "thirty": "30", "forty": "40",
@@ -126,8 +125,8 @@ _SERVINGS_REV = re.compile(
     r"\bservings?\s+per\s+(?:container|pouch|pack|bottle|jar|box)\s*[:#]?\s*(?P<n>\d{1,4})\b",
     re.I,
 )
-_DAY = re.compile(_INT + r"\s*-?\s*day\s+supply\b", re.I)
-_GUMMIES = re.compile(_INT + r"\s*-?\s*gumm(?:y|ies)\b", re.I)
+_DAY = re.compile(_NUM + r"\s*-?\s*day\s+supply\b", re.I)
+_GUMMIES = re.compile(_NUM + r"\s*-?\s*gumm(?:y|ies)\b", re.I)
 _CFU = re.compile(
     r"(?<![\w.,])(?P<n>\d+(?:\.\d+)?)\s*-?\s*(?:billion|million|bn)?\s*-?\s*cfus?\b"
     r"|\b(?P<w>one|two|fifteen)\s+billion\s+cfus?\b",

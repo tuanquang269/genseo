@@ -146,8 +146,8 @@ class LabelCopyPasses(unittest.TestCase):
 
     def test_other_products_in_the_same_piece_keep_their_own_doses(self):
         text = "\n".join([
-            "Pure Shilajit Gold Resin. 75% Fulvic. " + SERVING + ".",
-            "Shilajit Shockwave. EXPERIENCE FOCUSED ENERGY. PEAK PERFORMANCE.",
+            "Pure Shilajit Gold Resin, 75% Fulvic, " + SERVING + ".",
+            "Shilajit Shockwave, EXPERIENCE FOCUSED ENERGY, PEAK PERFORMANCE.",
             "FloraFresh: per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 1 billion CFU, "
             "Vitamin C 30 mg and pineapple fruit powder 100 mg.",
             "FusiForce Creatine Monohydrate Gummies, 90 gummies.",
@@ -194,6 +194,7 @@ class InventedDosesRejected(unittest.TestCase):
         self.assertRejected("Pure Shilajit Gold Resin, thirty servings.", "30 servings")
         self.assertRejected("Pure Shilajit Gold Resin, sixty servings.", "60 servings")
         self.assertRejected("Pure Shilajit Gold Resin has 7.5 servings.", "7.5 servings")
+        self.assertRejected("Pure Shilajit Gold Resin is 7.5% fulvic acid.", "7.5%")
         self.assertRejected("Pure Shilajit Gold Resin has 175 servings.", "175 servings")
         self.assertRejected("Pure Shilajit Gold Resin is 1 fl oz (30 ml).", "1 fl oz", "30 ml")
         self.assertRejected("Pure Shilajit Gold Resin is 2 oz.", "2 oz")
