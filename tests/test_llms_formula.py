@@ -77,6 +77,9 @@ class DraftText(unittest.TestCase):
             text,
         )
         self.assertNotIn("TURNESTERONE", text)
+        self.assertNotIn("TURKESTERONE", text)
+        self.assertNotIn("60 capsules", text.lower())
+        self.assertNotIn("500 mg", text.lower())
         self.assertEqual(br.violations(text), [])
 
     def test_cli_writes_a_local_file_and_does_not_keep_urolithin(self):

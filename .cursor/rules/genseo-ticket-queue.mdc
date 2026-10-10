@@ -17,7 +17,8 @@ the wrapper counts open tickets with `grep -cE '^(- \[ \]|## \[ \])'`. Zero open
 - After any edit: `python3 scripts/lint_tickets.py daily-tickets.md` must exit 0 (it fails on a banned AgeAura link,
   a Urolithin mention, a FloraFresh claim its Supplement Facts label does not support, a Shilajit Shockwave
   dose its pack-label whitelist does not list, a Pure Shilajit Gold Resin dose its pack-label whitelist
-  does not list, or a ShilaSource resin dose its pack-label whitelist does not list, inside an open ticket).
+  does not list, a ShilaSource resin dose its pack-label whitelist does not list, or a Turkesterone
+  Advanced Formula dose its pack-label whitelist does not list, inside an open ticket).
 - FloraFresh tickets take strain, CFU and sugar facts from its Supplement Facts label (Bacillus coagulans SNZ-1969,
   1 billion CFU per 2 gummies, not sugar-free), never from the PDP description, which is wrong until Kevin's GO;
   `refill_tickets.py` adds the label line under the hero product (`docs/FLORAFRESH_FORMULA_GUARD.md`).
@@ -31,6 +32,10 @@ the wrapper counts open tickets with `grep -cE '^(- \[ \]|## \[ \])'`. Zero open
   `product_refs/shilasource-himalayan-shilajit-resin.label.json` only (`70% Fulvic Acid*`, `1.06oz (30g)`,
   and the split `75` / `SERVINGS` badge; no milligram token). `refill_tickets.py` adds that line
   (`docs/SHILASOURCE_RESIN_LABEL_GUARD.md`).
+- Turkesterone Advanced Formula tickets take pack-label facts from
+  `product_refs/turkesterone-advanced-formula.label.json` only (front-of-pack lines and the split
+  `60` / `Capsules` badge; no milligram token and no Supplement Facts panel). `refill_tickets.py` adds that line
+  (`docs/TURKESTERONE_LABEL_GUARD.md`).
 - An open landing ticket (`listicle |` / `advertorial |`) that opts out of a committed packaging palette, or
   forces a hue that file does not list, fails lint. See `docs/PACKAGING_PALETTE_GUARD.md`.
 

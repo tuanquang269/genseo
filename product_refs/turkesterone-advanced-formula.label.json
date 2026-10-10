@@ -1,0 +1,34 @@
+{
+ "handle": "turkesterone-advanced-formula",
+ "source": "RapidOCR (rapidocr-onnxruntime) on product_refs/turkesterone-advanced-formula.png, 2026-10-10. required and accepted_ocr are strings the native read and a 2x read both returned verbatim. None scored confidence 1.00. Native/2x: wellness 0.9439/0.9878, nest 0.9931/0.9926, PREMIUM 0.9893/0.9880, TURKESTERONE 0.9934/0.9925, ADVANCED 0.9878/0.9819, FORMULA 0.9602/0.9860, AMPLIFY 0.9893/0.9892, MUSCLE 0.9908/0.9864, ENDURANCE 0.9942/0.9930, 60 0.9917/0.9930, Dietary Supplement 0.9875/0.9859, Capsules 0.9241/0.9786. This host has no macOS Vision, so label_ocr.swift was not re-run. A 2026-10-09 macOS Vision read returned the brand line as \"TURNESTERONE\" (confidence 1.00). That string was not copied and was not corrected. Lines the two RapidOCR reads did not agree on were omitted, not corrected: \"KSM-66?Ashwagandha\" vs \"KSM-66? Ashwagandha\"; \"POTENTIAL*\" vs \"POTENTIAL\"; \"RECOVERY\" vs \"RECOVERY*\"; \"Colostrum+Tongkat Ali\" vs \"Colostrum + Tongkat Ali\"; \"BioPerineBlackPepper\" vs \"BioPerine@ Black Pepper\". The in-repo photo is the jar front only (480x560). No Supplement Facts panel and no milligram token were read. Do not add one. \"60\" and \"Capsules\" were separate lines. They were not rewritten into one \"60 Capsules\" line.",
+ "accepted_ocr": [
+  "wellness",
+  "nest",
+  "PREMIUM",
+  "TURKESTERONE",
+  "ADVANCED",
+  "FORMULA",
+  "AMPLIFY",
+  "MUSCLE",
+  "ENDURANCE",
+  "60",
+  "Dietary Supplement",
+  "Capsules"
+ ],
+ "required": [
+  "wellness",
+  "nest",
+  "PREMIUM",
+  "TURKESTERONE",
+  "ADVANCED",
+  "FORMULA",
+  "AMPLIFY",
+  "MUSCLE",
+  "ENDURANCE",
+  "60",
+  "Dietary Supplement",
+  "Capsules"
+ ],
+ "optional": [],
+ "mark": "Not confirmed by this OCR pass. The 2026-10-09 Vision read and this RapidOCR pass did not agree on a registered or trademark glyph. Zoom product_refs/turkesterone-advanced-formula.png at >= 2x before shipping."
+}

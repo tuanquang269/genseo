@@ -19,6 +19,7 @@ FloraFresh lines also carry florafresh_rules.LANDING_NOTE (formula from the Supp
 Shilajit Shockwave lines carry shockwave_rules.LANDING_NOTE (identity lines only; no dose the label file omits).
 Pure Shilajit Gold Resin lines carry gold_resin_rules.LANDING_NOTE (the OCR serving line and 75% Fulvic; no milligram and no other dose).
 ShilaSource resin lines carry shilasource_resin_rules.LANDING_NOTE (front-of-pack lines only; no milligram and no other dose).
+Turkesterone Advanced Formula lines carry turkesterone_rules.LANDING_NOTE (front-of-pack lines only; the split capsule badge; no milligram and no Supplement Facts dose).
 A product with product_refs/<handle>.palette.json also carries packaging_palette.landing_note
 (UI colors match that file; do not opt out or force a conflicting hue).
 """
@@ -32,6 +33,7 @@ import gold_resin_rules as gr  # noqa: E402
 import packaging_palette as pp  # noqa: E402
 import shilasource_resin_rules as sr  # noqa: E402
 import shockwave_rules as sw  # noqa: E402
+import turkesterone_rules as tk  # noqa: E402
 
 QUEUE = os.path.join(ROOT, "daily-landing-tickets.md")
 ANGLES = os.path.join(ROOT, "templates", "landing", "listicle-angles.json")
@@ -149,6 +151,8 @@ def main():
         line += " · " + gr.LANDING_NOTE
     if h == sr.HANDLE:
         line += " · " + sr.LANDING_NOTE
+    if h == tk.HANDLE:
+        line += " · " + tk.LANDING_NOTE
     note = pp.landing_note(h)
     if note:
         line += " · " + note

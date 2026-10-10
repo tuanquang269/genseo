@@ -17,6 +17,7 @@ import florafresh_rules
 import gold_resin_rules
 import shilasource_resin_rules
 import shockwave_rules
+import turkesterone_rules
 
 CONFIG_PATH = _gcfg.CONFIG_PATH
 API = _gcfg.API
@@ -30,7 +31,8 @@ def _refuse_guarded_draft(title, body):
     a FloraFresh formula claim its Supplement Facts label does not support, that states a
     Shilajit Shockwave dose the pack-label whitelist does not list, that states a Pure Shilajit
     Gold Resin dose its pack-label whitelist does not list, that states a ShilaSource
-    Himalayan Shilajit Resin dose its pack-label whitelist does not list, or that is a
+    Himalayan Shilajit Resin dose its pack-label whitelist does not list, that states a
+    Turkesterone Advanced Formula dose its pack-label whitelist does not list, or that is a
     landing-ticket line whose colors conflict with product_refs/<handle>.palette.json."""
     try:
         brand_rules.assert_publishable(title, body)
@@ -39,7 +41,8 @@ def _refuse_guarded_draft(title, body):
               "the Pure NMN + TMG product, a FloraFresh formula that is not on its Supplement Facts label, "
               "a Shilajit Shockwave dose the pack-label whitelist does not list, a Pure Shilajit "
               "Gold Resin dose its pack-label whitelist does not list, a ShilaSource Himalayan "
-              "Shilajit Resin dose its pack-label whitelist does not list, or a listicle/landing palette "
+              "Shilajit Resin dose its pack-label whitelist does not list, a Turkesterone "
+              "Advanced Formula dose its pack-label whitelist does not list, or a listicle/landing palette "
               "that conflicts with product_refs/<handle>.palette.json.")
         for reason in e.reasons[:8]:
             print(f"  {reason}")
@@ -48,6 +51,7 @@ def _refuse_guarded_draft(title, body):
         print(f"  Shilajit Shockwave pack label: {shockwave_rules.LABEL_LINE}")
         print(f"  Pure Shilajit Gold Resin pack label: {gold_resin_rules.LABEL_LINE}")
         print(f"  ShilaSource resin pack label: {shilasource_resin_rules.LABEL_LINE}")
+        print(f"  Turkesterone Advanced Formula pack label: {turkesterone_rules.LABEL_LINE}")
         print("  Packaging palette: product_refs/<handle>.palette.json (docs/PACKAGING_PALETTE_GUARD.md)")
         sys.exit(2)
 

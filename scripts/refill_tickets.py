@@ -20,7 +20,8 @@ read live at run time:
     A FloraFresh ticket also carries florafresh_rules.TICKET_LINE (the label formula).
     A Shilajit Shockwave ticket also carries shockwave_rules.TICKET_LINE (the pack label).
     A Pure Shilajit Gold Resin ticket also carries gold_resin_rules.TICKET_LINE (the pack label).
-    A ShilaSource resin ticket also carries shilasource_resin_rules.TICKET_LINE (the pack label)
+    A ShilaSource resin ticket also carries shilasource_resin_rules.TICKET_LINE (the pack label).
+    A Turkesterone Advanced Formula ticket also carries turkesterone_rules.TICKET_LINE (the pack label)
   3 hero and inline products live and in stock (products.json); a live collection to link
   4 not a covered topic (queue header rule 6: MenoMate / meal plans, shilajit foundations, ...)
   5 not already in daily-tickets.md, any status: same primary, title overlap, or same family + segment
@@ -50,6 +51,7 @@ import florafresh_rules as ff  # noqa: E402
 import gold_resin_rules as gr  # noqa: E402
 import shilasource_resin_rules as sr  # noqa: E402
 import shockwave_rules as sw  # noqa: E402
+import turkesterone_rules as tk  # noqa: E402
 import topic_fitness as tf  # noqa: E402
 
 SITE = "https://wellnessnest.co"
@@ -707,6 +709,8 @@ def render(c, tid, ctx, info):
         out.append("  - " + gr.TICKET_LINE)
     if sr.HANDLE in [c["product"]] + c["inline"]:
         out.append("  - " + sr.TICKET_LINE)
+    if tk.HANDLE in [c["product"]] + c["inline"]:
+        out.append("  - " + tk.TICKET_LINE)
     out += [f"  - **Collection links (≥2, verify live):** {coll}", f"  - **Angle:** {c['angle']}"]
     if c["fanout"]:
         out.append("  - **Fan-out answers to cover:** " + "; ".join(c["fanout"]))
@@ -962,6 +966,7 @@ def self_test():
         t("FloraFresh ticket: no Shockwave pack-label line", sw.TICKET_LINE not in text)
         t("FloraFresh ticket: no Gold Resin pack-label line", gr.TICKET_LINE not in text)
         t("FloraFresh ticket: no ShilaSource resin pack-label line", sr.TICKET_LINE not in text)
+        t("FloraFresh ticket: no Turkesterone pack-label line", tk.TICKET_LINE not in text)
         header = batch_header(ctx, ["CA1009-4", "CA1009-4"])
         t("batch header is brand-clean and sets no image override",
           not banned(header, bank) and "ALL images NO-FACE" not in header)
@@ -1016,6 +1021,7 @@ def self_test():
         t("AgeAura ticket: no Shockwave pack-label line", sw.TICKET_LINE not in text)
         t("AgeAura ticket: no Gold Resin pack-label line", gr.TICKET_LINE not in text)
         t("AgeAura ticket: no ShilaSource resin pack-label line", sr.TICKET_LINE not in text)
+        t("AgeAura ticket: no Turkesterone pack-label line", tk.TICKET_LINE not in text)
 
     sw_cand = norm_cand(dict(FIX_GOOD, id="sw", product="shilajit-shockwave",
                              primary="shilajit shockwave for athletes",
@@ -1032,6 +1038,7 @@ def self_test():
     t("Shockwave ticket carries the pack-label line", sw.TICKET_LINE in sw_text)
     t("Shockwave ticket: no Gold Resin pack-label line", gr.TICKET_LINE not in sw_text)
     t("Shockwave ticket: no ShilaSource resin pack-label line", sr.TICKET_LINE not in sw_text)
+    t("Shockwave ticket: no Turkesterone pack-label line", tk.TICKET_LINE not in sw_text)
     t("Shockwave ticket is brand-clean", not br.violations(sw_text), br.violations(sw_text))
 
     gr_cand = norm_cand(dict(FIX_GOOD, id="gr", product="pure-shilajit-gold-resin",
@@ -1049,6 +1056,7 @@ def self_test():
     t("Gold Resin ticket carries the pack-label line", gr.TICKET_LINE in gr_text)
     t("Gold Resin ticket: no Shockwave pack-label line", sw.TICKET_LINE not in gr_text)
     t("Gold Resin ticket: no ShilaSource resin pack-label line", sr.TICKET_LINE not in gr_text)
+    t("Gold Resin ticket: no Turkesterone pack-label line", tk.TICKET_LINE not in gr_text)
     t("Gold Resin ticket is brand-clean", not br.violations(gr_text), br.violations(gr_text))
 
     sr_cand = norm_cand(dict(FIX_GOOD, id="sr", product="shilasource-himalayan-shilajit-resin",
@@ -1066,7 +1074,26 @@ def self_test():
     t("ShilaSource resin ticket carries the pack-label line", sr.TICKET_LINE in sr_text)
     t("ShilaSource resin ticket: no Shockwave pack-label line", sw.TICKET_LINE not in sr_text)
     t("ShilaSource resin ticket: no Gold Resin pack-label line", gr.TICKET_LINE not in sr_text)
+    t("ShilaSource resin ticket: no Turkesterone pack-label line", tk.TICKET_LINE not in sr_text)
     t("ShilaSource resin ticket is brand-clean", not br.violations(sr_text), br.violations(sr_text))
+
+    tk_cand = norm_cand(dict(FIX_GOOD, id="tk", product="turkesterone-advanced-formula",
+                             primary="turkesterone for athletes",
+                             title="Turkesterone for Athletes (US 2026)",
+                             secondary=["turkesterone drug test"], segment="athletes",
+                             intent="athlete checking a capsule jar", template="EDITORIAL",
+                             angle="What the jar front actually lists.",
+                             fanout=["what does the jar front show"],
+                             evidence="Pack label lines only.",
+                             link=[]), ctx["bank"], "topic-bank", 1, 0)
+    tk_info = {"verdict": ("PASS", "brand"), "suggest": "offline",
+               "colls": ["mens-essential-collection", "shilajit-wellness-stack"], "links": []}
+    tk_text = render(tk_cand, "CA1010-2", ctx, tk_info)
+    t("Turkesterone ticket carries the pack-label line", tk.TICKET_LINE in tk_text)
+    t("Turkesterone ticket: no Shockwave pack-label line", sw.TICKET_LINE not in tk_text)
+    t("Turkesterone ticket: no Gold Resin pack-label line", gr.TICKET_LINE not in tk_text)
+    t("Turkesterone ticket: no ShilaSource resin pack-label line", sr.TICKET_LINE not in tk_text)
+    t("Turkesterone ticket is brand-clean", not br.violations(tk_text), br.violations(tk_text))
 
     mk = [("1", "probiotic", "LISTICLE"), ("2", "probiotic", "COMPARISON"), ("3", "turkesterone", "EDITORIAL"),
           ("4", "creatine", "LISTICLE"), ("5", "creatine", "LISTICLE"), ("6", "nmn", "EDITORIAL")]

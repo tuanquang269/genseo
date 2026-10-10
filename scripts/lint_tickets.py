@@ -6,14 +6,17 @@ Shockwave milligram, serving count, or other dose its pack-label whitelist does 
 Pure Shilajit Gold Resin milligram, serving count, volume, weight, day-supply, or other dose its
 pack-label whitelist does not list, states a ShilaSource Himalayan Shilajit Resin milligram,
 serving count, volume, weight, fulvic percentage, mineral count, day-supply, or other dose its
-pack-label whitelist does not list, or an open landing ticket opts out of a committed packaging
+pack-label whitelist does not list, states a Turkesterone Advanced Formula milligram,
+serving count, capsule count, day-supply, or other dose its pack-label whitelist does not list,
+or an open landing ticket opts out of a committed packaging
 palette or forces a hue that file does not list (scripts/packaging_palette.py).
 
 The rules live in brand_rules.py (FloraFresh: florafresh_rules.py; Shockwave: shockwave_rules.py;
-Gold Resin: gold_resin_rules.py; ShilaSource resin: shilasource_resin_rules.py; packaging colors:
-packaging_palette.py). Builders must prepare_ticket() before appending so an ambiguous AgeAura line
-is locked to ageaura-pure-nmn-tmg-nad-complex instead of failing here. Closed tickets (DONE,
-SKIPPED, ...) are history and are not linted.
+Gold Resin: gold_resin_rules.py; ShilaSource resin: shilasource_resin_rules.py;
+Turkesterone: turkesterone_rules.py; packaging colors: packaging_palette.py). Builders must
+prepare_ticket() before appending so an ambiguous AgeAura line is locked to
+ageaura-pure-nmn-tmg-nad-complex instead of failing here. Closed tickets (DONE, SKIPPED, ...) are
+history and are not linted.
 """
 import sys, os, re
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
