@@ -65,9 +65,11 @@ select_lane() {
   return $?
 }
 
-echo "1. native wins even when local has no writer model and a key is set"
+echo "1. native wins for a non-PATI writer and fallback, even when local has no writer model and a key is set"
 reset_env
 USE_NATIVE=1
+GENSEO_WRITER_MODEL="claude-sonnet-4-6"
+GENSEO_WRITER_FALLBACK="claude-haiku-4-5"
 GENSEO_LANE_LOCAL_UP=1
 GENSEO_LANE_MODELS_JSON='{"data":[{"id":"ag/gemini-3.8-flash-high"}]}'
 NINE_ROUTER_KEY="$FAKE_KEY"
@@ -75,6 +77,7 @@ select_lane
 rc=$?
 [ "$rc" = 0 ] && ok "exit 0" || bad "exit $rc"
 [ "${GENSEO_MODEL_LANE:-}" = "native" ] && ok "lane native" || bad "lane ${GENSEO_MODEL_LANE:-empty}"
+[ "${USE_NATIVE:-}" = "1" ] && ok "login flag kept" || bad "USE_NATIVE was ${USE_NATIVE:-empty}"
 [ -z "${ANTHROPIC_AUTH_TOKEN:-}" ] && ok "native does not export router token" || bad "native exported a token"
 [ ! -s "$SANDBOX/out" ] && ok "stdout empty" || bad "stdout not empty"
 no_secret "$SANDBOX/out" "$FAKE_KEY" "native stdout has no key"
@@ -212,6 +215,7 @@ no_secret "$SANDBOX/err" "$QUOTED_KEY" "env-file stderr has no key"
 echo "10. runners source the helper and pass the writer env to claude"
 for rel in scripts/run_landing_headless.sh scripts/run_ticket_headless.sh; do
   file="$ROOT/$rel"
+  bash -n "$file" && ok "$rel parses" || bad "$rel does not parse"
   grep -q 'scripts/genseo_model_lane.sh' "$file" && ok "$rel sources helper" || bad "$rel missing source"
   grep -q 'genseo_select_model_lane' "$file" && ok "$rel selects lane" || bad "$rel missing select"
   grep -q 'genseo_lane_log_line' "$file" && ok "$rel logs lane" || bad "$rel missing log"
@@ -219,12 +223,135 @@ for rel in scripts/run_landing_headless.sh scripts/run_ticket_headless.sh; do
   grep -q -- '--fallback-model "$GENSEO_WRITER_FALLBACK"' "$file" && ok "$rel fallback model" || bad "$rel fallback flag"
   if grep -q 'PATI-Alpha-Plan-Review' "$file"; then bad "$rel still hardcodes the writer model"; else ok "$rel no hardcoded writer"; fi
   if grep -q 'curl -s -m 3 -o /dev/null http://127.0.0.1:20128/' "$file"; then bad "$rel still uses the up/down-only gate"; else ok "$rel gate moved"; fi
+  grep -F -q 'PATI-*' "$file" && ok "$rel documents PATI-* skip" || bad "$rel missing PATI-* skip note"
+  grep -F -q 'unrecognized_model' "$file" && ok "$rel names unrecognized_model" || bad "$rel missing unrecognized_model"
 done
+grep -F -q 'PATI-*' "$ROOT/scripts/genseo_model_lane.sh" && ok "helper documents PATI-* skip" || bad "helper missing PATI-* skip"
+grep -F -q 'unrecognized_model' "$ROOT/scripts/genseo_model_lane.sh" && ok "helper names unrecognized_model" || bad "helper missing unrecognized_model"
+grep -F -q '[ "${GENSEO_MODEL_LANE:-}" = "native" ]' "$ROOT/scripts/run_ticket_headless.sh" \
+  && ok "ticket runner invokes on chosen lane" || bad "ticket runner still keys the invocation off USE_NATIVE"
+if grep -q 'if \[ "\$USE_NATIVE" = "1" \]' "$ROOT/scripts/run_ticket_headless.sh"; then
+  bad "ticket runner still branches on raw USE_NATIVE"
+else
+  ok "ticket runner does not branch on raw USE_NATIVE"
+fi
 grep -q 'hosted-9router' "$ROOT/DAILY-RUN.md" && ok "DAILY-RUN names hosted-9router" || bad "DAILY-RUN lane note"
 grep -q 'no PATI writer alias' "$ROOT/DAILY-RUN.md" && ok "DAILY-RUN notes missing PATI alias" || bad "DAILY-RUN alias note"
+grep -F -q 'never uses the native Claude login lane' "$ROOT/DAILY-RUN.md" && ok "DAILY-RUN skips native for PATI" || bad "DAILY-RUN native-skip note"
+grep -F -q 'unrecognized_model' "$ROOT/DAILY-RUN.md" && ok "DAILY-RUN names unrecognized_model" || bad "DAILY-RUN unrecognized_model note"
 ticket='- [ ] listicle | wellnessnest | product=pure-shilajit-gold-resin · angle: Resin vs capsules vs gummies: N things to compare before you pick a shilajit format · audience: adults comparing shilajit formats (added 2026-10-09)'
 grep -qxF -- "$ticket" "$ROOT/daily-landing-tickets.md" && ok "gold-resin ticket reopened" || bad "gold-resin ticket line"
 if grep -q 'FAILED 2026-10-10' "$ROOT/daily-landing-tickets.md"; then bad "FAILED tag still on the queue"; else ok "FAILED tag cleared"; fi
+
+echo "11. USE_NATIVE=1 + default PATI writer + local lists the id → local, not native"
+reset_env
+USE_NATIVE=1
+GENSEO_LANE_LOCAL_UP=1
+GENSEO_LANE_MODELS_JSON='{"data":[{"id":"ag/gemini-3.8-flash-high"},{"id":"PATI-Alpha-Plan-Review"}]}'
+NINE_ROUTER_KEY="$FAKE_KEY"
+select_lane
+rc=$?
+[ "$rc" = 0 ] && ok "exit 0" || bad "exit $rc"
+[ "${GENSEO_MODEL_LANE:-}" = "local-9router" ] && ok "lane local-9router" || bad "lane ${GENSEO_MODEL_LANE:-empty}"
+[ "${USE_NATIVE:-}" = "0" ] && ok "native flag cleared" || bad "USE_NATIVE=${USE_NATIVE:-empty}"
+[ "${GENSEO_WRITER_MODEL:-}" = "PATI-Alpha-Plan-Review" ] && ok "default writer" || bad "writer ${GENSEO_WRITER_MODEL:-empty}"
+[ "${GENSEO_WRITER_FALLBACK:-}" = "PATI-Fable-5" ] && ok "default fallback" || bad "fallback ${GENSEO_WRITER_FALLBACK:-empty}"
+[ -z "${ANTHROPIC_AUTH_TOKEN:-}" ] && ok "local does not export token" || bad "local exported a token"
+[ -z "${ANTHROPIC_BASE_URL:-}" ] && ok "local does not export base url" || bad "local exported base url"
+no_secret "$SANDBOX/out" "$FAKE_KEY" "PATI-local stdout has no key"
+no_secret "$SANDBOX/err" "$FAKE_KEY" "PATI-local stderr has no key"
+
+echo "12. USE_NATIVE=1 + PATI writer + local missing the id + key → hosted"
+reset_env
+USE_NATIVE=1
+GENSEO_WRITER_MODEL="PATI-Fable-5"
+GENSEO_LANE_LOCAL_UP=1
+GENSEO_LANE_MODELS_JSON='{"data":[{"id":"ag/gemini-3.8-flash-high"}]}'
+NINE_ROUTER_KEY="$FAKE_KEY"
+select_lane
+rc=$?
+[ "$rc" = 0 ] && ok "exit 0" || bad "exit $rc"
+[ "${GENSEO_MODEL_LANE:-}" = "hosted-9router" ] && ok "lane hosted-9router" || bad "lane ${GENSEO_MODEL_LANE:-empty}"
+[ "${USE_NATIVE:-}" = "0" ] && ok "native flag cleared" || bad "USE_NATIVE=${USE_NATIVE:-empty}"
+[ "${ANTHROPIC_BASE_URL:-}" = "https://ai.patigroup.com" ] && ok "default hosted base" || bad "base ${ANTHROPIC_BASE_URL:-empty}"
+[ "${ANTHROPIC_AUTH_TOKEN:-}" = "$FAKE_KEY" ] && ok "token loaded" || bad "token mismatch"
+[ "${GENSEO_WRITER_MODEL:-}" = "PATI-Fable-5" ] && ok "writer kept" || bad "writer ${GENSEO_WRITER_MODEL:-empty}"
+no_secret "$SANDBOX/out" "$FAKE_KEY" "PATI-hosted stdout has no key"
+no_secret "$SANDBOX/err" "$FAKE_KEY" "PATI-hosted stderr has no key"
+
+echo "13. USE_NATIVE=1 + PATI writer + local down + key → hosted"
+reset_env
+USE_NATIVE=1
+GENSEO_LANE_LOCAL_UP=0
+NINE_ROUTER_KEY="$FAKE_KEY"
+select_lane
+rc=$?
+[ "$rc" = 0 ] && ok "exit 0" || bad "exit $rc"
+[ "${GENSEO_MODEL_LANE:-}" = "hosted-9router" ] && ok "lane hosted-9router" || bad "lane ${GENSEO_MODEL_LANE:-empty}"
+[ "${USE_NATIVE:-}" = "0" ] && ok "native flag cleared" || bad "USE_NATIVE=${USE_NATIVE:-empty}"
+[ "${ANTHROPIC_AUTH_TOKEN:-}" = "$FAKE_KEY" ] && ok "token loaded" || bad "token mismatch"
+no_secret "$SANDBOX/out" "$FAKE_KEY" "PATI-down stdout has no key"
+no_secret "$SANDBOX/err" "$FAKE_KEY" "PATI-down stderr has no key"
+
+echo "14. USE_NATIVE=1 + PATI writer + local missing + no key → fail, no secret"
+reset_env
+USE_NATIVE=1
+GENSEO_LANE_LOCAL_UP=1
+GENSEO_LANE_MODELS_JSON='{"data":[{"id":"ag/gemini-3.8-flash-high"}]}'
+select_lane
+rc=$?
+[ "$rc" = 1 ] && ok "exit 1" || bad "exit $rc"
+[ -z "${GENSEO_MODEL_LANE:-}" ] && ok "lane empty" || bad "lane ${GENSEO_MODEL_LANE:-empty}"
+[ "${USE_NATIVE:-}" = "0" ] && ok "native flag cleared" || bad "USE_NATIVE=${USE_NATIVE:-empty}"
+case "${GENSEO_MODEL_LANE_ERROR:-}" in
+  *'missing PATI-Alpha-Plan-Review'*'NINE_ROUTER_KEY'*) ok "error names the missing model" ;;
+  *) bad "error [${GENSEO_MODEL_LANE_ERROR:-empty}]" ;;
+esac
+[ -z "${ANTHROPIC_AUTH_TOKEN:-}" ] && ok "no token exported" || bad "token exported on failure"
+[ ! -s "$SANDBOX/out" ] && ok "stdout empty" || bad "stdout not empty"
+
+echo "15. USE_NATIVE=1 + non-PATI writer + PATI fallback skips native"
+reset_env
+USE_NATIVE=1
+GENSEO_WRITER_MODEL="claude-sonnet-4-6"
+GENSEO_WRITER_FALLBACK="PATI-Fable-5"
+GENSEO_LANE_LOCAL_UP=1
+GENSEO_LANE_MODELS_JSON='{"data":[{"id":"claude-sonnet-4-6"}]}'
+NINE_ROUTER_KEY="$FAKE_KEY"
+select_lane
+rc=$?
+[ "$rc" = 0 ] && ok "exit 0" || bad "exit $rc"
+[ "${GENSEO_MODEL_LANE:-}" = "local-9router" ] && ok "fallback PATI + local id → local" || bad "lane ${GENSEO_MODEL_LANE:-empty}"
+[ "${USE_NATIVE:-}" = "0" ] && ok "native flag cleared" || bad "USE_NATIVE=${USE_NATIVE:-empty}"
+reset_env
+USE_NATIVE=1
+GENSEO_WRITER_MODEL="claude-sonnet-4-6"
+GENSEO_WRITER_FALLBACK="PATI-Fable-5"
+GENSEO_LANE_LOCAL_UP=1
+GENSEO_LANE_MODELS_JSON='{"data":[{"id":"ag/gemini-3.8-flash-high"}]}'
+NINE_ROUTER_KEY="$FAKE_KEY"
+select_lane
+[ "${GENSEO_MODEL_LANE:-}" = "hosted-9router" ] && ok "fallback PATI + missing id → hosted" || bad "lane ${GENSEO_MODEL_LANE:-empty}"
+[ "${USE_NATIVE:-}" = "0" ] && ok "native flag cleared" || bad "USE_NATIVE=${USE_NATIVE:-empty}"
+no_secret "$SANDBOX/out" "$FAKE_KEY" "fallback-PATI stdout has no key"
+no_secret "$SANDBOX/err" "$FAKE_KEY" "fallback-PATI stderr has no key"
+
+echo "16. a later PATI substring is not a router alias, so native still wins"
+reset_env
+USE_NATIVE=1
+GENSEO_WRITER_MODEL="claude-PATI-not-a-prefix"
+GENSEO_WRITER_FALLBACK="claude-haiku-4-5"
+GENSEO_LANE_LOCAL_UP=1
+GENSEO_LANE_MODELS_JSON='{"data":[{"id":"PATI-Alpha-Plan-Review"}]}'
+NINE_ROUTER_KEY="$FAKE_KEY"
+select_lane
+rc=$?
+[ "$rc" = 0 ] && ok "exit 0" || bad "exit $rc"
+[ "${GENSEO_MODEL_LANE:-}" = "native" ] && ok "lane native" || bad "lane ${GENSEO_MODEL_LANE:-empty}"
+[ "${USE_NATIVE:-}" = "1" ] && ok "login flag kept" || bad "USE_NATIVE=${USE_NATIVE:-empty}"
+[ -z "${ANTHROPIC_AUTH_TOKEN:-}" ] && ok "native does not export router token" || bad "native exported a token"
+no_secret "$SANDBOX/out" "$FAKE_KEY" "substring stdout has no key"
+no_secret "$SANDBOX/err" "$FAKE_KEY" "substring stderr has no key"
 
 echo
 echo "$PASS passed, $FAIL failed"
