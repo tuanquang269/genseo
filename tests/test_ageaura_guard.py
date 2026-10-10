@@ -99,10 +99,11 @@ class AgeAuraGuardTests(unittest.TestCase):
         self.assertIn(URO, rejected)
 
     def test_live_landing_specs_pass(self):
+        # shilajit-gummies-listicle-261008.json states a 30-serving panel and 150 mg.
+        # tests/test_shilajit_gummies_guard.py asserts that copy fails closed.
         for name in (
             "ageaura-nmn-listicle-261008.json",
             "fusiforce-creatine-listicle-261008.json",
-            "shilajit-gummies-listicle-261008.json",
         ):
             with open(os.path.join(ROOT, "landing_drafts", name), encoding="utf-8") as fh:
                 raw = fh.read()

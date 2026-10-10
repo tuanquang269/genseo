@@ -13,7 +13,9 @@ Verdicts: PASS (exit 0), REVIEW (exit 2 — allowed but flagged), FAIL (exit 1 �
 
 Rules (a heuristic gate — tune the lists as data grows):
   FAIL  brand_rules: a FloraFresh formula claim its Supplement Facts label does not support
-        [florafresh-formula], or an AgeAura SKU other than the NMN + TMG Complex [ageaura-sku]
+        [florafresh-formula], a Premium Himalayan Shilajit Gummies pack-count or milligram
+        claim the label whitelist does not list [shilajit-gummies-label], or an AgeAura SKU
+        other than the NMN + TMG Complex [ageaura-sku]
   FAIL  near-duplicate of an existing live article (we already have the page)
   FAIL  bare category head-term a COLLECTION owns ("best protein powder us") -> the
         collection page should win it, a new article would cannibalise it
@@ -30,6 +32,7 @@ Usage:
 import json, re, sys
 import brand_rules as br
 import florafresh_rules as ff
+import shilajit_gummies_rules as sg
 
 ROOT = "/Users/kevinkreative/genseo"
 MIN_IMP = 20          # below this SG demand, not worth a dedicated page
@@ -139,6 +142,13 @@ def assess(topic, sg_imp=None, articles=None, collections=None, pos=None):
         return ('FAIL', 'florafresh-formula',
                 'FloraFresh follows its Supplement Facts label (' + ff.STRAIN + ', ' + ff.CFU
                 + ' per 2 gummies), not the PDP description: ' + '; '.join(ff_bad))
+
+    sg_bad = sg.violations(topic)
+    if sg_bad:
+        return ('FAIL', 'shilajit-gummies-label',
+                'Premium Himalayan Shilajit Gummies follow the pack label (' + sg.LABEL_LINE
+                + '); a 30-serving panel and milligram amounts not in that file fail closed: '
+                + '; '.join(sg_bad))
 
     if br.assess(topic).action == "deny":
         return ('FAIL', 'ageaura-sku',
@@ -259,6 +269,7 @@ def self_check():
         ("FloraFresh 15 billion CFU review", None, [], 'FAIL'),            # wrong PDP figure (label: 1 billion CFU)
         ("FloraFresh sugar free gummies review", None, [], 'FAIL'),        # label: maltitol + isomalt
         ("FloraFresh Bacillus coagulans SNZ-1969 review", None, [], 'PASS'),  # the label strain
+        ("Premium Himalayan Shilajit Gummies 30 servings review", None, [], 'FAIL'),  # not on the pack label
     ]
     ok = True
     for topic, imp, a, want, *rest in cases:

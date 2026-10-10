@@ -70,6 +70,10 @@ testimonials, no sticky). Surface the choice to Kevin; never silently downgrade 
    The live PDP description (15 billion CFU, four Lactobacillus strains, XOS, D-mannose, sugar-free) is wrong until
    Kevin's GO rewrites it, so for FloraFresh the PDP gives price, offer and directions, never the formula.
    `validate_landing.py` fails any FloraFresh claim the label does not support (`scripts/florafresh_rules.py`).
+   **Premium Himalayan Shilajit Gummies = the pack-label whitelist** (`product_refs/premium-himalayan-shilajit-gummies.label.json`):
+   60 gummies and a 60-day supply. Do not state a 30-serving panel or a milligram amount that file does not list.
+   Shockwave, Gold Resin, and ShilaSource resin are separate products.
+   `validate_landing.py` fails those claims (`scripts/shilajit_gummies_rules.py`).
 4. **No faces** in any image. Use `scripts/article_images.py` with `--qc` (same pipeline + QC as articles),
    `--product-ref <handle>` (no `:index`) for any image showing a pack, `--ugc` for lifestyle shots, and put
    "no people's faces" in the NEGATIVE. Never `--persona-ref`, never `persona_picker.py`. Run in the foreground.
@@ -94,6 +98,7 @@ testimonials, no sticky). Surface the choice to Kevin; never silently downgrade 
    price, variants, images[0] (real packaging for the product/offer block). Read the vault product note
    `~/PATI/LLM-Wiki/20-brands/21-wellnessnest-products/<product>.md` if present. FloraFresh formula facts come
    from its Supplement Facts label only (`python3 scripts/florafresh_rules.py --brief`), never the PDP description.
+   Premium Himalayan Shilajit Gummies pack counts come from `python3 scripts/shilajit_gummies_rules.py --brief`.
 2. **Evidence.** 3–6 sources max. Confirm every figure in the abstract (Europe PMC REST:
    `https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI:<doi>&resultType=core&format=json`).
 3. **Spec.** Write `landing_drafts/<slug>.json` (schema in `templates/landing/README.md`; copy a sample:

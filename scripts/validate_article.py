@@ -357,6 +357,9 @@ def main():
     # NAD Complex only. Any other AgeAura handle, and a bare "AgeAura" with no NMN + TMG
     # product, are hard fails. FloraFresh claims follow its Supplement Facts label, never the
     # PDP description (Kevin 2026-10-09; scripts/brand_rules.py + florafresh_rules.py).
+    # Premium Himalayan Shilajit Gummies pack count and doses follow
+    # product_refs/premium-himalayan-shilajit-gummies.label.json
+    # (60 gummies, 60-day supply; scripts/shilajit_gummies_rules.py).
     _v=_br.violations(html)
     if _v: fails.append("brand rule — banned link(s)/mentions/claims: "+"; ".join(_v[:6]))
 
