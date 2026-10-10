@@ -53,6 +53,12 @@ Also: never `rm` repo files (move them to `_superseded/`); never put CDN URLs in
   including `75% Fulvic` and `1.06 oz (30g) - 75 servings`. No milligram amount was read. Do not add one.
   Do not state a different serving count, volume, weight, or day-supply. Gummies, Shockwave, and
   ShilaSource resin are separate products. See `docs/GOLD_RESIN_LABEL_GUARD.md`.
+- **ShilaSource Himalayan Shilajit Resin = its OCR pack label only** (`scripts/shilasource_resin_rules.py`, run by
+  `brand_rules.py`): required and optional lines in `product_refs/shilasource-himalayan-shilajit-resin.label.json`
+  (2026-10-08 `label_ocr.swift` read). Front lines include `70% Fulvic Acid*` and `1.06oz (30g)`. The servings
+  badge is the separate lines `75` and `SERVINGS`. No milligram amount and no Supplement Facts panel were read.
+  Do not add one. Do not state a different serving count, volume, weight, fulvic percentage, mineral count, or
+  day-supply. Gummies, Shockwave, and Gold Resin are separate products. See `docs/SHILASOURCE_RESIN_LABEL_GUARD.md`.
 - **Hero products** (house brands sold on wellnessnest.co — follow `lint_tickets.py` and `knowledge_base/`):
   FusiForce creatine gummies `fusiforce-creatine-gummies` · ShilaSource / Himalayan shilajit: resin
   `shilasource-himalayan-shilajit-resin`, gummies `premium-himalayan-shilajit-gummies`, gold resin
@@ -83,6 +89,7 @@ python3 scripts/lint_tickets.py daily-tickets.md        # banned link or claim i
 python3 scripts/florafresh_rules.py <draft>.md          # FloraFresh copy vs its Supplement Facts label -> exit 1
 python3 scripts/shockwave_rules.py <draft>.md           # Shockwave copy vs its pack-label whitelist -> exit 1
 python3 scripts/gold_resin_rules.py <draft>.md          # Gold Resin copy vs its pack-label whitelist -> exit 1
+python3 scripts/shilasource_resin_rules.py <draft>.md   # ShilaSource resin copy vs its pack-label whitelist -> exit 1
 python3 scripts/refill_tickets.py --self-test           # offline fixtures + topic-bank lint
 python3 scripts/refill_tickets.py --count 8 --dry-run   # storefront reads only; queue + board untouched
 python3 scripts/sync_cursor_skills.py --check           # .cursor/skills pointers match skills/

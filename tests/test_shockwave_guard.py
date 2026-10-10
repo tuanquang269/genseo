@@ -108,7 +108,7 @@ class LabelCopyPasses(unittest.TestCase):
             "| Shilajit Shockwave | drops |\n| Brand X | 500 mg | 30 servings | 30 ml |",
             "Premium Himalayan Shilajit Gummies list 1500 mg and 30 servings.",
             "Pure Shilajit Gold Resin, 1.06 oz (30g) - 75 servings, 75% Fulvic.",
-            "ShilaSource resin, 300 mg per serving.",
+            "ShilaSource resin, 70% Fulvic Acid, 1.06oz (30g), 75 servings.",
             "FusiForce has 90 gummies and 30 servings.",
             "FloraFresh: Vitamin C 30 mg per 2 gummies, 1 billion CFU.",
             "The trial used 250 mg of purified shilajit. Shilajit Shockwave is a dropper bottle.",

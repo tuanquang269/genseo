@@ -20,8 +20,9 @@ Read `skills/genseo-landing-pages/SKILL.md` and `templates/landing/README.md` in
   `ageaura-pure-nmn-tmg-nad-complex`. `validate_landing.py` blocks banned handles and terms, any FloraFresh
   formula claim its Supplement Facts label does not support (`scripts/florafresh_rules.py`; the PDP description is
   wrong until Kevin's GO), any Shilajit Shockwave dose its pack-label whitelist does not list
-  (`scripts/shockwave_rules.py`), and any Pure Shilajit Gold Resin dose its pack-label whitelist does not list
-  (`scripts/gold_resin_rules.py`).
+  (`scripts/shockwave_rules.py`), any Pure Shilajit Gold Resin dose its pack-label whitelist does not list
+  (`scripts/gold_resin_rules.py`), and any ShilaSource Himalayan Shilajit Resin dose its pack-label
+  whitelist does not list (`scripts/shilasource_resin_rules.py`).
 - **No invented facts:** every number, study, price, rating and review comes from a page fetched this run, else
   `[[PLACEHOLDER: …]]` or cut. Reviews only verbatim from Trustpilot as displayed.
 - **Theme:** `--install-template` only adds a missing template key, never overwrites. Any other theme change needs
