@@ -15,10 +15,14 @@ the wrapper counts open tickets with `grep -cE '^(- \[ \]|## \[ \])'`. Zero open
 - Ticket ids never collide across hosts: Mac Mini `#NN` (hand-written) or `#MMmmdd-N` (refill), MacBook
   `#MBmmdd-N`, Cursor Cloud `#CAmmdd-N`. `refill_tickets.py --prefix XX` continues after the highest N used today.
 - After any edit: `python3 scripts/lint_tickets.py daily-tickets.md` must exit 0 (it fails on a banned AgeAura link,
-  a Urolithin mention, or a FloraFresh claim its Supplement Facts label does not support inside an open ticket).
+  a Urolithin mention, a FloraFresh claim its Supplement Facts label does not support, or a Shilajit Shockwave
+  dose its pack-label whitelist does not list, inside an open ticket).
 - FloraFresh tickets take strain, CFU and sugar facts from its Supplement Facts label (Bacillus coagulans SNZ-1969,
   1 billion CFU per 2 gummies, not sugar-free), never from the PDP description, which is wrong until Kevin's GO;
   `refill_tickets.py` adds the label line under the hero product (`docs/FLORAFRESH_FORMULA_GUARD.md`).
+- Shilajit Shockwave tickets take pack-label facts from `product_refs/shilajit-shockwave.label.json` only
+  (no milligram, serving count, or volume token). `refill_tickets.py` adds that line
+  (`docs/SHOCKWAVE_LABEL_GUARD.md`).
 
 ## Ticket format (what `refill_tickets.py` renders)
 ```

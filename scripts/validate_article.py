@@ -357,6 +357,8 @@ def main():
     # NAD Complex only. Any other AgeAura handle, and a bare "AgeAura" with no NMN + TMG
     # product, are hard fails. FloraFresh claims follow its Supplement Facts label, never the
     # PDP description (Kevin 2026-10-09; scripts/brand_rules.py + florafresh_rules.py).
+    # Shilajit Shockwave doses follow product_refs/shilajit-shockwave.label.json
+    # (no milligram token; scripts/shockwave_rules.py).
     _v=_br.violations(html)
     if _v: fails.append("brand rule — banned link(s)/mentions/claims: "+"; ".join(_v[:6]))
 

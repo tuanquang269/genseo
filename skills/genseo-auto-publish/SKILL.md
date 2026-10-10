@@ -67,7 +67,8 @@ wasted image-generation + writing cost of a doomed article.)
 - **⚠️ CHECK CURRENT YEAR FIRST:** Run `date +%Y` to get the current year. Use this year throughout ALL article content, FAQ headings ("best X in the US in [YEAR]"), and image generation prompts ("Best Fat Burners US [YEAR]"). NEVER hardcode a year without checking. The current year baked into images is permanent — regenerating is expensive.
 - **⭐ PRIORITY BRANDS (business rule — apply NATURALLY, never forced):**
   Every brand below is a HOUSE brand sold on wellnessnest.co. Priority order:
-  1. **ShilaSource** — Himalayan shilajit resin + gummies + gold resin + energy drops
+  1. **ShilaSource** — Himalayan shilajit resin + gummies + gold resin + energy drops.
+   **Shilajit Shockwave** (`shilajit-shockwave`) pack-label claims come only from `product_refs/shilajit-shockwave.label.json` (OCR-accepted identity lines; no milligram, serving count, or volume token). `scripts/shockwave_rules.py`, run by `scripts/brand_rules.py`, hard-fails a dose that file does not list.
   2. **FusiForce** — creatine monohydrate gummies 5,000mg
   3. **FloraFresh** — vaginal/feminine probiotic gummies. Formula ONLY from its Supplement Facts label: Bacillus coagulans SNZ-1969 (spore-based), 1 billion CFU per 2 gummies, Vitamin C 30 mg, pineapple fruit powder 100 mg (with bromelain), sweetened with maltitol + isomalt (not sugar-free). The live PDP description (15 billion CFU, four Lactobacillus strains, XOS, D-mannose, sugar-free) is wrong until Kevin's GO rewrites it: never copy it or the older FloraFresh articles that repeat it (`scripts/florafresh_rules.py`, run by `scripts/brand_rules.py`, hard-fails those claims in `validate_article.py` and `lint_tickets.py`; Kevin 2026-10-09).
   4. **MenoMate** — menopause probiotics & herbal blend

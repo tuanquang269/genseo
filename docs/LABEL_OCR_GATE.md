@@ -37,7 +37,7 @@ Required strings in a new label file are confidence-1.00 lines copied from `labe
 |---|---|---|
 | `florafresh-vaginal-probiotics-gummies` | Front pouch: FloraFresh, Vaginal, Probiotic, Gummies, 60, DIETARY, GUMMIES, SUPPLEMENT | Not the Supplement Facts panel. Strain and CFU stay in `scripts/florafresh_rules.py`. |
 | `pure-shilajit-gold-resin` | Front identity lines, including `75% Fulvic`, `Lab-Tested`, `Pure Shilajit Gold Resin`, `1.06 oz (30g) - 75 servings` | No milligram serving was read. Do not add one. Tomorrow's listicle dry-run must not publish. |
-| `shilajit-shockwave` | wellness, nest, SHILAJIT, SHOCKWAVE, EXPERIENCE FOCUSED ENERGY, PEAK PERFORMANCE | No milligram token was read. The volume line was not stable (`1 il oz` / `1 1l oz`) and is not in the whitelist. An OCR line with a milligram dose fails the gate. |
+| `shilajit-shockwave` | wellness, nest, SHILAJIT, SHOCKWAVE, EXPERIENCE FOCUSED ENERGY, PEAK PERFORMANCE | No milligram token was read. The volume line was not stable (`1 il oz` / `1 1l oz`) and is not in the whitelist. An OCR line with a milligram dose fails the gate. Copy that names this SKU is checked by `scripts/shockwave_rules.py` (`docs/SHOCKWAVE_LABEL_GUARD.md`). |
 | `turkesterone-advanced-formula` | No file | The brand line was read as `TURNESTERONE`. That was not rewritten into the label, and no dose was added. The gate fails closed until a letter-perfect file exists. |
 | `ageaura-pure-urolithin-a` | No file | Not an allowed AgeAura SKU. Do not add a promotion whitelist. |
 
