@@ -1,5 +1,5 @@
-"""Brand guard: AgeAura promotion (Kevin 2026-10-06, re-audited 2026-10-09) and the
-FloraFresh formula (Kevin 2026-10-09).
+"""Brand guard: AgeAura promotion (Kevin 2026-10-06, re-audited 2026-10-09), the
+FloraFresh formula (Kevin 2026-10-09), and the FusiForce pack label (2026-10-09).
 
 AgeAura may promote exactly one SKU:
 
@@ -13,8 +13,14 @@ allowed product via prepare_ticket / prepare_image_request.
 
 FloraFresh copy follows its Supplement Facts label (Bacillus coagulans SNZ-1969,
 1 billion CFU per 2 gummies), not the wrong PDP description. florafresh_rules.py
-holds those facts; assess() denies any FloraFresh claim it rejects, so every
-caller below enforces both brands. Landing specs use spec_violations().
+holds those facts.
+
+FusiForce copy follows product_refs/fusiforce-creatine-gummies.label.json:
+creatine monohydrate, 90 gummies. fusiforce_rules.py rejects 84, milligram
+amounts, serving counts, and ginseng unless that exact token is in the file.
+
+assess() denies any FloraFresh or FusiForce claim those modules reject, so every
+caller below enforces all three. Landing specs use spec_violations().
 
 Local llms.txt drafts omit denied handles. A FloraFresh, FusiForce, or
 shilajit-gummies formula line is included only when it matches the label source
@@ -22,13 +28,14 @@ of truth (scripts/llms_formula.py). Other handles get a URL and no invented form
 
 This module is the only allow/deny list. Ticket builders, landing builders,
 image prompts, the publisher, llms.txt drafts, and IndexNow call it.
-Do not copy the handle into another file.
+Do not copy the AgeAura handle into another file.
 """
 import json
 import os
 import re
 
 import florafresh_rules as florafresh
+import fusiforce_rules as fusiforce
 import llms_formula
 
 AGEAURA_OK = "ageaura-pure-nmn-tmg-nad-complex"
@@ -137,18 +144,19 @@ def assess(text):
     """Classify promotion copy.
 
     deny  — Urolithin A, another AgeAura SKU, a banned bundle, /collections/ageaura,
-            or a FloraFresh formula claim its Supplement Facts label does not support
+            a FloraFresh formula claim its Supplement Facts label does not support,
+            or a FusiForce pack-count / dose / ginseng claim the label whitelist does not list
     force — AgeAura is named and the Pure NMN + TMG product is not
-    allow — no AgeAura, or AgeAura is tied to that one product
+    allow — no AgeAura, or AgeAura is tied to that one product, and no FloraFresh or FusiForce label miss
     """
     decision = _ageaura_decision(text)
-    ff_bad = florafresh.violations(text)
-    if not ff_bad:
+    extra = florafresh.violations(text) + fusiforce.violations(text)
+    if not extra:
         return decision
     reasons = list(decision.reasons) if decision.action == "deny" else []
     if decision.action == "force":
         reasons.append(_FORCE_REASON)
-    return Decision("deny", None, tuple(_dedupe(reasons + ff_bad)))
+    return Decision("deny", None, tuple(_dedupe(reasons + extra)))
 
 
 def _ageaura_decision(text):
@@ -185,8 +193,8 @@ def violations(text):
     """Hard-fail strings for lint and the article/landing gates.
 
     Ambiguous AgeAura is a violation until prepare_ticket / prepare_promotion
-    locks the copy to the allowed SKU. Denied SKUs and FloraFresh formula claims
-    stay violations either way.
+    locks the copy to the allowed SKU. Denied SKUs, FloraFresh formula claims,
+    and FusiForce pack-label claims stay violations either way.
     """
     return _decision_violations(assess(text))
 
@@ -194,12 +202,12 @@ def violations(text):
 def spec_violations(spec):
     """violations() for a landing spec (the parsed JSON).
 
-    AgeAura reads the whole spec, as the gates always did. FloraFresh is checked field
-    by field, so source notes and the citation list may record what the wrong PDP says;
-    product, offer, sticky_cta, and trust copy counts as a FloraFresh claim.
+    AgeAura reads the whole spec, as the gates always did. FloraFresh and FusiForce are
+    checked field by field, so source notes and the citation list may record what a PDP says;
+    product, offer, sticky_cta, and trust copy counts as a product claim.
     """
     out = _decision_violations(_ageaura_decision(json.dumps(spec)))
-    return _dedupe(out + florafresh.spec_violations(spec))
+    return _dedupe(out + florafresh.spec_violations(spec) + fusiforce.spec_violations(spec))
 
 
 def _decision_violations(decision):

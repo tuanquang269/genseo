@@ -44,6 +44,10 @@ Also: never `rm` repo files (move them to `_superseded/`); never put CDN URLs in
   powder 100 mg (with bromelain), sweetened with maltitol + isomalt, so never "sugar-free". The live PDP description
   (15 billion CFU, four Lactobacillus strains, XOS, D-mannose, sugar-free) is wrong until Kevin's GO rewrites it:
   never take formula facts from it or from older FloraFresh articles. See `docs/FLORAFRESH_FORMULA_GUARD.md`.
+- **FusiForce pack label = `product_refs/fusiforce-creatine-gummies.label.json`** (2026-10-09;
+  `scripts/fusiforce_rules.py`, run by `brand_rules.py`): creatine monohydrate, **90 gummies**. Do not state 84
+  gummies, 25 mg, 50 mg, 30 servings, any other serving count, any milligram amount, or ginseng unless that exact
+  token is in the whitelist file. See `docs/FUSIFORCE_LABEL_GUARD.md`.
 - **Hero products** (house brands sold on wellnessnest.co — follow `lint_tickets.py` and `knowledge_base/`):
   FusiForce creatine gummies `fusiforce-creatine-gummies` · ShilaSource / Himalayan shilajit: resin
   `shilasource-himalayan-shilajit-resin`, gummies `premium-himalayan-shilajit-gummies`, gold resin
@@ -72,6 +76,7 @@ Also: never `rm` repo files (move them to `_superseded/`); never put CDN URLs in
 ```bash
 python3 scripts/lint_tickets.py daily-tickets.md        # banned link or claim in an open ticket -> exit 2
 python3 scripts/florafresh_rules.py <draft>.md          # FloraFresh copy vs its Supplement Facts label -> exit 1
+python3 scripts/fusiforce_rules.py <draft>.md           # FusiForce copy vs its pack label whitelist -> exit 1
 python3 scripts/refill_tickets.py --self-test           # offline fixtures + topic-bank lint
 python3 scripts/refill_tickets.py --count 8 --dry-run   # storefront reads only; queue + board untouched
 python3 scripts/sync_cursor_skills.py --check           # .cursor/skills pointers match skills/

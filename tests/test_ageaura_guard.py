@@ -101,13 +101,21 @@ class AgeAuraGuardTests(unittest.TestCase):
     def test_live_landing_specs_pass(self):
         for name in (
             "ageaura-nmn-listicle-261008.json",
-            "fusiforce-creatine-listicle-261008.json",
             "shilajit-gummies-listicle-261008.json",
         ):
             with open(os.path.join(ROOT, "landing_drafts", name), encoding="utf-8") as fh:
                 raw = fh.read()
             self.assertEqual(br.violations(raw), [], name)
             self.assertEqual(br.violations(json.dumps(json.loads(raw))), [], name)
+        # The 2026-10-08 FusiForce listicle still states doses the pack whitelist does not list.
+        # AgeAura rules do not fire; fusiforce_rules owns those reasons.
+        name = "fusiforce-creatine-listicle-261008.json"
+        with open(os.path.join(ROOT, "landing_drafts", name), encoding="utf-8") as fh:
+            raw = fh.read()
+        for blob in (raw, json.dumps(json.loads(raw))):
+            reasons = br.violations(blob)
+            self.assertTrue(reasons, name)
+            self.assertTrue(all(r.startswith("FusiForce label:") for r in reasons), reasons)
 
     def test_topic_fitness_blocks_urolithin_and_keeps_ageaura(self):
         verdict, code, _why = tf.assess("urolithin a benefits review")
