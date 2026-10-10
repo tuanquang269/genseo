@@ -364,6 +364,10 @@ def main():
     # ShilaSource Himalayan Shilajit Resin doses follow
     # product_refs/shilasource-himalayan-shilajit-resin.label.json
     # (front-of-pack lines only; no milligram token; scripts/shilasource_resin_rules.py).
+    # Turkesterone Advanced Formula doses follow
+    # product_refs/turkesterone-advanced-formula.label.json
+    # (front-of-pack lines only; split 60 / Capsules badge; no milligram token;
+    # scripts/turkesterone_rules.py).
     _v=_br.violations(html)
     if _v: fails.append("brand rule — banned link(s)/mentions/claims: "+"; ".join(_v[:6]))
 

@@ -59,6 +59,12 @@ Also: never `rm` repo files (move them to `_superseded/`); never put CDN URLs in
   badge is the separate lines `75` and `SERVINGS`. No milligram amount and no Supplement Facts panel were read.
   Do not add one. Do not state a different serving count, volume, weight, fulvic percentage, mineral count, or
   day-supply. Gummies, Shockwave, and Gold Resin are separate products. See `docs/SHILASOURCE_RESIN_LABEL_GUARD.md`.
+- **Turkesterone Advanced Formula = its OCR pack label only** (`scripts/turkesterone_rules.py`, run by
+  `brand_rules.py`): required and optional lines in `product_refs/turkesterone-advanced-formula.label.json`
+  (2026-10-10 RapidOCR native and 2x agreement on the jar front). The capsule badge is the separate lines
+  `60` and `Capsules`. No milligram amount and no Supplement Facts panel were read. Do not add one.
+  The 2026-10-09 Vision miss `TURNESTERONE` was not copied. Bare "turkesterone" is the ingredient, not this SKU.
+  Gummies, Shockwave, Gold Resin, and ShilaSource resin are separate products. See `docs/TURKESTERONE_LABEL_GUARD.md`.
 - **Listicle/landing UI colors match the hero pack** (Kevin 2026-10-09; `scripts/packaging_palette.py`, run by
   `brand_rules.py` and `scripts/landing_palette.py`): `product_refs/<handle>.palette.json` is the source of truth.
   FloraFresh is dusty pink / rose `#d17a85`. AgeAura Pure NMN + TMG is a neutral white/grey bottle (no chromatic
@@ -95,6 +101,7 @@ python3 scripts/florafresh_rules.py <draft>.md          # FloraFresh copy vs its
 python3 scripts/shockwave_rules.py <draft>.md           # Shockwave copy vs its pack-label whitelist -> exit 1
 python3 scripts/gold_resin_rules.py <draft>.md          # Gold Resin copy vs its pack-label whitelist -> exit 1
 python3 scripts/shilasource_resin_rules.py <draft>.md   # ShilaSource resin copy vs its pack-label whitelist -> exit 1
+python3 scripts/turkesterone_rules.py <draft>.md        # Turkesterone copy vs its pack-label whitelist -> exit 1
 python3 scripts/packaging_palette.py --spec <landing>.json  # listicle colors vs the pack palette file -> exit 1
 python3 scripts/refill_tickets.py --self-test           # offline fixtures + topic-bank lint
 python3 scripts/refill_tickets.py --count 8 --dry-run   # storefront reads only; queue + board untouched

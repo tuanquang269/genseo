@@ -35,4 +35,4 @@ python3 scripts/gold_resin_rules.py --spec landing_drafts/<slug>.json
 - No Shopify write, no PDP edit, no theme or robots change.
 - The whitelist was not given a milligram token.
 - The omitted second-jar misreads were not corrected into the file.
-- Gummies, Shockwave, and ShilaSource resin were not given a new formula guard in this change.
+- Gummies, Shockwave, and ShilaSource resin were not given a new formula guard in this change. Turkesterone Advanced Formula has its own pack-label guard: `docs/TURKESTERONE_LABEL_GUARD.md`.

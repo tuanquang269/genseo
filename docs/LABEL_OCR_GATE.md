@@ -31,7 +31,7 @@ Skip only when the image is not a whitelist pack shot: no `pack_images`, and the
 
 ## Label files and reads that were not promoted
 
-Required strings in a new label file are confidence-1.00 lines copied from `label_ocr.swift` on 2026-10-09. Misreads were omitted. They were not corrected, and doses the read did not show were not added.
+Required strings in a new label file are copied from an OCR read of the pack photo already in `product_refs`. The 2026-10-09 `label_ocr.swift` files use confidence-1.00 lines only. Turkesterone is the exception in the table: two RapidOCR reads that agreed verbatim, and none of those lines scored confidence 1.00. Misreads were omitted. They were not corrected, and doses the read did not show were not added.
 
 | Handle | Whitelist | Note |
 |---|---|---|
@@ -39,7 +39,7 @@ Required strings in a new label file are confidence-1.00 lines copied from `labe
 | `pure-shilajit-gold-resin` | Front identity lines, including `75% Fulvic`, `Lab-Tested`, `Pure Shilajit Gold Resin`, `1.06 oz (30g) - 75 servings` | No milligram serving was read. Do not add one. Second-jar misreads were omitted, not corrected. Copy that names this SKU is checked by `scripts/gold_resin_rules.py` (`docs/GOLD_RESIN_LABEL_GUARD.md`). Tomorrow's listicle dry-run must not publish. |
 | `shilajit-shockwave` | wellness, nest, SHILAJIT, SHOCKWAVE, EXPERIENCE FOCUSED ENERGY, PEAK PERFORMANCE | No milligram token was read. The volume line was not stable (`1 il oz` / `1 1l oz`) and is not in the whitelist. An OCR line with a milligram dose fails the gate. Copy that names this SKU is checked by `scripts/shockwave_rules.py` (`docs/SHOCKWAVE_LABEL_GUARD.md`). |
 | `shilasource-himalayan-shilajit-resin` | Front identity and badge lines from the 2026-10-08 PDP pack-shot read: ShilaSource, Himalayan, Shilajit, Resin, `75`, Dietary Supplement, plus optional Wellness, Nest, `70% Fulvic Acid*`, `Lab-Tested for Purity*`, `1.06oz (30g)`, SERVINGS, Servings | No `accepted_ocr` key. No Supplement Facts panel and no milligram token are in the file. The side panel on the pack photo was not transcribed. Copy that names this SKU is checked by `scripts/shilasource_resin_rules.py` (`docs/SHILASOURCE_RESIN_LABEL_GUARD.md`). |
-| `turkesterone-advanced-formula` | No file | The brand line was read as `TURNESTERONE`. That was not rewritten into the label, and no dose was added. The gate fails closed until a letter-perfect file exists. |
+| `turkesterone-advanced-formula` | Front identity lines from a 2026-10-10 RapidOCR native read and a 2x read that agreed verbatim: wellness, nest, PREMIUM, TURKESTERONE, ADVANCED, FORMULA, AMPLIFY, MUSCLE, ENDURANCE, `60`, Dietary Supplement, Capsules | Not a `label_ocr.swift` confidence-1.00 read. None of those lines scored 1.00. The 2026-10-09 Vision brand line `TURNESTERONE` was not copied and was not corrected. Disagreements were omitted (KSM-66 mark, POTENTIAL asterisk, RECOVERY asterisk, Colostrum spacing, BioPerine spacing). No Supplement Facts panel and no milligram token. `60` and `Capsules` stayed separate lines. Copy that names this SKU is checked by `scripts/turkesterone_rules.py` (`docs/TURKESTERONE_LABEL_GUARD.md`). There is no cutout, so the landing runner uses the real PDP image and must not claim `label gate PASS`. |
 | `ageaura-pure-urolithin-a` | No file | Not an allowed AgeAura SKU. Do not add a promotion whitelist. |
 
 FusiForce's existing whitelist required token is `90` next to `Gummies`. A read that says `84` or `84 gummies` fails. The shilajit gummies whitelist includes optional `60 GUMMIES` and `60-DAY SUPPLY`. A `30 servings` line on that read fails. Those checks use the label file plus a stubbed OCR blob. They do not call Swift.
@@ -54,7 +54,7 @@ The Gold Resin PDP composite also contains a supplement-facts wrap. Vision misre
 - FloraFresh states Bacillus coagulans SNZ-1969 and 1 billion CFU, from `florafresh_rules.py`.
 - FusiForce states 90 gummies, from the pack label file. The file does not contain a serving count or a ginseng milligram, so the draft does not state `30 servings`, `84`, `25 mg`, or `50 mg`.
 - Shilajit gummies state 60 gummies and a 60-day supply, from the pack label. They do not state a 30-serving panel.
-- Gold Resin, Shockwave, Turkesterone, and ShilaSource get a URL and no formula sentence.
+- Gold Resin, Shockwave, Turkesterone, and ShilaSource get a URL and no formula sentence. The Turkesterone front whitelist does not add one: no Supplement Facts panel was read, and the capsule badge was not rewritten into a formula sentence.
 
 Regenerate with:
 

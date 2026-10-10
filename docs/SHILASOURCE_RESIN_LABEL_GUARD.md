@@ -48,4 +48,4 @@ The 2026-10-08 file also has no `accepted_ocr` array. That is a provenance gap n
 - No Shopify write, no PDP edit, no publish, no theme or robots change.
 - The whitelist was not given a milligram token, a serving-size gram amount, or a mineral count.
 - The split `75` and `SERVINGS` lines were not rewritten into one new OCR line.
-- Gummies, Shockwave, and Gold Resin were not given a new formula guard in this change.
+- Gummies, Shockwave, and Gold Resin were not given a new formula guard in this change. Turkesterone Advanced Formula has its own pack-label guard: `docs/TURKESTERONE_LABEL_GUARD.md`.

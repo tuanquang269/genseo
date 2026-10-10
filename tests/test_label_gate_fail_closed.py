@@ -38,6 +38,10 @@ SHOCK_OK = [
     "wellness", "nest", "SHILAJIT", "SHOCKWAVE",
     "EXPERIENCE FOCUSED ENERGY", "PEAK PERFORMANCE",
 ]
+TURK_OCR = [
+    "wellness", "nest", "PREMIUM", "TURKESTERONE", "ADVANCED", "FORMULA",
+    "AMPLIFY", "MUSCLE", "ENDURANCE", "60", "Dietary Supplement", "Capsules",
+]
 FLORA_OCR = [
     "FloraFresh", "Vaginal", "Probiotic", "Gummies", "60", "DIETARY", "GUMMIES", "SUPPLEMENT",
 ]
@@ -61,23 +65,23 @@ def load_label(handle):
 
 class FailClosedInfrastructure(unittest.TestCase):
     def test_missing_label_json_is_not_a_pass(self):
-        for handle in (TURK, "not-a-stocked-handle"):
+        for handle in ("not-a-stocked-handle",):
             with self.assertRaises(lg.LabelGateError) as caught:
                 lg.evaluate(handle, ocr_lines=["anything"])
             message = str(caught.exception)
             self.assertIn("FAIL CLOSED", message)
             self.assertIn("do not invent", message.lower())
             self.assertNotIn("LABEL PASS", message)
-        note = lg.missing_label_note(TURK)
-        self.assertIn("TURNESTERONE", note)
-        self.assertNotIn("TURKESTERONE", note)
-        self.assertFalse(os.path.isfile(lg.label_json_path(TURK)))
+        self.assertTrue(os.path.isfile(lg.label_json_path(TURK)))
         self.assertFalse(os.path.isfile(lg.label_json_path("ageaura-pure-urolithin-a")))
+        note = lg.missing_label_note("ageaura-pure-urolithin-a")
+        self.assertIn("not an allowed AgeAura", note)
+        self.assertNotIn("TURNESTERONE", lg.missing_label_note("not-a-stocked-handle"))
 
     def test_cli_missing_label_exits_nonzero(self):
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
-            code = lg.main(["no-such.png", "--handle", TURK])
+            code = lg.main(["no-such.png", "--handle", "not-a-stocked-handle"])
         text = buf.getvalue()
         self.assertEqual(code, 1)
         self.assertIn("FAIL CLOSED", text)
@@ -222,13 +226,41 @@ class VerbatimWhitelists(unittest.TestCase):
         self.assertTrue(lg.assess_lines(load_label(FLORA), FLORA_OCR)["ok"])
         self.assertTrue(lg.assess_lines(load_label(GOLD), GOLD_OCR)["ok"])
 
+    def test_turkesterone_front_lines_and_invented_doses(self):
+        spec = load_label(TURK)
+        self.assertEqual(spec["required"], spec["accepted_ocr"])
+        self.assertEqual(spec["optional"], [])
+        self.assertEqual(spec["required"], TURK_OCR)
+        catalog = " ".join(spec["required"] + spec["optional"])
+        self.assertIsNone(lg._MG_DOSE.search(catalog))
+        self.assertNotIn("TURNESTERONE", catalog)
+        self.assertIn("TURNESTERONE", spec["source"])
+        self.assertIn("not copied", spec["source"])
+        self.assertIn("KSM-66?Ashwagandha", spec["source"])
+        self.assertNotIn("KSM-66", catalog)
+        self.assertNotIn("Ashwagandha", catalog)
+        self.assertNotIn("BioPerine", catalog)
+        self.assertEqual(lg.expected_capsule_counts(spec), [60])
+        self.assertEqual(lg.expected_gummy_counts(spec), [])
+        passed = lg.assess_lines(spec, TURK_OCR)
+        self.assertTrue(passed["ok"], passed)
+        invented = lg.assess_lines(spec, TURK_OCR + ["500 mg"])
+        self.assertFalse(invented["ok"])
+        self.assertTrue(any("500 mg" in item for item in invented["conflicts"]))
+        wrong_count = lg.assess_lines(spec, TURK_OCR + ["90 Capsules"])
+        self.assertFalse(wrong_count["ok"])
+        self.assertTrue(any("90" in item for item in wrong_count["conflicts"]))
+        misread = lg.assess_lines(spec, ["TURNESTERONE", "wellness", "nest"])
+        self.assertFalse(misread["ok"])
+        self.assertIn("TURKESTERONE", misread["missing"])
+
 
 class ValidateLandingCaller(unittest.TestCase):
     def test_missing_whitelist_does_not_run_ocr(self):
         spec = {
             "style": "premium",
             "pack_images": ["tmp/pack.webp"],
-            "offer": {"href": "https://wellnessnest.co/products/" + TURK},
+            "offer": {"href": "https://wellnessnest.co/products/not-a-stocked-handle"},
         }
 
         def boom(_image, _handle):
@@ -237,7 +269,7 @@ class ValidateLandingCaller(unittest.TestCase):
         errors = lg.whitelist_pack_errors(spec, ROOT, run_gate=boom)
         self.assertEqual(len(errors), 1)
         self.assertIn("FAIL CLOSED", errors[0])
-        self.assertIn(TURK, errors[0])
+        self.assertIn("not-a-stocked-handle", errors[0])
 
     def test_claimed_pass_without_images_fails_closed(self):
         spec = {

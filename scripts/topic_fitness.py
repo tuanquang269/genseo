@@ -18,7 +18,9 @@ Rules (a heuristic gate — tune the lists as data grows):
         serving, volume, weight, day-supply, or other dose its pack label does not list
         [gold-resin-label], a ShilaSource resin milligram, serving, volume, weight,
         fulvic percentage, mineral count, day-supply, or other dose its pack label
-        does not list [shilasource-resin-label], or an AgeAura SKU other than the
+        does not list [shilasource-resin-label], a Turkesterone Advanced Formula
+        milligram, serving, capsule count, day-supply, or other dose its pack
+        label does not list [turkesterone-label], or an AgeAura SKU other than the
         NMN + TMG Complex [ageaura-sku]
   FAIL  near-duplicate of an existing live article (we already have the page)
   FAIL  bare category head-term a COLLECTION owns ("best protein powder us") -> the
@@ -39,6 +41,7 @@ import florafresh_rules as ff
 import gold_resin_rules as gr
 import shilasource_resin_rules as sr
 import shockwave_rules as sw
+import turkesterone_rules as tk
 
 ROOT = "/Users/kevinkreative/genseo"
 MIN_IMP = 20          # below this SG demand, not worth a dedicated page
@@ -172,6 +175,14 @@ def assess(topic, sg_imp=None, articles=None, collections=None, pos=None):
                 + 'mineral count, day-supply, or other dose not in that file fails closed: '
                 + '; '.join(sr_bad))
 
+    tk_bad = tk.violations(topic)
+    if tk_bad:
+        return ('FAIL', tk.CODE,
+                'Turkesterone Advanced Formula follows the pack label (' + tk.LABEL_LINE
+                + '); a milligram amount, a serving count, a different capsule count, a day-supply, '
+                + 'or other dose not in that file fails closed: '
+                + '; '.join(tk_bad))
+
     if br.assess(topic).action == "deny":
         return ('FAIL', 'ageaura-sku',
                 'AgeAura promotes only the Pure NMN + TMG NAD Complex (' + br.AGEAURA_OK
@@ -297,6 +308,9 @@ def self_check():
         ("Pure Shilajit Gold Resin review", None, [], 'PASS'),                 # whitelist lines only
         ("ShilaSource Himalayan Shilajit Resin 500 mg review", None, [], 'FAIL'),  # pack label has no milligram
         ("ShilaSource Himalayan Shilajit Resin review", None, [], 'PASS'),     # whitelist lines only
+        ("Turkesterone Advanced Formula 500 mg review", None, [], 'FAIL'),     # pack label has no milligram
+        ("Turkesterone Advanced Formula review", None, [], 'PASS'),            # front lines only
+        ("Turkesterone vs Ecdysterone 500 mg", None, [], 'PASS'),              # ingredient trial dose, not the SKU
     ]
     ok = True
     for topic, imp, a, want, *rest in cases:

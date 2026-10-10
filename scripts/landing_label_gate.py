@@ -50,15 +50,15 @@ _WHITELIST_CLAIM = re.compile(
 # Quoted OCR misses for stocked products that still have no whitelist. These are
 # notes, not required strings. Do not copy them into a .label.json.
 _MISSING_NOTES = {
-    "turkesterone-advanced-formula": (
-        "A 2026-10-09 macOS Vision read of product_refs/turkesterone-advanced-formula.png "
-        "returned the brand line as \"TURNESTERONE\" (confidence 1.00). That misread was not "
-        "rewritten into a whitelist, and no dose was added."
-    ),
     "ageaura-pure-urolithin-a": (
         "This SKU is not an allowed AgeAura product. Do not create a promotion whitelist for it."
     ),
 }
+_NO_MG_NOTE = {
+    "shilajit-shockwave": "shockwave label has no milligram token",
+    "turkesterone-advanced-formula": "turkesterone label has no milligram token",
+}
+_CAPSULE_COUNT = re.compile(r"\b(\d+)\s*capsules?\b", re.I)
 
 
 class LabelGateError(Exception):
@@ -167,8 +167,9 @@ def gummy_count_conflicts(spec, lines):
 
 
 def milligram_conflicts(spec, lines):
-    """Shockwave's whitelist has no milligram token. A dose in the read is invented."""
-    if spec.get("handle") != "shilajit-shockwave":
+    """A whitelist with no milligram token rejects a milligram in the read."""
+    note = _NO_MG_NOTE.get(spec.get("handle"))
+    if not note:
         return []
     catalog = " ".join(str(s) for s in (spec.get("required") or []) + (spec.get("optional") or []))
     if _MG_DOSE.search(catalog):
@@ -176,9 +177,51 @@ def milligram_conflicts(spec, lines):
     bad = []
     for line in lines:
         for match in _MG_DOSE.finditer(line):
-            bad.append(
-                "invented milligram dose %s (shockwave label has no milligram token)" % match.group(0)
-            )
+            bad.append("invented milligram dose %s (%s)" % (match.group(0), note))
+    return bad
+
+
+def expected_capsule_counts(spec):
+    """Capsule counts written on the Turkesterone whitelist. Empty for every other SKU."""
+    if spec.get("handle") != "turkesterone-advanced-formula":
+        return []
+    blobs = [str(s) for s in (spec.get("required") or []) + (spec.get("optional") or [])]
+    counts = []
+    for blob in blobs:
+        for match in _CAPSULE_COUNT.finditer(blob):
+            count = int(match.group(1))
+            if count not in counts:
+                counts.append(count)
+    if counts or not re.search(r"\bcapsules?\b", " ".join(blobs), re.I):
+        return counts
+    for blob in spec.get("required") or []:
+        token = str(blob).strip()
+        if re.fullmatch(r"\d+", token):
+            count = int(token)
+            if count not in counts:
+                counts.append(count)
+    return counts
+
+
+def capsule_count_conflicts(spec, lines):
+    expected = expected_capsule_counts(spec)
+    if not expected:
+        return []
+    allowed = ", ".join(str(n) for n in expected)
+    bare = []
+    for blob in spec.get("required") or []:
+        token = str(blob).strip()
+        if re.fullmatch(r"\d+", token) and int(token) in expected and int(token) not in bare:
+            bare.append(int(token))
+    bad = []
+    for line in lines:
+        for match in _CAPSULE_COUNT.finditer(line):
+            count = int(match.group(1))
+            if count not in expected:
+                bad.append("%s (label capsule count is %s)" % (match.group(0), allowed))
+        stripped = line.strip()
+        if bare and re.fullmatch(r"\d+", stripped) and int(stripped) not in expected:
+            bad.append("%s (label capsule count is %s)" % (stripped, allowed))
     return bad
 
 
@@ -217,7 +260,8 @@ def assess_lines(spec, lines):
                 close = difflib.get_close_matches(token, vocab, n=1, cutoff=0.75)
                 if close:
                     garbled.append("%s (~%s)" % (word, close[0]))
-    conflicts = gummy_count_conflicts(spec, lines) + milligram_conflicts(spec, lines) + serving_panel_conflicts(spec, lines)
+    conflicts = (gummy_count_conflicts(spec, lines) + milligram_conflicts(spec, lines)
+                 + serving_panel_conflicts(spec, lines) + capsule_count_conflicts(spec, lines))
     return {
         "missing": missing,
         "garbled": garbled,
