@@ -128,6 +128,7 @@ Rules 1–19 were absorbed on 2026-10-08. **Rules 20–39, and the dated bullets
 - **2026-10-09** Never put a CAPTCHA, age gate, or forced interstitial on an article or landing. Anthropic's bots will not bypass CAPTCHAs (§6.6 rule 28).
 - **2026-10-09** Never add a script that traps the Back button (§6.6 rule 26).
 - **2026-10-09** Product identity is not a GEO choice. AgeAura links only to https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex (NMN + TMG). FloraFresh copy follows the Supplement Facts label: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies. Guards: `scripts/brand_rules.py`, `docs/AGEAURA_PRODUCT_GUARD.md`, `docs/FLORAFRESH_FORMULA_GUARD.md`.
+- **2026-10-10** Shilajit Shockwave pack-label copy follows `product_refs/shilajit-shockwave.label.json` only (identity lines; no milligram, serving count, or volume token). Guard: `scripts/shockwave_rules.py`, `docs/SHOCKWAVE_LABEL_GUARD.md`.
 
 ### 6.6 Crawlers, user agents, and robots.txt (2026-10-09)
 

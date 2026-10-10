@@ -5,7 +5,8 @@
 
 --strict (required by landing_publisher.py --live): zero placeholders allowed.
 Checks: schema, brand_rules.spec_violations (AgeAura = the NMN + TMG SKU only; FloraFresh formula = its
-Supplement Facts label, never the PDP description), forbidden terms per store (AgeAura: urolithin/peptide), banned filler, every
+Supplement Facts label, never the PDP description; Shilajit Shockwave doses = its pack-label whitelist,
+which has no milligram token — scripts/shockwave_rules.py), forbidden terms per store (AgeAura: urolithin/peptide), banned filler, every
 number in copy carries a source link or a placeholder, testimonials/expert quotes are either
 placeholders or carry a "source", byline is on roster.json, all wellnessnest.co links 200,
 images exist (local) or are https and < 80 KB as served with Accept: image/webp, no dosage-with-units

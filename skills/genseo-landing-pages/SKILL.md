@@ -70,6 +70,7 @@ testimonials, no sticky). Surface the choice to Kevin; never silently downgrade 
    The live PDP description (15 billion CFU, four Lactobacillus strains, XOS, D-mannose, sugar-free) is wrong until
    Kevin's GO rewrites it, so for FloraFresh the PDP gives price, offer and directions, never the formula.
    `validate_landing.py` fails any FloraFresh claim the label does not support (`scripts/florafresh_rules.py`).
+   **Shilajit Shockwave** pack-label doses come only from `product_refs/shilajit-shockwave.label.json` (identity lines; no milligram, serving count, or volume token). `validate_landing.py` fails a dose that file does not list (`scripts/shockwave_rules.py`).
 4. **No faces** in any image. Use `scripts/article_images.py` with `--qc` (same pipeline + QC as articles),
    `--product-ref <handle>` (no `:index`) for any image showing a pack, `--ugc` for lifestyle shots, and put
    "no people's faces" in the NEGATIVE. Never `--persona-ref`, never `persona_picker.py`. Run in the foreground.
