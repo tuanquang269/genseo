@@ -9,8 +9,9 @@ Supplement Facts label, never the PDP description; Shilajit Shockwave doses = it
 which has no milligram token — scripts/shockwave_rules.py; Pure Shilajit Gold Resin doses = its
 pack-label whitelist, which has the OCR serving line and 75% Fulvic and no milligram token —
 scripts/gold_resin_rules.py; ShilaSource Himalayan Shilajit Resin doses = its pack-label whitelist,
-front-of-pack lines only, no milligram token — scripts/shilasource_resin_rules.py), forbidden terms
-per store (AgeAura: urolithin/peptide), banned filler, every
+front-of-pack lines only, no milligram token — scripts/shilasource_resin_rules.py; listicle/advertorial
+UI colors vs product_refs/<handle>.palette.json — scripts/packaging_palette.py, hard for specs created
+>= 2026-10-09), forbidden terms per store (AgeAura: urolithin/peptide), banned filler, every
 number in copy carries a source link or a placeholder, testimonials/expert quotes are either
 placeholders or carry a "source", byline is on roster.json, all wellnessnest.co links 200,
 images exist (local) or are https and < 80 KB as served with Accept: image/webp, no dosage-with-units

@@ -42,6 +42,12 @@ assess() denies any FloraFresh, Shockwave, Gold Resin, or ShilaSource resin
 claim those modules reject, so every caller below enforces them. Landing specs
 use spec_violations().
 
+Listicle and advertorial UI colors follow product_refs/<handle>.palette.json
+(Kevin 2026-10-09). packaging_palette.py rejects a hard-window landing spec or
+landing ticket that opts out of a chromatic pack or forces a hue the file does
+not list. The painted page is checked by scripts/landing_palette.py. See
+docs/PACKAGING_PALETTE_GUARD.md.
+
 Local llms.txt drafts omit denied handles. A FloraFresh, FusiForce, or
 shilajit-gummies formula line is included only when it matches the label source
 of truth (scripts/llms_formula.py). Shockwave, Gold Resin, and ShilaSource resin
@@ -58,6 +64,7 @@ import re
 import florafresh_rules as florafresh
 import gold_resin_rules as gold_resin
 import llms_formula
+import packaging_palette
 import shilasource_resin_rules as shilasource_resin
 import shockwave_rules as shockwave
 
@@ -225,9 +232,11 @@ def violations(text):
     Ambiguous AgeAura is a violation until prepare_ticket / prepare_promotion
     locks the copy to the allowed SKU. Denied SKUs, FloraFresh formula claims,
     Shockwave pack-label claims, Gold Resin pack-label claims, and ShilaSource
-    resin pack-label claims stay violations either way.
+    resin pack-label claims stay violations either way. A landing-ticket line
+    that opts out of a committed packaging palette, or forces a hue that file
+    does not list, is a violation too (scripts/packaging_palette.py).
     """
-    return _decision_violations(assess(text))
+    return _dedupe(_decision_violations(assess(text)) + packaging_palette.ticket_violations(text))
 
 
 def spec_violations(spec):
@@ -236,12 +245,15 @@ def spec_violations(spec):
     AgeAura reads the whole spec, as the gates always did. FloraFresh, Shockwave,
     Gold Resin, and ShilaSource resin are checked field by field, so source notes
     and the citation list may record what a PDP says; product, offer, sticky_cta,
-    trust, chip, and bullets count as product claims.
+    trust, chip, and bullets count as product claims. A listicle/advertorial
+    created on or after 2026-10-09 is also checked against
+    product_refs/<handle>.palette.json.
     """
     out = _decision_violations(_ageaura_decision(json.dumps(spec)))
     return _dedupe(out + florafresh.spec_violations(spec) + shockwave.spec_violations(spec)
                    + gold_resin.spec_violations(spec)
-                   + shilasource_resin.spec_violations(spec))
+                   + shilasource_resin.spec_violations(spec)
+                   + packaging_palette.spec_violations(spec))
 
 
 def _decision_violations(decision):
@@ -361,12 +373,12 @@ def indexnow_urls(urls):
 
 
 def handles_from_product_refs(refs_dir):
-    """Product handles declared by product_refs/*.json (not *.label.json)."""
+    """Product handles declared by product_refs/*.json (not *.label.json or *.palette.json)."""
     handles = []
     if not refs_dir or not os.path.isdir(refs_dir):
         return handles
     for name in sorted(os.listdir(refs_dir)):
-        if not name.endswith(".json") or name.endswith(".label.json"):
+        if not name.endswith(".json") or name.endswith(".label.json") or name.endswith(".palette.json"):
             continue
         handles.append(name[: -len(".json")])
     return handles

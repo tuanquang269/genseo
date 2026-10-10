@@ -176,12 +176,12 @@ Kevin saw an old offer box in his preview while the local v3 screenshots looked 
 `run_landing_daily.sh` runs it after every daily draft and tags the ticket DRAFT-QA-FAIL if it fails. Set `GENSEO_LANDING_REAL_QA_WINDOW=0` to keep parity but skip the window.
 
 ### Packaging palette (Kevin 2026-10-09: "UI/UX colors must be congruent with the product's packaging")
-Every listicle/advertorial wears the hero product's PACK colors, not the house greens. Kevin judges pages heavily on visual design.
+Every listicle/advertorial wears the hero product's PACK colors. A chromatic pack replaces the house greens. A neutral pack with no measured chromatic hue keeps the house greens until a grey token map is recorded. Kevin judges pages heavily on visual design.
 - **Extract:** `scripts/landing_palette.py extract <img…>` k-means (OKLab, k=6) over `product_refs/<handle>.png`
   (+ spec `pack_palette_images`), ignoring near-white/near-black/transparent pixels. Pack hue = heaviest chromatic
   cluster (OKLCh C >= 0.035). A pack with < 8 % chromatic pixels is "neutral" and keeps the house palette.
 - **Apply (automatic at render):** `landing_clone.py` calls `landing_palette.resolve(spec)` for every `engine: ref` spec
-  created >= 2026-10-09 (`"palette": "off"` opts out; `{"hue": 12, "chroma": 0.11}` forces a hue, still gated). Every
+  created >= 2026-10-09 (a chromatic palette file refuses `"palette": "off"`; `{"hue": 12, "chroma": 0.11}` is applied only when it sits within the file's hue tolerance). Every
   house-green literal in the compiled template CSS and in the body (inline SVG fills, #rrggbbaa included) is re-hued to the
   pack hue at the SAME WCAG luminance, so all contrast ratios stay what the template already passes; text tokens
   (`--gp-accent/ink/text/muted`) are additionally darkened to >= 4.6:1 on white and the soft surfaces.
@@ -189,15 +189,26 @@ Every listicle/advertorial wears the hero product's PACK colors, not the house g
   (`.gsl-ref.gsl-pal …`) for every declaration of an affected property family, so the template's own cascade is kept.
   **The shared theme template is never touched**: other live pages on the same suffix render exactly as before.
   Output: `landing_drafts/<slug>/palette.json` (pack clusters, hue, chroma).
+- **Source of truth:** `product_refs/<handle>.palette.json`, read by `scripts/packaging_palette.py`. Hexes in that
+  file are measurements (k-means of the pack photo, or the packaging note already in `product_refs/<handle>.json`).
+  Do not invent a hue for a product with no file. FloraFresh is chromatic dusty pink / rose `#d17a85` (hue 12.3).
+  AgeAura Pure NMN + TMG is neutral (white with dark grey text; no cluster reached chroma 0.035). A hard-window spec
+  (`created` >= 2026-10-09) fails closed when it sets `palette` off on a chromatic file, forces a hue outside the
+  file's tolerance, or forces a chromatic hue on a neutral file. The pack photo failing to match the file is also a
+  failure. Products with no palette file are a gap, not a guessed color. See `docs/PACKAGING_PALETTE_GUARD.md`.
 - **Gate:** `scripts/landing_palette.py check <spec>` on the rendered body: CTA `--gp-forest`, `--gp-accent` and
-  `--gp-sage` hue within 30° of the pack hue, accent chroma >= 0.035, WCAG AA (4.5:1) for ink/text/muted/accent on white
-  and sage and white on the CTA. FAIL is hard for specs created >= 2026-10-09 (WARN for older live pages). Runs in
-  `landing_publisher.py` (refuses to push), `run_landing_daily.sh` (ticket → DRAFT-QA-FAIL palette=fail), and
-  `landing_real_qa.py` repeats the hue test on the storefront's computed colors (`<vp>_palette_matches_pack`).
+  `--gp-sage` hue within 30° of the pack hue (the palette file's hue when the file exists), accent chroma >= 0.035,
+  WCAG AA (4.5:1) for ink/text/muted/accent on white and sage and white on the CTA. A neutral file allows near-grey
+  tokens and, while `house_palette_allowed` is true, the house greens. FAIL is hard for specs created >= 2026-10-09
+  (WARN for older live pages). `palette: off` does not skip that fail when a chromatic palette file exists. Runs in
+  `brand_rules.spec_violations` (so `validate_landing.py`, `landing_render.py`, and `landing_publisher.py` refuse the
+  spec), `landing_palette.py check` (refuses the push), `run_landing_daily.sh` (ticket → DRAFT-QA-FAIL palette=fail),
+  `lint_tickets.py` (open landing tickets only), and `landing_real_qa.py` repeats the hue test on the storefront's
+  computed colors (`<vp>_palette_matches_pack`).
 - **Clipped text:** `landing_qa.mjs` and `landing_live_shot.mjs` report `clipped` (an element's own text wider than its
   box or off-screen; swipe carousels, hidden sticky bar and deliberate ellipsis excluded). The daily wrapper treats it
   like overflow; real QA has `<vp>_no_clipped_text`. Page-level fix for the offer pill (`PAGE_FIX_CSS`, body
   `<style id="gsl-fix">`, specs >= 2026-10-09): it wraps/shrinks on phones instead of being cut off.
-- Tests: `/usr/bin/python3 -m unittest discover -s tests -p 'test_landing_palette.py'`.
+- Tests: `/usr/bin/python3 -m unittest tests/test_packaging_palette.py tests/test_landing_palette.py`.
 - First page: FloraFresh `/pages/vaginal-probiotic-research` (pack #d17a85 rose → CTA #561b26, accent #a44958,
   sage #feeff0, ink #501521).

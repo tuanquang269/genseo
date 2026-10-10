@@ -7,10 +7,13 @@ the product's packaging colors, for this page and every listicle later").
   /usr/bin/python3 scripts/landing_palette.py check <spec> [--json]             # QA gate on the RENDERED body.html
 
 How it works
-  1. PACK COLORS: k-means (OKLab, k=6) over the hero product's packaging truth image product_refs/<handle>.png
-     (+ any spec "pack_palette_images"). Near-white / near-black / transparent pixels are ignored (backgrounds,
-     label text). The "pack hue" is the heaviest chromatic cluster (OKLCh chroma >= 0.035). A pack with < 8 %
-     chromatic pixels is "neutral": the page keeps the house palette and the gate only reports.
+  1. PACK COLORS: the committed source of truth is product_refs/<handle>.palette.json when that
+     file exists (scripts/packaging_palette.py). k-means (OKLab, k=6) over product_refs/<handle>.png
+     (+ any spec "pack_palette_images") is the cross-check and the fallback for a product with no file.
+     Near-white / near-black / transparent pixels are ignored. The "pack hue" is the heaviest chromatic
+     cluster (OKLCh chroma >= 0.035). A pack with < 8 % chromatic pixels is "neutral": the page keeps the
+     house palette unless the palette file says otherwise. A hard-window page fails when the photo hue
+     disagrees with the file, or when the spec opts out of a chromatic file.
   2. TOKENS: every house-brand color literal in the compiled page CSS (the shared gsl-ref-* theme template, Wellness
      Nest greens, hue 95..170 deg) and in the page body (inline SVG fills) is re-hued to the pack hue. Each new color
      keeps the ORIGINAL relative luminance (WCAG Y), so every text/CTA contrast ratio stays exactly what the
@@ -29,6 +32,8 @@ Spec keys: "palette": "auto" (default for specs created >= 2026-10-09) | "off" |
 from offer.href / sticky_cta.href /products/<handle>).
 """
 import json, math, os, re, sys
+
+import packaging_palette as packaging
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 AUTO_FROM = "2026-10-09"          # specs created on/after this date get the pack palette by default and a hard gate
@@ -215,6 +220,18 @@ def resolve(spec):
     h, imgs = pack_images(spec)
     colors = extract(imgs) if imgs else []
     ph = pack_hue(colors) if colors else None
+    sot = packaging.load(h) if h else None
+    if sot and sot.get("kind") == "neutral":
+        return None
+    if sot and sot.get("kind") == "chromatic" and sot.get("hue") is not None:
+        ph = {"hue": float(sot["hue"]), "chroma": float(sot.get("chroma") or (ph or {}).get("chroma") or 0.1),
+              "hex": sot.get("hex") or "", "sot": True}
+        tol = float(sot.get("hue_tolerance", HUE_TOL))
+        if isinstance(v, dict) and "hue" in v and hue_dist(float(v["hue"]), ph["hue"]) <= tol:
+            ph = {**ph, "hue": float(v["hue"]), "chroma": float(v.get("chroma", ph["chroma"])),
+                  "hex": v.get("hex") or ph["hex"], "manual": True}
+        return {**ph, "handle": h, "images": [os.path.relpath(p, ROOT) for p in imgs],
+                "pack": colors or sot.get("clusters") or []}
     if isinstance(v, dict) and "hue" in v:
         ph = {"hue": float(v["hue"]), "chroma": float(v.get("chroma", ph["chroma"] if ph else 0.1)), "hex": v.get("hex", ""), "manual": True}
     if not ph:
@@ -417,15 +434,93 @@ def judge(tokens, pal, has_block=True):
     return res
 
 
+def judge_neutral(tokens, sot, has_block):
+    """Neutral pack: near-grey tokens pass. House greens pass only when the file allows them."""
+    res = []
+    rgb = {k: parse_color(v)[0] for k, v in tokens.items() if COLOR_RE.fullmatch(v.strip())}
+    allow_house = bool(sot.get("house_palette_allowed"))
+    note = sot.get("packaging_note") or "neutral pack"
+    for k in ("--gp-forest", "--gp-accent", "--gp-sage"):
+        if k not in rgb:
+            res.append((f"hue{k}", False, "token missing"))
+            continue
+        _L, C, h = lch(rgb[k])
+        if C < MIN_CHROMA:
+            res.append((f"hue{k}", True, f"{hexc(rgb[k])} neutral C={C:.3f} ({note})"))
+        elif allow_house and HOUSE_HUE[0] <= h <= HOUSE_HUE[1]:
+            res.append((f"hue{k}", True, f"{hexc(rgb[k])} house-green fallback hue {h:.0f} (not read off the bottle)"))
+        else:
+            res.append((f"hue{k}", False, f"{hexc(rgb[k])} hue {h:.0f} conflicts with neutral pack ({note})"))
+    # The untouched house template is the allowed fallback. Its accent contrast is the template's own.
+    # AA applies once a palette block repaints the page.
+    if has_block:
+        W = (255, 255, 255)
+        pairs = [("--gp-ink", W), ("--gp-text", W), ("--gp-muted", W), ("--gp-accent", W), ("--gp-ink", "--gp-sage"),
+                 ("--gp-text", "--gp-sage"), ("--gp-muted", "--gp-sage"), ("--gp-accent", "--gp-sage"), (W, "--gp-forest")]
+        for fg, bg in pairs:
+            a = W if fg == W else rgb.get(fg)
+            b = W if bg == W else rgb.get(bg)
+            if a is None or b is None:
+                continue
+            cr = contrast(a, b)
+            name = f"{'#fff' if fg == W else fg} on {'#fff' if bg == W else bg}"
+            res.append((f"aa {name}", cr >= 4.5, f"{cr:.2f}:1"))
+        if not allow_house:
+            res.append(("palette_block_in_body", False, "neutral pack was recolored"))
+    return res
+
+
+def _file_rows(spec, extracted):
+    rows = []
+    for item in packaging.spec_violations(spec) + packaging.image_violations(spec, extracted):
+        rows.append(("sot", False, item))
+    return rows
+
+
+def _emit(rep, rows, as_json, headline=None):
+    bad = [r for r in rows if not r[1]]
+    hard = rep["hard"]
+    rep["checks"] = [{"check": n, "ok": ok, "detail": d} for n, ok, d in rows]
+    rep["result"] = "PASS" if not bad else ("FAIL" if hard else "WARN")
+    if as_json:
+        print(json.dumps(rep, indent=1))
+    else:
+        if headline:
+            print(headline)
+        for n, ok, d in rows:
+            print(f"{'✓' if ok else '✗'} {n}  {d}")
+        print(f"palette gate: {rep['result']}")
+    return 1 if rep["result"] == "FAIL" else 0
+
+
 def check(spec_path, as_json=False):
     spec = json.load(open(spec_path))
     out_dir = os.path.join(os.path.dirname(os.path.abspath(spec_path)), spec["slug"])
     hard = spec.get("created", "") >= AUTO_FROM and spec.get("palette") != "off"
     h, imgs = pack_images(spec)
     colors = extract(imgs) if imgs else []
-    ph = pack_hue(colors) if colors else None
-    rep = {"spec": spec_path, "handle": h, "pack_images": [os.path.relpath(p, ROOT) for p in imgs], "pack": colors, "pack_hue": ph, "hard": hard}
+    extracted = pack_hue(colors) if colors else None
+    sot = packaging.load(h) if h else None
+    if sot and sot.get("kind") == "chromatic" and spec.get("created", "") >= AUTO_FROM:
+        hard = True
+    ph = extracted
+    if sot and sot.get("kind") == "chromatic" and sot.get("hue") is not None:
+        ph = {"hue": float(sot["hue"]), "chroma": float(sot.get("chroma") or (extracted or {}).get("chroma") or 0.1),
+              "hex": sot.get("hex") or "", "chromatic_share": (extracted or {}).get("chromatic_share", 1), "sot": True}
+    rep = {"spec": spec_path, "handle": h, "pack_images": [os.path.relpath(p, ROOT) for p in imgs],
+           "pack": colors, "pack_hue": ph, "hard": hard, "palette_file": (sot or {}).get("_path")}
+    file_rows = _file_rows(spec, extracted)
+    if sot and sot.get("kind") == "neutral":
+        body = open(os.path.join(out_dir, "body.html")).read()
+        css = open(os.path.join(out_dir, "page.css")).read()
+        tok, blk = effective_tokens(css, body)
+        rows = judge_neutral(tok, sot, blk) + file_rows
+        rep["tokens"] = tok
+        return _emit(rep, rows, as_json, f"pack {h}: neutral file ({sot.get('packaging_note')})")
     if not ph:
+        if file_rows and hard:
+            rep["why"] = file_rows[0][2]
+            return _emit(rep, file_rows, as_json, f"palette: FAIL ({rep['why']})" if hard else None)
         rep["result"] = "SKIP"
         rep["why"] = "no pack ref image" if not imgs else "neutral pack (house palette allowed)"
         print(json.dumps(rep, indent=1) if as_json else f"palette: SKIP ({rep['why']})")
@@ -433,19 +528,14 @@ def check(spec_path, as_json=False):
     body = open(os.path.join(out_dir, "body.html")).read()
     css = open(os.path.join(out_dir, "page.css")).read()
     tok, blk = effective_tokens(css, body)
-    rows = judge(tok, ph, blk)
+    rows = judge(tok, ph, blk) + file_rows
     rep["tokens"] = tok
-    rep["checks"] = [{"check": n, "ok": ok, "detail": d} for n, ok, d in rows]
-    bad = [r for r in rows if not r[1]]
-    rep["result"] = "PASS" if not bad else ("FAIL" if hard else "WARN")
-    if as_json:
-        print(json.dumps(rep, indent=1))
-    else:
-        print(f"pack {h}: hue {ph['hue']:.0f} ({ph['hex']}, chromatic {ph['chromatic_share']:.0%}) · colors " + " ".join(f"{c['hex']}:{c['share']:.0%}" for c in colors))
-        for n, ok, d in rows:
-            print(f"{'✓' if ok else '✗'} {n}  {d}")
-        print(f"palette gate: {rep['result']}")
-    return 1 if rep["result"] == "FAIL" else 0
+    share = ph.get("chromatic_share")
+    share_s = f"{share:.0%}" if isinstance(share, (int, float)) else "n/a"
+    source = "palette file" if ph.get("sot") else "pack photo"
+    headline = (f"pack {h}: hue {ph['hue']:.0f} ({ph['hex']}, {source}, chromatic {share_s}) · colors "
+                + " ".join(f"{c['hex']}:{c['share']:.0%}" for c in colors))
+    return _emit(rep, rows, as_json, headline)
 
 
 def main():

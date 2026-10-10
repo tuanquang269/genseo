@@ -131,6 +131,7 @@ Rules 1–19 were absorbed on 2026-10-08. **Rules 20–39, and the dated bullets
 - **2026-10-10** Shilajit Shockwave pack-label copy follows `product_refs/shilajit-shockwave.label.json` only (identity lines; no milligram, serving count, or volume token). Guard: `scripts/shockwave_rules.py`, `docs/SHOCKWAVE_LABEL_GUARD.md`.
 - **2026-10-10** Pure Shilajit Gold Resin pack-label copy follows `product_refs/pure-shilajit-gold-resin.label.json` only (`required` + `optional`: identity lines, `75% Fulvic`, and `1.06 oz (30g) - 75 servings`). No milligram token was read. Guard: `scripts/gold_resin_rules.py`, `docs/GOLD_RESIN_LABEL_GUARD.md`.
 - **2026-10-10** ShilaSource Himalayan Shilajit Resin pack-label copy follows `product_refs/shilasource-himalayan-shilajit-resin.label.json` only (`required` + `optional` from the 2026-10-08 OCR read: identity lines, `70% Fulvic Acid*`, `1.06oz (30g)`, and the split `75` / `SERVINGS` badge). No milligram token and no Supplement Facts panel were read. Guard: `scripts/shilasource_resin_rules.py`, `docs/SHILASOURCE_RESIN_LABEL_GUARD.md`.
+- **2026-10-10** Listicle and advertorial UI colors follow `product_refs/<handle>.palette.json` (Kevin 2026-10-09). FloraFresh is `#d17a85` dusty pink / rose. AgeAura Pure NMN + TMG is neutral white/grey; no chromatic hue was read off the bottle. Guard: `scripts/packaging_palette.py`, `docs/PACKAGING_PALETTE_GUARD.md`.
 
 ### 6.6 Crawlers, user agents, and robots.txt (2026-10-09)
 
