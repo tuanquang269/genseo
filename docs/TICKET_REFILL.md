@@ -12,10 +12,14 @@ python3 scripts/refill_tickets.py --self-test             # offline checks + top
 python3 scripts/refill_tickets.py --count 8 --dry-run     # live store read; prints the batch + every rejection
 python3 scripts/refill_tickets.py --count 8 --prefix MM   # append a "# BATCH" and update board/ideas.csv
 python3 scripts/refill_tickets.py --if-below 5 --count 8  # do nothing while 5 or more tickets are open
+python3 scripts/refill_tickets.py --count 8 --prefix MB --day 2026-10-12  # ids for a future day
 ```
 
 - `--prefix` sets the ticket ids (`#MM1009-1`, …; numbering continues after the highest used that day): `MM` Mac
   Mini, `MB` MacBook, `CA` Cursor Cloud. Default `$GENSEO_TICKET_PREFIX`, else `RF`.
+- `--day YYYY-MM-DD` sets the batch title date and the ids (default: today ICT). The build stamp, the
+  in-stock date, and the dedup date stay the real clock, so a Monday MacBook queue can be prepared the
+  evening before as `#MBmmdd-N`.
 - `--max-per-family 2` spreads the batch across products before filling. `--offline` reuses the last store
   snapshot (`state/refill_cache.json`, gitignored) and skips STEP 0; `--no-suggest` skips STEP 0 only.
 - Exit `0` done (or nothing to do) · `3` fewer than `--count` passed — whatever passed was appended; add topics ·
