@@ -37,7 +37,17 @@ one-way; the Mini's repo commits are unpushed), so the PUBLIC SITE is the lock:
 3. The runner prompt re-checks the count + STEP 0 `suggest.json` immediately before
    `shopify_publisher.py` (catches a topic the other Mac shipped while this run was writing).
 4. Standby waits 20 min at each slot so a healthy Mini goes first.
-5. A local mkdir lock (`state/daily.lock`) stops the 14:47 catch-up overlapping a running batch.
+5. A local mkdir lock (`state/daily.lock`, wrapper PID in `daily.lock/pid`) stops the 14:47
+   catch-up overlapping a running batch. A live `grokbot-genseo-daily` is never evicted for
+   age, even with no PID file (a batch started before PID stamping). A dead PID is stale and
+   may be taken immediately. A missing PID is stale only after 6 hours, so a lock that has not
+   finished writing its PID is left alone. Each ticket runs in its own session for 90 minutes
+   (`scripts/genseo_group_timeout.sh`); on timeout the process group is killed (ticket bash and
+   Claude). `perl alarm; exec` is not used there — that signal hits only bash and leaves Claude
+   publishing into the next ticket. launchd runs `~/bin/grokbot-genseo-daily.sh`, a copy of
+   `deploy/grokbot-genseo-daily.sh`. After pull, copy it to `~/bin/` (`docs/TICKET_REFILL.md`)
+   so the next slot picks this up. Helpers load from `~/genseo/scripts/`. Offline:
+   `bash tests/test_daily_lock.sh`.
 
 **MacBook lane = all images NO-FACE** until `personas/index.json` is re-synced from the Mini
 (angles spent there since 2026-08-15 are unknown here — re-spending one breaks Kevin's

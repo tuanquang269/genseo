@@ -36,8 +36,11 @@ say(){ echo "[$(ts)] [$HOST/$ROLE] $*" | tee -a "$LOG"; }
 # sleep until the wall clock reaches epoch $1 in <= POLL s steps, ending early once the optional condition command
 # (args 2..) fails; a deadline instead of a count of sleeps, so a Mac that dozes off mid-wait cannot stretch the wait
 wait_until(){ local end=$1 now; shift; while now=$(date +%s); [ "$now" -lt "$end" ] && { [ $# = 0 ] || "$@"; }; do sleep $(( end - now < POLL ? end - now : POLL )); done; }
-# lock younger than grokbot-genseo-daily.sh's own 6 h takeover age; one that vanishes mid-check counts as released
-# (an empty stat inside $(( )) would abort this whole script)
+# Courtesy yield only. A daily.lock directory younger than 6h counts as "the article batch may be
+# running"; one that vanishes mid-check counts as released (an empty stat inside $(( )) would abort
+# this script). The article wrapper does not steal its lock for age while a live grokbot-genseo-daily
+# matches — this yield does not read that PID. Past 6h it builds alongside, which is safe (a page,
+# never a blog article).
 articles_running(){ local m; m="$(stat -f %m "$ART_LOCK" 2>/dev/null)" && [ $(( $(date +%s) - m )) -lt 21600 ]; }
 
 [ "${GENSEO_LANDING_DAILY_ENABLED:-1}" = "1" ] && [ ! -e "$G/state/landing-daily.disabled" ] || { say "disabled (kill switch) — exit"; exit 0; }
