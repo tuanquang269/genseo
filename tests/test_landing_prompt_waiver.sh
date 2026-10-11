@@ -67,14 +67,36 @@ need = [
     "product=pure-shilajit-gold-resin",
     "empty SPEC, the 2026-10-11 gold-resin no-spec failure",
     "Never --live",
+    "DRAFT ALREADY APPROVED.",
+    "Do not show a file-count menu.",
+    "more than 2 output files",
+    'Do not ask "Proceed with the full unpublished draft package?"',
+    "FILE-COUNT MENU is not a looser rule",
+    "ima2 OAuth lane at $0",
+    "Do not stop for a cost table.",
 ]
 missing = [s for s in need if s not in text]
 if missing:
     sys.exit("missing: " + " | ".join(missing))
+if text.index("DRAFT ALREADY APPROVED.") > text.index("Build ONE GenSeo landing page."):
+    sys.exit("draft lead is below the build sentence")
 if text.index(preserve) < text.index(override):
     sys.exit("preservation bullet is above the override sentence")
 if text.index(waiver) < text.index(override):
     sys.exit("SCOPE_WAIVER block is above the override sentence")
+menu = "FILE-COUNT MENU is not a looser rule"
+if text.index(menu) < text.index(override):
+    sys.exit("file-count bullet is above the override sentence")
+ask = 'Do not ask "Proceed with the full unpublished draft package?"'
+bare = "Proceed with the full unpublished draft package?"
+start = 0
+while True:
+    i = text.find(bare, start)
+    if i < 0:
+        break
+    if not text[max(0, i - len('Do not ask "')):i].endswith('Do not ask "'):
+        sys.exit("unprohibited package question")
+    start = i + len(bare)
 banned = [
     "ask the human to proceed before",
     "wait for a human",
@@ -102,7 +124,11 @@ else
 fi
 if grep -q 'SCOPE_WAIVER (Kevin, standing approval for unpublished draft listicles):' "$OUT" \
   && grep -q 'Do not ask a human to proceed.' "$OUT" \
-  && ! grep -q 'DAILY LISTICLE LANE' "$OUT"; then
+  && grep -q 'DRAFT ALREADY APPROVED.' "$OUT" \
+  && grep -q 'Do not show a file-count menu.' "$OUT" \
+  && grep -q 'Proceed with the full unpublished draft package?' "$OUT" \
+  && ! grep -q 'DAILY LISTICLE LANE' "$OUT" \
+  && ! grep -q 'FILE-COUNT MENU' "$OUT"; then
   ok "preview waiver without daily override"
 else
   bad "preview waiver shape"
@@ -118,6 +144,7 @@ else
 fi
 if grep -q 'SCOPE_WAIVER (Kevin, standing approval for unpublished draft listicles):' "$OUT" \
   && grep -q 'NOT overridden by the sentence above' "$OUT" \
+  && grep -q 'FILE-COUNT MENU is not a looser rule' "$OUT" \
   && grep -q 'Never --live' "$OUT"; then
   ok "daily waiver held with leaked LIVE_OK"
 else
@@ -134,7 +161,10 @@ else
 fi
 if grep -q 'SCOPE_WAIVER (Kevin, standing approval for unpublished draft listicles):' "$OUT" \
   || grep -q 'Do not ask a human to proceed.' "$OUT" \
-  || grep -q 'DRAFT STANDING APPROVAL' "$OUT"; then
+  || grep -q 'DRAFT STANDING APPROVAL' "$OUT" \
+  || grep -q 'DRAFT ALREADY APPROVED.' "$OUT" \
+  || grep -q 'more than 2 output files' "$OUT" \
+  || grep -q 'Proceed with the full unpublished draft package?' "$OUT"; then
   bad "live attempt still carries the draft waiver"
 else
   ok "live attempt has no draft waiver"
