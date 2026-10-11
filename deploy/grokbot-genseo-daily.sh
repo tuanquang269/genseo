@@ -14,7 +14,16 @@
 #   4. ticket ids per Mac never collide (MacBook batch uses #MBmmdd-N) and STEP 0 kills same-topic repeats
 #   5. GENSEO_HOST_ROLE=standby (MacBook) waits GENSEO_STANDBY_DELAY_MIN first, so if the Mini is healthy its
 #      07:30 batch has a head start and rule 2 makes this Mac stand down.
-#   6. local mkdir lock: the 14:47 catch-up never overlaps a still-running 07:30 batch on the same Mac.
+#   6. local mkdir lock (state/daily.lock + pid): catch-up exits while that PID is a live
+#      grokbot-genseo-daily, however old the lock is. A dead PID is stale. A missing PID is
+#      stale only after 6h (GENSEO_LOCK_STALE_SEC), so a lock still being stamped is not stolen.
+#      A live wrapper with no PID file (the pre-PID lock) is not stolen for age either.
+#   7. each ticket is its own session, 90 min (GENSEO_TICKET_TIMEOUT_SEC). Timeout kills the
+#      process group (ticket bash + Claude). perl `alarm; exec` only signaled bash and left Claude
+#      publishing into the next ticket.
+# launchd runs ~/bin/grokbot-genseo-daily.sh, a copy of this file. After git pull, copy it to ~/bin/
+# (docs/TICKET_REFILL.md) so the next slot uses this; helpers load from ~/genseo/scripts/.
+# Offline: bash tests/test_daily_lock.sh
 set -uo pipefail
 export PATH="$HOME/.local/bin:$HOME/.npm-global/bin:$HOME/.codex/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 G="$HOME/genseo"; PY=/usr/bin/python3
@@ -23,6 +32,10 @@ ROLE="${GENSEO_HOST_ROLE:-primary}"
 DELAY="${GENSEO_STANDBY_DELAY_MIN:-20}"
 PEER_WIN="${GENSEO_PEER_WINDOW_MIN:-50}"
 MAX_RUNS="${GENSEO_MAX_RUNS:-9}"
+TICKET_TIMEOUT="${GENSEO_TICKET_TIMEOUT_SEC:-5400}"
+case "$TICKET_TIMEOUT" in
+  ''|*[!0-9]*|0) TICKET_TIMEOUT=5400 ;;
+esac
 REFILL="${GENSEO_AUTO_REFILL:-0}"
 REFILL_BUFFER="${GENSEO_REFILL_BUFFER:-3}"
 REFILL_PREFIX="${GENSEO_TICKET_PREFIX:-$([ "$ROLE" = standby ] && echo MB || echo MM)}"
@@ -35,11 +48,20 @@ ts(){ date '+%F %T'; }
 say(){ echo "[$(ts)] [$HOST/$ROLE] $*" | tee -a "$LOG"; }
 export GENSEO_DAILY_TARGET="$TARGET"
 
-if ! mkdir "$LOCK" 2>/dev/null; then
-  if [ $(( $(date +%s) - $(stat -f %m "$LOCK") )) -gt 21600 ]; then rmdir "$LOCK"; mkdir "$LOCK" || exit 1
-  else say "another batch is running on this Mac (lock $LOCK) — exit"; exit 0; fi
+if [ ! -f "$G/scripts/genseo_daily_lock.sh" ] || [ ! -f "$G/scripts/genseo_group_timeout.sh" ]; then
+  say "FATAL: missing scripts/genseo_daily_lock.sh or scripts/genseo_group_timeout.sh — git pull ~/genseo, then cp this wrapper to ~/bin/"
+  exit 1
 fi
-trap 'rmdir "$LOCK" 2>/dev/null' EXIT
+# shellcheck source=../scripts/genseo_daily_lock.sh
+. "$G/scripts/genseo_daily_lock.sh" || { say "FATAL: could not load daily lock helper"; exit 1; }
+genseo_daily_lock_acquire
+lock_rc=$?
+case "$lock_rc" in
+  0) ;;
+  10) exit 0 ;;
+  *) exit "$lock_rc" ;;
+esac
+trap 'genseo_daily_lock_release' EXIT
 
 live_urls(){ $PY "$G/scripts/genseo_published_today.py" --json 2>/dev/null | $PY -c 'import json,sys
 d=json.load(sys.stdin); [print(e["url"]) for e in d.get("entries",[])]' 2>/dev/null; }
@@ -86,7 +108,7 @@ for i in $(seq 1 $(( MAX_RUNS + ${GENSEO_PEER_MAX_WAITS:-6} ))); do
   fi
   before="$(live_urls | sort)"
   say "run $i: live $n/$TARGET, $open open ticket(s) → run_ticket_headless.sh"
-  perl -e 'alarm 5400; exec @ARGV' /bin/bash "$G/scripts/run_ticket_headless.sh"; rrc=$?
+  /bin/bash "$G/scripts/genseo_group_timeout.sh" "$TICKET_TIMEOUT" /bin/bash "$G/scripts/run_ticket_headless.sh"; rrc=$?
   after="$(live_urls | sort)"
   new="$(comm -13 <(echo "$before") <(echo "$after") | sed '/^$/d')"
   if [ -n "$new" ]; then
