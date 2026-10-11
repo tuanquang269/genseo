@@ -39,7 +39,9 @@ fi
 # ai.patigroup.com. Key from the env or the vault .env. Never printed. The hosted lane uses
 # lean ~/.claude-genseo (no settings.json): the MacBook's global ~/.claude filled 450k
 # tokens before the first ticket read (2026-10-06 09:57). The invocation below follows
-# GENSEO_MODEL_LANE, not the raw login flag.
+# GENSEO_MODEL_LANE, not the raw login flag. Router lanes pass --permission-mode dontAsk:
+# Claude Code 2.1.295+ defaults -p to auto, and auto mode uses the PATI model id as the
+# Bash safety service (articles 2026-10-11 08:19). dontAsk keeps ALLOWED_TOOLS as the gate.
 # shellcheck source=genseo_model_lane.sh
 . "$HOME/genseo/scripts/genseo_model_lane.sh"
 if ! genseo_select_model_lane; then
@@ -141,10 +143,14 @@ else
   # 9router's real per-request limit is smaller than the 200k the CLI assumes for the
   # unrecognized model name — three runs died on "input exceeds the context window"
   # (2026-08-09). Cap the window well below it so autocompact fires early enough.
+  # dontAsk: auto mode would name the PATI writer as the Bash safety service and
+  # block every script before a write. The lane sets this; the default covers a miss.
   export CLAUDE_CODE_MAX_CONTEXT_TOKENS=150000
+  : "${GENSEO_PERMISSION_MODE:=dontAsk}"
   "$CLAUDE_BIN" -p "$PROMPT" \
     --model "$GENSEO_WRITER_MODEL" \
     --fallback-model "$GENSEO_WRITER_FALLBACK" \
+    --permission-mode "$GENSEO_PERMISSION_MODE" \
     --strict-mcp-config \
     --output-format text \
     --allowed-tools "$ALLOWED_TOOLS" \
