@@ -54,6 +54,7 @@ Queue: `landing-tickets.md` (manual) / `daily-landing-tickets.md` (daily lane, o
 only after the bridge, zero fabricated trust) · **advertorial** (advertorial default — the reference's scaffolding:
 hero CTA, sticky for the whole page, review cards; still no fabricated facts) · **editorial** (no announcement, no
 testimonials, no sticky). Surface the choice to Kevin; never silently downgrade his pick.
+Unpublished headless runs do not ask. A local preview, `GENSEO_LANDING_DRAFT=1`, and the daily lane are standing-approved: do not ask a human to proceed, and write the spec. The prompt `SCOPE_WAIVER` is that approval. The daily lane repeats it in a DRAFT STANDING APPROVAL bullet so the "override anything looser above" line cannot drop it.
 
 ## Hard rules
 1. **No invented facts.** Every number, study, dose, price, rating, review count, testimonial and expert quote
@@ -145,6 +146,7 @@ testimonials, no sticky). Surface the choice to Kevin; never silently downgrade 
 - Agent: `run_landing_headless.sh --queue daily-landing-tickets.md --next` with the DAILY rules (ref listicle,
   `gsl-ref-listicle-v1`, slug `<short>-listicle-<yymmdd>`, handle `gsl-preview-<slug>`, Dr. Marcus Hale, fresh
   no-face `--square --qc` images uploaded by the publisher with the CLI app token).
+- Unpublished drafts are standing-approved. Do not ask Kevin to proceed and do not exit before `landing_drafts/<slug>.json` exists. On 2026-10-11 the gold-resin run asked on a scope gate, wrote no spec, and the wrapper tagged the ticket FAILED (no spec). The product file was present. `SCOPE_WAIVER` plus the DAILY LISTICLE LANE bullet that preserves it are the fix.
 - Wrapper post-checks on its own: validate_landing.py, landing_qa.mjs (desktop.png 1440 + mobile.png 375, overflow),
   page must be unpublished (force-hidden + logged if not), ticket re-tagged `[DRAFT <day> page <id>]` /
   `[DRAFT-QA-FAIL …]` / `[FAILED …]`, outputs committed. Logs: `logs/landing-daily/<day>.log`.
