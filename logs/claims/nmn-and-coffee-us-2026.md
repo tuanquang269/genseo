@@ -1,0 +1,9 @@
+No human trial has tested NMN with coffee or caffeine together | https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=%22nicotinamide%20mononucleotide%22%20AND%20(caffeine%20OR%20coffee)%20AND%20(trial%20OR%20randomized) | fetched+confirmed Y
+NMN + exercise trial used split doses at breakfast and lunch/afternoon, before training; it did not test coffee interaction | https://pmc.ncbi.nlm.nih.gov/articles/PMC8265078/ | fetched+confirmed Y
+NMN + exercise trial: 48 recreational runners, 6 weeks, 300/600/1200 mg/day, randomized double-blind placebo-controlled | https://pmc.ncbi.nlm.nih.gov/articles/PMC8265078/ | fetched+confirmed Y
+FDA says most healthy adults can consume 400 mg caffeine/day; sensitivity varies | https://www.fda.gov/consumers/consumer-updates/spilling-beans-how-much-caffeine-too-much | fetched+confirmed Y
+FDA says pregnancy/trying to conceive/breastfeeding caffeine limits should be discussed with a health professional | https://www.fda.gov/consumers/consumer-updates/spilling-beans-how-much-caffeine-too-much | fetched+confirmed Y
+Caffeine excess can cause insomnia, anxiety, nausea, headache, and fast heartbeat | https://www.fda.gov/consumers/consumer-updates/spilling-beans-how-much-caffeine-too-much | fetched+confirmed Y
+No evidence that coffee cancels NMN | https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=%22nicotinamide%20mononucleotide%22%20AND%20(caffeine%20OR%20coffee)%20AND%20(trial%20OR%20randomized) | fetched+confirmed Y
+AgeAura label facts: 2 capsules daily; 60 capsules; 30 servings; NMN + TMG; 100 mg trans-resveratrol; 150 mg quercetin; 50 mg apigenin; 1 mg spermidine; 400 mcg DFE L-5-MTHF; contains wheat | https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex | fetched+confirmed Y
+AgeAura live price: $69.95 | https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex | fetched+confirmed Y
