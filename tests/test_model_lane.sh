@@ -49,6 +49,7 @@ reset_env() {
   unset NINE_ROUTER_KEY ANTHROPIC_AUTH_TOKEN ANTHROPIC_BASE_URL CLAUDE_CONFIG_DIR USE_NATIVE
   unset GENSEO_LANE_LOCAL_UP GENSEO_LANE_MODELS_JSON GENSEO_WRITER_MODEL GENSEO_WRITER_FALLBACK
   unset GENSEO_ROUTER_BASE GENSEO_MODEL_LANE GENSEO_MODEL_LANE_ERROR GENSEO_LOCAL_ROUTER GENSEO_CFG
+  unset GENSEO_PERMISSION_MODE
   export HOME="$SANDBOX"
   export GENSEO_CFG="$SANDBOX/claude-cfg"
   rm -rf "$SANDBOX/PATI" "$SANDBOX/claude-cfg" "$SANDBOX/out" "$SANDBOX/err"
@@ -78,6 +79,7 @@ rc=$?
 [ "$rc" = 0 ] && ok "exit 0" || bad "exit $rc"
 [ "${GENSEO_MODEL_LANE:-}" = "native" ] && ok "lane native" || bad "lane ${GENSEO_MODEL_LANE:-empty}"
 [ "${USE_NATIVE:-}" = "1" ] && ok "login flag kept" || bad "USE_NATIVE was ${USE_NATIVE:-empty}"
+[ -z "${GENSEO_PERMISSION_MODE:-}" ] && ok "native leaves permission mode to the CLI" || bad "permission ${GENSEO_PERMISSION_MODE:-empty}"
 [ -z "${ANTHROPIC_AUTH_TOKEN:-}" ] && ok "native does not export router token" || bad "native exported a token"
 [ ! -s "$SANDBOX/out" ] && ok "stdout empty" || bad "stdout not empty"
 no_secret "$SANDBOX/out" "$FAKE_KEY" "native stdout has no key"
@@ -93,11 +95,12 @@ select_lane
 rc=$?
 [ "$rc" = 0 ] && ok "exit 0" || bad "exit $rc"
 [ "${GENSEO_MODEL_LANE:-}" = "local-9router" ] && ok "lane local-9router" || bad "lane ${GENSEO_MODEL_LANE:-empty}"
+[ "${GENSEO_PERMISSION_MODE:-}" = "dontAsk" ] && ok "local permission dontAsk" || bad "permission ${GENSEO_PERMISSION_MODE:-empty}"
 [ -z "${ANTHROPIC_AUTH_TOKEN:-}" ] && ok "local does not export token" || bad "local exported a token"
 [ -z "${ANTHROPIC_BASE_URL:-}" ] && ok "local does not export base url" || bad "local exported base url"
 log="$(genseo_lane_log_line)"
 case "$log" in
-  *'(lane: local-9router on '*' writer=PATI-Alpha-Plan-Review fallback=PATI-Fable-5)'*) ok "log line" ;;
+  *'(lane: local-9router on '*' writer=PATI-Alpha-Plan-Review fallback=PATI-Fable-5 permission=dontAsk)'*) ok "log line" ;;
   *) bad "log line [$log]" ;;
 esac
 no_secret "$SANDBOX/out" "$FAKE_KEY" "local stdout has no key"
@@ -112,6 +115,7 @@ select_lane
 rc=$?
 [ "$rc" = 0 ] && ok "exit 0" || bad "exit $rc"
 [ "${GENSEO_MODEL_LANE:-}" = "hosted-9router" ] && ok "lane hosted-9router" || bad "lane ${GENSEO_MODEL_LANE:-empty}"
+[ "${GENSEO_PERMISSION_MODE:-}" = "dontAsk" ] && ok "hosted permission dontAsk" || bad "permission ${GENSEO_PERMISSION_MODE:-empty}"
 [ "${ANTHROPIC_BASE_URL:-}" = "https://ai.patigroup.com" ] && ok "default hosted base" || bad "base ${ANTHROPIC_BASE_URL:-empty}"
 [ "${ANTHROPIC_AUTH_TOKEN:-}" = "$FAKE_KEY" ] && ok "token loaded" || bad "token mismatch"
 [ "${CLAUDE_CONFIG_DIR:-}" = "$SANDBOX/claude-cfg" ] && ok "lean config dir" || bad "config dir"
@@ -192,6 +196,7 @@ select_lane
 rc=$?
 [ "$rc" = 1 ] && ok "exit 1" || bad "exit $rc"
 [ -z "${GENSEO_MODEL_LANE:-}" ] && ok "lane empty" || bad "lane ${GENSEO_MODEL_LANE:-empty}"
+[ -z "${GENSEO_PERMISSION_MODE:-}" ] && ok "failure does not pin dontAsk" || bad "permission ${GENSEO_PERMISSION_MODE:-empty}"
 case "${GENSEO_MODEL_LANE_ERROR:-}" in
   *'missing PATI-Alpha-Plan-Review'*'NINE_ROUTER_KEY'*) ok "error names the missing model" ;;
   *) bad "error [${GENSEO_MODEL_LANE_ERROR:-empty}]" ;;
@@ -239,6 +244,23 @@ grep -q 'hosted-9router' "$ROOT/DAILY-RUN.md" && ok "DAILY-RUN names hosted-9rou
 grep -q 'no PATI writer alias' "$ROOT/DAILY-RUN.md" && ok "DAILY-RUN notes missing PATI alias" || bad "DAILY-RUN alias note"
 grep -F -q 'never uses the native Claude login lane' "$ROOT/DAILY-RUN.md" && ok "DAILY-RUN skips native for PATI" || bad "DAILY-RUN native-skip note"
 grep -F -q 'unrecognized_model' "$ROOT/DAILY-RUN.md" && ok "DAILY-RUN names unrecognized_model" || bad "DAILY-RUN unrecognized_model note"
+grep -F -q -- '--permission-mode "$GENSEO_PERMISSION_MODE"' "$ROOT/scripts/run_ticket_headless.sh" \
+  && ok "ticket runner passes permission mode" || bad "ticket runner missing permission mode"
+grep -F -q 'GENSEO_PERMISSION_MODE:=dontAsk' "$ROOT/scripts/run_ticket_headless.sh" \
+  && ok "ticket runner defaults dontAsk" || bad "ticket runner missing dontAsk default"
+if awk '/GENSEO_MODEL_LANE:-}" = "native"/,/^else$/' "$ROOT/scripts/run_ticket_headless.sh" | grep -q 'permission-mode'; then
+  bad "ticket native branch passes permission-mode"
+else
+  ok "ticket native branch leaves the CLI permission mode"
+fi
+grep -F -q -- '--permission-mode "$GENSEO_PERMISSION_MODE"' "$ROOT/scripts/run_landing_headless.sh" \
+  && ok "landing runner passes permission mode" || bad "landing runner missing permission mode"
+grep -F -q 'GENSEO_PERMISSION_MODE:=dontAsk' "$ROOT/scripts/run_landing_headless.sh" \
+  && ok "landing runner defaults dontAsk" || bad "landing runner missing dontAsk default"
+grep -F -q 'permission-mode dontAsk' "$ROOT/DAILY-RUN.md" && ok "DAILY-RUN names dontAsk" || bad "DAILY-RUN dontAsk note"
+grep -F -q 'Bash safety service' "$ROOT/DAILY-RUN.md" && ok "DAILY-RUN names the Bash safety block" || bad "DAILY-RUN Bash safety note"
+grep -F -q 'GENSEO_PERMISSION_MODE="dontAsk"' "$ROOT/scripts/genseo_model_lane.sh" \
+  && ok "helper sets dontAsk" || bad "helper missing dontAsk"
 ticket='- [ ] listicle | wellnessnest | product=pure-shilajit-gold-resin · angle: Resin vs capsules vs gummies: N things to compare before you pick a shilajit format · audience: adults comparing shilajit formats (added 2026-10-09)'
 grep -qxF -- "$ticket" "$ROOT/daily-landing-tickets.md" && ok "gold-resin ticket reopened" || bad "gold-resin ticket line"
 if grep -q 'FAILED 2026-10-10' "$ROOT/daily-landing-tickets.md"; then bad "FAILED tag still on the queue"; else ok "FAILED tag cleared"; fi
@@ -253,6 +275,7 @@ select_lane
 rc=$?
 [ "$rc" = 0 ] && ok "exit 0" || bad "exit $rc"
 [ "${GENSEO_MODEL_LANE:-}" = "local-9router" ] && ok "lane local-9router" || bad "lane ${GENSEO_MODEL_LANE:-empty}"
+[ "${GENSEO_PERMISSION_MODE:-}" = "dontAsk" ] && ok "PATI local permission dontAsk" || bad "permission ${GENSEO_PERMISSION_MODE:-empty}"
 [ "${USE_NATIVE:-}" = "0" ] && ok "native flag cleared" || bad "USE_NATIVE=${USE_NATIVE:-empty}"
 [ "${GENSEO_WRITER_MODEL:-}" = "PATI-Alpha-Plan-Review" ] && ok "default writer" || bad "writer ${GENSEO_WRITER_MODEL:-empty}"
 [ "${GENSEO_WRITER_FALLBACK:-}" = "PATI-Fable-5" ] && ok "default fallback" || bad "fallback ${GENSEO_WRITER_FALLBACK:-empty}"
@@ -272,6 +295,7 @@ select_lane
 rc=$?
 [ "$rc" = 0 ] && ok "exit 0" || bad "exit $rc"
 [ "${GENSEO_MODEL_LANE:-}" = "hosted-9router" ] && ok "lane hosted-9router" || bad "lane ${GENSEO_MODEL_LANE:-empty}"
+[ "${GENSEO_PERMISSION_MODE:-}" = "dontAsk" ] && ok "PATI hosted permission dontAsk" || bad "permission ${GENSEO_PERMISSION_MODE:-empty}"
 [ "${USE_NATIVE:-}" = "0" ] && ok "native flag cleared" || bad "USE_NATIVE=${USE_NATIVE:-empty}"
 [ "${ANTHROPIC_BASE_URL:-}" = "https://ai.patigroup.com" ] && ok "default hosted base" || bad "base ${ANTHROPIC_BASE_URL:-empty}"
 [ "${ANTHROPIC_AUTH_TOKEN:-}" = "$FAKE_KEY" ] && ok "token loaded" || bad "token mismatch"
@@ -349,9 +373,45 @@ rc=$?
 [ "$rc" = 0 ] && ok "exit 0" || bad "exit $rc"
 [ "${GENSEO_MODEL_LANE:-}" = "native" ] && ok "lane native" || bad "lane ${GENSEO_MODEL_LANE:-empty}"
 [ "${USE_NATIVE:-}" = "1" ] && ok "login flag kept" || bad "USE_NATIVE=${USE_NATIVE:-empty}"
+[ -z "${GENSEO_PERMISSION_MODE:-}" ] && ok "substring native leaves permission mode" || bad "permission ${GENSEO_PERMISSION_MODE:-empty}"
 [ -z "${ANTHROPIC_AUTH_TOKEN:-}" ] && ok "native does not export router token" || bad "native exported a token"
 no_secret "$SANDBOX/out" "$FAKE_KEY" "substring stdout has no key"
 no_secret "$SANDBOX/err" "$FAKE_KEY" "substring stderr has no key"
+
+echo "17. a stale auto permission mode cannot survive lane selection"
+reset_env
+USE_NATIVE=0
+GENSEO_LANE_LOCAL_UP=0
+GENSEO_PERMISSION_MODE="auto"
+NINE_ROUTER_KEY="$FAKE_KEY"
+select_lane
+rc=$?
+[ "$rc" = 0 ] && ok "exit 0" || bad "exit $rc"
+[ "${GENSEO_MODEL_LANE:-}" = "hosted-9router" ] && ok "lane hosted-9router" || bad "lane ${GENSEO_MODEL_LANE:-empty}"
+[ "${GENSEO_PERMISSION_MODE:-}" = "dontAsk" ] && ok "stale auto overwritten" || bad "permission ${GENSEO_PERMISSION_MODE:-empty}"
+log="$(genseo_lane_log_line)"
+case "$log" in
+  *'permission=dontAsk'*) ok "log shows dontAsk" ;;
+  *) bad "log line [$log]" ;;
+esac
+no_secret "$SANDBOX/out" "$FAKE_KEY" "stale-auto stdout has no key"
+no_secret "$SANDBOX/err" "$FAKE_KEY" "stale-auto stderr has no key"
+reset_env
+USE_NATIVE=1
+GENSEO_WRITER_MODEL="claude-sonnet-4-6"
+GENSEO_WRITER_FALLBACK="claude-haiku-4-5"
+GENSEO_PERMISSION_MODE="dontAsk"
+NINE_ROUTER_KEY="$FAKE_KEY"
+select_lane
+[ "${GENSEO_MODEL_LANE:-}" = "native" ] && ok "lane native" || bad "lane ${GENSEO_MODEL_LANE:-empty}"
+[ -z "${GENSEO_PERMISSION_MODE:-}" ] && ok "native clears a stale dontAsk" || bad "permission ${GENSEO_PERMISSION_MODE:-empty}"
+log="$(genseo_lane_log_line)"
+case "$log" in
+  *'permission=cli-default'*) ok "native log says cli-default" ;;
+  *) bad "log line [$log]" ;;
+esac
+no_secret "$SANDBOX/out" "$FAKE_KEY" "stale-dontAsk stdout has no key"
+no_secret "$SANDBOX/err" "$FAKE_KEY" "stale-dontAsk stderr has no key"
 
 echo
 echo "$PASS passed, $FAIL failed"

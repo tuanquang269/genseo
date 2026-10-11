@@ -10,7 +10,9 @@
 # or fallback is a 9router alias: native Claude login is ignored (unrecognized_model,
 # landing 2026-10-10 09:30). Otherwise native login if logged in. Else local 9router only
 # when /v1/models lists the writer alias, else hosted ai.patigroup.com. A MacBook router
-# that is up with no PATI-* ids is not a writer lane.
+# that is up with no PATI-* ids is not a writer lane. Router lanes pass
+# --permission-mode dontAsk so auto mode does not use the PATI id as the Bash safety
+# service (articles 2026-10-11 08:19).
 export PATH="$HOME/.local/bin:$HOME/.npm-global/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
 for d in "$HOME"/.nvm/versions/node/*/bin; do [ -d "$d" ] && PATH="$d:$PATH"; done
 export PATH
@@ -73,7 +75,15 @@ Hard rules: no invented claims, numbers, ratings, reviews, testimonials or exper
 Finish with: SPEC: <path>  PREVIEW: <file:// path>  placeholders: <n>  claims: <n>."
 echo "=== landing run $STAMP $TEMPLATE $STORE ===" >> "$LOG"
 genseo_lane_log_line >> "$LOG"
-"$CLAUDE_BIN" -p "$PROMPT" --model "$GENSEO_WRITER_MODEL" --fallback-model "$GENSEO_WRITER_FALLBACK" --strict-mcp-config \
+# Router lanes only. Native keeps the CLI default. dontAsk is the fallback if the
+# lane left the mode empty on a non-native run.
+PERM_ARGS=()
+if [ "${GENSEO_MODEL_LANE:-}" != "native" ]; then
+  : "${GENSEO_PERMISSION_MODE:=dontAsk}"
+  PERM_ARGS=(--permission-mode "$GENSEO_PERMISSION_MODE")
+fi
+"$CLAUDE_BIN" -p "$PROMPT" --model "$GENSEO_WRITER_MODEL" --fallback-model "$GENSEO_WRITER_FALLBACK" \
+  "${PERM_ARGS[@]}" --strict-mcp-config \
   --output-format text --allowed-tools "Read,Write,Edit,Bash,Glob,Grep,WebFetch,WebSearch" >> "$LOG" 2>&1
 RC=$?
 echo "=== exit $RC ===" >> "$LOG"; tail -5 "$LOG"
