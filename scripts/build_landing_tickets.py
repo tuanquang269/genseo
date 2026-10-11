@@ -10,8 +10,8 @@ Queue: daily-landing-tickets.md, one line per ticket:
 Done lines are re-tagged by run_landing_daily.sh: - [DRAFT YYYY-MM-DD page <id>] / - [FAILED YYYY-MM-DD ...].
 
 Product pick: live https://wellnessnest.co/products.json, filtered to real single SKUs (product_type set, not
-shipping protection / reserve / multi-pack bundles), brand_rules.product_allowed (AgeAura = NMN + TMG Complex
-only, no Urolithin), a curated packaging ref in product_refs/<handle>.png and an entry in
+shipping protection / reserve / multi-pack bundles), ageaura_rules.require_target (AgeAura = NMN + TMG Complex
+only; ageaura-pure-urolithin-a and any other Urolithin A AgeAura handle fail closed), a curated packaging ref in product_refs/<handle>.png and an entry in
 templates/landing/listicle-angles.json. Rotation: least-recently-used product, never one used in the last
 GENSEO_LANDING_NO_REPEAT_DAYS days (default 6) — history = every dated line in the queue + landing_drafts/*.json.
 Angle: the least-used angle for that product. The new line must pass brand_rules + lint_tickets.py.
@@ -27,6 +27,7 @@ import datetime as dt, json, os, re, subprocess, sys, urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "scripts"))
+import ageaura_rules as ar  # noqa: E402
 import brand_rules as br  # noqa: E402
 import florafresh_rules as ff  # noqa: E402
 import gold_resin_rules as gr  # noqa: E402
@@ -94,6 +95,42 @@ def angle_counts(handle):
     return c
 
 
+def refused_angle_keys(angles):
+    """Angle-catalog keys that are denied AgeAura product handles."""
+    refused = []
+    for key in angles:
+        if str(key).startswith("_"):
+            continue
+        if ar.classify_handle(key) == "deny":
+            refused.append(key)
+    return refused
+
+
+def ticket_line(handle, store, angle, audience, added):
+    """One landing-queue line. A denied AgeAura handle raises brand_rules.GuardError."""
+    try:
+        handle = ar.require_target(handle)
+    except ar.AgeAuraProductError as exc:
+        raise br.GuardError(list(exc.reasons))
+    line = "- [ ] listicle | %s | product=%s · angle: %s · audience: %s" % (
+        store, handle, angle, audience)
+    if handle == ff.HANDLE:
+        line += " · " + ff.LANDING_NOTE
+    if handle == sw.HANDLE:
+        line += " · " + sw.LANDING_NOTE
+    if handle == gr.HANDLE:
+        line += " · " + gr.LANDING_NOTE
+    if handle == sr.HANDLE:
+        line += " · " + sr.LANDING_NOTE
+    if handle == tk.HANDLE:
+        line += " · " + tk.LANDING_NOTE
+    note = pp.landing_note(handle)
+    if note:
+        line += " · " + note
+    line += " (added %s)" % added
+    return line
+
+
 def pick(products, angles, used, window):
     t = today()
     cands, why = [], {}
@@ -105,8 +142,8 @@ def pick(products, angles, used, window):
             why[h] = "not on the live store"; continue
         if BUNDLE.search(h) or not p.get("product_type"):
             why[h] = "bundle / non-SKU"; continue
-        if not br.product_allowed(h):
-            why[h] = "brand_rules"; continue
+        if ar.classify_handle(h) == "deny":
+            why[h] = "ageaura product guard"; continue
         if not any(v.get("available") for v in p.get("variants", [])):
             why[h] = "sold out"; continue
         if not os.path.exists(os.path.join(ROOT, "product_refs", f"{h}.png")):
@@ -136,28 +173,14 @@ def main():
     window = int(os.environ.get("GENSEO_LANDING_NO_REPEAT_DAYS", "6"))
     raw_angles = json.load(open(ANGLES))
     angles = {}
+    for key in refused_angle_keys(raw_angles):
+        print(f"ageaura guard: dropped landing angle key {key}")
     for key, meta in raw_angles.items():
-        if key.startswith("_") or br.product_allowed(key):
+        if key.startswith("_") or ar.classify_handle(key) != "deny":
             angles[key] = meta
-        else:
-            print(f"ageaura guard: dropped landing angle key {key}")
     h, meta, angle, age, stale, why = pick(live_products(), angles, history(), window)
-    line = f"- [ ] listicle | {meta['store']} | product={h} · angle: {angle} · audience: {meta.get('audience', '')}"
-    if h == ff.HANDLE:
-        line += " · " + ff.LANDING_NOTE
-    if h == sw.HANDLE:
-        line += " · " + sw.LANDING_NOTE
-    if h == gr.HANDLE:
-        line += " · " + gr.LANDING_NOTE
-    if h == sr.HANDLE:
-        line += " · " + sr.LANDING_NOTE
-    if h == tk.HANDLE:
-        line += " · " + tk.LANDING_NOTE
-    note = pp.landing_note(h)
-    if note:
-        line += " · " + note
-    line += f" (added {today()})"
     try:
+        line = ticket_line(h, meta["store"], angle, meta.get("audience", ""), today())
         line = br.prepare_ticket(line)
     except br.GuardError as e:
         sys.exit(f"✗ brand_rules rejected the ticket: {e}")

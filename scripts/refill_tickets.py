@@ -11,7 +11,8 @@ Candidates: board/ideas.csv rows with status=idea first, then templates/article-
 (priority, then the family with the fewest live articles). Each must pass, in order, against the store
 read live at run time:
   1 complete brief: product, primary, secondary, intent, angle, title <= 60 chars, known segment + template
-  2 brand_rules (AgeAura = NMN + TMG Complex only, no Urolithin; FloraFresh formula = its Supplement Facts
+  2 brand_rules / ageaura_rules (AgeAura handle = NMN + TMG Complex only; ageaura-pure-urolithin-a and any
+    other Urolithin A AgeAura handle fail closed; FloraFresh formula = its Supplement Facts
     label, never the PDP description; Shilajit Shockwave doses = its pack-label whitelist, which has no
     milligram token; Pure Shilajit Gold Resin doses = its pack-label whitelist, which has the OCR
     serving line and 75% Fulvic and no milligram token; ShilaSource Himalayan Shilajit Resin doses =
@@ -46,6 +47,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "scripts"))
+import ageaura_rules as ar  # noqa: E402
 import brand_rules as br  # noqa: E402
 import florafresh_rules as ff  # noqa: E402
 import gold_resin_rules as gr  # noqa: E402
@@ -148,11 +150,19 @@ def banned(text, bank):
     return br.violations(text) + [f"banned term /{rx.pattern}/" for rx in bank["banned_rx"] if rx.search(text)]
 
 
+def guard_hero(handle):
+    """Normalized hero/inline handle. A denied AgeAura handle raises brand_rules.GuardError."""
+    try:
+        return ar.require_target(handle)
+    except ar.AgeAuraProductError as exc:
+        raise br.GuardError(list(exc.reasons))
+
+
 def lint_bank(bank, year="2026"):
     """Problems in the topic bank (run by --self-test on the real file)."""
     errs, seen = [], set()
     for h, p in bank["products"].items():
-        if not br.product_allowed(h):
+        if ar.classify_handle(h) == "deny":
             errs.append(f"products: {h} is banned by brand_rules")
         if p.get("family") not in bank["families"]:
             errs.append(f"products: {h} has unknown family {p.get('family')!r}")
@@ -185,7 +195,7 @@ def lint_bank(bank, year="2026"):
         for text in (t["primary"], title.lower()):
             if not any(re.search(r"\b%s\b" % re.escape(m), text) for m in tf.SEGMENT_MODIFIERS):
                 errs.append(f"{tid}: {text!r} has no topic_fitness SEGMENT_MODIFIER (strict gate FAILs [covered])")
-        bad = [h for h in t["link"] if not re.fullmatch(r"[a-z0-9]+(-[a-z0-9]+)*", h) or "urolithin" in h]
+        bad = [h for h in t["link"] if not re.fullmatch(r"[a-z0-9]+(-[a-z0-9]+)*", h) or not ar.article_link_allowed(h)]
         if bad:
             errs.append(f"{tid}: bad link handles {bad}")
         hits = banned(" ".join([t["primary"], title, t["intent"], t["angle"], t["evidence"]]
@@ -593,7 +603,12 @@ def check(c, ctx):
     unmapped = [h for h in pages if h not in bank["products"]]
     if unmapped:
         return f"not in the bank's products map: {', '.join(unmapped)}", None
-    bad = [h for h in pages if not br.product_allowed(h)]
+    bad = []
+    for h in pages:
+        try:
+            guard_hero(h)
+        except br.GuardError:
+            bad.append(h)
     if bad:
         return f"brand_rules: {', '.join(bad)} is not an allowed product", None
     hits = banned(" ".join([c["primary"], c["title"], c["intent"], c["angle"], c["evidence"]]
@@ -632,7 +647,7 @@ def check(c, ctx):
     why, note = step0(c, ctx)
     if why:
         return why, None
-    links = [h for h in c["link"] if h in ctx["live_handles"] and "urolithin" not in h]
+    links = [h for h in c["link"] if h in ctx["live_handles"] and ar.article_link_allowed(h)]
     info = {"verdict": max(fits, key=lambda r: RANK[r[0]]), "suggest": note, "colls": colls, "links": links,
             "dropped": [h for h in c["link"] if h not in links]}
     hits = banned(render(c, "XX0000-0", ctx, info), bank)
@@ -677,6 +692,9 @@ def order(batch, last_template):
 
 
 def render(c, tid, ctx, info):
+    guard_hero(c["product"])
+    for h in c.get("inline") or []:
+        guard_hero(h)
     bank, prods = ctx["bank"], ctx["products"]
     name = bank["products"][c["product"]]["name"]
 

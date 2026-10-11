@@ -18,6 +18,7 @@ Usage: refresh_targets.py [out.md] [--min-imp 150]
 """
 import datetime, os, re, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import ageaura_rules as ar
 import brand_rules as br
 from gsc_fetcher import get_service
 
@@ -58,7 +59,7 @@ def main():
     for page, p in pages.items():
         if p['imp'] < min_imp:
             continue
-        if br.assess(page).action == "deny":
+        if br.assess(page).action == "deny" or ar.classify_handle(page) == "deny":
             continue
         avgpos = p['wpos'] / p['imp']
         climb = [(q, i, c, ps) for q, i, c, ps in p['q']

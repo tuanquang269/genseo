@@ -11,6 +11,7 @@ Usage: python3 scripts/build_ctr_tickets.py <output.md>
 import json, os, sys, urllib.request, collections, datetime
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import ageaura_rules as ar
 import brand_rules as br
 from gsc_fetcher import get_service
 
@@ -104,6 +105,8 @@ def main():
                 skipped.append(f"{path} (FROZEN)"); continue
             rtype, rid, extra = 'article', aid, f"--blog {blog} "
         elif '/products/' in path:
+            if ar.guard_product_handle(handle) is None:
+                skipped.append(f"{path} (ageaura product guard)"); continue
             res = shopify(f"products.json?handle={handle}&fields=id,title").get('products', [])
             if not res: skipped.append(f"{path} (product not found)"); continue
             rtype, rid, title, extra = 'product', res[0]['id'], res[0]['title'], ''
@@ -118,7 +121,7 @@ def main():
             rtype, rid, title, extra = 'page', res[0]['id'], res[0]['title'], ''
         else:
             skipped.append(f"{path} (unknown type)"); continue
-        if br.assess(f"{url}\n{title}").action == "deny":
+        if br.assess(f"{url}\n{title}").action == "deny" or ar.classify_handle(url) == "deny":
             skipped.append(f"{path} (brand guard)"); continue
         top = [r for r in top if br.assess(r['keys'][1]).action != "deny"]
         if not top:

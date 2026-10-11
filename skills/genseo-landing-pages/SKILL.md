@@ -63,8 +63,9 @@ testimonials, no sticky). Surface the choice to Kevin; never silently downgrade 
 2. **Testimonials, star ratings, "X customers", expert quotes**: placeholders unless the spec block carries a
    `source` (review app export, signed expert review). Do not copy PDP social-proof numbers onto a page.
 3. **AgeAura = the NMN + TMG Complex only** (`/products/ageaura-pure-nmn-tmg-nad-complex`, Kevin 2026-10-06). No other
-   AgeAura handle, bundle (`-p2`) or collection link; never Urolithin A or peptides. `brand/ageaura.json`
-   (`allowed_products`, `forbidden_terms`) + `validate_landing.py` block them in any store's page.
+   AgeAura handle, bundle (`-p2`) or collection link; never Urolithin A or peptides. `scripts/ageaura_rules.py`
+   fails closed if a ticket or spec targets `ageaura-pure-urolithin-a` or any other Urolithin A AgeAura handle.
+   `brand/ageaura.json` (`allowed_products`, `forbidden_terms`) + `validate_landing.py` block them in any store's page.
    **FloraFresh = its Supplement Facts label** (Kevin 2026-10-09): Bacillus coagulans SNZ-1969, 1 billion CFU per
    2 gummies, Vitamin C 30 mg, pineapple fruit powder 100 mg (with bromelain), maltitol + isomalt (not sugar-free).
    The live PDP description (15 billion CFU, four Lactobacillus strains, XOS, D-mannose, sugar-free) is wrong until

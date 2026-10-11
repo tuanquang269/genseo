@@ -3,6 +3,7 @@ import sys
 import json
 import datetime
 import urllib.request
+import ageaura_rules as ar
 import brand_rules as br
 from googleapiclient.discovery import build
 from google.oauth2.credentials import Credentials
@@ -109,7 +110,7 @@ def analyze_and_build(t1_rows, t2_rows, shopify_map):
         
         # Tier 1: The Bleeding Giants (Decay Analysis)
         # Dropped > 30% in impressions, DROPPED > 1.0 spots, and past impressions > 150
-        if br.assess(f"{url}\n{top_query}").action == "deny":
+        if br.assess(f"{url}\n{top_query}").action == "deny" or ar.classify_handle(url) == "deny":
             continue
         if q_data_t2['impressions'] > 150 and q_data_t1['impressions'] < (q_data_t2['impressions'] * 0.70):
             if q_data_t1['position'] > q_data_t2['position'] + 1.0:
@@ -144,7 +145,7 @@ def analyze_and_build(t1_rows, t2_rows, shopify_map):
     for kw, urls in tier4_cannibal.items():
         if br.assess(kw).action == "deny":
             continue
-        urls = [u for u in urls if br.assess(u['url']).action != "deny"]
+        urls = [u for u in urls if br.assess(u['url']).action != "deny" and ar.classify_handle(u['url']) != "deny"]
         if len(urls) > 1: # More than 1 URL fighting for same keyword
             urls.sort(key=lambda x: x['imp'], reverse=True)
             cannibals_out.append({

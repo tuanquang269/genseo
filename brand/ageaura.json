@@ -3,7 +3,7 @@
   "extends": "wellnessnest",
   "name": "AgeAura (a Wellness Nest product line)",
   "domain": "https://wellnessnest.co",
-  "notes": "AgeAura is a vendor label on the SAME wellnessnest.co storefront/theme, so it inherits every Wellness Nest token. Kevin 2026-10-06, re-audited 2026-10-09: AgeAura promotes ONLY the NMN + TMG Complex PDP https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex. No other AgeAura handle, bundle or collection link. Never mention, link or picture Urolithin A or peptides. Enforced by scripts/brand_rules.py (tickets, landings, image prompts, publisher, llms.txt draft, IndexNow). See docs/AGEAURA_PRODUCT_GUARD.md.",
+  "notes": "AgeAura is a vendor label on the SAME wellnessnest.co storefront/theme, so it inherits every Wellness Nest token. Kevin 2026-10-06, re-audited 2026-10-09: AgeAura promotes ONLY the NMN + TMG Complex PDP https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex. No other AgeAura handle, bundle or collection link. Never mention, link or picture Urolithin A or peptides. Handle allow/deny list: scripts/ageaura_rules.py. Enforced by scripts/brand_rules.py (tickets, landings, image prompts, publisher, llms.txt draft, IndexNow). See docs/AGEAURA_PRODUCT_GUARD.md.",
   "colors": {
     "ink": "#2e2a39",
     "bg_soft": "#f5f5f7",

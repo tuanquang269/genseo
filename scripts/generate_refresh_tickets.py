@@ -1,6 +1,7 @@
 import csv
 import sys
 from datetime import datetime
+import ageaura_rules as ar
 import brand_rules as br
 
 def generate_tickets(csv_path, output_path):
@@ -27,7 +28,8 @@ def generate_tickets(csv_path, output_path):
                 
                 if not link or not keyword or impressions < 5:
                     continue
-                if br.assess(link).action == "deny" or br.assess(keyword).action == "deny":
+                if (br.assess(link).action == "deny" or br.assess(keyword).action == "deny"
+                        or ar.classify_handle(link) == "deny"):
                     continue
                     
                 ctr = (clicks / impressions) * 100 if impressions > 0 else 0

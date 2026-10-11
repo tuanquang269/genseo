@@ -34,6 +34,8 @@ import os
 import re
 import sys
 
+import ageaura_rules
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 AUTO_FROM = "2026-10-09"
 HUE_TOL = 30.0
@@ -138,7 +140,7 @@ def gaps(refs_dir=None):
     """
     missing = []
     for handle in iter_product_handles(refs_dir):
-        if "urolithin" in handle:
+        if ageaura_rules.classify_handle(handle) == "deny":
             continue
         if load(handle, refs_dir) is None:
             missing.append(handle)
