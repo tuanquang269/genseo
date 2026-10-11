@@ -20,6 +20,8 @@
 #      only ever writes a Shopify PAGE, never a blog article (article publishing stays serialized by daily.lock and the
 #      article lane's own guards); pages never reach /blogs/news.atom (the article live-count + peer guards); and
 #      ima2 serve admits parallel jobs (it renders 3 at a time on its one OAuth session by itself).
+#   6. the listicle writer is its own session for 90 min (GENSEO_LANDING_TIMEOUT_SEC, default 5400).
+#      scripts/genseo_group_timeout.sh TERM then KILLs that process group (landing bash and Claude).
 # Kill switch: touch state/landing-daily.disabled (or GENSEO_LANDING_DAILY_ENABLED=0).
 set -uo pipefail
 export PATH="$HOME/.local/bin:$HOME/.npm-global/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
@@ -27,6 +29,10 @@ for d in "$HOME"/.nvm/versions/node/*/bin; do [ -d "$d" ] && PATH="$d:$PATH"; do
 G="$HOME/genseo"; PY=/usr/bin/python3; cd "$G" || exit 1
 ROLE="${GENSEO_HOST_ROLE:-primary}"; DELAY="${GENSEO_LANDING_STANDBY_DELAY_MIN:-75}"
 YIELD="${GENSEO_LANDING_ARTICLE_YIELD_MIN:-30}"; POLL="${GENSEO_LANDING_POLL_SEC:-60}"
+LANDING_TIMEOUT="${GENSEO_LANDING_TIMEOUT_SEC:-5400}"
+case "$LANDING_TIMEOUT" in
+  ''|*[!0-9]*|0) LANDING_TIMEOUT=5400 ;;
+esac
 HOST="$(hostname -s)"; DAY="$(TZ=Asia/Saigon date +%F)"
 LOGDIR="$G/logs/landing-daily"; mkdir -p "$LOGDIR" "$G/state"; LOG="$LOGDIR/$DAY.log"
 LOCK="$G/state/landing-daily.lock"; MINE="$G/state/landing-by-$HOST.log"; ART_LOCK="$G/state/daily.lock"
@@ -44,6 +50,10 @@ wait_until(){ local end=$1 now; shift; while now=$(date +%s); [ "$now" -lt "$end
 articles_running(){ local m; m="$(stat -f %m "$ART_LOCK" 2>/dev/null)" && [ $(( $(date +%s) - m )) -lt 21600 ]; }
 
 [ "${GENSEO_LANDING_DAILY_ENABLED:-1}" = "1" ] && [ ! -e "$G/state/landing-daily.disabled" ] || { say "disabled (kill switch) — exit"; exit 0; }
+if [ ! -f "$G/scripts/genseo_group_timeout.sh" ]; then
+  say "FATAL: missing scripts/genseo_group_timeout.sh — git pull ~/genseo"
+  exit 1
+fi
 if ! mkdir "$LOCK" 2>/dev/null; then
   if [ $(( $(date +%s) - $(stat -f %m "$LOCK") )) -gt 14400 ]; then rmdir "$LOCK"; mkdir "$LOCK" || exit 1
   else say "another landing run is active on this Mac — exit"; exit 0; fi
@@ -80,7 +90,8 @@ LINE="$(grep -m1 -E '^- \[ \] ' "$QUEUE")"
 say "ticket: $LINE"
 STAMP="$(date +%Y%m%d-%H%M)"; RUNLOG="logs/landing-daily-$STAMP.log"; START=$(date +%s)
 GENSEO_LANDING_DAILY=1 GENSEO_LANDING_DRAFT=1 GENSEO_NO_FACE=1 GENSEO_LANDING_LOG="$RUNLOG" \
-  perl -e 'alarm 5400; exec @ARGV' /bin/bash scripts/run_landing_headless.sh --queue "$QUEUE" --next >> "$LOG" 2>&1; RC=$?
+  /bin/bash "$G/scripts/genseo_group_timeout.sh" "$LANDING_TIMEOUT" \
+  /bin/bash scripts/run_landing_headless.sh --queue "$QUEUE" --next >> "$LOG" 2>&1; RC=$?
 say "agent exit $RC (log $RUNLOG)"
 
 # post-checks done HERE, independent of what the agent reported

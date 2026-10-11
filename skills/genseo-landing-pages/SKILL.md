@@ -135,6 +135,8 @@ Unpublished headless runs do not ask. A local preview, `GENSEO_LANDING_DRAFT=1`,
   ALONGSIDE it. A page is never a blog article, so article publishing stays serialized by the article lane's own lock +
   guards. (Until 2026-10-09 it waited up to 180 min via `GENSEO_LANDING_WAIT_ARTICLES_MIN`, which is no longer read; a
   long article batch then held the day's draft hostage.) Offline self-check: `bash tests/test_landing_daily_lock.sh`.
+- Writer cap: 90 minutes (`GENSEO_LANDING_TIMEOUT_SEC`, default 5400) in its own session via
+  `scripts/genseo_group_timeout.sh`. On timeout that process group is killed (landing bash and Claude).
 - Guard: `scripts/landing_guard.py` counts Shopify pages with a `gsl-` handle CREATED today (ICT). ≥1 → stand down;
   Shopify unreadable → fail closed. `landing_publisher.py` (env `GENSEO_LANDING_DAILY=1`) re-checks it right before
   POSTing a new page, refuses `--live`, and requires a `gsl-preview-` handle.

@@ -84,6 +84,10 @@ Default output is a local preview; `GENSEO_LANDING_DRAFT=1` adds an UNPUBLISHED 
 Daily lane (`scripts/run_landing_daily.sh`, launchd 08:15 + 16:15, 1 UNPUBLISHED listicle draft/day): it gives this
 Mac's article batch (`state/daily.lock`) at most a 30-min courtesy yield, then builds alongside it — it never waits out
 the whole batch, and it never touches the article publisher.
+The listicle writer runs in its own session for 90 minutes (`scripts/genseo_group_timeout.sh`,
+`GENSEO_LANDING_TIMEOUT_SEC`, default 5400). On timeout the process group is killed (landing bash and
+Claude). launchd runs `scripts/run_landing_daily.sh` from this checkout, so a pull is the update for the next
+08:15 / 16:15 slot. Offline: `bash tests/test_landing_daily_lock.sh`.
 Unpublished listicle prompts carry a standing `SCOPE_WAIVER` (`scripts/run_landing_headless.sh`, 2026-10-11). The writer must not ask a human to proceed. That day's `pure-shilajit-gold-resin` run asked, exited with an empty SPEC, and the wrapper logged FAILED (no spec). The product file was not missing. The DAILY LISTICLE LANE block says it overrides looser rules above; its first bullet keeps the draft standing approval in force.
 **Pack palette (Kevin 2026-10-09):** every landing page wears its hero product's packaging colors. The source of truth is
 `product_refs/<handle>.palette.json` (`scripts/packaging_palette.py`, `docs/PACKAGING_PALETTE_GUARD.md`); `scripts/landing_palette.py`

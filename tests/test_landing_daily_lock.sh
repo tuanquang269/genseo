@@ -1,21 +1,35 @@
 #!/bin/bash
 # Offline self-check of scripts/run_landing_daily.sh scheduling + locks: no Shopify, no model, no images, no git.
-#   bash tests/test_landing_daily_lock.sh                                # ~75 s (case 7 waits out a real 1-min yield)
+#   bash tests/test_landing_daily_lock.sh                                # ~80 s (case 7 waits out a real 1-min yield)
 #   LANDING_WRAPPER=<another copy> bash tests/test_landing_daily_lock.sh  # same cases against another wrapper
 # Every case runs the REAL wrapper under `env -i HOME=<sandbox>`, so its G=$HOME/genseo is a throwaway dir whose
 # scripts/ are stubs: landing_guard.py replays scripted exit codes (state/guard-codes; none left = 0, slot free) and
 # run_landing_headless.sh only records that the agent would start now, with which env, and whether state/daily.lock
 # was held at that moment. No spec is produced, so a run that reaches the agent ends "FAILED: no spec produced".
+# scripts/genseo_group_timeout.sh is copied in for real. Case 11 caps a TERM-ignoring child at 1s. Case 12 deletes
+# that helper and expects a fail-closed exit before the agent.
 set -uo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 WRAPPER="${LANDING_WRAPPER:-$ROOT/scripts/run_landing_daily.sh}"
 TMP="$(mktemp -d "${TMPDIR:-/tmp}/landing-lock-test.XXXXXX")" || exit 1
-trap 'kill $(jobs -p) 2>/dev/null; rm -rf "$TMP"' EXIT
+cleanup() {
+  local p f
+  kill $(jobs -p) 2>/dev/null || true
+  if [ -n "${TMP:-}" ] && [ -d "$TMP" ]; then
+    while IFS= read -r f; do
+      p=$(tr -cd '0-9' < "$f" 2>/dev/null || true)
+      [ -n "$p" ] && kill -KILL "$p" 2>/dev/null || true
+    done < <(find "$TMP" -type f \( -name 'child.pid' -o -name 'runner.pid' \) 2>/dev/null)
+  fi
+  rm -rf "$TMP"
+}
+trap cleanup EXIT
 PASS=0; FAIL=0; H=""; S=""; RC=""; T0=0
 
 sandbox(){  # sandbox <name> [guard exit codes...]: fresh fake HOME in $H, its genseo/state in $S
   H="$TMP/$1"; shift; S="$H/genseo/state"; local sc="$H/genseo/scripts"
   mkdir -p "$sc" "$S" "$H/genseo/logs"
+  cp "$ROOT/scripts/genseo_group_timeout.sh" "$sc/genseo_group_timeout.sh"
   echo "$*" > "$S/guard-codes"
   cat > "$sc/landing_guard.py" <<'PY'
 import sys
@@ -61,6 +75,14 @@ agent_saw(){ grep -qxF -- "$1" "$S/agent-called" 2>/dev/null; }
 started_after(){  # started_after <min s> <max s>: the agent started that long after the wrapper did
   local t; t="$(sed -n 's/^ts=//p' "$S/agent-called" 2>/dev/null)"
   [ -n "$t" ] && [ $(( t - T0 )) -ge "$1" ] && [ $(( t - T0 )) -le "$2" ]
+}
+wait_dead() {
+  local p=$1 i
+  for i in $(seq 1 40); do
+    kill -0 "$p" 2>/dev/null || return 0
+    sleep 0.05
+  done
+  return 1
 }
 
 echo "wrapper: $WRAPPER"
@@ -130,6 +152,51 @@ sandbox standby 0 3; run 30 GENSEO_HOST_ROLE=standby GENSEO_LANDING_STANDBY_DELA
 check "exit 0" rc_is 0
 check "logged peer stand down" logged "peer Mac already made today's draft — stand down"
 check "agent never started" not agent_started
+
+echo "11. listicle writer uses the process-group timeout"
+check "syntax landing wrapper" bash -n "$ROOT/scripts/run_landing_daily.sh"
+check "syntax group timeout" bash -n "$ROOT/scripts/genseo_group_timeout.sh"
+check "calls group timeout" grep -q 'genseo_group_timeout.sh' "$ROOT/scripts/run_landing_daily.sh"
+check "default cap is 5400s" grep -q 'GENSEO_LANDING_TIMEOUT_SEC:-5400' "$ROOT/scripts/run_landing_daily.sh"
+check "ticket line is not perl alarm" not grep -q 'alarm .*run_landing_headless' "$ROOT/scripts/run_landing_daily.sh"
+sandbox group_timeout
+cat > "$H/genseo/scripts/run_landing_headless.sh" << 'EOF'
+#!/bin/bash
+state="$HOME/genseo/state"
+printf '%s\n' "$$" > "$state/runner.pid"
+perl -e '
+  $SIG{TERM} = "IGNORE";
+  $SIG{HUP} = "IGNORE";
+  $SIG{INT} = "IGNORE";
+  open my $f, ">", $ARGV[0] or die $!;
+  print $f "$$\n";
+  close $f;
+  sleep 60;
+' "$state/child.pid" &
+wait
+EOF
+run 40 GENSEO_LANDING_TIMEOUT_SEC=1 GENSEO_TIMEOUT_GRACE_SEC=0
+check "logged agent exit 124" logged "agent exit 124"
+check "timeout warned in the day log" grep -q "signaling process group" "$H/genseo/logs/landing-daily/"*.log
+check "returned before the child sleep" test $(( $(date +%s) - T0 )) -lt 25
+childp=$(tr -cd '0-9' < "$S/child.pid" 2>/dev/null || true)
+check "child pid was recorded" test -n "$childp"
+check "TERM-ignoring child is dead" wait_dead "$childp"
+runnerp=$(tr -cd '0-9' < "$S/runner.pid" 2>/dev/null || true)
+check "runner pid was recorded" test -n "$runnerp"
+check "runner is dead" wait_dead "$runnerp"
+check "wrapper carried on after the timeout" logged "FAILED: no spec produced"
+check "landing lock released" test ! -e "$S/landing-daily.lock"
+check "exit 1" rc_is 1
+
+echo "12. missing group-timeout helper fails closed before the agent"
+sandbox missing_helper
+rm -f "$H/genseo/scripts/genseo_group_timeout.sh"
+run 20
+check "exit 1" rc_is 1
+check "logged FATAL" logged "FATAL: missing scripts/genseo_group_timeout.sh"
+check "agent never started" not agent_started
+check "landing lock was not taken" test ! -e "$S/landing-daily.lock"
 
 echo
 echo "$PASS passed, $FAIL failed"
