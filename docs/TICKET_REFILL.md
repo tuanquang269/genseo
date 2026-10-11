@@ -46,11 +46,19 @@ It then commits `daily-tickets.md` + `board/ideas.csv` locally (`queue: refill_t
 that pushes, the runner's next publish push carries it. Exit 3 or 1 is logged to `logs/daily/<date>.log` and the
 run continues with whatever is open (still stopping at 0, as before). The call is capped at 10 minutes.
 
-**Off by default.** To turn it on for a Mac:
+**Off by default.** launchd runs `~/bin/grokbot-genseo-daily.sh`, a copy of
+`deploy/grokbot-genseo-daily.sh`. `git pull` does not update that copy. After a pull, on each Mac:
 
 ```bash
-cd ~/genseo && git pull                                   # this repo version
-cp ~/genseo/deploy/grokbot-genseo-daily.sh ~/bin/         # launchd runs the ~/bin copy
+cd ~/genseo && git pull
+bash scripts/install_mac_daily_wrapper.sh
+```
+
+That copies the wrapper into `~/bin`, checks the copy is executable, and prints whether
+`scripts/genseo_daily_lock.sh` and `scripts/genseo_group_timeout.sh` are in the checkout. It does not
+start launchd. The lines below only turn refill on (they reload the agent; the installer does not):
+
+```bash
 P=~/Library/LaunchAgents/com.pati.genseo-daily.plist
 plutil -replace EnvironmentVariables.GENSEO_AUTO_REFILL -string 1 "$P"
 launchctl bootout gui/$(id -u) "$P"; launchctl bootstrap gui/$(id -u) "$P"

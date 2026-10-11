@@ -23,6 +23,18 @@ schedule; the live site decides who publishes.
 | image QC | gem9 judges | gem9 judges (gem9 defaults to the hosted router, so it works without the Mini) |
 | tickets | Mini `daily-tickets.md` (#NN) | MacBook `daily-tickets.md` (#MBmmdd-N — ids can never collide) |
 
+**Wrapper copy.** launchd runs `~/bin/grokbot-genseo-daily.sh`, a copy of `deploy/grokbot-genseo-daily.sh`.
+A pull does not update that copy. On each Mac, after pull:
+
+```bash
+cd ~/genseo && git pull
+bash scripts/install_mac_daily_wrapper.sh
+```
+
+The script creates `~/bin` if needed, copies the wrapper, checks it is executable, and prints whether
+`scripts/genseo_daily_lock.sh` and `scripts/genseo_group_timeout.sh` are in the checkout. It does not
+start launchd. Offline: `bash tests/test_install_mac_daily_wrapper.sh`.
+
 **Headless model lane (2026-10-10).** `run_ticket_headless.sh` and `run_landing_headless.sh` share `scripts/genseo_model_lane.sh`. A `PATI-*` writer or fallback (defaults `PATI-Alpha-Plan-Review` and `PATI-Fable-5`) never uses the native Claude login lane: Claude Code does not know those ids (`unrecognized_model`, landing 2026-10-10 09:30). Native login (`~/.claude-genseo`, `loggedIn: true`) is only for a writer and fallback that are not `PATI-*`. For a PATI writer, and whenever native does not apply, local 9router `:20128` is used only when `GET /v1/models` includes `GENSEO_WRITER_MODEL`. MacBook local 9router can be up and still list only `ag/gemini-*` ids. That is not a writer lane: headless falls through to hosted `GENSEO_ROUTER_BASE` (default `https://ai.patigroup.com`) with `NINE_ROUTER_KEY`. The run log records `native`, `local-9router`, or `hosted-9router` and does not print the key.
 
 **Bash on a PATI writer (2026-10-11).** Claude Code 2.1.295+ defaults `claude -p` to permission mode `auto`. Auto mode names the session model as the Bash safety service. `PATI-Alpha-Plan-Review` is a 9router alias, not a classifier `ai.patigroup.com` can run, so Bash returns "Bash safety service `PATI-Alpha-Plan-Review` is unavailable" and the agent exits 0 with the ticket unchanged (articles 2026-10-11 08:19). Read tools still work. Router lanes (`local-9router` and `hosted-9router`) pass `--permission-mode dontAsk`. The tool allowlist stays the gate, and `dontAsk` does not call that classifier. The `[claude-code:unrecognized_model]` line can still print; it is a warning. The id sent to the gateway stays `PATI-Alpha-Plan-Review` (fallback `PATI-Fable-5`). Native login is not pinned. The daily wrapper execs `run_ticket_headless.sh` once per ticket, so the next ticket reads this from disk. No launchd restart.
