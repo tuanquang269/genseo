@@ -584,7 +584,7 @@ FloraFresh $40.99, Turkesterone Advanced Formula $75, AgeAura Pure NMN + TMG NAD
   - **Angle:** human trials that tested NMN with exercise outcomes (e.g. the 2021 amateur-runner trial — only if fetched & confirmed); what they did and did not show; no human evidence on pre- vs post-workout timing (say so); label: 2 capsules daily. LINK how-much-nmn-per-day, nmn-side-effects — don't restate.
   - **Fan-out answers to cover:** before or after training; on rest days; does it replace pre-workout (no); can older adults who exercise take it (ask a clinician).
 
-- [ ] **#MB1009-5 — creatine gummies and alcohol** (buffer — run only if <5 live today) — `Creatine Gummies and Alcohol: What Happens If You Drink? (US 2026)`
+- [DONE 2026-10-11 https://wellnessnest.co/blogs/news/creatine-and-alcohol-what-happens-if-you-drink-us-2026] **#MB1009-5 — creatine gummies and alcohol** (buffer — run only if <5 live today) — `Creatine Gummies and Alcohol: What Happens If You Drink? (US 2026)`
   - **Primary keyword:** `creatine and alcohol` · **Secondary:** can you drink on creatine, creatine gummies hangover, alcohol and muscle recovery, creatine dehydration alcohol
   - **Template:** LISTICLE · **Gate:** topic_fitness PASS [brand] · dedupe: no creatine-alcohol title live
   - **Products:** `/products/fusiforce-creatine-gummies` ($69.99) only. Collections: `/collections/mens-essential-collection`, `/collections/best-seller`.
