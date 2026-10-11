@@ -754,3 +754,101 @@ plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check th
   - **Link, don't restate:** `/blogs/news/creatine-gummies-dosage-how-many-a-day-us-2026`, `/blogs/news/best-time-to-take-creatine-before-or-after-us-2026`, `/blogs/news/creatine-gummies-side-effects-4-real-3-myths-us-2026`, `/blogs/news/creatine-gummies-loading-phase-is-it-needed-us-2026`, `/blogs/news/how-long-does-creatine-take-to-work-week-by-week-us-2026`
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** creatine + beginners checked 2026-10-09 against 108 live articles (blog listing + sitemap + Atom) and all 47 tickets in this file; STEP 0 re-checks at write time
+
+# BATCH 2026-10-12 (refill_tickets.py — ids #MB1012-1…#MB1012-6)
+
+Built by `scripts/refill_tickets.py` at 2026-10-11 18:49 ICT from `templates/article-topic-bank.json` + `board/ideas.csv`
+(search volume: No data — GSC/Ads not used). Every ticket passed, against the live store at build time:
+brand_rules + `lint_tickets.py` · hero product live and in stock · not a covered topic (header rule 6) ·
+not already queued · not live (110 published articles: blog listing + sitemap + Atom; one article per brand + segment) ·
+`topic_fitness.py` strict on primary and title · STEP 0 suggest.json.
+A `topic_fitness` REVIEW [covered-segment] verdict is allowed under Kevin's standing greenlight for mined queues (2026-08-13).
+A topic is a brief, not copy: source every claim or cut it.
+
+**Rules for this batch:** from the 2026-10-08 batch rules — fan-out answers, a "Where to buy <product> in the US"
+section (live price, the ticket's product link only), roster.json byline only (never an invented person or
+credential), the logged fact-check pass (`logs/claims/<slug>.md`; delete unconfirmed claims), the brand gate.
+Blog 104008483131, publish `--live`. Images: no batch-wide override — runner rule D decides per host (the MacBook
+plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check the PDP while writing.
+
+- [ ] **#MB1012-1 — creatine gummies for runners** — `Creatine Gummies for Runners: What Trials Show (US 2026)`
+  - **Primary keyword:** `creatine gummies for runners` · **Secondary:** creatine for runners, creatine for endurance athletes, does creatine slow you down, creatine water weight runners
+  - **Search intent:** runner worried creatine adds weight and slows them down
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-11 18:49 ICT)
+  - **Hero product:** `/products/fusiforce-creatine-gummies` (FusiForce Creatine Gummies, $69.99, in stock 2026-10-11)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** Runners ask two things: does creatine help their training (evidence is strongest for repeated sprints, intervals and hills, weaker for steady-state distance) and will the water weight slow them down. Answer both from fetched trials and reviews, then give the simple daily gummy routine. Link the dosage and side-effects pages instead of restating them.
+  - **Fan-out answers to cover:** does creatine help long-distance running; will creatine make me heavier on race day; should runners load creatine; when should runners take creatine
+  - **Evidence to fetch & confirm (claims log):** ISSN creatine position stand (Kreider et al. 2017) and endurance-specific reviews — fetch before citing.
+  - **Link, don't restate:** `/blogs/news/creatine-gummies-dosage-how-many-a-day-us-2026`, `/blogs/news/creatine-gummies-side-effects-4-real-3-myths-us-2026`, `/blogs/news/best-time-to-take-creatine-before-or-after-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** creatine + athletes checked 2026-10-11 against 110 live articles (blog listing + sitemap + Atom) and all 57 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1012-2 — vaginal probiotics for beginners** — `Vaginal Probiotics for Beginners: What to Expect (US 2026)`
+  - **Primary keyword:** `vaginal probiotics for beginners` · **Secondary:** first time taking vaginal probiotics, how to start vaginal probiotics, what do vaginal probiotics do, vaginal probiotics first week
+  - **Search intent:** first-time buyer who wants to know what vaginal probiotics do and what the first weeks are like
+  - **Template:** STORY · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-11 18:49 ICT)
+  - **Hero product:** `/products/florafresh-vaginal-probiotics-gummies` (FloraFresh Vaginal Probiotics Gummies, $40.99, in stock 2026-10-11)
+  - **FloraFresh formula (Supplement Facts label, the source of truth):** per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 1 billion CFU, Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain); sweetened with maltitol and isomalt, so not sugar-free; label badges Allergen Free, Vegan, Halal, Gluten Free. Cite the Supplement Facts label, never the live PDP description or an older FloraFresh article (both repeat a wrong formula); a PDP/label mismatch is a gate failure.
+  - **Collection links (≥2, verify live):** `/collections/womens-essentials-collection` (contains it), `/collections/best-seller` (contains it)
+  - **Angle:** A first-month walkthrough: what oral vaginal probiotics are meant to support (a Lactobacillus-dominant flora), what is normal in week one, how long until changes (link — don't restate), how to take FloraFresh daily, and which symptoms mean seeing a clinician instead. No cure or treatment claims.
+  - **Fan-out answers to cover:** what do vaginal probiotics actually do; is it normal to notice changes in the first week; can you take them every day long term; when should you see a doctor instead
+  - **Evidence to fetch & confirm (claims log):** Reviews of oral Lactobacillus for vaginal health — fetch before citing; FloraFresh directions from the live PDP.
+  - **Link, don't restate:** `/blogs/news/vaginal-probiotics-how-long-until-they-work-us-2026`, `/blogs/news/vaginal-probiotics-side-effects-normal-vs-stop-us-2026`, `/blogs/news/yeast-infection-vs-bv-how-to-tell-them-apart-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** probiotic + beginners checked 2026-10-11 against 110 live articles (blog listing + sitemap + Atom) and all 57 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1012-3 — creatine gummies over 60** — `Creatine Gummies Over 60: What the Trials Show (US 2026)`
+  - **Primary keyword:** `creatine gummies over 60` · **Secondary:** creatine for seniors, creatine for older adults, creatine muscle loss aging, is creatine safe over 60
+  - **Search intent:** adult 60+ (or a family member) looking at creatine for strength and muscle with age
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-11 18:49 ICT)
+  - **Hero product:** `/products/fusiforce-creatine-gummies` (FusiForce Creatine Gummies, $69.99, in stock 2026-10-11)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** What trials in older adults found when creatine was combined with resistance training (lean mass, strength), what it does not do without training, kidney questions and the medication check with a clinician. Why the gummy format suits some older adults (no mixing) and the sugar per serving. Link the men-over-50 and women-over-40 pages instead of restating them.
+  - **Fan-out answers to cover:** is creatine safe for seniors; does creatine help without exercise; how much creatine do older adults take; creatine and kidney function over 60
+  - **Evidence to fetch & confirm (claims log):** Meta-analyses of creatine plus resistance training in older adults (e.g. Chilibeck et al. 2017; Candow reviews) — fetch before citing.
+  - **Link, don't restate:** `/blogs/news/fusiforce-creatine-gummies-for-men-over-50-us-2026`, `/blogs/news/creatine-for-women-over-40-what-changes-in-the-us`, `/blogs/news/creatine-gummies-side-effects-4-real-3-myths-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** creatine + seniors checked 2026-10-11 against 110 live articles (blog listing + sitemap + Atom) and all 57 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1012-4 — turkesterone over 60** — `Turkesterone Over 60: 5 Checks for Older Lifters (US 2026)`
+  - **Primary keyword:** `turkesterone over 60` · **Secondary:** turkesterone for older men, turkesterone for seniors, turkesterone at 60, is turkesterone safe for older men
+  - **Search intent:** lifter 60+ deciding whether turkesterone is worth trying
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-11 18:49 ICT)
+  - **Hero product:** `/products/turkesterone-advanced-formula` (Turkesterone Advanced Formula, $75, in stock 2026-10-11)
+  - **Turkesterone Advanced Formula pack label (source of truth):** wellness, nest, PREMIUM, TURKESTERONE, ADVANCED, FORMULA, AMPLIFY, MUSCLE, ENDURANCE, 60, Dietary Supplement, Capsules. No milligram amount and no Supplement Facts panel were read. Do not add one. The capsule badge is the separate lines in product_refs/turkesterone-advanced-formula.label.json. Do not state a milligram amount, a serving count, a different capsule count, or a day-supply.
+  - **Collection links (≥2, verify live):** `/collections/mens-essential-collection` (contains it), `/collections/shilajit-wellness-stack` (contains it)
+  - **Angle:** No turkesterone trial enrolled adults over 60 — say so. Compare in a table what the formula's other ingredients have been tested for in older adults (KSM-66 ashwagandha, tongkat ali; fetched trials only), the medication check with a clinician (thyroid, blood pressure, diabetes), and why training and protein matter more. Link the men-over-40 page instead of restating it.
+  - **Fan-out answers to cover:** is turkesterone safe for men over 60; does turkesterone raise testosterone; can older adults take ashwagandha daily; what matters more than supplements after 60
+  - **Evidence to fetch & confirm (claims log):** Ashwagandha and tongkat ali trials in older adults — fetch each before citing; Turkesterone Advanced panel from the live PDP.
+  - **Link, don't restate:** `/blogs/news/turkesterone-for-men-over-40-5-honest-checks-us-2026`, `/blogs/news/turkesterone-side-effects-4-ingredients-to-check-us-2026`, `/blogs/news/turkesterone-benefits-dosing-whats-real-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** turkesterone + seniors checked 2026-10-11 against 110 live articles (blog listing + sitemap + Atom) and all 57 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1012-5 — shilajit for seniors** — `Shilajit for Seniors: 5 Safety Checks Over 60 (US 2026)`
+  - **Primary keyword:** `shilajit for seniors` · **Secondary:** shilajit for older adults, shilajit over 60, is shilajit safe for elderly, shilajit and blood pressure medication
+  - **Search intent:** adult 60+ (or a family member) checking whether shilajit is safe alongside existing medication
+  - **Template:** LISTICLE · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-11 18:49 ICT)
+  - **Hero product:** `/products/shilasource-himalayan-shilajit-resin` (ShilaSource Himalayan Shilajit Resin, $59.99, in stock 2026-10-11)
+  - **ShilaSource Himalayan Shilajit Resin pack label (source of truth):** ShilaSource, Himalayan, Shilajit, Resin, 75, Dietary Supplement, Wellness, Nest, 70% Fulvic Acid*, Lab-Tested for Purity*, 1.06oz (30g), SERVINGS, Servings. No milligram amount and no Supplement Facts panel were read into that file. Do not add one. Do not state a serving count, volume, weight, fulvic percentage, mineral count, or day-supply other than the lines in product_refs/shilasource-himalayan-shilajit-resin.label.json.
+  - **Collection links (≥2, verify live):** `/collections/shilajit-wellness-stack` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** Human evidence in adults over 60 is thin — say so up front. Then five practical safety checks: medications to raise with a clinician, purity (link the fake-shilajit page; do not lead on lab testing), starting dose, form (pure resin vs gummies with added herbs), and stop signs. Link the side-effects and dosage pages instead of restating them.
+  - **Fan-out answers to cover:** is shilajit safe for seniors; can shilajit interact with blood pressure or diabetes medication; what dose should older adults start with; resin or gummies for older adults
+  - **Evidence to fetch & confirm (claims log):** Any human shilajit study that enrolled older adults, and interaction data — fetch before citing; say plainly where there is none.
+  - **Link, don't restate:** `/blogs/news/shilajit-side-effects-7-signs-to-watch-for-us-2026`, `/blogs/news/how-much-shilajit-per-day-dosage-by-form-us-2026`, `/blogs/news/fake-shilajit-6-signs-yours-isnt-real-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** shilajit + seniors checked 2026-10-11 against 110 live articles (blog listing + sitemap + Atom) and all 57 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1012-6 — shilajit for fertility** — `Shilajit for Fertility: What One Small Trial Found (US 2026)`
+  - **Primary keyword:** `shilajit for fertility` · **Secondary:** shilajit sperm count, shilajit male fertility, shilajit for men trying to conceive, shilajit and sperm motility
+  - **Search intent:** man trying to conceive who is researching shilajit
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-11 18:49 ICT)
+  - **Hero product:** `/products/shilasource-himalayan-shilajit-resin` (ShilaSource Himalayan Shilajit Resin, $59.99, in stock 2026-10-11)
+  - **ShilaSource Himalayan Shilajit Resin pack label (source of truth):** ShilaSource, Himalayan, Shilajit, Resin, 75, Dietary Supplement, Wellness, Nest, 70% Fulvic Acid*, Lab-Tested for Purity*, 1.06oz (30g), SERVINGS, Servings. No milligram amount and no Supplement Facts panel were read into that file. Do not add one. Do not state a serving count, volume, weight, fulvic percentage, mineral count, or day-supply other than the lines in product_refs/shilasource-himalayan-shilajit-resin.label.json.
+  - **Collection links (≥2, verify live):** `/collections/shilajit-wellness-stack` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** One small, uncontrolled trial in men with low sperm count (processed shilajit for 90 days) is most of the evidence — describe it accurately, list its limits and what it cannot show. Structure/function language only, no treatment claims, and a clear 'see a fertility clinician' section. Shilajit is not for anyone pregnant or trying to become pregnant without medical advice. Link the men's benefits page instead of restating it.
+  - **Fan-out answers to cover:** does shilajit increase sperm count; how long did the trial last; should partners trying to conceive take shilajit; when to see a fertility specialist
+  - **Evidence to fetch & confirm (claims log):** Biswas et al. 2010, Andrologia (processed shilajit in oligospermic men) — fetch and confirm design and numbers before citing.
+  - **Link, don't restate:** `/blogs/news/shilajit-benefits-for-men-4-claims-ranked-us-2026`, `/blogs/news/shilajit-side-effects-7-signs-to-watch-for-us-2026`, `/blogs/news/how-much-shilajit-per-day-dosage-by-form-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** shilajit + fertility checked 2026-10-11 against 110 live articles (blog listing + sitemap + Atom) and all 57 tickets in this file; STEP 0 re-checks at write time

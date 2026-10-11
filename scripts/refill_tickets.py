@@ -5,6 +5,7 @@ queue ran empty and the daily runner stopped at 1/5).
   python3 scripts/refill_tickets.py --count 8 --dry-run     # print the batch + every rejection; queue + board untouched
   python3 scripts/refill_tickets.py --count 8               # append a `# BATCH` + update board/ideas.csv
   python3 scripts/refill_tickets.py --if-below 4 --count 6  # no-op while >= 4 tickets are open (wrapper hook)
+  python3 scripts/refill_tickets.py --count 8 --prefix MB --day 2026-10-12  # ids for that date; stamp stays now
   python3 scripts/refill_tickets.py --self-test             # offline fixtures: no network, writes nothing
 
 Candidates: board/ideas.csv rows with status=idea first, then templates/article-topic-bank.json topics
@@ -244,6 +245,19 @@ def next_ids(text, prefix, day, k):
     used = [int(n) for n in re.findall(r"#%s%s-(\d+)\b" % (prefix, mmdd), text)]
     start = max(used, default=0) + 1
     return [f"{prefix}{mmdd}-{start + i}" for i in range(k)]
+
+
+def batch_day(now, day_arg):
+    """Calendar date for the batch title and ticket ids. Empty keeps `now` (today ICT).
+    A Monday queue prepared the evening before passes `--day` so ids are `#MBmmdd-N` for that
+    Monday. The build stamp, the in-stock date, and the dedup date stay on `now` — the clock
+    that actually read the store."""
+    if not day_arg:
+        return now.date()
+    try:
+        return dt.date.fromisoformat(day_arg)
+    except ValueError as e:
+        raise Refuse(f"--day must be YYYY-MM-DD, got {day_arg!r}") from e
 
 
 def read_board(path):
@@ -796,6 +810,7 @@ def refill(a):
             raise Refuse(f"live store unreadable ({type(e).__name__}: {e}) — failing closed")
         save_cache(store, now.strftime("%Y-%m-%d %H:%M ICT"))
     ctx = build_ctx(bank, queue, store, local_inventory(), now, "skip" if a.offline or a.no_suggest else "live")
+    ids_day = batch_day(now, a.day)
     cands, held = candidates(bank, rows, ctx)
     print(f"refill_tickets: {n_open} open ticket(s) · {ctx['stamp']} ICT · {len(ctx['live_handles'])} live articles"
           f"{' + local caches' if ctx['local'] else ''} · {sum(1 for p in store[0].values() if p['available'])} "
@@ -822,8 +837,9 @@ def refill(a):
     if not batch:
         print(f"✗ 0 of {len(cands)} topic(s) passed — add topics to templates/article-topic-bank.json or board/ideas.csv")
         return 3
-    ids = next_ids(text, a.prefix, ctx["day"], len(batch))
-    block = batch_header(ctx, ids) + "\n" + "\n\n".join(render(c, tid, ctx, c["info"]) for c, tid in zip(batch, ids)) + "\n"
+    ids = next_ids(text, a.prefix, ids_day, len(batch))
+    block = (batch_header(dict(ctx, day=ids_day), ids) + "\n"
+             + "\n\n".join(render(c, tid, ctx, c["info"]) for c, tid in zip(batch, ids)) + "\n")
     if a.dry_run:
         print(f"---- dry run: {len(batch)} ticket(s); queue and board untouched ----\n{block}")
     else:
@@ -928,6 +944,15 @@ def self_test():
       q[2]["title"])
     t("open count = the wrapper's grep", len(OPEN_RX.findall(FIX_QUEUE)) == 1)
     t("ids continue after the highest used", next_ids(FIX_QUEUE, "CA", dt.date(2026, 10, 9), 2) == ["CA1009-4", "CA1009-5"])
+    fixed = dt.datetime(2026, 10, 11, 18, 43, tzinfo=ICT)
+    t("--day overrides the batch date", batch_day(fixed, "2026-10-12") == dt.date(2026, 10, 12))
+    t("--day empty keeps the clock date", batch_day(fixed, None) == dt.date(2026, 10, 11))
+    try:
+        batch_day(fixed, "1012")
+        bad_day = False
+    except Refuse:
+        bad_day = True
+    t("--day rejects a non-ISO date", bad_day)
     t("families_of", families_of("NMN + TMG for runners", bank) == {"nmn"}
       and families_of("FloraFresh for BV", bank) == {"probiotic"})
     t("segments_of", segments_of("vaginal probiotics morning or night", bank) == {"timing"}
@@ -1171,6 +1196,10 @@ def main():
     ap.add_argument("--prefix", default=os.environ.get("GENSEO_TICKET_PREFIX", "RF"),
                     help="ticket id prefix, 1-4 capitals: MM Mini wrapper, MB MacBook, CA Cursor cloud (default RF "
                          "or $GENSEO_TICKET_PREFIX)")
+    ap.add_argument("--day", default=None, metavar="YYYY-MM-DD",
+                    help="batch date for the title and ticket ids (default: today ICT). "
+                         "The build stamp, in-stock date, and dedup date stay the real clock, "
+                         "so a Monday queue can be prepared the evening before.")
     ap.add_argument("--max-per-family", type=int, default=2, help="spread: per-family cap before filling (default 2)")
     ap.add_argument("--queue", default=QUEUE)
     ap.add_argument("--bank", default=BANK)
