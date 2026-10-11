@@ -264,6 +264,12 @@ grep -F -q 'GENSEO_PERMISSION_MODE="dontAsk"' "$ROOT/scripts/genseo_model_lane.s
 ticket='- [ ] listicle | wellnessnest | product=pure-shilajit-gold-resin · angle: Resin vs capsules vs gummies: N things to compare before you pick a shilajit format · audience: adults comparing shilajit formats (added 2026-10-09)'
 grep -qxF -- "$ticket" "$ROOT/daily-landing-tickets.md" && ok "gold-resin ticket reopened" || bad "gold-resin ticket line"
 if grep -q 'FAILED 2026-10-10' "$ROOT/daily-landing-tickets.md"; then bad "FAILED tag still on the queue"; else ok "FAILED tag cleared"; fi
+if grep -q 'FAILED 2026-10-11' "$ROOT/daily-landing-tickets.md"; then bad "FAILED 2026-10-11 tag still on the queue"; else ok "2026-10-11 FAILED tag cleared"; fi
+first_open="$(grep -m1 -E '^- \[ \] ' "$ROOT/daily-landing-tickets.md" || true)"
+case "$first_open" in
+  *'product=pure-shilajit-gold-resin'*) ok "first open landing ticket is gold resin" ;;
+  *) bad "first open landing ticket [$first_open]" ;;
+esac
 
 echo "11. USE_NATIVE=1 + default PATI writer + local lists the id → local, not native"
 reset_env
