@@ -57,9 +57,9 @@ one-way; the Mini's repo commits are unpushed), so the PUBLIC SITE is the lock:
    (`scripts/genseo_group_timeout.sh`); on timeout the process group is killed (ticket bash and
    Claude). `perl alarm; exec` is not used there — that signal hits only bash and leaves Claude
    publishing into the next ticket. launchd runs `~/bin/grokbot-genseo-daily.sh`, a copy of
-   `deploy/grokbot-genseo-daily.sh`. After pull, copy it to `~/bin/` (`docs/TICKET_REFILL.md`)
-   so the next slot picks this up. Helpers load from `~/genseo/scripts/`. Offline:
-   `bash tests/test_daily_lock.sh`.
+   `deploy/grokbot-genseo-daily.sh`. After pull, `bash scripts/install_mac_daily_wrapper.sh`
+   (`docs/TICKET_REFILL.md`) so the next slot picks this up. It does not start launchd.
+   Helpers load from `~/genseo/scripts/`. Offline: `bash tests/test_daily_lock.sh`.
 
 **MacBook lane = all images NO-FACE** until `personas/index.json` is re-synced from the Mini
 (angles spent there since 2026-08-15 are unknown here — re-spending one breaks Kevin's

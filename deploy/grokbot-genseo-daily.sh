@@ -21,8 +21,9 @@
 #   7. each ticket is its own session, 90 min (GENSEO_TICKET_TIMEOUT_SEC). Timeout kills the
 #      process group (ticket bash + Claude). perl `alarm; exec` only signaled bash and left Claude
 #      publishing into the next ticket.
-# launchd runs ~/bin/grokbot-genseo-daily.sh, a copy of this file. After git pull, copy it to ~/bin/
-# (docs/TICKET_REFILL.md) so the next slot uses this; helpers load from ~/genseo/scripts/.
+# launchd runs ~/bin/grokbot-genseo-daily.sh, a copy of this file. After git pull:
+#   bash ~/genseo/scripts/install_mac_daily_wrapper.sh
+# (docs/TICKET_REFILL.md). That does not start launchd. Helpers load from ~/genseo/scripts/.
 # Offline: bash tests/test_daily_lock.sh
 set -uo pipefail
 export PATH="$HOME/.local/bin:$HOME/.npm-global/bin:$HOME/.codex/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
@@ -49,7 +50,7 @@ say(){ echo "[$(ts)] [$HOST/$ROLE] $*" | tee -a "$LOG"; }
 export GENSEO_DAILY_TARGET="$TARGET"
 
 if [ ! -f "$G/scripts/genseo_daily_lock.sh" ] || [ ! -f "$G/scripts/genseo_group_timeout.sh" ]; then
-  say "FATAL: missing scripts/genseo_daily_lock.sh or scripts/genseo_group_timeout.sh — git pull ~/genseo, then cp this wrapper to ~/bin/"
+  say "FATAL: missing scripts/genseo_daily_lock.sh or scripts/genseo_group_timeout.sh — git pull ~/genseo, then bash scripts/install_mac_daily_wrapper.sh"
   exit 1
 fi
 # shellcheck source=../scripts/genseo_daily_lock.sh

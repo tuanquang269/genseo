@@ -66,7 +66,7 @@ if [ "$needs" = 1 ] && [ "$missing" = 1 ]; then
   die "wrapper requires scripts/genseo_daily_lock.sh and scripts/genseo_group_timeout.sh — git pull in $GENSEO_HOME, then re-run. Nothing was copied."
 fi
 if [ "$missing" = 1 ]; then
-  printf '%s\n' "note: this wrapper does not require the daily.lock helpers. Re-run after the lock-PID pull; the installer then refuses to copy if either helper is missing."
+  printf '%s\n' "note: this wrapper does not require the daily.lock helpers. A wrapper that references them is not copied while either file is missing."
 fi
 
 on_mac=0
