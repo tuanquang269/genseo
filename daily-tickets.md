@@ -591,7 +591,7 @@ FloraFresh $40.99, Turkesterone Advanced Formula $75, AgeAura Pure NMN + TMG NAD
   - **Angle:** no human trial tests creatine + alcohol directly (say so); what alcohol does to recovery/muscle protein synthesis (fetched sources only); hydration myths around creatine; practical spacing. LINK creatine-gummies-side-effects, creatine-and-caffeine — don't restate.
   - **Fan-out answers to cover:** morning after drinking; does alcohol cancel creatine; kidney/liver concerns (ask a clinician).
 
-- [ ] **#MB1009-6 — nmn and coffee** (buffer — run only if <5 live today) — `NMN and Coffee: Can You Take Them Together? (US 2026)`
+- [SKIPPED-DUPLICATE 2026-10-11 https://wellnessnest.co/blogs/news/nmn-and-coffee-can-you-take-them-together-us-2026] **#MB1009-6 — nmn and coffee** (buffer — run only if <5 live today) — `NMN and Coffee: Can You Take Them Together? (US 2026)`
   - **Primary keyword:** `nmn and coffee` · **Secondary:** nmn with coffee in the morning, nmn and caffeine, does coffee affect nmn, nmn before or after coffee
   - **Template:** EDITORIAL · **Gate:** topic_fitness PASS [brand] · dedupe: no coffee/caffeine NMN title live (when-to-take-nmn covers time of day; does-nmn-break-a-fast covers fasting — LINK both, don't restate)
   - **Products:** `/products/ageaura-pure-nmn-tmg-nad-complex` ($69.95) ONLY. Collections: `/collections/best-seller` (twice). No other AgeAura product or AgeAura collection link (brand_rules.py gate). NMN + TMG only.
