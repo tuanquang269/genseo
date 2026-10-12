@@ -198,14 +198,17 @@ fi
 # clears USE_NATIVE and sets local-9router or hosted-9router instead.
 # Both lanes pass claudeMdExcludes. The user scope-gate file loads as User
 # memory even when CLAUDE_CONFIG_DIR is the lean lane.
+# A non-Anthropic HTTP 200 (OpenAI chat.completion from a PATI alias) re-execs
+# once on GENSEO_WRITER_FALLBACK. The prompt, including live publish after the
+# article gate, is the same on that re-exec.
 if [ "${GENSEO_MODEL_LANE:-}" = "native" ]; then
-  CLAUDE_CONFIG_DIR="$GENSEO_CFG" "$CLAUDE_BIN" -p "$PROMPT" \
-    --model "$GENSEO_WRITER_MODEL" \
+  CLAUDE_CONFIG_DIR="$GENSEO_CFG" genseo_run_writer_with_shape_fallback \
+    "$LOGDIR/articles-$STAMP.log" "$CLAUDE_BIN" \
+    -p "$PROMPT" \
     --fallback-model "$GENSEO_WRITER_FALLBACK" \
     "${SETTINGS_ARGS[@]}" \
     --output-format text \
-    --allowed-tools "$ALLOWED_TOOLS" \
-    >> "$LOGDIR/articles-$STAMP.log" 2>&1
+    --allowed-tools "$ALLOWED_TOOLS"
   RC=$?
 else
   # 9router's real per-request limit is smaller than the 200k the CLI assumes for the
@@ -215,15 +218,15 @@ else
   # block every script before a write. The lane sets this; the default covers a miss.
   export CLAUDE_CODE_MAX_CONTEXT_TOKENS=150000
   : "${GENSEO_PERMISSION_MODE:=dontAsk}"
-  "$CLAUDE_BIN" -p "$PROMPT" \
-    --model "$GENSEO_WRITER_MODEL" \
+  genseo_run_writer_with_shape_fallback \
+    "$LOGDIR/articles-$STAMP.log" "$CLAUDE_BIN" \
+    -p "$PROMPT" \
     --fallback-model "$GENSEO_WRITER_FALLBACK" \
     --permission-mode "$GENSEO_PERMISSION_MODE" \
     "${SETTINGS_ARGS[@]}" \
     --strict-mcp-config \
     --output-format text \
-    --allowed-tools "$ALLOWED_TOOLS" \
-    >> "$LOGDIR/articles-$STAMP.log" 2>&1
+    --allowed-tools "$ALLOWED_TOOLS"
   RC=$?
 fi
 echo "=== exit $RC ===" >> "$LOGDIR/articles-$STAMP.log"

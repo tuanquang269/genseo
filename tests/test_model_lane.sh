@@ -224,13 +224,19 @@ for rel in scripts/run_landing_headless.sh scripts/run_ticket_headless.sh; do
   grep -q 'scripts/genseo_model_lane.sh' "$file" && ok "$rel sources helper" || bad "$rel missing source"
   grep -q 'genseo_select_model_lane' "$file" && ok "$rel selects lane" || bad "$rel missing select"
   grep -q 'genseo_lane_log_line' "$file" && ok "$rel logs lane" || bad "$rel missing log"
-  grep -q -- '--model "$GENSEO_WRITER_MODEL"' "$file" && ok "$rel writer model" || bad "$rel writer flag"
+  grep -q 'genseo_run_writer_with_shape_fallback' "$file" && ok "$rel shape fallback" || bad "$rel missing shape fallback"
   grep -q -- '--fallback-model "$GENSEO_WRITER_FALLBACK"' "$file" && ok "$rel fallback model" || bad "$rel fallback flag"
   if grep -q 'PATI-Alpha-Plan-Review' "$file"; then bad "$rel still hardcodes the writer model"; else ok "$rel no hardcoded writer"; fi
   if grep -q 'curl -s -m 3 -o /dev/null http://127.0.0.1:20128/' "$file"; then bad "$rel still uses the up/down-only gate"; else ok "$rel gate moved"; fi
   grep -F -q 'PATI-*' "$file" && ok "$rel documents PATI-* skip" || bad "$rel missing PATI-* skip note"
   grep -F -q 'unrecognized_model' "$file" && ok "$rel names unrecognized_model" || bad "$rel missing unrecognized_model"
 done
+grep -q -- '--model "$GENSEO_WRITER_MODEL"' "$ROOT/scripts/genseo_model_lane.sh" \
+  && ok "helper passes primary model" || bad "helper missing primary model"
+grep -q -- '--model "$GENSEO_WRITER_FALLBACK"' "$ROOT/scripts/genseo_model_lane.sh" \
+  && ok "helper passes fallback model" || bad "helper missing fallback model"
+grep -q 'GENSEO_WRITER_SHAPE_RETRY' "$ROOT/scripts/genseo_model_lane.sh" \
+  && ok "helper stops after one re-exec" || bad "helper missing retry guard"
 grep -F -q 'PATI-*' "$ROOT/scripts/genseo_model_lane.sh" && ok "helper documents PATI-* skip" || bad "helper missing PATI-* skip"
 grep -F -q 'unrecognized_model' "$ROOT/scripts/genseo_model_lane.sh" && ok "helper names unrecognized_model" || bad "helper missing unrecognized_model"
 grep -F -q '[ "${GENSEO_MODEL_LANE:-}" = "native" ]' "$ROOT/scripts/run_ticket_headless.sh" \
@@ -261,15 +267,15 @@ grep -F -q 'permission-mode dontAsk' "$ROOT/DAILY-RUN.md" && ok "DAILY-RUN names
 grep -F -q 'Bash safety service' "$ROOT/DAILY-RUN.md" && ok "DAILY-RUN names the Bash safety block" || bad "DAILY-RUN Bash safety note"
 grep -F -q 'GENSEO_PERMISSION_MODE="dontAsk"' "$ROOT/scripts/genseo_model_lane.sh" \
   && ok "helper sets dontAsk" || bad "helper missing dontAsk"
-ticket='- [ ] listicle | wellnessnest | product=pure-shilajit-gold-resin · angle: Resin vs capsules vs gummies: N things to compare before you pick a shilajit format · audience: adults comparing shilajit formats (added 2026-10-09)'
-grep -qxF -- "$ticket" "$ROOT/daily-landing-tickets.md" && ok "gold-resin ticket reopened" || bad "gold-resin ticket line"
+ticket='- [DRAFT 2026-10-12 page 166173573435] listicle | wellnessnest | product=pure-shilajit-gold-resin · angle: Resin vs capsules vs gummies: N things to compare before you pick a shilajit format · audience: adults comparing shilajit formats (added 2026-10-09)'
+grep -qxF -- "$ticket" "$ROOT/daily-landing-tickets.md" && ok "gold-resin stays the unpublished draft" || bad "gold-resin draft line"
+if grep -qE '^- \[ \] .*pure-shilajit-gold-resin' "$ROOT/daily-landing-tickets.md"; then
+  bad "gold-resin is open again"
+else
+  ok "gold-resin is not an open ticket"
+fi
 if grep -q 'FAILED 2026-10-10' "$ROOT/daily-landing-tickets.md"; then bad "FAILED tag still on the queue"; else ok "FAILED tag cleared"; fi
 if grep -q 'FAILED 2026-10-11' "$ROOT/daily-landing-tickets.md"; then bad "FAILED 2026-10-11 tag still on the queue"; else ok "2026-10-11 FAILED tag cleared"; fi
-first_open="$(grep -m1 -E '^- \[ \] ' "$ROOT/daily-landing-tickets.md" || true)"
-case "$first_open" in
-  *'product=pure-shilajit-gold-resin'*) ok "first open landing ticket is gold resin" ;;
-  *) bad "first open landing ticket [$first_open]" ;;
-esac
 
 echo "11. USE_NATIVE=1 + default PATI writer + local lists the id → local, not native"
 reset_env
