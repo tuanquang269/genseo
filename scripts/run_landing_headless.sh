@@ -43,7 +43,9 @@ if ! python3 -c 'import PIL, markdown' >/dev/null 2>&1 && /usr/bin/python3 -c 'i
   mkdir -p "$HOME/genseo/state/pybin" && ln -sf /usr/bin/python3 "$HOME/genseo/state/pybin/python3"
   export PATH="$HOME/genseo/state/pybin:$PATH"
 fi
-if [ "$PRINT_PROMPT" != 1 ]; then
+# GENSEO_LANDING_PRINT_SETTINGS=1 prints the unpublished-run --settings payload and exits
+# before the model lane. tests/test_landing_prompt_waiver.sh uses it. No Shopify, no claude.
+if [ "$PRINT_PROMPT" != 1 ] && [ "${GENSEO_LANDING_PRINT_SETTINGS:-0}" != "1" ]; then
   GENSEO_CFG="$HOME/.claude-genseo"; USE_NATIVE=0
   if [ -d "$GENSEO_CFG" ]; then
     AUTH_JSON="$(CLAUDE_CONFIG_DIR="$GENSEO_CFG" "$HOME/.local/bin/claude" auth status 2>/dev/null || true)"
@@ -110,6 +112,42 @@ if [ "$PRINT_PROMPT" = 1 ]; then
   printf '%s\n' "$PROMPT"
   exit 0
 fi
+# 2026-10-11 pure-shilajit-gold-resin: hosted lane set CLAUDE_CONFIG_DIR to
+# ~/.claude-genseo (no CLAUDE.md there) and the writer still loaded
+# ~/.claude/CLAUDE.md as User memory. That file's always-on scope gate said
+# more than 2 output files, show a menu, then wait. The model asked
+# "Proceed with the full unpublished draft package?" and exited 0 with no spec.
+# claudeMdExcludes drops that User file (and the wiki path it symlinks to) for
+# unpublished runs. Project CLAUDE.md and this prompt stay. A non-daily live
+# attempt does not get the waiver, so it does not get this exclude.
+# --settings merges; it does not replace the lane's auth or permission flags.
+SETTINGS_ARGS=()
+if [ -n "$SCOPE_WAIVER" ]; then
+  SETTINGS_JSON="$(/usr/bin/python3 - "$HOME/.claude/CLAUDE.md" "$HOME/PATI/LLM-Wiki/CLAUDE.md" <<'PY'
+import json, sys
+user_md, wiki_md = sys.argv[1:]
+print(json.dumps({
+    "claudeMdExcludes": [
+        user_md,
+        wiki_md,
+        "**/.claude/CLAUDE.md",
+        "**/LLM-Wiki/CLAUDE.md",
+    ]
+}))
+PY
+)" || SETTINGS_JSON=""
+  if [ -n "$SETTINGS_JSON" ]; then
+    SETTINGS_ARGS=(--settings "$SETTINGS_JSON")
+  else
+    echo "WARN: claudeMdExcludes settings were not built; prompt waiver only" >> "$LOG"
+  fi
+fi
+if [ "${GENSEO_LANDING_PRINT_SETTINGS:-0}" = "1" ]; then
+  if [ "${#SETTINGS_ARGS[@]}" -gt 0 ]; then
+    printf '%s\n' "${SETTINGS_ARGS[@]}"
+  fi
+  exit 0
+fi
 echo "=== landing run $STAMP $TEMPLATE $STORE ===" >> "$LOG"
 genseo_lane_log_line >> "$LOG"
 # Router lanes only. Native keeps the CLI default. dontAsk is the fallback if the
@@ -120,7 +158,7 @@ if [ "${GENSEO_MODEL_LANE:-}" != "native" ]; then
   PERM_ARGS=(--permission-mode "$GENSEO_PERMISSION_MODE")
 fi
 "$CLAUDE_BIN" -p "$PROMPT" --model "$GENSEO_WRITER_MODEL" --fallback-model "$GENSEO_WRITER_FALLBACK" \
-  "${PERM_ARGS[@]}" --strict-mcp-config \
+  "${PERM_ARGS[@]}" "${SETTINGS_ARGS[@]}" --strict-mcp-config \
   --output-format text --allowed-tools "Read,Write,Edit,Bash,Glob,Grep,WebFetch,WebSearch" >> "$LOG" 2>&1
 RC=$?
 echo "=== exit $RC ===" >> "$LOG"; tail -5 "$LOG"

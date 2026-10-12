@@ -22,6 +22,7 @@ assemble(){  # assemble <outfile> <runner args...>  — lane flags come from the
     GENSEO_LANDING_DAILY="${GENSEO_LANDING_DAILY-}" \
     GENSEO_LANDING_DRAFT="${GENSEO_LANDING_DRAFT-}" \
     GENSEO_LANDING_LIVE_OK="${GENSEO_LANDING_LIVE_OK-}" \
+    GENSEO_LANDING_PRINT_SETTINGS="${GENSEO_LANDING_PRINT_SETTINGS-}" \
     /bin/bash "$RUNNER" "$@" > "$out"
 }
 
@@ -185,6 +186,42 @@ if grep -q 're-armed 2026-10-11' "$ROOT/daily-landing-tickets.md"; then
   ok "re-arm note is on the queue"
 else
   bad "missing 2026-10-11 re-arm note"
+fi
+
+echo "6. unpublished run excludes the user scope-gate CLAUDE.md; a live attempt does not"
+OUT="$TMP/settings-daily.txt"
+if GENSEO_LANDING_DAILY=1 GENSEO_LANDING_DRAFT=1 GENSEO_LANDING_PRINT_SETTINGS=1 \
+  assemble "$OUT" --queue daily-landing-tickets.md --next; then
+  ok "daily settings print exit 0"
+else
+  bad "daily settings print failed"; echo "-----"; cat "$OUT"; echo "-----"
+fi
+if python3 - "$OUT" "$TMP/home/.claude/CLAUDE.md" "$TMP/home/PATI/LLM-Wiki/CLAUDE.md" <<'PY'
+import json, sys
+text = open(sys.argv[1], encoding="utf-8").read().splitlines()
+user_md, wiki_md = sys.argv[2:]
+if len(text) != 2 or text[0] != "--settings":
+    sys.exit("expected --settings then one JSON line, got %r" % text[:4])
+data = json.loads(text[1])
+ex = data.get("claudeMdExcludes")
+need = [user_md, wiki_md, "**/.claude/CLAUDE.md", "**/LLM-Wiki/CLAUDE.md"]
+if ex != need:
+    sys.exit("excludes %r" % ex)
+print("settings-ok")
+PY
+then ok "daily settings exclude the user and wiki CLAUDE.md"; else bad "daily settings excludes"; fi
+
+OUT="$TMP/settings-live.txt"
+if GENSEO_LANDING_LIVE_OK=1 GENSEO_LANDING_PRINT_SETTINGS=1 \
+  assemble "$OUT" listicle wellnessnest "product=pure-shilajit-gold-resin live-attempt"; then
+  ok "live settings print exit 0"
+else
+  bad "live settings print failed"
+fi
+if [ ! -s "$OUT" ]; then
+  ok "live attempt passes no claudeMdExcludes settings"
+else
+  bad "live attempt still has settings [$(cat "$OUT")]"
 fi
 
 echo
