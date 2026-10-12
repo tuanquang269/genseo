@@ -48,10 +48,14 @@ print(count)
 PY
 }
 
+# Fixture queue, not daily-landing-tickets.md. Gold-resin is already an unpublished
+# DRAFT there (2026-10-12 page 166173573435) and must not be reopened for this check.
+printf '%s\n' '- [ ] listicle | wellnessnest | product=pure-shilajit-gold-resin · angle: Resin vs capsules vs gummies: N things to compare before you pick a shilajit format · audience: adults comparing shilajit formats (added 2026-10-09)' > "$TMP/queue.md"
+
 echo "1. daily + draft (the 2026-10-11 lane) — waiver survives the DAILY_RULES override"
 OUT="$TMP/daily.txt"
 if GENSEO_LANDING_DAILY=1 GENSEO_LANDING_DRAFT=1 \
-  assemble "$OUT" --print-prompt --queue daily-landing-tickets.md --next; then
+  assemble "$OUT" --print-prompt --queue "$TMP/queue.md" --next; then
   ok "print-prompt exit 0"
 else
   bad "print-prompt failed"; echo "-----"; cat "$OUT"; echo "-----"
@@ -171,12 +175,18 @@ else
   ok "live attempt has no draft waiver"
 fi
 
-echo "5. gold-resin ticket is the open one the next daily/catch-up will take"
-first="$(grep -m1 -E '^- \[ \] ' "$ROOT/daily-landing-tickets.md" || true)"
-case "$first" in
-  *'product=pure-shilajit-gold-resin'*) ok "first open ticket is gold resin" ;;
-  *) bad "first open ticket [$first]" ;;
-esac
+echo "5. gold-resin stays the unpublished draft; the next daily run must not take it"
+draft='- [DRAFT 2026-10-12 page 166173573435] listicle | wellnessnest | product=pure-shilajit-gold-resin · angle: Resin vs capsules vs gummies: N things to compare before you pick a shilajit format · audience: adults comparing shilajit formats (added 2026-10-09)'
+if grep -qxF -- "$draft" "$ROOT/daily-landing-tickets.md"; then
+  ok "gold-resin draft line is on the queue"
+else
+  bad "gold-resin draft line missing"
+fi
+if grep -qE '^- \[ \] .*pure-shilajit-gold-resin' "$ROOT/daily-landing-tickets.md"; then
+  bad "gold-resin is open again"
+else
+  ok "gold-resin is not an open ticket"
+fi
 if grep -q 'FAILED 2026-10-11' "$ROOT/daily-landing-tickets.md"; then
   bad "queue still has FAILED 2026-10-11"
 else
@@ -191,7 +201,7 @@ fi
 echo "6. unpublished run excludes the user scope-gate CLAUDE.md; a live attempt does not"
 OUT="$TMP/settings-daily.txt"
 if GENSEO_LANDING_DAILY=1 GENSEO_LANDING_DRAFT=1 GENSEO_LANDING_PRINT_SETTINGS=1 \
-  assemble "$OUT" --queue daily-landing-tickets.md --next; then
+  assemble "$OUT" --queue "$TMP/queue.md" --next; then
   ok "daily settings print exit 0"
 else
   bad "daily settings print failed"; echo "-----"; cat "$OUT"; echo "-----"

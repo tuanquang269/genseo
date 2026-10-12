@@ -32,6 +32,13 @@
 # Native login leaves GENSEO_PERMISSION_MODE empty (CLI default). A stale value
 # in the environment is cleared or overwritten here.
 #
+# Wrong-shape response (landing 2026-10-12 09:19): a PATI alias can return HTTP 200
+# JSON that is an OpenAI chat.completion, not an Anthropic Messages API message.
+# Claude Code logs "body is JSON but not a Message" and exits. Its own
+# --fallback-model does not run. genseo_run_writer_with_shape_fallback re-executes
+# the same argv once on GENSEO_WRITER_FALLBACK. GENSEO_WRITER_SHAPE_RETRY stops a
+# second re-exec. Draft-only flags are unchanged; this helper never publishes.
+#
 # Test hooks — leave unset in production:
 #   GENSEO_LANE_LOCAL_UP=0|1
 #   GENSEO_LANE_MODELS_JSON='{"data":[{"id":"..."}]}'
@@ -161,4 +168,60 @@ genseo_lane_log_line() {
     "${GENSEO_WRITER_MODEL:-PATI-Alpha-Plan-Review}" \
     "${GENSEO_WRITER_FALLBACK:-PATI-Fable-5}" \
     "${GENSEO_PERMISSION_MODE:-cli-default}"
+}
+
+# Exit 0 when the writer log's latest attempt is a non-Anthropic model payload.
+# Exit 1 when it is an Anthropic message, an Anthropic error, or any other failure.
+genseo_log_needs_writer_fallback() {
+  local dir py
+  dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+  py="${GENSEO_WRITER_RESPONSE_PY:-$dir/genseo_writer_response.py}"
+  [ -f "$py" ] || return 1
+  python3 "$py" --log "$1" >/dev/null
+}
+
+# Run claude once. On a non-Anthropic HTTP 200 JSON failure, run it one more time
+# with --model set to the fallback. Same remaining argv, including --fallback-model
+# and any draft/permission flags the caller already set.
+genseo_run_writer_with_shape_fallback() {
+  local log="$1" bin="$2"
+  shift 2
+  local rc=0
+  if [ -z "$log" ] || [ -z "$bin" ]; then
+    echo "writer-shape: missing log or claude bin" >&2
+    return 1
+  fi
+  : "${GENSEO_WRITER_MODEL:=PATI-Alpha-Plan-Review}"
+  : "${GENSEO_WRITER_FALLBACK:=PATI-Fable-5}"
+  export GENSEO_WRITER_MODEL GENSEO_WRITER_FALLBACK
+
+  if [ "${GENSEO_WRITER_SHAPE_RETRY:-0}" = "1" ]; then
+    printf '=== writer attempt model=%s ===\n' "$GENSEO_WRITER_FALLBACK" >>"$log"
+    "$bin" "$@" --model "$GENSEO_WRITER_FALLBACK" >>"$log" 2>&1 || rc=$?
+    return "$rc"
+  fi
+
+  printf '=== writer attempt model=%s ===\n' "$GENSEO_WRITER_MODEL" >>"$log"
+  "$bin" "$@" --model "$GENSEO_WRITER_MODEL" >>"$log" 2>&1 || rc=$?
+  if [ "$rc" -eq 0 ]; then
+    return 0
+  fi
+  if [ -z "$GENSEO_WRITER_FALLBACK" ] || [ "$GENSEO_WRITER_FALLBACK" = "$GENSEO_WRITER_MODEL" ]; then
+    return "$rc"
+  fi
+  if ! genseo_log_needs_writer_fallback "$log"; then
+    return "$rc"
+  fi
+  printf 'writer-shape: %s returned HTTP 200 JSON that is not an Anthropic message; one re-exec on %s\n' \
+    "$GENSEO_WRITER_MODEL" "$GENSEO_WRITER_FALLBACK" >>"$log"
+  GENSEO_WRITER_SHAPE_RETRY=1
+  export GENSEO_WRITER_SHAPE_RETRY
+  printf '=== writer attempt model=%s ===\n' "$GENSEO_WRITER_FALLBACK" >>"$log"
+  rc=0
+  "$bin" "$@" --model "$GENSEO_WRITER_FALLBACK" >>"$log" 2>&1 || rc=$?
+  if genseo_log_needs_writer_fallback "$log"; then
+    printf 'writer-shape: %s also returned a non-Anthropic payload; not retrying again\n' \
+      "$GENSEO_WRITER_FALLBACK" >>"$log"
+  fi
+  return "$rc"
 }

@@ -157,9 +157,14 @@ if [ "${GENSEO_MODEL_LANE:-}" != "native" ]; then
   : "${GENSEO_PERMISSION_MODE:=dontAsk}"
   PERM_ARGS=(--permission-mode "$GENSEO_PERMISSION_MODE")
 fi
-"$CLAUDE_BIN" -p "$PROMPT" --model "$GENSEO_WRITER_MODEL" --fallback-model "$GENSEO_WRITER_FALLBACK" \
+# 2026-10-12 09:19: the primary writer returned HTTP 200 OpenAI chat.completion.
+# Claude logged "JSON but not a Message" and exited with no spec. --fallback-model
+# did not run. One re-exec uses GENSEO_WRITER_FALLBACK. The prompt and draft flags
+# stay as they are; this path still never passes --live.
+genseo_run_writer_with_shape_fallback "$LOG" "$CLAUDE_BIN" \
+  -p "$PROMPT" --fallback-model "$GENSEO_WRITER_FALLBACK" \
   "${PERM_ARGS[@]}" "${SETTINGS_ARGS[@]}" --strict-mcp-config \
-  --output-format text --allowed-tools "Read,Write,Edit,Bash,Glob,Grep,WebFetch,WebSearch" >> "$LOG" 2>&1
+  --output-format text --allowed-tools "Read,Write,Edit,Bash,Glob,Grep,WebFetch,WebSearch"
 RC=$?
 echo "=== exit $RC ===" >> "$LOG"; tail -5 "$LOG"
 if [ "$1" = "--next" ] && [ $RC = 0 ] && [ "${GENSEO_LANDING_DAILY:-0}" != "1" ]; then   # daily lane: wrapper re-tags
