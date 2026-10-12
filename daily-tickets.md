@@ -635,7 +635,7 @@ plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check th
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** turkesterone + athletes checked 2026-10-09 against 108 live articles (blog listing + sitemap + Atom) and all 47 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1009-2 — vaginal probiotic dosage** — `Vaginal Probiotic Dosage: How Many CFU a Day? (US 2026)`
+- [DONE 2026-10-12 https://wellnessnest.co/blogs/news/vaginal-probiotic-dosage-how-many-cfu-a-day-us-2026] **#CA1009-2 — vaginal probiotic dosage** — `Vaginal Probiotic Dosage: How Many CFU a Day? (US 2026)`
   - **Primary keyword:** `vaginal probiotic dosage` · **Secondary:** how many cfu for vaginal health, vaginal probiotic cfu, 1 billion cfu probiotic, how many vaginal probiotics a day
   - **Search intent:** buyer comparing CFU numbers on labels and unsure how much is enough
   - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-09 11:08 ICT)
