@@ -649,7 +649,7 @@ plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check th
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** probiotic + dosage checked 2026-10-09 against 108 live articles (blog listing + sitemap + Atom) and all 47 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1009-3 — where to buy creatine gummies** — `Where to Buy Creatine Gummies: 5 Label Checks (US 2026)`
+- [SKIPPED-DUPLICATE 2026-10-12 https://wellnessnest.co/blogs/news/where-to-buy-creatine-gummies-5-label-checks-us-2026] **#CA1009-3 — where to buy creatine gummies** — `Where to Buy Creatine Gummies: 5 Label Checks (US 2026)`
   - **Primary keyword:** `where to buy creatine gummies` · **Secondary:** best place to buy creatine gummies, creatine gummies in stores, do creatine gummies have creatine, creatine gummies price
   - **Search intent:** buyer choosing a creatine gummy brand who has heard some gummies are under-dosed
   - **Template:** LISTICLE · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-09 11:08 ICT)
