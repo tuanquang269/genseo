@@ -116,6 +116,73 @@ case "$first" in
   *) bad "first open ticket [$first]" ;;
 esac
 
+echo "3. article run excludes the user scope-gate CLAUDE.md; project memory stays"
+OUT="$TMP/settings.txt"
+if env -i HOME="$TMP/home" PATH="/usr/bin:/bin" \
+  GENSEO_ARTICLE_PRINT_SETTINGS=1 /bin/bash "$RUNNER" > "$OUT"; then
+  ok "settings print exit 0"
+else
+  bad "settings print failed"; echo "-----"; cat "$OUT"; echo "-----"
+fi
+if python3 - "$OUT" "$TMP/article.txt" \
+  "$TMP/home/.claude/CLAUDE.md" "$TMP/home/PATI/LLM-Wiki/CLAUDE.md" \
+  "$ROOT/CLAUDE.md" "$ROOT/AGENTS.md" <<'PY'
+import json, sys
+text = open(sys.argv[1], encoding="utf-8").read().splitlines()
+prompt = open(sys.argv[2], encoding="utf-8").read()
+user_md, wiki_md, project_claude, project_agents = sys.argv[3:]
+if len(text) != 2 or text[0] != "--settings":
+    sys.exit("expected --settings then one JSON line, got %r" % text[:4])
+data = json.loads(text[1])
+if list(data) != ["claudeMdExcludes"]:
+    sys.exit("settings keys %r" % list(data))
+ex = data["claudeMdExcludes"]
+need = [user_md, wiki_md, "**/.claude/CLAUDE.md", "**/LLM-Wiki/CLAUDE.md"]
+if ex != need:
+    sys.exit("excludes %r" % ex)
+for banned in (project_claude, project_agents, "AGENTS.md", "genseo/CLAUDE.md"):
+    if banned in ex:
+        sys.exit("project memory excluded: %s" % banned)
+gate = "validate_article.py prints PASS"
+pub = "scripts/shopify_publisher.py --live"
+if gate not in prompt or pub not in prompt:
+    sys.exit("publish path missing from the prompt")
+if prompt.index(gate) > prompt.index(pub):
+    sys.exit("validate gate is after the publisher")
+if "validate_article.py gate (exit 0 required)" not in prompt:
+    sys.exit("step gate missing")
+print("settings-ok")
+PY
+then ok "settings exclude the user and wiki CLAUDE.md"; else bad "settings excludes"; fi
+
+if grep -F -q '/bin/bash "$G/scripts/run_ticket_headless.sh"' "$ROOT/deploy/grokbot-genseo-daily.sh"; then
+  ok "daily wrapper calls the checkout runner"
+else
+  bad "daily wrapper does not call the checkout runner"
+fi
+# print-settings, the native invocation, and the router invocation
+settings_hits="$(grep -F -c '"${SETTINGS_ARGS[@]}"' "$RUNNER" || true)"
+if [ "$settings_hits" = 3 ]; then
+  ok "print-settings, native, and router pass the exclude"
+else
+  bad "expected 3 settings expansions, got $settings_hits"
+fi
+if awk '/GENSEO_MODEL_LANE:-}" = "native"/,/^else$/' "$RUNNER" | grep -F -q '"${SETTINGS_ARGS[@]}"'; then
+  ok "native lane passes claudeMdExcludes"
+else
+  bad "native lane missing settings"
+fi
+if awk '/^else$/,/^fi$/' "$RUNNER" | grep -F -q '"${SETTINGS_ARGS[@]}"'; then
+  ok "router lane passes claudeMdExcludes"
+else
+  bad "router lane missing settings"
+fi
+if awk '/GENSEO_MODEL_LANE:-}" = "native"/,/^else$/' "$RUNNER" | grep -q 'permission-mode'; then
+  bad "native lane passes permission-mode"
+else
+  ok "native lane leaves the CLI permission mode"
+fi
+
 echo
 echo "$PASS passed, $FAIL failed"
 [ "$FAIL" -eq 0 ]

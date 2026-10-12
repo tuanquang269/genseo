@@ -3,6 +3,7 @@
 # Mirrors the proven pati-os dreams pattern: enrich launchd's minimal PATH,
 # strip ANTHROPIC_API_KEY so claude CLI uses subscription OAuth, run one ticket.
 #   scripts/run_ticket_headless.sh --print-prompt   # assembled prompt only; no model
+#   GENSEO_ARTICLE_PRINT_SETTINGS=1 scripts/run_ticket_headless.sh  # --settings only; no model
 
 export PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
 # nvm-installed node (Mac mini lane) — ima2 is a node script and needs node on PATH
@@ -15,7 +16,10 @@ unset ANTHROPIC_API_KEY
 PRINT_PROMPT=0
 if [ "${1:-}" = "--print-prompt" ]; then PRINT_PROMPT=1; shift; fi
 
-if [ "$PRINT_PROMPT" != 1 ]; then
+# GENSEO_ARTICLE_PRINT_SETTINGS=1 prints the article-run --settings payload and exits
+# before the model lane, the live-count guard, and claude.
+# tests/test_article_prompt_waiver.sh uses it. No Shopify, no claude.
+if [ "$PRINT_PROMPT" != 1 ] && [ "${GENSEO_ARTICLE_PRINT_SETTINGS:-0}" != "1" ]; then
 # Pipeline scripts need Pillow/markdown. If the first python3 on PATH lacks them (MacBook: Homebrew 3.12),
 # shim python3 -> /usr/bin/python3 for this run so the agent never trips on "No module named PIL".
 if ! python3 -c 'import PIL, markdown' >/dev/null 2>&1 && /usr/bin/python3 -c 'import PIL, markdown' >/dev/null 2>&1; then
@@ -139,6 +143,39 @@ if [ "$PRINT_PROMPT" = 1 ]; then
   exit 0
 fi
 
+# 2026-10-12 #MB1009-7: the hosted lane still loaded ~/.claude/CLAUDE.md as User
+# memory. CLAUDE_CONFIG_DIR does not stop that load. That file's always-on scope
+# gate said more than 2 output files, show a menu, then wait. Three runs printed
+# the menu and exited 0 with the ticket still open (logs/articles-20261012-0750.log,
+# 0752, 0755). claudeMdExcludes drops that User file (and the wiki path it
+# symlinks to) on every article run, native and router. Project CLAUDE.md,
+# AGENTS.md, and this prompt stay. Live publish stays scripts/shopify_publisher.py
+# after validate_article.py prints PASS. --settings merges; it does not replace
+# the lane's auth or permission flags.
+SETTINGS_ARGS=()
+SETTINGS_JSON="$(/usr/bin/python3 - "$HOME/.claude/CLAUDE.md" "$HOME/PATI/LLM-Wiki/CLAUDE.md" <<'PY'
+import json, sys
+user_md, wiki_md = sys.argv[1:]
+print(json.dumps({
+    "claudeMdExcludes": [
+        user_md,
+        wiki_md,
+        "**/.claude/CLAUDE.md",
+        "**/LLM-Wiki/CLAUDE.md",
+    ]
+}))
+PY
+)" || SETTINGS_JSON=""
+if [ -n "$SETTINGS_JSON" ]; then
+  SETTINGS_ARGS=(--settings "$SETTINGS_JSON")
+fi
+if [ "${GENSEO_ARTICLE_PRINT_SETTINGS:-0}" = "1" ]; then
+  if [ "${#SETTINGS_ARGS[@]}" -gt 0 ]; then
+    printf '%s\n' "${SETTINGS_ARGS[@]}"
+  fi
+  exit 0
+fi
+
 LOGDIR="$HOME/genseo/logs"
 mkdir -p "$LOGDIR"
 STAMP="$(date +%Y%m%d-%H%M)"
@@ -154,12 +191,18 @@ ALLOWED_TOOLS="Read,Write,Edit,Bash,Glob,Grep,WebFetch,WebSearch"
 
 echo "=== GenSeo ticket run $STAMP ===" >> "$LOGDIR/articles-$STAMP.log"
 genseo_lane_log_line >> "$LOGDIR/articles-$STAMP.log"
+if [ -z "$SETTINGS_JSON" ]; then
+  echo "WARN: claudeMdExcludes settings were not built; prompt waiver only" >> "$LOGDIR/articles-$STAMP.log"
+fi
 # Native invocation only when the picker kept the login lane. A PATI-* writer
 # clears USE_NATIVE and sets local-9router or hosted-9router instead.
+# Both lanes pass claudeMdExcludes. The user scope-gate file loads as User
+# memory even when CLAUDE_CONFIG_DIR is the lean lane.
 if [ "${GENSEO_MODEL_LANE:-}" = "native" ]; then
   CLAUDE_CONFIG_DIR="$GENSEO_CFG" "$CLAUDE_BIN" -p "$PROMPT" \
     --model "$GENSEO_WRITER_MODEL" \
     --fallback-model "$GENSEO_WRITER_FALLBACK" \
+    "${SETTINGS_ARGS[@]}" \
     --output-format text \
     --allowed-tools "$ALLOWED_TOOLS" \
     >> "$LOGDIR/articles-$STAMP.log" 2>&1
@@ -176,6 +219,7 @@ else
     --model "$GENSEO_WRITER_MODEL" \
     --fallback-model "$GENSEO_WRITER_FALLBACK" \
     --permission-mode "$GENSEO_PERMISSION_MODE" \
+    "${SETTINGS_ARGS[@]}" \
     --strict-mcp-config \
     --output-format text \
     --allowed-tools "$ALLOWED_TOOLS" \
