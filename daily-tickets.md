@@ -622,7 +622,7 @@ credential), the logged fact-check pass (`logs/claims/<slug>.md`; delete unconfi
 Blog 104008483131, publish `--live`. Images: no batch-wide override — runner rule D decides per host (the MacBook
 plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check the PDP while writing.
 
-- [ ] **#CA1009-1 — turkesterone for athletes** — `Turkesterone for Athletes: What Drug Tests Check (US 2026)`
+- [DONE 2026-10-12 https://wellnessnest.co/blogs/news/turkesterone-for-athletes-drug-test-guide-us-2026] **#CA1009-1 — turkesterone for athletes** — `Turkesterone for Athletes: What Drug Tests Check (US 2026)`
   - **Primary keyword:** `turkesterone for athletes` · **Secondary:** is turkesterone banned, turkesterone drug test, turkesterone wada, turkesterone ncaa
   - **Search intent:** tested or competitive athlete deciding whether a turkesterone product is safe to take in season
   - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-09 11:08 ICT)
