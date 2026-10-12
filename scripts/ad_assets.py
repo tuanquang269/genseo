@@ -183,7 +183,9 @@ def main():
 
     # gen_png() starts the ima2 serve daemon itself, with IMA2's own directory
     # prepended to PATH. Doing it here too would only risk launching the daemon
-    # under a worse PATH than the one that works.
+    # under a worse PATH than the one that works. gen_png also retries a dropped
+    # stream / 5xx / timeout, then sys.exits — this loop only regenerates when
+    # the pixels came back at the wrong ratio.
     for attempt in range(1, 4):
         print(f"⏳ ima2 gen {stem} (ask {native}, {len(refs)} ref, try {attempt}/3)...", flush=True)
         if os.path.exists(raw):

@@ -14,6 +14,9 @@ in the draft's ![alt](...) tag; shopify_publisher.py uploads it to the CDN.
 
 House rules baked in:
   * generator = ima2 OAuth only (no KIE / per-token APIs)
+  * a dropped Responses stream, HTTP 429/5xx, timeout, or connection reset
+    is retried inside gen_png (3 attempts, 5s then 15s). Auth, content
+    policy, and invalid-request failures are not retried.
   * default size 1536x1024 (blog landscape, 1K class — never 2K/4K)
   * every prompt gets the no-watermark/no-caption suffix
   * output webp < 80KB (quality ladder, then width ladder)
@@ -31,6 +34,7 @@ import os
 import re
 import subprocess
 import sys
+import time
 import brand_rules
 import persona_picker
 
@@ -510,7 +514,84 @@ def _ensure_serve(env):
     sys.exit("✗ ima2 serve did not come up within 30s — check /tmp/ima2-serve-genseo.log (OAuth session may need re-login)")
 
 
-def gen_png(prompt, size, out_png, refs, timeout=360):
+# 2026-10-12 #CA1009-3 (daily run 4, 18:21–18:41 ICT): ima2 printed
+# "Responses stream returned an error" and gen_png exited on that first try.
+# deploy/grokbot-genseo-daily.sh then counts a ticket that puts nothing new
+# live, and stops the day after three of those. A dropped stream, a 429/5xx,
+# a timeout, or a reset is the upstream blipping — retry a few times, briefly.
+# Auth, content policy, and a bad request are the same call again: do not
+# retry them, and do not retry an error we cannot classify. ad_assets.py's
+# 3-try loop is a different gate (wrong aspect ratio after a file landed).
+# It calls gen_png, so it inherits this retry; it does not replace it.
+# QC re-rolls (exit 2, max 2) stay in the caller. No second image vendor.
+IMA2_ATTEMPTS = 3
+IMA2_BACKOFF_SEC = (5, 15)  # after attempt 1, then after attempt 2
+IMA2_MIN_PNG_BYTES = 30_000
+
+# Status codes count only when they are written as an HTTP failure. A dose
+# ("500 mg") or our own "--timeout 360" flag must not look transient.
+_IMA2_TRANSIENT_RE = (
+    re.compile(r"responses stream returned an error", re.I),
+    re.compile(r"\b(?:response|responses|event) stream\b[^.\n]{0,80}\b(?:error|interrupted|closed|failed)\b", re.I),
+    re.compile(r"\bstream (?:error|interrupted|closed|failed|disconnected)\b", re.I),
+    re.compile(r"\b(?:econnreset|econnrefused|etimedout|econnaborted|epipe|enotconn|enetunreach|ehostunreach)\b", re.I),
+    re.compile(r"connection (?:reset|refused|aborted)|broken pipe|socket hang up|peer closed connection|server disconnected", re.I),
+    re.compile(r"timed out|timeout exceeded|deadline exceeded|gateway timeout|read timeout|i/o timeout|request timeout", re.I),
+    re.compile(r"\b(?:http|status|error|code)[:\s/]+(429|500|502|503|504|529)\b", re.I),
+    re.compile(r"\b(?:internal server error|bad gateway|service unavailable|gateway timeout|too many requests)\b", re.I),
+    re.compile(r"\b(?:temporarily unavailable|upstream (?:error|reset)|network error|fetch failed|rate limit)\b", re.I),
+    re.compile(r"APIConnectionError|APITimeoutError|APIConnectionTimeoutError|ConnectError|ReadTimeout|RemoteProtocolError"),
+    re.compile(r"\boverloaded\b", re.I),
+)
+_IMA2_PERMANENT_RE = (
+    re.compile(r"\b(?:unauthorized|unauthorised|authentication failed|invalid api key|invalid_api_key|not logged in|login required|re-login|oauth session expired)\b", re.I),
+    re.compile(r"\b(?:http|status|error|code)[:\s/]+(400|401|402|403)\b", re.I),
+    re.compile(r"\b(?:bad request|invalid request|invalid_request_error|invalid_request)\b", re.I),
+    re.compile(r"\b(?:forbidden|payment required)\b", re.I),
+    re.compile(r"\b(?:content policy|content_policy(?:_violation)?|safety system|moderation blocked)\b", re.I),
+    re.compile(r"\b(?:insufficient_quota|quota exceeded|billing hard limit)\b", re.I),
+)
+
+
+def ima2_error_class(text):
+    """Classify an ima2 failure as 'transient', 'permanent', or 'unknown'.
+
+    Permanent wins when both match, so a stream line that also carries a 401
+    or a content-policy refusal is not retried. Callers that see 'unknown'
+    must not retry: an unrecognized refusal repeated three times still fails,
+    and it spends three generations to do it.
+    """
+    blob = text or ""
+    if any(pat.search(blob) for pat in _IMA2_PERMANENT_RE):
+        return "permanent"
+    if any(pat.search(blob) for pat in _IMA2_TRANSIENT_RE):
+        return "transient"
+    return "unknown"
+
+
+def _ima2_chosen_output(res):
+    """stderr when ima2 wrote one, otherwise stdout. Matches the old tail source,
+    except blank stderr no longer hides a real error on stdout."""
+    err = (getattr(res, "stderr", None) or "").strip()
+    out = (getattr(res, "stdout", None) or "").strip()
+    return err or out
+
+
+def _ima2_tail(text, returncode):
+    lines = [ln.strip() for ln in (text or "").splitlines() if ln.strip()]
+    if lines:
+        return " | ".join(lines[-3:])
+    if returncode is None:
+        return "no output"
+    return "exit %s, no output" % returncode
+
+
+def gen_png(prompt, size, out_png, refs, timeout=360, sleeper=None):
+    """Render one PNG via the local ima2 binary.
+
+    sleeper defaults to time.sleep. Tests pass their own so the backoff
+    does not actually wait.
+    """
     cmd = [IMA2, "gen", prompt + PROMPT_SUFFIX, "-q", "medium", "-s", size,
            "-o", out_png, "--timeout", str(timeout)]
     for r in refs:
@@ -527,11 +608,47 @@ def gen_png(prompt, size, out_png, refs, timeout=360):
         cmd += ["--model", model]
     env = os.environ.copy()
     env["PATH"] = os.path.dirname(IMA2) + ":" + env.get("PATH", "")
-    _ensure_serve(env)
-    res = subprocess.run(cmd, env=env, capture_output=True, text=True, timeout=timeout + 30)
-    if res.returncode != 0 or not os.path.exists(out_png) or os.path.getsize(out_png) < 30_000:
-        tail = (res.stderr or res.stdout).strip().splitlines()[-3:]
-        sys.exit("✗ ima2 generation failed: " + " | ".join(tail))
+    pause = time.sleep if sleeper is None else sleeper
+    last_tail = "no output"
+    for attempt in range(1, IMA2_ATTEMPTS + 1):
+        if os.path.isfile(out_png):
+            os.unlink(out_png)
+        _ensure_serve(env)
+        try:
+            res = subprocess.run(cmd, env=env, capture_output=True, text=True,
+                                 timeout=timeout + 30)
+        except subprocess.TimeoutExpired:
+            last_tail = "timed out after %ss" % (timeout + 30)
+            kind = "transient"
+        else:
+            chosen = _ima2_chosen_output(res)
+            size_b = os.path.getsize(out_png) if os.path.isfile(out_png) else 0
+            if res.returncode == 0 and size_b >= IMA2_MIN_PNG_BYTES:
+                return
+            last_tail = _ima2_tail(chosen, res.returncode)
+            kind = ima2_error_class(chosen)
+            # Exit 0 with no usable file and no refusal text is a truncated
+            # write. A policy line on that same output stays permanent.
+            if res.returncode == 0 and size_b < IMA2_MIN_PNG_BYTES:
+                note = "output missing" if size_b == 0 else (
+                    "output %dB < %dB" % (size_b, IMA2_MIN_PNG_BYTES))
+                last_tail = ("%s: %s" % (note, last_tail)) if chosen else note
+                if kind == "unknown":
+                    kind = "transient"
+        if kind == "transient" and attempt < IMA2_ATTEMPTS:
+            wait = IMA2_BACKOFF_SEC[min(attempt - 1, len(IMA2_BACKOFF_SEC) - 1)]
+            print(f"   ✗ ima2 attempt {attempt}/{IMA2_ATTEMPTS}: {last_tail} "
+                  f"— transient, retrying in {wait}s", flush=True)
+            pause(wait)
+            continue
+        if kind == "permanent":
+            why = "permanent, not retrying"
+        elif kind != "transient":
+            why = "not retrying"
+        else:
+            why = "transient, giving up"
+        print(f"   ✗ ima2 attempt {attempt}/{IMA2_ATTEMPTS}: {last_tail} — {why}", flush=True)
+        sys.exit("✗ ima2 generation failed: " + last_tail)
 
 
 def compress_webp(src_png, out_webp):
