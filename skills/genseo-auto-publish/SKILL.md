@@ -9,6 +9,8 @@ metadata: {"clawdbot":{"emoji":"🏭","requires":{"commands":["python3","curl"]}
 
 You are the Master Orchestrator. When the user invokes this skill, you must execute the entire SEO content pipeline from Research to Publishing AUTONOMOUSLY. Do not pause to ask the user to switch agents. You possess the powers of the Strategist, the Writer, and the Publisher all in one.
 
+The daily headless prompt carries `SCOPE_WAIVER (Kevin, standing approval for the daily blog article)`. On that run the always-on file-count scope gate is off. More than 2 output files does not mean show a menu and wait. Write the one ticket (draft, images, claims log, tracker row, ticket update) and publish the blog article live after `validate_article.py` prints PASS. A template named LISTICLE is still that blog article. This waiver does not publish a landing-page listicle. On 2026-10-12 three hosted-9router runs showed a file-count menu for `#MB1009-7` and exited 0 with the ticket unchanged.
+
 ## Required Input Check
 Before diving into Step 1, verify you have:
 1. The Target Topic or Keyword(s).

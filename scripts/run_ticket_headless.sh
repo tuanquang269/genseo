@@ -2,12 +2,20 @@
 # GenSeo headless ticket runner — called by launchd (com.pati.genseo-articles).
 # Mirrors the proven pati-os dreams pattern: enrich launchd's minimal PATH,
 # strip ANTHROPIC_API_KEY so claude CLI uses subscription OAuth, run one ticket.
+#   scripts/run_ticket_headless.sh --print-prompt   # assembled prompt only; no model
 
 export PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
 # nvm-installed node (Mac mini lane) — ima2 is a node script and needs node on PATH
 for d in "$HOME"/.nvm/versions/node/*/bin; do [ -d "$d" ] && PATH="$d:$PATH"; done
 export PATH
 unset ANTHROPIC_API_KEY
+# --print-prompt writes the assembled writer prompt and exits before the model
+# lane, the live-count guard, and claude. tests/test_article_prompt_waiver.sh
+# uses it. No Shopify, no claude.
+PRINT_PROMPT=0
+if [ "${1:-}" = "--print-prompt" ]; then PRINT_PROMPT=1; shift; fi
+
+if [ "$PRINT_PROMPT" != 1 ]; then
 # Pipeline scripts need Pillow/markdown. If the first python3 on PATH lacks them (MacBook: Homebrew 3.12),
 # shim python3 -> /usr/bin/python3 for this run so the agent never trips on "No module named PIL".
 if ! python3 -c 'import PIL, markdown' >/dev/null 2>&1 && /usr/bin/python3 -c 'import PIL, markdown' >/dev/null 2>&1; then
@@ -75,12 +83,11 @@ if [ "$_LIVE" -lt 0 ] || [ "$_LIVE" -ge "$_TARGET" ]; then
   echo "[$(date '+%F %T')] $(hostname -s) skipped: live today=$_LIVE target=$_TARGET" >> "$HOME/genseo/logs/articles-retry.log"
   exit 0
 fi
+fi
 
-LOGDIR="$HOME/genseo/logs"
-mkdir -p "$LOGDIR"
-STAMP="$(date +%Y%m%d-%H%M)"
+PROMPT='ARTICLE ALREADY APPROVED. Write and publish this one blog article in this run. The always-on file-count scope gate is off: more than 2 output files does not mean show a menu and wait. Do not show a file-count menu. Do not wait. Do not ask a human to proceed.
 
-PROMPT='Continue with the next ticket in /Users/kevinkreative/genseo/daily-tickets.md.
+Continue with the next ticket in /Users/kevinkreative/genseo/daily-tickets.md.
 
 Rules for this run:
 1. Take the FIRST ticket whose heading still contains `[ ]` (top-to-bottom). Process exactly ONE ticket, then STOP.
@@ -101,7 +108,7 @@ Rules for this run:
 STANDING APPROVALS (Kevin, 2026-08-08 — this run is unattended, never pause to ask):
 - The mandatory media-cost gate is PRE-APPROVED for ima2 OAuth image generation only (ChatGPT subscription, $0 per image — hero + 3 inline per article). Do not stop to present a cost table for ima2; note "ima2 $0 subscription (standing approval)" in the report instead.
 - This pre-approval covers NOTHING else: any paid media API (KIE, Veo, Kling, HeyGen, ElevenLabs, per-token image/video/audio) remains FORBIDDEN in this pipeline — if a step seems to need one, skip it, mark the ticket [BLOCKED <reason>], and report.
-- If any OTHER rule requires human input, do not improvise: leave the ticket un-flipped, explain in the report, exit.
+- If any OTHER rule requires human input, do not improvise: leave the ticket un-flipped, explain in the report, exit. The file-count scope gate is not one of those rules. The SCOPE_WAIVER at the end of this prompt turns that gate off for this blog article.
 
 CONTEXT HYGIENE (a run died on "input exceeds the context window", 2026-08-09): never Read a whole large file — use offset/limit chunks for anything over ~500 lines; never cat/tail entire logs or HTML dumps; read only the sections of skill references you need. If a tool result looks huge, summarize and move on instead of re-reading it.
 
@@ -116,7 +123,25 @@ L. ShilaSource Himalayan Shilajit Resin pack label is product_refs/shilasource-h
 T. Turkesterone Advanced Formula pack label is product_refs/turkesterone-advanced-formula.label.json. Repeat only that file'\''s required and optional lines. No milligram amount and no Supplement Facts panel were read into that file. Do not add one. The capsule badge is the separate lines 60 and Capsules. Do not state a milligram amount, a serving count, a different capsule count, or a day-supply. python3 scripts/turkesterone_rules.py --brief prints the line. Bare turkesterone (the ingredient) is not this SKU. Premium Himalayan Shilajit Gummies, Shilajit Shockwave, Pure Shilajit Gold Resin, and ShilaSource resin are separate products and are not covered by this rule.
 F. Never run Bash commands in the background (no run_in_background, no trailing &): this is a one-shot -p run and it ENDS when you stop talking, killing background image jobs (2026-10-06 10:47 a run exited mid-images). Run image generations in the foreground, one or several per command.
 E. NEVER modify an existing live post: no [REFRESH EXISTING], no shopify_publisher.py update on an article you did not create in this run. If STEP 0/0.5 says refresh or duplicate, mark the ticket SKIPPED and move to the next one.
-D. If the ticket batch header says "ALL images NO-FACE" (MacBook failover lane, or env GENSEO_NO_FACE='"${GENSEO_NO_FACE:-0}"' = 1): that OVERRIDES the HERO / PERSONA ROTATION / FACE ANGLE rules above for this run — do NOT run persona_picker.py at all, never pass --persona-ref, make the hero a NO-FACE real-pack-in-a-real-scene image (--product-ref + --qc, no --ugc) and all 3 inline images no-face (--ugc --qc). Log "persona: none (failover no-face)" in the tracker/report.'
+D. If the ticket batch header says "ALL images NO-FACE" (MacBook failover lane, or env GENSEO_NO_FACE='"${GENSEO_NO_FACE:-0}"' = 1): that OVERRIDES the HERO / PERSONA ROTATION / FACE ANGLE rules above for this run — do NOT run persona_picker.py at all, never pass --persona-ref, make the hero a NO-FACE real-pack-in-a-real-scene image (--product-ref + --qc, no --ugc) and all 3 inline images no-face (--ugc --qc). Log "persona: none (failover no-face)" in the tracker/report.
+
+SCOPE_WAIVER (Kevin, standing approval for the daily blog article):
+- This run writes and publishes one blog article from daily-tickets.md. Kevin already approved that package on 2026-08-09 (auto publish visible). Do not ask a human to proceed. Do not stop on a scope gate.
+- The always-on scope gate is off. That rule says more than 2 output files, show a menu with real file counts, then wait, and silence means the smallest set. Do not show that menu. Do not wait. Silence does not mean 0 files. The full package is the approved deliverable.
+- The full package for this one ticket is the draft, the hero image, at least 3 inline images, logs/claims/<slug>.md, the tracker CSV row, and the ticket heading update. Write those files. Do not offer a smaller set.
+- Do not ask "Proceed with the full live publish package?" That question and an exit with the ticket still open is the 2026-10-12 failure (logs/articles-20261012-0750.log, 0752, 0755, ticket #MB1009-7 unchanged).
+- The bullet that says to exit when some other rule requires human input does not apply to this scope gate. Leaving the ticket `[ ]` and writing no draft is a failed run.
+- A ticket template named LISTICLE is still this blog article. Publish it live after validate_article.py prints PASS, using scripts/shopify_publisher.py --live. This waiver does not publish a landing-page listicle, a gsl- page, or any file under landing_drafts/.
+- ima2 image generation stays the $0 standing approval. Do not stop for a cost table.'
+
+if [ "$PRINT_PROMPT" = 1 ]; then
+  printf '%s\n' "$PROMPT"
+  exit 0
+fi
+
+LOGDIR="$HOME/genseo/logs"
+mkdir -p "$LOGDIR"
+STAMP="$(date +%Y%m%d-%H%M)"
 
 # Both lanes get the same grant, declared once so they cannot drift apart.
 # WebSearch added 2026-08-12. It was missing, and its absence was silent: the skill's STEP 2
