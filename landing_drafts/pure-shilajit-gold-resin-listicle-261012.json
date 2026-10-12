@@ -1,0 +1,253 @@
+{
+  "engine": "ref",
+  "template": "listicle",
+  "posture": "hybrid",
+  "store": "wellnessnest",
+  "slug": "pure-shilajit-gold-resin-listicle-261012",
+  "handle": "gsl-preview-pure-shilajit-gold-resin-listicle-261012",
+  "template_suffix": "gsl-ref-listicle-v4",
+  "takeover": false,
+  "created": "2026-10-12",
+  "daily": true,
+  "reference": "http://localhost:8790/pages/10-reasons-why-creatine-is-for-skinny-people/",
+  "title": "7 Things to Compare Before You Pick a Shilajit Format",
+  "meta_description": "Resin, capsules, gummies: what the human trials actually tested, what moved, and the one thing no study has measured yet.",
+  "topbar": {
+    "labels": [
+      "Wellness Nest Guide 📖",
+      "90-Day Money-Back Guarantee on first orders"
+    ],
+    "deadline": null
+  },
+  "hero": {
+    "accent": "7 Things",
+    "title": "to Compare Before a Shilajit Format",
+    "summary_html": "<strong>Summary:</strong> Resin, capsules, and gummies are tested very differently. Here is what each form's trials actually measured.",
+    "kicker": "Evidence review · 3 studies cited",
+    "image": "tmp_images/landing-pure-shilajit-gold-resin-listicle-261012/pack-ref.webp",
+    "alt": "Pure Shilajit Gold Resin pack on a travertine podium in soft morning light",
+    "chip": "Himalayan Shilajit, raw resin",
+    "cta": {
+      "label": "SEE THE LABEL",
+      "href": "https://wellnessnest.co/products/pure-shilajit-gold-resin"
+    },
+    "image_note": "No cutout.png exists for this handle, so pack imagery here is a generated reference using the PDP photo, not an OCR whitelist check.",
+    "source": "https://wellnessnest.co/products/pure-shilajit-gold-resin.js fetched 2026-10-12",
+    "focal_y": 0.42
+  },
+  "byline": {
+    "name": "Dr. Marcus Hale",
+    "role": "Wellness Nest editorial team",
+    "avatar": "tmp_images/landing-pure-shilajit-gold-resin-listicle-261012/sq-avatar.webp"
+  },
+  "updated": "October 12, 2026",
+  "items": [
+    {
+      "title": "Three formats, three methods",
+      "body": "<p>Shilajit is sold as a raw resin you pinch into water, a capsule with a standardized extract inside, or a gummy with shilajit added to a sweetened base.</p><p>Each format changes how much fulvic acid and trace mineral content actually reaches the dose, not just how it tastes.</p>",
+      "evidence": "Product category overview, no clinical claim",
+      "image": "tmp_images/landing-pure-shilajit-gold-resin-listicle-261012/row1.webp",
+      "alt": "A pinch of dark resin, a capsule, and a gummy laid out on travertine stone"
+    },
+    {
+      "title": "Capsule trial raised testosterone",
+      "body": "<p>In a <a href=\"https://doi.org/10.1111/and.12482\" target=\"_blank\" rel=\"noopener\">placebo-controlled trial</a> of men aged 45 to 55, a purified shilajit capsule taken twice daily for 90 days raised free testosterone 19.14 percent versus baseline.</p><p>DHEAS, a related hormone, rose 31.35 percent over the same 90 days. Placebo did not match either change.</p>",
+      "evidence": "Human RCT, Andrologia 2016",
+      "source": "https://doi.org/10.1111/and.12482",
+      "chart": {
+        "kind": "bars",
+        "title": "Change vs baseline, day 90",
+        "legend": [
+          { "label": "Capsule group", "highlight": true },
+          { "label": "Placebo group" }
+        ],
+        "bars": [
+          { "label": "Free testosterone", "value": 19.14, "display": "+19.14%", "highlight": true, "inbar": "Capsule" },
+          { "label": "DHEAS", "value": 31.35, "display": "+31.35%", "highlight": true, "inbar": "Capsule" },
+          { "label": "Free testosterone", "value": 0, "display": "No gain" }
+        ],
+        "source": "Pandit S et al. Andrologia 2016;48(5):570-575. 75 men aged 45 to 55, 90 days, purified shilajit capsule vs placebo, randomised double-blind."
+      },
+      "evidence_label": "Human RCT · Pandit et al., Andrologia 2016"
+    },
+    {
+      "title": "No trial tested shilajit gummies",
+      "body": "<p>We searched Europe PMC and PubMed for a human trial of a shilajit gummy. We found none.</p><p>Gummy formulas also carry less active material per serving than a resin or a standardized capsule, since sugar and gelling agents take up space in the dose.</p>",
+      "evidence": "Evidence gap: Europe PMC and PubMed search 2026-10-12, no shilajit gummy trial found",
+      "image": "tmp_images/landing-pure-shilajit-gold-resin-listicle-261012/row3.webp",
+      "alt": "Printed research papers and reading glasses beside an empty gummy dish on linen",
+      "evidence_label": "Literature check · no gummy trial found",
+      "layout": "callout"
+    },
+    {
+      "title": "Resin pilot had no placebo",
+      "body": "<p>A <a href=\"https://doi.org/10.7759/cureus.102372\" target=\"_blank\" rel=\"noopener\">28-day pilot study</a> gave 25 healthy men a daily dose of shilajit resin (exact amount in the chart source below). Leg press strength rose 12.94 percent and grip strength rose 5.73 percent.</p><p>The design was open label with no placebo arm, so some of that gain could reflect training familiarity rather than the resin alone.</p>",
+      "evidence": "Open-label pilot, Cureus 2026",
+      "source": "https://doi.org/10.7759/cureus.102372",
+      "chart": {
+        "kind": "stats",
+        "title": "28-day open-label pilot, 25 men",
+        "stats": [
+          { "value": "+12.94%", "label": "Leg press strength", "highlight": true },
+          { "value": "+5.73%", "label": "Grip strength" },
+          { "value": "0", "label": "Placebo arms used" }
+        ],
+        "source": "Yadav D et al. Cureus 2026;18(1):e102372. 25 healthy men, 28 days, 500 mg/day TruBlk shilajit resin, open-label single-arm pilot."
+      },
+      "evidence_label": "Open-label pilot · Yadav et al., Cureus 2026"
+    },
+    {
+      "title": "Trials measured different things",
+      "body": "<p>The capsule trial measured hormone levels in blood. The resin pilot measured strength and endurance in the gym. Neither trial measured the other's outcome.</p><p>That makes format-to-format comparison a guess dressed up as a fact. Read what a study measured before you read what it means.</p>",
+      "evidence": "Study design comparison, no new claim",
+      "image": "tmp_images/landing-pure-shilajit-gold-resin-listicle-261012/row5.webp",
+      "alt": "Two open notebooks with different handwritten charts on a stone desk"
+    },
+    {
+      "title": "Contamination risk, any format",
+      "body": "<p>A <a href=\"https://doi.org/10.1186/s13065-025-01384-7\" target=\"_blank\" rel=\"noopener\">2025 lab survey</a> tested raw shilajit and finished shilajit supplements for thallium, a toxic metal. Trace amounts turned up in both, and the exact levels are in the chart source below.</p><p>Some finished products tested higher than the raw material they came from. The survey did not break results out by resin versus capsule versus gummy.</p>",
+      "evidence": "Lab survey, BMC Chemistry 2025",
+      "source": "https://doi.org/10.1186/s13065-025-01384-7",
+      "image": "tmp_images/landing-pure-shilajit-gold-resin-listicle-261012/row6.webp",
+      "alt": "A gloved hand holding lab test strips over a petri dish, no face visible",
+      "evidence_label": "Lab survey · Kamgar et al., BMC Chemistry 2025"
+    },
+    {
+      "title": "Ask for third-party lab tests",
+      "body": "<p>Since the contamination study above found no safe format, the only control left is testing. Ask a brand for a current batch's heavy-metal lab result before you buy.</p><p>A brand that will not produce one is a bigger red flag than the format you pick.</p>",
+      "evidence": "Buying guidance drawn from the lab survey above",
+      "image": "tmp_images/landing-pure-shilajit-gold-resin-listicle-261012/row7.webp",
+      "alt": "A printed lab certificate of analysis on a travertine desk beside a pen"
+    }
+  ],
+  "bridge": {
+    "title": "What the label on this jar actually says",
+    "body": "<p>Pure Shilajit Gold Resin is the raw-resin format above: no capsule shell, no gummy base. The jar's own label states 75% Fulvic Acid, with the full weight and serving count printed on the product page.</p><p>That is what the label prints. It is not a restatement of either trial above, since neither trial tested this exact product.</p><p>Taking medication or managing a health condition? Check with a doctor first.</p>",
+    "image": "tmp_images/landing-pure-shilajit-gold-resin-listicle-261012/bridge.webp",
+    "alt": "Pure Shilajit Gold Resin jar and tube on a stone shelf beside a glass of water"
+  },
+  "expert": {
+    "title": "TrustScore 4.2 · 1,144 Trustpilot Reviews",
+    "stars": 5,
+    "quote": "The shilajit from Wellness Nest has helped me detox from alcoholism and revive my liver, lungs and energy!",
+    "author": "Patricia Kowalski · Wellness Nest customer on Trustpilot",
+    "source": "https://www.trustpilot.com/reviews/69e1315a036b2887686369df (5-star review, published 2026-04-16, verbatim; TrustScore 4.2, 1,144 reviews displayed on trustpilot.com/review/wellnessnest.co, read 2026-10-12). Individual result, not a clinical claim.",
+    "image": "tmp_images/landing-pure-shilajit-gold-resin-listicle-261012/pack-ref.webp",
+    "alt": "Pure Shilajit Gold Resin pack on a travertine podium against deep green",
+    "reviews": [
+      {
+        "stars": 5,
+        "quote": "I highly recommend Wellness Nest. Its shilajit gummies are excellent sources of energy and stamina, and they taste great too!",
+        "name": "Stephen A McCloskey",
+        "meta": "GB · May 2026",
+        "verified": true,
+        "url": "https://www.trustpilot.com/reviews/6a0baa79fcc6ea99cdee38f4"
+      },
+      {
+        "stars": 5,
+        "quote": "fast and easy and the Shilajit I ordered is high Quality",
+        "name": "A Ginter",
+        "meta": "DE · Feb 2026",
+        "verified": false,
+        "url": "https://www.trustpilot.com/reviews/698a106be72503d576b56410"
+      },
+      {
+        "stars": 5,
+        "quote": "the order came very quickly. the product is working and we will continue to order.",
+        "name": "ΙΩΑΝΝΗΣ ΜΙΧΑΗΛΙΔΗΣ",
+        "meta": "GR · May 2026",
+        "verified": true,
+        "url": "https://www.trustpilot.com/reviews/69f48d775947725abd74e886"
+      }
+    ],
+    "reviews_source": "4-5 star reviews from state/trustpilot/wellnessnest.json (trustpilot.com/review/wellnessnest.co, read 2026-10-12), quoted verbatim, URLs are the individual review pages. Service/delivery and product-effect reviews, not independent clinical evidence."
+  },
+  "offer": {
+    "pill": "PURE SHILAJIT GOLD RESIN",
+    "accent": "Gold Resin",
+    "title": "the Raw Format, Lab-Tested",
+    "sub": "Himalayan shilajit resin, 75% Fulvic Acid, 1.06 oz (30g), 75 servings per jar. $75.00 on the product page.",
+    "cta": "SEE THE LABEL",
+    "href": "https://wellnessnest.co/products/pure-shilajit-gold-resin",
+    "meta": [
+      "<b>90-Day</b> Guarantee",
+      "<b>FREE</b> shipping $70+"
+    ],
+    "guarantee": "Your first order is covered by our 90-Day Money-Back Guarantee.",
+    "image": "tmp_images/landing-pure-shilajit-gold-resin-listicle-261012/pack-ref.webp",
+    "alt": "Pure Shilajit Gold Resin pack on stacked travertine discs",
+    "source": "https://wellnessnest.co/products/pure-shilajit-gold-resin.js (price $75.00, fetched 2026-10-12); refund + free-shipping threshold from /policies/refund-policy and the site ticker banner",
+    "rating_html": "<b>4.2</b> TrustScore · 1,144 reviews on Trustpilot",
+    "price": {
+      "now": "$67.50",
+      "was": "$75.00",
+      "tag": "Save 10%",
+      "note": "with Subscribe & Save, delivered every 4 weeks. Or $75.00 one-time."
+    },
+    "bullets": [
+      "Himalayan Shilajit, 75% Fulvic Acid",
+      "Lab-Tested",
+      "1.06 oz (30g) - 75 servings",
+      "90-day money-back guarantee on your first order"
+    ],
+    "price_source": "PDP /products/pure-shilajit-gold-resin.js fetched 2026-10-12: price 7500 ($75.00), selling_plan price 6750 ($67.50, 10% off, every 4 weeks). PDP /policies/refund-policy for guarantee; site ticker for free-shipping threshold."
+  },
+  "product": {
+    "name": "Pure Shilajit Gold Resin",
+    "image": "tmp_images/landing-pure-shilajit-gold-resin-listicle-261012/pack-ref.webp",
+    "bullets": [
+      "Himalayan Shilajit, 75% Fulvic Acid",
+      "Lab-Tested",
+      "1.06 oz (30g) - 75 servings",
+      "Dietary Supplements"
+    ],
+    "source": "product_refs/pure-shilajit-gold-resin.label.json (OCR-confirmed front-of-pack lines, no milligram token on this label) and https://wellnessnest.co/products/pure-shilajit-gold-resin (fetched 2026-10-12)"
+  },
+  "footer": {
+    "disclaimer": "These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease.",
+    "copyright": "© 2026 Wellness Nest. All rights reserved."
+  },
+  "sources": [
+    {
+      "label": "Pandit S, Biswas S, Jana U, De RK, Mukhopadhyay SC, Biswas TK. Clinical evaluation of purified Shilajit on testosterone levels in healthy volunteers. Andrologia 2016;48(5):570-575. doi:10.1111/and.12482",
+      "url": "https://doi.org/10.1111/and.12482"
+    },
+    {
+      "label": "Yadav D, Mishra S, Shah KM, Reddy ST, Gupta R, Pandey P. Safety and Efficacy of TruBlk Shilajit Resin Supplementation on Physical Performance and Blood Biomarkers in Healthy Adults: A 28-Day Open-Label Pilot Study. Cureus 2026;18(1):e102372. doi:10.7759/cureus.102372",
+      "url": "https://doi.org/10.7759/cureus.102372"
+    },
+    {
+      "label": "Kamgar E, Zembrzuska J, Zembrzuski W, Kaykhaii M. Quantifying of thallium in Shilajit and its supplements to unveil the potential risk of consumption of this popular traditional medicine. BMC Chem 2025;19:20. doi:10.1186/s13065-025-01384-7",
+      "url": "https://doi.org/10.1186/s13065-025-01384-7"
+    }
+  ],
+  "style": "premium",
+  "trust": [
+    {
+      "icon": "stars",
+      "html": "<b>4.2 TrustScore</b> <small>1,144 Trustpilot reviews</small>"
+    },
+    {
+      "icon": "shield",
+      "html": "<b>90-day</b> <small>money-back guarantee</small>"
+    },
+    {
+      "icon": "truck",
+      "html": "<b>Free shipping</b> <small>on orders $70+</small>"
+    },
+    {
+      "icon": "leaf",
+      "html": "<b>Raw resin</b> <small>Himalayan Shilajit</small>"
+    }
+  ],
+  "trust_source": "TrustScore/count: state/trustpilot/wellnessnest.json (trustpilot.com/review/wellnessnest.co, read 2026-10-12). Guarantee + free-shipping threshold: /policies/refund-policy, site ticker. Raw resin: PDP label.",
+  "sticky_cta": {
+    "name": "Pure Shilajit Gold Resin",
+    "note": "From $67.50",
+    "cta": "SEE THE LABEL",
+    "href": "https://wellnessnest.co/products/pure-shilajit-gold-resin"
+  },
+  "pack_images": [
+    "tmp_images/landing-pure-shilajit-gold-resin-listicle-261012/pack-ref.webp"
+  ]
+}
