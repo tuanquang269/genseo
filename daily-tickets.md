@@ -598,7 +598,7 @@ FloraFresh $40.99, Turkesterone Advanced Formula $75, AgeAura Pure NMN + TMG NAD
   - **Angle:** no human trial tests NMN with coffee or caffeine (say so plainly); what is known about caffeine and NAD+ only if a fetched source confirms it, otherwise drop it; practical morning routine (label: 2 capsules daily, with or without coffee per label directions). No anti-aging, disease or cure claims (FDA structure/function only). LINK when-to-take-nmn-morning-or-night, how-much-nmn-per-day, nmn-side-effects — don't restate.
   - **Fan-out answers to cover:** same time as coffee or wait; black coffee vs with milk; decaf; does coffee cancel NMN (no evidence either way — say so).
 
-- [ ] **#MB1009-7 — vaginal probiotics while traveling** (buffer — run only if <5 live today) — `Vaginal Probiotics While Traveling: Keep Them Working on the Road (US 2026)`
+- [DONE 2026-10-12 https://wellnessnest.co/blogs/news/vaginal-probiotics-while-traveling-7-us-rules] **#MB1009-7 — vaginal probiotics while traveling** (buffer — run only if <5 live today) — `Vaginal Probiotics While Traveling: Keep Them Working on the Road (US 2026)`
   - **Primary keyword:** `vaginal probiotics while traveling` · **Secondary:** probiotics travel heat, do probiotic gummies need refrigeration, probiotics on a plane, travel routine probiotics women
   - **Template:** LISTICLE · **Gate:** topic_fitness PASS [brand] · dedupe: no travel title for vaginal probiotics live (best-time-to-take-vaginal-probiotics covers timing; how-long-until-they-work covers onset — LINK both, don't restate)
   - **Products:** `/products/florafresh-vaginal-probiotics-gummies` ($40.99). Collections: `/collections/womens-essentials-collection`, `/collections/best-seller`.

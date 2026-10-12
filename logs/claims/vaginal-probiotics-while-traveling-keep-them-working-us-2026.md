@@ -1,0 +1,21 @@
+# Claims log — Vaginal Probiotics While Traveling: 7 US Rules
+
+- FloraFresh Supplement Facts list Bacillus coagulans SNZ-1969 as a spore-based probiotic blend providing 1 billion CFU per 2 gummies — source: Supplement Facts label; confirmed.
+- FloraFresh Supplement Facts list Vitamin C at 30 mg per 2 gummies — source: Supplement Facts label; confirmed.
+- FloraFresh Supplement Facts list pineapple fruit powder with bromelain at 100 mg per 2 gummies — source: Supplement Facts label; confirmed.
+- FloraFresh is sweetened with maltitol and isomalt — source: Supplement Facts label; confirmed.
+- The FloraFresh label badges include Allergen Free, Vegan, Halal, and Gluten Free — source: Supplement Facts label; confirmed.
+- FloraFresh package directions say to take 2 gummies daily with water — source: live product-page directions; confirmed.
+- FloraFresh package directions say the gummies are best consumed with meals for maximum absorption — source: live product-page directions; confirmed.
+- FloraFresh package directions say to store the product in a cool, dry place for optimal potency — source: live product-page directions; confirmed.
+- A 2025 study tested spore-forming probiotic strains in cookies and crackers stored at -18°C, 4°C, and 25°C for 12 months — source: Payne et al., 2025, https://pmc.ncbi.nlm.nih.gov/articles/PMC12451811/; confirmed.
+- In that study, temperature was not a significant factor for the tested Bacillus coagulans GBI-30 spores, while storage time reduced viability — source: Payne et al., 2025, https://pmc.ncbi.nlm.nih.gov/articles/PMC12451811/; confirmed.
+- The Payne study used different strains and food matrices from FloraFresh gummies, so it does not establish a travel-temperature guarantee for FloraFresh — source: Payne et al., 2025, https://pmc.ncbi.nlm.nih.gov/articles/PMC12451811/ and label comparison; confirmed.
+- Solid supplements should remain in their original labeled packaging when traveling — source: practical travel guidance; confirmed as advice, not a product-performance claim.
+- Current airport screening and baggage rules can change, so travelers should check current TSA guidance before flying — source: current-rule verification advice; confirmed as advice, no numeric claim.
+- A daily meal anchor can help maintain a supplement routine across time zones — source: practical routine guidance; confirmed as advice, not a clinical outcome claim.
+- A missed serving should not be replaced with an improvised extra serving; the traveler should resume the labeled schedule or ask a pharmacist — source: conservative medication-and-supplement safety guidance; confirmed as advice.
+- People taking travel medicines should ask a pharmacist or clinician about their individual schedule and combination of products — source: clinical safety guidance; confirmed as advice.
+- The best-time article covers timing, and the how-long-until-they-work article covers onset; this article links to both without restating those pages — source: live Wellness Nest articles; confirmed.
+- Wellness Nest lists FloraFresh Vaginal Probiotics Gummies at $40.99 at the time of writing — source: live product page; confirmed.
+- The FloraFresh pouch contains 60 gummies according to the live product listing — source: live product page; confirmed.
