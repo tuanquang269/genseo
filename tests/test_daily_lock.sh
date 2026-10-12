@@ -258,6 +258,21 @@ genseo_daily_lock_release
 
 SAYLOG=""
 echo "12. PID file names this process (PID reuse) — adopt, do not treat us as another batch"
+# bash 3.2 has no BASHPID, and the lock scan runs two $(...) deep. A one-level
+# parent check treats that grandchild fork as another daily batch.
+grandf="$TMP/grand.pid"
+rm -f "$grandf"
+sh -c 'sleep 40 & echo $! > "$1"; wait' _ "$grandf" &
+holder=$!
+track "$holder"
+check "grandchild pid appeared" wait_file "$grandf"
+grand=$(tr -cd '0-9' < "$grandf")
+track "$grand"
+check "grandchild fork is this shell" genseo_pid_in_this_shell "$grand"
+check "init is not this shell" not genseo_pid_in_this_shell 1
+kill -KILL "$grand" "$holder" 2>/dev/null || true
+wait "$holder" 2>/dev/null || true
+
 selfdir="$TMP/self"
 mkdir -p "$selfdir"
 cat > "$selfdir/self.sh" << 'EOF'
@@ -457,6 +472,22 @@ childp=$(tr -cd '0-9' < "$H/genseo/state/child.pid" 2>/dev/null || true)
 check "child pid was recorded" test -n "$childp"
 check "orphan child is dead" wait_dead "$childp"
 check "lock released after the batch" test ! -e "$H/genseo/state/daily.lock"
+
+echo "20. real wrapper: dead PID while a sibling wrapper is alive — do not steal"
+sandbox sibling
+if ! start_wrapper_sleeper; then echo "wrapper sleeper failed"; exit 1; fi
+mkdir "$H/genseo/state/daily.lock"
+printf '%s\n' 99999999 > "$H/genseo/state/daily.lock/pid"
+printf '%s\n' 0 > "$H/genseo/state/live-count"
+run_wrapper 15
+check "exit 0" test "$RC" = 0
+check "logged another batch" grep -q "another batch is running" "$H/out.log"
+check "did not take over" not grep -q "taking over" "$H/out.log"
+check "did not start a batch" not grep -q "start (target" "$H/out.log"
+check "dead pid left" test "$(tr -cd '0-9' < "$H/genseo/state/daily.lock/pid")" = 99999999
+check "sleeper still alive" kill -0 "$SLEEPER"
+check "lock still held" test -d "$H/genseo/state/daily.lock"
+stop_sleeper
 
 echo
 printf '%s passed, %s failed\n' "$PASS" "$FAIL"

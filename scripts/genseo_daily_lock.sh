@@ -10,7 +10,8 @@
 #   * Recorded PID is a live grokbot-genseo-daily (kill -0, command matches) — exit without
 #     taking it, however old the directory is.
 #   * Some other live grokbot-genseo-daily exists (old lock with no PID file, or a dead PID
-#     left behind while the batch is still running) — same, do not take it.
+#     left behind while the batch is still running) — same, do not take it. Forks of this
+#     process are not that other batch: the scan itself runs inside $(...).
 #   * Recorded PID is dead, or this process's own PID (the holder died and the PID was reused
 #     by us) — the lock is stale. Take it even if the directory is young.
 #   * PID missing or not the wrapper — take it only when the directory is older than
@@ -123,27 +124,44 @@ genseo_cmd_is_daily_wrapper() {
   return 1
 }
 
-# True for this shell, the scanner's subshell, or a direct child of either.
-# classify/find run inside $(...), and that fork still has the wrapper's cmdline
-# until it execs. Those are not a second batch. A launchd catch-up is a sibling, not a child.
-genseo_pid_in_this_shell() {
+genseo_ppid_of() {
   local pid=$1 ppid=""
   case "$pid" in
     ''|*[!0-9]*|0) return 1 ;;
   esac
-  [ "$pid" = "$$" ] && return 0
-  if [ -n "${BASHPID:-}" ] && [ "$pid" = "$BASHPID" ]; then
-    return 0
-  fi
   if [ -r "/proc/$pid/status" ]; then
     ppid=$(awk '/^PPid:/ {print $2}' "/proc/$pid/status" 2>/dev/null || true)
   else
     ppid=$(ps -p "$pid" -o ppid= 2>/dev/null | tr -d '[:space:]' || true)
   fi
-  [ "$ppid" = "$$" ] && return 0
-  if [ -n "${BASHPID:-}" ] && [ "$ppid" = "$BASHPID" ]; then
-    return 0
-  fi
+  case "$ppid" in
+    ''|*[!0-9]*|0) return 1 ;;
+  esac
+  printf '%s\n' "$ppid"
+}
+
+# True if pid is this wrapper ($$) or a descendant of it.
+# classify/find run inside $(...), and that fork still has the wrapper cmdline
+# until it execs. Those are not a second batch. A launchd catch-up is a sibling
+# of $$, not a descendant.
+# bash 3.2 has no BASHPID, and $$ does not change inside $(...). A one-level
+# check (pid or parent is $$ / BASHPID) misses the scan fork: its parent is the
+# classify fork, not $$. Walk parents up to $$.
+genseo_pid_in_this_shell() {
+  local pid=$1 ppid="" guard=0
+  case "$pid" in
+    ''|*[!0-9]*|0) return 1 ;;
+  esac
+  while [ "$guard" -lt 40 ]; do
+    [ "$pid" = "$$" ] && return 0
+    ppid=$(genseo_ppid_of "$pid" || true)
+    case "$ppid" in
+      ''|*[!0-9]*|0|1) return 1 ;;
+    esac
+    [ "$ppid" = "$pid" ] && return 1
+    pid=$ppid
+    guard=$((guard + 1))
+  done
   return 1
 }
 
@@ -153,13 +171,13 @@ genseo_find_other_daily_wrapper() {
   if [ -d /proc ]; then
     for pid in /proc/[0-9]*; do
       pid=${pid#/proc/}
-      genseo_pid_in_this_shell "$pid" && continue
       [ -r "/proc/$pid/cmdline" ] || continue
       cmd=$(tr '\0' ' ' < "/proc/$pid/cmdline" 2>/dev/null || true)
-      if genseo_cmd_is_daily_wrapper "$cmd" && genseo_pid_alive "$pid"; then
-        printf '%s\n' "$pid"
-        return 0
-      fi
+      genseo_cmd_is_daily_wrapper "$cmd" || continue
+      genseo_pid_alive "$pid" || continue
+      genseo_pid_in_this_shell "$pid" && continue
+      printf '%s\n' "$pid"
+      return 0
     done
     return 1
   fi
@@ -167,11 +185,11 @@ genseo_find_other_daily_wrapper() {
     case "$pid" in
       ''|*[!0-9]*|0) continue ;;
     esac
+    genseo_cmd_is_daily_wrapper "$cmd" || continue
+    genseo_pid_alive "$pid" || continue
     genseo_pid_in_this_shell "$pid" && continue
-    if genseo_cmd_is_daily_wrapper "$cmd" && genseo_pid_alive "$pid"; then
-      printf '%s\n' "$pid"
-      return 0
-    fi
+    printf '%s\n' "$pid"
+    return 0
   done < <(ps -axww -o pid=,args= 2>/dev/null || ps -eo pid=,args= 2>/dev/null)
   return 1
 }
