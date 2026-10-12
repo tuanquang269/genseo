@@ -180,6 +180,26 @@ genseo_log_needs_writer_fallback() {
   python3 "$py" --log "$1" >/dev/null
 }
 
+# Bound a stuck writer connect or read without changing the model or the provider.
+# 2026-10-12 run 5: the Claude process sat at 0% CPU with two connects in SYN_SENT
+# to Cloudflare, past the 90-minute ticket cap. CLAUDE_CODE_CONNECT_TIMEOUT_MS is a
+# no-op since Claude Code 2.1.186. API_TIMEOUT_MS is the whole-request cap (Claude's
+# own 10-minute default, set here so a build with no default cannot wait forever).
+# CLAUDE_STREAM_FIRST_BYTE_TIMEOUT_MS bounds the handshake and the first response
+# byte. CLAUDE_STREAM_IDLE_TIMEOUT_MS bounds a read that goes quiet; the CLI clamps
+# an explicit value to at least 5 minutes. Export any of them before the runner to
+# override. Settings-file env still wins inside Claude Code when it replaces the
+# process environment; the ticket cap is the backstop.
+genseo_exec_writer() {
+  local bin=$1
+  shift
+  env \
+    "API_TIMEOUT_MS=${API_TIMEOUT_MS:-600000}" \
+    "CLAUDE_STREAM_FIRST_BYTE_TIMEOUT_MS=${CLAUDE_STREAM_FIRST_BYTE_TIMEOUT_MS:-120000}" \
+    "CLAUDE_STREAM_IDLE_TIMEOUT_MS=${CLAUDE_STREAM_IDLE_TIMEOUT_MS:-300000}" \
+    "$bin" "$@"
+}
+
 # Run claude once. On a non-Anthropic HTTP 200 JSON failure, run it one more time
 # with --model set to the fallback. Same remaining argv, including --fallback-model
 # and any draft/permission flags the caller already set.
@@ -197,12 +217,12 @@ genseo_run_writer_with_shape_fallback() {
 
   if [ "${GENSEO_WRITER_SHAPE_RETRY:-0}" = "1" ]; then
     printf '=== writer attempt model=%s ===\n' "$GENSEO_WRITER_FALLBACK" >>"$log"
-    "$bin" "$@" --model "$GENSEO_WRITER_FALLBACK" >>"$log" 2>&1 || rc=$?
+    genseo_exec_writer "$bin" "$@" --model "$GENSEO_WRITER_FALLBACK" >>"$log" 2>&1 || rc=$?
     return "$rc"
   fi
 
   printf '=== writer attempt model=%s ===\n' "$GENSEO_WRITER_MODEL" >>"$log"
-  "$bin" "$@" --model "$GENSEO_WRITER_MODEL" >>"$log" 2>&1 || rc=$?
+  genseo_exec_writer "$bin" "$@" --model "$GENSEO_WRITER_MODEL" >>"$log" 2>&1 || rc=$?
   if [ "$rc" -eq 0 ]; then
     return 0
   fi
@@ -218,7 +238,7 @@ genseo_run_writer_with_shape_fallback() {
   export GENSEO_WRITER_SHAPE_RETRY
   printf '=== writer attempt model=%s ===\n' "$GENSEO_WRITER_FALLBACK" >>"$log"
   rc=0
-  "$bin" "$@" --model "$GENSEO_WRITER_FALLBACK" >>"$log" 2>&1 || rc=$?
+  genseo_exec_writer "$bin" "$@" --model "$GENSEO_WRITER_FALLBACK" >>"$log" 2>&1 || rc=$?
   if genseo_log_needs_writer_fallback "$log"; then
     printf 'writer-shape: %s also returned a non-Anthropic payload; not retrying again\n' \
       "$GENSEO_WRITER_FALLBACK" >>"$log"

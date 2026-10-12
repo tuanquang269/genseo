@@ -21,7 +21,8 @@
 #      article lane's own guards); pages never reach /blogs/news.atom (the article live-count + peer guards); and
 #      ima2 serve admits parallel jobs (it renders 3 at a time on its one OAuth session by itself).
 #   6. the listicle writer is its own session for 90 min (GENSEO_LANDING_TIMEOUT_SEC, default 5400).
-#      scripts/genseo_group_timeout.sh TERM then KILLs that process group (landing bash and Claude).
+#      scripts/genseo_group_timeout.sh TERMs then KILLs the descendant tree (landing bash, Claude,
+#      and workers that called setsid) and that process group. The deadline is monotonic elapsed time.
 # Kill switch: touch state/landing-daily.disabled (or GENSEO_LANDING_DAILY_ENABLED=0).
 set -uo pipefail
 export PATH="$HOME/.local/bin:$HOME/.npm-global/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
