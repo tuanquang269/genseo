@@ -662,7 +662,7 @@ plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check th
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** creatine + buy checked 2026-10-09 against 108 live articles (blog listing + sitemap + Atom) and all 47 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1009-4 — where to buy nmn** — `Where to Buy NMN in the US: FDA Status Explained (2026)`
+- [DONE 2026-10-12 https://wellnessnest.co/blogs/news/where-to-buy-nmn-in-the-us-fda-status-explained-2026] **#CA1009-4 — where to buy nmn** — `Where to Buy NMN in the US: FDA Status Explained (2026)`
   - **Primary keyword:** `where to buy nmn` · **Secondary:** can you still buy nmn, is nmn legal in the us, nmn fda, nmn amazon
   - **Search intent:** US buyer who saw NMN disappear from big marketplaces and wants to know whether and where it can still be bought
   - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-09 11:08 ICT)
