@@ -689,7 +689,7 @@ plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check th
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** shilajit + price checked 2026-10-09 against 108 live articles (blog listing + sitemap + Atom) and all 47 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1009-6 — where to buy turkesterone** — `Where to Buy Turkesterone in the US: What to Check (2026)`
+- [x] **#CA1009-6 — where to buy turkesterone** — `Where to Buy Turkesterone in the US: What to Check (2026)` — PUBLISHED 2026-10-14, id 634917978427, https://wellnessnest.co/blogs/news/where-to-buy-turkesterone-in-the-us-what-to-check-2026
   - **Primary keyword:** `where to buy turkesterone` · **Secondary:** best place to buy turkesterone, turkesterone in stores, is my turkesterone real, turkesterone price
   - **Search intent:** buyer choosing where to buy turkesterone and worried about under-dosed products
   - **Template:** LISTICLE · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-09 11:08 ICT)
@@ -702,7 +702,7 @@ plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check th
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** turkesterone + buy checked 2026-10-09 against 108 live articles (blog listing + sitemap + Atom) and all 47 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1009-7 — nmn for seniors** — `NMN for Seniors: What Trials in Adults 65+ Show (US 2026)`
+- [DONE 2026-10-14](https://wellnessnest.co/blogs/news/nmn-for-seniors-what-2-trials-show-in-the-us-2026) **#CA1009-7 — nmn for seniors** — `NMN for Seniors: What Trials in Adults 65+ Show (US 2026)` — LIVE article 634918109499; validator PASS; schema/frontend/widget verified.
   - **Primary keyword:** `nmn for seniors` · **Secondary:** nmn for older adults, nmn for elderly, nmn over 65, nmn muscle strength aging
   - **Search intent:** adult 65+ (or a family member) asking whether NMN has been tested at their age
   - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-09 11:08 ICT)
