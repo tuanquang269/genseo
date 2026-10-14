@@ -675,7 +675,7 @@ plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check th
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** nmn + buy checked 2026-10-09 against 108 live articles (blog listing + sitemap + Atom) and all 47 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1009-5 — shilajit price** — `Shilajit Price: Cost Per Serving by Form (US 2026)`
+- [DONE 2026-10-14 https://wellnessnest.co/blogs/news/shilajit-price-cost-per-serving-by-form-us-2026] **#CA1009-5 — shilajit price** — `Shilajit Price: Cost Per Serving by Form (US 2026)`
   - **Primary keyword:** `shilajit price` · **Secondary:** how much does shilajit cost, shilajit cost per serving, is shilajit expensive, cheap shilajit
   - **Search intent:** price-checking buyer comparing resin, gummies, gold resin and drops before buying
   - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-09 11:08 ICT)
