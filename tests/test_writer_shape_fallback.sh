@@ -301,6 +301,11 @@ cat > "$NET" << 'EOF'
   printf 'api=%s\n' "${API_TIMEOUT_MS:-}"
   printf 'first=%s\n' "${CLAUDE_STREAM_FIRST_BYTE_TIMEOUT_MS:-}"
   printf 'idle=%s\n' "${CLAUDE_STREAM_IDLE_TIMEOUT_MS:-}"
+  if [ -n "${ANTHROPIC_API_KEY+x}" ]; then
+    printf 'apikey=set\n'
+  else
+    printf 'apikey=unset\n'
+  fi
   printf 'args=%s\n' "$*"
 } > "$NETOUT"
 printf '%s\n' '{"id":"msg_1","type":"message","role":"assistant","model":"claude","content":[{"type":"text","text":"ok"}]}'
@@ -309,12 +314,15 @@ EOF
 chmod +x "$NET"
 reset_run
 unset API_TIMEOUT_MS CLAUDE_STREAM_FIRST_BYTE_TIMEOUT_MS CLAUDE_STREAM_IDLE_TIMEOUT_MS
+export ANTHROPIC_API_KEY="on-demand-key-do-not-use"
 genseo_run_writer_with_shape_fallback "$TMP/net.log" "$NET" -p "prompt" --fallback-model PATI-Fable-5
+unset ANTHROPIC_API_KEY
 RC=$?
 [ "$RC" = 0 ] && ok "default deadlines exit 0" || bad "default deadlines exit $RC"
 grep -q '^api=600000$' "$NETOUT" && ok "default API_TIMEOUT_MS is 600000" || bad "api $(grep '^api=' "$NETOUT")"
 grep -q '^first=120000$' "$NETOUT" && ok "default first-byte timeout is 120000" || bad "first $(grep '^first=' "$NETOUT")"
 grep -q '^idle=300000$' "$NETOUT" && ok "default idle timeout is 300000" || bad "idle $(grep '^idle=' "$NETOUT")"
+grep -q '^apikey=unset$' "$NETOUT" && ok "writer child does not see ANTHROPIC_API_KEY" || bad "apikey $(grep '^apikey=' "$NETOUT")"
 grep -q -- '--model claude-opus-5-5' "$NETOUT" && ok "primary model is the Claude id" || bad "model args drifted"
 grep -q -- '--fallback-model claude-fable-5' "$NETOUT" && ok "fallback flag is the Claude fable id" || bad "fallback flag was not rewritten"
 if grep -q -- '--model PATI-' "$NETOUT" || grep -q -- '--fallback-model PATI-' "$NETOUT"; then

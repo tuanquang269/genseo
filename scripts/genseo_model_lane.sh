@@ -101,6 +101,14 @@ genseo_claude_model_id() {
   esac
 }
 
+# One line from a file, including a last line that has no newline.
+# BSD sed drops that line, and `tr` removes the newline before sed would
+# see it, so the MacBook would lose the unmapped-model error. awk keeps it.
+_genseo_collapse_file() {
+  [ -f "$1" ] || return 0
+  awk 'NR > 1 { printf " " } { printf "%s", $0 }' "$1" 2>/dev/null || true
+}
+
 # Resolve $1 in the current shell. Command substitution cannot keep
 # GENSEO_MODEL_LANE_ERROR, so the error is read back from stderr.
 # On success GENSEO_RESOLVED_MODEL is the Claude Code id.
@@ -111,7 +119,7 @@ genseo_resolve_model() {
     return 1
   }
   if ! id="$(genseo_claude_model_id "$1" 2>"$errfile")"; then
-    GENSEO_MODEL_LANE_ERROR="$(tr '\n' ' ' <"$errfile" | sed 's/ *$//')"
+    GENSEO_MODEL_LANE_ERROR="$(_genseo_collapse_file "$errfile")"
     rm -f "$errfile"
     if [ -z "${GENSEO_MODEL_LANE_ERROR:-}" ]; then
       GENSEO_MODEL_LANE_ERROR="unrecognized model: $1"
@@ -159,8 +167,14 @@ genseo_merge_model_settings() {
   merged="$(python3 "$py" merge-settings --writer "$1" --fallback "$2" 2>"$errfile" <<<"${3:-}")"
   rc=$?
   if [ "$rc" != 0 ]; then
-    GENSEO_MODEL_LANE_ERROR="$(tr '\n' ' ' <"$errfile" | sed 's/ *$//')"
+    GENSEO_MODEL_LANE_ERROR="$(_genseo_collapse_file "$errfile")"
     rm -f "$errfile"
+    if [ -z "${GENSEO_MODEL_LANE_ERROR:-}" ]; then
+      GENSEO_MODEL_LANE_ERROR="model settings could not be merged"
+    fi
+    # stdout is the JSON. The error has to go to stderr: prepare captures
+    # this function in a command substitution, which drops the variable.
+    printf '%s\n' "$GENSEO_MODEL_LANE_ERROR" >&2
     return 1
   fi
   rm -f "$errfile"
@@ -236,6 +250,8 @@ genseo_select_model_lane() {
   GENSEO_MODEL_LANE_ERROR=""
   GENSEO_PERMISSION_MODE=""
   export GENSEO_PERMISSION_MODE
+  # A leaked API key would bill on demand. Router lanes use ANTHROPIC_AUTH_TOKEN.
+  unset ANTHROPIC_API_KEY
   base="${GENSEO_LOCAL_ROUTER:-http://127.0.0.1:20128}"
   base="${base%/}"
   cfg="${GENSEO_CFG:-$HOME/.claude-genseo}"
@@ -333,7 +349,9 @@ genseo_log_needs_writer_fallback() {
 genseo_exec_writer() {
   local bin=$1
   shift
-  env \
+  # -u, not an empty assignment: a present ANTHROPIC_API_KEY switches the CLI
+  # onto the on-demand API even when the value is blank.
+  env -u ANTHROPIC_API_KEY \
     "API_TIMEOUT_MS=${API_TIMEOUT_MS:-600000}" \
     "CLAUDE_STREAM_FIRST_BYTE_TIMEOUT_MS=${CLAUDE_STREAM_FIRST_BYTE_TIMEOUT_MS:-120000}" \
     "CLAUDE_STREAM_IDLE_TIMEOUT_MS=${CLAUDE_STREAM_IDLE_TIMEOUT_MS:-300000}" \
@@ -351,7 +369,7 @@ genseo_prepare_writer_args() {
   local -a built=()
   local i=0 count=0 arg="" nxt=""
   local attempt_id="" writer_id="" fallback_id=""
-  local settings_at=-1 existing="" merged=""
+  local settings_at=-1 existing="" merged="" settings_err=""
   GENSEO_PREPARED_ARGS=()
   GENSEO_PREPARED_MODEL=""
   if [ "$#" -gt 0 ]; then
@@ -414,9 +432,19 @@ genseo_prepare_writer_args() {
   if [ "$settings_at" -ge 0 ]; then
     existing="${built[$((settings_at + 1))]}"
   fi
-  if ! merged="$(genseo_merge_model_settings "${GENSEO_WRITER_MODEL:-}" "${GENSEO_WRITER_FALLBACK:-}" "$existing")"; then
+  settings_err="$(mktemp "${TMPDIR:-/tmp}/genseo-model-merge.XXXXXX")" || {
+    GENSEO_MODEL_LANE_ERROR="model settings could not be merged"
+    return 1
+  }
+  if ! merged="$(genseo_merge_model_settings "${GENSEO_WRITER_MODEL:-}" "${GENSEO_WRITER_FALLBACK:-}" "$existing" 2>"$settings_err")"; then
+    GENSEO_MODEL_LANE_ERROR="$(_genseo_collapse_file "$settings_err")"
+    rm -f "$settings_err"
+    if [ -z "${GENSEO_MODEL_LANE_ERROR:-}" ]; then
+      GENSEO_MODEL_LANE_ERROR="model settings could not be merged"
+    fi
     return 1
   fi
+  rm -f "$settings_err"
   if [ -n "$merged" ]; then
     if [ "$settings_at" -ge 0 ]; then
       built[$((settings_at + 1))]="$merged"
