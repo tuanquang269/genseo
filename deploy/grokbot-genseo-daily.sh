@@ -12,8 +12,14 @@
 #      publish -> the other Mac is mid-batch -> stop; the next slot tops up whatever is missing
 #   3. inside the run, right before shopify_publisher.py: count + STEP 0 suggest.json re-check (runner prompt)
 #   4. ticket ids per Mac never collide (MacBook batch uses #MBmmdd-N) and STEP 0 kills same-topic repeats
-#   5. GENSEO_HOST_ROLE=standby (MacBook) waits GENSEO_STANDBY_DELAY_MIN first, so if the Mini is healthy its
-#      07:30 batch has a head start and rule 2 makes this Mac stand down.
+#   5. GENSEO_HOST_ROLE=standby waits GENSEO_STANDBY_DELAY_MIN first, so a healthy peer
+#      has a head start and rule 2 makes this Mac stand down. The MacBook plist is
+#      primary with GENSEO_TICKET_PREFIX=MB until a Mini failover release is explicit
+#      (MacBook agents unloaded, Mini plist loaded as primary). The wrapper default
+#      is primary. Standby is only when the LaunchAgent sets it. Do not load both
+#      Macs as primary. Prefix fallback: standby -> MB, otherwise MM, unless
+#      GENSEO_TICKET_PREFIX is set (the MacBook plist sets MB so a primary MacBook
+#      does not mint Mini MM ids).
 #   6. local mkdir lock (state/daily.lock + pid): catch-up exits while that PID is a live
 #      grokbot-genseo-daily, however old the lock is. A dead PID is stale. A missing PID is
 #      stale only after 6h (GENSEO_LOCK_STALE_SEC), so a lock still being stamped is not stolen.
@@ -25,8 +31,15 @@
 #      no-publish; the EXIT trap releases state/daily.lock when this wrapper returns.
 # launchd runs ~/bin/grokbot-genseo-daily.sh, a copy of this file. After git pull:
 #   bash ~/genseo/scripts/install_mac_daily_wrapper.sh
-# (docs/TICKET_REFILL.md). That does not start launchd. Helpers load from ~/genseo/scripts/.
+# Pulling alone is not enough. That copy is what 07:30 and 14:47 execute. The
+# installer does not start launchd and does not change the loaded plist. The role
+# is LaunchAgent environment: copy deploy/com.pati.genseo-daily.macbook.plist over
+# ~/Library/LaunchAgents/com.pati.genseo-daily.plist and bootstrap the agent again,
+# or the loaded job keeps GENSEO_HOST_ROLE=standby. Helpers load from ~/genseo/scripts/.
 # Offline: bash tests/test_daily_lock.sh
+# An unreadable live count (-1) is retried GENSEO_LIVE_FEED_RETRIES times (default 3,
+# cap 5) with GENSEO_LIVE_FEED_BACKOFF_SEC between tries (default 5, cap 30), then
+# fail closed. A readable count does not sleep there and still runs the peer-active check.
 set -uo pipefail
 export PATH="$HOME/.local/bin:$HOME/.npm-global/bin:$HOME/.codex/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 G="$HOME/genseo"; PY=/usr/bin/python3
@@ -42,6 +55,18 @@ esac
 REFILL="${GENSEO_AUTO_REFILL:-0}"
 REFILL_BUFFER="${GENSEO_REFILL_BUFFER:-3}"
 REFILL_PREFIX="${GENSEO_TICKET_PREFIX:-$([ "$ROLE" = standby ] && echo MB || echo MM)}"
+# Extra reads after the first -1. 0 keeps the old single-check fail-closed.
+# Caps stop a bad LaunchAgent value from spinning or sleeping for hours.
+LIVE_FEED_RETRIES="${GENSEO_LIVE_FEED_RETRIES:-3}"
+LIVE_FEED_BACKOFF="${GENSEO_LIVE_FEED_BACKOFF_SEC:-5}"
+case "$LIVE_FEED_RETRIES" in
+  ''|*[!0-9]*) LIVE_FEED_RETRIES=3 ;;
+esac
+if [ "$LIVE_FEED_RETRIES" -gt 5 ]; then LIVE_FEED_RETRIES=5; fi
+case "$LIVE_FEED_BACKOFF" in
+  ''|*[!0-9]*) LIVE_FEED_BACKOFF=5 ;;
+esac
+if [ "$LIVE_FEED_BACKOFF" -gt 30 ]; then LIVE_FEED_BACKOFF=30; fi
 HOST="$(hostname -s)"; DAY="$(date +%F)"
 LOGDIR="$G/logs/daily"; mkdir -p "$LOGDIR" "$G/state"
 LOG="$LOGDIR/$DAY.log"
@@ -79,6 +104,15 @@ fi
 fails=0; pw=0; refilled=0; PEER_MAX_WAITS="${GENSEO_PEER_MAX_WAITS:-6}"
 for i in $(seq 1 $(( MAX_RUNS + ${GENSEO_PEER_MAX_WAITS:-6} ))); do
   n="$(live_count)"
+  feed_try=0
+  while [ "$n" -lt 0 ] && [ "$feed_try" -lt "$LIVE_FEED_RETRIES" ]; do
+    feed_try=$((feed_try + 1))
+    say "live feed unreadable — retry $feed_try/$LIVE_FEED_RETRIES in ${LIVE_FEED_BACKOFF}s"
+    if [ "$LIVE_FEED_BACKOFF" -gt 0 ]; then
+      sleep "$LIVE_FEED_BACKOFF"
+    fi
+    n="$(live_count)"
+  done
   if [ "$n" -lt 0 ]; then say "live feed unreadable — fail closed, exit"; exit 1; fi
   if [ "$n" -ge "$TARGET" ]; then say "DONE: $n/$TARGET live for $DAY (ICT)"; exit 0; fi
   peer="$($PY "$G/scripts/genseo_published_today.py" --peer-active "$PEER_WIN" --local-log "$MINE" 2>/dev/null)"; rc=$?

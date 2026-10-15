@@ -16,6 +16,7 @@
 # checklist: 6. After main moves, refresh the daily LaunchAgent wrapper. A pull does not update ~/bin. Run: bash scripts/install_mac_daily_wrapper.sh
 # checklist:    Docs: DAILY-RUN.md and docs/TICKET_REFILL.md. The installer does not start launchd. launchd label com.pati.genseo-daily runs ~/bin/grokbot-genseo-daily.sh.
 # checklist:    Repo plist: deploy/com.pati.genseo-daily.macbook.plist. Installed path named in DAILY-RUN.md: ~/Library/LaunchAgents/com.pati.genseo-daily.plist.
+# checklist:    That plist is GENSEO_HOST_ROLE=primary and GENSEO_TICKET_PREFIX=MB until a Mini failover-release. Copy it onto the installed LaunchAgent and bootstrap again. install_mac_daily_wrapper.sh does not change that env. Pulling alone does not update ~/bin.
 # checklist: 7. Landing code updates by the pull: launchd runs scripts/run_landing_daily.sh from this checkout (DAILY-RUN.md). MacBook plist, from the install comment in deploy/com.pati.genseo-landing.macbook.plist:
 # checklist:    cp deploy/com.pati.genseo-landing.macbook.plist ~/Library/LaunchAgents/com.pati.genseo-landing.plist
 # checklist:    launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.pati.genseo-landing.plist
@@ -824,6 +825,7 @@ printf '%s\n' "wrapper_doc: DAILY-RUN.md docs/TICKET_REFILL.md"
 printf '%s\n' "wrapper_dest: ~/bin/grokbot-genseo-daily.sh"
 printf '%s\n' "wrapper_plist_repo: deploy/com.pati.genseo-daily.macbook.plist"
 printf '%s\n' "wrapper_plist_installed: ~/Library/LaunchAgents/com.pati.genseo-daily.plist"
+printf '%s\n' "wrapper_role: MacBook GENSEO_HOST_ROLE=primary GENSEO_TICKET_PREFIX=MB until Mini failover-release. Copy the plist and bootstrap; the wrapper installer does not."
 printf '%s\n' "landing_plist_repo: deploy/com.pati.genseo-landing.macbook.plist"
 printf '%s\n' "landing_script: scripts/run_landing_daily.sh"
 printf '%s\n' "worker: agent worker start --name MacBook-Pro"

@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- MacBook article lane. Role is primary until the Mini daily job is explicitly
+     enabled: a failover-release marker on main, these agents unloaded, then the
+     Mini plist loaded as primary. Do not load this beside a Mini that is also
+     primary. This plist does not read those markers.
+     GENSEO_TICKET_PREFIX=MB so refill ids stay #MBmmdd-N and cannot collide
+     with Mini MM. A primary host with no prefix would refill as MM.
+     GENSEO_STANDBY_DELAY_MIN applies only if GENSEO_HOST_ROLE is later set
+     to standby. GENSEO_NO_FACE=1 stays.
+     launchd reads ~/Library/LaunchAgents/com.pati.genseo-daily.plist, not this
+     copy. After pull: bash scripts/install_mac_daily_wrapper.sh (updates ~/bin
+     only), then copy this plist over the LaunchAgent and bootstrap it again.
+     Pulling alone does not update the wrapper launchd runs. -->
 <plist version="1.0">
 <dict>
     <key>Label</key>
@@ -12,7 +24,8 @@
     <key>EnvironmentVariables</key>
     <dict>
         <key>GENSEO_DAILY_TARGET</key><string>5</string>
-        <key>GENSEO_HOST_ROLE</key><string>standby</string>
+        <key>GENSEO_HOST_ROLE</key><string>primary</string>
+        <key>GENSEO_TICKET_PREFIX</key><string>MB</string>
         <key>GENSEO_STANDBY_DELAY_MIN</key><string>20</string>
         <key>GENSEO_PEER_WINDOW_MIN</key><string>50</string>
         <key>GENSEO_NO_FACE</key><string>1</string>

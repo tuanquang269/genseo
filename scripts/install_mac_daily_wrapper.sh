@@ -23,7 +23,8 @@ for arg in "$@"; do
       printf '%s\n' "usage: bash scripts/install_mac_daily_wrapper.sh [--dry-run]" \
         "GENSEO_HOME defaults to ~/genseo." \
         "Copies deploy/grokbot-genseo-daily.sh to ~/bin/grokbot-genseo-daily.sh." \
-        "Does not start launchd."
+        "Does not start launchd." \
+        "Does not copy the LaunchAgent plist. Pulling alone does not update ~/bin."
       exit 0
       ;;
     *)
@@ -83,6 +84,7 @@ fi
 
 printf 'source: %s\n' "$SRC"
 printf 'dest: %s\n' "$DEST"
+printf '%s\n' "plist: not copied (launchd keeps the installed GENSEO_HOST_ROLE until deploy/com.pati.genseo-daily.macbook.plist is copied and the agent is bootstrapped again)"
 if [ "$DRY" = 1 ]; then
   printf '%s\n' "dry-run: yes" "executable: not written" "launchd: not started"
   exit 0
