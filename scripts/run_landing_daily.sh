@@ -43,12 +43,39 @@ say(){ echo "[$(ts)] [$HOST/$ROLE] $*" | tee -a "$LOG"; }
 # sleep until the wall clock reaches epoch $1 in <= POLL s steps, ending early once the optional condition command
 # (args 2..) fails; a deadline instead of a count of sleeps, so a Mac that dozes off mid-wait cannot stretch the wait
 wait_until(){ local end=$1 now; shift; while now=$(date +%s); [ "$now" -lt "$end" ] && { [ $# = 0 ] || "$@"; }; do sleep $(( end - now < POLL ? end - now : POLL )); done; }
+# Epoch mtime. GNU stat understands -c; BSD stat (macOS bash 3.2) understands -f.
+# GNU `stat -f` is filesystem info and must not be tried first: its "File:" line
+# becomes an unbound name inside $(( )) and aborts this script under set -u.
+# Same order as genseo_path_mtime in scripts/genseo_daily_lock.sh.
+path_mtime() {
+  local p=$1 m=""
+  m=$(stat -c %Y "$p" 2>/dev/null) || true
+  case "$m" in
+    ''|*[!0-9]*) m="" ;;
+  esac
+  if [ -z "$m" ]; then
+    m=$(stat -f %m "$p" 2>/dev/null) || true
+    case "$m" in
+      ''|*[!0-9]*) m="" ;;
+    esac
+  fi
+  if [ -z "$m" ]; then
+    m=$(/usr/bin/python3 -c 'import os,sys; print(int(os.stat(sys.argv[1]).st_mtime))' "$p" 2>/dev/null) || true
+    case "$m" in
+      ''|*[!0-9]*) return 1 ;;
+    esac
+  fi
+  printf '%s\n' "$m"
+}
 # Courtesy yield only. A daily.lock directory younger than 6h counts as "the article batch may be
-# running"; one that vanishes mid-check counts as released (an empty stat inside $(( )) would abort
-# this script). The article wrapper does not steal its lock for age while a live grokbot-genseo-daily
-# matches — this yield does not read that PID. Past 6h it builds alongside, which is safe (a page,
-# never a blog article).
-articles_running(){ local m; m="$(stat -f %m "$ART_LOCK" 2>/dev/null)" && [ $(( $(date +%s) - m )) -lt 21600 ]; }
+# running". A missing directory, or an mtime that is not an integer, counts as released. The article
+# wrapper does not steal its lock for age while a live grokbot-genseo-daily matches — this yield
+# does not read that PID. Past 6h it builds alongside, which is safe (a page, never a blog article).
+articles_running(){
+  local m
+  m="$(path_mtime "$ART_LOCK")" || return 1
+  [ $(( $(date +%s) - m )) -lt 21600 ]
+}
 
 [ "${GENSEO_LANDING_DAILY_ENABLED:-1}" = "1" ] && [ ! -e "$G/state/landing-daily.disabled" ] || { say "disabled (kill switch) — exit"; exit 0; }
 if [ ! -f "$G/scripts/genseo_group_timeout.sh" ]; then
@@ -56,7 +83,10 @@ if [ ! -f "$G/scripts/genseo_group_timeout.sh" ]; then
   exit 1
 fi
 if ! mkdir "$LOCK" 2>/dev/null; then
-  if [ $(( $(date +%s) - $(stat -f %m "$LOCK") )) -gt 14400 ]; then rmdir "$LOCK"; mkdir "$LOCK" || exit 1
+  # Older than 4h: the previous run died without releasing. An unreadable mtime
+  # is not old enough to steal (same outcome as a young lock).
+  lock_mtime="$(path_mtime "$LOCK" || true)"
+  if [ -n "$lock_mtime" ] && [ $(( $(date +%s) - lock_mtime )) -gt 14400 ]; then rmdir "$LOCK"; mkdir "$LOCK" || exit 1
   else say "another landing run is active on this Mac — exit"; exit 0; fi
 fi
 trap 'rmdir "$LOCK" 2>/dev/null' EXIT

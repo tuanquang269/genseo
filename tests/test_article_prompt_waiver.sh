@@ -109,10 +109,12 @@ print("article-ok")
 PY
 then ok "prompt and CLAUDE.md keep the two waivers apart"; else bad "prompt assertions"; fi
 
-echo "2. first open article ticket is still #MB1009-7"
+# #MB1009-7 was published in 925e143. The prompt still names that 2026-10-12
+# failure. The queue head — the first `- [ ]` line — is now #CA1009-1.
+echo "2. first open article ticket is #CA1009-1"
 first="$(grep -m1 -E '^- \[ \]' "$ROOT/daily-tickets.md" || true)"
 case "$first" in
-  *'#MB1009-7'*) ok "first open ticket is #MB1009-7" ;;
+  *'#CA1009-1'*) ok "first open ticket is #CA1009-1" ;;
   *) bad "first open ticket [$first]" ;;
 esac
 
