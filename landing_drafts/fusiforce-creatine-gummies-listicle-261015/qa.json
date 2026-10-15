@@ -1,0 +1,52 @@
+{
+ "file": "/Users/kevinkreative/genseo/landing_drafts/fusiforce-creatine-gummies-listicle-261015/preview.html",
+ "widths": {
+  "375": {
+   "overflow": false,
+   "smallTargets": 0,
+   "brokenImages": [],
+   "headings": "",
+   "clipped": [],
+   "palette": {
+    "cta_bg": "rgb(37, 52, 5)",
+    "accent": "rgb(83, 112, 18)",
+    "kicker": "rgb(83, 112, 18)",
+    "topbar_bg": "rgb(37, 52, 5)",
+    "pill_bg": "rgb(37, 52, 5)",
+    "offer_cta_bg": "rgb(37, 52, 5)"
+   }
+  },
+  "768": {
+   "overflow": false,
+   "smallTargets": 0,
+   "brokenImages": [],
+   "headings": "",
+   "clipped": [],
+   "palette": {
+    "cta_bg": "rgb(37, 52, 5)",
+    "accent": "rgb(83, 112, 18)",
+    "kicker": "rgb(83, 112, 18)",
+    "topbar_bg": "rgb(37, 52, 5)",
+    "pill_bg": "rgb(37, 52, 5)",
+    "offer_cta_bg": "rgb(37, 52, 5)"
+   }
+  },
+  "1440": {
+   "overflow": false,
+   "smallTargets": 0,
+   "brokenImages": [],
+   "headings": "",
+   "clipped": [],
+   "palette": {
+    "cta_bg": "rgb(37, 52, 5)",
+    "accent": "rgb(83, 112, 18)",
+    "kicker": "rgb(83, 112, 18)",
+    "topbar_bg": "rgb(37, 52, 5)",
+    "pill_bg": "rgb(37, 52, 5)",
+    "offer_cta_bg": "rgb(37, 52, 5)"
+   }
+  }
+ },
+ "stickyAtTop": null,
+ "stickyInZone": null
+}

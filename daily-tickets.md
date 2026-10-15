@@ -622,7 +622,7 @@ credential), the logged fact-check pass (`logs/claims/<slug>.md`; delete unconfi
 Blog 104008483131, publish `--live`. Images: no batch-wide override — runner rule D decides per host (the MacBook
 plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check the PDP while writing.
 
-- [ ] **#CA1009-1 — turkesterone for athletes** — `Turkesterone for Athletes: What Drug Tests Check (US 2026)`
+- [DONE 2026-10-12 https://wellnessnest.co/blogs/news/turkesterone-for-athletes-drug-test-guide-us-2026] **#CA1009-1 — turkesterone for athletes** — `Turkesterone for Athletes: What Drug Tests Check (US 2026)`
   - **Primary keyword:** `turkesterone for athletes` · **Secondary:** is turkesterone banned, turkesterone drug test, turkesterone wada, turkesterone ncaa
   - **Search intent:** tested or competitive athlete deciding whether a turkesterone product is safe to take in season
   - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-09 11:08 ICT)
@@ -635,7 +635,7 @@ plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check th
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** turkesterone + athletes checked 2026-10-09 against 108 live articles (blog listing + sitemap + Atom) and all 47 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1009-2 — vaginal probiotic dosage** — `Vaginal Probiotic Dosage: How Many CFU a Day? (US 2026)`
+- [DONE 2026-10-12 https://wellnessnest.co/blogs/news/vaginal-probiotic-dosage-how-many-cfu-a-day-us-2026] **#CA1009-2 — vaginal probiotic dosage** — `Vaginal Probiotic Dosage: How Many CFU a Day? (US 2026)`
   - **Primary keyword:** `vaginal probiotic dosage` · **Secondary:** how many cfu for vaginal health, vaginal probiotic cfu, 1 billion cfu probiotic, how many vaginal probiotics a day
   - **Search intent:** buyer comparing CFU numbers on labels and unsure how much is enough
   - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-09 11:08 ICT)
@@ -649,7 +649,7 @@ plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check th
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** probiotic + dosage checked 2026-10-09 against 108 live articles (blog listing + sitemap + Atom) and all 47 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1009-3 — where to buy creatine gummies** — `Where to Buy Creatine Gummies: 5 Label Checks (US 2026)`
+- [SKIPPED-DUPLICATE 2026-10-12 https://wellnessnest.co/blogs/news/where-to-buy-creatine-gummies-5-label-checks-us-2026] **#CA1009-3 — where to buy creatine gummies** — `Where to Buy Creatine Gummies: 5 Label Checks (US 2026)`
   - **Primary keyword:** `where to buy creatine gummies` · **Secondary:** best place to buy creatine gummies, creatine gummies in stores, do creatine gummies have creatine, creatine gummies price
   - **Search intent:** buyer choosing a creatine gummy brand who has heard some gummies are under-dosed
   - **Template:** LISTICLE · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-09 11:08 ICT)
@@ -662,7 +662,7 @@ plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check th
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** creatine + buy checked 2026-10-09 against 108 live articles (blog listing + sitemap + Atom) and all 47 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1009-4 — where to buy nmn** — `Where to Buy NMN in the US: FDA Status Explained (2026)`
+- [DONE 2026-10-12 https://wellnessnest.co/blogs/news/where-to-buy-nmn-in-the-us-fda-status-explained-2026] **#CA1009-4 — where to buy nmn** — `Where to Buy NMN in the US: FDA Status Explained (2026)`
   - **Primary keyword:** `where to buy nmn` · **Secondary:** can you still buy nmn, is nmn legal in the us, nmn fda, nmn amazon
   - **Search intent:** US buyer who saw NMN disappear from big marketplaces and wants to know whether and where it can still be bought
   - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-09 11:08 ICT)
@@ -675,7 +675,7 @@ plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check th
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** nmn + buy checked 2026-10-09 against 108 live articles (blog listing + sitemap + Atom) and all 47 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1009-5 — shilajit price** — `Shilajit Price: Cost Per Serving by Form (US 2026)`
+- [DONE 2026-10-14 https://wellnessnest.co/blogs/news/shilajit-price-cost-per-serving-by-form-us-2026] **#CA1009-5 — shilajit price** — `Shilajit Price: Cost Per Serving by Form (US 2026)`
   - **Primary keyword:** `shilajit price` · **Secondary:** how much does shilajit cost, shilajit cost per serving, is shilajit expensive, cheap shilajit
   - **Search intent:** price-checking buyer comparing resin, gummies, gold resin and drops before buying
   - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-09 11:08 ICT)
@@ -689,7 +689,7 @@ plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check th
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** shilajit + price checked 2026-10-09 against 108 live articles (blog listing + sitemap + Atom) and all 47 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1009-6 — where to buy turkesterone** — `Where to Buy Turkesterone in the US: What to Check (2026)`
+- [x] **#CA1009-6 — where to buy turkesterone** — `Where to Buy Turkesterone in the US: What to Check (2026)` — PUBLISHED 2026-10-14, id 634917978427, https://wellnessnest.co/blogs/news/where-to-buy-turkesterone-in-the-us-what-to-check-2026
   - **Primary keyword:** `where to buy turkesterone` · **Secondary:** best place to buy turkesterone, turkesterone in stores, is my turkesterone real, turkesterone price
   - **Search intent:** buyer choosing where to buy turkesterone and worried about under-dosed products
   - **Template:** LISTICLE · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-09 11:08 ICT)
@@ -702,7 +702,7 @@ plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check th
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** turkesterone + buy checked 2026-10-09 against 108 live articles (blog listing + sitemap + Atom) and all 47 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1009-7 — nmn for seniors** — `NMN for Seniors: What Trials in Adults 65+ Show (US 2026)`
+- [DONE 2026-10-14](https://wellnessnest.co/blogs/news/nmn-for-seniors-what-2-trials-show-in-the-us-2026) **#CA1009-7 — nmn for seniors** — `NMN for Seniors: What Trials in Adults 65+ Show (US 2026)` — LIVE article 634918109499; validator PASS; schema/frontend/widget verified.
   - **Primary keyword:** `nmn for seniors` · **Secondary:** nmn for older adults, nmn for elderly, nmn over 65, nmn muscle strength aging
   - **Search intent:** adult 65+ (or a family member) asking whether NMN has been tested at their age
   - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-09 11:08 ICT)
