@@ -49,7 +49,9 @@ reset_env() {
   unset NINE_ROUTER_KEY ANTHROPIC_AUTH_TOKEN ANTHROPIC_BASE_URL CLAUDE_CONFIG_DIR USE_NATIVE
   unset GENSEO_LANE_LOCAL_UP GENSEO_LANE_MODELS_JSON GENSEO_WRITER_MODEL GENSEO_WRITER_FALLBACK
   unset GENSEO_ROUTER_BASE GENSEO_MODEL_LANE GENSEO_MODEL_LANE_ERROR GENSEO_LOCAL_ROUTER GENSEO_CFG
-  unset GENSEO_PERMISSION_MODE
+  unset GENSEO_PERMISSION_MODE GENSEO_MODEL_MAP_JSON GENSEO_MODEL_MAP_PY
+  unset ANTHROPIC_DEFAULT_OPUS_MODEL ANTHROPIC_DEFAULT_FABLE_MODEL ANTHROPIC_API_KEY
+  unset GENSEO_PREPARED_MODEL GENSEO_PREPARED_ARGS
   export HOME="$SANDBOX"
   export GENSEO_CFG="$SANDBOX/claude-cfg"
   rm -rf "$SANDBOX/PATI" "$SANDBOX/claude-cfg" "$SANDBOX/out" "$SANDBOX/err"
@@ -80,6 +82,8 @@ rc=$?
 [ "${GENSEO_MODEL_LANE:-}" = "native" ] && ok "lane native" || bad "lane ${GENSEO_MODEL_LANE:-empty}"
 [ "${USE_NATIVE:-}" = "1" ] && ok "login flag kept" || bad "USE_NATIVE was ${USE_NATIVE:-empty}"
 [ -z "${GENSEO_PERMISSION_MODE:-}" ] && ok "native leaves permission mode to the CLI" || bad "permission ${GENSEO_PERMISSION_MODE:-empty}"
+[ -z "${ANTHROPIC_DEFAULT_OPUS_MODEL:-}" ] && ok "native sonnet does not pin opus" || bad "opus pin leaked into native"
+[ -z "${ANTHROPIC_DEFAULT_FABLE_MODEL:-}" ] && ok "native sonnet does not pin fable" || bad "fable pin leaked into native"
 [ -z "${ANTHROPIC_AUTH_TOKEN:-}" ] && ok "native does not export router token" || bad "native exported a token"
 [ ! -s "$SANDBOX/out" ] && ok "stdout empty" || bad "stdout not empty"
 no_secret "$SANDBOX/out" "$FAKE_KEY" "native stdout has no key"
@@ -98,6 +102,9 @@ rc=$?
 [ "${GENSEO_PERMISSION_MODE:-}" = "dontAsk" ] && ok "local permission dontAsk" || bad "permission ${GENSEO_PERMISSION_MODE:-empty}"
 [ -z "${ANTHROPIC_AUTH_TOKEN:-}" ] && ok "local does not export token" || bad "local exported a token"
 [ -z "${ANTHROPIC_BASE_URL:-}" ] && ok "local does not export base url" || bad "local exported base url"
+[ -z "${ANTHROPIC_API_KEY:-}" ] && ok "local does not set an Anthropic API key" || bad "local set ANTHROPIC_API_KEY"
+[ "${ANTHROPIC_DEFAULT_OPUS_MODEL:-}" = "claude-opus-5-5" ] && ok "planner pin is opus 5.5" || bad "opus pin ${ANTHROPIC_DEFAULT_OPUS_MODEL:-empty}"
+[ "${ANTHROPIC_DEFAULT_FABLE_MODEL:-}" = "claude-fable-5" ] && ok "fallback pin is fable 5" || bad "fable pin ${ANTHROPIC_DEFAULT_FABLE_MODEL:-empty}"
 log="$(genseo_lane_log_line)"
 case "$log" in
   *'(lane: local-9router on '*' writer=PATI-Alpha-Plan-Review fallback=PATI-Fable-5 permission=dontAsk)'*) ok "log line" ;;
@@ -131,11 +138,15 @@ no_secret "$SANDBOX/err" "$FAKE_KEY" "hosted stderr has no key"
 printf '%s' "$log" >"$SANDBOX/logline"
 no_secret "$SANDBOX/logline" "$FAKE_KEY" "log line has no key"
 
-echo "4. local down → hosted, including a custom base and fallback"
+echo "4. local down → hosted, including a custom base and a mapped fallback"
 reset_env
 USE_NATIVE=0
 GENSEO_LANE_LOCAL_UP=0
 GENSEO_ROUTER_BASE="https://router.example.test"
+cat >"$SANDBOX/map-other.json" <<'EOF'
+{"modelOverrides":{"claude-opus-5-5":"PATI-Alpha-Plan-Review","claude-haiku-4-5":"PATI-Other"}}
+EOF
+GENSEO_MODEL_MAP_JSON="$SANDBOX/map-other.json"
 GENSEO_WRITER_FALLBACK="PATI-Other"
 NINE_ROUTER_KEY="$FAKE_KEY"
 select_lane
@@ -144,10 +155,18 @@ rc=$?
 [ "${GENSEO_MODEL_LANE:-}" = "hosted-9router" ] && ok "lane hosted-9router" || bad "lane ${GENSEO_MODEL_LANE:-empty}"
 [ "${ANTHROPIC_BASE_URL:-}" = "https://router.example.test" ] && ok "custom base" || bad "base ${ANTHROPIC_BASE_URL:-empty}"
 [ "${GENSEO_WRITER_FALLBACK:-}" = "PATI-Other" ] && ok "custom fallback" || bad "fallback"
+[ "${ANTHROPIC_DEFAULT_OPUS_MODEL:-}" = "claude-opus-5-5" ] && ok "mapped writer pins opus" || bad "opus pin ${ANTHROPIC_DEFAULT_OPUS_MODEL:-empty}"
+[ -z "${ANTHROPIC_DEFAULT_FABLE_MODEL:-}" ] && ok "haiku fallback does not pin fable" || bad "fable pin ${ANTHROPIC_DEFAULT_FABLE_MODEL:-empty}"
+[ -z "${ANTHROPIC_API_KEY:-}" ] && ok "hosted does not set an Anthropic API key" || bad "hosted set ANTHROPIC_API_KEY"
 log="$(genseo_lane_log_line)"
 case "$log" in
   *'fallback=PATI-Other'*) ok "log shows fallback" ;;
   *) bad "log line [$log]" ;;
+esac
+claude_log="$(genseo_claude_model_log_line)"
+case "$claude_log" in
+  *'writer=claude-opus-5-5 fallback=claude-haiku-4-5 gateway=PATI-Alpha-Plan-Review/PATI-Other'*) ok "claude log names both ids" ;;
+  *) bad "claude log [$claude_log]" ;;
 esac
 
 echo "5. unparseable model list falls through to hosted"
@@ -174,18 +193,34 @@ reset_env
 USE_NATIVE=0
 GENSEO_LANE_LOCAL_UP=1
 GENSEO_WRITER_MODEL="PATI-Custom"
-GENSEO_LANE_MODELS_JSON='{"data":[{"id":"PATI-Alpha-Plan-Review"}]}'
+GENSEO_LANE_MODELS_JSON='{"data":[{"id":"PATI-Custom"}]}'
 NINE_ROUTER_KEY="$FAKE_KEY"
 select_lane
-[ "${GENSEO_MODEL_LANE:-}" = "hosted-9router" ] && ok "custom writer missing → hosted" || bad "lane ${GENSEO_MODEL_LANE:-empty}"
+rc=$?
+[ "$rc" = 1 ] && ok "unmapped alias exits 1" || bad "exit $rc"
+[ -z "${GENSEO_MODEL_LANE:-}" ] && ok "unmapped alias does not pick a lane" || bad "lane ${GENSEO_MODEL_LANE:-empty}"
+[ -z "${ANTHROPIC_AUTH_TOKEN:-}" ] && ok "unmapped alias does not export a token" || bad "unmapped exported a token"
+[ -z "${ANTHROPIC_BASE_URL:-}" ] && ok "unmapped alias does not export a base url" || bad "unmapped exported a base url"
+[ -z "${ANTHROPIC_API_KEY:-}" ] && ok "unmapped alias does not set an Anthropic API key" || bad "unmapped set ANTHROPIC_API_KEY"
+case "${GENSEO_MODEL_LANE_ERROR:-}" in
+  *'unrecognized model: PATI-Custom'*'modelOverrides'*'genseo_model_map.json'*'unrecognized_model'*) ok "error names the unmapped alias" ;;
+  *) bad "error [${GENSEO_MODEL_LANE_ERROR:-empty}]" ;;
+esac
 reset_env
 USE_NATIVE=0
 GENSEO_LANE_LOCAL_UP=1
+cat >"$SANDBOX/map-custom.json" <<'EOF'
+{"modelOverrides":{"claude-haiku-4-5":"PATI-Custom","claude-fable-5":"PATI-Fable-5"}}
+EOF
+GENSEO_MODEL_MAP_JSON="$SANDBOX/map-custom.json"
 GENSEO_WRITER_MODEL="PATI-Custom"
 GENSEO_LANE_MODELS_JSON='{"data":[{"id":"PATI-Custom"}]}'
 NINE_ROUTER_KEY="$FAKE_KEY"
 select_lane
-[ "${GENSEO_MODEL_LANE:-}" = "local-9router" ] && ok "custom writer present → local" || bad "lane ${GENSEO_MODEL_LANE:-empty}"
+[ "${GENSEO_MODEL_LANE:-}" = "local-9router" ] && ok "mapped custom writer present → local" || bad "lane ${GENSEO_MODEL_LANE:-empty}"
+[ "${ANTHROPIC_DEFAULT_OPUS_MODEL:-}" = "" ] && ok "custom haiku writer does not pin opus" || bad "opus pin ${ANTHROPIC_DEFAULT_OPUS_MODEL:-empty}"
+resolved="$(genseo_claude_model_id "$GENSEO_WRITER_MODEL")"
+[ "$resolved" = "claude-haiku-4-5" ] && ok "custom map resolves the writer" || bad "resolved $resolved"
 
 echo "8. no key and local missing the model → fail, no secret on stdout"
 reset_env
@@ -231,10 +266,20 @@ for rel in scripts/run_landing_headless.sh scripts/run_ticket_headless.sh; do
   grep -F -q 'PATI-*' "$file" && ok "$rel documents PATI-* skip" || bad "$rel missing PATI-* skip note"
   grep -F -q 'unrecognized_model' "$file" && ok "$rel names unrecognized_model" || bad "$rel missing unrecognized_model"
 done
-grep -q -- '--model "$GENSEO_WRITER_MODEL"' "$ROOT/scripts/genseo_model_lane.sh" \
-  && ok "helper passes primary model" || bad "helper missing primary model"
-grep -q -- '--model "$GENSEO_WRITER_FALLBACK"' "$ROOT/scripts/genseo_model_lane.sh" \
-  && ok "helper passes fallback model" || bad "helper missing fallback model"
+grep -q 'genseo_prepare_writer_args' "$ROOT/scripts/genseo_model_lane.sh" \
+  && ok "helper rewrites model ids before exec" || bad "helper missing prepare"
+if grep -q -- '--model "$GENSEO_WRITER_MODEL"' "$ROOT/scripts/genseo_model_lane.sh" \
+  || grep -q -- '--model "$GENSEO_WRITER_FALLBACK"' "$ROOT/scripts/genseo_model_lane.sh"; then
+  bad "helper still passes a raw gateway alias to --model"
+else
+  ok "helper does not pass a raw gateway alias to --model"
+fi
+grep -q 'modelOverrides' "$ROOT/scripts/genseo_model_map.json" \
+  && ok "map file has modelOverrides" || bad "map file missing modelOverrides"
+grep -q 'genseo_claude_model_log_line' "$ROOT/scripts/run_landing_headless.sh" \
+  && ok "landing logs the claude model ids" || bad "landing missing claude model log"
+grep -q 'genseo_claude_model_log_line' "$ROOT/scripts/run_ticket_headless.sh" \
+  && ok "article logs the claude model ids" || bad "article missing claude model log"
 grep -q 'GENSEO_WRITER_SHAPE_RETRY' "$ROOT/scripts/genseo_model_lane.sh" \
   && ok "helper stops after one re-exec" || bad "helper missing retry guard"
 grep -F -q 'PATI-*' "$ROOT/scripts/genseo_model_lane.sh" && ok "helper documents PATI-* skip" || bad "helper missing PATI-* skip"
@@ -293,6 +338,8 @@ rc=$?
 [ "${GENSEO_WRITER_FALLBACK:-}" = "PATI-Fable-5" ] && ok "default fallback" || bad "fallback ${GENSEO_WRITER_FALLBACK:-empty}"
 [ -z "${ANTHROPIC_AUTH_TOKEN:-}" ] && ok "local does not export token" || bad "local exported a token"
 [ -z "${ANTHROPIC_BASE_URL:-}" ] && ok "local does not export base url" || bad "local exported base url"
+[ "${ANTHROPIC_DEFAULT_OPUS_MODEL:-}" = "claude-opus-5-5" ] && ok "PATI local pins opus" || bad "opus pin ${ANTHROPIC_DEFAULT_OPUS_MODEL:-empty}"
+[ "${ANTHROPIC_DEFAULT_FABLE_MODEL:-}" = "claude-fable-5" ] && ok "PATI local pins fable" || bad "fable pin ${ANTHROPIC_DEFAULT_FABLE_MODEL:-empty}"
 no_secret "$SANDBOX/out" "$FAKE_KEY" "PATI-local stdout has no key"
 no_secret "$SANDBOX/err" "$FAKE_KEY" "PATI-local stderr has no key"
 
@@ -387,6 +434,8 @@ rc=$?
 [ "${USE_NATIVE:-}" = "1" ] && ok "login flag kept" || bad "USE_NATIVE=${USE_NATIVE:-empty}"
 [ -z "${GENSEO_PERMISSION_MODE:-}" ] && ok "substring native leaves permission mode" || bad "permission ${GENSEO_PERMISSION_MODE:-empty}"
 [ -z "${ANTHROPIC_AUTH_TOKEN:-}" ] && ok "native does not export router token" || bad "native exported a token"
+[ -z "${ANTHROPIC_DEFAULT_OPUS_MODEL:-}" ] && ok "native claude id does not pin opus" || bad "opus pin leaked"
+[ -z "${ANTHROPIC_DEFAULT_FABLE_MODEL:-}" ] && ok "native claude id does not pin fable" || bad "fable pin leaked"
 no_secret "$SANDBOX/out" "$FAKE_KEY" "substring stdout has no key"
 no_secret "$SANDBOX/err" "$FAKE_KEY" "substring stderr has no key"
 
@@ -424,6 +473,117 @@ case "$log" in
 esac
 no_secret "$SANDBOX/out" "$FAKE_KEY" "stale-dontAsk stdout has no key"
 no_secret "$SANDBOX/err" "$FAKE_KEY" "stale-dontAsk stderr has no key"
+
+echo "18. default aliases resolve to Claude ids and settings keep the gateway alias"
+reset_env
+writer_id="$(genseo_claude_model_id "PATI-Alpha-Plan-Review")"
+[ "$writer_id" = "claude-opus-5-5" ] && ok "planner alias maps to opus 5.5" || bad "planner id $writer_id"
+fallback_id="$(genseo_claude_model_id "PATI-Fable-5")"
+[ "$fallback_id" = "claude-fable-5" ] && ok "fable alias maps to fable 5" || bad "fable id $fallback_id"
+plain_id="$(genseo_claude_model_id "claude-sonnet-4-6")"
+[ "$plain_id" = "claude-sonnet-4-6" ] && ok "claude id passes through" || bad "passthrough $plain_id"
+merged="$(genseo_merge_model_settings "PATI-Alpha-Plan-Review" "PATI-Fable-5" '{"claudeMdExcludes":["/tmp/CLAUDE.md"]}')"
+python3 - "$merged" <<'PY'
+import json, sys
+data = json.loads(sys.argv[1])
+if data.get("claudeMdExcludes") != ["/tmp/CLAUDE.md"]:
+    sys.exit("excludes dropped: %r" % data)
+overrides = data.get("modelOverrides") or {}
+if overrides.get("claude-opus-5-5") != "PATI-Alpha-Plan-Review":
+    sys.exit("planner override missing: %r" % overrides)
+if overrides.get("claude-fable-5") != "PATI-Fable-5":
+    sys.exit("fable override missing: %r" % overrides)
+if "ANTHROPIC_API_KEY" in data or "apiKey" in data:
+    sys.exit("settings carry a billing key")
+PY
+[ "$?" = 0 ] && ok "settings merge keeps excludes and gateway aliases" || bad "settings merge"
+if genseo_claude_model_id "PATI-No-Such" >/dev/null 2>/dev/null; then
+  bad "unmapped alias resolved"
+else
+  case "${GENSEO_MODEL_LANE_ERROR:-}" in
+    *'unrecognized model: PATI-No-Such'*'/v1/models listing is not enough'*) ok "unmapped alias fails closed" ;;
+    *) bad "unmapped error [${GENSEO_MODEL_LANE_ERROR:-empty}]" ;;
+  esac
+fi
+
+echo "19. a leaked API key is cleared before the lane can use it"
+reset_env
+export ANTHROPIC_API_KEY="on-demand-key-do-not-use"
+USE_NATIVE=0
+GENSEO_LANE_LOCAL_UP=0
+NINE_ROUTER_KEY="$FAKE_KEY"
+select_lane
+rc=$?
+[ "$rc" = 0 ] && ok "exit 0" || bad "exit $rc"
+[ -z "${ANTHROPIC_API_KEY:-}" ] && ok "select unsets ANTHROPIC_API_KEY" || bad "API key survived select"
+[ "${GENSEO_MODEL_LANE:-}" = "hosted-9router" ] && ok "lane still hosted" || bad "lane ${GENSEO_MODEL_LANE:-empty}"
+grep -F -q 'unset ANTHROPIC_API_KEY' "$ROOT/scripts/genseo_model_lane.sh" \
+  && ok "helper unsets the API key" || bad "helper does not unset the API key"
+grep -F -q 'env -u ANTHROPIC_API_KEY' "$ROOT/scripts/genseo_model_lane.sh" \
+  && ok "writer exec strips the API key" || bad "writer exec can inherit the API key"
+if grep -F -q 's/ *$//' "$ROOT/scripts/genseo_model_lane.sh"; then
+  bad "error path still strips with BSD sed"
+else
+  ok "error path does not use BSD sed"
+fi
+
+echo "20. an error file with no trailing newline still yields the message"
+printf '%s' 'unrecognized model: PATI-Custom modelOverrides' >"$SANDBOX/nonewline"
+got="$(_genseo_collapse_file "$SANDBOX/nonewline")"
+[ "$got" = "unrecognized model: PATI-Custom modelOverrides" ] && ok "no-newline error kept" || bad "collapsed [$got]"
+printf '%s\n%s\n' 'line one' 'line two' >"$SANDBOX/twoline"
+got="$(_genseo_collapse_file "$SANDBOX/twoline")"
+[ "$got" = "line one line two" ] && ok "two error lines joined" || bad "collapsed [$got]"
+
+echo "21. settings that are not JSON fail in the parent shell"
+reset_env
+GENSEO_WRITER_MODEL="PATI-Alpha-Plan-Review"
+GENSEO_WRITER_FALLBACK="PATI-Fable-5"
+if genseo_prepare_writer_args "$GENSEO_WRITER_MODEL" -p "prompt" --settings 'not-json' --fallback-model "$GENSEO_WRITER_FALLBACK"; then
+  bad "bad settings returned 0"
+else
+  ok "bad settings returns 1"
+fi
+case "${GENSEO_MODEL_LANE_ERROR:-}" in
+  *'model settings are not a JSON object'*) ok "parent keeps the settings error" ;;
+  *) bad "settings error [${GENSEO_MODEL_LANE_ERROR:-empty}]" ;;
+esac
+
+echo "22. native claude ids are not rewritten and do not inherit a stale pin"
+reset_env
+GENSEO_WRITER_MODEL="claude-sonnet-4-6"
+GENSEO_WRITER_FALLBACK="claude-haiku-4-5"
+export ANTHROPIC_DEFAULT_OPUS_MODEL="stale-opus"
+export ANTHROPIC_DEFAULT_FABLE_MODEL="stale-fable"
+if genseo_prepare_writer_args "$GENSEO_WRITER_MODEL" \
+  -p "prompt" \
+  --fallback-model "$GENSEO_WRITER_FALLBACK" \
+  --settings '{"claudeMdExcludes":["/tmp/CLAUDE.md"]}'; then
+  ok "native prepare exit 0"
+else
+  bad "native prepare failed [${GENSEO_MODEL_LANE_ERROR:-empty}]"
+fi
+[ "${GENSEO_PREPARED_MODEL:-}" = "claude-sonnet-4-6" ] && ok "native model unchanged" || bad "model ${GENSEO_PREPARED_MODEL:-empty}"
+[ -z "${ANTHROPIC_DEFAULT_OPUS_MODEL:-}" ] && ok "prepare clears a stale opus pin" || bad "opus pin ${ANTHROPIC_DEFAULT_OPUS_MODEL:-empty}"
+[ -z "${ANTHROPIC_DEFAULT_FABLE_MODEL:-}" ] && ok "prepare clears a stale fable pin" || bad "fable pin ${ANTHROPIC_DEFAULT_FABLE_MODEL:-empty}"
+if python3 - "${GENSEO_PREPARED_ARGS[@]}" <<'PY'
+import json, sys
+args = sys.argv[1:]
+if "--model" not in args or args[args.index("--model") + 1] != "claude-sonnet-4-6":
+    sys.exit("model %r" % args)
+if "--fallback-model" not in args or args[args.index("--fallback-model") + 1] != "claude-haiku-4-5":
+    sys.exit("fallback %r" % args)
+blob = args[args.index("--settings") + 1]
+data = json.loads(blob)
+if "modelOverrides" in data:
+    sys.exit("native settings gained overrides: %r" % data)
+if data.get("claudeMdExcludes") != ["/tmp/CLAUDE.md"]:
+    sys.exit("excludes %r" % data)
+if "ANTHROPIC_API_KEY" in data or "apiKey" in data:
+    sys.exit("billing key in settings")
+PY
+then ok "native settings stay free of gateway overrides"
+else bad "native settings"; fi
 
 echo
 echo "$PASS passed, $FAIL failed"

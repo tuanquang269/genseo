@@ -110,13 +110,25 @@ PY
 then ok "prompt and CLAUDE.md keep the two waivers apart"; else bad "prompt assertions"; fi
 
 # #MB1009-7 was published in 925e143. The prompt still names that 2026-10-12
-# failure. The queue head — the first `- [ ]` line — is now #CA1009-1.
-echo "2. first open article ticket is #CA1009-1"
+# failure. The Mac publisher keeps flipping later tickets on main, so the
+# queue head id is not stable. The invariant is that the failure ticket is
+# not what the next run would pick.
+echo "2. the 2026-10-12 failure ticket is not the open queue head"
 first="$(grep -m1 -E '^- \[ \]' "$ROOT/daily-tickets.md" || true)"
+if [ -n "$first" ]; then
+  ok "an open ticket remains"
+else
+  bad "ticket queue has no open line"
+fi
 case "$first" in
-  *'#CA1009-1'*) ok "first open ticket is #CA1009-1" ;;
-  *) bad "first open ticket [$first]" ;;
+  *'#MB1009-7'*) bad "failure ticket is still the queue head" ;;
+  *) ok "queue head is not #MB1009-7" ;;
 esac
+if grep -E '^- \[ \] .*#MB1009-7' "$ROOT/daily-tickets.md" >/dev/null; then
+  bad "#MB1009-7 is still open"
+else
+  ok "#MB1009-7 is not an open ticket"
+fi
 
 echo "3. article run excludes the user scope-gate CLAUDE.md; project memory stays"
 OUT="$TMP/settings.txt"

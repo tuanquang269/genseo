@@ -1,0 +1,7 @@
+{
+  "note": "Keys are Anthropic model ids Claude Code accepts. Values are the 9router aliases sent on the wire via modelOverrides. This does not set an Anthropic API key and does not turn on on-demand billing. Listing an alias on local :20128 /v1/models is not a substitute for an entry here.",
+  "modelOverrides": {
+    "claude-opus-5-5": "PATI-Alpha-Plan-Review",
+    "claude-fable-5": "PATI-Fable-5"
+  }
+}

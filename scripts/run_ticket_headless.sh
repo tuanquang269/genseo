@@ -44,7 +44,8 @@ fi
 
 # Writing lane (scripts/genseo_model_lane.sh). A PATI-* writer or fallback never uses native
 # Claude login, even when ~/.claude-genseo is logged in: those ids are unrecognized_model
-# there (landing 2026-10-10 09:30). Otherwise native login wins. Local 9router is used only
+# there (landing 2026-10-10 09:30). An alias with no modelOverrides entry is refused
+# before claude starts (landing 2026-10-15). Otherwise native login wins. Local 9router is used only
 # when :20128 is up AND /v1/models lists the writer model — the Mini's global settings.json
 # routes that lane, and a process env cannot override it there. A router that is up without
 # the PATI writer alias (MacBook 2026-10-10: only ag/gemini-* ids) falls through to hosted
@@ -191,6 +192,7 @@ ALLOWED_TOOLS="Read,Write,Edit,Bash,Glob,Grep,WebFetch,WebSearch"
 
 echo "=== GenSeo ticket run $STAMP ===" >> "$LOGDIR/articles-$STAMP.log"
 genseo_lane_log_line >> "$LOGDIR/articles-$STAMP.log"
+genseo_claude_model_log_line >> "$LOGDIR/articles-$STAMP.log"
 if [ -z "$SETTINGS_JSON" ]; then
   echo "WARN: claudeMdExcludes settings were not built; prompt waiver only" >> "$LOGDIR/articles-$STAMP.log"
 fi
