@@ -465,12 +465,41 @@ sandbox() {
   cat > "$sc/genseo_published_today.py" << 'PY'
 import os, sys
 root = os.path.join(os.environ["HOME"], "genseo")
+state = os.path.join(root, "state")
 if "--json" in sys.argv:
     print('{"entries":[]}')
     raise SystemExit(0)
 if "--peer-active" in sys.argv:
+    peer = os.path.join(state, "peer-rc")
+    if os.path.isfile(peer):
+        raw = open(peer).read().strip() or "0"
+        try:
+            code = int(raw)
+        except ValueError:
+            code = 0
+        if code == 3:
+            print("peer-active: fixture")
+        else:
+            print("peer-idle")
+        raise SystemExit(code)
     raise SystemExit(0)
-print(open(os.path.join(root, "state", "live-count")).read().strip())
+seq = os.path.join(state, "live-seq")
+if os.path.isfile(seq):
+    lines = [ln.strip() for ln in open(seq) if ln.strip() != ""]
+    if not lines:
+        lines = ["-1"]
+    idx_path = os.path.join(state, "live-seq.idx")
+    idx = 0
+    if os.path.isfile(idx_path):
+        try:
+            idx = int(open(idx_path).read().strip() or "0")
+        except ValueError:
+            idx = 0
+    val = lines[idx] if idx < len(lines) else lines[-1]
+    open(idx_path, "w").write(str(idx + 1))
+    print(val)
+    raise SystemExit(0)
+print(open(os.path.join(state, "live-count")).read().strip())
 PY
   printf '%s\n' 'import sys; sys.exit(0)' > "$sc/lint_tickets.py"
   printf '%s\n' '0' > "$H/genseo/state/live-count"
@@ -484,8 +513,13 @@ run_wrapper() {
       GENSEO_PEER_MAX_WAITS="${WRAP_PEER_WAITS:-0}" \
       GENSEO_TICKET_TIMEOUT_SEC="${WRAP_TICKET_TIMEOUT:-5400}" \
       GENSEO_TIMEOUT_GRACE_SEC="${WRAP_GRACE:-0}" \
-      GENSEO_NO_DELAY=1 \
-      GENSEO_AUTO_REFILL=0 \
+      GENSEO_NO_DELAY="${WRAP_NO_DELAY:-1}" \
+      GENSEO_STANDBY_DELAY_MIN="${WRAP_DELAY_MIN:-20}" \
+      GENSEO_HOST_ROLE="${WRAP_ROLE:-primary}" \
+      GENSEO_TICKET_PREFIX="${WRAP_PREFIX-}" \
+      GENSEO_AUTO_REFILL="${WRAP_REFILL:-0}" \
+      GENSEO_LIVE_FEED_RETRIES="${WRAP_FEED_RETRIES:-3}" \
+      GENSEO_LIVE_FEED_BACKOFF_SEC="${WRAP_FEED_BACKOFF:-0}" \
       /bin/bash "$ROOT/deploy/grokbot-genseo-daily.sh" >"$H/out.log" 2>"$H/err.log"
   RC=$?
 }
@@ -690,6 +724,152 @@ check "session leader is dead" wait_dead "$leader"
 check "sleep-forever grandchild is dead" wait_dead "$grand"
 check "sleep-forever middle process is dead" wait_dead "$midp"
 check "lock released after the sleeper timeout" test ! -e "$H/genseo/state/daily.lock"
+
+# The start line calls live_count once before the loop, so a live-seq fixture
+# must include that banner read. Backoff is 0 here so the suite stays offline
+# and does not sleep.
+reset_wrap() {
+  WRAP_TARGET=5
+  WRAP_MAX_RUNS=1
+  WRAP_PEER_WAITS=0
+  WRAP_TICKET_TIMEOUT=5400
+  WRAP_GRACE=0
+  WRAP_NO_DELAY=1
+  WRAP_DELAY_MIN=20
+  WRAP_ROLE=primary
+  unset WRAP_PREFIX
+  WRAP_REFILL=0
+  WRAP_FEED_RETRIES=3
+  WRAP_FEED_BACKOFF=0
+}
+retry_lines() { grep -c 'live feed unreadable — retry ' "$H/out.log" || true; }
+
+echo "24. macbook plist is primary with MB prefix; standby remains opt-in"
+plist="$ROOT/deploy/com.pati.genseo-daily.macbook.plist"
+check "macbook role is primary" grep -q '<key>GENSEO_HOST_ROLE</key><string>primary</string>' "$plist"
+check "macbook prefix is MB" grep -q '<key>GENSEO_TICKET_PREFIX</key><string>MB</string>' "$plist"
+check "macbook stays no-face" grep -q '<key>GENSEO_NO_FACE</key><string>1</string>' "$plist"
+check "role key is not standby" not grep -q '<key>GENSEO_HOST_ROLE</key><string>standby</string>' "$plist"
+check "standby delay remains in the wrapper" grep -q 'ROLE" = "standby"' "$ROOT/deploy/grokbot-genseo-daily.sh"
+check "default feed retries is 3" grep -q 'GENSEO_LIVE_FEED_RETRIES:-3' "$ROOT/deploy/grokbot-genseo-daily.sh"
+check "default feed backoff is 5" grep -q 'GENSEO_LIVE_FEED_BACKOFF_SEC:-5' "$ROOT/deploy/grokbot-genseo-daily.sh"
+check "retry cap is 5" grep -q 'LIVE_FEED_RETRIES" -gt 5' "$ROOT/deploy/grokbot-genseo-daily.sh"
+check "runbook says pulling alone is not enough" grep -q 'Pulling alone is not enough' "$ROOT/DAILY-RUN.md"
+check "runbook names the wrapper installer" grep -q 'bash scripts/install_mac_daily_wrapper.sh' "$ROOT/DAILY-RUN.md"
+
+echo "25. unreadable feed with retries 0 fail-closes and does not call the peer guard"
+reset_wrap
+sandbox feed0
+printf '%s\n' '-1' '-1' >"$H/genseo/state/live-seq"
+printf '%s\n' 3 >"$H/genseo/state/peer-rc"
+WRAP_FEED_RETRIES=0
+run_wrapper 15
+check "exit 1" test "$RC" = 1
+check "logged fail closed" grep -q "live feed unreadable — fail closed, exit" "$H/out.log"
+check "no retry line" test "$(retry_lines)" = 0
+check "did not reach a ticket" not grep -q "run 1:" "$H/out.log"
+# banner + one loop read = 2. peer-rc is never consumed because we exit first.
+check "banner plus one loop read" test "$(tr -cd '0-9' < "$H/genseo/state/live-seq.idx")" = 2
+check "still no peer-active log" not grep -q "peer-active" "$H/out.log"
+
+echo "26. unreadable feed retries the cap, then fail-closes"
+reset_wrap
+sandbox feedcap
+i=0
+: >"$H/genseo/state/live-seq"
+while [ "$i" -lt 12 ]; do
+  printf '%s\n' '-1' >>"$H/genseo/state/live-seq"
+  i=$((i + 1))
+done
+printf '%s\n' 3 >"$H/genseo/state/peer-rc"
+WRAP_FEED_RETRIES=9
+run_wrapper 15
+check "exit 1" test "$RC" = 1
+check "logged fail closed" grep -q "live feed unreadable — fail closed, exit" "$H/out.log"
+check "capped at 5 retries" test "$(retry_lines)" = 5
+check "banner plus six loop reads" test "$(tr -cd '0-9' < "$H/genseo/state/live-seq.idx")" = 7
+check "did not stand down for a peer" not grep -q "peer-active" "$H/out.log"
+check "did not start a ticket" not grep -q "run 1:" "$H/out.log"
+
+echo "27. unreadable feed that recovers continues; a readable count does not retry"
+reset_wrap
+sandbox feedok
+printf '%s\n' '-1' '-1' '5' >"$H/genseo/state/live-seq"
+WRAP_FEED_RETRIES=3
+run_wrapper 15
+check "exit 0" test "$RC" = 0
+check "logged one retry" test "$(retry_lines)" = 1
+check "reached DONE" grep -q "DONE:" "$H/out.log"
+check "did not fail closed" not grep -q "fail closed" "$H/out.log"
+
+reset_wrap
+sandbox readable
+printf '%s\n' 0 >"$H/genseo/state/live-count"
+printf '%s\n' 3 >"$H/genseo/state/peer-rc"
+run_wrapper 15
+check "peer stand-down exit 0" test "$RC" = 0
+check "readable path logged the peer" grep -q "peer-active: fixture" "$H/out.log"
+check "stood down" grep -q "standing down" "$H/out.log"
+check "readable path did not retry" test "$(retry_lines)" = 0
+check "readable path did not fail closed" not grep -q "fail closed" "$H/out.log"
+check "did not start a ticket while the peer was active" not grep -q "run 1:" "$H/out.log"
+
+echo "28. primary does not wait; standby still waits; prefix follows role unless set"
+reset_wrap
+sandbox primary
+printf '%s\n' 5 >"$H/genseo/state/live-count"
+WRAP_ROLE=primary
+WRAP_NO_DELAY=0
+WRAP_DELAY_MIN=20
+run_wrapper 15
+check "primary exit 0" test "$RC" = 0
+check "primary reached DONE" grep -q "DONE:" "$H/out.log"
+check "primary did not log standby" not grep -q "standby: waiting" "$H/out.log"
+
+reset_wrap
+sandbox standby
+printf '%s\n' 5 >"$H/genseo/state/live-count"
+WRAP_ROLE=standby
+WRAP_NO_DELAY=0
+WRAP_DELAY_MIN=0
+run_wrapper 15
+check "standby exit 0" test "$RC" = 0
+check "standby logged the wait" grep -q "standby: waiting 0 min" "$H/out.log"
+check "standby reached DONE" grep -q "DONE:" "$H/out.log"
+
+reset_wrap
+sandbox prefixmm
+printf '%s\n' 0 >"$H/genseo/state/live-count"
+WRAP_ROLE=primary
+unset WRAP_PREFIX
+WRAP_REFILL=1
+run_wrapper 15
+check "primary fallback exit 0" test "$RC" = 0
+check "unset prefix on primary is MM" grep -q "prefix MM" "$H/out.log"
+check "primary fallback is not MB" not grep -q "prefix MB" "$H/out.log"
+
+reset_wrap
+sandbox prefixmb
+printf '%s\n' 0 >"$H/genseo/state/live-count"
+WRAP_ROLE=standby
+unset WRAP_PREFIX
+WRAP_REFILL=1
+WRAP_NO_DELAY=1
+run_wrapper 15
+check "standby prefix exit 0" test "$RC" = 0
+check "unset prefix on standby is MB" grep -q "prefix MB" "$H/out.log"
+check "standby fallback is not MM" not grep -q "prefix MM" "$H/out.log"
+
+reset_wrap
+sandbox prefixset
+printf '%s\n' 0 >"$H/genseo/state/live-count"
+WRAP_ROLE=primary
+WRAP_PREFIX=MB
+WRAP_REFILL=1
+run_wrapper 15
+check "explicit MB exit 0" test "$RC" = 0
+check "explicit prefix MB wins on primary" grep -q "prefix MB" "$H/out.log"
+check "explicit MB is not MM" not grep -q "prefix MM" "$H/out.log"
 
 echo
 printf '%s passed, %s failed\n' "$PASS" "$FAIL"

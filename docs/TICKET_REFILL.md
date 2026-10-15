@@ -43,12 +43,15 @@ open tickets < (`GENSEO_DAILY_TARGET` − live today):
 
 ```bash
 refill_tickets.py --if-below <still to publish> --count <still to publish − open + GENSEO_REFILL_BUFFER (3)> \
-                  --prefix <$GENSEO_TICKET_PREFIX, else MM on the Mini (primary), MB on the MacBook (standby)>
+                  --prefix <$GENSEO_TICKET_PREFIX, else MB when GENSEO_HOST_ROLE=standby, else MM>
 ```
 
 It then commits `daily-tickets.md` + `board/ideas.csv` locally (`queue: refill_tickets.py on <host>`); on a Mac
 that pushes, the runner's next publish push carries it. Exit 3 or 1 is logged to `logs/daily/<date>.log` and the
 run continues with whatever is open (still stopping at 0, as before). The call is capped at 10 minutes.
+The MacBook article plist sets `GENSEO_TICKET_PREFIX=MB` while its role is `primary`, so a MacBook
+refill does not mint Mini `MM` ids. A later Mini plist sets `MM`. A primary host that leaves the
+prefix unset still falls back to `MM`.
 
 **Off by default.** launchd runs `~/bin/grokbot-genseo-daily.sh`, a copy of
 `deploy/grokbot-genseo-daily.sh`. `git pull` does not update that copy. After a pull, on each Mac:

@@ -14,14 +14,22 @@ Written 2026-08-13. Rebuild when the state block at the bottom stops matching re
 GenSeo runs from **whichever Mac is online**. Both Macs carry the same pipeline and the same
 schedule; the live site decides who publishes.
 
-| | Mac Mini (primary) | MacBook Pro (standby) |
+The Mac Mini (`Kevins-Mac-mini-2`) is not a GenSeo runner. Until a Mini failover release
+is explicit, the MacBook article job is **primary** and does not wait 20 minutes for a
+peer that is not loaded. The Mini can become primary later: an empty
+`failover-release: macbook-pro <epoch>` commit on `main`, the MacBook agents unloaded,
+then the Mini daily plist loaded as `primary` with prefix `MM`. Do not load both Macs.
+This wrapper does not read those markers and does not install the Mini. Landing launchd
+is a separate plist and is unchanged.
+
+| | Mac Mini (unloaded until an explicit failover release) | MacBook Pro (primary until that handover) |
 |---|---|---|
-| launchd | Mini's existing 07:30 batch + 14:47 catch-up | `com.pati.genseo-daily` 07:30 + 14:47 (`~/Library/LaunchAgents/com.pati.genseo-daily.plist`) |
-| wrapper | `~/bin/grokbot-genseo-daily.sh` | `~/bin/grokbot-genseo-daily.sh` (role `standby`, waits 20 min first) |
+| launchd | not installed. A later Mini article plist is `primary` with prefix `MM`, and only after the release marker and the MacBook agents are unloaded | `com.pati.genseo-daily` 07:30 + 14:47 (`~/Library/LaunchAgents/com.pati.genseo-daily.plist`) |
+| wrapper | `~/bin/grokbot-genseo-daily.sh` once that Mini job is installed | `~/bin/grokbot-genseo-daily.sh` (role `primary`, ticket prefix `MB`, no standby wait) |
 | writer | `PATI-Alpha-Plan-Review` → `PATI-Fable-5` via local 9router :20128 **only when `/v1/models` lists that alias**. A `PATI-*` writer never uses the native Claude login lane | same picker. Hosted `ai.patigroup.com` when local is down **or the local list has no PATI writer alias** (key from vault `.env`, never printed) |
 | images | `GENSEO_IMAGE_BACKEND=gpt` (cx/gpt-image-2.5 via 9router), Grok Imagine fallback | ima2 ChatGPT OAuth lane (`GENSEO_IMA2_PROVIDER=oauth`, `GENSEO_IMA2_MODEL=gpt-6-sol`, $0 subscription) |
 | image QC | gem9 judges | gem9 judges (gem9 defaults to the hosted router, so it works without the Mini) |
-| tickets | Mini `daily-tickets.md` (#NN) | MacBook `daily-tickets.md` (#MBmmdd-N — ids can never collide) |
+| tickets | Mini `daily-tickets.md` (`#MMmmdd-N` once that plist is loaded) | MacBook `daily-tickets.md` (`#MBmmdd-N` — `GENSEO_TICKET_PREFIX=MB` even while primary, so ids cannot collide with Mini `MM`) |
 
 **Wrapper copy.** launchd runs `~/bin/grokbot-genseo-daily.sh`, a copy of `deploy/grokbot-genseo-daily.sh`.
 A pull does not update that copy. On each Mac, after pull:
@@ -31,9 +39,25 @@ cd ~/genseo && git pull
 bash scripts/install_mac_daily_wrapper.sh
 ```
 
+Pulling alone is not enough. That script is what updates the copy 07:30 and 14:47 execute.
 The script creates `~/bin` if needed, copies the wrapper, checks it is executable, and prints whether
 `scripts/genseo_daily_lock.sh` and `scripts/genseo_group_timeout.sh` are in the checkout. It does not
-start launchd. Offline: `bash tests/test_install_mac_daily_wrapper.sh`.
+start launchd, and it does not change LaunchAgent environment. Offline: `bash tests/test_install_mac_daily_wrapper.sh`.
+
+**MacBook role after this fix.** `GENSEO_HOST_ROLE` lives in the loaded plist, not in the wrapper
+file. `install_mac_daily_wrapper.sh` does not copy it. Until the LaunchAgent is replaced and
+bootstrapped, the loaded job keeps `standby` and still waits 20 minutes:
+
+```bash
+cp deploy/com.pati.genseo-daily.macbook.plist ~/Library/LaunchAgents/com.pati.genseo-daily.plist
+launchctl bootout gui/$(id -u) ~/Library/LaunchAgents/com.pati.genseo-daily.plist
+launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.pati.genseo-daily.plist
+```
+
+`bootout` fails if that label is not loaded; `bootstrap` loads the new environment. Do not start
+`grokbot-genseo-daily.sh` by hand. The repo plist is `primary` with `GENSEO_TICKET_PREFIX=MB`
+and `GENSEO_NO_FACE=1`. `GENSEO_STANDBY_DELAY_MIN=20` stays in the plist and applies only if
+the role is later set back to `standby`.
 
 **Headless model lane (2026-10-10).** `run_ticket_headless.sh` and `run_landing_headless.sh` share `scripts/genseo_model_lane.sh`. A `PATI-*` writer or fallback (defaults `PATI-Alpha-Plan-Review` and `PATI-Fable-5`) never uses the native Claude login lane: Claude Code does not know those ids (`unrecognized_model`, landing 2026-10-10 09:30). Native login (`~/.claude-genseo`, `loggedIn: true`) is only for a writer and fallback that are not `PATI-*`. For a PATI writer, and whenever native does not apply, local 9router `:20128` is used only when `GET /v1/models` includes `GENSEO_WRITER_MODEL`. MacBook local 9router can be up and still list only `ag/gemini-*` ids. That is not a writer lane: headless falls through to hosted `GENSEO_ROUTER_BASE` (default `https://ai.patigroup.com`) with `NINE_ROUTER_KEY`. The run log records `native`, `local-9router`, or `hosted-9router` and does not print the key.
 
@@ -46,13 +70,18 @@ start launchd. Offline: `bash tests/test_install_mac_daily_wrapper.sh`.
 **Double-publish prevention.** The Macs share no writable state (vault Syncthing is MacBook→Mini
 one-way; the Mini's repo commits are unpushed), so the PUBLIC SITE is the lock:
 1. `scripts/genseo_published_today.py` counts today's (ICT) posts in `/blogs/news.atom`. Every
-   wrapper loop AND `run_ticket_headless.sh` exit when it is ≥ `GENSEO_DAILY_TARGET` (5). Unreadable
-   feed = fail closed.
+   wrapper loop AND `run_ticket_headless.sh` exit when it is ≥ `GENSEO_DAILY_TARGET` (5). An
+   unreadable feed (`-1`) is retried `GENSEO_LIVE_FEED_RETRIES` times (default 3, cap 5) with
+   `GENSEO_LIVE_FEED_BACKOFF_SEC` between tries (default 5, cap 30), then fail closed. A
+   readable count does not sleep on that path and still runs the peer-active check.
 2. `--peer-active 50 --local-log state/published-by-<host>.log`: a post that went live in the last
    50 min and was not published by this Mac means the other Mac is mid-batch → stand down.
 3. The runner prompt re-checks the count + STEP 0 `suggest.json` immediately before
    `shopify_publisher.py` (catches a topic the other Mac shipped while this run was writing).
-4. Standby waits 20 min at each slot so a healthy Mini goes first.
+4. A host with `GENSEO_HOST_ROLE=standby` waits 20 min (`GENSEO_STANDBY_DELAY_MIN`) so a
+   healthy peer goes first. The MacBook article plist is `primary`, so the loaded MacBook
+   does not wait. Standby remains in the wrapper for an explicit standby role. Do not load
+   the MacBook and a Mini that is also `primary`.
 5. A local mkdir lock (`state/daily.lock`, wrapper PID in `daily.lock/pid`) stops the 14:47
    catch-up overlapping a running batch. A live `grokbot-genseo-daily` is never evicted for
    age, even with no PID file (a batch started before PID stamping). A dead PID is stale and
