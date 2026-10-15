@@ -177,9 +177,11 @@ based and every house brand already has a page. Do not wait on it.
   `Responses stream returned an error` used to exit the image step, and the daily
   wrapper counted that ticket toward its 3-in-a-row no-publish stop. `gen_png` now
   tries 3 times (wait 5s, then 15s) for a dropped stream, HTTP 429/5xx, a timeout,
-  or a connection reset, and logs each attempt. Auth, content policy, invalid
-  request, and any unrecognized error exit on the first failure. QC FAIL stays
-  exit 2 in the caller, re-roll max 2. The generator stays the ima2 OAuth lane.
+  or a connection reset, and logs each attempt. One call stops at 10 minutes, so a
+  hero plus three inline images stay under half of the 90-minute ticket cap. A
+  timed-out ima2 tree is killed before that backoff sleep. Auth, content policy,
+  invalid request, and any unrecognized error exit on the first failure. QC FAIL
+  stays exit 2 in the caller, re-roll max 2. The generator stays the ima2 OAuth lane.
 - 1 hero + **≥3 inline**. The gate hard-fails below 3 inline. Hero must be the first
   `![]()` tag in the body; the publisher promotes it to `article.image` and strips it.
 - Hero = approved persona **+ real pack**, label-forward. Pack **standing beside** the model,

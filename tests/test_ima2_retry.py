@@ -11,6 +11,7 @@ import stat
 import subprocess
 import sys
 import tempfile
+import time
 import unittest
 from contextlib import redirect_stdout
 from io import StringIO
@@ -42,16 +43,20 @@ MIN_BYTES = ai.IMA2_MIN_PNG_BYTES
 
 
 class ScriptedRun(object):
-    """Stand-in for subprocess.run. Each outcome is an exception, or a tuple
+    """Stand-in for _run_ima2. Each outcome is an exception, or a tuple
     (returncode, stderr, stdout, nbytes). nbytes > 0 writes that many bytes
-    to the -o path."""
+    to the -o path. on_call(n, timeout_s) runs after the call is recorded
+    and before the outcome, so a test clock can jump mid-attempt."""
 
-    def __init__(self, outcomes):
+    def __init__(self, outcomes, on_call=None):
         self.outcomes = list(outcomes)
         self.calls = []
+        self.on_call = on_call
 
-    def __call__(self, cmd, **kwargs):
-        self.calls.append((cmd, kwargs))
+    def __call__(self, cmd, env, timeout_s):
+        self.calls.append((cmd, {"env": env, "timeout": timeout_s}))
+        if self.on_call:
+            self.on_call(len(self.calls), timeout_s)
         if not self.outcomes:
             raise AssertionError("ima2 ran more times than the test scripted")
         outcome = self.outcomes.pop(0)
@@ -130,7 +135,7 @@ class GenPngRetryTests(unittest.TestCase):
         self.ref = os.path.join(self.tmp, "pack.png")
         with open(self.ref, "wb") as fh:
             fh.write(b"ref")
-        self.saved_run = ai.subprocess.run
+        self.saved_run = ai._run_ima2
         self.saved_serve = ai._ensure_serve
         self.saved_ima2 = ai.IMA2
         self.serve_calls = []
@@ -145,7 +150,7 @@ class GenPngRetryTests(unittest.TestCase):
         self.sleeps = []
 
     def tearDown(self):
-        ai.subprocess.run = self.saved_run
+        ai._run_ima2 = self.saved_run
         ai._ensure_serve = self.saved_serve
         ai.IMA2 = self.saved_ima2
         for key, value in self.env.items():
@@ -157,15 +162,17 @@ class GenPngRetryTests(unittest.TestCase):
     def _pause(self, seconds):
         self.sleeps.append(seconds)
 
-    def _go(self, outcomes, refs=None):
-        runner = ScriptedRun(outcomes)
-        ai.subprocess.run = runner
+    def _go(self, outcomes, refs=None, clock=None, on_call=None, sleeper=None):
+        runner = ScriptedRun(outcomes, on_call=on_call)
+        ai._run_ima2 = runner
         buf = StringIO()
         caught = None
         with redirect_stdout(buf):
             try:
                 ai.gen_png("a kitchen counter", "1536x1024", self.out,
-                           [] if refs is None else refs, timeout=360, sleeper=self._pause)
+                           [] if refs is None else refs, timeout=360,
+                           sleeper=self._pause if sleeper is None else sleeper,
+                           clock=clock)
             except SystemExit as exc:
                 caught = exc
         return caught, buf.getvalue(), runner
@@ -314,6 +321,140 @@ class GenPngRetryTests(unittest.TestCase):
         self.assertEqual(len(runner.calls), 2)
         self.assertEqual(self.sleeps, [5])
         self.assertIn("permanent, not retrying", log)
+
+    def test_four_images_stay_under_half_the_ticket_cap(self):
+        wrapper = os.path.join(ROOT, "deploy", "grokbot-genseo-daily.sh")
+        with open(wrapper, encoding="utf-8") as fh:
+            text = fh.read()
+        marker = "GENSEO_TICKET_TIMEOUT_SEC:-"
+        self.assertIn(marker, text)
+        cap = int(text.split(marker, 1)[1].split("}", 1)[0])
+        self.assertEqual(cap, ai.TICKET_CAP_SEC)
+        self.assertEqual(ai.IMA2_BACKOFF_SEC, (5, 15))
+        self.assertLessEqual(sum(ai.IMA2_BACKOFF_SEC), 20)
+        self.assertGreaterEqual(
+            ai.IMA2_CALL_BUDGET_SEC, 360 + ai.IMA2_TIMEOUT_PAD_SEC)
+        # Hero + 3 inline. Each call may burn the whole budget. That total
+        # stays under half of the 90-minute ticket so the writer still fits.
+        self.assertLessEqual(4 * ai.IMA2_CALL_BUDGET_SEC, cap // 2)
+
+    def test_call_budget_stops_before_another_attempt(self):
+        self.t = 0
+
+        def clock():
+            return self.t
+
+        def on_call(n, timeout_s):
+            if n == 1:
+                self.t = ai.IMA2_CALL_BUDGET_SEC
+
+        timeout_exc = subprocess.TimeoutExpired(["ima2", "gen"], 390)
+        caught, log, runner = self._go([timeout_exc, (0, "", "", MIN_BYTES)],
+                                        clock=clock, on_call=on_call)
+        self.assertIn("ima2 generation failed:", str(caught.code))
+        self.assertIn("call budget", str(caught.code))
+        self.assertEqual(len(runner.calls), 1)
+        self.assertEqual(runner.calls[0][1]["timeout"], 390)
+        self.assertEqual(self.sleeps, [])
+        self.assertIn("call budget, not retrying", log)
+        self.assertNotIn("retrying in", log)
+
+    def test_second_attempt_timeout_is_clamped_to_the_budget(self):
+        self.t = 0
+
+        def clock():
+            return self.t
+
+        def pause(seconds):
+            self.sleeps.append(seconds)
+            self.t += seconds
+
+        def on_call(n, timeout_s):
+            if n == 1:
+                self.t = 500
+
+        timeout_exc = subprocess.TimeoutExpired(["ima2", "gen"], 390)
+        caught, log, runner = self._go(
+            [timeout_exc, (0, "", "", MIN_BYTES)],
+            clock=clock, on_call=on_call, sleeper=pause)
+        self.assertIsNone(caught)
+        self.assertEqual(len(runner.calls), 2)
+        self.assertEqual(runner.calls[0][1]["timeout"], 390)
+        # 500s already spent, plus the 5s backoff, leaves 95s of the 600s budget.
+        self.assertEqual(runner.calls[1][1]["timeout"], 95)
+        self.assertEqual(self.sleeps, [5])
+        self.assertGreaterEqual(os.path.getsize(self.out), MIN_BYTES)
+        self.assertIn("retrying in 5s", log)
+
+    def test_timeout_kills_sigterm_ignoring_sleeper_tree(self):
+        pidfile = os.path.join(self.tmp, "grand.pid")
+        script = os.path.join(self.tmp, "ima2-hang")
+        with open(script, "w", encoding="utf-8") as fh:
+            fh.write(
+                "#!/usr/bin/perl\n"
+                "use POSIX qw(setsid);\n"
+                "my $grandf = $ARGV[0];\n"
+                "my $pid = fork();\n"
+                "die \"fork\\n\" unless defined $pid;\n"
+                "if ($pid == 0) {\n"
+                "  setsid() or die \"setsid\\n\";\n"
+                "  $SIG{TERM} = \"IGNORE\";\n"
+                "  $SIG{HUP} = \"IGNORE\";\n"
+                "  $SIG{INT} = \"IGNORE\";\n"
+                "  open my $f, \">\", $grandf or die $!;\n"
+                "  print $f \"$$\\n\";\n"
+                "  close $f;\n"
+                "  while (1) { sleep 30; }\n"
+                "  exit 0;\n"
+                "}\n"
+                "$SIG{TERM} = \"IGNORE\";\n"
+                "$SIG{HUP} = \"IGNORE\";\n"
+                "$SIG{INT} = \"IGNORE\";\n"
+                "while (1) { sleep 30; }\n"
+            )
+        os.chmod(script, stat.S_IRWXU)
+        sibling = subprocess.Popen(["/bin/sleep", "60"])
+        grand = None
+        try:
+            with self.assertRaises(subprocess.TimeoutExpired):
+                ai._run_ima2([script, pidfile], os.environ.copy(), 1)
+            self.assertTrue(os.path.isfile(pidfile))
+            with open(pidfile, encoding="utf-8") as fh:
+                grand = int(fh.read().strip())
+            self.assertTrue(self._stopped(grand), "sleeper grandchild still running")
+            self.assertIsNone(sibling.poll())
+        finally:
+            if sibling.poll() is None:
+                sibling.kill()
+                sibling.wait()
+            if grand and ai._pid_alive(grand):
+                try:
+                    os.kill(grand, 9)
+                except OSError:
+                    pass
+
+    def _stopped(self, pid):
+        deadline = time.time() + 2
+        while time.time() < deadline:
+            if not ai._pid_alive(pid):
+                return True
+            state = _proc_state(pid)
+            if state in ("Z", None):
+                return True
+            time.sleep(0.05)
+        return False
+
+
+def _proc_state(pid):
+    path = "/proc/%s/stat" % pid
+    try:
+        raw = open(path, encoding="utf-8", errors="replace").read()
+    except OSError:
+        return None
+    mark = raw.rfind(")")
+    if mark < 0 or mark + 2 >= len(raw):
+        return None
+    return raw[mark + 2]
 
 
 if __name__ == "__main__":
