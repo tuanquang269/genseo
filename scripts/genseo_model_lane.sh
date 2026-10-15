@@ -16,6 +16,17 @@
 # matches, USE_NATIVE is ignored and cleared so the router lanes run, including
 # callers that branch on the login flag (run_ticket_headless.sh).
 #
+# Bare aliases are not passed to claude. scripts/genseo_model_map.json maps an
+# Anthropic id Claude Code accepts onto each alias (claude-opus-5-5 for the
+# planner, claude-fable-5 for the Fable fallback). --model / --fallback-model
+# receive the Anthropic id. modelOverrides in --settings is what the gateway
+# receives, so the router still sees the PATI alias. No Anthropic API key is
+# set. An alias with no map entry is a fatal error before claude starts:
+# landing 2026-10-15 sat ~2h20 after unrecognized_model on the SDK query and
+# on agent:builtin:Explore (the fallback alias). A /v1/models hit is not a
+# Claude Code registration. GENSEO_MODEL_MAP_JSON overrides the map path and
+# must stay unset in production.
+#
 # Local lane does not export ANTHROPIC_BASE_URL. The Mini's global Claude settings
 # already route at its 9router, and a process env cannot reliably override that.
 # Hosted lane exports the base URL and token into the lean CLAUDE_CONFIG_DIR
@@ -27,8 +38,7 @@
 # the Bash safety service. PATI-Alpha-Plan-Review is not a classifier the gateway
 # can run, so Bash is blocked and the agent exits 0 before any write (articles
 # 2026-10-11 08:19). dontAsk keeps the runner allowlist and does not call that
-# classifier. The writer id sent to the gateway stays the PATI alias.
-# unrecognized_model may still print; that line is a warning, not the Bash block.
+# classifier. The gateway still receives the PATI alias through modelOverrides.
 # Native login leaves GENSEO_PERMISSION_MODE empty (CLI default). A stale value
 # in the environment is cleared or overwritten here.
 #
@@ -49,6 +59,123 @@ genseo_writer_model() {
 
 genseo_writer_fallback() {
   printf '%s' "${GENSEO_WRITER_FALLBACK:-PATI-Fable-5}"
+}
+
+# A test may assign GENSEO_MODEL_MAP_JSON without exporting it. Python only
+# sees the exported environment, and this must run in the current shell.
+genseo_export_model_map() {
+  if [ -n "${GENSEO_MODEL_MAP_JSON:-}" ]; then
+    export GENSEO_MODEL_MAP_JSON
+  fi
+}
+
+genseo_model_map_py() {
+  local dir
+  dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+  printf '%s' "${GENSEO_MODEL_MAP_PY:-$dir/genseo_model_map.py}"
+}
+
+# Print the Claude Code model id for $1. A claude-* id is unchanged. A mapped
+# gateway alias becomes the Anthropic id from scripts/genseo_model_map.json.
+# On refusal, set GENSEO_MODEL_LANE_ERROR and return 1. Never prints the router key.
+genseo_claude_model_id() {
+  local py line
+  genseo_export_model_map
+  py="$(genseo_model_map_py)"
+  line="$(python3 "$py" claude-id -- "$1" 2>/dev/null)" || true
+  case "$line" in
+    "OK "*)
+      printf '%s' "${line#OK }"
+      return 0
+      ;;
+    "ERR "*)
+      GENSEO_MODEL_LANE_ERROR="${line#ERR }"
+      printf '%s\n' "$GENSEO_MODEL_LANE_ERROR" >&2
+      return 1
+      ;;
+    *)
+      GENSEO_MODEL_LANE_ERROR="model map could not be read"
+      printf '%s\n' "$GENSEO_MODEL_LANE_ERROR" >&2
+      return 1
+      ;;
+  esac
+}
+
+# Resolve $1 in the current shell. Command substitution cannot keep
+# GENSEO_MODEL_LANE_ERROR, so the error is read back from stderr.
+# On success GENSEO_RESOLVED_MODEL is the Claude Code id.
+genseo_resolve_model() {
+  local errfile id
+  errfile="$(mktemp "${TMPDIR:-/tmp}/genseo-model-id.XXXXXX")" || {
+    GENSEO_MODEL_LANE_ERROR="model map could not be read"
+    return 1
+  }
+  if ! id="$(genseo_claude_model_id "$1" 2>"$errfile")"; then
+    GENSEO_MODEL_LANE_ERROR="$(tr '\n' ' ' <"$errfile" | sed 's/ *$//')"
+    rm -f "$errfile"
+    if [ -z "${GENSEO_MODEL_LANE_ERROR:-}" ]; then
+      GENSEO_MODEL_LANE_ERROR="unrecognized model: $1"
+    fi
+    GENSEO_RESOLVED_MODEL=""
+    return 1
+  fi
+  rm -f "$errfile"
+  GENSEO_RESOLVED_MODEL="$id"
+}
+
+# Pin family aliases only for gateway aliases this run mapped. A claude-* writer
+# keeps the CLI default. Unset first so a previous alias cannot leak into a
+# native run in the same shell.
+genseo_pin_one_family() {
+  local configured="$1" resolved="$2"
+  case "$configured" in
+    claude-*|"") return 0 ;;
+  esac
+  case "$resolved" in
+    *opus*) export ANTHROPIC_DEFAULT_OPUS_MODEL="$resolved" ;;
+    *fable*) export ANTHROPIC_DEFAULT_FABLE_MODEL="$resolved" ;;
+  esac
+}
+
+genseo_pin_mapped_families() {
+  local writer_id="" fallback_id=""
+  unset ANTHROPIC_DEFAULT_OPUS_MODEL ANTHROPIC_DEFAULT_FABLE_MODEL
+  genseo_resolve_model "$GENSEO_WRITER_MODEL" || return 1
+  writer_id="$GENSEO_RESOLVED_MODEL"
+  genseo_resolve_model "$GENSEO_WRITER_FALLBACK" || return 1
+  fallback_id="$GENSEO_RESOLVED_MODEL"
+  genseo_pin_one_family "$GENSEO_WRITER_MODEL" "$writer_id"
+  genseo_pin_one_family "$GENSEO_WRITER_FALLBACK" "$fallback_id"
+}
+
+# Stdin-less: $3 is the existing --settings JSON, or empty. Prints the merged
+# object, or nothing when there is nothing to pass. modelOverrides values are
+# the gateway aliases.
+genseo_merge_model_settings() {
+  local py merged errfile rc
+  genseo_export_model_map
+  py="$(genseo_model_map_py)"
+  errfile="$(mktemp "${TMPDIR:-/tmp}/genseo-model-settings.XXXXXX")" || return 1
+  merged="$(python3 "$py" merge-settings --writer "$1" --fallback "$2" 2>"$errfile" <<<"${3:-}")"
+  rc=$?
+  if [ "$rc" != 0 ]; then
+    GENSEO_MODEL_LANE_ERROR="$(tr '\n' ' ' <"$errfile" | sed 's/ *$//')"
+    rm -f "$errfile"
+    return 1
+  fi
+  rm -f "$errfile"
+  printf '%s' "$merged"
+}
+
+genseo_claude_model_log_line() {
+  local writer_id="" fallback_id="" saved=""
+  saved="${GENSEO_MODEL_LANE_ERROR:-}"
+  writer_id="$(genseo_claude_model_id "${GENSEO_WRITER_MODEL:-}" 2>/dev/null)" || writer_id="unmapped"
+  fallback_id="$(genseo_claude_model_id "${GENSEO_WRITER_FALLBACK:-}" 2>/dev/null)" || fallback_id="unmapped"
+  GENSEO_MODEL_LANE_ERROR="$saved"
+  printf '(claude-model: writer=%s fallback=%s gateway=%s/%s)\n' \
+    "$writer_id" "$fallback_id" \
+    "${GENSEO_WRITER_MODEL:-}" "${GENSEO_WRITER_FALLBACK:-}"
 }
 
 # Exit 0 when $1 is a 9router alias Claude Code native login cannot resolve.
@@ -113,6 +240,16 @@ genseo_select_model_lane() {
   base="${base%/}"
   cfg="${GENSEO_CFG:-$HOME/.claude-genseo}"
 
+  # Refuse a bare alias before any router call. Claude Code does not accept it,
+  # and confirming it on a subagent switch is what hung landing 2026-10-15.
+  unset ANTHROPIC_DEFAULT_OPUS_MODEL ANTHROPIC_DEFAULT_FABLE_MODEL
+  if ! genseo_resolve_model "$model"; then
+    return 1
+  fi
+  if ! genseo_resolve_model "$GENSEO_WRITER_FALLBACK"; then
+    return 1
+  fi
+
   # PATI-* is not a native Claude model. Ignore the login flag and clear it so
   # run_ticket_headless.sh uses the router invocation (context cap, strict MCP).
   if genseo_model_is_router_alias "$model" || genseo_model_is_router_alias "$GENSEO_WRITER_FALLBACK"; then
@@ -120,6 +257,7 @@ genseo_select_model_lane() {
   fi
 
   if [ "${USE_NATIVE:-0}" = "1" ]; then
+    genseo_pin_mapped_families || return 1
     export CLAUDE_CONFIG_DIR="$cfg"
     GENSEO_MODEL_LANE="native"
     return 0
@@ -139,6 +277,7 @@ genseo_select_model_lane() {
       body="$(curl -s -m 5 "$base/v1/models" 2>/dev/null || true)"
     fi
     if printf '%s' "$body" | genseo_models_json_has_id "$model"; then
+      genseo_pin_mapped_families || return 1
       GENSEO_MODEL_LANE="local-9router"
       GENSEO_PERMISSION_MODE="dontAsk"
       export GENSEO_PERMISSION_MODE
@@ -151,6 +290,7 @@ genseo_select_model_lane() {
     GENSEO_MODEL_LANE_ERROR="no model lane (no native login, local 9router down or missing ${model}, no NINE_ROUTER_KEY)"
     return 1
   fi
+  genseo_pin_mapped_families || return 1
   export ANTHROPIC_BASE_URL="${GENSEO_ROUTER_BASE:-https://ai.patigroup.com}"
   export ANTHROPIC_AUTH_TOKEN="$key"
   export CLAUDE_CONFIG_DIR="$cfg"
@@ -200,9 +340,110 @@ genseo_exec_writer() {
     "$bin" "$@"
 }
 
+# Rewrite --model / --fallback-model to Claude Code ids and merge modelOverrides
+# into the existing --settings object. $1 is the gateway name for this attempt
+# (writer or fallback). Remaining args are the caller's claude argv.
+# Sets GENSEO_PREPARED_ARGS and GENSEO_PREPARED_MODEL. Does not exec claude.
+genseo_prepare_writer_args() {
+  local model_name="$1"
+  shift
+  local -a incoming=()
+  local -a built=()
+  local i=0 count=0 arg="" nxt=""
+  local attempt_id="" writer_id="" fallback_id=""
+  local settings_at=-1 existing="" merged=""
+  GENSEO_PREPARED_ARGS=()
+  GENSEO_PREPARED_MODEL=""
+  if [ "$#" -gt 0 ]; then
+    incoming=("$@")
+  fi
+  count=${#incoming[@]}
+  if ! genseo_resolve_model "${GENSEO_WRITER_MODEL:-}"; then
+    return 1
+  fi
+  writer_id="$GENSEO_RESOLVED_MODEL"
+  if ! genseo_resolve_model "${GENSEO_WRITER_FALLBACK:-}"; then
+    return 1
+  fi
+  fallback_id="$GENSEO_RESOLVED_MODEL"
+  if ! genseo_resolve_model "$model_name"; then
+    return 1
+  fi
+  attempt_id="$GENSEO_RESOLVED_MODEL"
+  GENSEO_PREPARED_MODEL="$attempt_id"
+  unset ANTHROPIC_DEFAULT_OPUS_MODEL ANTHROPIC_DEFAULT_FABLE_MODEL
+  genseo_pin_one_family "${GENSEO_WRITER_MODEL:-}" "$writer_id"
+  genseo_pin_one_family "${GENSEO_WRITER_FALLBACK:-}" "$fallback_id"
+  while [ "$i" -lt "$count" ]; do
+    arg="${incoming[$i]}"
+    if [ "$arg" = "--model" ] || [ "$arg" = "--fallback-model" ]; then
+      i=$((i + 1))
+      if [ "$i" -ge "$count" ]; then
+        GENSEO_MODEL_LANE_ERROR="missing value after $arg"
+        return 1
+      fi
+      nxt="${incoming[$i]}"
+      if ! genseo_resolve_model "$nxt"; then
+        return 1
+      fi
+      nxt="$GENSEO_RESOLVED_MODEL"
+      # A caller --model is rewritten so a bare alias cannot reach claude.
+      # The attempt id is appended last and is the one claude uses.
+      if [ "$arg" = "--fallback-model" ]; then
+        built+=("--fallback-model" "$nxt")
+      fi
+      i=$((i + 1))
+      continue
+    fi
+    if [ "$arg" = "--settings" ]; then
+      i=$((i + 1))
+      settings_at=${#built[@]}
+      if [ "$i" -ge "$count" ]; then
+        built+=("--settings" "")
+        break
+      fi
+      built+=("--settings" "${incoming[$i]}")
+      i=$((i + 1))
+      continue
+    fi
+    built+=("$arg")
+    i=$((i + 1))
+  done
+  built+=("--model" "$GENSEO_PREPARED_MODEL")
+  existing=""
+  if [ "$settings_at" -ge 0 ]; then
+    existing="${built[$((settings_at + 1))]}"
+  fi
+  if ! merged="$(genseo_merge_model_settings "${GENSEO_WRITER_MODEL:-}" "${GENSEO_WRITER_FALLBACK:-}" "$existing")"; then
+    return 1
+  fi
+  if [ -n "$merged" ]; then
+    if [ "$settings_at" -ge 0 ]; then
+      built[$((settings_at + 1))]="$merged"
+    else
+      built+=("--settings" "$merged")
+    fi
+  fi
+  GENSEO_PREPARED_ARGS=("${built[@]}")
+}
+
+_genseo_model_fail() {
+  local log="$1"
+  local msg="${GENSEO_MODEL_LANE_ERROR:-unrecognized model}"
+  printf 'FATAL: %s\n' "$msg" >>"$log"
+  printf 'FATAL: %s\n' "$msg" >&2
+}
+
+_genseo_log_writer_attempt() {
+  local log="$1" gateway="$2"
+  printf '=== writer attempt model=%s gateway=%s ===\n' \
+    "$GENSEO_PREPARED_MODEL" "$gateway" >>"$log"
+}
+
 # Run claude once. On a non-Anthropic HTTP 200 JSON failure, run it one more time
-# with --model set to the fallback. Same remaining argv, including --fallback-model
-# and any draft/permission flags the caller already set.
+# with --model set to the fallback's Claude Code id. Same remaining argv, including
+# draft/permission flags. Gateway aliases are rewritten before exec. An unmapped
+# alias returns 1 without starting claude.
 genseo_run_writer_with_shape_fallback() {
   local log="$1" bin="$2"
   shift 2
@@ -216,13 +457,21 @@ genseo_run_writer_with_shape_fallback() {
   export GENSEO_WRITER_MODEL GENSEO_WRITER_FALLBACK
 
   if [ "${GENSEO_WRITER_SHAPE_RETRY:-0}" = "1" ]; then
-    printf '=== writer attempt model=%s ===\n' "$GENSEO_WRITER_FALLBACK" >>"$log"
-    genseo_exec_writer "$bin" "$@" --model "$GENSEO_WRITER_FALLBACK" >>"$log" 2>&1 || rc=$?
+    if ! genseo_prepare_writer_args "$GENSEO_WRITER_FALLBACK" "$@"; then
+      _genseo_model_fail "$log"
+      return 1
+    fi
+    _genseo_log_writer_attempt "$log" "$GENSEO_WRITER_FALLBACK"
+    genseo_exec_writer "$bin" "${GENSEO_PREPARED_ARGS[@]}" >>"$log" 2>&1 || rc=$?
     return "$rc"
   fi
 
-  printf '=== writer attempt model=%s ===\n' "$GENSEO_WRITER_MODEL" >>"$log"
-  genseo_exec_writer "$bin" "$@" --model "$GENSEO_WRITER_MODEL" >>"$log" 2>&1 || rc=$?
+  if ! genseo_prepare_writer_args "$GENSEO_WRITER_MODEL" "$@"; then
+    _genseo_model_fail "$log"
+    return 1
+  fi
+  _genseo_log_writer_attempt "$log" "$GENSEO_WRITER_MODEL"
+  genseo_exec_writer "$bin" "${GENSEO_PREPARED_ARGS[@]}" >>"$log" 2>&1 || rc=$?
   if [ "$rc" -eq 0 ]; then
     return 0
   fi
@@ -236,9 +485,13 @@ genseo_run_writer_with_shape_fallback() {
     "$GENSEO_WRITER_MODEL" "$GENSEO_WRITER_FALLBACK" >>"$log"
   GENSEO_WRITER_SHAPE_RETRY=1
   export GENSEO_WRITER_SHAPE_RETRY
-  printf '=== writer attempt model=%s ===\n' "$GENSEO_WRITER_FALLBACK" >>"$log"
+  if ! genseo_prepare_writer_args "$GENSEO_WRITER_FALLBACK" "$@"; then
+    _genseo_model_fail "$log"
+    return 1
+  fi
+  _genseo_log_writer_attempt "$log" "$GENSEO_WRITER_FALLBACK"
   rc=0
-  genseo_exec_writer "$bin" "$@" --model "$GENSEO_WRITER_FALLBACK" >>"$log" 2>&1 || rc=$?
+  genseo_exec_writer "$bin" "${GENSEO_PREPARED_ARGS[@]}" >>"$log" 2>&1 || rc=$?
   if genseo_log_needs_writer_fallback "$log"; then
     printf 'writer-shape: %s also returned a non-Anthropic payload; not retrying again\n' \
       "$GENSEO_WRITER_FALLBACK" >>"$log"

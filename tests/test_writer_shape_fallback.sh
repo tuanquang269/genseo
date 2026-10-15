@@ -169,7 +169,14 @@ printf '%s\n' anthropic-ok > "$MODE"
 run_writer
 [ "$RC" = 0 ] && ok "exit 0" || bad "exit $RC"
 [ "$(call_count)" = 1 ] && ok "one call" || bad "calls $(call_count)"
-[ "$(model_n 1)" = "PATI-Alpha-Plan-Review" ] && ok "primary model" || bad "model $(model_n 1)"
+[ "$(model_n 1)" = "claude-opus-5-5" ] && ok "primary model is the Claude id" || bad "model $(model_n 1)"
+grep -q 'modelOverrides' "$CALLS" && ok "primary call carries modelOverrides" || bad "missing modelOverrides"
+grep -q 'PATI-Alpha-Plan-Review' "$CALLS" && ok "override value is the planner alias" || bad "planner alias missing"
+if grep -q -- '--model PATI-' "$CALLS" || grep -q -- '--fallback-model PATI-' "$CALLS"; then
+  bad "primary call passed a bare alias"
+else
+  ok "primary call has no bare alias"
+fi
 if grep -q 'one re-exec' "$LOG"; then bad "success re-execed"; else ok "no re-exec"; fi
 [ -z "${GENSEO_WRITER_SHAPE_RETRY:-}" ] && ok "retry flag stays unset" || bad "retry flag leaked"
 
@@ -187,8 +194,8 @@ printf '%s\n' phrase-then-ok > "$MODE"
 run_writer
 [ "$RC" = 0 ] && ok "exit 0" || bad "exit $RC"
 [ "$(call_count)" = 2 ] && ok "exactly two calls" || bad "calls $(call_count)"
-[ "$(model_n 1)" = "PATI-Alpha-Plan-Review" ] && ok "first model is primary" || bad "first $(model_n 1)"
-[ "$(model_n 2)" = "PATI-Fable-5" ] && ok "second model is fallback" || bad "second $(model_n 2)"
+[ "$(model_n 1)" = "claude-opus-5-5" ] && ok "first model is the Claude planner id" || bad "first $(model_n 1)"
+[ "$(model_n 2)" = "claude-fable-5" ] && ok "second model is the Claude fable id" || bad "second $(model_n 2)"
 grep -q 'one re-exec on PATI-Fable-5' "$LOG" && ok "log names the one re-exec" || bad "missing re-exec line"
 if grep -q 'not retrying again' "$LOG"; then bad "success logged a second failure"; else ok "no second-failure line"; fi
 grep -q 'SPEC: landing_drafts/stub.json' "$LOG" && ok "fallback output kept" || bad "missing fallback output"
@@ -202,7 +209,7 @@ printf '%s\n' openai-then-ok > "$MODE"
 run_writer
 [ "$RC" = 0 ] && ok "exit 0" || bad "exit $RC"
 [ "$(call_count)" = 2 ] && ok "exactly two calls" || bad "calls $(call_count)"
-[ "$(model_n 2)" = "PATI-Fable-5" ] && ok "fallback model" || bad "second $(model_n 2)"
+[ "$(model_n 2)" = "claude-fable-5" ] && ok "fallback model is the Claude fable id" || bad "second $(model_n 2)"
 
 echo "6. runner: fallback failure stops, keeps the fallback status, and does not call a third time"
 reset_run
@@ -215,7 +222,7 @@ grep -q 'not retrying again' "$LOG" && ok "stop line" || bad "missing stop line"
 printf '%s\n' always-fail > "$MODE"
 run_writer
 [ "$(call_count)" = 3 ] && ok "re-entry is a single fallback call" || bad "calls $(call_count)"
-[ "$(model_n 3)" = "PATI-Fable-5" ] && ok "re-entry uses the fallback" || bad "third $(model_n 3)"
+[ "$(model_n 3)" = "claude-fable-5" ] && ok "re-entry uses the Claude fable id" || bad "third $(model_n 3)"
 [ "$RC" = 4 ] && ok "re-entry returns that call" || bad "re-entry exit $RC"
 
 echo "7. runner: OpenAI on both attempts stops after the fallback"
@@ -308,20 +315,62 @@ RC=$?
 grep -q '^api=600000$' "$NETOUT" && ok "default API_TIMEOUT_MS is 600000" || bad "api $(grep '^api=' "$NETOUT")"
 grep -q '^first=120000$' "$NETOUT" && ok "default first-byte timeout is 120000" || bad "first $(grep '^first=' "$NETOUT")"
 grep -q '^idle=300000$' "$NETOUT" && ok "default idle timeout is 300000" || bad "idle $(grep '^idle=' "$NETOUT")"
-grep -q -- '--model PATI-Alpha-Plan-Review' "$NETOUT" && ok "primary model unchanged" || bad "model args drifted"
-if grep -q 'PATI-Fable-5' "$NETOUT"; then
-  # fallback-model is an argv flag the caller already passed; the selected --model must stay primary
-  grep -q -- '--model PATI-Fable-5' "$NETOUT" && bad "default run switched --model" || ok "fallback flag is not the selected model"
+grep -q -- '--model claude-opus-5-5' "$NETOUT" && ok "primary model is the Claude id" || bad "model args drifted"
+grep -q -- '--fallback-model claude-fable-5' "$NETOUT" && ok "fallback flag is the Claude fable id" || bad "fallback flag was not rewritten"
+if grep -q -- '--model PATI-' "$NETOUT" || grep -q -- '--fallback-model PATI-' "$NETOUT"; then
+  bad "bare PATI alias was passed to claude"
 else
-  ok "fallback flag is not the selected model"
+  ok "bare PATI alias was not passed to claude"
 fi
+grep -q 'PATI-Alpha-Plan-Review' "$NETOUT" && ok "settings still name the planner alias" || bad "gateway planner alias missing"
+grep -q 'PATI-Fable-5' "$NETOUT" && ok "settings still name the fable alias" || bad "gateway fable alias missing"
 API_TIMEOUT_MS=111111 CLAUDE_STREAM_FIRST_BYTE_TIMEOUT_MS=22222 CLAUDE_STREAM_IDLE_TIMEOUT_MS=333333 \
   genseo_run_writer_with_shape_fallback "$TMP/net.log" "$NET" -p "prompt" --fallback-model PATI-Fable-5
 grep -q '^api=111111$' "$NETOUT" && ok "explicit API_TIMEOUT_MS kept" || bad "override api $(grep '^api=' "$NETOUT")"
 grep -q '^first=22222$' "$NETOUT" && ok "explicit first-byte timeout kept" || bad "override first $(grep '^first=' "$NETOUT")"
 grep -q '^idle=333333$' "$NETOUT" && ok "explicit idle timeout kept" || bad "override idle $(grep '^idle=' "$NETOUT")"
-grep -q -- '--model PATI-Alpha-Plan-Review' "$NETOUT" && ok "override kept the primary model" || bad "override changed model"
+grep -q -- '--model claude-opus-5-5' "$NETOUT" && ok "override kept the Claude planner id" || bad "override changed model"
 [ -z "${API_TIMEOUT_MS:-}" ] && ok "timeout export did not leak into the shell" || bad "API_TIMEOUT_MS leaked"
+
+echo "12. an unmapped alias does not start claude"
+reset_run
+export GENSEO_WRITER_MODEL="PATI-No-Such"
+printf '%s\n' anthropic-ok > "$MODE"
+run_writer
+[ "$RC" = 1 ] && ok "unmapped exit 1" || bad "exit $RC"
+[ "$(call_count)" = 0 ] && ok "unmapped does not exec" || bad "calls $(call_count)"
+grep -q 'FATAL: unrecognized model: PATI-No-Such' "$LOG" && ok "log names the refusal" || bad "missing fatal line"
+if grep -q 'ANTHROPIC_API_KEY' "$LOG"; then bad "refusal log mentions an API key"; else ok "refusal log has no API key"; fi
+
+echo "13. existing --settings JSON keeps claudeMdExcludes"
+reset_run
+printf '%s\n' anthropic-ok > "$MODE"
+genseo_run_writer_with_shape_fallback "$LOG" "$STUB" \
+  -p "prompt" --settings '{"claudeMdExcludes":["/tmp/CLAUDE.md"]}' \
+  --fallback-model "$GENSEO_WRITER_FALLBACK"
+RC=$?
+[ "$RC" = 0 ] && ok "settings merge exit 0" || bad "exit $RC"
+if python3 - "$CALLS" <<'PY'
+import json, sys
+text = open(sys.argv[1], encoding="utf-8").read().splitlines()
+blob = ""
+for i, line in enumerate(text):
+    if line == "--settings" and i + 1 < len(text):
+        blob = text[i + 1]
+        break
+if not blob:
+    sys.exit("no settings arg")
+data = json.loads(blob)
+if data.get("claudeMdExcludes") != ["/tmp/CLAUDE.md"]:
+    sys.exit("excludes %r" % data)
+overrides = data.get("modelOverrides") or {}
+if overrides.get("claude-opus-5-5") != "PATI-Alpha-Plan-Review":
+    sys.exit("override %r" % overrides)
+if overrides.get("claude-fable-5") != "PATI-Fable-5":
+    sys.exit("fable override %r" % overrides)
+PY
+then ok "merged settings keep excludes and the gateway aliases"
+else bad "settings merge in argv"; fi
 
 echo
 echo "$PASS passed, $FAIL failed"

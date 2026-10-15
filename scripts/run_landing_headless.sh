@@ -13,7 +13,8 @@
 # when /v1/models lists the writer alias, else hosted ai.patigroup.com. A MacBook router
 # that is up with no PATI-* ids is not a writer lane. Router lanes pass
 # --permission-mode dontAsk so auto mode does not use the PATI id as the Bash safety
-# service (articles 2026-10-11 08:19).
+# service (articles 2026-10-11 08:19). A PATI-* id with no modelOverrides entry in
+# scripts/genseo_model_map.json is refused before claude starts (landing 2026-10-15).
 export PATH="$HOME/.local/bin:$HOME/.npm-global/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
 for d in "$HOME"/.nvm/versions/node/*/bin; do [ -d "$d" ] && PATH="$d:$PATH"; done
 export PATH
@@ -150,6 +151,7 @@ if [ "${GENSEO_LANDING_PRINT_SETTINGS:-0}" = "1" ]; then
 fi
 echo "=== landing run $STAMP $TEMPLATE $STORE ===" >> "$LOG"
 genseo_lane_log_line >> "$LOG"
+genseo_claude_model_log_line >> "$LOG"
 # Router lanes only. Native keeps the CLI default. dontAsk is the fallback if the
 # lane left the mode empty on a non-native run.
 PERM_ARGS=()
