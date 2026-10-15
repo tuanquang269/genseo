@@ -848,6 +848,13 @@
       "f6070",
       "m6070"
     ],
+    "fusiforce-buyer": [
+      "f4049",
+      "f5059",
+      "m4049",
+      "m5059",
+      "m6070"
+    ],
     "active-20-45": [
       "m3039",
       "f3039",
@@ -860,7 +867,7 @@
   "brand_fallback_audience": {
     "ShilaSource": "men-30-55",
     "Turkesterone": "men-20-35",
-    "FusiForce": "active-20-45",
+    "FusiForce": "fusiforce-buyer",
     "FloraFresh": "women-25-45",
     "MenoMate": "women-40-60",
     "AgeAura": "adults-50-70"
