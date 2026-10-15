@@ -18,9 +18,11 @@
 #      grokbot-genseo-daily, however old the lock is. A dead PID is stale. A missing PID is
 #      stale only after 6h (GENSEO_LOCK_STALE_SEC), so a lock still being stamped is not stolen.
 #      A live wrapper with no PID file (the pre-PID lock) is not stolen for age either.
-#   7. each ticket is its own session, 90 min (GENSEO_TICKET_TIMEOUT_SEC). Timeout kills the
-#      process group (ticket bash + Claude). perl `alarm; exec` only signaled bash and left Claude
-#      publishing into the next ticket.
+#   7. each ticket is its own session, 90 min (GENSEO_TICKET_TIMEOUT_SEC). The deadline is
+#      monotonic elapsed time. Timeout TERMs then KILLs the descendant tree (ticket bash,
+#      Claude, and workers that called setsid) and the process group. perl `alarm; exec`
+#      only signaled bash and left Claude publishing into the next ticket. A timeout is a
+#      no-publish; the EXIT trap releases state/daily.lock when this wrapper returns.
 # launchd runs ~/bin/grokbot-genseo-daily.sh, a copy of this file. After git pull:
 #   bash ~/genseo/scripts/install_mac_daily_wrapper.sh
 # (docs/TICKET_REFILL.md). That does not start launchd. Helpers load from ~/genseo/scripts/.
@@ -43,6 +45,7 @@ REFILL_PREFIX="${GENSEO_TICKET_PREFIX:-$([ "$ROLE" = standby ] && echo MB || ech
 HOST="$(hostname -s)"; DAY="$(date +%F)"
 LOGDIR="$G/logs/daily"; mkdir -p "$LOGDIR" "$G/state"
 LOG="$LOGDIR/$DAY.log"
+export GENSEO_TIMEOUT_LOG="$LOG"
 MINE="$G/state/published-by-$HOST.log"     # URLs this Mac published (one per line: <iso-ts> <url>)
 LOCK="$G/state/daily.lock"
 ts(){ date '+%F %T'; }
@@ -116,7 +119,12 @@ for i in $(seq 1 $(( MAX_RUNS + ${GENSEO_PEER_MAX_WAITS:-6} ))); do
     while read -r u; do echo "$(date '+%FT%T%z') $u" >> "$MINE"; say "published: $u"; done <<< "$new"
     fails=0
   else
-    fails=$((fails+1)); say "run $i exit $rrc — nothing new went live (skip/dup/fail #$fails)"
+    fails=$((fails+1))
+    if [ "$rrc" -eq 124 ]; then
+      say "run $i TIMEOUT exit 124 after ${TICKET_TIMEOUT}s — nothing new went live (fail #$fails)"
+    else
+      say "run $i exit $rrc — nothing new went live (skip/dup/fail #$fails)"
+    fi
     [ "$fails" -ge 3 ] && { say "3 runs in a row without a publish — stopping; check logs/articles-*.log"; exit 1; }
   fi
 done

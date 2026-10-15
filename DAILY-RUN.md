@@ -58,9 +58,12 @@ one-way; the Mini's repo commits are unpushed), so the PUBLIC SITE is the lock:
    age, even with no PID file (a batch started before PID stamping). A dead PID is stale and
    may be taken immediately. A missing PID is stale only after 6 hours, so a lock that has not
    finished writing its PID is left alone. Each ticket runs in its own session for 90 minutes
-   (`scripts/genseo_group_timeout.sh`); on timeout the process group is killed (ticket bash and
-   Claude). `perl alarm; exec` is not used there — that signal hits only bash and leaves Claude
-   publishing into the next ticket. launchd runs `~/bin/grokbot-genseo-daily.sh`, a copy of
+   (`scripts/genseo_group_timeout.sh`). The deadline is monotonic elapsed time, not `alarm`.
+   On timeout every descendant is TERM'd then KILL'd (ticket bash, Claude, and workers that
+   called `setsid`), then the process group. `perl alarm; exec` is not used there — that signal
+   hits only bash and leaves Claude publishing into the next ticket. A timeout counts as a
+   no-publish; the wrapper's EXIT trap releases `state/daily.lock` when the batch returns.
+   launchd runs `~/bin/grokbot-genseo-daily.sh`, a copy of
    `deploy/grokbot-genseo-daily.sh`. After pull, `bash scripts/install_mac_daily_wrapper.sh`
    (`docs/TICKET_REFILL.md`) so the next slot picks this up. It does not start launchd.
    Helpers load from `~/genseo/scripts/`. Offline: `bash tests/test_daily_lock.sh`.
@@ -89,8 +92,8 @@ Daily lane (`scripts/run_landing_daily.sh`, launchd 08:15 + 16:15, 1 UNPUBLISHED
 Mac's article batch (`state/daily.lock`) at most a 30-min courtesy yield, then builds alongside it — it never waits out
 the whole batch, and it never touches the article publisher.
 The listicle writer runs in its own session for 90 minutes (`scripts/genseo_group_timeout.sh`,
-`GENSEO_LANDING_TIMEOUT_SEC`, default 5400). On timeout the process group is killed (landing bash and
-Claude). launchd runs `scripts/run_landing_daily.sh` from this checkout, so a pull is the update for the next
+`GENSEO_LANDING_TIMEOUT_SEC`, default 5400). On timeout the descendant tree is killed (landing bash,
+Claude, and workers that called `setsid`), then the process group. launchd runs `scripts/run_landing_daily.sh` from this checkout, so a pull is the update for the next
 08:15 / 16:15 slot. Offline: `bash tests/test_landing_daily_lock.sh`.
 Unpublished listicle prompts carry a standing `SCOPE_WAIVER` (`scripts/run_landing_headless.sh`, 2026-10-11). The writer must not ask a human to proceed. That day's `pure-shilajit-gold-resin` run followed the always-on file-count scope gate (more than 2 output files → show a menu and wait), asked "Proceed with the full unpublished draft package?", exited with an empty SPEC, and the wrapper logged FAILED (no spec). The product file was not missing. The waiver names that gate and forbids the menu and the wait. The DAILY LISTICLE LANE block says it overrides looser rules above; its first bullets keep the draft standing approval and the file-count prohibition in force. The headless runner also passes `--settings` `claudeMdExcludes` for unpublished runs so that session does not load `~/.claude/CLAUDE.md` (the file that injected the always-on gate on 2026-10-11; `CLAUDE_CONFIG_DIR` does not stop that load). A non-daily live attempt does not get the exclude.
 **Pack palette (Kevin 2026-10-09):** every landing page wears its hero product's packaging colors. The source of truth is

@@ -284,6 +284,45 @@ else
   ok "gold-resin was not reopened"
 fi
 
+echo "11. writer network deadlines do not change the model"
+NET="$TMP/net-claude"
+NETOUT="$TMP/net-out"
+export NETOUT
+cat > "$NET" << 'EOF'
+#!/bin/bash
+{
+  printf 'api=%s\n' "${API_TIMEOUT_MS:-}"
+  printf 'first=%s\n' "${CLAUDE_STREAM_FIRST_BYTE_TIMEOUT_MS:-}"
+  printf 'idle=%s\n' "${CLAUDE_STREAM_IDLE_TIMEOUT_MS:-}"
+  printf 'args=%s\n' "$*"
+} > "$NETOUT"
+printf '%s\n' '{"id":"msg_1","type":"message","role":"assistant","model":"claude","content":[{"type":"text","text":"ok"}]}'
+exit 0
+EOF
+chmod +x "$NET"
+reset_run
+unset API_TIMEOUT_MS CLAUDE_STREAM_FIRST_BYTE_TIMEOUT_MS CLAUDE_STREAM_IDLE_TIMEOUT_MS
+genseo_run_writer_with_shape_fallback "$TMP/net.log" "$NET" -p "prompt" --fallback-model PATI-Fable-5
+RC=$?
+[ "$RC" = 0 ] && ok "default deadlines exit 0" || bad "default deadlines exit $RC"
+grep -q '^api=600000$' "$NETOUT" && ok "default API_TIMEOUT_MS is 600000" || bad "api $(grep '^api=' "$NETOUT")"
+grep -q '^first=120000$' "$NETOUT" && ok "default first-byte timeout is 120000" || bad "first $(grep '^first=' "$NETOUT")"
+grep -q '^idle=300000$' "$NETOUT" && ok "default idle timeout is 300000" || bad "idle $(grep '^idle=' "$NETOUT")"
+grep -q -- '--model PATI-Alpha-Plan-Review' "$NETOUT" && ok "primary model unchanged" || bad "model args drifted"
+if grep -q 'PATI-Fable-5' "$NETOUT"; then
+  # fallback-model is an argv flag the caller already passed; the selected --model must stay primary
+  grep -q -- '--model PATI-Fable-5' "$NETOUT" && bad "default run switched --model" || ok "fallback flag is not the selected model"
+else
+  ok "fallback flag is not the selected model"
+fi
+API_TIMEOUT_MS=111111 CLAUDE_STREAM_FIRST_BYTE_TIMEOUT_MS=22222 CLAUDE_STREAM_IDLE_TIMEOUT_MS=333333 \
+  genseo_run_writer_with_shape_fallback "$TMP/net.log" "$NET" -p "prompt" --fallback-model PATI-Fable-5
+grep -q '^api=111111$' "$NETOUT" && ok "explicit API_TIMEOUT_MS kept" || bad "override api $(grep '^api=' "$NETOUT")"
+grep -q '^first=22222$' "$NETOUT" && ok "explicit first-byte timeout kept" || bad "override first $(grep '^first=' "$NETOUT")"
+grep -q '^idle=333333$' "$NETOUT" && ok "explicit idle timeout kept" || bad "override idle $(grep '^idle=' "$NETOUT")"
+grep -q -- '--model PATI-Alpha-Plan-Review' "$NETOUT" && ok "override kept the primary model" || bad "override changed model"
+[ -z "${API_TIMEOUT_MS:-}" ] && ok "timeout export did not leak into the shell" || bad "API_TIMEOUT_MS leaked"
+
 echo
 echo "$PASS passed, $FAIL failed"
 [ "$FAIL" = 0 ]

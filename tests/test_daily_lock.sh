@@ -25,7 +25,7 @@ cleanup() {
     while IFS= read -r f; do
       p=$(tr -cd '0-9' < "$f" 2>/dev/null || true)
       [ -n "$p" ] && kill -KILL "$p" 2>/dev/null || true
-    done < <(find "$TMP" -type f \( -name 'child.pid' -o -name 'sleeper.pid' -o -name 'runner.pid' \) 2>/dev/null)
+    done < <(find "$TMP" -type f \( -name 'child.pid' -o -name 'sleeper.pid' -o -name 'runner.pid' -o -name 'grand.pid' -o -name 'mid.pid' -o -name 'bash.pid' \) 2>/dev/null)
   fi
   jobs -p | while read -r p; do kill -KILL "$p" 2>/dev/null || true; done
   rm -rf "$TMP"
@@ -303,6 +303,7 @@ check "syntax group timeout" bash -n "$ROOT/scripts/genseo_group_timeout.sh"
 check "calls group timeout" grep -q 'genseo_group_timeout.sh' "$ROOT/deploy/grokbot-genseo-daily.sh"
 check "acquires pid lock" grep -q 'genseo_daily_lock_acquire' "$ROOT/deploy/grokbot-genseo-daily.sh"
 check "ticket line is not perl alarm" not grep -q 'alarm .*run_ticket_headless' "$ROOT/deploy/grokbot-genseo-daily.sh"
+check "cap does not arm alarm" not grep -q 'alarm $secs' "$ROOT/scripts/genseo_group_timeout.sh"
 
 echo "14. group timeout returns the command status and kills the process group"
 ign="$TMP/ignore.sh"
@@ -372,6 +373,88 @@ RC=$?
 check "forward exit 143" test "$RC" = 143
 check "stderr says forwarding" grep -q "forwarding signal" "$TMP/fwd.err"
 check "forwarded KILL reached the child" wait_dead "$child2"
+
+echo "21. cap kills a TERM-ignoring grandchild that left the group and blocked in connect"
+# The session leader's process group is not the whole tree. Claude (and a worker
+# it spawned) calls setsid; kill -$leader misses that pid. It is reparented to
+# init and stays in connect (SYN_SENT). The waiter must still return, and that
+# pid must be dead, within cap + grace.
+treedir="$TMP/tree21"
+mkdir -p "$treedir"
+tree="$TMP/tree-connect.sh"
+cat > "$tree" << 'EOF'
+#!/bin/bash
+d=$1
+printf '%s\n' "$$" > "$d/bash.pid"
+perl -e '
+use POSIX qw(setsid);
+use Socket;
+my ($grandf, $midf) = @ARGV;
+my $pid = fork();
+die "fork\n" unless defined $pid;
+if ($pid == 0) {
+  setsid() or die "setsid\n";
+  $SIG{TERM} = "IGNORE";
+  $SIG{HUP} = "IGNORE";
+  $SIG{INT} = "IGNORE";
+  open my $f, ">", $grandf or die $!;
+  print $f "$$\n";
+  close $f;
+  socket(my $s, PF_INET, SOCK_STREAM, 0) or die $!;
+  my $addr = sockaddr_in(81, inet_aton("192.0.2.1"));
+  connect($s, $addr);
+  sleep 120;
+  exit 0;
+}
+$SIG{TERM} = "IGNORE";
+$SIG{HUP} = "IGNORE";
+$SIG{INT} = "IGNORE";
+open my $f, ">", $midf or die $!;
+print $f "$$\n";
+close $f;
+waitpid($pid, 0);
+' "$d/grand.pid" "$d/mid.pid" &
+wait
+EOF
+chmod +x "$tree"
+sleep 30 >/dev/null &
+sib=$!
+track "$sib"
+t0=$(date +%s)
+GENSEO_TIMEOUT_GRACE_SEC=1 /bin/bash "$ROOT/scripts/genseo_group_timeout.sh" 2 /bin/bash "$tree" "$treedir" >"$TMP/tree.out" 2>"$TMP/tree.err" &
+tp=$!
+track "$tp"
+check "grandchild pid appeared" wait_file "$treedir/grand.pid"
+check "session leader pid appeared" wait_file "$treedir/bash.pid"
+check "middle pid appeared" wait_file "$treedir/mid.pid"
+grand=$(tr -cd '0-9' < "$treedir/grand.pid")
+leader=$(tr -cd '0-9' < "$treedir/bash.pid")
+midp=$(tr -cd '0-9' < "$treedir/mid.pid")
+gpgid=$(ps -o pgid= -p "$grand" 2>/dev/null | tr -d '[:space:]')
+lpgid=$(ps -o pgid= -p "$leader" 2>/dev/null | tr -d '[:space:]')
+check "grandchild left the ticket process group" test -n "$gpgid" -a -n "$lpgid" -a "$gpgid" != "$lpgid"
+# Bound the waiter. A hang in blocking waitpid must fail this case, not the suite.
+(
+  sleep 12
+  kill -KILL "$tp" 2>/dev/null || true
+) &
+guard=$!
+track "$guard"
+wait "$tp"
+RC=$?
+kill -KILL "$guard" 2>/dev/null || true
+wait "$guard" 2>/dev/null || true
+t1=$(date +%s)
+check "timeout exit 124" test "$RC" = 124
+check "returned within cap + grace" test $((t1 - t0)) -le 8
+check "did not return before the cap" test $((t1 - t0)) -ge 2
+check "stderr names the group" grep -q "signaling process group" "$TMP/tree.err"
+check "TERM-ignoring grandchild is dead" wait_dead "$grand"
+check "TERM-ignoring middle process is dead" wait_dead "$midp"
+check "session leader is dead" wait_dead "$leader"
+check "sibling outside the tree survived" kill -0 "$sib"
+kill -KILL "$sib" 2>/dev/null || true
+wait "$sib" 2>/dev/null || true
 
 sandbox() {
   H="$TMP/wrap-$1"
@@ -488,6 +571,125 @@ check "dead pid left" test "$(tr -cd '0-9' < "$H/genseo/state/daily.lock/pid")" 
 check "sleeper still alive" kill -0 "$SLEEPER"
 check "lock still held" test -d "$H/genseo/state/daily.lock"
 stop_sleeper
+
+echo "22. real wrapper: setsid connect-hang is a no-publish, the tree dies, the lock is released"
+sandbox treewrap
+printf '%s\n' 0 > "$H/genseo/state/live-count"
+printf '%s\n' '- [ ] **#901** tree timeout' > "$H/genseo/daily-tickets.md"
+cat > "$H/genseo/scripts/run_ticket_headless.sh" << 'EOF'
+#!/bin/bash
+state="$HOME/genseo/state"
+printf '%s\n' "$$" > "$state/bash.pid"
+perl -e '
+use POSIX qw(setsid);
+use Socket;
+my ($grandf, $midf) = @ARGV;
+my $pid = fork();
+die "fork\n" unless defined $pid;
+if ($pid == 0) {
+  setsid() or die "setsid\n";
+  $SIG{TERM} = "IGNORE";
+  $SIG{HUP} = "IGNORE";
+  $SIG{INT} = "IGNORE";
+  open my $f, ">", $grandf or die $!;
+  print $f "$$\n";
+  close $f;
+  socket(my $s, PF_INET, SOCK_STREAM, 0) or die $!;
+  my $addr = sockaddr_in(81, inet_aton("192.0.2.1"));
+  connect($s, $addr);
+  sleep 120;
+  exit 0;
+}
+$SIG{TERM} = "IGNORE";
+$SIG{HUP} = "IGNORE";
+$SIG{INT} = "IGNORE";
+open my $f, ">", $midf or die $!;
+print $f "$$\n";
+close $f;
+waitpid($pid, 0);
+' "$state/grand.pid" "$state/mid.pid" &
+wait
+EOF
+WRAP_TARGET=5
+WRAP_MAX_RUNS=1
+WRAP_PEER_WAITS=0
+WRAP_TICKET_TIMEOUT=1
+WRAP_GRACE=1
+run_wrapper 20
+check "wrapper exit 0" test "$RC" = 0
+check "logged timeout 124" grep -q "exit 124" "$H/out.log"
+check "stdout counts a timeout" grep -q "TIMEOUT" "$H/out.log"
+check "stderr names the group" grep -q "signaling process group" "$H/err.log"
+daylog=$(ls "$H/genseo/logs/daily/"*.log 2>/dev/null | head -1)
+check "daily log has the timeout line" grep -q "signaling process group" "$daylog"
+check "daily log counts it as no publish" grep -q "nothing new went live" "$daylog"
+grand=$(tr -cd '0-9' < "$H/genseo/state/grand.pid" 2>/dev/null || true)
+midp=$(tr -cd '0-9' < "$H/genseo/state/mid.pid" 2>/dev/null || true)
+check "grandchild pid was recorded" test -n "$grand"
+check "setsid grandchild is dead" wait_dead "$grand"
+check "middle process is dead" wait_dead "$midp"
+check "lock released after the timeout" test ! -e "$H/genseo/state/daily.lock"
+
+echo "23. real wrapper: sleep-forever child that ignores SIGTERM is killed and the lock is released"
+# Image retries sleep inside the ticket tree (5s, then 15s). A hang that ignores
+# TERM — the backoff process, or a setsid grandchild blocked in sleep — has to
+# die on KILL, and the wrapper's EXIT trap has to drop state/daily.lock.
+sandbox sleepforever
+printf '%s\n' 0 > "$H/genseo/state/live-count"
+printf '%s\n' '- [ ] **#902** sleep forever' > "$H/genseo/daily-tickets.md"
+cat > "$H/genseo/scripts/run_ticket_headless.sh" << 'EOF'
+#!/bin/bash
+state="$HOME/genseo/state"
+printf '%s\n' "$$" > "$state/bash.pid"
+perl -e '
+use POSIX qw(setsid);
+my ($grandf, $midf) = @ARGV;
+my $pid = fork();
+die "fork\n" unless defined $pid;
+if ($pid == 0) {
+  setsid() or die "setsid\n";
+  $SIG{TERM} = "IGNORE";
+  $SIG{HUP} = "IGNORE";
+  $SIG{INT} = "IGNORE";
+  open my $f, ">", $grandf or die $!;
+  print $f "$$\n";
+  close $f;
+  while (1) { sleep 30; }
+  exit 0;
+}
+$SIG{TERM} = "IGNORE";
+$SIG{HUP} = "IGNORE";
+$SIG{INT} = "IGNORE";
+open my $f, ">", $midf or die $!;
+print $f "$$\n";
+close $f;
+while (1) { sleep 30; }
+' "$state/grand.pid" "$state/mid.pid" &
+wait
+EOF
+WRAP_TARGET=5
+WRAP_MAX_RUNS=1
+WRAP_PEER_WAITS=0
+WRAP_TICKET_TIMEOUT=1
+WRAP_GRACE=1
+run_wrapper 20
+check "wrapper exit 0" test "$RC" = 0
+check "logged timeout 124" grep -q "exit 124" "$H/out.log"
+check "stdout counts a timeout" grep -q "TIMEOUT" "$H/out.log"
+check "stderr names the group" grep -q "signaling process group" "$H/err.log"
+daylog=$(ls "$H/genseo/logs/daily/"*.log 2>/dev/null | head -1)
+check "daily log has the timeout line" grep -q "signaling process group" "$daylog"
+check "daily log counts it as no publish" grep -q "nothing new went live" "$daylog"
+leader=$(tr -cd '0-9' < "$H/genseo/state/bash.pid" 2>/dev/null || true)
+grand=$(tr -cd '0-9' < "$H/genseo/state/grand.pid" 2>/dev/null || true)
+midp=$(tr -cd '0-9' < "$H/genseo/state/mid.pid" 2>/dev/null || true)
+check "session leader pid was recorded" test -n "$leader"
+check "grandchild pid was recorded" test -n "$grand"
+check "middle pid was recorded" test -n "$midp"
+check "session leader is dead" wait_dead "$leader"
+check "sleep-forever grandchild is dead" wait_dead "$grand"
+check "sleep-forever middle process is dead" wait_dead "$midp"
+check "lock released after the sleeper timeout" test ! -e "$H/genseo/state/daily.lock"
 
 echo
 printf '%s passed, %s failed\n' "$PASS" "$FAIL"
