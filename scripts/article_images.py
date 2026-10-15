@@ -14,6 +14,12 @@ in the draft's ![alt](...) tag; shopify_publisher.py uploads it to the CDN.
 
 House rules baked in:
   * generator = ima2 OAuth only (no KIE / per-token APIs)
+  * a dropped Responses stream, HTTP 429/5xx, timeout, or connection reset
+    is retried inside gen_png (3 attempts, 5s then 15s). One call stops at
+    10 minutes so a hero plus three inline images stay under half of the
+    90-minute ticket cap. A timed-out ima2 tree is killed before the
+    backoff sleep. Auth, content policy, and invalid-request failures are
+    not retried.
   * default size 1536x1024 (blog landscape, 1K class — never 2K/4K)
   * every prompt gets the no-watermark/no-caption suffix
   * output webp < 80KB (quality ladder, then width ladder)
@@ -29,8 +35,10 @@ import argparse
 import json
 import os
 import re
+import signal
 import subprocess
 import sys
+import time
 import brand_rules
 import persona_picker
 
@@ -510,7 +518,265 @@ def _ensure_serve(env):
     sys.exit("✗ ima2 serve did not come up within 30s — check /tmp/ima2-serve-genseo.log (OAuth session may need re-login)")
 
 
-def gen_png(prompt, size, out_png, refs, timeout=360):
+# 2026-10-12 #CA1009-3 (daily run 4, 18:21–18:41 ICT): ima2 printed
+# "Responses stream returned an error" and gen_png exited on that first try.
+# deploy/grokbot-genseo-daily.sh then counts a ticket that puts nothing new
+# live, and stops the day after three of those. A dropped stream, a 429/5xx,
+# a timeout, or a reset is the upstream blipping — retry a few times, briefly.
+# Auth, content policy, and a bad request are the same call again: do not
+# retry them, and do not retry an error we cannot classify. ad_assets.py's
+# 3-try loop is a different gate (wrong aspect ratio after a file landed).
+# It calls gen_png, so it inherits this retry; it does not replace it.
+# QC re-rolls (exit 2, max 2) stay in the caller. No second image vendor.
+#
+# The ticket cap is GENSEO_TICKET_TIMEOUT_SEC (5400) in
+# deploy/grokbot-genseo-daily.sh. Three full subprocess timeouts on a hero
+# and three inline images are about 78 minutes, which leaves the writer
+# nothing. One gen_png call may spend IMA2_CALL_BUDGET_SEC. Four of those
+# stay under half the cap. Fast failures still use the 5s/15s backoff; the
+# backoff total is 20s. A TimeoutExpired kills the ima2 process tree before
+# that sleep: subprocess timeout kills only the direct child, and a setsid
+# worker would otherwise be reparented to init while this process is in
+# time.sleep, where the ticket tree-kill cannot see it.
+IMA2_ATTEMPTS = 3
+IMA2_BACKOFF_SEC = (5, 15)  # after attempt 1, then after attempt 2
+IMA2_MIN_PNG_BYTES = 30_000
+TICKET_CAP_SEC = 5400
+IMA2_CALL_BUDGET_SEC = 600
+IMA2_TIMEOUT_PAD_SEC = 30
+_IMA2_KILL_GRACE_SEC = 0.2
+
+# Status codes count only when they are written as an HTTP failure. A dose
+# ("500 mg") or our own "--timeout 360" flag must not look transient.
+_IMA2_TRANSIENT_RE = (
+    re.compile(r"responses stream returned an error", re.I),
+    re.compile(r"\b(?:response|responses|event) stream\b[^.\n]{0,80}\b(?:error|interrupted|closed|failed)\b", re.I),
+    re.compile(r"\bstream (?:error|interrupted|closed|failed|disconnected)\b", re.I),
+    re.compile(r"\b(?:econnreset|econnrefused|etimedout|econnaborted|epipe|enotconn|enetunreach|ehostunreach)\b", re.I),
+    re.compile(r"connection (?:reset|refused|aborted)|broken pipe|socket hang up|peer closed connection|server disconnected", re.I),
+    re.compile(r"timed out|timeout exceeded|deadline exceeded|gateway timeout|read timeout|i/o timeout|request timeout", re.I),
+    re.compile(r"\b(?:http|status|error|code)[:\s/]+(429|500|502|503|504|529)\b", re.I),
+    re.compile(r"\b(?:internal server error|bad gateway|service unavailable|gateway timeout|too many requests)\b", re.I),
+    re.compile(r"\b(?:temporarily unavailable|upstream (?:error|reset)|network error|fetch failed|rate limit)\b", re.I),
+    re.compile(r"APIConnectionError|APITimeoutError|APIConnectionTimeoutError|ConnectError|ReadTimeout|RemoteProtocolError"),
+    re.compile(r"\boverloaded\b", re.I),
+)
+_IMA2_PERMANENT_RE = (
+    re.compile(r"\b(?:unauthorized|unauthorised|authentication failed|invalid api key|invalid_api_key|not logged in|login required|re-login|oauth session expired)\b", re.I),
+    re.compile(r"\b(?:http|status|error|code)[:\s/]+(400|401|402|403)\b", re.I),
+    re.compile(r"\b(?:bad request|invalid request|invalid_request_error|invalid_request)\b", re.I),
+    re.compile(r"\b(?:forbidden|payment required)\b", re.I),
+    re.compile(r"\b(?:content policy|content_policy(?:_violation)?|safety system|moderation blocked)\b", re.I),
+    re.compile(r"\b(?:insufficient_quota|quota exceeded|billing hard limit)\b", re.I),
+)
+
+
+def ima2_error_class(text):
+    """Classify an ima2 failure as 'transient', 'permanent', or 'unknown'.
+
+    Permanent wins when both match, so a stream line that also carries a 401
+    or a content-policy refusal is not retried. Callers that see 'unknown'
+    must not retry: an unrecognized refusal repeated three times still fails,
+    and it spends three generations to do it.
+    """
+    blob = text or ""
+    if any(pat.search(blob) for pat in _IMA2_PERMANENT_RE):
+        return "permanent"
+    if any(pat.search(blob) for pat in _IMA2_TRANSIENT_RE):
+        return "transient"
+    return "unknown"
+
+
+def _ima2_chosen_output(res):
+    """stderr when ima2 wrote one, otherwise stdout. Matches the old tail source,
+    except blank stderr no longer hides a real error on stdout."""
+    err = (getattr(res, "stderr", None) or "").strip()
+    out = (getattr(res, "stdout", None) or "").strip()
+    return err or out
+
+
+def _ima2_tail(text, returncode):
+    lines = [ln.strip() for ln in (text or "").splitlines() if ln.strip()]
+    if lines:
+        return " | ".join(lines[-3:])
+    if returncode is None:
+        return "no output"
+    return "exit %s, no output" % returncode
+
+
+def _ima2_give_up(attempt, last_tail, why):
+    print(f"   ✗ ima2 attempt {attempt}/{IMA2_ATTEMPTS}: {last_tail} — {why}", flush=True)
+    sys.exit("✗ ima2 generation failed: " + last_tail)
+
+
+def _ppid_map():
+    """pid -> parent pid. Linux /proc, otherwise ps (macOS has no /proc)."""
+    mapping = {}
+    if os.path.isdir("/proc"):
+        for ent in os.listdir("/proc"):
+            if not ent.isdigit():
+                continue
+            path = "/proc/%s/status" % ent
+            try:
+                fh = open(path, encoding="utf-8", errors="replace")
+            except OSError:
+                continue
+            try:
+                for line in fh:
+                    if line.startswith("PPid:"):
+                        mapping[int(ent)] = int(line.split()[1])
+                        break
+            finally:
+                fh.close()
+        if mapping:
+            return mapping
+    for argv in (
+        ["ps", "-ax", "-o", "pid=,ppid="],
+        ["/bin/ps", "-ax", "-o", "pid=,ppid="],
+        ["/usr/bin/ps", "-ax", "-o", "pid=,ppid="],
+    ):
+        try:
+            out = subprocess.check_output(argv, stderr=subprocess.DEVNULL, text=True)
+        except (OSError, subprocess.CalledProcessError):
+            continue
+        mapping = {}
+        for line in out.splitlines():
+            parts = line.split()
+            if len(parts) == 2 and parts[0].isdigit() and parts[1].isdigit():
+                mapping[int(parts[0])] = int(parts[1])
+        if mapping:
+            return mapping
+    return mapping
+
+
+def _descendant_pids(seed):
+    """Seed plus every process whose parent chain still reaches it."""
+    try:
+        seed = int(seed or 0)
+    except (TypeError, ValueError):
+        return []
+    me = os.getpid()
+    if seed <= 1 or seed == me:
+        return []
+    ppid = _ppid_map()
+    out = [seed]
+    seen = {seed}
+    for _guard in range(40):
+        grew = False
+        for pid, parent in list(ppid.items()):
+            if pid in seen or pid <= 1 or pid == me:
+                continue
+            if parent in seen:
+                seen.add(pid)
+                out.append(pid)
+                grew = True
+        if not grew:
+            break
+    return out
+
+
+def _pid_alive(pid):
+    if not pid or pid <= 1 or pid == os.getpid():
+        return False
+    try:
+        os.kill(pid, 0)
+    except OSError:
+        return False
+    return True
+
+
+def _signal_pids(sig, pids):
+    me = os.getpid()
+    seen = set()
+    for pid in pids:
+        if not pid or pid <= 1 or pid == me or pid in seen:
+            continue
+        seen.add(pid)
+        try:
+            os.kill(pid, sig)
+        except OSError:
+            pass
+
+
+def _kill_pid_tree(seed):
+    """TERM, then KILL, seed and any process still parented under it.
+
+    Snapshot before the first signal. A setsid grandchild stays in the set
+    until its parent dies; killing the parent first would reparent it to
+    init and the later ticket tree-kill would miss it during backoff sleep.
+    """
+    wave = _descendant_pids(seed)
+    if not wave:
+        try:
+            seed = int(seed or 0)
+        except (TypeError, ValueError):
+            return
+        if seed <= 1 or seed == os.getpid():
+            return
+        wave = [seed]
+    _signal_pids(signal.SIGTERM, wave)
+    time.sleep(_IMA2_KILL_GRACE_SEC)
+    kill_set = list(wave)
+    for pid in wave:
+        if _pid_alive(pid):
+            kill_set.extend(_descendant_pids(pid))
+    _signal_pids(signal.SIGKILL, kill_set)
+
+
+def _close_pipes(proc):
+    for stream in (proc.stdout, proc.stderr, proc.stdin):
+        if stream is None:
+            continue
+        try:
+            stream.close()
+        except OSError:
+            pass
+
+
+def _run_ima2(cmd, env, timeout_s):
+    """Run one ima2 generation. On timeout, kill its process tree first.
+
+    subprocess.run kills only the direct child, and only after the
+    TimeoutExpired is raised from inside run(). Doing it here means the
+    setsid worker is still parented under ima2 when we snapshot it.
+    """
+    proc = subprocess.Popen(
+        cmd,
+        env=env,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+    )
+    try:
+        try:
+            out, err = proc.communicate(timeout=timeout_s)
+        except subprocess.TimeoutExpired as exc:
+            _kill_pid_tree(proc.pid)
+            try:
+                proc.wait(timeout=2)
+            except subprocess.TimeoutExpired:
+                pass
+            raise subprocess.TimeoutExpired(
+                cmd, timeout_s, output=exc.output, stderr=exc.stderr)
+        return subprocess.CompletedProcess(cmd, proc.returncode, out, err)
+    finally:
+        _close_pipes(proc)
+
+
+def _attempt_limit(timeout, remaining):
+    """Seconds this attempt may block. Never past the call budget."""
+    if remaining < 1:
+        return 0
+    return min(timeout + IMA2_TIMEOUT_PAD_SEC, int(remaining))
+
+
+def gen_png(prompt, size, out_png, refs, timeout=360, sleeper=None, clock=None):
+    """Render one PNG via the local ima2 binary.
+
+    sleeper defaults to time.sleep. clock defaults to time.monotonic.
+    Tests pass their own so the backoff does not actually wait and so a
+    call-budget check can run without burning the subprocess timeout.
+    """
     cmd = [IMA2, "gen", prompt + PROMPT_SUFFIX, "-q", "medium", "-s", size,
            "-o", out_png, "--timeout", str(timeout)]
     for r in refs:
@@ -527,11 +793,73 @@ def gen_png(prompt, size, out_png, refs, timeout=360):
         cmd += ["--model", model]
     env = os.environ.copy()
     env["PATH"] = os.path.dirname(IMA2) + ":" + env.get("PATH", "")
-    _ensure_serve(env)
-    res = subprocess.run(cmd, env=env, capture_output=True, text=True, timeout=timeout + 30)
-    if res.returncode != 0 or not os.path.exists(out_png) or os.path.getsize(out_png) < 30_000:
-        tail = (res.stderr or res.stdout).strip().splitlines()[-3:]
-        sys.exit("✗ ima2 generation failed: " + " | ".join(tail))
+    pause = time.sleep if sleeper is None else sleeper
+    now = time.monotonic if clock is None else clock
+    t0 = now()
+    last_tail = "no output"
+    for attempt in range(1, IMA2_ATTEMPTS + 1):
+        remaining = IMA2_CALL_BUDGET_SEC - (now() - t0)
+        if remaining < 1:
+            _ima2_give_up(
+                attempt,
+                "%s (stopped at %ss call budget)" % (last_tail, IMA2_CALL_BUDGET_SEC),
+                "call budget, not retrying",
+            )
+        if os.path.isfile(out_png):
+            os.unlink(out_png)
+        _ensure_serve(env)
+        remaining = IMA2_CALL_BUDGET_SEC - (now() - t0)
+        limit = _attempt_limit(timeout, remaining)
+        if limit < 1:
+            _ima2_give_up(
+                attempt,
+                "%s (stopped at %ss call budget)" % (last_tail, IMA2_CALL_BUDGET_SEC),
+                "call budget, not retrying",
+            )
+        try:
+            res = _run_ima2(cmd, env, limit)
+        except subprocess.TimeoutExpired:
+            last_tail = "timed out after %ss" % limit
+            kind = "transient"
+        else:
+            chosen = _ima2_chosen_output(res)
+            size_b = os.path.getsize(out_png) if os.path.isfile(out_png) else 0
+            if res.returncode == 0 and size_b >= IMA2_MIN_PNG_BYTES:
+                return
+            last_tail = _ima2_tail(chosen, res.returncode)
+            kind = ima2_error_class(chosen)
+            # Exit 0 with no usable file and no refusal text is a truncated
+            # write. A policy line on that same output stays permanent.
+            if res.returncode == 0 and size_b < IMA2_MIN_PNG_BYTES:
+                note = "output missing" if size_b == 0 else (
+                    "output %dB < %dB" % (size_b, IMA2_MIN_PNG_BYTES))
+                last_tail = ("%s: %s" % (note, last_tail)) if chosen else note
+                if kind == "unknown":
+                    kind = "transient"
+        if kind == "transient" and attempt < IMA2_ATTEMPTS:
+            wait = IMA2_BACKOFF_SEC[min(attempt - 1, len(IMA2_BACKOFF_SEC) - 1)]
+            elapsed = now() - t0
+            # Do not sleep, and do not start another attempt, when this call
+            # has already used the budget. The ticket cap still kills this
+            # process if it is inside pause(); the budget is what keeps four
+            # images from arriving there.
+            if elapsed + wait >= IMA2_CALL_BUDGET_SEC:
+                _ima2_give_up(
+                    attempt,
+                    "%s (stopped at %ss call budget)" % (last_tail, IMA2_CALL_BUDGET_SEC),
+                    "call budget, not retrying",
+                )
+            print(f"   ✗ ima2 attempt {attempt}/{IMA2_ATTEMPTS}: {last_tail} "
+                  f"— transient, retrying in {wait}s", flush=True)
+            pause(wait)
+            continue
+        if kind == "permanent":
+            why = "permanent, not retrying"
+        elif kind != "transient":
+            why = "not retrying"
+        else:
+            why = "transient, giving up"
+        _ima2_give_up(attempt, last_tail, why)
 
 
 def compress_webp(src_png, out_webp):
