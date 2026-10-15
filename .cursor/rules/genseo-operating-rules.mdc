@@ -93,7 +93,11 @@ Also: never `rm` repo files (move them to `_superseded/`); never put CDN URLs in
   hard-stops when no ticket is open, so keep the queue stocked with `scripts/refill_tickets.py`
   (`docs/TICKET_REFILL.md`). launchd executes `~/bin/grokbot-genseo-daily.sh`, a copy of
   `deploy/grokbot-genseo-daily.sh`. After pull, on the Mac: `bash scripts/install_mac_daily_wrapper.sh`
-  (does not start launchd). Mac Mini = primary (`#NN` ids); MacBook = standby (`#MBmmdd-N`, all images no-face).
+  (does not start launchd). The MacBook article LaunchAgent is primary (`GENSEO_TICKET_PREFIX=MB`,
+  no-face images) until a Mini failover release is explicit. The Mini stays unloaded until that
+  handover, then its daily plist is primary with `MM` ids. Do not load both.
+  `GENSEO_HOST_ROLE=standby` still waits for a healthy peer; the MacBook plist does not set it.
+  Pulling alone does not update `~/bin/grokbot-genseo-daily.sh`.
 - **Landing pages — 1 unpublished draft/day, never counted in the 5.** `scripts/build_landing_tickets.py` →
   `daily-landing-tickets.md` → `scripts/run_landing_daily.sh`; `gsl-preview-*` pages that Kevin approves. Skill
   `genseo-landing-pages`.

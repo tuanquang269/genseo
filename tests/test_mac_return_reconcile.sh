@@ -188,6 +188,8 @@ has "$WORK/out" "lock landing-daily.lock suggest: rmdir " "landing suggest is rm
 has "$WORK/out" "wrapper: bash scripts/install_mac_daily_wrapper.sh" "daily wrapper reminder"
 has "$WORK/out" "wrapper_doc: DAILY-RUN.md docs/TICKET_REFILL.md" "wrapper docs"
 has "$WORK/out" "wrapper_plist_repo: deploy/com.pati.genseo-daily.macbook.plist" "daily plist in repo"
+has "$WORK/out" "wrapper_role: MacBook GENSEO_HOST_ROLE=primary GENSEO_TICKET_PREFIX=MB until Mini failover-release. Copy the plist and bootstrap; the wrapper installer does not." "daily role reminder"
+has "$WORK/out" "checklist:    That plist is GENSEO_HOST_ROLE=primary and GENSEO_TICKET_PREFIX=MB until a Mini failover-release." "checklist names primary MB"
 has "$WORK/out" "landing_plist_repo: deploy/com.pati.genseo-landing.macbook.plist" "landing plist in repo"
 has "$WORK/out" "worker: agent worker start --name MacBook-Pro" "worker reminder"
 has "$WORK/out" "launchagent: com.pati.cursor-agent-worker" "worker launchagent"
