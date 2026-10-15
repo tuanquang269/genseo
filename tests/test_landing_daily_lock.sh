@@ -84,6 +84,47 @@ wait_dead() {
   done
   return 1
 }
+# Stamp for touch -t, N hours ago. BSD date -v (macOS bash 3.2) first.
+# GNU date -d only if -v did not print [[CC]YY]MMDDhhmm[.SS]. Never try -d
+# first: on macOS, date -d sets the kernel DST flag.
+touch_mtime_hours_ago() {
+  local hours=$1 path=$2 stamp=""
+  stamp=$(date -v-"${hours}"H +%Y%m%d%H%M.%S 2>/dev/null) || true
+  case "$stamp" in
+    [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9].[0-9][0-9]) ;;
+    *) stamp="" ;;
+  esac
+  if [ -z "$stamp" ]; then
+    stamp=$(date -d "${hours} hours ago" +%Y%m%d%H%M.%S 2>/dev/null) || true
+    case "$stamp" in
+      [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9].[0-9][0-9]) ;;
+      *) return 1 ;;
+    esac
+  fi
+  touch -t "$stamp" "$path"
+}
+# Epoch mtime for the fixture check. GNU stat -c first; BSD stat -f second.
+# Same order as path_mtime in scripts/run_landing_daily.sh.
+epoch_mtime() {
+  local p=$1 m=""
+  m=$(stat -c %Y "$p" 2>/dev/null) || true
+  case "$m" in
+    ''|*[!0-9]*) m="" ;;
+  esac
+  if [ -z "$m" ]; then
+    m=$(stat -f %m "$p" 2>/dev/null) || true
+    case "$m" in
+      ''|*[!0-9]*) m="" ;;
+    esac
+  fi
+  if [ -z "$m" ]; then
+    m=$(/usr/bin/python3 -c 'import os,sys; print(int(os.stat(sys.argv[1]).st_mtime))' "$p" 2>/dev/null) || true
+    case "$m" in
+      ''|*[!0-9]*) return 1 ;;
+    esac
+  fi
+  printf '%s\n' "$m"
+}
 
 echo "wrapper: $WRAPPER"
 echo "1. today's draft already exists (guard exit 3) -> stand down, even with the article batch running"
@@ -137,7 +178,20 @@ check "logged the yield" logged "yielding up to 1 min"
 check "logged building alongside" logged "still running — building alongside it"
 
 echo "8. stale article lock (7 h old, batch long gone) -> no yield at all"
-sandbox stale; mkdir "$S/daily.lock"; touch -t "$(date -v-7H +%Y%m%d%H%M.%S)" "$S/daily.lock"; run 30
+sandbox stale; mkdir "$S/daily.lock"
+if ! touch_mtime_hours_ago 7 "$S/daily.lock"; then
+  FAIL=$((FAIL+1)); echo "  FAIL  could not stamp a 7h-old mtime (BSD date -v / GNU date -d)"
+  fixture_age=0
+else
+  fixture_m="$(epoch_mtime "$S/daily.lock" || true)"
+  if [ -n "${fixture_m:-}" ]; then fixture_age=$(( $(date +%s) - fixture_m )); else fixture_age=0; fi
+  if [ "$fixture_age" -ge 21600 ]; then
+    PASS=$((PASS+1)); echo "  ok    fixture mtime is older than 6h"
+  else
+    FAIL=$((FAIL+1)); echo "  FAIL  fixture mtime is older than 6h (age=${fixture_age}s)"
+  fi
+fi
+run 30
 check "agent started within 10 s" started_after 0 10
 check "no yield logged" not logged "yielding"
 
@@ -156,6 +210,16 @@ check "agent never started" not agent_started
 echo "11. listicle writer uses the process-group timeout"
 check "syntax landing wrapper" bash -n "$ROOT/scripts/run_landing_daily.sh"
 check "syntax group timeout" bash -n "$ROOT/scripts/genseo_group_timeout.sh"
+check "GNU stat -c is tried before BSD stat -f" awk '
+  /stat -c %Y/ { if (!gnu) gnu=NR }
+  /stat -f %m/ { if (!bsd) bsd=NR }
+  END { exit !(gnu && bsd && gnu < bsd) }
+' "$ROOT/scripts/run_landing_daily.sh"
+check "BSD date -v is tried before GNU date -d" awk '
+  /date -v-/ { if (!bsd) bsd=NR }
+  /date -d "/ { if (!gnu) gnu=NR }
+  END { exit !(bsd && gnu && bsd < gnu) }
+' "$ROOT/tests/test_landing_daily_lock.sh"
 check "calls group timeout" grep -q 'genseo_group_timeout.sh' "$ROOT/scripts/run_landing_daily.sh"
 check "default cap is 5400s" grep -q 'GENSEO_LANDING_TIMEOUT_SEC:-5400' "$ROOT/scripts/run_landing_daily.sh"
 check "ticket line is not perl alarm" not grep -q 'alarm .*run_landing_headless' "$ROOT/scripts/run_landing_daily.sh"
