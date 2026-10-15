@@ -1,0 +1,292 @@
+{
+  "engine": "ref",
+  "template": "listicle",
+  "posture": "hybrid",
+  "store": "wellnessnest",
+  "slug": "fusiforce-creatine-gummies-listicle-261015",
+  "handle": "gsl-preview-fusiforce-creatine-gummies-listicle-261015",
+  "template_suffix": "gsl-ref-listicle-v2",
+  "takeover": false,
+  "created": "2026-10-15",
+  "daily": true,
+  "reference": "http://localhost:8790/pages/10-reasons-why-creatine-is-for-skinny-people/",
+  "title": "7 Reasons Creatine Is Worth a Look After 40",
+  "meta_description": "What research says about creatine after 40: muscle creatine stores, lean mass and strength with resistance training, and why daily consistency matters.",
+  "topbar": {
+    "labels": [
+      "Wellness Nest Guide",
+      "90-Day Money-Back Guarantee on first orders"
+    ],
+    "deadline": null
+  },
+  "hero": {
+    "accent": "7 Reasons",
+    "title": "Creatine Is Worth a Look After 40",
+    "summary_html": "<strong>Summary:</strong> What creatine research found about muscle stores, strength, lean mass and the daily habit that makes the routine practical.",
+    "kicker": "Evidence review · 4 sources cited",
+    "image": "tmp_images/landing-fusiforce-creatine-gummies-listicle-261015/hero.webp",
+    "alt": "Bright green FusiForce creatine gummies pouch on a travertine pedestal in soft morning light",
+    "chip": "90 gummies · Green Apple flavor",
+    "cta": {
+      "label": "SEE SERVING",
+      "href": "https://wellnessnest.co/products/fusiforce-creatine-gummies"
+    },
+    "source": "https://wellnessnest.co/products/fusiforce-creatine-gummies (pack label and flavor, fetched 2026-10-15)",
+    "focal_y": 0.2
+  },
+  "byline": {
+    "name": "Dr. Marcus Hale",
+    "role": "Wellness Nest editorial team"
+  },
+  "updated": "Oct 15, 2026",
+  "items": [
+    {
+      "title": "A well-studied ingredient",
+      "body": "<p>The International Society of Sports Nutrition reviewed creatine monohydrate research and found that it raises muscle creatine stores and can support high-intensity exercise and lean mass gains during training.</p><p>That review also described creatine as generally well tolerated in healthy people. Have a medical condition or take medication? Ask your clinician first.</p>",
+      "evidence": "ISSN position stand, 2017",
+      "source": "https://doi.org/10.1186/s12970-017-0173-z",
+      "image": "tmp_images/landing-fusiforce-creatine-gummies-listicle-261015/row1.webp",
+      "alt": "Hex dumbbells, a steel water bottle and a folded towel on a bright home gym mat",
+      "evidence_label": "Position stand · Kreider et al., 2017"
+    },
+    {
+      "title": "It tops up muscle stores",
+      "body": "<p>In a classic study of <a href=\"https://doi.org/10.1152/jappl.1996.81.1.232\" target=\"_blank\" rel=\"noopener\">31 men</a>, muscle creatine rose about 20% after a high-dose loading week.</p><p>A lower daily amount reached a similar rise more gradually, over 28 days. The study measured muscle creatine, not strength.</p>",
+      "evidence": "Human study, J Appl Physiol 1996",
+      "source": "https://doi.org/10.1152/jappl.1996.81.1.232",
+      "chart": {
+        "kind": "bars",
+        "title": "Muscle creatine relative to baseline",
+        "legend": [
+          {
+            "label": "Baseline"
+          },
+          {
+            "label": "After supplementing",
+            "highlight": true
+          }
+        ],
+        "bars": [
+          {
+            "label": "Baseline",
+            "value": 100,
+            "display": "100"
+          },
+          {
+            "label": "Loading week",
+            "value": 120,
+            "display": "About 120",
+            "highlight": true
+          },
+          {
+            "label": "Steady routine",
+            "value": 120,
+            "display": "About 120",
+            "highlight": true
+          }
+        ],
+        "source": "Hultman et al., J Appl Physiol 1996. 31 men; muscle creatine rose about 20% after six days or 28 days, depending on the approach."
+      },
+      "evidence_label": "Human study · Hultman et al., 1996"
+    },
+    {
+      "title": "Training still does the work",
+      "body": "<p>In a <a href=\"https://doi.org/10.2147/OAJSM.S123529\" target=\"_blank\" rel=\"noopener\">meta-analysis of older adults</a>, creatine paired with resistance training produced greater chest-press and leg-press strength gains than training alone.</p><p>The pattern matters: creatine was studied as a training partner, not as a substitute for lifting.</p>",
+      "evidence": "Meta-analysis, Open Access J Sports Med 2017",
+      "source": "https://doi.org/10.2147/OAJSM.S123529",
+      "image": "tmp_images/landing-fusiforce-creatine-gummies-listicle-261015/row3.webp",
+      "alt": "An older adult's hands holding a dumbbell beside a gym bench, with no face visible",
+      "evidence_label": "Meta-analysis · Chilibeck et al., 2017"
+    },
+    {
+      "title": "Lean mass rose with lifting",
+      "body": "<p>The same <a href=\"https://doi.org/10.2147/OAJSM.S123529\" target=\"_blank\" rel=\"noopener\">meta-analysis</a> found more lean tissue mass when creatine was added to resistance training.</p><p>Its participants were older adults, and the result came from structured training studies. It does not mean the supplement replaces progressive exercise.</p>",
+      "evidence": "Meta-analysis of randomized trials, 2017",
+      "source": "https://doi.org/10.2147/OAJSM.S123529",
+      "chart": {
+        "kind": "stats",
+        "title": "Creatine plus resistance training",
+        "stats": [
+          {
+            "value": "+1.37",
+            "label": "Lean mass gain",
+            "highlight": true
+          },
+          {
+            "value": "22",
+            "label": "Trials pooled"
+          },
+          {
+            "value": "721",
+            "label": "Participants"
+          }
+        ],
+        "source": "Chilibeck et al., Open Access J Sports Med 2017. 22 randomized trials, 721 participants; lean tissue mass difference 1.37 kg."
+      },
+      "evidence_label": "Meta-analysis · 22 trials, 721 participants"
+    },
+    {
+      "title": "Loading is optional",
+      "body": "<p>Loading fills muscle stores faster, but a steady daily routine reaches a similar level more gradually, according to the <a href=\"https://doi.org/10.1186/s12970-021-00412-w\" target=\"_blank\" rel=\"noopener\">evidence review</a>.</p><p>That gives you a choice of pace. The research does not make a loading phase a requirement.</p>",
+      "evidence": "Evidence review, J Int Soc Sports Nutr 2021",
+      "source": "https://doi.org/10.1186/s12970-021-00412-w",
+      "image": "tmp_images/landing-fusiforce-creatine-gummies-listicle-261015/row5.webp",
+      "alt": "A scoop beside a shaker bottle and a clean kitchen sink, with no product packaging visible",
+      "evidence_label": "Evidence review · Antonio et al., 2021"
+    },
+    {
+      "title": "Consistency keeps stores up",
+      "body": "<p>In the <a href=\"https://doi.org/10.1152/jappl.1996.81.1.232\" target=\"_blank\" rel=\"noopener\">1996 study</a>, muscle creatine stayed elevated while participants continued the routine.</p><p>After they stopped, levels moved back toward baseline in about 30 days. The practical lesson is less about a perfect start and more about a habit you can repeat.</p>",
+      "evidence": "Human study, J Appl Physiol 1996",
+      "source": "https://doi.org/10.1152/jappl.1996.81.1.232",
+      "image": "tmp_images/landing-fusiforce-creatine-gummies-listicle-261015/row6.webp",
+      "alt": "A weekly planner, glass of water and dumbbell on a calm kitchen counter",
+      "evidence_label": "Human study · Hultman et al., 1996"
+    },
+    {
+      "title": "The format can help",
+      "body": "<p>The studies above used repeated routines, not occasional use. A supplement only fits the evidence if the habit fits your real week.</p><p>That makes convenience a practical question, not a performance claim: will you remember it on training days and rest days alike?</p>",
+      "evidence": "Study-design pattern across the cited sources",
+      "source": "https://doi.org/10.1152/jappl.1996.81.1.232",
+      "image": "tmp_images/landing-fusiforce-creatine-gummies-listicle-261015/row7.webp",
+      "alt": "A gym bag, water bottle and bright green FusiForce pouch on a linen bench",
+      "evidence_label": "Daily-use pattern · cited studies"
+    }
+  ],
+  "bridge": {
+    "title": "Convenience is part of consistency",
+    "body": "<p>The research used a daily routine. The practical question is which routine you will actually remember.</p><p>Powder can mean measuring, mixing and cleaning up. Those small steps may become friction when you are rushing out the door or packing for a trip.</p><p>If format is the obstacle, FusiForce is one option: creatine monohydrate in a chewable gummy, with Green Apple or Blueberry flavor.</p>",
+    "image": "tmp_images/landing-fusiforce-creatine-gummies-listicle-261015/bridge.webp",
+    "alt": "Bright green FusiForce creatine gummies pouch beside a glass of water on travertine"
+  },
+  "expert": {
+    "title": "TrustScore 4.2 from 1,144 Trustpilot Reviews",
+    "stars": 5,
+    "quote": "right on time with subscription  Don't have to worry about ordering it ",
+    "author": "Tonya · Wellness Nest customer on Trustpilot",
+    "source": "https://www.trustpilot.com/reviews/6abe1771497e18bd92cada2f (5-star review, published 2026-10-01, verbatim; service and subscription review, not a product-effect claim. TrustScore 4.2 and 1,144 reviews from state/trustpilot/wellnessnest.json, read 2026-10-15.)",
+    "image": "tmp_images/landing-fusiforce-creatine-gummies-listicle-261015/expert.webp",
+    "alt": "Bright green FusiForce pouch on a dark stone surface with soft directional light",
+    "reviews": [
+      {
+        "stars": 5,
+        "quote": "right on time with subscription  Don't have to worry about ordering it ",
+        "name": "Tonya",
+        "meta": "US · Oct 2026",
+        "verified": true,
+        "url": "https://www.trustpilot.com/reviews/6abe1771497e18bd92cada2f"
+      },
+      {
+        "stars": 5,
+        "quote": "Henry was very responsive and helpful when there was a problem that needed resolving ",
+        "name": "Mel Barrett",
+        "meta": "GB · Aug 2026",
+        "verified": false,
+        "url": "https://www.trustpilot.com/reviews/6a8df7438bab5ca2e585cf7f"
+      },
+      {
+        "stars": 5,
+        "quote": "Nice product and good effects ",
+        "name": "JONNERET PIERRE",
+        "meta": "CH · Jul 2026",
+        "verified": true,
+        "url": "https://www.trustpilot.com/reviews/6a5101996383ce75e24714e3"
+      }
+    ],
+    "reviews_source": "Verbatim 4-5-star Trustpilot reviews from state/trustpilot/wellnessnest.json, read 2026-10-15. Service reviews are presented as store feedback, not evidence of product effects."
+  },
+  "offer": {
+    "pill": "FUSIFORCE CREATINE GUMMIES",
+    "accent": "No Scoop, No Shaker",
+    "title": "Just Chewable Creatine",
+    "sub": "A chewable format for a routine you can keep.",
+    "cta": "SEE SERVING",
+    "href": "https://wellnessnest.co/products/fusiforce-creatine-gummies",
+    "meta": [
+      "<b>90-Day</b> Guarantee",
+      "<b>FREE</b> shipping $70+"
+    ],
+    "guarantee": "Your first order is covered by our 90-Day Money-Back Guarantee.",
+    "image": "tmp_images/landing-fusiforce-creatine-gummies-listicle-261015/offer.webp",
+    "alt": "FusiForce Creatine Monohydrate Gummies bright green pouch on stacked travertine discs",
+    "source": "https://wellnessnest.co/products/fusiforce-creatine-gummies (price, variants and product facts fetched 2026-10-15); 90-Day Guarantee and free-shipping threshold verified from Wellness Nest policy and site banner.",
+    "rating_html": "<b>4.2</b> TrustScore · 1,144 reviews on Trustpilot",
+    "price": {
+      "now": "$52.49",
+      "was": "$69.99",
+      "tag": "Save 25%",
+      "note": "with Subscribe & Save, delivered every 4 weeks. Or $69.99 one-time."
+    },
+    "bullets": [
+      "5,000 mg creatine monohydrate per 3-gummy serving",
+      "Plus 25 mg Panax ginseng extract with 10% ginsenosides",
+      "Green Apple or Blueberry flavor",
+      "90-day money-back guarantee on first orders"
+    ],
+    "price_source": "PDP /products/fusiforce-creatine-gummies.js fetched 2026-10-15: one-time price $69.99; selling plan Every 4 weeks, 25% discount, $52.49."
+  },
+  "product": {
+    "name": "FusiForce Creatine Monohydrate Gummies 5,000 mg",
+    "image": "https://cdn.shopify.com/s/files/1/0810/1563/6283/files/creatine_gummies.webp?v=1772185175&width=800",
+    "bullets": [
+      "5,000 mg creatine monohydrate per 3-gummy serving",
+      "Plus 25 mg Panax ginseng extract with 10% ginsenosides",
+      "Green Apple or Blueberry flavor"
+    ],
+    "source": "https://wellnessnest.co/products/fusiforce-creatine-gummies (live product page, fetched 2026-10-15)"
+  },
+  "footer": {
+    "disclaimer": "These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease.",
+    "copyright": "© 2026 Wellness Nest. All rights reserved."
+  },
+  "sources": [
+    {
+      "label": "Kreider RB et al. International Society of Sports Nutrition position stand: safety and efficacy of creatine supplementation in exercise, sport, and medicine. J Int Soc Sports Nutr 2017. doi:10.1186/s12970-017-0173-z",
+      "url": "https://doi.org/10.1186/s12970-017-0173-z"
+    },
+    {
+      "label": "Hultman E et al. Muscle creatine loading in men. J Appl Physiol 1996. doi:10.1152/jappl.1996.81.1.232",
+      "url": "https://doi.org/10.1152/jappl.1996.81.1.232"
+    },
+    {
+      "label": "Chilibeck PD et al. Effect of creatine supplementation during resistance training on lean tissue mass and muscular strength in older adults: a meta-analysis. Open Access J Sports Med 2017. doi:10.2147/OAJSM.S123529",
+      "url": "https://doi.org/10.2147/OAJSM.S123529"
+    },
+    {
+      "label": "Antonio J et al. Common questions and misconceptions about creatine supplementation: what does the scientific evidence really show? J Int Soc Sports Nutr 2021. doi:10.1186/s12970-021-00412-w",
+      "url": "https://doi.org/10.1186/s12970-021-00412-w"
+    }
+  ],
+  "style": "premium",
+  "trust": [
+    {
+      "icon": "stars",
+      "html": "<b>4.2 TrustScore</b> <small>1,144 Trustpilot reviews</small>"
+    },
+    {
+      "icon": "shield",
+      "html": "<b>90-day</b> <small>money-back guarantee</small>"
+    },
+    {
+      "icon": "truck",
+      "html": "<b>Free shipping</b> <small>on orders $70+</small>"
+    },
+    {
+      "icon": "leaf",
+      "html": "<b>Creatine gummies</b> <small>Green Apple or Blueberry</small>"
+    }
+  ],
+  "trust_source": "TrustScore and review count: state/trustpilot/wellnessnest.json, read 2026-10-15. Guarantee, shipping threshold and formula facts: live Wellness Nest product and policy pages, fetched 2026-10-15.",
+  "sticky_cta": {
+    "name": "FusiForce Creatine",
+    "note": "From $52.49",
+    "cta": "SEE SERVING",
+    "href": "https://wellnessnest.co/products/fusiforce-creatine-gummies"
+  },
+  "pack_images": [
+    "tmp_images/landing-fusiforce-creatine-gummies-listicle-261015/hero.webp",
+    "tmp_images/landing-fusiforce-creatine-gummies-listicle-261015/offer.webp",
+    "tmp_images/landing-fusiforce-creatine-gummies-listicle-261015/expert.webp",
+    "tmp_images/landing-fusiforce-creatine-gummies-listicle-261015/bridge.webp"
+  ]
+}
