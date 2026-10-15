@@ -25,6 +25,11 @@
 # log stays block-buffered until the writer exits, so the daily log is where
 # the timeout line has to land.
 #
+# A retry backoff is sleep inside a descendant (Python time.sleep, or a child
+# that ignores TERM and sleeps). The snapshot is taken before the first
+# signal, and KILL follows TERM, so that sleep cannot outlive the cap. The
+# same walk covers a setsid grandchild that is still parented under the tree.
+#
 # Exit: CMD's status, 124 on timeout, 128+signal when this waiter is signaled,
 # 125 if setsid fails, 127 if CMD cannot be executed.
 # Usage: genseo_group_timeout.sh SECONDS CMD [ARGS...]

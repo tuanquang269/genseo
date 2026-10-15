@@ -630,6 +630,67 @@ check "setsid grandchild is dead" wait_dead "$grand"
 check "middle process is dead" wait_dead "$midp"
 check "lock released after the timeout" test ! -e "$H/genseo/state/daily.lock"
 
+echo "23. real wrapper: sleep-forever child that ignores SIGTERM is killed and the lock is released"
+# Image retries sleep inside the ticket tree (5s, then 15s). A hang that ignores
+# TERM — the backoff process, or a setsid grandchild blocked in sleep — has to
+# die on KILL, and the wrapper's EXIT trap has to drop state/daily.lock.
+sandbox sleepforever
+printf '%s\n' 0 > "$H/genseo/state/live-count"
+printf '%s\n' '- [ ] **#902** sleep forever' > "$H/genseo/daily-tickets.md"
+cat > "$H/genseo/scripts/run_ticket_headless.sh" << 'EOF'
+#!/bin/bash
+state="$HOME/genseo/state"
+printf '%s\n' "$$" > "$state/bash.pid"
+perl -e '
+use POSIX qw(setsid);
+my ($grandf, $midf) = @ARGV;
+my $pid = fork();
+die "fork\n" unless defined $pid;
+if ($pid == 0) {
+  setsid() or die "setsid\n";
+  $SIG{TERM} = "IGNORE";
+  $SIG{HUP} = "IGNORE";
+  $SIG{INT} = "IGNORE";
+  open my $f, ">", $grandf or die $!;
+  print $f "$$\n";
+  close $f;
+  while (1) { sleep 30; }
+  exit 0;
+}
+$SIG{TERM} = "IGNORE";
+$SIG{HUP} = "IGNORE";
+$SIG{INT} = "IGNORE";
+open my $f, ">", $midf or die $!;
+print $f "$$\n";
+close $f;
+while (1) { sleep 30; }
+' "$state/grand.pid" "$state/mid.pid" &
+wait
+EOF
+WRAP_TARGET=5
+WRAP_MAX_RUNS=1
+WRAP_PEER_WAITS=0
+WRAP_TICKET_TIMEOUT=1
+WRAP_GRACE=1
+run_wrapper 20
+check "wrapper exit 0" test "$RC" = 0
+check "logged timeout 124" grep -q "exit 124" "$H/out.log"
+check "stdout counts a timeout" grep -q "TIMEOUT" "$H/out.log"
+check "stderr names the group" grep -q "signaling process group" "$H/err.log"
+daylog=$(ls "$H/genseo/logs/daily/"*.log 2>/dev/null | head -1)
+check "daily log has the timeout line" grep -q "signaling process group" "$daylog"
+check "daily log counts it as no publish" grep -q "nothing new went live" "$daylog"
+leader=$(tr -cd '0-9' < "$H/genseo/state/bash.pid" 2>/dev/null || true)
+grand=$(tr -cd '0-9' < "$H/genseo/state/grand.pid" 2>/dev/null || true)
+midp=$(tr -cd '0-9' < "$H/genseo/state/mid.pid" 2>/dev/null || true)
+check "session leader pid was recorded" test -n "$leader"
+check "grandchild pid was recorded" test -n "$grand"
+check "middle pid was recorded" test -n "$midp"
+check "session leader is dead" wait_dead "$leader"
+check "sleep-forever grandchild is dead" wait_dead "$grand"
+check "sleep-forever middle process is dead" wait_dead "$midp"
+check "lock released after the sleeper timeout" test ! -e "$H/genseo/state/daily.lock"
+
 echo
 printf '%s passed, %s failed\n' "$PASS" "$FAIL"
 [ "$FAIL" = 0 ]
