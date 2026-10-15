@@ -126,6 +126,16 @@ fi
 grep -F -q 'git merge --ff-only origin/main' "$SCRIPT" && ok "apply is ff-only" || bad "missing ff-only"
 grep -F -q 'e1b8519' "$SCRIPT" && ok "historical sha e1b8519 is named" || bad "missing e1b8519"
 grep -F -q '289803e' "$SCRIPT" && ok "historical sha 289803e is named" || bad "missing 289803e"
+n=$(grep -c 'gc.auto=0' "$SCRIPT" || true)
+if [ "$n" -ge 2 ]; then ok "fetch and merge disable auto-gc"
+else bad "gc.auto=0 count is $n"; fi
+if grep -F -q 'BSD stat -f only' "$SCRIPT"; then
+  bad "stale claim that landing mtime is BSD stat only"
+else
+  ok "mtime comment matches the landing helper"
+fi
+grep -F -q 'GENSEO_LOCK_STALE_SEC:-21600' "$ROOT/scripts/genseo_daily_lock.sh" && ok "daily lock default is 21600" || bad "daily lock default drifted"
+grep -F -q -- '-gt 14400' "$ROOT/scripts/run_landing_daily.sh" && ok "landing lock steals after 14400" || bad "landing lock threshold drifted"
 
 echo "1. help and conflicting flags"
 bash "$SCRIPT" --help >"$WORK/out" 2>"$WORK/err"
@@ -288,6 +298,7 @@ set_age "$REPO/state/daily.lock" 30000
 run_rec --apply-stale-lock
 assert_rc 4 "extra file blocks unlock"
 has "$WORK/out" "lock_apply daily.lock: kept unexpected-files" "unexpected-files"
+has "$WORK/out" "mode: apply-stale-lock" "lock-only apply is not labeled dry-run"
 [ -f "$REPO/state/daily.lock/note" ] && ok "note file kept" || bad "note file removed"
 [ -f "$REPO/state/daily.lock/pid" ] && ok "pid file kept" || bad "pid file removed"
 init_repo link
@@ -339,6 +350,7 @@ run_rec --apply-stale-lock
 assert_rc 0 "unrelated pid unlock exit 0"
 has "$WORK/out" "lock_apply daily.lock: removed" "reused-pid lock removed"
 [ ! -e "$REPO/state/daily.lock" ] && ok "reused-pid lock is gone" || bad "reused-pid lock remains"
+ls -d "$REPO/state"/daily.lock.reconcile-hold.* >/dev/null 2>&1 && bad "hold dir left after removal" || ok "no hold dir left after removal"
 kill -0 "$SLEEP_PID" 2>/dev/null && ok "unrelated sleep was not killed" || bad "unrelated sleep was killed"
 kill "$SLEEP_PID" 2>/dev/null || true
 wait "$SLEEP_PID" 2>/dev/null || true
@@ -378,6 +390,85 @@ run_rec --apply
 assert_rc 3 "fetch failure apply exit 3"
 has "$WORK/out" "apply_block: fetch-failed" "fetch-failed block"
 [ "$(head_of "$REPO")" = "$BEFORE" ] && ok "refused apply left HEAD" || bad "refused apply moved HEAD"
+
+echo "12. a lock swapped in the removal window is restored, not deleted"
+init_repo swapped
+mkdir -p "$REPO/state/daily.lock"
+printf '%s\n' 99999999 >"$REPO/state/daily.lock/pid"
+set_age "$REPO/state/daily.lock" 30000
+cat >"$WORK/swap-lock.sh" <<'EOF'
+#!/bin/bash
+path=$1
+mv "$path" "${path}.old-stale"
+mkdir "$path"
+printf '%s\n' KEEPME >"$path/pid"
+printf '%s\n' now >"$path/started"
+EOF
+chmod +x "$WORK/swap-lock.sh"
+export GENSEO_RECONCILE_BEFORE_RM="$WORK/swap-lock.sh"
+run_rec --apply-stale-lock
+unset GENSEO_RECONCILE_BEFORE_RM
+assert_rc 4 "replaced lock is not cleared"
+has "$WORK/out" "lock_apply daily.lock: kept changed" "swap is kept changed"
+lacks "$WORK/out" "lock_apply daily.lock: removed" "swap was not reported removed"
+grep -F -q KEEPME "$REPO/state/daily.lock/pid" && ok "replacement pid kept" || bad "replacement pid missing"
+[ -d "$REPO/state/daily.lock.old-stale" ] && ok "previous lock dir was not deleted" || bad "previous lock dir deleted"
+[ -f "$REPO/state/daily.lock.old-stale/pid" ] && ok "previous pid file kept" || bad "previous pid file deleted"
+ls -d "$REPO/state"/daily.lock.reconcile-hold.* >/dev/null 2>&1 && bad "hold dir left after restore" || ok "hold dir not left after restore"
+
+echo "13. an empty process list does not clear a stale lock or fast-forward"
+init_repo nops
+advance_origin nops
+mkdir -p "$REPO/state/daily.lock"
+printf '%s\n' 99999999 >"$REPO/state/daily.lock/pid"
+set_age "$REPO/state/daily.lock" 30000
+mkdir -p "$WORK/nops-bin"
+cat >"$WORK/nops-bin/ps" <<'EOF'
+#!/bin/bash
+exit 0
+EOF
+chmod +x "$WORK/nops-bin/ps"
+BEFORE="$(head_of "$REPO")"
+OLD_PATH=$PATH
+PATH="$WORK/nops-bin:$PATH"
+export PATH
+run_rec --apply-stale-lock
+PATH="$OLD_PATH"
+export PATH
+assert_rc 4 "empty ps blocks unlock"
+has "$WORK/out" "lock_apply daily.lock: kept process-list-unknown" "process list unknown"
+has "$WORK/out" "lock daily.lock suggested_unlock: no" "empty ps does not suggest unlock"
+[ -d "$REPO/state/daily.lock" ] && ok "lock kept when ps is empty" || bad "lock removed when ps is empty"
+PATH="$WORK/nops-bin:$PATH"
+export PATH
+run_rec --apply
+PATH="$OLD_PATH"
+export PATH
+assert_rc 3 "empty ps blocks apply"
+has "$WORK/out" "apply_block: process-list-unknown" "apply blocked without a process list"
+[ "$(head_of "$REPO")" = "$BEFORE" ] && ok "apply without ps left HEAD" || bad "apply without ps moved HEAD"
+
+echo "14. GIT_DIR does not make --apply operate on another repository"
+init_repo gitdir
+advance_origin gitdir
+DECOY="$WORK/decoy-gitdir"
+rm -rf "$DECOY"
+git init -b main "$DECOY" >/dev/null 2>&1 || exit 1
+git_cfg "$DECOY"
+printf '%s\n' decoy >"$DECOY/README"
+git -C "$DECOY" add README
+git -C "$DECOY" commit -m decoy >/dev/null 2>&1 || exit 1
+DECOY_HEAD="$(head_of "$DECOY")"
+export GIT_DIR="$DECOY/.git"
+export GIT_WORK_TREE="$DECOY"
+run_rec --apply
+rc_save=$RC
+unset GIT_DIR GIT_WORK_TREE
+RC=$rc_save
+assert_rc 0 "apply with GIT_DIR set still exits 0"
+has "$WORK/out" "apply: fast-forward" "ff happened in GENSEO_HOME"
+[ "$(head_of "$REPO")" = "$(git -C "$REPO" rev-parse origin/main)" ] && ok "GENSEO_HOME fast-forwarded" || bad "GENSEO_HOME was not fast-forwarded"
+[ "$(head_of "$DECOY")" = "$DECOY_HEAD" ] && ok "decoy repo was not modified" || bad "decoy repo changed"
 
 echo "11. the workspace checkout was not fetched or edited by this test"
 END_STATUS="$(git -C "$ROOT" status --porcelain)"

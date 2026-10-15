@@ -9,7 +9,7 @@
 # checklist:    Default is dry-run. It prints ICT time, git status, main vs HEAD, local commits that are not on origin, and lock ages. It fetches origin. It does not merge, delete a lock, push, reset, or publish.
 # checklist: 2. If local commits are not on origin, read them with git show and keep them. Do not run git push --force. Do not run git reset --hard. e1b8519 and 289803e were unpushed publish commits on this Mac. If either is still local, leave it.
 # checklist: 3. If personas/index.json is dirty, leave it. DAILY-RUN.md keeps the MacBook image lane no-face until that file is re-synced from the Mini.
-# checklist: 4. A lock is cleared only when you pass --apply-stale-lock, the lock is older than its documented threshold, and no live writer PID is running. The report prints the rmdir command on a dry-run and does not run it.
+# checklist: 4. A lock is cleared only when you pass --apply-stale-lock, the lock is older than its documented threshold, and no live writer PID is running. The report prints the rmdir command on a dry-run and does not run it. If that directory changes before removal, it is left in place.
 # checklist:    daily.lock threshold is 21600 seconds (6h), GENSEO_LOCK_STALE_SEC in scripts/genseo_daily_lock.sh. A live grokbot-genseo-daily or run_ticket_headless.sh blocks removal at any age.
 # checklist:    landing-daily.lock threshold is 14400 seconds (4h), hardcoded in scripts/run_landing_daily.sh. A live run_landing_daily.sh or run_landing_headless.sh blocks removal at any age.
 # checklist: 5. --apply fast-forwards main only: git merge --ff-only origin/main. It runs only when HEAD is main, the work tree is clean, fetch succeeded, and every local branch commit is already on origin. Otherwise it prints instructions and changes nothing.
@@ -27,8 +27,11 @@
 # Does not: genseo_daily_lock_acquire, shopify_publisher, landing_publisher, launchctl,
 # agent worker start, git push, git reset, git checkout, git stash, git clean, rm -r.
 # --apply is git merge --ff-only origin/main and nothing else.
-# --apply-stale-lock removes pid and started inside a stale daily.lock, then rmdir.
+# Fetch and that merge set gc.auto=0 so auto-gc cannot prune a local dangling commit.
+# --apply-stale-lock moves one stale lock directory aside, checks it is still the
+# same directory, then removes pid and started (daily only) and rmdir.
 # A landing lock is rmdir only, and only when the directory is empty.
+# A directory that was replaced is moved back and left in place.
 
 set -uo pipefail
 
@@ -38,7 +41,7 @@ usage() {
     "GENSEO_HOME defaults to the checkout that contains this script (~/genseo on the Mac)." \
     "Default is dry-run: fetch and report. No merge, no lock delete, no push, no publish." \
     "--apply           git merge --ff-only origin/main when main is clean and fully pushed." \
-    "--apply-stale-lock  rmdir a lock only past its documented age with no live writer." \
+    "--apply-stale-lock  remove one stale lock dir when its identity is unchanged and no writer is live." \
     "Exit 0 report or apply finished. Exit 2 usage. Exit 3 apply refused. Exit 4 lock not cleared."
 }
 
@@ -71,12 +74,16 @@ fi
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 DEFAULT_HOME=$(cd "$SCRIPT_DIR/.." && pwd)
 GENSEO_HOME=${GENSEO_HOME:-$DEFAULT_HOME}
+# git -C does not override these. A parent that exported them would
+# fast-forward or fetch a different repository than GENSEO_HOME.
+unset GIT_DIR GIT_WORK_TREE GIT_INDEX_FILE
 
-# Epoch mtime. Same order as genseo_path_mtime in scripts/genseo_daily_lock.sh:
-# GNU stat -c, then BSD stat -f. GNU stat -f is filesystem info and must not be first.
-# run_landing_daily.sh still calls BSD stat -f only; this helper does not.
+# Epoch mtime. Same order as genseo_path_mtime in scripts/genseo_daily_lock.sh
+# and path_mtime in scripts/run_landing_daily.sh:
+# GNU stat -c, then BSD stat -f, then /usr/bin/python3.
+# GNU stat -f is filesystem info and must not be tried first.
 reconcile_path_mtime() {
-  local p=$1 m="" py=""
+  local p=$1 m=""
   m=$(stat -c %Y "$p" 2>/dev/null) || true
   case "$m" in
     ''|*[!0-9]*) m="" ;;
@@ -88,19 +95,28 @@ reconcile_path_mtime() {
     esac
   fi
   if [ -z "$m" ]; then
-    if [ -x /usr/bin/python3 ]; then
-      py=/usr/bin/python3
-    elif command -v python3 >/dev/null 2>&1; then
-      py=$(command -v python3)
-    else
-      return 1
-    fi
-    m=$("$py" -c 'import os,sys; print(int(os.stat(sys.argv[1]).st_mtime))' "$p" 2>/dev/null) || true
+    m=$(/usr/bin/python3 -c 'import os,sys; print(int(os.stat(sys.argv[1]).st_mtime))' "$p" 2>/dev/null) || true
     case "$m" in
       ''|*[!0-9]*) return 1 ;;
     esac
   fi
   printf '%s\n' "$m"
+}
+
+# device:inode. GNU stat -c, then BSD stat -f. Same order as mtime.
+reconcile_dir_id() {
+  local p=$1 id=""
+  id=$(stat -c '%d:%i' "$p" 2>/dev/null) || true
+  case "$id" in
+    ''|*[!0-9:]*) id="" ;;
+  esac
+  if [ -z "$id" ]; then
+    id=$(stat -f '%d:%i' "$p" 2>/dev/null) || true
+    case "$id" in
+      ''|*[!0-9:]*) return 1 ;;
+    esac
+  fi
+  printf '%s\n' "$id"
 }
 
 reconcile_lock_age() {
@@ -223,14 +239,17 @@ reconcile_cmd_matches_lane() {
 }
 
 # Space-separated PIDs in RECONCILE_LIVE_WRITERS. Does not print the process list.
+# RECONCILE_PS_OK=0 when the listing has no numeric pid: absence of a writer is then unknown.
 reconcile_collect_writers() {
-  local lane=$1 psout="" pid="" cmd=""
+  local lane=$1 psout="" pid="" cmd="" seen=0
   RECONCILE_LIVE_WRITERS=""
+  RECONCILE_PS_OK=0
   psout=$(ps -axww -o pid=,args= 2>/dev/null || ps -eo pid=,args= 2>/dev/null || true)
   while read -r pid cmd; do
     case "$pid" in
       ''|*[!0-9]*|0) continue ;;
     esac
+    seen=1
     reconcile_pid_alive "$pid" || continue
     reconcile_cmd_matches_lane "$lane" "$cmd" || continue
     case " $RECONCILE_LIVE_WRITERS " in
@@ -238,6 +257,11 @@ reconcile_collect_writers() {
       *) RECONCILE_LIVE_WRITERS="${RECONCILE_LIVE_WRITERS}${pid} " ;;
     esac
   done <<< "$psout"
+  if [ "$seen" = 0 ]; then
+    return 1
+  fi
+  RECONCILE_PS_OK=1
+  return 0
 }
 
 reconcile_read_pid() {
@@ -332,7 +356,11 @@ reconcile_inspect_lock() {
     LOCK_REASON=mtime-unknown
     return 0
   fi
-  reconcile_collect_writers "$lane"
+  reconcile_collect_writers "$lane" || true
+  if [ "$RECONCILE_PS_OK" != 1 ]; then
+    LOCK_REASON=process-list-unknown
+    return 0
+  fi
   reconcile_recorded_writer "$path" "$lane" || true
   LOCK_LIVE=$RECONCILE_LIVE_WRITERS
   if [ -n "$LOCK_LIVE" ]; then
@@ -399,8 +427,59 @@ reconcile_print_lock() {
   fi
 }
 
+reconcile_names_ok() {
+  local path=$1 lane=$2 names="" base=""
+  names=$(ls -A "$path" 2>/dev/null) || return 1
+  [ -n "$names" ] || return 0
+  while IFS= read -r base; do
+    [ -n "$base" ] || continue
+    case "$lane" in
+      daily)
+        case "$base" in
+          pid|started) ;;
+          *) return 1 ;;
+        esac
+        ;;
+      *)
+        return 1
+        ;;
+    esac
+  done <<< "$names"
+  return 0
+}
+
+# missing, symlink, or file:<text>. Compared before a directory is deleted.
+reconcile_pid_snapshot() {
+  local pid=""
+  if [ -L "$1/pid" ]; then
+    printf '%s\n' symlink
+    return 0
+  fi
+  if [ ! -f "$1/pid" ]; then
+    printf '%s\n' missing
+    return 0
+  fi
+  IFS= read -r pid < "$1/pid" || pid=""
+  printf 'file:%s\n' "$pid"
+}
+
+# Move a held-aside lock back when the path is free. Never deletes on this path.
+reconcile_restore_hold() {
+  local hold=$1
+  if [ ! -e "$LOCK_PATH" ] && [ ! -L "$LOCK_PATH" ]; then
+    mv "$hold" "$LOCK_PATH" 2>/dev/null || printf 'lock_apply %s: aside %s\n' "$LOCK_LABEL" "$hold"
+  else
+    printf 'lock_apply %s: aside %s\n' "$LOCK_LABEL" "$hold"
+  fi
+}
+
 # 0 removed, absent, or younger than the threshold. 4 left in place on purpose.
+# Deletes only the directory object that was classified as stale. A replacement
+# at the same path is moved back and kept. The hold name is not a
+# daily.lock.stale.* / daily.lock.releasing.* path, so the next acquire's sweep
+# does not remove it if a restore fails.
 reconcile_apply_lock() {
+  local id="" pid_snap="" mtime="" hold="" now_id="" now_pid="" now_m=""
   reconcile_inspect_lock "$1" "$2" "$3" "$4"
   case "$LOCK_REASON" in
     absent)
@@ -418,23 +497,81 @@ reconcile_apply_lock() {
       return 4
       ;;
   esac
-  # Re-check immediately before removal. Inspect already required a dead writer.
-  reconcile_collect_writers "$LOCK_LANE"
+  id=$(reconcile_dir_id "$LOCK_PATH" || true)
+  pid_snap=$(reconcile_pid_snapshot "$LOCK_PATH")
+  mtime=$(reconcile_path_mtime "$LOCK_PATH" || true)
+  case "$id" in
+    ''|*[!0-9:]*)
+      printf 'lock_apply %s: kept id-unknown\n' "$LOCK_LABEL"
+      return 4
+      ;;
+  esac
+  if [ -L "$LOCK_PATH" ] || [ ! -d "$LOCK_PATH" ]; then
+    printf 'lock_apply %s: kept changed\n' "$LOCK_LABEL"
+    return 4
+  fi
+  now_id=$(reconcile_dir_id "$LOCK_PATH" || true)
+  now_pid=$(reconcile_pid_snapshot "$LOCK_PATH")
+  now_m=$(reconcile_path_mtime "$LOCK_PATH" || true)
+  if [ "$now_id" != "$id" ] || [ "$now_pid" != "$pid_snap" ] || [ "$now_m" != "$mtime" ]; then
+    printf 'lock_apply %s: kept changed\n' "$LOCK_LABEL"
+    return 4
+  fi
+  if ! reconcile_names_ok "$LOCK_PATH" "$LOCK_LANE"; then
+    printf 'lock_apply %s: kept changed\n' "$LOCK_LABEL"
+    return 4
+  fi
+  reconcile_collect_writers "$LOCK_LANE" || true
+  if [ "$RECONCILE_PS_OK" != 1 ]; then
+    printf 'lock_apply %s: kept process-list-unknown\n' "$LOCK_LABEL"
+    return 4
+  fi
   reconcile_recorded_writer "$LOCK_PATH" "$LOCK_LANE" || true
   if [ -n "$RECONCILE_LIVE_WRITERS" ]; then
     printf 'lock_apply %s: kept live-writer\n' "$LOCK_LABEL"
     return 4
   fi
+  # Test seam, unset on a Mac run. Placed after the checks so a swap here is
+  # the removal window. A failing hook does not delete.
+  if [ -n "${GENSEO_RECONCILE_BEFORE_RM:-}" ]; then
+    if ! "$GENSEO_RECONCILE_BEFORE_RM" "$LOCK_PATH"; then
+      printf 'lock_apply %s: kept pre-remove-hook-failed\n' "$LOCK_LABEL"
+      return 4
+    fi
+  fi
+  hold="${LOCK_PATH}.reconcile-hold.$$"
+  if [ -e "$hold" ] || [ -L "$hold" ]; then
+    printf 'lock_apply %s: kept hold-exists\n' "$LOCK_LABEL"
+    return 4
+  fi
+  if ! mv "$LOCK_PATH" "$hold" 2>/dev/null; then
+    printf 'lock_apply %s: kept mv-failed\n' "$LOCK_LABEL"
+    return 4
+  fi
+  now_id=$(reconcile_dir_id "$hold" || true)
+  now_pid=$(reconcile_pid_snapshot "$hold")
+  if [ "$now_id" != "$id" ] || [ "$now_pid" != "$pid_snap" ]; then
+    reconcile_restore_hold "$hold"
+    printf 'lock_apply %s: kept changed\n' "$LOCK_LABEL"
+    return 4
+  fi
+  if ! reconcile_names_ok "$hold" "$LOCK_LANE"; then
+    reconcile_restore_hold "$hold"
+    printf 'lock_apply %s: kept changed\n' "$LOCK_LABEL"
+    return 4
+  fi
   if [ "$LOCK_LANE" = daily ]; then
-    rm -f "$LOCK_PATH/pid" "$LOCK_PATH/started" || {
+    rm -f "$hold/pid" "$hold/started" || {
+      reconcile_restore_hold "$hold"
       printf 'lock_apply %s: kept rm-failed\n' "$LOCK_LABEL"
       return 4
     }
   fi
-  if rmdir "$LOCK_PATH" 2>/dev/null; then
+  if rmdir "$hold" 2>/dev/null; then
     printf 'lock_apply %s: removed\n' "$LOCK_LABEL"
     return 0
   fi
+  reconcile_restore_hold "$hold"
   printf 'lock_apply %s: kept rmdir-failed\n' "$LOCK_LABEL"
   return 4
 }
@@ -508,6 +645,8 @@ HEAD_SHA=$(git -C "$REPO" rev-parse HEAD 2>/dev/null || printf 'unknown')
 
 if [ "$APPLY" = 1 ]; then
   MODE_NAME=apply
+elif [ "$APPLY_LOCK" = 1 ]; then
+  MODE_NAME=apply-stale-lock
 else
   MODE_NAME=dry-run
 fi
@@ -537,7 +676,7 @@ done || true
 
 printf '%s\n' "== fetch =="
 FETCH_RC=0
-FETCH_OUT=$(GIT_TERMINAL_PROMPT=0 git -C "$REPO" fetch origin 2>&1) || FETCH_RC=$?
+FETCH_OUT=$(GIT_TERMINAL_PROMPT=0 git -C "$REPO" -c gc.auto=0 fetch origin 2>&1) || FETCH_RC=$?
 if [ "$FETCH_RC" = 0 ]; then
   printf '%s\n' "fetch: ok"
 else
@@ -607,9 +746,12 @@ fi
 reconcile_historical e1b8519
 reconcile_historical 289803e
 
-PORCELAIN=$(git -C "$REPO" status --porcelain 2>/dev/null || true)
+STATUS_RC=0
+PORCELAIN=$(git -C "$REPO" status --porcelain 2>/dev/null) || STATUS_RC=$?
 PERSONAS_DIRTY=0
-if [ -n "$PORCELAIN" ]; then
+if [ "$STATUS_RC" != 0 ]; then
+  printf '%s\n' "dirty: unknown"
+elif [ -n "$PORCELAIN" ]; then
   while IFS= read -r line; do
     [ -n "$line" ] || continue
     printf 'dirty: %s\n' "$line"
@@ -620,7 +762,9 @@ if [ -n "$PORCELAIN" ]; then
 else
   printf '%s\n' "dirty: none"
 fi
-if [ "$PERSONAS_DIRTY" = 1 ]; then
+if [ "$STATUS_RC" != 0 ]; then
+  printf '%s\n' "personas_index: unknown"
+elif [ "$PERSONAS_DIRTY" = 1 ]; then
   printf '%s\n' "personas_index: dirty. Leave it. DAILY-RUN.md keeps the MacBook image lane no-face until personas/index.json is re-synced from the Mini."
 else
   printf '%s\n' "personas_index: clean"
@@ -664,7 +808,12 @@ reconcile_print_lock
 reconcile_inspect_lock "landing-daily.lock" "$LANDING_LOCK" landing "$LANDING_THRESHOLD"
 reconcile_print_lock
 
-for leftover in "$REPO/state"/daily.lock.stale.[0-9]* "$REPO/state"/daily.lock.releasing.[0-9]*; do
+for leftover in \
+  "$REPO/state"/daily.lock.stale.[0-9]* \
+  "$REPO/state"/daily.lock.releasing.[0-9]* \
+  "$REPO/state"/daily.lock.reconcile-hold.[0-9]* \
+  "$REPO/state"/landing-daily.lock.reconcile-hold.[0-9]*
+do
   [ -e "$leftover" ] || continue
   printf 'leftover: %s not touched\n' "$leftover"
 done
@@ -707,6 +856,10 @@ apply_allowed() {
     printf '%s\n' "apply_block: git-operation-in-progress"
     APPLY_ALLOWED=0
   fi
+  if [ "${STATUS_RC:-1}" != 0 ]; then
+    printf '%s\n' "apply_block: status-failed"
+    APPLY_ALLOWED=0
+  fi
   if [ -n "$PORCELAIN" ]; then
     printf '%s\n' "apply_block: dirty"
     printf '%s\n' "apply_next: git status --short"
@@ -742,7 +895,11 @@ apply_allowed() {
     printf '%s\n' "apply_block: head-not-ancestor-of-origin-main"
     APPLY_ALLOWED=0
   fi
-  reconcile_collect_writers any
+  reconcile_collect_writers any || true
+  if [ "$RECONCILE_PS_OK" != 1 ]; then
+    printf '%s\n' "apply_block: process-list-unknown"
+    APPLY_ALLOWED=0
+  fi
   if [ -n "$RECONCILE_LIVE_WRITERS" ]; then
     printf 'apply_block: live-writer %s\n' "$RECONCILE_LIVE_WRITERS"
     APPLY_ALLOWED=0
@@ -760,7 +917,7 @@ else
   if apply_allowed; then
     BEFORE=$(git -C "$REPO" rev-parse HEAD)
     MERGE_RC=0
-    MERGE_OUT=$(git -C "$REPO" merge --ff-only origin/main 2>&1) || MERGE_RC=$?
+    MERGE_OUT=$(git -C "$REPO" -c gc.auto=0 merge --ff-only origin/main 2>&1) || MERGE_RC=$?
     while IFS= read -r line; do
       [ -n "$line" ] || continue
       printf 'merge: %s\n' "$line"
