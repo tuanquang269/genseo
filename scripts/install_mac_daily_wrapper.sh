@@ -24,7 +24,8 @@ for arg in "$@"; do
         "GENSEO_HOME defaults to ~/genseo." \
         "Copies deploy/grokbot-genseo-daily.sh to ~/bin/grokbot-genseo-daily.sh." \
         "Does not start launchd." \
-        "Does not copy the LaunchAgent plist. Pulling alone does not update ~/bin."
+        "Does not copy the LaunchAgent plist. Pulling alone does not update ~/bin." \
+        "A wrapper that sources scripts/genseo_sync_main.sh is not copied while that file is missing."
       exit 0
       ;;
     *)
@@ -76,6 +77,15 @@ if grep -F -q 'genseo_wait_for_network.sh' "$SRC"; then
   else
     printf 'helper %s: MISSING\n' "$net_rel"
     die "wrapper requires $net_rel — git pull in $GENSEO_HOME, then re-run. Nothing was copied."
+  fi
+fi
+if grep -F -q 'genseo_sync_main.sh' "$SRC"; then
+  sync_rel="scripts/genseo_sync_main.sh"
+  if [ -f "$GENSEO_HOME/$sync_rel" ]; then
+    printf 'helper %s: present\n' "$sync_rel"
+  else
+    printf 'helper %s: MISSING\n' "$sync_rel"
+    die "wrapper requires $sync_rel — git pull in $GENSEO_HOME, then re-run. Nothing was copied."
   fi
 fi
 

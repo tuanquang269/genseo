@@ -178,8 +178,11 @@ else
   cmp -s "$ROOT/deploy/grokbot-genseo-daily.sh" "$HOME_DIR/bin/grokbot-genseo-daily.sh" \
     && ok "real dest matches deploy/" || bad "real dest differs"
   has "$WORK/out" "helper scripts/genseo_wait_for_network.sh: present" "real tree network helper present"
+  has "$WORK/out" "helper scripts/genseo_sync_main.sh: present" "real tree sync helper present"
   grep -F -q 'genseo_wait_for_network.sh' "$HOME_DIR/bin/grokbot-genseo-daily.sh" \
     && ok "copied wrapper waits for DNS" || bad "copied wrapper has no DNS wait"
+  grep -F -q 'genseo_sync_main.sh' "$HOME_DIR/bin/grokbot-genseo-daily.sh" \
+    && ok "copied wrapper syncs origin/main" || bad "copied wrapper has no origin/main sync"
 fi
 for rel in scripts/genseo_daily_lock.sh scripts/genseo_group_timeout.sh; do
   if [ -f "$ROOT/$rel" ]; then
@@ -229,6 +232,22 @@ assert_rc 0 "copy succeeds once the network helper exists"
 has "$WORK/out" "helper scripts/genseo_wait_for_network.sh: present" "network helper present"
 cmp -s "$FIX/deploy/grokbot-genseo-daily.sh" "$HOME_DIR/bin/grokbot-genseo-daily.sh" \
   && ok "DNS wrapper bytes match" || bad "DNS wrapper bytes differ"
+
+echo "12. a wrapper that syncs origin/main is not copied when that helper is absent"
+fixture syncmiss 1 755
+printf '\n%s\n' '. "$HOME/genseo/scripts/genseo_sync_main.sh"' >>"$FIX/deploy/grokbot-genseo-daily.sh"
+new_home syncmiss
+run_install "$HOME_DIR" "$FIX" 1 --
+assert_rc 1 "copy refused without the sync helper"
+has "$WORK/err" "Nothing was copied" "refused sync copy says nothing was copied"
+has "$WORK/out" "helper scripts/genseo_sync_main.sh: MISSING" "reports the sync helper missing"
+[ ! -e "$HOME_DIR/bin/grokbot-genseo-daily.sh" ] && ok "no dest without the sync helper" || bad "dest written without the sync helper"
+printf '%s\n' 'sync' >"$FIX/scripts/genseo_sync_main.sh"
+run_install "$HOME_DIR" "$FIX" 1 --
+assert_rc 0 "copy succeeds once the sync helper exists"
+has "$WORK/out" "helper scripts/genseo_sync_main.sh: present" "sync helper present"
+cmp -s "$FIX/deploy/grokbot-genseo-daily.sh" "$HOME_DIR/bin/grokbot-genseo-daily.sh" \
+  && ok "sync wrapper bytes match" || bad "sync wrapper bytes differ"
 
 printf '\n%d passed, %d failed\n' "$PASS" "$FAIL"
 [ "$FAIL" = 0 ]

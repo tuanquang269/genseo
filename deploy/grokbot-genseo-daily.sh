@@ -47,9 +47,27 @@
 # (default 3, cap 5) with GENSEO_LIVE_FEED_BACKOFF_SEC between tries (default 5,
 # cap 30), then fail closed. A readable count does not sleep there and still
 # runs the peer-active check. That retry is not the wake wait.
+# Checkout: after that wait succeeds, scripts/genseo_sync_main.sh runs
+# `git fetch origin main` and `git merge --ff-only origin/main` when HEAD is
+# main and the work tree is clean. A dirty checkout, or local commits that are
+# not on origin, is logged and this run continues. The fetch runs from a copy
+# of this file so git does not rewrite the script bash is reading. A
+# fast-forward re-execs ~/genseo/deploy/grokbot-genseo-daily.sh (same PID, so
+# state/daily.lock stays held). launchd runs ~/bin, so the first time this
+# ships the Mac still needs: bash scripts/install_mac_daily_wrapper.sh
+# That does not reload launchd. Later edits of this file are read from the
+# repo on the re-exec. Pulling alone does not update ~/bin.
 set -uo pipefail
 export PATH="$HOME/.local/bin:$HOME/.npm-global/bin:$HOME/.codex/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 G="$HOME/genseo"; PY=/usr/bin/python3
+if [ -f "$G/scripts/genseo_sync_main.sh" ]; then
+  # shellcheck source=../scripts/genseo_sync_main.sh
+  . "$G/scripts/genseo_sync_main.sh" || {
+    printf '%s\n' "FATAL: could not load scripts/genseo_sync_main.sh" >&2
+    exit 1
+  }
+  genseo_exec_stable_copy grokbot-genseo-daily "$@"
+fi
 TARGET="${GENSEO_DAILY_TARGET:-5}"
 ROLE="${GENSEO_HOST_ROLE:-primary}"
 DELAY="${GENSEO_STANDBY_DELAY_MIN:-20}"
@@ -96,14 +114,25 @@ fi
 . "$G/scripts/genseo_daily_lock.sh" || { say "FATAL: could not load daily lock helper"; exit 1; }
 # shellcheck source=../scripts/genseo_wait_for_network.sh
 . "$G/scripts/genseo_wait_for_network.sh" || { say "FATAL: could not load network wait helper"; exit 1; }
-genseo_daily_lock_acquire
-lock_rc=$?
-case "$lock_rc" in
-  0) ;;
-  10) exit 0 ;;
-  *) exit "$lock_rc" ;;
-esac
-trap 'genseo_daily_lock_release' EXIT
+# A re-exec after the fast-forward keeps this PID and the lock it already holds.
+lock_owned=0
+if declare -F genseo_daily_lock_is_ours >/dev/null 2>&1 && genseo_daily_lock_is_ours; then
+  lock_owned=1
+fi
+if [ "$lock_owned" != 1 ]; then
+  genseo_daily_lock_acquire
+  lock_rc=$?
+  case "$lock_rc" in
+    0) ;;
+    10) exit 0 ;;
+    *) exit "$lock_rc" ;;
+  esac
+fi
+if declare -F genseo_stable_copy_release >/dev/null 2>&1; then
+  trap 'genseo_daily_lock_release; genseo_stable_copy_release now || true' EXIT
+else
+  trap 'genseo_daily_lock_release' EXIT
+fi
 
 live_urls(){ $PY "$G/scripts/genseo_published_today.py" --json 2>/dev/null | $PY -c 'import json,sys
 d=json.load(sys.stdin); [print(e["url"]) for e in d.get("entries",[])]' 2>/dev/null; }
@@ -111,8 +140,20 @@ live_count(){ local n; n="$($PY "$G/scripts/genseo_published_today.py" 2>/dev/nu
 
 # The start line below is the first feed read. Wait for DNS before it so a
 # wake does not burn the short live-feed retry on ENOTFOUND / -1.
-if ! genseo_wait_for_network; then
-  exit 1
+# The fast-forward is after that wait and before the feed read. A re-exec
+# already waited, and it already holds the lock.
+if [ "${GENSEO_NET_WAIT_DONE:-}" != 1 ]; then
+  if ! genseo_wait_for_network; then
+    exit 1
+  fi
+  export GENSEO_NET_WAIT_DONE=1
+fi
+if [ "${GENSEO_MAIN_SYNCED:-}" != 1 ]; then
+  if declare -F genseo_sync_origin_main >/dev/null 2>&1; then
+    genseo_sync_origin_main "$G/deploy/grokbot-genseo-daily.sh" "$@"
+  else
+    say "WARN: origin/main not updated — missing scripts/genseo_sync_main.sh — continuing on the current checkout"
+  fi
 fi
 say "start (target $TARGET/day, live now $(live_count))"
 if [ "$ROLE" = "standby" ] && [ "${GENSEO_NO_DELAY:-0}" != "1" ]; then
