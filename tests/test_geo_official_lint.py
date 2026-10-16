@@ -3,6 +3,7 @@ import contextlib
 import io
 import json
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -16,6 +17,45 @@ import geo_official_lint as geo
 
 SCRIPT = os.path.join(ROOT, "scripts", "geo_official_lint.py")
 GUIDE = os.path.join(ROOT, "knowledge_base", "AEO_GEO_GUIDELINES.md")
+
+# The 2026-10-09 gap-fill banned the substring outright so §6 would not recommend
+# the refused AgeAura SKU. Later deny lines have to name that SKU. A mention is
+# allowed only in the same sentence as a refusal or an absence, and not when that
+# sentence also recommends it. A bare "never" or "do not" is not a refusal
+# ("Do not forget Urolithin A" is still a recommendation).
+_UROLITHIN = re.compile(r"urolithin", re.I)
+_UROLITHIN_DENY = re.compile(
+    r"\b(?:is|are)\s+refused\b(?!\s+by\s+(?:nobody|no one))"
+    r"|\brefused by\b(?!\s+(?:nobody|no one))"
+    r"|\bfail-closed\b"
+    r"|\bno palette file\b"
+    r"|\bdoes not unpublish\b",
+    re.I,
+)
+_UROLITHIN_PROMO = re.compile(
+    r"\b(?:buy|shop|order|supports?|benefits?|best|recommend(?:ed|s)?|ideal|helps?|hero)\b"
+    r"|\blink(?:s|ed|ing)?\s+(?:only\s+)?to\b",
+    re.I,
+)
+_SENTENCE_BREAK = re.compile(r"(?<=[.!?])\s+(?=[A-Z*`])|\n+")
+
+
+def urolithin_promotions(text):
+    """Sentences that name Urolithin outside a same-sentence deny or absence."""
+    bad = []
+    seen = 0
+    for sentence in _SENTENCE_BREAK.split(text):
+        sentence = " ".join(sentence.split())
+        hits = _UROLITHIN.findall(sentence)
+        if not sentence or not hits:
+            continue
+        seen += len(hits)
+        if not _UROLITHIN_DENY.search(sentence) or _UROLITHIN_PROMO.search(sentence):
+            bad.append(sentence)
+    total = len(_UROLITHIN.findall(text))
+    if seen != total:
+        bad.append(f"splitter dropped urolithin mentions: saw {seen} of {total}")
+    return bad
 
 CLEAN = """# NMN and TMG
 
@@ -175,9 +215,35 @@ class GuidelinesAndCli(unittest.TestCase):
         self.assertIn("https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex", text)
         self.assertIn("Bacillus coagulans SNZ-1969", text)
         self.assertIn("1 billion CFU", text)
-        self.assertNotIn("urolithin", text.lower())
+        self.assertIn(
+            "`ageaura-pure-urolithin-a` and any other Urolithin A AgeAura handle are refused",
+            text,
+        )
+        self.assertIn("does not unpublish the live Urolithin PDP", text)
+        self.assertIn("AgeAura Urolithin has no palette file", text)
+        self.assertEqual(urolithin_promotions(text), [])
         for number in range(20, 40):
             self.assertIn(f"{number}. **2026-10-09", text)
+
+    def test_urolithin_deny_is_allowed_and_a_recommendation_is_not(self):
+        denied = (
+            "`ageaura-pure-urolithin-a` and any other Urolithin A AgeAura handle are refused "
+            "by `scripts/ageaura_rules.py`.\n"
+            "This guard does not unpublish the live Urolithin PDP.\n"
+            "AgeAura Urolithin has no palette file.\n"
+        )
+        self.assertEqual(urolithin_promotions(denied), [])
+        recommendations = (
+            "AgeAura Urolithin A supports healthy aging.",
+            "The hero product is /products/ageaura-pure-urolithin-a.",
+            "Do not forget Urolithin A for muscle recovery.",
+            "Urolithin A is never a bad choice.",
+            "Shop Urolithin A. The peptide SKU is refused.",
+            "Urolithin A is refused by nobody and is the best AgeAura product.",
+            "AgeAura links only to the Urolithin PDP.",
+        )
+        for sample in recommendations:
+            self.assertTrue(urolithin_promotions(sample), sample)
 
     def test_guidelines_do_not_trip_new_claim_rules(self):
         with open(GUIDE, encoding="utf-8") as fh:
