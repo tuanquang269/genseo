@@ -95,7 +95,7 @@ PROMPT='ARTICLE ALREADY APPROVED. Write and publish this one blog article in thi
 Continue with the next ticket in /Users/kevinkreative/genseo/daily-tickets.md.
 
 Rules for this run:
-1. Take the FIRST ticket whose heading still contains `[ ]` (top-to-bottom). Process exactly ONE ticket, then STOP.
+1. Take the ticket named in the QUEUE POINTER at the end of this prompt. That line is the first heading that still starts with "- [ ]" or "## [ ]". Process exactly ONE ticket, then STOP. Do not decide the queue is empty from an older "Refill needed" or "queue is EMPTY" section. daily-tickets.md is longer than 500 lines; those notes are history above later open tickets.
 2. Follow the genseo-auto-publish skill end-to-end — if the Skill tool is unavailable, Read /Users/kevinkreative/genseo/skills/genseo-auto-publish/SKILL.md and follow it exactly: all 10 STEPs, STEP 0 dedup, STEP 0.5 topic fitness, images via scripts/article_images.py per the i5.2 UGC framework with --product-ref for any image containing a product, validate_article.py gate (exit 0 required), and BOTH post-publish gates.
    PACKAGING HARD RULE (Kevin 2026-08-09, after two wrong images shipped): pass --product-ref <handle> with NO :index. ~/genseo/product_refs/<handle>.png is the curated packaging truth and the wrapper injects its written description into the prompt. PDP indexes are marketing composites and some contain no package at all — generating against one produced an invented white pouch with the graphic stat badges pasted onto the label. If the wrapper warns a SKU has no curated ref, open the fallback ref, confirm the package is in it, and say so in the report; if it is not, stop and report that the SKU needs curating. Match product details beyond the label too (gummy colour = real flavour).
    HERO HARD RULE (Kevin 2026-08-08): the FIRST/hero image (it becomes the Shopify thumbnail/og:image) MUST show BOTH an approved-bank persona (visible face, ~/genseo/personas/ only) AND the real product pack label-forward — --persona-ref + --product-ref + --qc, NO --ugc. Default composition: the pack STANDS on a surface beside the model, hands NOT touching it, with "no hands touching the pouch" in the NEGATIVE (ima2 warps hand-pack grips; a holding pose is first-roll-only). Feed the exact hero_ref path the picker prints (see the PERSONA ROTATION rule below), never a previous gen. NEVER invent a fresh face.
@@ -104,7 +104,7 @@ Rules for this run:
 3. Publish LIVE — ALWAYS pass --live to shopify_publisher.py. Kevin ended the draft-review period in writing on 2026-08-09 ("just auto publish visible. I will do QA step even after you publish"), so the article must be visible to the public the moment this run finishes; he QAs on the live site. After publishing, confirm the article JSON has a non-null published_at AND that the frontend URL returns HTTP 200 with a browser User-Agent (a bare curl gets throttled). A draft that reports success but 404s for visitors is a FAILED run, not a completed one.
 4. Flip the ticket heading to [DONE <date> <url>] (or SKIPPED per skill rules), append the tracker CSV row, then git commit the genseo repo and try to push; if push fails for auth, keep the commit local and note "push pending" in the report — do not treat it as a run failure.
 5. TEMPLATE ROTATION: pick the article template (EDITORIAL / STORY / LISTICLE / COMPARISON) per skills/genseo-auto-publish/references/article-templates.md — ticket type: field wins, else intent match, avoid repeating the previous articles template; use only the block kit in that reference (blank lines around HTML blocks, markdown outside blocks); log template:<KEY> in the tracker row and the report. Tickets marked type LISTICLE also follow the craft pointer in the ticket. Gates unchanged for every template.
-6. If NO `[ ]` ticket remains: do NOT write an article. If the google-ads MCP is unavailable in this environment, append a line to daily-tickets.md under a "## Refill needed" heading asking Kevin to run the mining recipe in the app, and stop.
+6. If the QUEUE POINTER says 0 open tickets: do NOT write an article. If the google-ads MCP is unavailable in this environment, append a line to daily-tickets.md under a "## Refill needed" heading asking Kevin to run the mining recipe in the app, and stop. If the pointer names an open line, that ticket is open — do not append a refill note.
 7. Finish with a report containing BOTH links on their own lines exactly as:
    ADMIN: https://admin.shopify.com/store/wellnessnest1/content/articles/<id>
    FRONTEND: https://wellnessnest.co/blogs/news/<handle>
@@ -115,7 +115,7 @@ STANDING APPROVALS (Kevin, 2026-08-08 — this run is unattended, never pause to
 - This pre-approval covers NOTHING else: any paid media API (KIE, Veo, Kling, HeyGen, ElevenLabs, per-token image/video/audio) remains FORBIDDEN in this pipeline — if a step seems to need one, skip it, mark the ticket [BLOCKED <reason>], and report.
 - If any OTHER rule requires human input, do not improvise: leave the ticket un-flipped, explain in the report, exit. The file-count scope gate is not one of those rules. The SCOPE_WAIVER at the end of this prompt turns that gate off for this blog article.
 
-CONTEXT HYGIENE (a run died on "input exceeds the context window", 2026-08-09): never Read a whole large file — use offset/limit chunks for anything over ~500 lines; never cat/tail entire logs or HTML dumps; read only the sections of skill references you need. If a tool result looks huge, summarize and move on instead of re-reading it.
+CONTEXT HYGIENE (a run died on "input exceeds the context window", 2026-08-09): never Read a whole large file — use offset/limit chunks for anything over ~500 lines; never cat/tail entire logs or HTML dumps; read only the sections of skill references you need. If a tool result looks huge, summarize and move on instead of re-reading it. For daily-tickets.md, start at the QUEUE POINTER line instead of byte 0.
 
 TWO-MAC FAILOVER RULES (Kevin 2026-10-06 — GenSeo runs on whichever Mac is online; the Mini and the MacBook keep separate ticket files):
 A. DOUBLE-PUBLISH GUARD: immediately BEFORE running shopify_publisher.py, run `/usr/bin/python3 scripts/genseo_published_today.py` — if it prints a number >= '"${GENSEO_DAILY_TARGET:-5}"' (or -1), do NOT publish: release any persona reservation, leave the ticket un-flipped, report "daily target already live" and stop. Then re-run STEP 0 (suggest.json for the primary keyword) at that same moment: if an article for this keyword went live since you started (the other Mac may have shipped it), mark the ticket [SKIPPED-DUPLICATE <date> <url>] and stop.
@@ -128,7 +128,7 @@ L. ShilaSource Himalayan Shilajit Resin pack label is product_refs/shilasource-h
 T. Turkesterone Advanced Formula pack label is product_refs/turkesterone-advanced-formula.label.json. Repeat only that file'\''s required and optional lines. No milligram amount and no Supplement Facts panel were read into that file. Do not add one. The capsule badge is the separate lines 60 and Capsules. Do not state a milligram amount, a serving count, a different capsule count, or a day-supply. python3 scripts/turkesterone_rules.py --brief prints the line. Bare turkesterone (the ingredient) is not this SKU. Premium Himalayan Shilajit Gummies, Shilajit Shockwave, Pure Shilajit Gold Resin, and ShilaSource resin are separate products and are not covered by this rule.
 F. Never run Bash commands in the background (no run_in_background, no trailing &): this is a one-shot -p run and it ENDS when you stop talking, killing background image jobs (2026-10-06 10:47 a run exited mid-images). Run image generations in the foreground, one or several per command.
 E. NEVER modify an existing live post: no [REFRESH EXISTING], no shopify_publisher.py update on an article you did not create in this run. If STEP 0/0.5 says refresh or duplicate, mark the ticket SKIPPED and move to the next one.
-D. If the ticket batch header says "ALL images NO-FACE" (MacBook failover lane, or env GENSEO_NO_FACE='"${GENSEO_NO_FACE:-0}"' = 1): that OVERRIDES the HERO / PERSONA ROTATION / FACE ANGLE rules above for this run — do NOT run persona_picker.py at all, never pass --persona-ref, make the hero a NO-FACE real-pack-in-a-real-scene image (--product-ref + --qc, no --ugc) and all 3 inline images no-face (--ugc --qc). Log "persona: none (failover no-face)" in the tracker/report.
+D. If the ticket batch header says "ALL images NO-FACE" (MacBook failover lane, or the env value GENSEO_NO_FACE is exactly 1; this run: '"${GENSEO_NO_FACE:-0}"'): that OVERRIDES the HERO / PERSONA ROTATION / FACE ANGLE rules above for this run — do NOT run persona_picker.py at all, never pass --persona-ref, make the hero a NO-FACE real-pack-in-a-real-scene image (--product-ref + --qc, no --ugc) and all 3 inline images no-face (--ugc --qc). Log "persona: none (failover no-face)" in the tracker/report.
 
 SCOPE_WAIVER (Kevin, standing approval for the daily blog article):
 - This run writes and publishes one blog article from daily-tickets.md. Kevin already approved that package on 2026-08-09 (auto publish visible). Do not ask a human to proceed. Do not stop on a scope gate.
@@ -138,6 +138,47 @@ SCOPE_WAIVER (Kevin, standing approval for the daily blog article):
 - The bullet that says to exit when some other rule requires human input does not apply to this scope gate. Leaving the ticket `[ ]` and writing no draft is a failed run.
 - A ticket template named LISTICLE is still this blog article. Publish it live after validate_article.py prints PASS, using scripts/shopify_publisher.py --live. This waiver does not publish a landing-page listicle, a gsl- page, or any file under landing_drafts/.
 - ima2 image generation stays the $0 standing approval. Do not stop for a cost table.'
+
+# 2026-10-16: the writer read the August "queue is EMPTY" note (the file is
+# longer than the 500-line read cap) and exited 0 while the wrapper still
+# counted open "- [ ]" tickets. Name the grep hit in the prompt.
+# Rule D above splices GENSEO_NO_FACE as "this run: N". Do not write
+# GENSEO_NO_FACE=$N = 1 — that quote break rendered as "GENSEO_NO_FACE=1 = 1".
+TICKET_FILE="$HOME/genseo/daily-tickets.md"
+# Same grep as deploy/grokbot-genseo-daily.sh. A CRLF ticket file still matches
+# (the pattern is not anchored at end of line); drop the trailing CR so the
+# pointer is one clean line.
+FIRST_OPEN="$(grep -m1 -E '^(- \[ \]|## \[ \])' "$TICKET_FILE" 2>/dev/null || true)"
+FIRST_OPEN="${FIRST_OPEN%$'\r'}"
+OPEN_N="$(grep -cE '^(- \[ \]|## \[ \])' "$TICKET_FILE" 2>/dev/null || true)"
+case "$OPEN_N" in
+  ''|*[!0-9]*) OPEN_N=0 ;;
+esac
+# MacBook plist sets GENSEO_NO_FACE=1. The long persona block below is easy to
+# follow anyway (2026-10-16 #CA1009-8 committed a face and personas/index.json).
+# Put the override first, before those rules.
+if [ "${GENSEO_NO_FACE:-0}" = "1" ]; then
+  PROMPT="NO-FACE LANE (GENSEO_NO_FACE=1). Do not run persona_picker.py. Do not pass --persona-ref. Do not edit or commit personas/index.json. The hero is a no-face pack in a real scene (--product-ref + --qc, no --ugc). All inline images are no-face. This overrides the persona, gaze, and face-angle rules later in this prompt.
+
+$PROMPT"
+fi
+if [ -n "$FIRST_OPEN" ]; then
+  PROMPT="$PROMPT
+
+QUEUE POINTER (shell grep of daily-tickets.md, same pattern as the daily wrapper):
+Open tickets: $OPEN_N
+First open line:
+$FIRST_OPEN
+Process that ticket and no other. Older sections that say the queue is EMPTY or \"## Refill needed\" are history. Do not append a refill note while this line is still open."
+else
+  PROMPT="$PROMPT
+
+QUEUE POINTER (shell grep of daily-tickets.md, same pattern as the daily wrapper):
+Open tickets: 0
+First open line:
+(none)
+Do not write an article."
+fi
 
 if [ "$PRINT_PROMPT" = 1 ]; then
   printf '%s\n' "$PROMPT"
