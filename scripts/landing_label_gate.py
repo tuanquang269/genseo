@@ -17,8 +17,11 @@ When this gate is not called
   Scene images, and landing specs that have no pack_images and do not claim a
   label-gate pass ("label gate PASS", landing_label_gate, PACK FACE WHITELIST),
   are not whitelist pack shots. validate_landing.py does not run this gate for
-  those. That is the only skip. A pack shot that claims a whitelist still fails
-  closed when the label file or Vision is unavailable.
+  those. A label file without product_refs/<handle>-cutout.png is the same case:
+  omit pack_images and do not claim a pass (the real PDP photo or the curated
+  png is the pack). Listing pack_images there is an omit error, not an OCR run.
+  A pack shot that claims a whitelist when the cutout exists still fails closed
+  when the label file or Vision is unavailable.
 
 Unit tests pass ocr_lines into evaluate() so CI can prove the fail-closed
 branches without Vision. The mark (logo) cannot be OCR'd: a 2x zoom against the
@@ -385,6 +388,8 @@ def whitelist_pack_errors(spec, root=None, run_gate=None):
 
     run_gate(image, handle) -> (returncode, summary). The default subprocesses this
     script. A missing label file fails closed and does not call run_gate.
+    A label file with no product_refs/<handle>-cutout.png does not call run_gate
+    either: the spec must omit pack_images and use the curated pack photo.
     """
     root = ROOT if root is None else root
     if not claims_label_whitelist(spec):
@@ -397,6 +402,16 @@ def whitelist_pack_errors(spec, root=None, run_gate=None):
         return ["pack_images label gate FAIL CLOSED: " + ageaura_rules.denial_message(handle)]
     if not os.path.isfile(label_json_path(handle, root)):
         return ["pack_images label gate FAIL CLOSED: " + missing_label_note(handle)]
+    cutout = os.path.join(root, "product_refs", handle + "-cutout.png")
+    if not os.path.isfile(cutout):
+        # No generated-shot path exists. Running OCR here forced the 2026-10-16
+        # turkesterone spec to keep a failed pack_images list, and the daily
+        # reminder forced that list whenever a label file existed.
+        return [(
+            "omit pack_images for %s: product_refs/%s-cutout.png does not exist, "
+            "so this is not a whitelist pack shot. Remove pack_images and do not "
+            "claim a label-gate pass. Use the live PDP image or product_refs/%s.png."
+        ) % (handle, handle, handle)]
     packs = spec.get("pack_images") or []
     if not packs:
         return [(
