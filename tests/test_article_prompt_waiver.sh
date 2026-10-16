@@ -117,8 +117,19 @@ echo "2. the 2026-10-12 failure ticket is not the open queue head"
 first="$(grep -m1 -E '^- \[ \]' "$ROOT/daily-tickets.md" || true)"
 if [ -n "$first" ]; then
   ok "an open ticket remains"
+  if grep -F -q -- "$first" "$TMP/article.txt"; then
+    ok "prompt names that open queue head"
+  else
+    bad "prompt missing the open queue head"
+  fi
 else
   bad "ticket queue has no open line"
+fi
+if grep -F -q "QUEUE POINTER (shell grep of daily-tickets.md, same pattern as the daily wrapper):" "$TMP/article.txt" \
+  && grep -F -q "Older sections that say the queue is EMPTY" "$TMP/article.txt"; then
+  ok "prompt warns that old empty-queue notes are history"
+else
+  bad "prompt missing the empty-queue history warning"
 fi
 case "$first" in
   *'#MB1009-7'*) bad "failure ticket is still the queue head" ;;
