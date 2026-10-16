@@ -320,18 +320,28 @@ run_unit 15 \
 assert_rc 0 "localhost resolves without the stub"
 has_out "network ready (localhost)" "ready via the system resolver"
 [ ! -s "$DNS_LOG" ] && ok "stub was not used" || bad "stub ran without GENSEO_NET_WAIT_TEST=1"
-run_unit 20 \
+# Backoff is 1s so the production clock has to advance. A process-relative
+# clock stays at 0, the stall guard needs 501 loops, and this bound kills
+# the wait before that. .invalid does not need a live storefront.
+run_unit 25 \
   GENSEO_NET_WAIT_TEST=0 \
-  GENSEO_NET_WAIT_MAX_SEC=2 \
-  GENSEO_NET_WAIT_BACKOFF_SEC=0 \
+  GENSEO_NET_WAIT_MAX_SEC=3 \
+  GENSEO_NET_WAIT_BACKOFF_SEC=1 \
   GENSEO_DNS_TIMEOUT_SEC=1 \
   GENSEO_NET_HOSTS='no-such-host.invalid' \
   PATH="/usr/bin:/bin"
-assert_rc 1 "NXDOMAIN exits 1"
+assert_rc 1 "NXDOMAIN exits 1 inside the short budget"
 has_out "network not ready — timeout" "NXDOMAIN logs a network timeout"
 has_out "fail closed" "NXDOMAIN fail-closes"
 lacks_out "network ready" "NXDOMAIN is not ready"
 lacks_out "live feed unreadable" "NXDOMAIN is not feed unreadable"
+waits=$(grep -c -F ' — waiting ' "$WORK/unit.out" || true)
+if [ "${waits:-0}" -lt 20 ]; then
+  ok "NXDOMAIN exits on the budget, not the stall guard ($waits waits)"
+else
+  bad "NXDOMAIN took the stall path ($waits waits)"
+  show
+fi
 
 article_home() {
   H="$WORK/home-$1"
@@ -447,6 +457,7 @@ else
 fi
 
 echo "9. article wrapper: DNS never comes up, fail closed, feed is not read"
+# No GENSEO_NET_NOW_CMD: this short budget uses the production clock.
 reset_dns 9999
 article_home timeout
 run_article 20 \
@@ -487,6 +498,7 @@ lacks_out "Shopify unreadable" "landing recovery is not Shopify unreadable"
 [ ! -e "$H/genseo/state/landing-daily.lock" ] && ok "landing lock released after stand-down" || bad "landing lock still held"
 
 echo "12. landing wrapper: DNS never comes up, fail closed, guard is not called"
+# No GENSEO_NET_NOW_CMD: this short budget uses the production clock.
 reset_dns 9999
 landing_home timeout 7
 run_landing 20 \
@@ -501,6 +513,168 @@ lacks_out "stub landing_guard" "guard was not started"
 [ ! -e "$H/genseo/state/agent-called" ] && ok "landing agent did not start" || bad "landing agent started"
 [ ! -e "$H/genseo/state/landing-daily.lock" ] && ok "landing lock released" || bad "landing lock still held"
 lacks_out "landing_publisher.py" "landing timeout does not build a page"
+
+echo "13. production clock advances across separate python processes"
+# genseo_net_now shells out to python3 -c on every sample. The samples have
+# to be non-decreasing and move far enough to pass a 1s budget. The wall
+# fallback is forced by a test python that rejects the monotonic API; it is
+# not the production path while clock_gettime works.
+cat >"$WORK/bin/py-clock-fallback" <<'EOF'
+#!/bin/bash
+real=$(command -v python3) || exit 127
+if [ "$1" != "-c" ] || [ -z "${2:-}" ]; then
+  exec "$real" "$@"
+fi
+exec "$real" - "$2" "${GENSEO_CLOCK_BREAK:-both}" <<'PY'
+import sys, time, builtins
+mode = sys.argv[2]
+def _boom(clk):
+    raise OSError("clock_gettime disabled")
+time.clock_gettime = _boom
+if mode == "both":
+    _open = builtins.open
+    def open(path, *args, **kwargs):
+        if path == "/proc/uptime":
+            raise OSError("uptime hidden")
+        return _open(path, *args, **kwargs)
+    builtins.open = open
+exec(sys.argv[1])
+PY
+EOF
+chmod +x "$WORK/bin/py-clock-fallback"
+: >"$WORK/unit.out"
+: >"$WORK/unit.err"
+bounded 20 env -u GENSEO_NET_WAIT_TEST -u GENSEO_NET_NOW_CMD -u PY \
+  PATH="/usr/bin:/bin" \
+  bash -c '
+    set -uo pipefail
+    . "$1"
+    wrap=$2
+    a=$(genseo_net_now) || exit 2
+    up=$(PY="$wrap" GENSEO_CLOCK_BREAK=mono genseo_net_now) || exit 4
+    wall=$(PY="$wrap" GENSEO_CLOCK_BREAK=both genseo_net_now) || exit 5
+    sleep 2
+    b=$(genseo_net_now) || exit 3
+    up2=$(PY="$wrap" GENSEO_CLOCK_BREAK=mono genseo_net_now) || exit 6
+    wall2=$(PY="$wrap" GENSEO_CLOCK_BREAK=both genseo_net_now) || exit 7
+    printf "%s\n%s\n%s\n%s\n%s\n%s\n" "$a" "$b" "$up" "$up2" "$wall" "$wall2"
+  ' _ "$HELPER" "$WORK/bin/py-clock-fallback" >"$WORK/unit.out" 2>"$WORK/unit.err"
+assert_rc 0 "clock samples exit 0"
+a=$(sed -n '1p' "$WORK/unit.out" | tr -cd '0-9')
+b=$(sed -n '2p' "$WORK/unit.out" | tr -cd '0-9')
+up=$(sed -n '3p' "$WORK/unit.out" | tr -cd '0-9')
+up2=$(sed -n '4p' "$WORK/unit.out" | tr -cd '0-9')
+wall=$(sed -n '5p' "$WORK/unit.out" | tr -cd '0-9')
+wall2=$(sed -n '6p' "$WORK/unit.out" | tr -cd '0-9')
+case "$a" in
+  ''|*[!0-9]*) bad "first production sample is not an integer" ; show ;;
+  *) ok "first production sample is an integer" ;;
+esac
+case "$b" in
+  ''|*[!0-9]*) bad "second production sample is not an integer" ; show ;;
+  *) ok "second production sample is an integer" ;;
+esac
+if [ -n "$a" ] && [ -n "$b" ] && [ "$a" -le "$b" ]; then
+  ok "production samples are non-decreasing ($a -> $b)"
+else
+  bad "production clock went backwards or was empty ($a -> $b)"
+  show
+fi
+if [ -n "$a" ] && [ -n "$b" ]; then
+  delta=$((b - a))
+  if [ "$delta" -ge 1 ] && [ "$delta" -le 30 ]; then
+    ok "production samples moved ${delta}s and can pass a 1s budget"
+  else
+    bad "production samples moved ${delta}s, want 1..30 ($a -> $b)"
+    show
+  fi
+  unix=$(date +%s)
+  gap=$((unix - a))
+  if [ "$gap" -lt 0 ]; then
+    gap=$((0 - gap))
+  fi
+  if [ "$gap" -gt 86400 ]; then
+    ok "production clock is not wall time"
+  else
+    bad "production clock is within a day of wall time ($a vs $unix)"
+    show
+  fi
+fi
+if [ -n "$up" ] && [ -n "$up2" ] && [ "$up2" -ge "$up" ] && [ $((up2 - up)) -ge 1 ]; then
+  ok "uptime fallback advances across processes ($up -> $up2)"
+else
+  bad "uptime fallback did not advance ($up -> $up2)"
+  show
+fi
+if [ -r /proc/uptime ]; then
+  boot=$(awk '{print int($1)}' /proc/uptime)
+  if [ -n "$up2" ] && [ -n "$boot" ]; then
+    gap=$((up2 - boot))
+    if [ "$gap" -lt 0 ]; then
+      gap=$((0 - gap))
+    fi
+  else
+    gap=999
+  fi
+  if [ "$gap" -le 5 ]; then
+    ok "mono-API failure falls back to /proc/uptime ($up2 vs $boot)"
+  else
+    bad "mono-API failure was not /proc/uptime ($up2 vs $boot)"
+    show
+  fi
+fi
+if [ -n "$wall" ] && [ -n "$wall2" ] && [ "$wall2" -ge "$wall" ] && [ $((wall2 - wall)) -ge 1 ]; then
+  ok "wall fallback advances across processes ($wall -> $wall2)"
+else
+  bad "wall fallback did not advance ($wall -> $wall2)"
+  show
+fi
+unix=$(date +%s)
+if [ -n "$wall2" ] && [ -n "$unix" ]; then
+  gap=$((wall2 - unix))
+  if [ "$gap" -lt 0 ]; then
+    gap=$((0 - gap))
+  fi
+else
+  gap=999
+fi
+if [ "$gap" -le 15 ]; then
+  ok "last fallback is wall time when no monotonic source is readable"
+else
+  bad "last fallback was not wall time ($wall2 vs $unix)"
+  show
+fi
+if awk '
+  /^[[:space:]]*#/ { next }
+  /time\.monotonic[[:space:]]*\(/ { found=1 }
+  END { exit found ? 0 : 1 }
+' "$HELPER"; then
+  bad "production clock still calls time.monotonic()"
+else
+  ok "production clock does not call time.monotonic()"
+fi
+grep -F -q 'CLOCK_MONOTONIC' "$HELPER" && ok "helper names CLOCK_MONOTONIC" || bad "helper does not name CLOCK_MONOTONIC"
+
+reset_dns 9999
+run_unit 20 \
+  GENSEO_NET_WAIT_TEST=1 \
+  GENSEO_NET_WAIT_MAX_SEC=3 \
+  GENSEO_NET_WAIT_BACKOFF_SEC=1 \
+  GENSEO_DNS_RESOLVE="$WORK/bin/dns-stub" \
+  GENSEO_DNS_STATE="$DNS_STATE" \
+  GENSEO_DNS_LOG="$DNS_LOG" \
+  PATH="/usr/bin:/bin"
+assert_rc 1 "production clock reaches a 3s budget while DNS stays down"
+has_out "network not ready — timeout" "budget exit logs a timeout"
+has_out "fail closed" "budget exit fail-closes"
+lacks_out "network ready" "budget exit is not ready"
+waits=$(grep -c -F ' — waiting ' "$WORK/unit.out" || true)
+if [ "${waits:-0}" -lt 20 ]; then
+  ok "budget exit is not the stall guard ($waits waits)"
+else
+  bad "stall guard was the only exit ($waits waits)"
+  show
+fi
 
 printf '\n%d passed, %d failed\n' "$PASS" "$FAIL"
 [ "$FAIL" = 0 ]

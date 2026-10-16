@@ -27,6 +27,17 @@
 # on-box tools; python is already required by both wrappers and is what the
 # Linux tests run. Each lookup is capped so a blackholed resolver cannot spend
 # the whole budget inside one call.
+#
+# Budget clock: time.clock_gettime(CLOCK_MONOTONIC) from each python3 process.
+# That clock is system-wide (seconds since boot on Linux and macOS), so the
+# samples are comparable. Apple Python 3.9 time.monotonic() is
+# mach_absolute_time() minus the interpreter start, so every new process
+# prints ~0, elapsed time never reaches this budget, and a DNS-down wait
+# exits only on the stall>500 guard (hours) while state/daily.lock is held.
+# If no monotonic API is available, the fallback is /proc/uptime (the same
+# Linux clock, still cross-process) and only then time.time(). Wall time is
+# not the primary clock: NTP can step it backward. The loop already treats a
+# backward step as no progress.
 
 if [ "${BASH_SOURCE[0]}" = "$0" ]; then
   printf '%s\n' "source scripts/genseo_wait_for_network.sh from a daily wrapper; it does not publish." >&2
@@ -119,7 +130,31 @@ genseo_net_now() {
     out=$("$GENSEO_NET_NOW_CMD") || return 1
   else
     py=$(genseo_net_py) || return 1
-    out=$("$py" -c 'import time; print(int(time.monotonic()))') || return 1
+    # One process per sample. Do not use time.monotonic(): on Apple Python
+    # 3.9 it is process-relative and each sample is ~0. Prefer a raw
+    # monotonic clock id (CLOCK_MONOTONIC, then the macOS raw clocks). Those
+    # stay on one timeline across processes. Fallback when that API is
+    # missing or raises: /proc/uptime (Linux CLOCK_MONOTONIC seconds), then
+    # time.time() so a sample still advances across processes.
+    out=$("$py" -c 'import time
+def n():
+    cg = getattr(time, "clock_gettime", None)
+    if cg is not None:
+        for name in ("CLOCK_MONOTONIC", "CLOCK_MONOTONIC_RAW", "CLOCK_UPTIME_RAW"):
+            clk = getattr(time, name, None)
+            if clk is None:
+                continue
+            try:
+                return int(cg(clk))
+            except OSError:
+                continue
+    try:
+        raw = open("/proc/uptime", "r").read().split()
+        return int(float(raw[0]))
+    except (OSError, ValueError, IndexError):
+        return int(time.time())
+print(n())
+') || return 1
   fi
   case "$out" in
     ''|*[!0-9]*) return 1 ;;
@@ -257,7 +292,9 @@ genseo_wait_for_network() {
       return 1
     }
     # A backoff of 0 must not busy-loop if the clock is stuck. A moving clock
-    # resets the stall count, so the 600s budget still applies.
+    # resets the stall count, so the 600s budget still applies. The clock has
+    # to move across processes. A per-process sample stays at 0 and this
+    # guard is the only exit, which holds the daily lock for hours.
     if [ "$now" -le "$prev" ]; then
       stall=$((stall + 1))
     else

@@ -81,6 +81,9 @@ one-way; the Mini's repo commits are unpushed), so the PUBLIC SITE is the lock:
    Before that first feed read, `scripts/genseo_wait_for_network.sh` waits until DNS resolves
    `wellnessnest.co` and `wellnessnest1.myshopify.com`. The bound is `GENSEO_NET_WAIT_MAX_SEC`
    (default 600, cap 600) with backoff from `GENSEO_NET_WAIT_BACKOFF_SEC` (default 5, cap 60).
+   The deadline is `time.clock_gettime(CLOCK_MONOTONIC)`, one clock shared by every `python3`
+   process. Apple Python 3.9 `time.monotonic()` starts again near 0 in each process, so a
+   DNS-down wait would miss this bound and hold `state/daily.lock` on the stuck-clock guard.
    Each wait is logged. If DNS is still down at the bound, the log says
    `network not ready — timeout` and the run exits 1 without reading the feed.
    `GENSEO_NET_WAIT_MAX_SEC=0` skips the wait. The live-feed retry above is unchanged.
