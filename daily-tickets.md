@@ -742,7 +742,7 @@ plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check th
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** shilajit + athletes checked 2026-10-09 against 108 live articles (blog listing + sitemap + Atom) and all 47 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1009-10 — creatine gummies for beginners** — `Creatine Gummies for Beginners: Your First 30 Days (US 2026)`
+- [DONE 2026-10-16 https://wellnessnest.co/blogs/news/creatine-gummies-for-beginners-30-days-in-the-us] **#CA1009-10 — creatine gummies for beginners** — `Creatine Gummies for Beginners: Your First 30 Days (US 2026)`
   - **Primary keyword:** `creatine gummies for beginners` · **Secondary:** how to start creatine gummies, creatine for beginners, first time taking creatine, creatine gummies first week
   - **Search intent:** first-time creatine buyer who wants a simple start plan
   - **Template:** LISTICLE · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-09 11:08 ICT)
