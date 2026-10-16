@@ -784,7 +784,7 @@ plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check th
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** creatine + athletes checked 2026-10-11 against 110 live articles (blog listing + sitemap + Atom) and all 57 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#MB1012-2 — vaginal probiotics for beginners** — `Vaginal Probiotics for Beginners: What to Expect (US 2026)`
+- [DONE 2026-10-16 https://wellnessnest.co/blogs/news/vaginal-probiotics-for-beginners-what-to-expect-in-the-us] **#MB1012-2 — vaginal probiotics for beginners** — `Vaginal Probiotics for Beginners: What to Expect (US 2026)`
   - **Primary keyword:** `vaginal probiotics for beginners` · **Secondary:** first time taking vaginal probiotics, how to start vaginal probiotics, what do vaginal probiotics do, vaginal probiotics first week
   - **Search intent:** first-time buyer who wants to know what vaginal probiotics do and what the first weeks are like
   - **Template:** STORY · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-11 18:49 ICT)
