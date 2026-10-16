@@ -347,6 +347,383 @@
    "fanout": ["is turkesterone safe for men over 60", "does turkesterone raise testosterone", "can older adults take ashwagandha daily", "what matters more than supplements after 60"],
    "evidence": "Ashwagandha and tongkat ali trials in older adults — fetch each before citing; Turkesterone Advanced panel from the live PDP.",
    "link": ["turkesterone-for-men-over-40-5-honest-checks-us-2026", "turkesterone-side-effects-4-ingredients-to-check-us-2026", "turkesterone-benefits-dosing-whats-real-us-2026"]
+  },
+  {
+   "id": "creatine-gummies-price",
+   "product": "fusiforce-creatine-gummies",
+   "primary": "creatine gummies price",
+   "title": "Creatine Gummies Price: Cost Per Bottle (US {year})",
+   "secondary": [
+    "how much do creatine gummies cost",
+    "creatine gummies cost per day",
+    "are creatine gummies expensive",
+    "creatine gummy price"
+   ],
+   "segment": "price",
+   "intent": "shopper comparing what a bottle of creatine gummies costs before choosing a format",
+   "template": "COMPARISON",
+   "priority": 1,
+   "angle": "Build a cost table from the live FusiForce PDP only: price, servings the PDP actually prints, and creatine per serving if the panel prints it. Do not invent a count or a gram amount the page does not show. A powder price goes in the table only from a page fetched the same day. Link the where-to-buy and dosage pages instead of restating them.",
+   "fanout": [
+    "how much does a bottle of creatine gummies cost",
+    "are gummies more expensive than powder",
+    "what changes the price per day",
+    "is a bigger bottle cheaper"
+   ],
+   "evidence": "Live FusiForce PDP price and serving facts, re-checked at write time. Any powder price only from a page fetched the same day. No estimated serving count.",
+   "link": [
+    "where-to-buy-creatine-gummies-5-label-checks-us-2026",
+    "creatine-gummies-dosage-how-many-a-day-us-2026",
+    "creatine-gummies-vs-powder-which-should-you-actually-take"
+   ]
+  },
+  {
+   "id": "nmn-price",
+   "product": "ageaura-pure-nmn-tmg-nad-complex",
+   "primary": "nmn price",
+   "title": "NMN Price: What a Bottle Costs in the US ({year})",
+   "secondary": [
+    "how much does nmn cost",
+    "nmn supplement price",
+    "is nmn expensive",
+    "nmn cost per bottle"
+   ],
+   "segment": "price",
+   "intent": "US shopper who wants the real bottle price of an NMN supplement after marketplace listings changed",
+   "template": "COMPARISON",
+   "priority": 1,
+   "angle": "Price the AgeAura Pure NMN + TMG NAD+ Complex from the live PDP and the servings line on its pack label. Do not invent a milligram amount the label file does not list. If the PDP prints a milligram, repeat it only after you fetch that page. Link the where-to-buy page for the FDA story instead of restating it.",
+   "fanout": [
+    "how much does a bottle of NMN cost",
+    "what does one serving cost",
+    "why do NMN prices differ",
+    "what should the label show before you pay"
+   ],
+   "evidence": "Live PDP price, fetched at write time. Serving facts only from the pack label in product_refs/ageaura-pure-nmn-tmg-nad-complex.label.json. No invented milligram.",
+   "link": [
+    "where-to-buy-nmn-in-the-us-fda-status-explained-2026",
+    "how-much-nmn-per-day-what-trials-used-us-2026",
+    "ageaura-nmn-tmg-ingredients-what-each-one-does-us"
+   ]
+  },
+  {
+   "id": "vaginal-probiotics-price",
+   "product": "florafresh-vaginal-probiotics-gummies",
+   "primary": "vaginal probiotics price",
+   "title": "Vaginal Probiotic Price: What a Month Costs ({year})",
+   "secondary": [
+    "how much do vaginal probiotics cost",
+    "vaginal probiotics cost per month",
+    "are vaginal probiotics expensive",
+    "florafresh price"
+   ],
+   "segment": "price",
+   "intent": "shopper comparing the monthly cost of vaginal probiotic gummies before buying",
+   "template": "COMPARISON",
+   "priority": 1,
+   "angle": "Do the monthly cost from the live PDP price only. Do not invent a bottle count or a day-supply the page does not print. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt, so not sugar-free. Link the where-to-buy page instead of restating its checks.",
+   "fanout": [
+    "how much do vaginal probiotics cost per month",
+    "are gummies priced like capsules",
+    "what makes one brand cost more",
+    "what the label should show for the price"
+   ],
+   "evidence": "Live PDP price, fetched at write time. Strain and CFU only from the Supplement Facts label (Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies), never the PDP description.",
+   "link": [
+    "where-to-buy-vaginal-probiotics-in-the-us-5-checks-2026",
+    "vaginal-probiotic-dosage-how-many-cfu-a-day-us-2026",
+    "florafresh-gummies-vs-capsules-5-format-facts-us-2026"
+   ]
+  },
+  {
+   "id": "turkesterone-price",
+   "product": "turkesterone-advanced-formula",
+   "primary": "turkesterone price",
+   "title": "Turkesterone Price: What a Bottle Costs (US {year})",
+   "secondary": [
+    "how much does turkesterone cost",
+    "turkesterone supplement price",
+    "is turkesterone expensive",
+    "turkesterone cost per bottle"
+   ],
+   "segment": "price",
+   "intent": "shopper checking whether a turkesterone bottle is worth the listed price",
+   "template": "LISTICLE",
+   "priority": 1,
+   "angle": "Give the live PDP price and what the shopper can verify on the label before paying. Do not state a milligram amount, a serving count, a capsule count, or a day-supply. The pack-label line on the ticket is the only label fact. Link the where-to-buy page instead of restating its checks.",
+   "fanout": [
+    "how much does turkesterone cost",
+    "why do prices vary so much",
+    "what should you check before you pay",
+    "is a cheaper bottle the same product"
+   ],
+   "evidence": "Live PDP price, fetched at write time. No milligram, serving count, or day-supply beyond product_refs/turkesterone-advanced-formula.label.json.",
+   "link": [
+    "where-to-buy-turkesterone-in-the-us-what-to-check-2026",
+    "turkesterone-benefits-dosing-whats-real-us-2026",
+    "turkesterone-side-effects-4-ingredients-to-check-us-2026"
+   ]
+  },
+  {
+   "id": "creatine-empty-stomach",
+   "product": "fusiforce-creatine-gummies",
+   "primary": "creatine gummies on an empty stomach",
+   "title": "Creatine Gummies on an Empty Stomach (US {year})",
+   "secondary": [
+    "creatine empty stomach",
+    "creatine without food",
+    "can you take creatine fasted",
+    "creatine gummies before breakfast"
+   ],
+   "segment": "fasting",
+   "intent": "person who trains fasted or skips breakfast and wants to know if creatine still makes sense without a meal",
+   "template": "EDITORIAL",
+   "priority": 1,
+   "angle": "Answer the fed-or-fasted question from fetched trials and reviews: what a meal changes, what it does not, and whether a gummy changes that. Do not restate the before-or-after-workout page or the gram dose. Stomach upset stays a link to the side-effects page. No medical claims.",
+   "fanout": [
+    "can you take creatine without food",
+    "does a meal change absorption",
+    "will gummies bother an empty stomach",
+    "what if you train before breakfast"
+   ],
+   "evidence": "Trials or reviews of creatine taken with and without carbohydrate or a meal — fetch each before citing. FusiForce directions from the live PDP only.",
+   "link": [
+    "best-time-to-take-creatine-before-or-after-us-2026",
+    "creatine-gummies-dosage-how-many-a-day-us-2026",
+    "creatine-gummies-side-effects-4-real-3-myths-us-2026"
+   ]
+  },
+  {
+   "id": "shilajit-empty-stomach",
+   "product": "shilasource-himalayan-shilajit-resin",
+   "primary": "shilajit on an empty stomach",
+   "title": "Shilajit on an Empty Stomach: Yes or No? ({year})",
+   "secondary": [
+    "shilajit empty stomach",
+    "shilajit without food",
+    "shilajit before breakfast",
+    "shilajit resin on an empty stomach"
+   ],
+   "segment": "fasting",
+   "intent": "new user who was told to take shilajit before eating and wants to know if that is required",
+   "template": "EDITORIAL",
+   "priority": 1,
+   "angle": "Separate tradition from trials. If you cannot fetch a human study that compared shilajit with food and without food, say that plainly. Give the practical resin routine by linking the how-to-take page, and the clock-time page for morning or night. Do not state a milligram amount or a serving count beyond the pack-label line this ticket prints.",
+   "fanout": [
+    "should you take shilajit before eating",
+    "can you take shilajit with a meal",
+    "does food change how you take resin",
+    "what if it upsets your stomach"
+   ],
+   "evidence": "Any human fed-versus-fasted shilajit study — fetch it or say you found none. Pack-label facts only from product_refs/shilasource-himalayan-shilajit-resin.label.json.",
+   "link": [
+    "how-to-take-shilajit-resin-dissolve-it-right-us-2026",
+    "how-much-shilajit-per-day-dosage-by-form-us-2026",
+    "shilajit-side-effects-7-signs-to-watch-for-us-2026"
+   ]
+  },
+  {
+   "id": "vaginal-probiotics-over-60",
+   "product": "florafresh-vaginal-probiotics-gummies",
+   "primary": "vaginal probiotics over 60",
+   "title": "Vaginal Probiotics Over 60: 5 Checks (US {year})",
+   "secondary": [
+    "vaginal probiotics for older women",
+    "probiotics after menopause",
+    "vaginal probiotics at 60",
+    "probiotics for postmenopausal women"
+   ],
+   "segment": "seniors",
+   "intent": "woman over 60, or someone buying for her, checking whether a vaginal probiotic gummy fits that age",
+   "template": "LISTICLE",
+   "priority": 1,
+   "angle": "Five checks for this age: what the vaginal microbiome does after menopause (fetched sources only), whether any oral-probiotic trial enrolled women over 60, medication questions for a clinician, the gummy routine, and when symptoms mean a clinician instead of a supplement. FloraFresh formula from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, which is not a strain those Lactobacillus trials tested (say so). No cure or treatment claims. Link the over-50 page instead of restating it.",
+   "fanout": [
+    "do vaginal probiotics change after menopause",
+    "were women over 60 in the trials",
+    "can you take them with other medication",
+    "when should you see a clinician instead"
+   ],
+   "evidence": "Reviews of the vaginal microbiome after menopause, and any oral probiotic trial that enrolled women over 60 — fetch before citing. FloraFresh strain and CFU from the Supplement Facts label, not the PDP description.",
+   "link": [
+    "vaginal-probiotics-which-strains-actually-work-us-2026",
+    "vaginal-probiotics-side-effects-normal-vs-stop-us-2026",
+    "florafresh-vs-generic-probiotics-4-strain-facts-us-2026"
+   ]
+  },
+  {
+   "id": "how-to-take-creatine-gummies",
+   "product": "fusiforce-creatine-gummies",
+   "primary": "how to take creatine gummies",
+   "title": "How to Take Creatine Gummies Each Day (US {year})",
+   "secondary": [
+    "how to use creatine gummies",
+    "creatine gummies directions",
+    "chew or swallow creatine gummies",
+    "creatine gummies with water"
+   ],
+   "segment": "how-to-take",
+   "intent": "first buyer who has the bottle and wants the physical daily routine, not another dose debate",
+   "template": "LISTICLE",
+   "priority": 2,
+   "angle": "The gummy routine the dosage page and the before-or-after page do not cover: chew them, water, the same time you will remember, rest days included, travel, and what the live label says to do. Link those two pages for the gram amount and the workout clock. Do not restate either one.",
+   "fanout": [
+    "do you chew creatine gummies",
+    "do you need water with them",
+    "what if you miss a day",
+    "can you take them on rest days"
+   ],
+   "evidence": "FusiForce directions from the live PDP. ISSN creatine position stand (Kreider et al. 2017) only for the daily-consistency point — fetch before citing.",
+   "link": [
+    "creatine-gummies-dosage-how-many-a-day-us-2026",
+    "best-time-to-take-creatine-before-or-after-us-2026",
+    "creatine-gummies-on-rest-days-keep-taking-them-us-2026"
+   ]
+  },
+  {
+   "id": "creatine-for-fertility",
+   "product": "fusiforce-creatine-gummies",
+   "primary": "creatine gummies for fertility",
+   "title": "Creatine Gummies for Fertility: What We Know ({year})",
+   "secondary": [
+    "creatine and sperm",
+    "creatine male fertility",
+    "creatine and pregnancy",
+    "does creatine affect fertility"
+   ],
+   "segment": "fertility",
+   "intent": "person trying to conceive who has seen creatine mentioned for sperm or pregnancy and wants the actual evidence",
+   "template": "STORY",
+   "priority": 2,
+   "angle": "Report only studies you fetch. Separate sperm-quality findings from pregnancy findings, and say when a study is small, short, or not in humans. Creatine is not a fertility treatment. Anyone pregnant or trying to conceive should talk to a clinician before starting. Link the side-effects page instead of restating it.",
+   "fanout": [
+    "does creatine affect sperm",
+    "can you take creatine while trying to conceive",
+    "is there pregnancy research",
+    "when should you ask a clinician"
+   ],
+   "evidence": "PubMed or DOI papers on creatine and sperm quality or pregnancy — fetch each paper and cite only what it measured. No unfetched numbers.",
+   "link": [
+    "creatine-gummies-side-effects-4-real-3-myths-us-2026",
+    "creatine-gummies-dosage-how-many-a-day-us-2026",
+    "creatine-for-women-over-40-what-changes-in-the-us"
+   ]
+  },
+  {
+   "id": "nmn-for-fertility",
+   "product": "ageaura-pure-nmn-tmg-nad-complex",
+   "primary": "nmn for fertility",
+   "title": "NMN for Fertility: What Human Studies Show ({year})",
+   "secondary": [
+    "nmn and fertility",
+    "nmn ovarian reserve",
+    "nmn and sperm",
+    "nmn while trying to conceive"
+   ],
+   "segment": "fertility",
+   "intent": "person trying to conceive who has seen NMN claimed for fertility and wants human evidence, not animal headlines",
+   "template": "EDITORIAL",
+   "priority": 2,
+   "angle": "Sort fetched papers into human and animal before you cite any number. If you cannot fetch a human fertility trial, say so and do not borrow an animal result as a human one. AgeAura Pure NMN + TMG NAD+ Complex is not a fertility drug. Do not invent a milligram amount. Link the dosage page instead of restating trial doses.",
+   "fanout": [
+    "is there human NMN fertility research",
+    "what did animal studies measure",
+    "can you take NMN while trying to conceive",
+    "what dose did any human study use"
+   ],
+   "evidence": "PubMed or DOI papers on NMN and fertility, ovarian reserve, or sperm — fetch each one. State human versus animal. No invented milligram.",
+   "link": [
+    "how-much-nmn-per-day-what-trials-used-us-2026",
+    "nmn-side-effects-6-checks-before-you-start-us-2026",
+    "nmn-for-women-what-the-all-female-trial-missed-us-2026"
+   ]
+  },
+  {
+   "id": "how-to-take-nmn",
+   "product": "ageaura-pure-nmn-tmg-nad-complex",
+   "primary": "how to take nmn",
+   "title": "How to Take NMN: A Simple Capsule Routine ({year})",
+   "secondary": [
+    "how to use nmn capsules",
+    "nmn capsule directions",
+    "swallow or dissolve nmn",
+    "nmn with water"
+   ],
+   "segment": "how-to-take",
+   "intent": "buyer who already has capsules and wants the daily routine, not another clock-time or dose article",
+   "template": "STORY",
+   "priority": 2,
+   "angle": "Walk through the capsule routine on the AgeAura Pure NMN + TMG NAD+ Complex label: swallow with water, follow the servings line on the pack label, and what to do if you miss one day. Do not invent a milligram amount. Link the morning-or-night page and the dosage page instead of restating them.",
+   "fanout": [
+    "do you swallow NMN capsules",
+    "do you take them with water",
+    "what if you miss a day",
+    "can you open the capsule"
+   ],
+   "evidence": "Pack-label directions in product_refs/ageaura-pure-nmn-tmg-nad-complex.label.json and the live PDP. No invented milligram.",
+   "link": [
+    "when-to-take-nmn-morning-or-night-us-2026",
+    "how-much-nmn-per-day-what-trials-used-us-2026",
+    "nmn-side-effects-6-checks-before-you-start-us-2026"
+   ]
+  },
+  {
+   "id": "vaginal-probiotics-for-fertility",
+   "product": "florafresh-vaginal-probiotics-gummies",
+   "primary": "vaginal probiotics for fertility",
+   "title": "Vaginal Probiotics for Fertility: The Limits ({year})",
+   "secondary": [
+    "probiotics while trying to conceive",
+    "vaginal probiotics and conception",
+    "probiotics and fertility",
+    "probiotics before pregnancy"
+   ],
+   "segment": "fertility",
+   "intent": "woman trying to conceive who has been told a vaginal probiotic might help and wants the limit of that claim",
+   "template": "EDITORIAL",
+   "priority": 2,
+   "angle": "This is not the BV page and not the yeast page. Answer whether oral probiotics have been studied around conception, from papers you fetch, and say what they did not measure. FloraFresh formula from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, which is not a strain those Lactobacillus trials tested (say so). Not a fertility treatment. No cure or treatment claims. Link the BV page and the strains page instead of restating them.",
+   "fanout": [
+    "can vaginal probiotics help conception",
+    "what did the studies measure",
+    "can you take them while trying to conceive",
+    "when should you see a clinician"
+   ],
+   "evidence": "Trials or reviews of probiotics and conception or vaginal flora in women trying to conceive — fetch before citing. FloraFresh strain and CFU from the Supplement Facts label, not the PDP description.",
+   "link": [
+    "vaginal-probiotics-which-strains-actually-work-us-2026",
+    "probiotics-for-bv-do-they-actually-work-us-2026",
+    "yeast-infection-vs-bv-how-to-tell-them-apart-us-2026"
+   ]
+  },
+  {
+   "id": "turkesterone-for-fertility",
+   "product": "turkesterone-advanced-formula",
+   "primary": "turkesterone for fertility",
+   "title": "Turkesterone for Fertility: What Is Known ({year})",
+   "secondary": [
+    "turkesterone and sperm",
+    "turkesterone male fertility",
+    "turkesterone while trying to conceive",
+    "does turkesterone affect fertility"
+   ],
+   "segment": "fertility",
+   "intent": "man trying to conceive who has seen turkesterone marketed for hormones and wants fertility evidence",
+   "template": "EDITORIAL",
+   "priority": 3,
+   "angle": "Search for human trials of turkesterone and sperm, conception, or fertility. If you cannot fetch one, say that is the state of the evidence. Do not turn a hormone claim from another page into a fertility result. Do not state a milligram amount, a serving count, a capsule count, or a day-supply. Not a fertility treatment. Link the dosing page instead of restating it.",
+   "fanout": [
+    "does turkesterone affect sperm",
+    "is there a fertility trial",
+    "can you take it while trying to conceive",
+    "when should you ask a clinician"
+   ],
+   "evidence": "PubMed or DOI search for turkesterone and fertility or sperm — fetch a paper or state that you found no human trial. No milligram amount.",
+   "link": [
+    "turkesterone-benefits-dosing-whats-real-us-2026",
+    "turkesterone-side-effects-4-ingredients-to-check-us-2026",
+    "turkesterone-for-women-3-trials-85-men-0-women-us-2026"
+   ]
   }
  ]
 }
