@@ -163,6 +163,13 @@ PY
 if [ -z "$SPEC" ] || [ ! -f "$SPEC" ]; then
   say "FAILED: no spec produced"; tag "FAILED $DAY no spec (see $RUNLOG)"; exit 1
 fi
+# No-cutout specs must not keep a pack_images whitelist claim (that claim is what
+# made validate_landing.py exit 1 on 2026-10-16). A cutout spec keeps the claim;
+# shots that failed the label gate are swapped for the real cutout before the gate
+# runs again. This does not contact Shopify.
+if [ -f "$G/scripts/landing_pack_claim.py" ]; then
+  $PY scripts/landing_pack_claim.py prepare "$SPEC" >> "$LOG" 2>&1 || say "WARN: pack-claim prepare failed - validating the spec as written"
+fi
 SLUG="$($PY -c 'import json,sys;print(json.load(open(sys.argv[1]))["slug"])' "$SPEC")"; OUT="landing_drafts/$SLUG"
 $PY scripts/validate_landing.py "$SPEC" >> "$LOG" 2>&1; V=$?
 $PY scripts/landing_render.py "$SPEC" >> "$LOG" 2>&1
@@ -174,6 +181,8 @@ d=json.load(open(sys.argv[1])); bad=[w for w,r in d["widths"].items() if r["over
 print("ok" if not bad and not cl else ("overflow@"+",".join(bad) if bad else "clipped@"+",".join(cl)))' "$OUT/qa.json" 2>/dev/null || echo "qa-error")"
 [ $Q != 0 ] && QOK="qa-error"
 for f in desktop mobile; do [ -f "$OUT/$f.png" ] && sips -s format jpeg -s formatOptions 70 "$OUT/$f.png" --out "$OUT/$f.jpg" >/dev/null 2>&1; done
+# The writer calls landing_publisher.py --draft (published:false) from the daily prompt.
+# This wrapper does not. It never passes --live or --install-template.
 # what Kevin will actually see: the real Shopify storefront render (not preview.html)
 RQ="skip"
 if [ -f "$OUT/shopify.json" ]; then

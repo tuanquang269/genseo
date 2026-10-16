@@ -143,6 +143,7 @@ Unpublished listicle prompts carry a standing `SCOPE_WAIVER` (`scripts/run_landi
 **Pack palette (Kevin 2026-10-09):** every landing page wears its hero product's packaging colors. The source of truth is
 `product_refs/<handle>.palette.json` (`scripts/packaging_palette.py`, `docs/PACKAGING_PALETTE_GUARD.md`); `scripts/landing_palette.py`
 applies it in the page body at render, never in the shared theme template. The palette gate + clipped-text check fail a draft that doesn't match.
+**Pack shots vs cutouts (2026-10-14 through 2026-10-16).** A daily premium spec used to require `pack_images` whenever `product_refs/<handle>.label.json` existed, and a non-empty `pack_images` list always ran the label gate. Turkesterone, Shockwave, Gold Resin, and FloraFresh have a label file and no `product_refs/<handle>-cutout.png`, so both choices failed: omit the list and the daily taste rule exits 1, or list a shot and the gate exits 1. `validate_landing.py` now asks for `pack_images` only when the cutout exists. Without a cutout, listing `pack_images` is an omit error and does not run OCR. The wrapper runs `scripts/landing_pack_claim.py prepare` before the gate. It does not call `landing_publisher.py`. The writer still creates the unpublished page with `--draft` after validation passes, and that lane still refuses `--live`.
 
 ## 1 · The daily loop
 

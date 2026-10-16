@@ -19,7 +19,7 @@ The CLI upscales the image 2x and checks `product_refs/<handle>.label.json`. The
 
 There is no flag that skips OCR and still exits 0. Unit tests pass `ocr_lines` into `evaluate()` so CI can prove those branches without Vision. That stub is not available on the CLI.
 
-`validate_landing.py` treats a premium spec as a whitelist claim when `pack_images` is non-empty or the spec says `label gate PASS`, `landing_label_gate`, or `PACK FACE WHITELIST`. A missing label file is a hard error. The gate is not invoked, and the spec does not pass.
+`validate_landing.py` treats a premium spec as a whitelist claim when `pack_images` is non-empty or the spec says `label gate PASS`, `landing_label_gate`, or `PACK FACE WHITELIST`. A missing label file is a hard error. The gate is not invoked, and the spec does not pass. A label file without `product_refs/<handle>-cutout.png` is not a generated-shot path: the spec must omit `pack_images` (the daily reminder does not ask for that list). Listing `pack_images` anyway is an omit error and does not run OCR.
 
 The mark still needs a human or vision zoom at 2x. OCR does not check the logo.
 
@@ -27,7 +27,7 @@ The mark still needs a human or vision zoom at 2x. OCR does not check the logo.
 
 Skip only when the image is not a whitelist pack shot: no `pack_images`, and the spec does not claim a label-gate pass. Scene images and a real PDP pack used because the product has no cutout are that case. Do not write `label gate PASS` for them.
 
-`scripts/run_landing_headless.sh` generates a whitelist pack shot only when both `product_refs/<handle>-cutout.png` and `product_refs/<handle>.label.json` exist. If either is missing, use the real PDP image and do not claim the gate passed.
+`scripts/run_landing_headless.sh` generates a whitelist pack shot only when both `product_refs/<handle>-cutout.png` and `product_refs/<handle>.label.json` exist. If either is missing, use the real PDP image and do not claim the gate passed. The daily wrapper (`scripts/landing_pack_claim.py prepare`) drops a no-cutout `pack_images` list before `validate_landing.py`, and replaces a cutout shot that failed the gate with a webp of the real cutout. The writer still creates the unpublished page with `landing_publisher.py --draft`. The wrapper does not call the publisher and does not pass `--live`.
 
 ## Label files and reads that were not promoted
 
