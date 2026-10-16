@@ -771,7 +771,7 @@ credential), the logged fact-check pass (`logs/claims/<slug>.md`; delete unconfi
 Blog 104008483131, publish `--live`. Images: no batch-wide override — runner rule D decides per host (the MacBook
 plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check the PDP while writing.
 
-- [ ] **#MB1012-1 — creatine gummies for runners** — `Creatine Gummies for Runners: What Trials Show (US 2026)`
+- [DONE 2026-10-16 https://wellnessnest.co/blogs/news/creatine-gummies-for-runners-what-trials-show-us-2026] **#MB1012-1 — creatine gummies for runners** — `Creatine Gummies for Runners: What Trials Show (US 2026)`
   - **Primary keyword:** `creatine gummies for runners` · **Secondary:** creatine for runners, creatine for endurance athletes, does creatine slow you down, creatine water weight runners
   - **Search intent:** runner worried creatine adds weight and slows them down
   - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-11 18:49 ICT)
