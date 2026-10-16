@@ -1,0 +1,9 @@
+Keller et al. trial was randomized, double-blind, placebo-controlled; 63 recreationally active men; 8 weeks | https://pmc.ncbi.nlm.nih.gov/articles/PMC6364418/ | fetched+confirmed Y
+Keller trial groups received placebo, 250 mg/day, or 500 mg/day PrimaVie shilajit | https://pmc.ncbi.nlm.nih.gov/articles/PMC6364418/ | fetched+confirmed Y
+Keller fatigue protocol used two sets of 50 maximal bilateral concentric leg extensions at 180°/s, separated by 2 minutes | https://pmc.ncbi.nlm.nih.gov/articles/PMC6364418/ | fetched+confirmed Y
+Keller reported post-fatigue MVIC decline of 9.1% at 500 mg/day versus 15.7% at 250 mg/day; no significant group difference for concentric peak-torque decline | https://pmc.ncbi.nlm.nih.gov/articles/PMC6364418/ | fetched+confirmed Y
+Keller found no overall group difference in serum hydroxyproline; marker was indirect and not proof of tendon recovery | https://pmc.ncbi.nlm.nih.gov/articles/PMC6364418/ | fetched+confirmed Y
+Keller sample was young, healthy recreationally active men; no structured resistance-training program | https://pmc.ncbi.nlm.nih.gov/articles/PMC6364418/ | fetched+confirmed Y
+ShilaSource PDP identifies one 30 g jar and says featured package states 75 servings; package label record reads 70% Fulvic Acid, Lab-Tested for Purity, 1.06oz (30g), 75 SERVINGS; no milligram amount read | https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin | fetched+confirmed Y
+ShilaSource PDP lists one-time price $59.99 and notes public evidence page does not verify every current Resin lot | https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin | fetched+confirmed Y
+Wellness Nest ShilaSource PDP is currently available and product JS lists price 5999 cents | https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin.js | fetched+confirmed Y
