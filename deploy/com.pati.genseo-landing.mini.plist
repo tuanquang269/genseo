@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<!-- GenSeo daily listicle landing DRAFT (1/day, never published). mini = primary.
-     install: cp deploy/com.pati.genseo-landing.mini.plist ~/Library/LaunchAgents/com.pati.genseo-landing.plist
-              launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.pati.genseo-landing.plist -->
+<!-- installed-by: mac_mini_failover_bootstrap
+     GenSeo daily listicle landing DRAFT (1/day, never published). mini = primary.
+     Install only with: bash scripts/mac_mini_failover_bootstrap.sh with the enable-daily flag
+     (docs/FAILOVER.md). Do not copy this file into LaunchAgents by hand.
+     A stale heartbeat does not install it. It does not publish. -->
 <plist version="1.0">
 <dict>
     <key>Label</key>

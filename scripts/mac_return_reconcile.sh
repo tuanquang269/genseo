@@ -22,12 +22,13 @@
 # checklist:    cp deploy/com.pati.genseo-landing.macbook.plist ~/Library/LaunchAgents/com.pati.genseo-landing.plist
 # checklist:    launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.pati.genseo-landing.plist
 # checklist:    Copy or bootstrap that plist only when the agent is not already loaded. This script does not.
-# checklist: 8. Start the Cursor private worker yourself: agent worker start --name MacBook-Pro
-# checklist:    LaunchAgent label: com.pati.cursor-agent-worker. This repo does not contain that plist. This script does not start the worker.
+# checklist:    Do not load the MacBook daily or landing agents while the Mini still has those labels bootstrapped. Unload the Mini first (docs/FAILOVER.md). Both loaded means two schedules.
+# checklist: 8. Start the Cursor private worker yourself: cursor-agent worker start --name MacBook-Pro
+# checklist:    Binary: ~/.local/bin/cursor-agent. The name agent collides with the Grok CLI. Mini template: deploy/com.pati.cursor-agent-worker.plist (installed only by scripts/mac_mini_failover_bootstrap.sh on the Mini). This script does not start the worker.
 # checklist: 9. Read-only verify on dry-run (against origin/main) and after --apply (against the work tree): scripts/genseo_model_map.json maps claude-opus-5-5 to PATI-Alpha-Plan-Review and claude-fable-5 to PATI-Fable-5. The landing daily lane stays draft-only and never passes --live. Do not start grokbot-genseo-daily.sh or run_landing_daily.sh from this reconcile. The next 07:30 / 14:47 and 08:15 / 16:15 slots run them. Starting them here would publish or open a Shopify draft.
 #
 # Does not: genseo_daily_lock_acquire, shopify_publisher, landing_publisher, launchctl,
-# agent worker start, git push, git reset, git checkout, git stash, git clean, rm -r.
+# cursor-agent worker start, git push, git reset, git checkout, git stash, git clean, rm -r.
 # --apply is git merge --ff-only origin/main when that fast-forward is allowed,
 # then scripts/install_mac_daily_wrapper.sh. It does not publish or start launchd.
 # Fetch and that merge set gc.auto=0 so auto-gc cannot prune a local dangling commit.
@@ -1158,7 +1159,9 @@ printf '%s\n' "wrapper_plist_installed: ~/Library/LaunchAgents/com.pati.genseo-d
 printf '%s\n' "wrapper_role: MacBook GENSEO_HOST_ROLE=primary GENSEO_TICKET_PREFIX=MB until Mini failover-release. Copy the plist and bootstrap; the wrapper installer does not."
 printf '%s\n' "landing_plist_repo: deploy/com.pati.genseo-landing.macbook.plist"
 printf '%s\n' "landing_script: scripts/run_landing_daily.sh"
-printf '%s\n' "worker: agent worker start --name MacBook-Pro"
+printf '%s\n' "worker: cursor-agent worker start --name MacBook-Pro"
+printf '%s\n' "worker_bin: ~/.local/bin/cursor-agent"
+printf '%s\n' "worker_note: do not start argv0 agent; that name collides with the Grok CLI"
 printf '%s\n' "launchagent: com.pati.cursor-agent-worker"
 printf '%s\n' "does_not: publish, Shopify, git push, git reset --hard, force-push, launchctl, worker start, landing --live"
 reconcile_print_checklist
