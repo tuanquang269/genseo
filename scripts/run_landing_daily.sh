@@ -30,10 +30,27 @@
 #      scripts/genseo_group_timeout.sh TERMs then KILLs the descendant tree (landing bash, Claude,
 #      and workers that called setsid) and that process group. The deadline is monotonic elapsed time.
 # Kill switch: touch state/landing-daily.disabled (or GENSEO_LANDING_DAILY_ENABLED=0).
+# Checkout: after the network wait succeeds, scripts/genseo_sync_main.sh runs
+# `git fetch origin main` and `git merge --ff-only origin/main` when HEAD is
+# main and the work tree is clean. A dirty checkout, or local commits that are
+# not on origin, is logged and this run continues. launchd executes this file,
+# so the fetch runs from a copy outside the repo: git must not rewrite the
+# script bash is reading. A fast-forward re-execs this file (same PID, so
+# state/landing-daily.lock stays held). The first time this ships, the Mac
+# needs `cd ~/genseo && git pull`. The plist already points at this path, so
+# that pull does not need a launchd reload.
 set -uo pipefail
 export PATH="$HOME/.local/bin:$HOME/.npm-global/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 for d in "$HOME"/.nvm/versions/node/*/bin; do [ -d "$d" ] && PATH="$d:$PATH"; done; export PATH
 G="$HOME/genseo"; PY=/usr/bin/python3; cd "$G" || exit 1
+if [ -f "$G/scripts/genseo_sync_main.sh" ]; then
+  # shellcheck source=genseo_sync_main.sh
+  . "$G/scripts/genseo_sync_main.sh" || {
+    printf '%s\n' "FATAL: could not load scripts/genseo_sync_main.sh" >&2
+    exit 1
+  }
+  genseo_exec_stable_copy run_landing_daily "$@"
+fi
 ROLE="${GENSEO_HOST_ROLE:-primary}"; DELAY="${GENSEO_LANDING_STANDBY_DELAY_MIN:-75}"
 YIELD="${GENSEO_LANDING_ARTICLE_YIELD_MIN:-30}"; POLL="${GENSEO_LANDING_POLL_SEC:-60}"
 LANDING_TIMEOUT="${GENSEO_LANDING_TIMEOUT_SEC:-5400}"
@@ -94,19 +111,44 @@ if [ ! -f "$G/scripts/genseo_wait_for_network.sh" ]; then
 fi
 # shellcheck source=genseo_wait_for_network.sh
 . "$G/scripts/genseo_wait_for_network.sh" || { say "FATAL: could not load network wait helper"; exit 1; }
-if ! mkdir "$LOCK" 2>/dev/null; then
-  # Older than 4h: the previous run died without releasing. An unreadable mtime
-  # is not old enough to steal (same outcome as a young lock).
-  lock_mtime="$(path_mtime "$LOCK" || true)"
-  if [ -n "$lock_mtime" ] && [ $(( $(date +%s) - lock_mtime )) -gt 14400 ]; then rmdir "$LOCK"; mkdir "$LOCK" || exit 1
-  else say "another landing run is active on this Mac — exit"; exit 0; fi
+# A re-exec after the fast-forward keeps this PID. The owner file sits beside
+# the lock directory so rmdir of the empty directory still works.
+lock_owned=0
+if declare -F genseo_landing_lock_is_ours >/dev/null 2>&1 && genseo_landing_lock_is_ours; then
+  lock_owned=1
 fi
-trap 'rmdir "$LOCK" 2>/dev/null' EXIT
+if [ "$lock_owned" != 1 ]; then
+  if ! mkdir "$LOCK" 2>/dev/null; then
+    # Older than 4h: the previous run died without releasing. An unreadable mtime
+    # is not old enough to steal (same outcome as a young lock).
+    lock_mtime="$(path_mtime "$LOCK" || true)"
+    if [ -n "$lock_mtime" ] && [ $(( $(date +%s) - lock_mtime )) -gt 14400 ]; then rmdir "$LOCK"; mkdir "$LOCK" || exit 1
+    else say "another landing run is active on this Mac — exit"; exit 0; fi
+  fi
+  printf '%s\n' "$$" > "${LOCK}.owner"
+fi
+if declare -F genseo_stable_copy_release >/dev/null 2>&1; then
+  trap 'rm -f "${LOCK}.owner"; rmdir "$LOCK" 2>/dev/null || true; genseo_stable_copy_release now || true' EXIT
+else
+  trap 'rm -f "${LOCK}.owner"; rmdir "$LOCK" 2>/dev/null || true' EXIT
+fi
 
 guard(){ $PY scripts/landing_guard.py >> "$LOG" 2>&1; }
 # First Shopify read is the guard below. A wake must not fail that read on DNS.
-if ! genseo_wait_for_network; then
-  exit 1
+# The fast-forward is after that wait and before the guard. A re-exec already
+# waited, and it already holds the lock.
+if [ "${GENSEO_NET_WAIT_DONE:-}" != 1 ]; then
+  if ! genseo_wait_for_network; then
+    exit 1
+  fi
+  export GENSEO_NET_WAIT_DONE=1
+fi
+if [ "${GENSEO_MAIN_SYNCED:-}" != 1 ]; then
+  if declare -F genseo_sync_origin_main >/dev/null 2>&1; then
+    genseo_sync_origin_main "$G/scripts/run_landing_daily.sh" "$@"
+  else
+    say "WARN: origin/main not updated — missing scripts/genseo_sync_main.sh — continuing on the current checkout"
+  fi
 fi
 guard; g=$?
 [ $g = 3 ] && { say "DONE: today's gsl- landing draft already exists — nothing to do"; exit 0; }

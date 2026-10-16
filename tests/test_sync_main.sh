@@ -1,0 +1,576 @@
+#!/bin/bash
+# Pre-run fast-forward of origin/main for the article and landing launchd wrappers.
+# Temp git repos only. No Shopify, no network, no launchd, no push.
+#   bash tests/test_sync_main.sh
+# Syntax target is bash 3.2 (macOS /bin/bash).
+set -uo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+HELPER="$ROOT/scripts/genseo_sync_main.sh"
+ARTICLE="$ROOT/deploy/grokbot-genseo-daily.sh"
+LANDING="$ROOT/scripts/run_landing_daily.sh"
+INSTALL="$ROOT/scripts/install_mac_daily_wrapper.sh"
+WORK="$(mktemp -d "${TMPDIR:-/tmp}/sync-main.XXXXXX")" || exit 1
+PASS=0
+FAIL=0
+RC=0
+START_STATUS="$(git -C "$ROOT" status --porcelain)"
+START_HEAD="$(git -C "$ROOT" rev-parse HEAD)"
+
+cleanup() {
+  rm -rf "$WORK"
+}
+trap cleanup EXIT
+
+ok() { PASS=$((PASS + 1)); printf '  ok   %s\n' "$*"; }
+bad() { FAIL=$((FAIL + 1)); printf '  FAIL %s\n' "$*"; }
+
+show_fail() {
+  if [ -f "$WORK/out" ]; then printf '    stdout: %s\n' "$(tr '\n' '|' <"$WORK/out")"; fi
+  if [ -f "$WORK/err" ]; then printf '    stderr: %s\n' "$(tr '\n' '|' <"$WORK/err")"; fi
+}
+
+assert_rc() {
+  if [ "$RC" = "$1" ]; then ok "$2"
+  else bad "$2 (rc $RC, want $1)"; show_fail; fi
+}
+
+has() {
+  if grep -F -q -- "$2" "$1"; then ok "$3"
+  else bad "$3"; show_fail; fi
+}
+
+lacks() {
+  if grep -F -q -- "$2" "$1"; then bad "$3"; show_fail
+  else ok "$3"; fi
+}
+
+git_cfg() {
+  git -C "$1" config user.email "sync-test@example.com"
+  git -C "$1" config user.name "sync-test"
+  git -C "$1" config commit.gpgsign false
+}
+
+init_repo() {
+  local name="$1"
+  BARE="$WORK/bare-$name"
+  REPO="$WORK/repo-$name"
+  rm -rf "$BARE" "$REPO"
+  git init --bare -b main "$BARE" >/dev/null 2>&1 || return 1
+  git init -b main "$REPO" >/dev/null 2>&1 || return 1
+  git_cfg "$REPO"
+  printf '%s\n' 'logs/' 'state/' >"$REPO/.gitignore"
+  printf '%s\n' 'v1' >"$REPO/README"
+  git -C "$REPO" add .gitignore README
+  git -C "$REPO" commit -m "v1" >/dev/null 2>&1 || return 1
+  git -C "$REPO" remote add origin "$BARE"
+  git -C "$REPO" push origin main >/dev/null 2>&1 || return 1
+}
+
+advance_origin() {
+  local name="$1"
+  local other="$WORK/other-$name"
+  rm -rf "$other"
+  git clone "$BARE" "$other" >/dev/null 2>&1 || return 1
+  git_cfg "$other"
+  printf '%s\n' 'from-origin' >"$other/FROM_ORIGIN"
+  git -C "$other" add FROM_ORIGIN
+  git -C "$other" commit -m "v2" >/dev/null 2>&1 || return 1
+  git -C "$other" push origin main >/dev/null 2>&1 || return 1
+}
+
+head_of() { git -C "$1" rev-parse HEAD; }
+bare_main() { git -C "$BARE" rev-parse main; }
+
+# Call the helper with $0 outside the checkout so a fast-forward is allowed.
+run_sync() {
+  : >"$WORK/out"
+  : >"$WORK/err"
+  env -i PATH="/usr/bin:/bin" GIT_TERMINAL_PROMPT=0 \
+    ${SYNC_ENV:-} \
+    bash -c '
+      set -uo pipefail
+      G=$1
+      . "$2"
+      genseo_sync_origin_main ""
+      printf "sync_rc:%s\n" "$?"
+    ' _ "$REPO" "$HELPER" >"$WORK/out" 2>"$WORK/err"
+  RC=$?
+}
+
+order_between() {
+  # order_between <file> <earlier-ere> <later-ere> <label>
+  local file=$1 early=$2 late=$3 label=$4
+  if awk -v early="$early" -v late="$late" '
+    $0 ~ early && !e { e=NR }
+    $0 ~ late && !l { l=NR }
+    END { exit !(e && l && e < l) }
+  ' "$file"; then
+    ok "$label"
+  else
+    bad "$label"
+  fi
+}
+
+echo "1. syntax, direct exec, fetch is ff-only, and the wrappers call it after DNS"
+bash -n "$HELPER" && ok "bash -n helper" || bad "bash -n helper"
+bash -n "$ARTICLE" && ok "bash -n article wrapper" || bad "bash -n article wrapper"
+bash -n "$LANDING" && ok "bash -n landing wrapper" || bad "bash -n landing wrapper"
+bash -n "$INSTALL" && ok "bash -n installer" || bad "bash -n installer"
+: >"$WORK/out"
+: >"$WORK/err"
+env -i PATH="/usr/bin:/bin" bash "$HELPER" >"$WORK/out" 2>"$WORK/err"
+RC=$?
+assert_rc 2 "direct exec refuses"
+lacks "$WORK/out" "fast-forwarded" "direct exec does not fast-forward"
+if awk '
+  /^[[:space:]]*#/ { next }
+  /git[[:space:]]+push/ { print NR": "$0; bad=1 }
+  /git[[:space:]]+reset/ { print NR": "$0; bad=1 }
+  /git[[:space:]]+rebase/ { print NR": "$0; bad=1 }
+  /git[[:space:]]+clean/ { print NR": "$0; bad=1 }
+  /git[[:space:]]+checkout/ { print NR": "$0; bad=1 }
+  /--hard/ { print NR": "$0; bad=1 }
+  /--force/ { print NR": "$0; bad=1 }
+  END { exit bad+0 }
+' "$HELPER"; then
+  ok "helper has no push, reset, rebase, clean, checkout, or force"
+else
+  bad "helper contains a forbidden git command"
+fi
+grep -F -q 'fetch origin main' "$HELPER" && ok "helper fetches origin main" || bad "helper missing fetch origin main"
+grep -F -q 'merge --ff-only origin/main' "$HELPER" && ok "helper merges ff-only" || bad "helper missing ff-only"
+order_between "$ARTICLE" 'genseo_exec_stable_copy grokbot-genseo-daily' 'genseo_wait_for_network;' "article copies itself aside before the network wait"
+order_between "$ARTICLE" 'genseo_daily_lock_acquire' 'genseo_wait_for_network;' "article still takes the lock before the network wait"
+order_between "$ARTICLE" 'genseo_wait_for_network;' 'genseo_sync_origin_main ' "article syncs after the network wait"
+order_between "$ARTICLE" 'genseo_sync_origin_main ' '\$\(live_count\)' "article syncs before the first live count"
+order_between "$LANDING" 'genseo_exec_stable_copy run_landing_daily' 'genseo_wait_for_network;' "landing copies itself aside before the network wait"
+order_between "$LANDING" 'mkdir "\$LOCK"' 'genseo_wait_for_network;' "landing still takes the lock before the network wait"
+order_between "$LANDING" 'genseo_wait_for_network;' 'genseo_sync_origin_main ' "landing syncs after the network wait"
+order_between "$LANDING" 'genseo_sync_origin_main ' '^guard; g=' "landing syncs before the first guard"
+grep -F -q 'GENSEO_LANDING_DAILY=1 GENSEO_LANDING_DRAFT=1' "$LANDING" && ok "landing stays draft-only" || bad "landing draft env changed"
+if awk '
+  /^[[:space:]]*#/ { next }
+  /--live/ { print NR": "$0; bad=1 }
+  END { exit bad+0 }
+' "$LANDING"; then
+  ok "landing wrapper gained no --live flag"
+else
+  bad "landing wrapper has a --live flag outside a comment"
+fi
+
+echo "2. fast-forward updates main, ignores logs/, and does not push or run hooks"
+if ! init_repo ff || ! advance_origin ff; then
+  bad "ff fixture"
+else
+  ok "ff fixture"
+  mkdir -p "$REPO/logs"
+  printf '%s\n' 'keep-log' >"$REPO/logs/noise"
+  cat >"$REPO/.git/hooks/post-merge" <<'EOF'
+#!/bin/bash
+printf '%s\n' ran >"$(git rev-parse --show-toplevel)/HOOK_RAN"
+EOF
+  chmod 755 "$REPO/.git/hooks/post-merge"
+  before=$(head_of "$REPO")
+  bare_before=$(bare_main)
+  git -C "$REPO" config --unset user.email || true
+  git -C "$REPO" config --unset user.name || true
+  run_sync
+  assert_rc 0 "fast-forward exits 0"
+  has "$WORK/out" "sync_rc:0" "fast-forward function returns 0"
+  has "$WORK/out" "origin/main: git fetch origin main" "fast-forward logs the fetch"
+  has "$WORK/out" "origin/main: git merge --ff-only origin/main" "fast-forward logs the merge"
+  has "$WORK/out" "origin/main: fast-forwarded" "fast-forward logs the result"
+  [ "$(head_of "$REPO")" = "$(git -C "$REPO" rev-parse origin/main)" ] && ok "HEAD matches origin/main" || bad "HEAD is not origin/main"
+  [ "$(head_of "$REPO")" != "$before" ] && ok "HEAD moved" || bad "HEAD did not move"
+  [ -f "$REPO/FROM_ORIGIN" ] && ok "origin file is in the work tree" || bad "origin file missing"
+  [ "$(cat "$REPO/logs/noise")" = "keep-log" ] && ok "ignored log survived" || bad "ignored log changed"
+  [ ! -e "$REPO/HOOK_RAN" ] && ok "post-merge hook did not run" || bad "post-merge hook ran"
+  [ "$(bare_main)" = "$bare_before" ] && ok "fast-forward did not push" || bad "fast-forward pushed"
+fi
+
+echo "3. uncommitted changes, local commits, and the wrong branch stay put"
+if ! init_repo dirty || ! advance_origin dirty; then
+  bad "dirty fixture"
+else
+  ok "dirty fixture"
+  printf '%s\n' 'local-edit' >"$REPO/README"
+  before=$(head_of "$REPO")
+  run_sync
+  assert_rc 0 "dirty exits 0"
+  has "$WORK/out" "uncommitted changes" "dirty warns"
+  has "$WORK/out" "continuing on the current checkout" "dirty continues"
+  [ "$(head_of "$REPO")" = "$before" ] && ok "dirty HEAD unchanged" || bad "dirty HEAD moved"
+  [ "$(cat "$REPO/README")" = "local-edit" ] && ok "dirty edit kept" || bad "dirty edit lost"
+  [ ! -e "$REPO/FROM_ORIGIN" ] && ok "dirty checkout did not take the origin file" || bad "dirty checkout took the origin file"
+  lacks "$WORK/out" "fast-forwarded" "dirty did not fast-forward"
+fi
+
+if ! init_repo untracked || ! advance_origin untracked; then
+  bad "untracked fixture"
+else
+  ok "untracked fixture"
+  printf '%s\n' 'scratch' >"$REPO/scratch.txt"
+  before=$(head_of "$REPO")
+  run_sync
+  assert_rc 0 "untracked exits 0"
+  has "$WORK/out" "uncommitted changes" "untracked warns"
+  [ "$(head_of "$REPO")" = "$before" ] && ok "untracked HEAD unchanged" || bad "untracked HEAD moved"
+  [ "$(cat "$REPO/scratch.txt")" = "scratch" ] && ok "untracked file kept" || bad "untracked file lost"
+  [ ! -e "$REPO/FROM_ORIGIN" ] && ok "untracked checkout did not take the origin file" || bad "untracked checkout took the origin file"
+fi
+
+if ! init_repo ahead; then
+  bad "ahead fixture"
+else
+  ok "ahead fixture"
+  printf '%s\n' 'only-local' >"$REPO/LOCAL_ONLY"
+  git_cfg "$REPO"
+  git -C "$REPO" add LOCAL_ONLY
+  git -C "$REPO" commit -m "local only" >/dev/null 2>&1 || { bad "ahead commit"; }
+  local_sha=$(head_of "$REPO")
+  bare_before=$(bare_main)
+  run_sync
+  assert_rc 0 "ahead exits 0"
+  has "$WORK/out" "local commits are not on origin/main" "ahead warns"
+  [ "$(head_of "$REPO")" = "$local_sha" ] && ok "ahead commit kept" || bad "ahead commit moved"
+  [ -f "$REPO/LOCAL_ONLY" ] && ok "ahead file kept" || bad "ahead file lost"
+  [ "$(bare_main)" = "$bare_before" ] && ok "ahead commit was not pushed" || bad "ahead commit was pushed"
+  lacks "$WORK/out" "fast-forwarded" "ahead did not fast-forward"
+fi
+
+if ! init_repo diverge || ! advance_origin diverge; then
+  bad "diverge fixture"
+else
+  ok "diverge fixture"
+  printf '%s\n' 'only-local' >"$REPO/LOCAL_ONLY"
+  git_cfg "$REPO"
+  git -C "$REPO" add LOCAL_ONLY
+  git -C "$REPO" commit -m "local only" >/dev/null 2>&1 || { bad "diverge commit"; }
+  local_sha=$(head_of "$REPO")
+  run_sync
+  assert_rc 0 "diverged exits 0"
+  has "$WORK/out" "local commits are not on origin/main" "diverged warns"
+  [ "$(head_of "$REPO")" = "$local_sha" ] && ok "diverged local commit kept" || bad "diverged local commit moved"
+  [ -f "$REPO/LOCAL_ONLY" ] && ok "diverged local file kept" || bad "diverged local file lost"
+  [ ! -e "$REPO/FROM_ORIGIN" ] && ok "diverged checkout did not take the origin file" || bad "diverged checkout took the origin file"
+fi
+
+if ! init_repo side || ! advance_origin side; then
+  bad "side fixture"
+else
+  ok "side fixture"
+  git -C "$REPO" checkout -b side >/dev/null 2>&1 || { bad "side branch"; }
+  before=$(head_of "$REPO")
+  run_sync
+  assert_rc 0 "side branch exits 0"
+  has "$WORK/out" "HEAD is side, not main" "side branch warns"
+  [ "$(git -C "$REPO" symbolic-ref --short HEAD)" = "side" ] && ok "stayed on side" || bad "left side"
+  [ "$(head_of "$REPO")" = "$before" ] && ok "side HEAD unchanged" || bad "side HEAD moved"
+  [ ! -e "$REPO/FROM_ORIGIN" ] && ok "side branch did not take the origin file" || bad "side branch took the origin file"
+fi
+
+if ! init_repo detach || ! advance_origin detach; then
+  bad "detach fixture"
+else
+  ok "detach fixture"
+  git -C "$REPO" checkout --detach >/dev/null 2>&1 || { bad "detach"; }
+  before=$(head_of "$REPO")
+  run_sync
+  assert_rc 0 "detached exits 0"
+  has "$WORK/out" "not main" "detached warns"
+  [ "$(head_of "$REPO")" = "$before" ] && ok "detached HEAD unchanged" || bad "detached HEAD moved"
+fi
+
+echo "4. a failed fetch and a non-checkout continue; GIT_DIR cannot retarget the repo"
+if ! init_repo fetchfail; then
+  bad "fetch fixture"
+else
+  ok "fetch fixture"
+  before=$(head_of "$REPO")
+  git -C "$REPO" remote set-url origin "$WORK/no-such-remote"
+  run_sync
+  assert_rc 0 "fetch failure exits 0"
+  has "$WORK/out" "fetch failed" "fetch failure warns"
+  has "$WORK/out" "continuing on the current checkout" "fetch failure continues"
+  [ "$(head_of "$REPO")" = "$before" ] && ok "fetch failure left HEAD" || bad "fetch failure moved HEAD"
+  lacks "$WORK/out" "fast-forwarded" "fetch failure did not fast-forward"
+fi
+
+if ! init_repo notgit; then
+  bad "notgit fixture"
+else
+  ok "notgit fixture"
+  plain="$WORK/plain-notgit"
+  rm -rf "$plain"
+  mkdir -p "$plain"
+  printf '%s\n' 'plain' >"$plain/README"
+  REPO="$plain"
+  run_sync
+  assert_rc 0 "non-checkout exits 0"
+  has "$WORK/out" "not a git work tree" "non-checkout warns"
+  [ "$(cat "$plain/README")" = "plain" ] && ok "non-checkout file kept" || bad "non-checkout file changed"
+fi
+
+if ! init_repo gitdir || ! advance_origin gitdir; then
+  bad "gitdir fixture"
+else
+  ok "gitdir fixture"
+  DECOY="$WORK/decoy-gitdir"
+  rm -rf "$DECOY"
+  git init -b main "$DECOY" >/dev/null 2>&1 || { bad "decoy init"; }
+  git_cfg "$DECOY"
+  printf '%s\n' 'decoy' >"$DECOY/README"
+  git -C "$DECOY" add README
+  git -C "$DECOY" commit -m decoy >/dev/null 2>&1 || { bad "decoy commit"; }
+  decoy_head=$(head_of "$DECOY")
+  before=$(head_of "$REPO")
+  : >"$WORK/out"
+  : >"$WORK/err"
+  env -i PATH="/usr/bin:/bin" GIT_TERMINAL_PROMPT=0 \
+    GIT_DIR="$DECOY/.git" GIT_WORK_TREE="$DECOY" \
+    bash -c '
+      set -uo pipefail
+      G=$1
+      . "$2"
+      genseo_sync_origin_main ""
+      printf "sync_rc:%s\n" "$?"
+    ' _ "$REPO" "$HELPER" >"$WORK/out" 2>"$WORK/err"
+  RC=$?
+  assert_rc 0 "GIT_DIR fast-forward exits 0"
+  [ "$(head_of "$REPO")" = "$(git -C "$REPO" rev-parse origin/main)" ] && ok "GIT_DIR updated the checkout" || bad "GIT_DIR did not update the checkout"
+  [ "$(head_of "$REPO")" != "$before" ] && ok "GIT_DIR checkout HEAD moved" || bad "GIT_DIR checkout HEAD stayed"
+  [ "$(head_of "$DECOY")" = "$decoy_head" ] && ok "GIT_DIR decoy was not modified" || bad "GIT_DIR decoy changed"
+fi
+
+echo "5. rewriting the launch file while the copy runs does not abort the script"
+home5="$WORK/home-stable"
+rm -rf "$home5"
+mkdir -p "$home5/genseo/scripts"
+cp "$HELPER" "$home5/genseo/scripts/genseo_sync_main.sh"
+cat >"$WORK/entry.sh" <<'EOF'
+#!/bin/bash
+set -uo pipefail
+G="$HOME/genseo"
+. "$G/scripts/genseo_sync_main.sh"
+genseo_exec_stable_copy grokbot-genseo-daily "$@"
+trap 'genseo_stable_copy_release now' EXIT
+printf '%s\n' 'echo ontAsk' >"$GENSEO_LAUNCH_SOURCE"
+echo STABLE_OK
+echo "STABLE_SCRIPT:$GENSEO_STABLE_SCRIPT"
+EOF
+: >"$WORK/out"
+: >"$WORK/err"
+env -i HOME="$home5" PATH="/usr/bin:/bin" bash "$WORK/entry.sh" >"$WORK/out" 2>"$WORK/err"
+RC=$?
+assert_rc 0 "stable copy exits 0"
+has "$WORK/out" "STABLE_OK" "stable copy finished after the launch file changed"
+lacks "$WORK/out" "ontAsk" "stdout is not the rewritten launch file"
+lacks "$WORK/err" "ontAsk" "stderr is not the rewritten launch file"
+grep -F -q 'echo ontAsk' "$WORK/entry.sh" && ok "launch file was rewritten" || bad "launch file was not rewritten"
+stable_path=$(sed -n 's/^STABLE_SCRIPT://p' "$WORK/out")
+if [ -n "$stable_path" ] && [ ! -e "$stable_path" ]; then
+  ok "stable copy removed on exit"
+else
+  bad "stable copy left behind ($stable_path)"
+fi
+
+echo "6. a fast-forward re-execs the repo script and adopts the lock"
+if ! init_repo reexec; then
+  bad "reexec fixture"
+else
+  ok "reexec fixture"
+  mkdir -p "$REPO/scripts" "$REPO/deploy"
+  cp "$HELPER" "$REPO/scripts/genseo_sync_main.sh"
+  cat >"$REPO/deploy/grokbot-genseo-daily.sh" <<'EOF'
+#!/bin/bash
+set -uo pipefail
+G="$HOME/genseo"
+. "$G/scripts/genseo_sync_main.sh"
+genseo_exec_stable_copy grokbot-genseo-daily "$@"
+LOCK="$G/state/daily.lock"
+mkdir -p "$LOCK"
+printf '%s\n' "$$" >"$LOCK/pid"
+export GENSEO_NET_WAIT_DONE=1
+genseo_sync_origin_main "$G/deploy/grokbot-genseo-daily.sh" "$@"
+echo OLD
+EOF
+  git_cfg "$REPO"
+  git -C "$REPO" add scripts deploy
+  git -C "$REPO" commit -m "v1 wrapper" >/dev/null 2>&1 || { bad "reexec v1 commit"; }
+  git -C "$REPO" push origin main >/dev/null 2>&1 || { bad "reexec v1 push"; }
+  other="$WORK/other-reexec"
+  rm -rf "$other"
+  git clone "$BARE" "$other" >/dev/null 2>&1 || { bad "reexec clone"; }
+  git_cfg "$other"
+  cat >"$other/deploy/grokbot-genseo-daily.sh" <<'EOF'
+#!/bin/bash
+set -uo pipefail
+G="$HOME/genseo"
+. "$G/scripts/genseo_sync_main.sh"
+genseo_exec_stable_copy grokbot-genseo-daily "$@"
+LOCK="$G/state/daily.lock"
+if [ "${GENSEO_MAIN_SYNCED:-}" = 1 ] && genseo_daily_lock_is_ours; then
+  echo NEW
+  exit 0
+fi
+echo V2_DID_NOT_ADOPT
+exit 1
+EOF
+  printf '%s\n' 'from-origin' >"$other/FROM_ORIGIN"
+  git -C "$other" add deploy/grokbot-genseo-daily.sh FROM_ORIGIN
+  git -C "$other" commit -m "v2 wrapper" >/dev/null 2>&1 || { bad "reexec v2 commit"; }
+  git -C "$other" push origin main >/dev/null 2>&1 || { bad "reexec v2 push"; }
+  bare_before=$(bare_main)
+  home6="$(dirname "$REPO")"
+  # The clone has to be named genseo under HOME. init_repo used repo-reexec.
+  link_home="$WORK/home-reexec"
+  rm -rf "$link_home"
+  mkdir -p "$link_home"
+  ln -s "$REPO" "$link_home/genseo"
+  : >"$WORK/out"
+  : >"$WORK/err"
+  env -i HOME="$link_home" PATH="/usr/bin:/bin" GIT_TERMINAL_PROMPT=0 \
+    bash "$REPO/deploy/grokbot-genseo-daily.sh" >"$WORK/out" 2>"$WORK/err"
+  RC=$?
+  assert_rc 0 "re-exec exits 0"
+  has "$WORK/out" "NEW" "re-exec ran the updated script"
+  lacks "$WORK/out" "OLD" "re-exec did not continue the old script"
+  lacks "$WORK/out" "V2_DID_NOT_ADOPT" "re-exec adopted the lock"
+  has "$WORK/out" "re-exec " "re-exec was logged"
+  [ -f "$REPO/FROM_ORIGIN" ] && ok "re-exec fast-forward brought the origin file" || bad "re-exec missed the origin file"
+  [ "$(bare_main)" = "$bare_before" ] && ok "re-exec did not push" || bad "re-exec pushed"
+  [ "$(head_of "$REPO")" = "$(git -C "$REPO" rev-parse origin/main)" ] && ok "re-exec HEAD matches origin/main" || bad "re-exec HEAD drifted"
+fi
+
+echo "7. a stale launcher re-execs the repo script when main is already current"
+if ! init_repo stale; then
+  bad "stale fixture"
+else
+  ok "stale fixture"
+  mkdir -p "$REPO/scripts" "$REPO/deploy" "$WORK/bin"
+  cp "$HELPER" "$REPO/scripts/genseo_sync_main.sh"
+  cat >"$REPO/deploy/grokbot-genseo-daily.sh" <<'EOF'
+#!/bin/bash
+set -uo pipefail
+G="$HOME/genseo"
+. "$G/scripts/genseo_sync_main.sh"
+genseo_exec_stable_copy grokbot-genseo-daily "$@"
+LOCK="$G/state/daily.lock"
+if [ "${GENSEO_MAIN_SYNCED:-}" = 1 ] && genseo_daily_lock_is_ours; then
+  echo CANONICAL
+  exit 0
+fi
+echo CANONICAL_MISSED
+exit 1
+EOF
+  git_cfg "$REPO"
+  git -C "$REPO" add scripts deploy
+  git -C "$REPO" commit -m "canonical" >/dev/null 2>&1 || { bad "stale commit"; }
+  git -C "$REPO" push origin main >/dev/null 2>&1 || { bad "stale push"; }
+  cat >"$WORK/bin/grokbot-genseo-daily.sh" <<'EOF'
+#!/bin/bash
+set -uo pipefail
+G="$HOME/genseo"
+. "$G/scripts/genseo_sync_main.sh"
+genseo_exec_stable_copy grokbot-genseo-daily "$@"
+LOCK="$G/state/daily.lock"
+mkdir -p "$LOCK"
+printf '%s\n' "$$" >"$LOCK/pid"
+export GENSEO_NET_WAIT_DONE=1
+genseo_sync_origin_main "$G/deploy/grokbot-genseo-daily.sh" "$@"
+echo LAUNCHER
+EOF
+  link_home="$WORK/home-stale"
+  rm -rf "$link_home"
+  mkdir -p "$link_home"
+  ln -s "$REPO" "$link_home/genseo"
+  before=$(head_of "$REPO")
+  : >"$WORK/out"
+  : >"$WORK/err"
+  env -i HOME="$link_home" PATH="/usr/bin:/bin" GIT_TERMINAL_PROMPT=0 \
+    bash "$WORK/bin/grokbot-genseo-daily.sh" >"$WORK/out" 2>"$WORK/err"
+  RC=$?
+  assert_rc 0 "stale launcher exits 0"
+  has "$WORK/out" "CANONICAL" "stale launcher re-execs the repo script"
+  lacks "$WORK/out" "LAUNCHER" "stale launcher does not keep running its own body"
+  has "$WORK/out" "already up to date" "stale launcher was already on origin/main"
+  [ "$(head_of "$REPO")" = "$before" ] && ok "stale launcher did not move HEAD" || bad "stale launcher moved HEAD"
+fi
+
+echo "8. reading a script inside the checkout does not fast-forward that file"
+if ! init_repo inside || ! advance_origin inside; then
+  bad "inside fixture"
+else
+  ok "inside fixture"
+  mkdir -p "$REPO/scripts"
+  cp "$HELPER" "$REPO/scripts/genseo_sync_main.sh"
+  cat >"$REPO/inside.sh" <<'EOF'
+#!/bin/bash
+set -uo pipefail
+G=$(cd "$(dirname "$0")" && pwd)
+. "$G/scripts/genseo_sync_main.sh"
+genseo_sync_origin_main ""
+echo INSIDE_DONE
+EOF
+  git_cfg "$REPO"
+  git -C "$REPO" add scripts/genseo_sync_main.sh inside.sh
+  git -C "$REPO" commit -m "inside script" >/dev/null 2>&1 || { bad "inside commit"; }
+  before=$(head_of "$REPO")
+  : >"$WORK/out"
+  : >"$WORK/err"
+  env -i PATH="/usr/bin:/bin" GIT_TERMINAL_PROMPT=0 \
+    bash "$REPO/inside.sh" >"$WORK/out" 2>"$WORK/err"
+  RC=$?
+  assert_rc 0 "inside-checkout exits 0"
+  has "$WORK/out" "reading a script inside the checkout" "inside-checkout refuses"
+  has "$WORK/out" "INSIDE_DONE" "inside-checkout still finishes"
+  [ "$(head_of "$REPO")" = "$before" ] && ok "inside-checkout HEAD unchanged" || bad "inside-checkout HEAD moved"
+  [ ! -e "$REPO/FROM_ORIGIN" ] && ok "inside-checkout did not take the origin file" || bad "inside-checkout took the origin file"
+fi
+
+echo "9. the article wrapper warns and still finishes when the helper is absent"
+sandbox="$WORK/home-wrap/genseo"
+mkdir -p "$sandbox/scripts" "$sandbox/state" "$sandbox/logs/daily" "$WORK/fakebin"
+cp "$ROOT/scripts/genseo_daily_lock.sh" "$sandbox/scripts/genseo_daily_lock.sh"
+cp "$ROOT/scripts/genseo_group_timeout.sh" "$sandbox/scripts/genseo_group_timeout.sh"
+cp "$ROOT/scripts/genseo_wait_for_network.sh" "$sandbox/scripts/genseo_wait_for_network.sh"
+cat >"$sandbox/scripts/genseo_published_today.py" <<'PY'
+import sys
+if "--json" in sys.argv:
+    print('{"entries":[]}')
+    raise SystemExit(0)
+print("5")
+PY
+cat >"$WORK/fakebin/git" <<'EOF'
+#!/bin/bash
+printf '%s\n' "$*" >>"${GIT_CALLS:?}"
+exit 99
+EOF
+chmod 755 "$WORK/fakebin/git"
+: >"$WORK/git-calls"
+: >"$WORK/out"
+: >"$WORK/err"
+env -i HOME="$WORK/home-wrap" PATH="$WORK/fakebin:/usr/bin:/bin" \
+  GIT_CALLS="$WORK/git-calls" \
+  GENSEO_DAILY_TARGET=5 \
+  GENSEO_MAX_RUNS=1 \
+  GENSEO_NO_DELAY=1 \
+  GENSEO_NET_WAIT_MAX_SEC=0 \
+  GENSEO_LIVE_FEED_RETRIES=0 \
+  bash "$ARTICLE" >"$WORK/out" 2>"$WORK/err"
+RC=$?
+assert_rc 0 "article wrapper without the helper exits 0"
+has "$WORK/out" "missing scripts/genseo_sync_main.sh" "article wrapper warns that the helper is missing"
+has "$WORK/out" "DONE:" "article wrapper still reaches the done path"
+[ ! -s "$WORK/git-calls" ] && ok "article wrapper did not run git" || bad "article wrapper ran git"
+[ ! -e "$sandbox/state/daily.lock" ] && ok "article lock released" || bad "article lock still held"
+
+echo "10. the workspace checkout was not fetched or edited by this test"
+END_STATUS="$(git -C "$ROOT" status --porcelain)"
+END_HEAD="$(git -C "$ROOT" rev-parse HEAD)"
+[ "$END_HEAD" = "$START_HEAD" ] && ok "workspace HEAD unchanged" || bad "workspace HEAD changed"
+[ "$END_STATUS" = "$START_STATUS" ] && ok "workspace status unchanged" || bad "workspace status changed"
+
+printf '\n%d passed, %d failed\n' "$PASS" "$FAIL"
+[ "$FAIL" = 0 ]
