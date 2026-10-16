@@ -128,7 +128,7 @@ L. ShilaSource Himalayan Shilajit Resin pack label is product_refs/shilasource-h
 T. Turkesterone Advanced Formula pack label is product_refs/turkesterone-advanced-formula.label.json. Repeat only that file'\''s required and optional lines. No milligram amount and no Supplement Facts panel were read into that file. Do not add one. The capsule badge is the separate lines 60 and Capsules. Do not state a milligram amount, a serving count, a different capsule count, or a day-supply. python3 scripts/turkesterone_rules.py --brief prints the line. Bare turkesterone (the ingredient) is not this SKU. Premium Himalayan Shilajit Gummies, Shilajit Shockwave, Pure Shilajit Gold Resin, and ShilaSource resin are separate products and are not covered by this rule.
 F. Never run Bash commands in the background (no run_in_background, no trailing &): this is a one-shot -p run and it ENDS when you stop talking, killing background image jobs (2026-10-06 10:47 a run exited mid-images). Run image generations in the foreground, one or several per command.
 E. NEVER modify an existing live post: no [REFRESH EXISTING], no shopify_publisher.py update on an article you did not create in this run. If STEP 0/0.5 says refresh or duplicate, mark the ticket SKIPPED and move to the next one.
-D. If the ticket batch header says "ALL images NO-FACE" (MacBook failover lane, or env GENSEO_NO_FACE='"${GENSEO_NO_FACE:-0}"' = 1): that OVERRIDES the HERO / PERSONA ROTATION / FACE ANGLE rules above for this run — do NOT run persona_picker.py at all, never pass --persona-ref, make the hero a NO-FACE real-pack-in-a-real-scene image (--product-ref + --qc, no --ugc) and all 3 inline images no-face (--ugc --qc). Log "persona: none (failover no-face)" in the tracker/report.
+D. If the ticket batch header says "ALL images NO-FACE" (MacBook failover lane, or the env value GENSEO_NO_FACE is exactly 1; this run: '"${GENSEO_NO_FACE:-0}"'): that OVERRIDES the HERO / PERSONA ROTATION / FACE ANGLE rules above for this run — do NOT run persona_picker.py at all, never pass --persona-ref, make the hero a NO-FACE real-pack-in-a-real-scene image (--product-ref + --qc, no --ugc) and all 3 inline images no-face (--ugc --qc). Log "persona: none (failover no-face)" in the tracker/report.
 
 SCOPE_WAIVER (Kevin, standing approval for the daily blog article):
 - This run writes and publishes one blog article from daily-tickets.md. Kevin already approved that package on 2026-08-09 (auto publish visible). Do not ask a human to proceed. Do not stop on a scope gate.
@@ -142,8 +142,14 @@ SCOPE_WAIVER (Kevin, standing approval for the daily blog article):
 # 2026-10-16: the writer read the August "queue is EMPTY" note (the file is
 # longer than the 500-line read cap) and exited 0 while the wrapper still
 # counted open "- [ ]" tickets. Name the grep hit in the prompt.
+# Rule D above splices GENSEO_NO_FACE as "this run: N". Do not write
+# GENSEO_NO_FACE=$N = 1 — that quote break rendered as "GENSEO_NO_FACE=1 = 1".
 TICKET_FILE="$HOME/genseo/daily-tickets.md"
+# Same grep as deploy/grokbot-genseo-daily.sh. A CRLF ticket file still matches
+# (the pattern is not anchored at end of line); drop the trailing CR so the
+# pointer is one clean line.
 FIRST_OPEN="$(grep -m1 -E '^(- \[ \]|## \[ \])' "$TICKET_FILE" 2>/dev/null || true)"
+FIRST_OPEN="${FIRST_OPEN%$'\r'}"
 OPEN_N="$(grep -cE '^(- \[ \]|## \[ \])' "$TICKET_FILE" 2>/dev/null || true)"
 case "$OPEN_N" in
   ''|*[!0-9]*) OPEN_N=0 ;;
