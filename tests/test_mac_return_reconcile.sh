@@ -124,6 +124,16 @@ else
   bad "script contains a forbidden command"
 fi
 grep -F -q 'git merge --ff-only origin/main' "$SCRIPT" && ok "apply is ff-only" || bad "missing ff-only"
+if awk '
+  /^[[:space:]]*#/ {next}
+  /^[[:space:]]*printf / {next}
+  /(bash|python3?)[[:space:]].*(shopify_publisher\.py|landing_publisher\.py|run_landing_daily\.sh|grokbot-genseo-daily\.sh)/ {print NR": "$0; bad=1}
+  END {exit bad+0}
+' "$SCRIPT"; then
+  ok "no publisher, daily-job, or --live invocation"
+else
+  bad "script invokes a publisher, daily job, or --live"
+fi
 grep -F -q 'e1b8519' "$SCRIPT" && ok "historical sha e1b8519 is named" || bad "missing e1b8519"
 grep -F -q '289803e' "$SCRIPT" && ok "historical sha 289803e is named" || bad "missing 289803e"
 n=$(grep -c 'gc.auto=0' "$SCRIPT" || true)
@@ -142,6 +152,9 @@ bash "$SCRIPT" --help >"$WORK/out" 2>"$WORK/err"
 RC=$?
 assert_rc 0 "help exit 0"
 has "$WORK/out" "usage:" "help prints usage"
+has "$WORK/out" "install_mac_daily_wrapper.sh" "help names the wrapper reinstall"
+has "$WORK/out" "Does not publish" "help says apply does not publish"
+has "$WORK/out" "never --live" "help names the draft-only verify"
 bash "$SCRIPT" --nope >"$WORK/out" 2>"$WORK/err"
 RC=$?
 assert_rc 2 "unknown argument exit 2"
@@ -195,6 +208,10 @@ has "$WORK/out" "worker: agent worker start --name MacBook-Pro" "worker reminder
 has "$WORK/out" "launchagent: com.pati.cursor-agent-worker" "worker launchagent"
 has "$WORK/out" "checklist: 1. cd ~/genseo && bash scripts/mac_return_reconcile.sh" "checklist printed"
 has "$WORK/out" "apply: not requested" "dry-run does not apply"
+has "$WORK/out" "catchup_cmd: git merge --ff-only origin/main" "dry-run names the ff-only catch-up"
+has "$WORK/out" "catchup: would fast-forward on --apply" "behind checkout would fast-forward"
+has "$WORK/out" "wrapper_install: skipped missing-source" "fixture has no wrapper to copy"
+has "$WORK/out" "verify: skipped-not-checkout" "fixture skips writer-map verify"
 has "$WORK/out" "result: ok" "result ok"
 lacks "$WORK/out" "rm -rf" "report has no rm -rf"
 if grep -F 'git push --force' "$WORK/out" | grep -v -e 'Do not' -e 'do not' | grep -q .; then
@@ -471,6 +488,175 @@ assert_rc 0 "apply with GIT_DIR set still exits 0"
 has "$WORK/out" "apply: fast-forward" "ff happened in GENSEO_HOME"
 [ "$(head_of "$REPO")" = "$(git -C "$REPO" rev-parse origin/main)" ] && ok "GENSEO_HOME fast-forwarded" || bad "GENSEO_HOME was not fast-forwarded"
 [ "$(head_of "$DECOY")" = "$DECOY_HEAD" ] && ok "decoy repo was not modified" || bad "decoy repo changed"
+
+echo "15. --apply fast-forwards origin/main, reinstalls the wrapper, and verifies the model map"
+ORIG_HOME="${HOME:-}"
+init_repo catchup
+mkdir -p "$REPO/deploy" "$REPO/scripts"
+cp "$ROOT/deploy/grokbot-genseo-daily.sh" "$REPO/deploy/grokbot-genseo-daily.sh"
+cp "$ROOT/deploy/com.pati.genseo-daily.macbook.plist" "$REPO/deploy/com.pati.genseo-daily.macbook.plist"
+cp "$ROOT/scripts/genseo_daily_lock.sh" "$REPO/scripts/genseo_daily_lock.sh"
+cp "$ROOT/scripts/genseo_group_timeout.sh" "$REPO/scripts/genseo_group_timeout.sh"
+cp "$ROOT/scripts/genseo_model_map.json" "$REPO/scripts/genseo_model_map.json"
+cp "$ROOT/scripts/run_landing_daily.sh" "$REPO/scripts/run_landing_daily.sh"
+cp "$ROOT/scripts/landing_publisher.py" "$REPO/scripts/landing_publisher.py"
+cp "$ROOT/scripts/run_landing_headless.sh" "$REPO/scripts/run_landing_headless.sh"
+git -C "$REPO" add deploy scripts
+git -C "$REPO" commit -m "pipeline files" >/dev/null 2>&1 || exit 1
+git -C "$REPO" push origin main >/dev/null 2>&1 || exit 1
+advance_origin catchup
+CATCH_HOME="$WORK/home-catchup"
+rm -rf "$CATCH_HOME"
+mkdir -p "$CATCH_HOME"
+export HOME="$CATCH_HOME"
+export GENSEO_INSTALL_WRAPPER_TEST=1
+BEFORE="$(head_of "$REPO")"
+BARE_BEFORE="$(bare_main)"
+run_rec
+assert_rc 0 "pipeline dry-run exit 0"
+has "$WORK/out" "catchup: would fast-forward on --apply" "pipeline dry-run would fast-forward"
+has "$WORK/out" "wrapper_install: planned" "dry-run plans the wrapper copy"
+has "$WORK/out" "wrapper_install_detail: dry-run: yes" "installer dry-run writes nothing"
+has "$WORK/out" "wrapper_install_detail: launchd: not started" "dry-run does not start launchd"
+has "$WORK/out" "verify_scope: origin/main" "dry-run verifies origin/main"
+has "$WORK/out" "verify_model_map: ok" "origin model map is ok"
+has "$WORK/out" "verify_landing_draft_only: ok" "origin landing lane is draft-only"
+has "$WORK/out" "verify_wrapper_feed_retry: ok" "origin wrapper has the live-feed retry"
+has "$WORK/out" "verify_wrapper_role_default: primary" "origin wrapper defaults to primary"
+has "$WORK/out" "verify_repo_plist_role: ok" "repo plist is primary MB"
+has "$WORK/out" "verify: ok" "dry-run verify ok"
+has "$WORK/out" "result: ok" "pipeline dry-run result ok"
+lacks "$WORK/out" "wrapper_install: copied" "dry-run does not report a copy"
+[ "$(head_of "$REPO")" = "$BEFORE" ] && ok "pipeline dry-run left HEAD" || bad "pipeline dry-run moved HEAD"
+[ "$(bare_main)" = "$BARE_BEFORE" ] && ok "pipeline dry-run did not push" || bad "pipeline dry-run pushed"
+[ ! -e "$CATCH_HOME/bin/grokbot-genseo-daily.sh" ] && ok "dry-run did not write ~/bin" || bad "dry-run wrote ~/bin"
+run_rec --apply
+assert_rc 0 "pipeline apply exit 0"
+has "$WORK/out" "catchup_cmd: git merge --ff-only origin/main" "apply names ff-only"
+has "$WORK/out" "apply: fast-forward" "pipeline apply fast-forwarded"
+has "$WORK/out" "wrapper_install: copied" "apply copied the wrapper"
+has "$WORK/out" "wrapper_dest_match: yes" "copied wrapper matches the checkout"
+has "$WORK/out" "wrapper_install_detail: launchd: not started" "apply does not start launchd"
+has "$WORK/out" "verify_scope: worktree" "apply verifies the work tree"
+has "$WORK/out" "verify_model_map: ok" "work tree model map is ok"
+has "$WORK/out" "verify_landing_draft_only: ok" "work tree landing lane is draft-only"
+has "$WORK/out" "verify: ok" "apply verify ok"
+has "$WORK/out" "result: ok" "pipeline apply result ok"
+lacks "$WORK/out" "shopify_publisher.py" "apply output does not name the article publisher"
+[ "$(head_of "$REPO")" = "$(git -C "$REPO" rev-parse origin/main)" ] && ok "pipeline HEAD matches origin/main" || bad "pipeline HEAD is not origin/main"
+[ "$(bare_main)" = "$BARE_BEFORE" ] && ok "pipeline apply did not push" || bad "pipeline apply pushed"
+cmp -s "$REPO/deploy/grokbot-genseo-daily.sh" "$CATCH_HOME/bin/grokbot-genseo-daily.sh" && ok "installed wrapper bytes match deploy/" || bad "installed wrapper differs"
+grep -F -q 'GENSEO_LIVE_FEED_RETRIES' "$CATCH_HOME/bin/grokbot-genseo-daily.sh" && ok "installed wrapper has the feed retry" || bad "installed wrapper lacks the feed retry"
+grep -F -q 'GENSEO_HOST_ROLE:-primary' "$CATCH_HOME/bin/grokbot-genseo-daily.sh" && ok "installed wrapper defaults to primary" || bad "installed wrapper role default drifted"
+[ -x "$CATCH_HOME/bin/grokbot-genseo-daily.sh" ] && ok "installed wrapper is executable" || bad "installed wrapper is not executable"
+
+echo "15b. a landing --live flag on origin fails verify and does not publish"
+init_repo badland
+mkdir -p "$REPO/deploy" "$REPO/scripts"
+cp "$ROOT/deploy/grokbot-genseo-daily.sh" "$REPO/deploy/grokbot-genseo-daily.sh"
+cp "$ROOT/scripts/genseo_daily_lock.sh" "$REPO/scripts/genseo_daily_lock.sh"
+cp "$ROOT/scripts/genseo_group_timeout.sh" "$REPO/scripts/genseo_group_timeout.sh"
+cp "$ROOT/scripts/genseo_model_map.json" "$REPO/scripts/genseo_model_map.json"
+cp "$ROOT/scripts/run_landing_daily.sh" "$REPO/scripts/run_landing_daily.sh"
+cp "$ROOT/scripts/landing_publisher.py" "$REPO/scripts/landing_publisher.py"
+cp "$ROOT/scripts/run_landing_headless.sh" "$REPO/scripts/run_landing_headless.sh"
+git -C "$REPO" add deploy scripts
+git -C "$REPO" commit -m "pipeline files" >/dev/null 2>&1 || exit 1
+git -C "$REPO" push origin main >/dev/null 2>&1 || exit 1
+POISON="$WORK/other-badland"
+rm -rf "$POISON"
+git clone "$BARE" "$POISON" >/dev/null 2>&1 || exit 1
+git_cfg "$POISON"
+printf '\n%s\n' 'python3 scripts/landing_publisher.py spec.json --live' >> "$POISON/scripts/run_landing_daily.sh"
+git -C "$POISON" add scripts/run_landing_daily.sh
+git -C "$POISON" commit -m "bad live flag" >/dev/null 2>&1 || exit 1
+git -C "$POISON" push origin main >/dev/null 2>&1 || exit 1
+BAD_HOME="$WORK/home-badland"
+rm -rf "$BAD_HOME"
+mkdir -p "$BAD_HOME"
+export HOME="$BAD_HOME"
+BEFORE="$(head_of "$REPO")"
+run_rec
+assert_rc 0 "bad landing dry-run still exits 0"
+has "$WORK/out" "verify_landing_draft_only: live-flag" "dry-run sees the origin --live flag"
+has "$WORK/out" "verify: fail" "dry-run verify fails"
+has "$WORK/out" "result: verify-failed" "dry-run result names the verify failure"
+[ "$(head_of "$REPO")" = "$BEFORE" ] && ok "bad landing dry-run left HEAD" || bad "bad landing dry-run moved HEAD"
+[ ! -e "$BAD_HOME/bin/grokbot-genseo-daily.sh" ] && ok "bad landing dry-run wrote no wrapper" || bad "bad landing dry-run wrote a wrapper"
+run_rec --apply
+assert_rc 5 "bad landing apply exit 5"
+has "$WORK/out" "apply: fast-forward" "bad landing still fast-forwards"
+has "$WORK/out" "verify_landing_draft_only: live-flag" "apply sees the --live flag"
+has "$WORK/out" "verify: fail" "apply verify fails"
+has "$WORK/out" "result: catch-up-incomplete" "apply result is catch-up-incomplete"
+has "$WORK/out" "wrapper_install_detail: launchd: not started" "failed verify still does not start launchd"
+lacks "$WORK/out" "shopify_publisher.py" "failed verify does not name the article publisher"
+grep -F -q 'python3 scripts/landing_publisher.py spec.json --live' "$REPO/scripts/run_landing_daily.sh" && ok "fast-forward brought the bad line in for the operator to see" || bad "fast-forward did not update the landing script"
+
+echo "15c. an empty writer model map fails verify after the fast-forward"
+init_repo badmap
+mkdir -p "$REPO/deploy" "$REPO/scripts"
+cp "$ROOT/deploy/grokbot-genseo-daily.sh" "$REPO/deploy/grokbot-genseo-daily.sh"
+cp "$ROOT/scripts/genseo_daily_lock.sh" "$REPO/scripts/genseo_daily_lock.sh"
+cp "$ROOT/scripts/genseo_group_timeout.sh" "$REPO/scripts/genseo_group_timeout.sh"
+cp "$ROOT/scripts/genseo_model_map.json" "$REPO/scripts/genseo_model_map.json"
+cp "$ROOT/scripts/run_landing_daily.sh" "$REPO/scripts/run_landing_daily.sh"
+cp "$ROOT/scripts/landing_publisher.py" "$REPO/scripts/landing_publisher.py"
+cp "$ROOT/scripts/run_landing_headless.sh" "$REPO/scripts/run_landing_headless.sh"
+git -C "$REPO" add deploy scripts
+git -C "$REPO" commit -m "pipeline files" >/dev/null 2>&1 || exit 1
+git -C "$REPO" push origin main >/dev/null 2>&1 || exit 1
+POISON="$WORK/other-badmap"
+rm -rf "$POISON"
+git clone "$BARE" "$POISON" >/dev/null 2>&1 || exit 1
+git_cfg "$POISON"
+printf '%s\n' '{"modelOverrides":{}}' > "$POISON/scripts/genseo_model_map.json"
+git -C "$POISON" add scripts/genseo_model_map.json
+git -C "$POISON" commit -m "empty model map" >/dev/null 2>&1 || exit 1
+git -C "$POISON" push origin main >/dev/null 2>&1 || exit 1
+export HOME="$WORK/home-badmap"
+mkdir -p "$HOME"
+run_rec --apply
+assert_rc 5 "empty model map apply exit 5"
+has "$WORK/out" "apply: fast-forward" "empty map still fast-forwards"
+has "$WORK/out" "verify_model_map: invalid" "empty model map is invalid"
+has "$WORK/out" "result: catch-up-incomplete" "empty map result is catch-up-incomplete"
+
+echo "15d. local-only commits still block the fast-forward and the wrapper copy"
+init_repo localblock
+mkdir -p "$REPO/deploy" "$REPO/scripts"
+cp "$ROOT/deploy/grokbot-genseo-daily.sh" "$REPO/deploy/grokbot-genseo-daily.sh"
+cp "$ROOT/scripts/genseo_daily_lock.sh" "$REPO/scripts/genseo_daily_lock.sh"
+cp "$ROOT/scripts/genseo_group_timeout.sh" "$REPO/scripts/genseo_group_timeout.sh"
+cp "$ROOT/scripts/genseo_model_map.json" "$REPO/scripts/genseo_model_map.json"
+cp "$ROOT/scripts/run_landing_daily.sh" "$REPO/scripts/run_landing_daily.sh"
+cp "$ROOT/scripts/landing_publisher.py" "$REPO/scripts/landing_publisher.py"
+cp "$ROOT/scripts/run_landing_headless.sh" "$REPO/scripts/run_landing_headless.sh"
+git -C "$REPO" add deploy scripts
+git -C "$REPO" commit -m "pipeline files" >/dev/null 2>&1 || exit 1
+git -C "$REPO" push origin main >/dev/null 2>&1 || exit 1
+advance_origin localblock
+printf '%s\n' 'local only' >"$REPO/LOCAL"
+git -C "$REPO" add LOCAL
+git -C "$REPO" commit -m "local only" >/dev/null 2>&1 || exit 1
+LOCAL_SHA="$(head_of "$REPO")"
+BARE_BEFORE="$(bare_main)"
+export HOME="$WORK/home-localblock"
+mkdir -p "$HOME"
+run_rec --apply
+assert_rc 3 "local-only apply still refused"
+has "$WORK/out" "apply_block: local-commits-not-on-origin" "local-only block"
+has "$WORK/out" "apply_next: do not run git push --force" "local-only still refuses force-push"
+has "$WORK/out" "wrapper_install: skipped not-fast-forwarded" "wrapper is not copied when fast-forward is refused"
+[ "$(head_of "$REPO")" = "$LOCAL_SHA" ] && ok "local-only commit kept" || bad "local-only commit moved"
+[ "$(bare_main)" = "$BARE_BEFORE" ] && ok "local-only commit was not pushed" || bad "local-only commit was pushed"
+[ ! -e "$HOME/bin/grokbot-genseo-daily.sh" ] && ok "refused apply wrote no wrapper" || bad "refused apply wrote a wrapper"
+if [ -n "$ORIG_HOME" ]; then
+  export HOME="$ORIG_HOME"
+else
+  unset HOME
+fi
+unset GENSEO_INSTALL_WRAPPER_TEST
 
 echo "11. the workspace checkout was not fetched or edited by this test"
 END_STATUS="$(git -C "$ROOT" status --porcelain)"
