@@ -715,7 +715,7 @@ plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check th
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** nmn + seniors checked 2026-10-09 against 108 live articles (blog listing + sitemap + Atom) and all 47 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1009-8 — where to buy vaginal probiotics** — `Where to Buy Vaginal Probiotics in the US: 5 Checks (2026)`
+- [DONE 2026-10-15 https://wellnessnest.co/blogs/news/where-to-buy-vaginal-probiotics-in-the-us-5-checks-2026] **#CA1009-8 — where to buy vaginal probiotics** — `Where to Buy Vaginal Probiotics in the US: 5 Checks (2026)`
   - **Primary keyword:** `where to buy vaginal probiotics` · **Secondary:** best place to buy vaginal probiotics, vaginal probiotics at a pharmacy, vaginal probiotics online, vaginal probiotics price
   - **Search intent:** buyer deciding between pharmacy, marketplace and brand-direct vaginal probiotics
   - **Template:** LISTICLE · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-09 11:08 ICT)
