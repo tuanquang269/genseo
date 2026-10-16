@@ -69,6 +69,15 @@ fi
 if [ "$missing" = 1 ]; then
   printf '%s\n' "note: this wrapper does not require the daily.lock helpers. A wrapper that references them is not copied while either file is missing."
 fi
+if grep -F -q 'genseo_wait_for_network.sh' "$SRC"; then
+  net_rel="scripts/genseo_wait_for_network.sh"
+  if [ -f "$GENSEO_HOME/$net_rel" ]; then
+    printf 'helper %s: present\n' "$net_rel"
+  else
+    printf 'helper %s: MISSING\n' "$net_rel"
+    die "wrapper requires $net_rel — git pull in $GENSEO_HOME, then re-run. Nothing was copied."
+  fi
+fi
 
 on_mac=0
 if [ "$(uname -s)" = "Darwin" ] && [ "${GENSEO_INSTALL_WRAPPER_PRETEND_OS:-}" != "Linux" ]; then

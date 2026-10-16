@@ -8,19 +8,25 @@
 # launchd com.pati.genseo-landing: 08:15 + 16:15 catch-up, on WHICHEVER Mac is online (deploy/com.pati.genseo-landing.*.plist).
 #
 # One-page-per-day guarantee across the two Macs (they share no writable state -> Shopify is the shared state):
-#   1. landing_guard.py: a page with a 'gsl-' handle created today (ICT) already exists -> stand down   [both Macs]
+#   1. DNS first: scripts/genseo_wait_for_network.sh, after the lock and before the first
+#      landing_guard.py read. wellnessnest.co and the Shopify admin host must resolve.
+#      Bound is GENSEO_NET_WAIT_MAX_SEC (default 600) with backoff. Each wait is logged.
+#      If DNS never comes up, the log says "network not ready — timeout" and this file
+#      exits 1 before the guard. That is not "Shopify unreadable". GENSEO_NET_WAIT_MAX_SEC=0 skips it.
+#   2. landing_guard.py: a page with a 'gsl-' handle created today (ICT) already exists -> stand down   [both Macs]
 #      (Shopify unreadable -> fail closed, build nothing)
-#   2. GENSEO_HOST_ROLE=standby (MacBook) waits GENSEO_LANDING_STANDBY_DELAY_MIN (default 75) first, so a healthy
-#      Mini (primary) finishes its draft and rule 1 makes this Mac stand down; then re-checks the guard
-#   3. landing_publisher.py (GENSEO_LANDING_DAILY=1) re-runs landing_guard.py right before it POSTs a NEW page
-#   4. local mkdir lock: the 16:15 catch-up never overlaps a still-running 08:15 run on the same Mac
-#   5. this Mac's article batch (state/daily.lock) only gets a short courtesy yield, never the whole day: wait while it
+#   3. GENSEO_HOST_ROLE=standby (MacBook) waits GENSEO_LANDING_STANDBY_DELAY_MIN (default 75) after that
+#      first guard, so a healthy Mini (primary) finishes its draft and the guard makes this Mac stand down;
+#      then re-checks the guard
+#   4. landing_publisher.py (GENSEO_LANDING_DAILY=1) re-runs landing_guard.py right before it POSTs a NEW page
+#   5. local mkdir lock: the 16:15 catch-up never overlaps a still-running 08:15 run on the same Mac
+#   6. this Mac's article batch (state/daily.lock) only gets a short courtesy yield, never the whole day: wait while it
 #      runs, at most GENSEO_LANDING_ARTICLE_YIELD_MIN (default 30) wall-clock minutes, re-checking every
-#      GENSEO_LANDING_POLL_SEC (default 60) s, then re-check rule 1 and build ALONGSIDE it. Overlap is safe: this lane
+#      GENSEO_LANDING_POLL_SEC (default 60) s, then re-check the guard and build ALONGSIDE it. Overlap is safe: this lane
 #      only ever writes a Shopify PAGE, never a blog article (article publishing stays serialized by daily.lock and the
 #      article lane's own guards); pages never reach /blogs/news.atom (the article live-count + peer guards); and
 #      ima2 serve admits parallel jobs (it renders 3 at a time on its one OAuth session by itself).
-#   6. the listicle writer is its own session for 90 min (GENSEO_LANDING_TIMEOUT_SEC, default 5400).
+#   7. the listicle writer is its own session for 90 min (GENSEO_LANDING_TIMEOUT_SEC, default 5400).
 #      scripts/genseo_group_timeout.sh TERMs then KILLs the descendant tree (landing bash, Claude,
 #      and workers that called setsid) and that process group. The deadline is monotonic elapsed time.
 # Kill switch: touch state/landing-daily.disabled (or GENSEO_LANDING_DAILY_ENABLED=0).
@@ -82,6 +88,12 @@ if [ ! -f "$G/scripts/genseo_group_timeout.sh" ]; then
   say "FATAL: missing scripts/genseo_group_timeout.sh — git pull ~/genseo"
   exit 1
 fi
+if [ ! -f "$G/scripts/genseo_wait_for_network.sh" ]; then
+  say "FATAL: missing scripts/genseo_wait_for_network.sh — git pull ~/genseo"
+  exit 1
+fi
+# shellcheck source=genseo_wait_for_network.sh
+. "$G/scripts/genseo_wait_for_network.sh" || { say "FATAL: could not load network wait helper"; exit 1; }
 if ! mkdir "$LOCK" 2>/dev/null; then
   # Older than 4h: the previous run died without releasing. An unreadable mtime
   # is not old enough to steal (same outcome as a young lock).
@@ -92,6 +104,10 @@ fi
 trap 'rmdir "$LOCK" 2>/dev/null' EXIT
 
 guard(){ $PY scripts/landing_guard.py >> "$LOG" 2>&1; }
+# First Shopify read is the guard below. A wake must not fail that read on DNS.
+if ! genseo_wait_for_network; then
+  exit 1
+fi
 guard; g=$?
 [ $g = 3 ] && { say "DONE: today's gsl- landing draft already exists — nothing to do"; exit 0; }
 [ $g != 0 ] && { say "guard: Shopify unreadable — fail closed"; exit 1; }

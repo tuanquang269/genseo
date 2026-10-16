@@ -37,9 +37,16 @@
 # ~/Library/LaunchAgents/com.pati.genseo-daily.plist and bootstrap the agent again,
 # or the loaded job keeps GENSEO_HOST_ROLE=standby. Helpers load from ~/genseo/scripts/.
 # Offline: bash tests/test_daily_lock.sh
-# An unreadable live count (-1) is retried GENSEO_LIVE_FEED_RETRIES times (default 3,
-# cap 5) with GENSEO_LIVE_FEED_BACKOFF_SEC between tries (default 5, cap 30), then
-# fail closed. A readable count does not sleep there and still runs the peer-active check.
+# Wake: launchd can start this file before DNS is up (2026-10-16 08:51 ICT).
+# scripts/genseo_wait_for_network.sh runs after the lock and before the first
+# feed read. It waits until wellnessnest.co and the Shopify admin host resolve,
+# up to GENSEO_NET_WAIT_MAX_SEC (default 600) with backoff. Each wait is logged.
+# If DNS never comes up, the log says "network not ready — timeout" and this
+# file exits 1 before any feed read. GENSEO_NET_WAIT_MAX_SEC=0 skips that wait.
+# An unreadable live count (-1) is still retried GENSEO_LIVE_FEED_RETRIES times
+# (default 3, cap 5) with GENSEO_LIVE_FEED_BACKOFF_SEC between tries (default 5,
+# cap 30), then fail closed. A readable count does not sleep there and still
+# runs the peer-active check. That retry is not the wake wait.
 set -uo pipefail
 export PATH="$HOME/.local/bin:$HOME/.npm-global/bin:$HOME/.codex/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 G="$HOME/genseo"; PY=/usr/bin/python3
@@ -81,8 +88,14 @@ if [ ! -f "$G/scripts/genseo_daily_lock.sh" ] || [ ! -f "$G/scripts/genseo_group
   say "FATAL: missing scripts/genseo_daily_lock.sh or scripts/genseo_group_timeout.sh — git pull ~/genseo, then bash scripts/install_mac_daily_wrapper.sh"
   exit 1
 fi
+if [ ! -f "$G/scripts/genseo_wait_for_network.sh" ]; then
+  say "FATAL: missing scripts/genseo_wait_for_network.sh — git pull ~/genseo, then bash scripts/install_mac_daily_wrapper.sh"
+  exit 1
+fi
 # shellcheck source=../scripts/genseo_daily_lock.sh
 . "$G/scripts/genseo_daily_lock.sh" || { say "FATAL: could not load daily lock helper"; exit 1; }
+# shellcheck source=../scripts/genseo_wait_for_network.sh
+. "$G/scripts/genseo_wait_for_network.sh" || { say "FATAL: could not load network wait helper"; exit 1; }
 genseo_daily_lock_acquire
 lock_rc=$?
 case "$lock_rc" in
@@ -96,6 +109,11 @@ live_urls(){ $PY "$G/scripts/genseo_published_today.py" --json 2>/dev/null | $PY
 d=json.load(sys.stdin); [print(e["url"]) for e in d.get("entries",[])]' 2>/dev/null; }
 live_count(){ local n; n="$($PY "$G/scripts/genseo_published_today.py" 2>/dev/null | tail -1)"; case "$n" in ''|*[!0-9-]*) n=-1;; esac; echo "$n"; }
 
+# The start line below is the first feed read. Wait for DNS before it so a
+# wake does not burn the short live-feed retry on ENOTFOUND / -1.
+if ! genseo_wait_for_network; then
+  exit 1
+fi
 say "start (target $TARGET/day, live now $(live_count))"
 if [ "$ROLE" = "standby" ] && [ "${GENSEO_NO_DELAY:-0}" != "1" ]; then
   say "standby: waiting ${DELAY} min so a healthy peer Mac goes first"; sleep $(( DELAY * 60 ))

@@ -138,7 +138,10 @@ Unpublished headless runs do not ask. A local preview, `GENSEO_LANDING_DRAFT=1`,
 - Writer cap: 90 minutes (`GENSEO_LANDING_TIMEOUT_SEC`, default 5400) in its own session via
   `scripts/genseo_group_timeout.sh`. On timeout the descendant tree is killed (landing bash, Claude,
   and any worker that left the process group), then the process group.
-- Guard: `scripts/landing_guard.py` counts Shopify pages with a `gsl-` handle CREATED today (ICT). ≥1 → stand down;
+- Guard: before the first `landing_guard.py` read, `scripts/genseo_wait_for_network.sh` waits until DNS
+  resolves `wellnessnest.co` and the Shopify admin host (default 10 minutes). If DNS never comes up, the log
+  says `network not ready — timeout` and the run fail-closes without calling Shopify. `landing_guard.py` then
+  counts Shopify pages with a `gsl-` handle CREATED today (ICT). ≥1 → stand down;
   Shopify unreadable → fail closed. `landing_publisher.py` (env `GENSEO_LANDING_DAILY=1`) re-checks it right before
   POSTing a new page, refuses `--live`, and requires a `gsl-preview-` handle.
 - Queue `daily-landing-tickets.md` ← `scripts/build_landing_tickets.py` (live products.json → real single SKUs that pass

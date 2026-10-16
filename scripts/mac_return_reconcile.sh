@@ -15,9 +15,10 @@
 # checklist: 5. --apply fast-forwards main only: git merge --ff-only origin/main. It runs only when HEAD is main, the work tree is clean, fetch succeeded, and every local branch commit is already on origin. Otherwise it prints instructions and changes nothing. Local commits that are not on origin stay local. This script does not rebase them and does not push. Do not run git push --force.
 # checklist: 6. When that fast-forward is allowed, or main is already up to date, --apply reinstalls the daily wrapper: bash scripts/install_mac_daily_wrapper.sh. Dry-run prints the plan and does not copy. The installer does not start launchd.
 # checklist:    Docs: DAILY-RUN.md and docs/TICKET_REFILL.md. launchd label com.pati.genseo-daily runs ~/bin/grokbot-genseo-daily.sh. Pulling alone does not update ~/bin.
+# checklist:    That wrapper waits for DNS before the first live-feed read (scripts/genseo_wait_for_network.sh). --apply copies the wrapper into ~/bin. The helper stays in this checkout.
 # checklist:    Repo plist: deploy/com.pati.genseo-daily.macbook.plist. Installed path named in DAILY-RUN.md: ~/Library/LaunchAgents/com.pati.genseo-daily.plist.
 # checklist:    That plist is GENSEO_HOST_ROLE=primary and GENSEO_TICKET_PREFIX=MB until a Mini failover-release. Copy it onto the installed LaunchAgent and bootstrap again. install_mac_daily_wrapper.sh does not change that env. Pulling alone does not update ~/bin.
-# checklist: 7. Landing code updates by the pull: launchd runs scripts/run_landing_daily.sh from this checkout (DAILY-RUN.md). MacBook plist, from the install comment in deploy/com.pati.genseo-landing.macbook.plist:
+# checklist: 7. Landing code updates by the pull: launchd runs scripts/run_landing_daily.sh from this checkout (DAILY-RUN.md). That script waits for the same DNS names before its first Shopify read. It is not copied to ~/bin. MacBook plist, from the install comment in deploy/com.pati.genseo-landing.macbook.plist:
 # checklist:    cp deploy/com.pati.genseo-landing.macbook.plist ~/Library/LaunchAgents/com.pati.genseo-landing.plist
 # checklist:    launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.pati.genseo-landing.plist
 # checklist:    Copy or bootstrap that plist only when the agent is not already loaded. This script does not.
@@ -794,11 +795,19 @@ reconcile_verify() {
       *) printf '%s\n' "verify_landing_draft_only: guard-missing"; fail=1 ;;
     esac
   fi
+  if [ -n "$path" ] && grep -F -q 'genseo_wait_for_network.sh' "$path" \
+    && grep -F -q 'genseo_wait_for_network;' "$path"; then
+    printf '%s\n' "verify_landing_net_wait: ok"
+  else
+    printf '%s\n' "verify_landing_net_wait: missing"
+    fail=1
+  fi
 
   path=$(reconcile_take_file "deploy/grokbot-genseo-daily.sh" "$wrap_f" || true)
   if [ -z "$path" ]; then
     printf '%s\n' "verify_wrapper_feed_retry: missing"
     printf '%s\n' "verify_wrapper_role_default: missing"
+    printf '%s\n' "verify_wrapper_net_wait: missing"
     fail=1
   else
     if grep -F -q 'GENSEO_LIVE_FEED_RETRIES' "$path"; then
@@ -811,6 +820,13 @@ reconcile_verify() {
       printf '%s\n' "verify_wrapper_role_default: primary"
     else
       printf '%s\n' "verify_wrapper_role_default: missing"
+      fail=1
+    fi
+    if grep -F -q 'genseo_wait_for_network.sh' "$path" \
+      && grep -F -q 'genseo_wait_for_network;' "$path"; then
+      printf '%s\n' "verify_wrapper_net_wait: ok"
+    else
+      printf '%s\n' "verify_wrapper_net_wait: missing"
       fail=1
     fi
   fi

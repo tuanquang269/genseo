@@ -78,6 +78,12 @@ one-way; the Mini's repo commits are unpushed), so the PUBLIC SITE is the lock:
    unreadable feed (`-1`) is retried `GENSEO_LIVE_FEED_RETRIES` times (default 3, cap 5) with
    `GENSEO_LIVE_FEED_BACKOFF_SEC` between tries (default 5, cap 30), then fail closed. A
    readable count does not sleep on that path and still runs the peer-active check.
+   Before that first feed read, `scripts/genseo_wait_for_network.sh` waits until DNS resolves
+   `wellnessnest.co` and `wellnessnest1.myshopify.com`. The bound is `GENSEO_NET_WAIT_MAX_SEC`
+   (default 600, cap 600) with backoff from `GENSEO_NET_WAIT_BACKOFF_SEC` (default 5, cap 60).
+   Each wait is logged. If DNS is still down at the bound, the log says
+   `network not ready — timeout` and the run exits 1 without reading the feed.
+   `GENSEO_NET_WAIT_MAX_SEC=0` skips the wait. The live-feed retry above is unchanged.
 2. `--peer-active 50 --local-log state/published-by-<host>.log`: a post that went live in the last
    50 min and was not published by this Mac means the other Mac is mid-batch → stand down.
 3. The runner prompt re-checks the count + STEP 0 `suggest.json` immediately before
@@ -121,7 +127,9 @@ and they cannot appear in `/blogs/news.atom`, so they never count toward or bloc
 Run: `scripts/run_landing_headless.sh <listicle|advertorial> <store> "<brief>"` or `--next` (queue `landing-tickets.md`).
 Default output is a local preview; `GENSEO_LANDING_DRAFT=1` adds an UNPUBLISHED page; live needs Kevin's GO
 (`GENSEO_LANDING_LIVE_OK=1 … --live`, refused while placeholders remain). Details: `skills/genseo-landing-pages/SKILL.md`.
-Daily lane (`scripts/run_landing_daily.sh`, launchd 08:15 + 16:15, 1 UNPUBLISHED listicle draft/day): it gives this
+Daily lane (`scripts/run_landing_daily.sh`, launchd 08:15 + 16:15, 1 UNPUBLISHED listicle draft/day): before the first
+`landing_guard.py` read it waits for the same DNS names as the article wrapper (`GENSEO_NET_WAIT_MAX_SEC`, default 600).
+A DNS timeout logs `network not ready — timeout` and fail-closes without calling Shopify. It gives this
 Mac's article batch (`state/daily.lock`) at most a 30-min courtesy yield, then builds alongside it — it never waits out
 the whole batch, and it never touches the article publisher.
 The listicle writer runs in its own session for 90 minutes (`scripts/genseo_group_timeout.sh`,

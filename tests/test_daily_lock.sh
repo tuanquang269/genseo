@@ -300,6 +300,7 @@ echo "13. wrapper script wires the helper and does not alarm-exec the ticket"
 check "syntax daily wrapper" bash -n "$ROOT/deploy/grokbot-genseo-daily.sh"
 check "syntax lock helper" bash -n "$ROOT/scripts/genseo_daily_lock.sh"
 check "syntax group timeout" bash -n "$ROOT/scripts/genseo_group_timeout.sh"
+check "syntax network wait" bash -n "$ROOT/scripts/genseo_wait_for_network.sh"
 check "calls group timeout" grep -q 'genseo_group_timeout.sh' "$ROOT/deploy/grokbot-genseo-daily.sh"
 check "acquires pid lock" grep -q 'genseo_daily_lock_acquire' "$ROOT/deploy/grokbot-genseo-daily.sh"
 check "ticket line is not perl alarm" not grep -q 'alarm .*run_ticket_headless' "$ROOT/deploy/grokbot-genseo-daily.sh"
@@ -462,6 +463,7 @@ sandbox() {
   mkdir -p "$sc" "$H/genseo/state" "$H/genseo/logs/daily"
   cp "$ROOT/scripts/genseo_daily_lock.sh" "$sc/genseo_daily_lock.sh"
   cp "$ROOT/scripts/genseo_group_timeout.sh" "$sc/genseo_group_timeout.sh"
+  cp "$ROOT/scripts/genseo_wait_for_network.sh" "$sc/genseo_wait_for_network.sh"
   cat > "$sc/genseo_published_today.py" << 'PY'
 import os, sys
 root = os.path.join(os.environ["HOME"], "genseo")
@@ -520,6 +522,7 @@ run_wrapper() {
       GENSEO_AUTO_REFILL="${WRAP_REFILL:-0}" \
       GENSEO_LIVE_FEED_RETRIES="${WRAP_FEED_RETRIES:-3}" \
       GENSEO_LIVE_FEED_BACKOFF_SEC="${WRAP_FEED_BACKOFF:-0}" \
+      GENSEO_NET_WAIT_MAX_SEC="${WRAP_NET_WAIT:-0}" \
       /bin/bash "$ROOT/deploy/grokbot-genseo-daily.sh" >"$H/out.log" 2>"$H/err.log"
   RC=$?
 }
@@ -741,6 +744,7 @@ reset_wrap() {
   WRAP_REFILL=0
   WRAP_FEED_RETRIES=3
   WRAP_FEED_BACKOFF=0
+  WRAP_NET_WAIT=0
 }
 retry_lines() { grep -c 'live feed unreadable — retry ' "$H/out.log" || true; }
 

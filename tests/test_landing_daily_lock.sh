@@ -30,6 +30,7 @@ sandbox(){  # sandbox <name> [guard exit codes...]: fresh fake HOME in $H, its g
   H="$TMP/$1"; shift; S="$H/genseo/state"; local sc="$H/genseo/scripts"
   mkdir -p "$sc" "$S" "$H/genseo/logs"
   cp "$ROOT/scripts/genseo_group_timeout.sh" "$sc/genseo_group_timeout.sh"
+  cp "$ROOT/scripts/genseo_wait_for_network.sh" "$sc/genseo_wait_for_network.sh"
   echo "$*" > "$S/guard-codes"
   cat > "$sc/landing_guard.py" <<'PY'
 import sys
@@ -58,7 +59,9 @@ SH
 run(){  # run <timeout s> [VAR=value ...]: the real wrapper on the current sandbox, with a clean environment
   local t=$1; shift
   T0=$(date +%s)
-  env -i HOME="$H" PATH=/usr/bin:/bin:/usr/sbin:/sbin "$@" \
+  env -i HOME="$H" PATH=/usr/bin:/bin:/usr/sbin:/sbin \
+    GENSEO_NET_WAIT_MAX_SEC=0 \
+    "$@" \
     /usr/bin/perl -e 'alarm shift; exec @ARGV' "$t" /bin/bash "$WRAPPER" > "$H/out.log" 2>&1
   RC=$?
 }
