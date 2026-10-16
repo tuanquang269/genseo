@@ -141,6 +141,30 @@ else
   ok "#MB1009-7 is not an open ticket"
 fi
 
+echo "2b. GENSEO_NO_FACE=1 leads the prompt and the default prompt does not"
+if grep -F -q "NO-FACE LANE (GENSEO_NO_FACE=1)" "$TMP/article.txt"; then
+  bad "default prompt carries the no-face banner"
+else
+  ok "default prompt has no no-face banner"
+fi
+NOFACE="$TMP/noface.txt"
+if env -i HOME="$TMP/home" PATH="/usr/bin:/bin" GENSEO_NO_FACE=1 /bin/bash "$RUNNER" --print-prompt > "$NOFACE"; then
+  ok "no-face print-prompt exit 0"
+else
+  bad "no-face print-prompt failed"
+fi
+if grep -F -q "NO-FACE LANE (GENSEO_NO_FACE=1)" "$NOFACE" \
+  && grep -F -q "Do not run persona_picker.py" "$NOFACE" \
+  && grep -F -q "Do not edit or commit personas/index.json" "$NOFACE"; then
+  head_line="$(head -n 1 "$NOFACE")"
+  case "$head_line" in
+    "NO-FACE LANE (GENSEO_NO_FACE=1)."*) ok "no-face banner is the first line" ;;
+    *) bad "no-face banner is not the first line: $head_line" ;;
+  esac
+else
+  bad "no-face prompt missing the banner"
+fi
+
 echo "3. article run excludes the user scope-gate CLAUDE.md; project memory stays"
 OUT="$TMP/settings.txt"
 if env -i HOME="$TMP/home" PATH="/usr/bin:/bin" \

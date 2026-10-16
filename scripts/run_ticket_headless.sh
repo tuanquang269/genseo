@@ -148,6 +148,14 @@ OPEN_N="$(grep -cE '^(- \[ \]|## \[ \])' "$TICKET_FILE" 2>/dev/null || true)"
 case "$OPEN_N" in
   ''|*[!0-9]*) OPEN_N=0 ;;
 esac
+# MacBook plist sets GENSEO_NO_FACE=1. The long persona block below is easy to
+# follow anyway (2026-10-16 #CA1009-8 committed a face and personas/index.json).
+# Put the override first, before those rules.
+if [ "${GENSEO_NO_FACE:-0}" = "1" ]; then
+  PROMPT="NO-FACE LANE (GENSEO_NO_FACE=1). Do not run persona_picker.py. Do not pass --persona-ref. Do not edit or commit personas/index.json. The hero is a no-face pack in a real scene (--product-ref + --qc, no --ugc). All inline images are no-face. This overrides the persona, gaze, and face-angle rules later in this prompt.
+
+$PROMPT"
+fi
 if [ -n "$FIRST_OPEN" ]; then
   PROMPT="$PROMPT
 
