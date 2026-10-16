@@ -44,6 +44,8 @@ The script creates `~/bin` if needed, copies the wrapper, checks it is executabl
 `scripts/genseo_daily_lock.sh` and `scripts/genseo_group_timeout.sh` are in the checkout. It does not
 start launchd, and it does not change LaunchAgent environment. Offline: `bash tests/test_install_mac_daily_wrapper.sh`.
 
+**Mac return.** After the Mac has been offline, `bash scripts/mac_return_reconcile.sh` is the catch-up. Dry-run fetches `origin` and reports. It does not publish. Local commits that are not on `origin` stay local: the script does not rebase them, does not push, and does not force-push. `--apply` runs `git merge --ff-only origin/main` when `main` is clean and those commits are already on `origin`, then `bash scripts/install_mac_daily_wrapper.sh` so `~/bin/grokbot-genseo-daily.sh` matches this checkout (primary default and live-feed retry). The same run checks, read-only, that `scripts/genseo_model_map.json` maps the PATI writer aliases and that the landing daily lane stays draft-only. It never passes `--live` and it does not start `run_landing_daily.sh` or the article wrapper. Offline: `bash tests/test_mac_return_reconcile.sh`.
+
 **MacBook role after this fix.** `GENSEO_HOST_ROLE` lives in the loaded plist, not in the wrapper
 file. `install_mac_daily_wrapper.sh` does not copy it. Until the LaunchAgent is replaced and
 bootstrapped, the loaded job keeps `standby` and still waits 20 minutes:

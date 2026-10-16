@@ -1,20 +1,20 @@
 #!/bin/bash
 # MacBook return reconcile. Run this on the Mac after days offline.
 # Bash 3.2 safe: no namerefs, no mapfile, no ${var,,}, no globstar.
-# Dry-run is the default. It does not publish, call Shopify, push, reset, or start launchd.
+# Dry-run is the default. It does not publish, call Shopify, push, reset, copy the wrapper, or start launchd.
 #
 # Offline: bash tests/test_mac_return_reconcile.sh
 #
 # checklist: 1. cd ~/genseo && bash scripts/mac_return_reconcile.sh
-# checklist:    Default is dry-run. It prints ICT time, git status, main vs HEAD, local commits that are not on origin, and lock ages. It fetches origin. It does not merge, delete a lock, push, reset, or publish.
+# checklist:    Default is dry-run. It prints ICT time, git status, main vs HEAD, local commits that are not on origin, and lock ages. It fetches origin. It does not merge, delete a lock, push, reset, copy the wrapper, or publish.
 # checklist: 2. If local commits are not on origin, read them with git show and keep them. Do not run git push --force. Do not run git reset --hard. e1b8519 and 289803e were unpushed publish commits on this Mac. If either is still local, leave it.
 # checklist: 3. If personas/index.json is dirty, leave it. DAILY-RUN.md keeps the MacBook image lane no-face until that file is re-synced from the Mini.
 # checklist: 4. A lock is cleared only when you pass --apply-stale-lock, the lock is older than its documented threshold, and no live writer PID is running. The report prints the rmdir command on a dry-run and does not run it. If that directory changes before removal, it is left in place.
 # checklist:    daily.lock threshold is 21600 seconds (6h), GENSEO_LOCK_STALE_SEC in scripts/genseo_daily_lock.sh. A live grokbot-genseo-daily or run_ticket_headless.sh blocks removal at any age.
 # checklist:    landing-daily.lock threshold is 14400 seconds (4h), hardcoded in scripts/run_landing_daily.sh. A live run_landing_daily.sh or run_landing_headless.sh blocks removal at any age.
-# checklist: 5. --apply fast-forwards main only: git merge --ff-only origin/main. It runs only when HEAD is main, the work tree is clean, fetch succeeded, and every local branch commit is already on origin. Otherwise it prints instructions and changes nothing.
-# checklist: 6. After main moves, refresh the daily LaunchAgent wrapper. A pull does not update ~/bin. Run: bash scripts/install_mac_daily_wrapper.sh
-# checklist:    Docs: DAILY-RUN.md and docs/TICKET_REFILL.md. The installer does not start launchd. launchd label com.pati.genseo-daily runs ~/bin/grokbot-genseo-daily.sh.
+# checklist: 5. --apply fast-forwards main only: git merge --ff-only origin/main. It runs only when HEAD is main, the work tree is clean, fetch succeeded, and every local branch commit is already on origin. Otherwise it prints instructions and changes nothing. Local commits that are not on origin stay local. This script does not rebase them and does not push. Do not run git push --force.
+# checklist: 6. When that fast-forward is allowed, or main is already up to date, --apply reinstalls the daily wrapper: bash scripts/install_mac_daily_wrapper.sh. Dry-run prints the plan and does not copy. The installer does not start launchd.
+# checklist:    Docs: DAILY-RUN.md and docs/TICKET_REFILL.md. launchd label com.pati.genseo-daily runs ~/bin/grokbot-genseo-daily.sh. Pulling alone does not update ~/bin.
 # checklist:    Repo plist: deploy/com.pati.genseo-daily.macbook.plist. Installed path named in DAILY-RUN.md: ~/Library/LaunchAgents/com.pati.genseo-daily.plist.
 # checklist:    That plist is GENSEO_HOST_ROLE=primary and GENSEO_TICKET_PREFIX=MB until a Mini failover-release. Copy it onto the installed LaunchAgent and bootstrap again. install_mac_daily_wrapper.sh does not change that env. Pulling alone does not update ~/bin.
 # checklist: 7. Landing code updates by the pull: launchd runs scripts/run_landing_daily.sh from this checkout (DAILY-RUN.md). MacBook plist, from the install comment in deploy/com.pati.genseo-landing.macbook.plist:
@@ -23,11 +23,12 @@
 # checklist:    Copy or bootstrap that plist only when the agent is not already loaded. This script does not.
 # checklist: 8. Start the Cursor private worker yourself: agent worker start --name MacBook-Pro
 # checklist:    LaunchAgent label: com.pati.cursor-agent-worker. This repo does not contain that plist. This script does not start the worker.
-# checklist: 9. Do not start grokbot-genseo-daily.sh or run_landing_daily.sh from this reconcile. The next 07:30 / 14:47 and 08:15 / 16:15 slots run them. Starting them here would publish or open a Shopify draft.
+# checklist: 9. Read-only verify on dry-run (against origin/main) and after --apply (against the work tree): scripts/genseo_model_map.json maps claude-opus-5-5 to PATI-Alpha-Plan-Review and claude-fable-5 to PATI-Fable-5. The landing daily lane stays draft-only and never passes --live. Do not start grokbot-genseo-daily.sh or run_landing_daily.sh from this reconcile. The next 07:30 / 14:47 and 08:15 / 16:15 slots run them. Starting them here would publish or open a Shopify draft.
 #
 # Does not: genseo_daily_lock_acquire, shopify_publisher, landing_publisher, launchctl,
 # agent worker start, git push, git reset, git checkout, git stash, git clean, rm -r.
-# --apply is git merge --ff-only origin/main and nothing else.
+# --apply is git merge --ff-only origin/main when that fast-forward is allowed,
+# then scripts/install_mac_daily_wrapper.sh. It does not publish or start launchd.
 # Fetch and that merge set gc.auto=0 so auto-gc cannot prune a local dangling commit.
 # --apply-stale-lock moves one stale lock directory aside, checks it is still the
 # same directory, then removes pid and started (daily only) and rmdir.
@@ -40,10 +41,13 @@ usage() {
   printf '%s\n' \
     "usage: bash scripts/mac_return_reconcile.sh [--dry-run] [--apply] [--apply-stale-lock]" \
     "GENSEO_HOME defaults to the checkout that contains this script (~/genseo on the Mac)." \
-    "Default is dry-run: fetch and report. No merge, no lock delete, no push, no publish." \
-    "--apply           git merge --ff-only origin/main when main is clean and fully pushed." \
+    "Default is dry-run: fetch and report. No merge, no lock delete, no push, no wrapper copy, no publish." \
+    "--apply           git merge --ff-only origin/main when main is clean and every local commit is already on origin," \
+    "                  then bash scripts/install_mac_daily_wrapper.sh. Does not publish or start launchd." \
     "--apply-stale-lock  remove one stale lock dir when its identity is unchanged and no writer is live." \
-    "Exit 0 report or apply finished. Exit 2 usage. Exit 3 apply refused. Exit 4 lock not cleared."
+    "Read-only verify: scripts/genseo_model_map.json and a draft-only landing lane (never --live)." \
+    "Exit 0 report finished. A dry-run verify failure still exits 0 and prints result: verify-failed." \
+    "Exit 2 usage. Exit 3 apply refused. Exit 4 lock not cleared. Exit 5 --apply catch-up incomplete."
 }
 
 APPLY=0
@@ -626,6 +630,316 @@ reconcile_historical() {
   fi
 }
 
+reconcile_line_is_comment() {
+  local s=$1
+  s="${s#"${s%%[![:space:]]*}"}"
+  case "$s" in
+    '#'*) return 0 ;;
+  esac
+  return 1
+}
+
+# 0 when a non-comment line contains the --live flag.
+reconcile_file_invokes_live() {
+  local f=$1 line=""
+  [ -f "$f" ] || return 1
+  while IFS= read -r line || [ -n "$line" ]; do
+    reconcile_line_is_comment "$line" && continue
+    case "$line" in
+      *'--live'*) return 0 ;;
+    esac
+  done < "$f"
+  return 1
+}
+
+reconcile_python() {
+  if command -v python3 >/dev/null 2>&1; then
+    command python3 "$@"
+    return $?
+  fi
+  if [ -x /usr/bin/python3 ]; then
+    /usr/bin/python3 "$@"
+    return $?
+  fi
+  return 127
+}
+
+# 0 ok, 2 missing, 1 invalid or unreadable.
+reconcile_model_map_ok() {
+  local f=$1
+  [ -f "$f" ] || return 2
+  reconcile_python - "$f" <<'PY'
+import json, sys
+path = sys.argv[1]
+try:
+    data = json.load(open(path))
+except Exception:
+    sys.exit(1)
+ov = data.get("modelOverrides")
+if not isinstance(ov, dict):
+    sys.exit(1)
+need = (
+    ("claude-opus-5-5", "PATI-Alpha-Plan-Review"),
+    ("claude-fable-5", "PATI-Fable-5"),
+)
+for key, val in need:
+    if ov.get(key) != val:
+        sys.exit(1)
+sys.exit(0)
+PY
+}
+
+# 0 ok, 2 missing file, 3 a non-comment --live flag, 4 a draft-only guard is gone.
+reconcile_landing_draft_only() {
+  local daily=$1 pub=$2 head=$3
+  [ -f "$daily" ] && [ -f "$pub" ] && [ -f "$head" ] || return 2
+  if reconcile_file_invokes_live "$daily"; then
+    return 3
+  fi
+  grep -F -q -e 'GENSEO_LANDING_DAILY=1 GENSEO_LANDING_DRAFT=1' "$daily" || return 4
+  grep -F -q -e 'if daily and mode == "live"' "$pub" || return 4
+  grep -F -q -e '--live refused in the daily landing lane' "$pub" || return 4
+  grep -F -q -e 'Never --live.' "$head" || return 4
+  return 0
+}
+
+reconcile_origin_has() {
+  local rel=$1
+  [ -n "${ORIGIN_MAIN:-}" ] || return 1
+  git --no-pager -C "$REPO" cat-file -e "origin/main:$rel" 2>/dev/null
+}
+
+reconcile_pipeline_present() {
+  PIPELINE=0
+  if [ -f "$REPO/deploy/grokbot-genseo-daily.sh" ] || [ -f "$REPO/scripts/genseo_model_map.json" ] || [ -f "$REPO/scripts/run_landing_daily.sh" ]; then
+    PIPELINE=1
+    return 0
+  fi
+  if reconcile_origin_has "deploy/grokbot-genseo-daily.sh" \
+    || reconcile_origin_has "scripts/genseo_model_map.json" \
+    || reconcile_origin_has "scripts/run_landing_daily.sh"; then
+    PIPELINE=1
+  fi
+}
+
+# Prints the path to use. Origin blobs are written to dest.
+reconcile_take_file() {
+  local rel=$1 dest=$2
+  if [ "$VERIFY_SCOPE" = worktree ]; then
+    if [ -f "$REPO/$rel" ]; then
+      printf '%s\n' "$REPO/$rel"
+      return 0
+    fi
+    return 1
+  fi
+  rm -f "$dest"
+  if git --no-pager -C "$REPO" show "origin/main:$rel" >"$dest" 2>/dev/null; then
+    printf '%s\n' "$dest"
+    return 0
+  fi
+  rm -f "$dest"
+  return 1
+}
+
+reconcile_verify() {
+  local map_f="" land_f="" pub_f="" head_f="" wrap_f="" plist_f=""
+  local fail=0 path="" rc=0
+  reconcile_pipeline_present
+  if [ "$PIPELINE" != 1 ]; then
+    printf '%s\n' "verify: skipped-not-checkout"
+    return 0
+  fi
+  if [ "$APPLY_RESULT" = fast-forward ] || [ "$APPLY_RESULT" = uptodate ]; then
+    VERIFY_SCOPE=worktree
+    printf '%s\n' "verify_scope: worktree"
+  else
+    VERIFY_SCOPE=origin
+    printf '%s\n' "verify_scope: origin/main"
+  fi
+  map_f=$(mktemp "${TMPDIR:-/tmp}/mac-return-map.XXXXXX") || return 1
+  land_f=$(mktemp "${TMPDIR:-/tmp}/mac-return-land.XXXXXX") || { rm -f "$map_f"; return 1; }
+  pub_f=$(mktemp "${TMPDIR:-/tmp}/mac-return-pub.XXXXXX") || { rm -f "$map_f" "$land_f"; return 1; }
+  head_f=$(mktemp "${TMPDIR:-/tmp}/mac-return-head.XXXXXX") || { rm -f "$map_f" "$land_f" "$pub_f"; return 1; }
+  wrap_f=$(mktemp "${TMPDIR:-/tmp}/mac-return-wrapf.XXXXXX") || { rm -f "$map_f" "$land_f" "$pub_f" "$head_f"; return 1; }
+  plist_f=$(mktemp "${TMPDIR:-/tmp}/mac-return-plist.XXXXXX") || { rm -f "$map_f" "$land_f" "$pub_f" "$head_f" "$wrap_f"; return 1; }
+
+  path=$(reconcile_take_file "scripts/genseo_model_map.json" "$map_f" || true)
+  rc=0
+  if [ -z "$path" ]; then
+    printf '%s\n' "verify_model_map: missing"
+    fail=1
+  else
+    reconcile_model_map_ok "$path" || rc=$?
+    case "$rc" in
+      0) printf '%s\n' "verify_model_map: ok" ;;
+      2) printf '%s\n' "verify_model_map: missing"; fail=1 ;;
+      *) printf '%s\n' "verify_model_map: invalid"; fail=1 ;;
+    esac
+  fi
+
+  path=$(reconcile_take_file "scripts/run_landing_daily.sh" "$land_f" || true)
+  local pub_path="" head_path=""
+  pub_path=$(reconcile_take_file "scripts/landing_publisher.py" "$pub_f" || true)
+  head_path=$(reconcile_take_file "scripts/run_landing_headless.sh" "$head_f" || true)
+  rc=0
+  if [ -z "$path" ] || [ -z "$pub_path" ] || [ -z "$head_path" ]; then
+    printf '%s\n' "verify_landing_draft_only: missing"
+    fail=1
+  else
+    reconcile_landing_draft_only "$path" "$pub_path" "$head_path" || rc=$?
+    case "$rc" in
+      0) printf '%s\n' "verify_landing_draft_only: ok" ;;
+      3) printf '%s\n' "verify_landing_draft_only: live-flag"; fail=1 ;;
+      2) printf '%s\n' "verify_landing_draft_only: missing"; fail=1 ;;
+      *) printf '%s\n' "verify_landing_draft_only: guard-missing"; fail=1 ;;
+    esac
+  fi
+
+  path=$(reconcile_take_file "deploy/grokbot-genseo-daily.sh" "$wrap_f" || true)
+  if [ -z "$path" ]; then
+    printf '%s\n' "verify_wrapper_feed_retry: missing"
+    printf '%s\n' "verify_wrapper_role_default: missing"
+    fail=1
+  else
+    if grep -F -q 'GENSEO_LIVE_FEED_RETRIES' "$path"; then
+      printf '%s\n' "verify_wrapper_feed_retry: ok"
+    else
+      printf '%s\n' "verify_wrapper_feed_retry: missing"
+      fail=1
+    fi
+    if grep -F -q 'GENSEO_HOST_ROLE:-primary' "$path"; then
+      printf '%s\n' "verify_wrapper_role_default: primary"
+    else
+      printf '%s\n' "verify_wrapper_role_default: missing"
+      fail=1
+    fi
+  fi
+
+  path=$(reconcile_take_file "deploy/com.pati.genseo-daily.macbook.plist" "$plist_f" || true)
+  if [ -z "$path" ]; then
+    printf '%s\n' "verify_repo_plist_role: absent"
+  elif grep -F -q '<key>GENSEO_HOST_ROLE</key><string>primary</string>' "$path" \
+    && grep -F -q '<key>GENSEO_TICKET_PREFIX</key><string>MB</string>' "$path"; then
+    printf '%s\n' "verify_repo_plist_role: ok"
+  else
+    printf '%s\n' "verify_repo_plist_role: not-primary"
+    fail=1
+  fi
+
+  rm -f "$map_f" "$land_f" "$pub_f" "$head_f" "$wrap_f" "$plist_f"
+  if [ "$fail" = 1 ]; then
+    printf '%s\n' "verify: fail"
+    return 1
+  fi
+  printf '%s\n' "verify: ok"
+  return 0
+}
+
+reconcile_prefix_file() {
+  local prefix=$1 file=$2 n=0 line=""
+  [ -f "$file" ] || return 0
+  while IFS= read -r line || [ -n "$line" ]; do
+    [ -n "$line" ] || continue
+    n=$((n + 1))
+    [ "$n" -le 40 ] || continue
+    printf '%s: %s\n' "$prefix" "$line"
+  done < "$file"
+}
+
+# dry-run prints the plan. apply copies when the checkout has the wrapper source.
+reconcile_install_wrapper() {
+  local mode=$1
+  local src="$REPO/deploy/grokbot-genseo-daily.sh"
+  local install_script="$SCRIPT_DIR/install_mac_daily_wrapper.sh"
+  local out="" err="" rc=0 dest=""
+  if [ ! -f "$install_script" ]; then
+    install_script="$REPO/scripts/install_mac_daily_wrapper.sh"
+  fi
+  if [ ! -f "$src" ]; then
+    if reconcile_origin_has "deploy/grokbot-genseo-daily.sh"; then
+      if [ "$mode" = dry-run ]; then
+        printf '%s\n' "wrapper_install: planned after fast-forward"
+        return 0
+      fi
+      printf '%s\n' "wrapper_install: failed missing-source"
+      return 1
+    fi
+    printf '%s\n' "wrapper_install: skipped missing-source"
+    return 0
+  fi
+  if [ ! -f "$install_script" ]; then
+    printf '%s\n' "wrapper_install: failed missing-installer"
+    [ "$mode" = dry-run ] && return 0
+    return 1
+  fi
+  out=$(mktemp "${TMPDIR:-/tmp}/mac-return-wrap-out.XXXXXX") || return 1
+  err=$(mktemp "${TMPDIR:-/tmp}/mac-return-wrap-err.XXXXXX") || { rm -f "$out"; return 1; }
+  rc=0
+  if [ "$mode" = dry-run ]; then
+    printf '%s\n' "wrapper_install: planned"
+    env GENSEO_HOME="$REPO" bash "$install_script" --dry-run >"$out" 2>"$err" || rc=$?
+  else
+    env GENSEO_HOME="$REPO" bash "$install_script" >"$out" 2>"$err" || rc=$?
+  fi
+  reconcile_prefix_file wrapper_install_detail "$out"
+  reconcile_prefix_file wrapper_install_err "$err"
+  rm -f "$out" "$err"
+  if [ "$mode" = dry-run ]; then
+    printf 'wrapper_install_rc: %s\n' "$rc"
+    return 0
+  fi
+  if [ "$rc" != 0 ]; then
+    printf 'wrapper_install: failed rc %s\n' "$rc"
+    return 1
+  fi
+  dest="${HOME:-}/bin/grokbot-genseo-daily.sh"
+  if [ -z "${HOME:-}" ] || [ ! -f "$dest" ] || [ ! -x "$dest" ] || ! cmp -s "$src" "$dest"; then
+    printf '%s\n' "wrapper_install: mismatch"
+    return 1
+  fi
+  printf '%s\n' "wrapper_install: copied"
+  printf '%s\n' "wrapper_dest_match: yes"
+  return 0
+}
+
+# 0 when --apply must not fast-forward. Local-only commits stay local: no rebase, no push.
+reconcile_catchup_blocked() {
+  if [ "${FETCH_RC:-1}" != 0 ] || [ "${BRANCH:-}" != main ] || [ "${GIT_BUSY:-1}" = 1 ]; then
+    return 0
+  fi
+  if [ "${STATUS_RC:-1}" != 0 ] || [ -n "${PORCELAIN:-}" ]; then
+    return 0
+  fi
+  case "${LOCAL_N:-}" in
+    0) ;;
+    *) return 0 ;;
+  esac
+  if [ -z "${ORIGIN_MAIN:-}" ]; then
+    return 0
+  fi
+  return 1
+}
+
+reconcile_catchup_plan() {
+  printf '%s\n' "catchup_cmd: git merge --ff-only origin/main"
+  CATCHUP_STATE=blocked
+  if reconcile_catchup_blocked; then
+    printf '%s\n' "catchup: blocked"
+    return 0
+  fi
+  if [ "$HEAD_SHA" = "$ORIGIN_MAIN" ]; then
+    CATCHUP_STATE=uptodate
+    printf '%s\n' "catchup: already up to date"
+    return 0
+  fi
+  if git -C "$REPO" merge-base --is-ancestor HEAD origin/main 2>/dev/null; then
+    CATCHUP_STATE=behind
+    printf '%s\n' "catchup: would fast-forward on --apply"
+    return 0
+  fi
+  printf '%s\n' "catchup: blocked"
+}
+
 DAILY_RAW=${GENSEO_LOCK_STALE_SEC:-}
 DAILY_THRESHOLD=$(reconcile_threshold "$DAILY_RAW" 21600)
 LANDING_THRESHOLD=14400
@@ -830,7 +1144,7 @@ printf '%s\n' "landing_plist_repo: deploy/com.pati.genseo-landing.macbook.plist"
 printf '%s\n' "landing_script: scripts/run_landing_daily.sh"
 printf '%s\n' "worker: agent worker start --name MacBook-Pro"
 printf '%s\n' "launchagent: com.pati.cursor-agent-worker"
-printf '%s\n' "does_not: publish, Shopify, git push, git reset --hard, force-push, launchctl, worker start"
+printf '%s\n' "does_not: publish, Shopify, git push, git reset --hard, force-push, launchctl, worker start, landing --live"
 reconcile_print_checklist
 
 printf '%s\n' "== actions =="
@@ -919,6 +1233,7 @@ else
   if apply_allowed; then
     BEFORE=$(git -C "$REPO" rev-parse HEAD)
     MERGE_RC=0
+    printf '%s\n' "catchup_cmd: git merge --ff-only origin/main"
     MERGE_OUT=$(git -C "$REPO" -c gc.auto=0 merge --ff-only origin/main 2>&1) || MERGE_RC=$?
     while IFS= read -r line; do
       [ -n "$line" ] || continue
@@ -942,10 +1257,30 @@ else
   fi
 fi
 
-if [ "$APPLY" != 1 ] && [ "$APPLY_LOCK" != 1 ]; then
-  printf '%s\n' "result: ok"
-  exit 0
+printf '%s\n' "== catch-up =="
+WRAPPER_PROBLEM=0
+VERIFY_PROBLEM=0
+if [ "$APPLY" = 1 ]; then
+  case "$APPLY_RESULT" in
+    fast-forward|uptodate)
+      reconcile_install_wrapper apply || WRAPPER_PROBLEM=1
+      ;;
+    *)
+      printf '%s\n' "wrapper_install: skipped not-fast-forwarded"
+      ;;
+  esac
+elif [ "$APPLY_LOCK" = 1 ]; then
+  printf '%s\n' "wrapper_install: not requested"
+else
+  reconcile_catchup_plan
+  if [ "$CATCHUP_STATE" = blocked ]; then
+    printf '%s\n' "wrapper_install: skipped catch-up-blocked"
+  else
+    reconcile_install_wrapper dry-run || true
+  fi
 fi
+reconcile_verify || VERIFY_PROBLEM=1
+
 if [ "$APPLY_RESULT" = failed ] || [ "$APPLY_RESULT" = refused ]; then
   printf '%s\n' "result: apply-refused"
   exit 3
@@ -953,6 +1288,14 @@ fi
 if [ "$LOCK_PROBLEM" != 0 ] || [ "$APPLY_RESULT" = skipped-lock ]; then
   printf '%s\n' "result: lock-not-cleared"
   exit 4
+fi
+if [ "$APPLY" = 1 ] && { [ "$WRAPPER_PROBLEM" = 1 ] || [ "$VERIFY_PROBLEM" = 1 ]; }; then
+  printf '%s\n' "result: catch-up-incomplete"
+  exit 5
+fi
+if [ "$VERIFY_PROBLEM" = 1 ]; then
+  printf '%s\n' "result: verify-failed"
+  exit 0
 fi
 printf '%s\n' "result: ok"
 exit 0
