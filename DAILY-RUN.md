@@ -119,6 +119,21 @@ unconfirmed claims before publish (SEL 2026-10-06: Google calls manual fact-chec
 the Mini; push the Mini's unpushed commits (or rsync `personas/index.json`, `PUBLISHED_ARTICLES_TRACKER.csv`,
 `daily-tickets.md`) so both Macs share persona + tracker state again.
 
+**Mac Mini failover bootstrap (2026-10-15).** The MacBook article job stays primary until an
+explicit handover. The Mini (`Kevins-Mac-mini-2.local`) has no Cursor worker and no daily agents
+until `scripts/mac_mini_failover_bootstrap.sh` says so. Dry-run is the default. `--install-worker`
+writes the `com.pati.cursor-agent-worker` LaunchAgent (`cursor-agent worker start --name Mac-Mini`,
+logs in `~/Library/Logs`) and does not load it. Use `cursor-agent`, not `agent` (that name collides
+with the Grok CLI). `--enable-daily` installs the Mini article and landing plists only when a
+`failover-release: macbook-pro <epoch>` subject on `origin/main` is newer than every
+`failover-heartbeat: macbook-pro <epoch>`. A stale or missing heartbeat does not install them.
+The script does not fetch, does not call `launchctl`, and does not edit
+`deploy/com.pati.genseo-daily.macbook.plist` or `deploy/grokbot-genseo-daily.sh`. It cannot by
+itself stop a MacBook job that is already loaded. The installed Mini article plist is `primary`
+with prefix `MM`, so do not load it beside the MacBook. `--disable-daily` removes only the plists
+this installer wrote. Listicle jobs stay unpublished drafts. Details: `docs/FAILOVER.md`.
+Offline: `bash tests/test_mac_mini_failover_bootstrap.sh`.
+
 ## 0.5 · Landing pages (listicle / advertorial) — NOT part of the 5/day (2026-10-06)
 
 Sales-style pages built from the omnicreatine reference layouts, re-skinned with `brand/<store>.json`.

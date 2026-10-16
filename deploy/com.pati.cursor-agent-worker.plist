@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- installed-by: mac_mini_failover_bootstrap
+     Cursor private worker (My Machines). Do not copy this file into LaunchAgents by hand.
+     scripts/mac_mini_failover_bootstrap.sh substitutes the tokens, then prints the launchctl
+     line. It does not boot the agent. This plist does not start the GenSeo daily article
+     or landing jobs.
+     Binary is cursor-agent (Cursor's installer also symlinks that binary as `agent`).
+     Use cursor-agent: the name `agent` collides with the Grok CLI in ~/.local/bin.
+     Docs: https://cursor.com/docs/cli/installation
+           https://cursor.com/docs/cloud-agent/self-hosted/my-machines
+           (agent worker start, name option)
+           https://cursor.com/docs/cli/reference/parameters (worker name option)
+     Tokens: __CURSOR_AGENT_BIN__ __WORKER_NAME__ __GENSEO_HOME__ __HOME__ -->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.pati.cursor-agent-worker</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>__CURSOR_AGENT_BIN__</string>
+        <string>worker</string>
+        <string>start</string>
+        <string>--name</string>
+        <string>__WORKER_NAME__</string>
+        <string>--worker-dir</string>
+        <string>__GENSEO_HOME__</string>
+    </array>
+    <key>WorkingDirectory</key>
+    <string>__GENSEO_HOME__</string>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    <key>ThrottleInterval</key>
+    <integer>30</integer>
+    <key>StandardOutPath</key>
+    <string>__HOME__/Library/Logs/com.pati.cursor-agent-worker.out.log</string>
+    <key>StandardErrorPath</key>
+    <string>__HOME__/Library/Logs/com.pati.cursor-agent-worker.err.log</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>HOME</key>
+        <string>__HOME__</string>
+        <key>PATH</key>
+        <string>__HOME__/.local/bin:__HOME__/.grok/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+    </dict>
+</dict>
+</plist>
