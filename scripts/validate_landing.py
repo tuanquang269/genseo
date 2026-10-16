@@ -75,6 +75,30 @@ def http_ok(u):
     return 0
 
 
+def premium_pack_list_message(spec, root=None):
+    """Return the pack_images reminder, or None.
+
+    A premium page lists generated pack shots only when a cutout exists, because
+    that is the whitelist-shot path. A label file without a cutout (Turkesterone,
+    and the same no-cutout case in docs/LABEL_OCR_GATE.md) uses the real PDP photo
+    and must not claim a label-gate pass, so an empty pack_images list is correct.
+    """
+    root = ROOT if root is None else root
+    if spec.get("style") != "premium":
+        return None
+    found = re.search(r"/products/([a-z0-9-]+)", json.dumps(spec))
+    if not found:
+        return None
+    handle = found.group(1)
+    label = os.path.join(root, "product_refs", handle + ".label.json")
+    cutout = os.path.join(root, "product_refs", handle + "-cutout.png")
+    packs = spec.get("pack_images") or []
+    claimed = llg.claims_label_whitelist(spec)
+    if os.path.isfile(label) and os.path.isfile(cutout) and not packs and not claimed:
+        return "product has a label json: list every generated pack shot in pack_images so the label gate runs"
+    return None
+
+
 def main():
     a = [x for x in sys.argv[1:] if not x.startswith("--")]
     strict = "--strict" in sys.argv
@@ -235,12 +259,10 @@ def main():
         for i, r in enumerate((spec.get("expert") or {}).get("reviews", [])):
             if int(r.get("stars", 0)) < 4 or "trustpilot.com/reviews/" not in r.get("url", ""):
                 errs.append(f"expert.reviews[{i}] must be a real 4-5 star Trustpilot review with its trustpilot.com/reviews/ URL")
-        ph = re.search(r"/products/([a-z0-9-]+)", json.dumps(spec))
-        lj = ph and os.path.join(ROOT, "product_refs", ph.group(1) + ".label.json")
-        packs = spec.get("pack_images") or []
+        pack_msg = premium_pack_list_message(spec)
+        if pack_msg:
+            taste.append(pack_msg)
         claimed = llg.claims_label_whitelist(spec)
-        if lj and os.path.exists(lj) and not packs and not claimed:
-            taste.append("product has a label json: list every generated pack shot in pack_images so the label gate runs")
         # pack_images, or copy that claims a label-gate pass, fails closed when the
         # whitelist is missing or landing_label_gate.py does not exit 0. A missing
         # file is not a skip. Scene-only specs (no pack_images, no claim) are.
