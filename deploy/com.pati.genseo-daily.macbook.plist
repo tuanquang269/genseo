@@ -11,13 +11,25 @@
      launchd reads ~/Library/LaunchAgents/com.pati.genseo-daily.plist, not this
      copy. After pull: bash scripts/install_mac_daily_wrapper.sh (updates ~/bin
      only), then copy this plist over the LaunchAgent and bootstrap it again.
-     Pulling alone does not update the wrapper launchd runs. -->
+     Pulling alone does not update the wrapper launchd runs, and it does not
+     reload these intervals.
+     Slots: 07:30 batch, 08:05 check, 14:47 catch-up. The 08:05 slot is the
+     same job. launchd will not start a second instance while one is running,
+     and state/daily.lock exits 0 if one does. A day that already reached the
+     target does not start a ticket. Intervals slept through coalesce into one
+     fire on wake, so a missed 07:30 is retried at 08:05 instead of 14:47.
+     ProgramArguments starts with /usr/bin/caffeinate -i -s. That is a
+     user-level assertion (idle sleep, and system sleep on AC). No sudo and
+     no pmset change. The wrapper also arms caffeinate itself. -->
 <plist version="1.0">
 <dict>
     <key>Label</key>
     <string>com.pati.genseo-daily</string>
     <key>ProgramArguments</key>
     <array>
+        <string>/usr/bin/caffeinate</string>
+        <string>-i</string>
+        <string>-s</string>
         <string>/bin/bash</string>
         <string>/Users/kevinkreative/bin/grokbot-genseo-daily.sh</string>
     </array>
@@ -33,6 +45,7 @@
     <key>StartCalendarInterval</key>
     <array>
         <dict><key>Hour</key><integer>7</integer><key>Minute</key><integer>30</integer></dict>
+        <dict><key>Hour</key><integer>8</integer><key>Minute</key><integer>5</integer></dict>
         <dict><key>Hour</key><integer>14</integer><key>Minute</key><integer>47</integer></dict>
     </array>
     <key>RunAtLoad</key>

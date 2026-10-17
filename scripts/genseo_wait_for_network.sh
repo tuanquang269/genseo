@@ -6,6 +6,11 @@
 # returns -1 as soon as DNS fails. The landing guard calls Shopify once and
 # fail-closes. Neither plist waits for a network. This wait sits in front of
 # those reads.
+# 2026-10-17 07:38 ICT: a dark wake started before DNS was up (down until
+# 07:39, about a minute). That gap is inside the default 600s budget. The
+# sleep in this loop is idle time. The daily wrappers arm caffeinate before
+# calling this function so pmset "sleep 1" cannot suspend the Mac during the
+# backoff. This function does not take that assertion itself.
 #
 # Sourced by deploy/grokbot-genseo-daily.sh and scripts/run_landing_daily.sh.
 # Bash 3.2 safe. Do not enable set -e here. Does not publish and does not

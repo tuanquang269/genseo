@@ -127,7 +127,7 @@ Unpublished headless runs do not ask. A local preview, `GENSEO_LANDING_DRAFT=1`,
 10. Commit `landing_drafts/<slug>.json`, `.claims.md`, `<slug>/body.html`, screenshots. `tmp_images/` is not versioned.
 
 ## Daily listicle lane (Kevin 2026-10-08) — 1 UNPUBLISHED draft per day, Kevin approves
-- launchd `com.pati.genseo-landing` 08:15 + 16:15 catch-up → `scripts/run_landing_daily.sh` (MacBook = standby,
+- launchd `com.pati.genseo-landing` 08:15 + 09:20 check + 16:15 catch-up → `scripts/run_landing_daily.sh` (MacBook = standby,
   waits 75 min; Mini = primary; plists in `deploy/com.pati.genseo-landing.{macbook,mini}.plist`). Kill switch:
   `touch state/landing-daily.disabled`.
 - Article batch on the same Mac (`state/daily.lock`): the lane yields to it at most `GENSEO_LANDING_ARTICLE_YIELD_MIN`

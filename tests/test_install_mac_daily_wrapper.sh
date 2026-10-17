@@ -183,6 +183,9 @@ else
     && ok "copied wrapper waits for DNS" || bad "copied wrapper has no DNS wait"
   grep -F -q 'genseo_sync_main.sh' "$HOME_DIR/bin/grokbot-genseo-daily.sh" \
     && ok "copied wrapper syncs origin/main" || bad "copied wrapper has no origin/main sync"
+  has "$WORK/out" "helper scripts/genseo_power_assert.sh: present" "real tree power helper present"
+  grep -F -q 'genseo_power_assert_arm' "$HOME_DIR/bin/grokbot-genseo-daily.sh" \
+    && ok "copied wrapper arms a power assertion" || bad "copied wrapper has no power assertion"
 fi
 for rel in scripts/genseo_daily_lock.sh scripts/genseo_group_timeout.sh; do
   if [ -f "$ROOT/$rel" ]; then
@@ -271,6 +274,22 @@ has "$WORK/err" "Nothing was copied." "open launcher copies nothing"
 run_install "$HOME_DIR" "$FIX" 1 --
 assert_rc 0 "launcher copy succeeds once the holder exits"
 cmp -s "$FIX/deploy/grokbot-genseo-daily.sh" "$dest" && ok "later copy matches the new source" || bad "later copy did not update"
+
+echo "14. a wrapper that arms caffeinate is not copied when that helper is absent"
+fixture powmiss 1 755
+printf '\n%s\n' '. "$HOME/genseo/scripts/genseo_power_assert.sh"' >>"$FIX/deploy/grokbot-genseo-daily.sh"
+new_home powmiss
+run_install "$HOME_DIR" "$FIX" 1 --
+assert_rc 1 "copy refused without the power helper"
+has "$WORK/err" "Nothing was copied" "refused power copy says nothing was copied"
+has "$WORK/out" "helper scripts/genseo_power_assert.sh: MISSING" "reports the power helper missing"
+[ ! -e "$HOME_DIR/bin/grokbot-genseo-daily.sh" ] && ok "no dest without the power helper" || bad "dest written without the power helper"
+printf '%s\n' 'arm' >"$FIX/scripts/genseo_power_assert.sh"
+run_install "$HOME_DIR" "$FIX" 1 --
+assert_rc 0 "copy succeeds once the power helper exists"
+has "$WORK/out" "helper scripts/genseo_power_assert.sh: present" "power helper present"
+cmp -s "$FIX/deploy/grokbot-genseo-daily.sh" "$HOME_DIR/bin/grokbot-genseo-daily.sh" \
+  && ok "power wrapper bytes match" || bad "power wrapper bytes differ"
 
 printf '\n%d passed, %d failed\n' "$PASS" "$FAIL"
 [ "$FAIL" = 0 ]

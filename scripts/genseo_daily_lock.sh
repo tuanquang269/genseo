@@ -2,7 +2,7 @@
 # Daily-batch lock for deploy/grokbot-genseo-daily.sh.
 #
 # state/daily.lock is a directory (atomic mkdir). The wrapper PID is state/daily.lock/pid.
-# Launchd's 14:47 catch-up used to rmdir any lock older than 6 hours. A 07:30 batch still
+# Launchd's 08:05 check and 14:47 catch-up used to rmdir any lock older than 6 hours. A 07:30 batch still
 # on a ticket is older than that and was losing its lock to the catch-up.
 #
 # Rules (genseo_daily_lock_acquire):
