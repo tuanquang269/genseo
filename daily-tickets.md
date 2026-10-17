@@ -825,7 +825,7 @@ plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check th
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** turkesterone + seniors checked 2026-10-11 against 110 live articles (blog listing + sitemap + Atom) and all 57 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#MB1012-5 — shilajit for seniors** — `Shilajit for Seniors: 5 Safety Checks Over 60 (US 2026)`
+- [DONE 2026-10-17 https://wellnessnest.co/blogs/news/shilajit-for-seniors-5-safety-checks-over-60-us-2026] **#MB1012-5 — shilajit for seniors** — `Shilajit for Seniors: 5 Safety Checks Over 60 (US 2026)`
   - **Primary keyword:** `shilajit for seniors` · **Secondary:** shilajit for older adults, shilajit over 60, is shilajit safe for elderly, shilajit and blood pressure medication
   - **Search intent:** adult 60+ (or a family member) checking whether shilajit is safe alongside existing medication
   - **Template:** LISTICLE · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-11 18:49 ICT)
