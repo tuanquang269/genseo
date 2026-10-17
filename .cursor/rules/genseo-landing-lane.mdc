@@ -11,7 +11,7 @@ live-count guard, no tracker row, never in `/blogs/news.atom`, never counted tow
 Read `skills/genseo-landing-pages/SKILL.md` and `templates/landing/README.md` in full before touching this lane.
 
 - **Daily lane:** `scripts/build_landing_tickets.py` adds one `- [ ] listicle | <store> | product=<handle> · angle: …`
-  line to `daily-landing-tickets.md` (angles in `templates/landing/listicle-angles.json`, LRU product rotation);
+  line to `daily-landing-tickets.md` (angles in `templates/landing/listicle-angles.json`, priority-weighted product rotation);
   `scripts/run_landing_daily.sh` (launchd 08:15 + 16:15 ICT) builds ONE unpublished `gsl-preview-*` draft per day.
   `landing_guard.py` keeps it to one page/day across both Macs. Kill switch: `state/landing-daily.disabled`.
 - **Never auto-live.** Live needs Kevin's explicit GO (`GENSEO_LANDING_LIVE_OK=1 … --live`), refused while
