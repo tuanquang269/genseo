@@ -57,10 +57,13 @@
 # a checkout script open. A fast-forward re-execs
 # ~/genseo/deploy/grokbot-genseo-daily.sh (same PID, so state/daily.lock stays
 # held). After each ticket, HEAD is switched back to main when it is still on
-# publish/*. launchd runs ~/bin, so the first time this ships the Mac still
-# needs: bash scripts/install_mac_daily_wrapper.sh
-# That does not reload launchd. Later edits of this file are read from the
-# repo on the re-exec. Pulling alone does not update ~/bin.
+# publish/*. launchd runs ~/bin. After a successful sync this file sources
+# scripts/genseo_self_apply.sh, which reinstalls ~/bin when the bytes differ
+# (bash scripts/install_mac_daily_wrapper.sh) and reloads a changed LaunchAgent
+# only after this process exits. It does not start a run. Later edits of this
+# file are read from the repo on the re-exec. Pulling alone does not update
+# ~/bin until that self-apply runs. A ~/bin older than the re-exec still needs
+# one manual bash scripts/install_mac_daily_wrapper.sh.
 # Sleep (2026-10-17): the Mac was in maintenance sleep at 07:27 and dark-woke
 # at 07:38 with DNS down until 07:39. pmset "sleep 1" is an idle timer, so a
 # running batch can be suspended without a power assertion. Before the stable
@@ -70,8 +73,9 @@
 # returning to sleep. On battery -s is not enforced. No sudo and no pmset
 # change. A missing caffeinate is logged and the run continues. The loaded
 # plist should also put /usr/bin/caffeinate -i -s in front of this file so the
-# assertion starts at launchd's exec. Copy the plist and bootstrap again or
-# launchd keeps the previous program and the previous intervals.
+# assertion starts at launchd's exec. Self-apply copies that plist and
+# bootstraps it after this process exits. An agent that was never loaded still
+# needs one manual copy and bootstrap. RunAtLoad stays false.
 # The 08:05 slot is this same job. launchd does not start a second instance
 # while one is still running, and the daily lock exits 0 if a second copy
 # does start. A count that has already reached the daily target does not
@@ -188,6 +192,15 @@ if [ "${GENSEO_MAIN_SYNCED:-}" != 1 ]; then
     genseo_sync_origin_main "$G/deploy/grokbot-genseo-daily.sh" "$@"
   else
     say "WARN: origin/main not updated — missing scripts/genseo_sync_main.sh — continuing on the current checkout"
+  fi
+fi
+# Only after a successful sync. A fetch failure, a refused fast-forward, or a
+# dry-run leaves GENSEO_MAIN_SYNCED unset and does not touch ~/bin or launchd.
+if [ "${GENSEO_MAIN_SYNCED:-}" = 1 ] && [ -f "$G/scripts/genseo_self_apply.sh" ]; then
+  # shellcheck source=../scripts/genseo_self_apply.sh
+  . "$G/scripts/genseo_self_apply.sh" || say "WARN: self-apply could not be loaded — continuing on the current setup"
+  if declare -F genseo_self_apply >/dev/null 2>&1; then
+    genseo_self_apply com.pati.genseo-daily || say "WARN: self-apply failed — continuing on the current setup"
   fi
 fi
 say "start (target $TARGET/day, live now $(live_count))"
