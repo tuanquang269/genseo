@@ -188,10 +188,10 @@ if grep -qxF -- "$draft" "$ROOT/daily-landing-tickets.md"; then
 else
   bad "gold-resin draft line missing"
 fi
-if grep -qE '^- \[ \] .*pure-shilajit-gold-resin' "$ROOT/daily-landing-tickets.md"; then
-  bad "gold-resin is open again"
+if grep -qE '^- \[ \] .*pure-shilajit-gold-resin.*Resin vs capsules vs gummies' "$ROOT/daily-landing-tickets.md"; then
+  bad "gold-resin draft angle is open again"
 else
-  ok "gold-resin is not an open ticket"
+  ok "gold-resin draft angle is not an open ticket"
 fi
 if grep -q 'FAILED 2026-10-11' "$ROOT/daily-landing-tickets.md"; then
   bad "queue still has FAILED 2026-10-11"
