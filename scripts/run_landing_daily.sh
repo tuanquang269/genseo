@@ -31,14 +31,18 @@
 #      and workers that called setsid) and that process group. The deadline is monotonic elapsed time.
 # Kill switch: touch state/landing-daily.disabled (or GENSEO_LANDING_DAILY_ENABLED=0).
 # Checkout: after the network wait succeeds, scripts/genseo_sync_main.sh runs
-# `git fetch origin main` and `git merge --ff-only origin/main` when HEAD is
-# main and the work tree is clean. A dirty checkout, or local commits that are
-# not on origin, is logged and this run continues. launchd executes this file,
-# so the fetch runs from a copy outside the repo: git must not rewrite the
-# script bash is reading. A fast-forward re-execs this file (same PID, so
-# state/landing-daily.lock stays held). The first time this ships, the Mac
-# needs `cd ~/genseo && git pull`. The plist already points at this path, so
-# that pull does not need a launchd reload.
+# `git fetch origin main` and `git merge --ff-only origin/main` when local
+# main can fast-forward. Untracked files that would not be overwritten stay.
+# A tracked edit that would be overwritten is stashed or backed up and logged.
+# A publish/* branch returns to main (the branch ref is kept). launchd executes
+# this file, so the fetch runs from a copy outside the repo: git must not
+# rewrite the script bash is reading. It does not fast-forward while another
+# GenSeo job holds a lane lock or has a checkout script open. A fast-forward
+# re-execs this file (same PID, so state/landing-daily.lock stays held).
+# Before this run commits, and again on exit, HEAD is switched back to main
+# when it is still on publish/*. The first time this ships, the Mac needs
+# `cd ~/genseo && git pull`. The plist already points at this path, so that
+# pull does not need a launchd reload.
 set -uo pipefail
 export PATH="$HOME/.local/bin:$HOME/.npm-global/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 for d in "$HOME"/.nvm/versions/node/*/bin; do [ -d "$d" ] && PATH="$d:$PATH"; done; export PATH
@@ -127,7 +131,9 @@ if [ "$lock_owned" != 1 ]; then
   fi
   printf '%s\n' "$$" > "${LOCK}.owner"
 fi
-if declare -F genseo_stable_copy_release >/dev/null 2>&1; then
+if declare -F genseo_return_publish_branch_to_main >/dev/null 2>&1 && declare -F genseo_stable_copy_release >/dev/null 2>&1; then
+  trap 'genseo_return_publish_branch_to_main || true; rm -f "${LOCK}.owner"; rmdir "$LOCK" 2>/dev/null || true; genseo_stable_copy_release now || true' EXIT
+elif declare -F genseo_stable_copy_release >/dev/null 2>&1; then
   trap 'rm -f "${LOCK}.owner"; rmdir "$LOCK" 2>/dev/null || true; genseo_stable_copy_release now || true' EXIT
 else
   trap 'rm -f "${LOCK}.owner"; rmdir "$LOCK" 2>/dev/null || true' EXIT
@@ -264,6 +270,9 @@ esac
 FILES=("$QUEUE" "$SPEC")
 for f in "${SPEC%.json}.claims.md" "$OUT/body.html" "$OUT/palette.json" "$OUT/page.css" "$OUT/preview.html" "$OUT/shopify.json" "$OUT/qa.json" "$OUT/desktop.jpg" "$OUT/mobile.jpg" "$OUT/real_qa.json" "$OUT/real-desktop.jpg" "$OUT/real-mobile.jpg" "$OUT/real-offer.jpg"; do [ -f "$f" ] && FILES+=("$f"); done
 for i in 1 2 3 4 5 6; do [ -e .git/index.lock ] && sleep 10 || break; done
+if declare -F genseo_return_publish_branch_to_main >/dev/null 2>&1; then
+  genseo_return_publish_branch_to_main || true
+fi
 git add -- "${FILES[@]}" >> "$LOG" 2>&1 && git commit -q -m "landing daily $DAY: $SLUG (UNPUBLISHED draft ${PID:-none}, validate=$V qa=$QOK palette=$PQ real=$RQ)" -- "${FILES[@]}" >> "$LOG" 2>&1 \
   && say "committed $(git rev-parse --short HEAD)" || say "WARN: commit failed (see log)"
 exit $R
