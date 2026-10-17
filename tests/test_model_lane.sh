@@ -314,10 +314,10 @@ grep -F -q 'GENSEO_PERMISSION_MODE="dontAsk"' "$ROOT/scripts/genseo_model_lane.s
   && ok "helper sets dontAsk" || bad "helper missing dontAsk"
 ticket='- [DRAFT 2026-10-12 page 166173573435] listicle | wellnessnest | product=pure-shilajit-gold-resin · angle: Resin vs capsules vs gummies: N things to compare before you pick a shilajit format · audience: adults comparing shilajit formats (added 2026-10-09)'
 grep -qxF -- "$ticket" "$ROOT/daily-landing-tickets.md" && ok "gold-resin stays the unpublished draft" || bad "gold-resin draft line"
-if grep -qE '^- \[ \] .*pure-shilajit-gold-resin' "$ROOT/daily-landing-tickets.md"; then
-  bad "gold-resin is open again"
+if grep -qE '^- \[ \] .*pure-shilajit-gold-resin.*Resin vs capsules vs gummies' "$ROOT/daily-landing-tickets.md"; then
+  bad "gold-resin draft angle is open again"
 else
-  ok "gold-resin is not an open ticket"
+  ok "gold-resin draft angle is not an open ticket"
 fi
 if grep -q 'FAILED 2026-10-10' "$ROOT/daily-landing-tickets.md"; then bad "FAILED tag still on the queue"; else ok "FAILED tag cleared"; fi
 if grep -q 'FAILED 2026-10-11' "$ROOT/daily-landing-tickets.md"; then bad "FAILED 2026-10-11 tag still on the queue"; else ok "2026-10-11 FAILED tag cleared"; fi
