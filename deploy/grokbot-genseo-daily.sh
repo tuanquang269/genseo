@@ -4,6 +4,11 @@
 # Loops run_ticket_headless.sh (one ticket per call) until today's ICT live count reaches GENSEO_DAILY_TARGET.
 # GENSEO_AUTO_REFILL=1: when fewer tickets are open than are still to publish today, scripts/refill_tickets.py
 # tops daily-tickets.md up once per run (gated, lint-checked; docs/TICKET_REFILL.md). Default off.
+# Queue low-water is separate and on by default. Once per run, if open tickets are below
+# GENSEO_QUEUE_LOW_WATER (default 2 * GENSEO_DAILY_TARGET), the same refill_tickets.py runs
+# ticket-only: public storefront reads, no Shopify write, no paid API. A short bank
+# (exit 3) writes state/queue-low-water.marker and the run continues. It does not
+# call an Ads or LLM miner. GENSEO_QUEUE_LOW_WATER=0 turns the guard off.
 #
 # Double-publish prevention (the two Macs share NO writable state: vault Syncthing is MacBook->Mini one-way,
 # ticket files are per-Mac, the Mini's repo commits are unpushed) — so the PUBLIC SITE is the shared state:
@@ -86,6 +91,14 @@
 set -uo pipefail
 export PATH="$HOME/.local/bin:$HOME/.npm-global/bin:$HOME/.codex/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 G="$HOME/genseo"; PY=/usr/bin/python3
+mkdir -p "$G/logs" "$G/state"
+if [ -f "$G/scripts/genseo_errlog.sh" ]; then
+  # shellcheck source=../scripts/genseo_errlog.sh
+  . "$G/scripts/genseo_errlog.sh" || printf '%s\n' "WARN: could not load scripts/genseo_errlog.sh" >&2
+  if declare -F genseo_errlog_begin >/dev/null 2>&1; then
+    genseo_errlog_begin "$G/logs/launchd-daily.err.log" || true
+  fi
+fi
 if [ -f "$G/scripts/genseo_power_assert.sh" ]; then
   # shellcheck source=../scripts/genseo_power_assert.sh
   . "$G/scripts/genseo_power_assert.sh" || {
@@ -114,6 +127,16 @@ esac
 REFILL="${GENSEO_AUTO_REFILL:-0}"
 REFILL_BUFFER="${GENSEO_REFILL_BUFFER:-3}"
 REFILL_PREFIX="${GENSEO_TICKET_PREFIX:-$([ "$ROLE" = standby ] && echo MB || echo MM)}"
+# Default is two days of the daily target (10 when the target is 5). 0 disables.
+# A non-numeric value is ignored so a bad plist cannot turn the guard off.
+LOW_WATER_RAW="${GENSEO_QUEUE_LOW_WATER-}"
+LOW_WATER_BAD=0
+case "$LOW_WATER_RAW" in
+  '') LOW_WATER=$(( TARGET * 2 )) ;;
+  *[!0-9]*) LOW_WATER=$(( TARGET * 2 )); LOW_WATER_BAD=1 ;;
+  *) LOW_WATER=$LOW_WATER_RAW ;;
+esac
+LOW_WATER_DONE=0
 # Extra reads after the first -1. 0 keeps the old single-check fail-closed.
 # Caps stop a bad LaunchAgent value from spinning or sleeping for hours.
 LIVE_FEED_RETRIES="${GENSEO_LIVE_FEED_RETRIES:-3}"
@@ -177,6 +200,87 @@ live_urls(){ $PY "$G/scripts/genseo_published_today.py" --json 2>/dev/null | $PY
 d=json.load(sys.stdin); [print(e["url"]) for e in d.get("entries",[])]' 2>/dev/null; }
 live_count(){ local n; n="$($PY "$G/scripts/genseo_published_today.py" 2>/dev/null | tail -1)"; case "$n" in ''|*[!0-9-]*) n=-1;; esac; echo "$n"; }
 
+_queue_low_marker() {
+  local marker=$1 open_n=$2 rc=$3 why=$4
+  mkdir -p "$(dirname "$marker")"
+  {
+    printf '%s\n' "QUEUE LOW"
+    printf 'time=%s\n' "$(date '+%F %T')"
+    printf 'open=%s\n' "$open_n"
+    printf 'threshold=%s\n' "$LOW_WATER"
+    printf 'exit=%s\n' "$rc"
+    printf 'reason=%s\n' "$why"
+    printf '%s\n' "action=add topics to templates/article-topic-bank.json or board/ideas.csv"
+    printf '%s\n' "paid_api=not called"
+  } > "$marker"
+}
+
+# Ticket-only. refill_tickets.py reads the public storefront and appends
+# daily-tickets.md. It does not call Shopify Admin and it does not call a
+# paid API. Exit 3 writes the marker and the run continues. Do not fall
+# through to an Ads or LLM miner. The lane lock is already held here.
+genseo_queue_low_water() {
+  local open need_add frc why marker
+  if [ "${LOW_WATER_DONE:-0}" = 1 ]; then
+    return 0
+  fi
+  LOW_WATER_DONE=1
+  if [ "${LOW_WATER:-0}" = 0 ]; then
+    return 0
+  fi
+  marker="$G/state/queue-low-water.marker"
+  open=$(grep -cE '^(- \[ \]|## \[ \])' "$G/daily-tickets.md" 2>/dev/null || true)
+  case "${open:-}" in
+    ''|*[!0-9]*) open=0 ;;
+  esac
+  if [ "$open" -ge "$LOW_WATER" ]; then
+    say "queue low-water: $open open ticket(s) >= $LOW_WATER — ok"
+    rm -f "$marker"
+    return 0
+  fi
+  need_add=$(( LOW_WATER - open ))
+  say "QUEUE LOW: $open open article ticket(s) < $LOW_WATER (2 days of target $TARGET is $(( TARGET * 2 )); threshold $LOW_WATER) — refill_tickets.py ticket-only, no Shopify write, no paid API (prefix $REFILL_PREFIX)"
+  if [ ! -f "$G/scripts/refill_tickets.py" ]; then
+    why="refill_tickets.py missing"
+    say "QUEUE LOW: $why — fail-soft, no miner"
+    _queue_low_marker "$marker" "$open" 127 "$why"
+    return 0
+  fi
+  /bin/bash "$G/scripts/genseo_group_timeout.sh" 600 \
+    "$PY" "$G/scripts/refill_tickets.py" \
+    --if-below "$LOW_WATER" --count "$need_add" --prefix "$REFILL_PREFIX" \
+    >> "$LOG" 2>&1
+  frc=$?
+  case "$frc" in
+    0)
+      say "queue low-water: refill_tickets.py exit 0"
+      rm -f "$marker"
+      git -C "$G" add -- daily-tickets.md board/ideas.csv 2>/dev/null \
+        && git -C "$G" commit -q -m "queue: refill_tickets.py on $HOST" -- daily-tickets.md board/ideas.csv >/dev/null 2>&1 \
+        || true
+      ;;
+    3)
+      why="fewer topics passed than asked — add topics to the bank or board; no paid miner"
+      say "QUEUE LOW: refill exit 3 — $why"
+      _queue_low_marker "$marker" "$open" 3 "$why"
+      git -C "$G" add -- daily-tickets.md board/ideas.csv 2>/dev/null \
+        && git -C "$G" commit -q -m "queue: refill_tickets.py on $HOST" -- daily-tickets.md board/ideas.csv >/dev/null 2>&1 \
+        || true
+      ;;
+    124)
+      why="refill timed out after 600s"
+      say "QUEUE LOW: $why — fail-soft"
+      _queue_low_marker "$marker" "$open" 124 "$why"
+      ;;
+    *)
+      why="refill failed (exit $frc) — see $LOG"
+      say "QUEUE LOW: $why — fail-soft"
+      _queue_low_marker "$marker" "$open" "$frc" "$why"
+      ;;
+  esac
+  return 0
+}
+
 # The start line below is the first feed read. Wait for DNS before it so a
 # wake does not burn the short live-feed retry on ENOTFOUND / -1.
 # The fast-forward is after that wait and before the feed read. A re-exec
@@ -204,6 +308,9 @@ if [ "${GENSEO_MAIN_SYNCED:-}" = 1 ] && [ -f "$G/scripts/genseo_self_apply.sh" ]
   fi
 fi
 say "start (target $TARGET/day, live now $(live_count))"
+if [ "${LOW_WATER_BAD:-0}" = 1 ]; then
+  say "QUEUE LOW: ignoring bad GENSEO_QUEUE_LOW_WATER — using $LOW_WATER"
+fi
 if [ "$ROLE" = "standby" ] && [ "${GENSEO_NO_DELAY:-0}" != "1" ]; then
   say "standby: waiting ${DELAY} min so a healthy peer Mac goes first"; sleep $(( DELAY * 60 ))
 fi
@@ -221,6 +328,7 @@ for i in $(seq 1 $(( MAX_RUNS + ${GENSEO_PEER_MAX_WAITS:-6} ))); do
     n="$(live_count)"
   done
   if [ "$n" -lt 0 ]; then say "live feed unreadable — fail closed, exit"; exit 1; fi
+  genseo_queue_low_water || say "QUEUE LOW: guard error — continuing"
   if [ "$n" -ge "$TARGET" ]; then say "DONE: $n/$TARGET live for $DAY (ICT)"; exit 0; fi
   peer="$($PY "$G/scripts/genseo_published_today.py" --peer-active "$PEER_WIN" --local-log "$MINE" 2>/dev/null)"; rc=$?
   if [ "$rc" = 3 ]; then

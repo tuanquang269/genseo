@@ -225,6 +225,7 @@ check "BSD date -v is tried before GNU date -d" awk '
 ' "$ROOT/tests/test_landing_daily_lock.sh"
 check "calls group timeout" grep -q 'genseo_group_timeout.sh' "$ROOT/scripts/run_landing_daily.sh"
 check "default cap is 5400s" grep -q 'GENSEO_LANDING_TIMEOUT_SEC:-5400' "$ROOT/scripts/run_landing_daily.sh"
+check "tops the queue up with --ensure" grep -q 'build_landing_tickets.py --ensure' "$ROOT/scripts/run_landing_daily.sh"
 check "ticket line is not perl alarm" not grep -q 'alarm .*run_landing_headless' "$ROOT/scripts/run_landing_daily.sh"
 sandbox group_timeout
 cat > "$H/genseo/scripts/run_landing_headless.sh" << 'EOF'
@@ -264,6 +265,26 @@ check "exit 1" rc_is 1
 check "logged FATAL" logged "FATAL: missing scripts/genseo_group_timeout.sh"
 check "agent never started" not agent_started
 check "landing lock was not taken" test ! -e "$S/landing-daily.lock"
+
+echo "13. builder failure with an open line is fail-soft and still starts the agent"
+sandbox lowsoft
+printf '%s\n' '- [ ] listicle | wellnessnest | product=stub-product · angle: stub (added 2026-01-01)' >"$H/genseo/daily-landing-tickets.md"
+printf '%s\n' 'import sys; sys.exit(1)' >"$H/genseo/scripts/build_landing_tickets.py"
+run 30
+check "agent started" agent_started
+check "logged low-water failed" logged "landing queue low-water failed"
+check "marker written" test -f "$S/landing-queue-low-water.marker"
+check "marker says no paid api" grep -q "paid_api=not called" "$S/landing-queue-low-water.marker"
+
+echo "14. builder failure with an empty queue still stops before the agent"
+sandbox lowempty
+rm -f "$H/genseo/daily-landing-tickets.md"
+printf '%s\n' 'import sys; sys.exit(1)' >"$H/genseo/scripts/build_landing_tickets.py"
+run 20
+check "exit 1" rc_is 1
+check "agent never started" not agent_started
+check "logged no open ticket" logged "no open landing ticket"
+check "empty-queue marker written" test -f "$S/landing-queue-low-water.marker"
 
 echo
 echo "$PASS passed, $FAIL failed"

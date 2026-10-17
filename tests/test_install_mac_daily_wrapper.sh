@@ -184,6 +184,7 @@ else
   grep -F -q 'genseo_sync_main.sh' "$HOME_DIR/bin/grokbot-genseo-daily.sh" \
     && ok "copied wrapper syncs origin/main" || bad "copied wrapper has no origin/main sync"
   has "$WORK/out" "helper scripts/genseo_power_assert.sh: present" "real tree power helper present"
+  has "$WORK/out" "helper scripts/genseo_errlog.sh: present" "real tree errlog helper present"
   grep -F -q 'genseo_power_assert_arm' "$HOME_DIR/bin/grokbot-genseo-daily.sh" \
     && ok "copied wrapper arms a power assertion" || bad "copied wrapper has no power assertion"
 fi
@@ -290,6 +291,22 @@ assert_rc 0 "copy succeeds once the power helper exists"
 has "$WORK/out" "helper scripts/genseo_power_assert.sh: present" "power helper present"
 cmp -s "$FIX/deploy/grokbot-genseo-daily.sh" "$HOME_DIR/bin/grokbot-genseo-daily.sh" \
   && ok "power wrapper bytes match" || bad "power wrapper bytes differ"
+
+echo "15. a wrapper that rotates launchd stderr is not copied when that helper is absent"
+fixture errmiss 1 755
+printf '\n%s\n' '. "$HOME/genseo/scripts/genseo_errlog.sh"' >>"$FIX/deploy/grokbot-genseo-daily.sh"
+new_home errmiss
+run_install "$HOME_DIR" "$FIX" 1 --
+assert_rc 1 "copy refused without the errlog helper"
+has "$WORK/err" "Nothing was copied" "refused errlog copy says nothing was copied"
+has "$WORK/out" "helper scripts/genseo_errlog.sh: MISSING" "reports the errlog helper missing"
+[ ! -e "$HOME_DIR/bin/grokbot-genseo-daily.sh" ] && ok "no dest without the errlog helper" || bad "dest written without the errlog helper"
+printf '%s\n' 'rotate' >"$FIX/scripts/genseo_errlog.sh"
+run_install "$HOME_DIR" "$FIX" 1 --
+assert_rc 0 "copy succeeds once the errlog helper exists"
+has "$WORK/out" "helper scripts/genseo_errlog.sh: present" "errlog helper present"
+cmp -s "$FIX/deploy/grokbot-genseo-daily.sh" "$HOME_DIR/bin/grokbot-genseo-daily.sh" \
+  && ok "errlog wrapper bytes match" || bad "errlog wrapper bytes differ"
 
 printf '\n%d passed, %d failed\n' "$PASS" "$FAIL"
 [ "$FAIL" = 0 ]

@@ -59,16 +59,21 @@ def _strip_approved(text):
 # Combined FAIL rule flags 53/534 = 9.9% of historical drafts.
 #
 # Escape hatch: GENSEO_QRG_ADVISORY=1 downgrades these to warnings.
+# A missing scorer is NOT that hatch. It prints "QRG scoring unavailable: …"
+# and stays a warning. Thresholds apply only to measured scores. The
+# auto-publish skill (STEP 6) hard-fails low scores; it does not hold a
+# draft whose scorer never ran. Do not invent a score and do not call a
+# paid API to replace the launcher.
 QRG_MIN_OVERALL=80
 QRG_MAX_FILLER=25
 QRG_MAX_AI=25
 QRG_WARN_REPETITION=20
 QRG_WARN_DENSITY=0.55
+QRG_LAUNCHER_GLOB="~/.claude/plugins/marketplaces/*claude-seo*/bin/claude-seo"
 
 def _claude_seo_bin():
     """Locate the claude-seo launcher. Glob so a marketplace rename can't break us."""
-    for p in glob.glob(os.path.expanduser(
-            "~/.claude/plugins/marketplaces/*claude-seo*/bin/claude-seo")):
+    for p in glob.glob(os.path.expanduser(QRG_LAUNCHER_GLOB)):
         if os.access(p, os.X_OK):
             return p
     return None
@@ -89,12 +94,76 @@ def _claude_seo_env():
     env.pop("CLAUDE_PLUGIN_DATA", None)   # leaks in from whichever plugin ran last
     return env
 
+def _qrg_flat(note):
+    """One log field: no tabs or newlines."""
+    return " ".join(str(note).split())
+
+
+def qrg_log_column(qrg, note):
+    """validate_runs.log column. A skip names the reason; it is not a bare qrg=skip."""
+    if note:
+        return "qrg=skip:" + _qrg_flat(note)[:160]
+    q=qrg["quality"]
+    return "qrg=%s/%s/%s" % (q["overall_quality"], q["filler_score"], q["ai_pattern_score"])
+
+
+def qrg_report(qrg, note):
+    """Return (hard_fails, warnings, line).
+
+    A non-empty note means the claude-seo scorer did not return usable scores.
+    That is a warning. The draft is not held. Measured scores still hard-fail
+    the thresholds above unless GENSEO_QRG_ADVISORY=1.
+    """
+    if note:
+        flat=_qrg_flat(note)
+        return [], ["QRG quality scoring skipped (%s)" % note], "QRG scoring unavailable: %s" % flat
+    try:
+        q,v=qrg["quality"],qrg["verify"]
+        overall=q["overall_quality"]
+        filler=q["filler_score"]
+        ai=q["ai_pattern_score"]
+        rep=q["repetition_score"]
+        density=q["information_density"]
+        matches=q["matches"]
+        claims=v["claim_count"]
+        uncited=v["uncited_count"]
+        ratio=v["uncited_ratio"]
+    except (AttributeError, KeyError, TypeError, ValueError) as exc:
+        flat="scorer JSON unusable (%s)" % _qrg_flat(exc)
+        return [], ["QRG quality scoring skipped (%s)" % flat], "QRG scoring unavailable: %s" % flat
+    advisory=os.environ.get("GENSEO_QRG_ADVISORY")=="1"
+    hard=[]
+    warns=[]
+    hits=lambda lst: ", ".join(lst[:6]) if lst else "none"
+    line=(f"QRG: overall {overall}/100 "
+          f"filler {filler} ai {ai} "
+          f"repetition {rep} density {density} "
+          f"| claims {claims} uncited {uncited}")
+    sink=warns if advisory else hard
+    if overall < QRG_MIN_OVERALL:
+        sink.append(f"QRG overall quality {overall}/100 below {QRG_MIN_OVERALL} "
+                    f"(scaled-content-abuse risk; p10 of our own corpus is 83)")
+    if filler >= QRG_MAX_FILLER:
+        sink.append(f"filler score {filler} >= {QRG_MAX_FILLER} — remove: "
+                    f"{hits(matches.get('filler') or [])}")
+    if ai >= QRG_MAX_AI:
+        sink.append(f"AI-pattern score {ai} >= {QRG_MAX_AI} — rewrite: "
+                    f"{hits(matches.get('ai_patterns') or [])}")
+    if rep >= QRG_WARN_REPETITION:
+        warns.append(f"repetition {rep} (p90 of corpus is 13) — likely restating the same point")
+    if density < QRG_WARN_DENSITY:
+        warns.append(f"information density {density} < {QRG_WARN_DENSITY} — padded prose")
+    if claims >= 3 and ratio >= 1.0:
+        warns.append(f"{claims} factual claims, none cited — add a source or drop the numbers")
+    return hard, warns, line
+
+
 def qrg_scores(plain_text):
     """Score prose quality + citation gaps. Returns (scores_dict, note) where a
     non-empty note means scoring was skipped and nothing should be enforced."""
     binary=_claude_seo_bin()
     if not binary:
-        return None, "claude-seo runtime not installed"
+        return None, "claude-seo runtime not installed (%s)" % QRG_LAUNCHER_GLOB
     env=_claude_seo_env()
     tmp=None
     try:
@@ -385,33 +454,9 @@ def main():
     plain=re.sub(r'<[^>]*>',' ',re.sub(r'<!--.*?-->','',text,flags=re.S))
     plain=re.sub(r'[ \t]+',' ',plain).strip()
     qrg,qrg_note=qrg_scores(plain)
-    qrg_line=""
-    if qrg_note:
-        warns.append(f"QRG quality scoring skipped ({qrg_note})")
-    else:
-        q,v=qrg["quality"],qrg["verify"]
-        advisory=os.environ.get("GENSEO_QRG_ADVISORY")=="1"
-        sink=warns if advisory else fails
-        hits=lambda lst: ", ".join(lst[:6]) if lst else "none"
-        qrg_line=(f"QRG: overall {q['overall_quality']}/100 "
-                  f"filler {q['filler_score']} ai {q['ai_pattern_score']} "
-                  f"repetition {q['repetition_score']} density {q['information_density']} "
-                  f"| claims {v['claim_count']} uncited {v['uncited_count']}")
-        if q["overall_quality"] < QRG_MIN_OVERALL:
-            sink.append(f"QRG overall quality {q['overall_quality']}/100 below {QRG_MIN_OVERALL} "
-                        f"(scaled-content-abuse risk; p10 of our own corpus is 83)")
-        if q["filler_score"] >= QRG_MAX_FILLER:
-            sink.append(f"filler score {q['filler_score']} >= {QRG_MAX_FILLER} — remove: "
-                        f"{hits(q['matches']['filler'])}")
-        if q["ai_pattern_score"] >= QRG_MAX_AI:
-            sink.append(f"AI-pattern score {q['ai_pattern_score']} >= {QRG_MAX_AI} — rewrite: "
-                        f"{hits(q['matches']['ai_patterns'])}")
-        if q["repetition_score"] >= QRG_WARN_REPETITION:
-            warns.append(f"repetition {q['repetition_score']} (p90 of corpus is 13) — likely restating the same point")
-        if q["information_density"] < QRG_WARN_DENSITY:
-            warns.append(f"information density {q['information_density']} < {QRG_WARN_DENSITY} — padded prose")
-        if v["claim_count"] >= 3 and v["uncited_ratio"] >= 1.0:
-            warns.append(f"{v['claim_count']} factual claims, none cited — add a source or drop the numbers")
+    qrg_fails,qrg_warns,qrg_line=qrg_report(qrg, qrg_note)
+    fails.extend(qrg_fails)
+    warns.extend(qrg_warns)
 
     print(f"=== VALIDATE {path} ===")
     print(f"words(content only): {words}  | h1:{len(h1s)} h2:{len(h2s)} table:{'<table' in html} faqschema:{'FAQPage' in html} collections:{len(colls)}")
@@ -423,7 +468,7 @@ def main():
         import datetime
         with open("/Users/kevinkreative/genseo/validate_runs.log","a") as lg:
             verdict="FAIL" if fails else "PASS"
-            qcol=f"qrg={qrg['quality']['overall_quality']}/{qrg['quality']['filler_score']}/{qrg['quality']['ai_pattern_score']}" if qrg else "qrg=skip"
+            qcol=qrg_log_column(qrg, qrg_note)
             lg.write(f"{datetime.datetime.now().isoformat(timespec='seconds')}\t{verdict}\twords={words}\t{qcol}\t{path}\t{';'.join(fails)[:200]}\n")
     except Exception:
         pass
