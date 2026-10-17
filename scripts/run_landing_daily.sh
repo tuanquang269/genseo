@@ -5,7 +5,7 @@
 # REAL render QA (Kevin 2026-10-08): landing_real_qa.py checks theme/template/body parity read-only, then screenshots the
 # REAL storefront in a ~40 s gsl-preview window (on -> screenshot -> off in a finally) so approval never rests on a local
 # render. GENSEO_LANDING_REAL_QA_WINDOW=0 keeps the parity checks but skips the window.
-# launchd com.pati.genseo-landing: 08:15 + 16:15 catch-up, on WHICHEVER Mac is online (deploy/com.pati.genseo-landing.*.plist).
+# launchd com.pati.genseo-landing: 08:15, 09:20 check, 16:15 catch-up, on WHICHEVER Mac is online (deploy/com.pati.genseo-landing.*.plist).
 #
 # One-page-per-day guarantee across the two Macs (they share no writable state -> Shopify is the shared state):
 #   1. DNS first: scripts/genseo_wait_for_network.sh, after the lock and before the first
@@ -19,7 +19,7 @@
 #      first guard, so a healthy Mini (primary) finishes its draft and the guard makes this Mac stand down;
 #      then re-checks the guard
 #   4. landing_publisher.py (GENSEO_LANDING_DAILY=1) re-runs landing_guard.py right before it POSTs a NEW page
-#   5. local mkdir lock: the 16:15 catch-up never overlaps a still-running 08:15 run on the same Mac
+#   5. local mkdir lock: the 09:20 check and the 16:15 catch-up never overlap a still-running run on the same Mac
 #   6. this Mac's article batch (state/daily.lock) only gets a short courtesy yield, never the whole day: wait while it
 #      runs, at most GENSEO_LANDING_ARTICLE_YIELD_MIN (default 30) wall-clock minutes, re-checking every
 #      GENSEO_LANDING_POLL_SEC (default 60) s, then re-check the guard and build ALONGSIDE it. Overlap is safe: this lane
@@ -41,12 +41,29 @@
 # re-execs this file (same PID, so state/landing-daily.lock stays held).
 # Before this run commits, and again on exit, HEAD is switched back to main
 # when it is still on publish/*. The first time this ships, the Mac needs
-# `cd ~/genseo && git pull`. The plist already points at this path, so that
-# pull does not need a launchd reload.
+# `cd ~/genseo && git pull`. The plist already points at this path, so the
+# in-script assertion below does not need a launchd reload. The 09:20 interval
+# and the /usr/bin/caffeinate prefix do: copy the plist and bootstrap again.
+# Sleep: before the stable copy, this file arms caffeinate -i -s -w of its own
+# PID (scripts/genseo_power_assert.sh). Idle sleep (pmset sleep 1) and an AC
+# dark wake cannot suspend the DNS wait or the draft build. No sudo, no pmset
+# change, and this lane still never publishes. A missing caffeinate is logged
+# and the run continues. The 09:20 slot is this same job. launchd does not
+# start a second instance while one is running, and the landing lock exits 0
+# if a second copy does start. A gsl- draft that already exists today stands
+# down without building another page.
 set -uo pipefail
 export PATH="$HOME/.local/bin:$HOME/.npm-global/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 for d in "$HOME"/.nvm/versions/node/*/bin; do [ -d "$d" ] && PATH="$d:$PATH"; done; export PATH
 G="$HOME/genseo"; PY=/usr/bin/python3; cd "$G" || exit 1
+if [ -f "$G/scripts/genseo_power_assert.sh" ]; then
+  # shellcheck source=genseo_power_assert.sh
+  . "$G/scripts/genseo_power_assert.sh" || {
+    printf '%s\n' "FATAL: could not load scripts/genseo_power_assert.sh" >&2
+    exit 1
+  }
+  genseo_power_assert_arm || true
+fi
 if [ -f "$G/scripts/genseo_sync_main.sh" ]; then
   # shellcheck source=genseo_sync_main.sh
   . "$G/scripts/genseo_sync_main.sh" || {
@@ -67,6 +84,9 @@ LOCK="$G/state/landing-daily.lock"; MINE="$G/state/landing-by-$HOST.log"; ART_LO
 QUEUE="daily-landing-tickets.md"
 ts(){ date '+%F %T'; }
 say(){ echo "[$(ts)] [$HOST/$ROLE] $*" | tee -a "$LOG"; }
+if declare -F genseo_power_assert_note >/dev/null 2>&1; then
+  genseo_power_assert_note || true
+fi
 # sleep until the wall clock reaches epoch $1 in <= POLL s steps, ending early once the optional condition command
 # (args 2..) fails; a deadline instead of a count of sleeps, so a Mac that dozes off mid-wait cannot stretch the wait
 wait_until(){ local end=$1 now; shift; while now=$(date +%s); [ "$now" -lt "$end" ] && { [ $# = 0 ] || "$@"; }; do sleep $(( end - now < POLL ? end - now : POLL )); done; }

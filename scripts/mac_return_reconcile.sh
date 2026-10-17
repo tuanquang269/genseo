@@ -18,13 +18,15 @@
 # checklist:    That wrapper waits for DNS before the first live-feed read (scripts/genseo_wait_for_network.sh). --apply copies the wrapper into ~/bin. The helper stays in this checkout.
 # checklist:    Repo plist: deploy/com.pati.genseo-daily.macbook.plist. Installed path named in DAILY-RUN.md: ~/Library/LaunchAgents/com.pati.genseo-daily.plist.
 # checklist:    That plist is GENSEO_HOST_ROLE=primary and GENSEO_TICKET_PREFIX=MB until a Mini failover-release. Copy it onto the installed LaunchAgent and bootstrap again. install_mac_daily_wrapper.sh does not change that env. Pulling alone does not update ~/bin.
+# checklist:    Slots in that plist: 07:30, 08:05 check, 14:47. ProgramArguments starts with /usr/bin/caffeinate -i -s (user-level; no pmset, no sudo). The wrapper also arms caffeinate; that copy is bash scripts/install_mac_daily_wrapper.sh. A fast-forward does not reload launchd. Bootout the old agent and bootstrap the copied plist or the 08:05 slot never fires.
+# checklist:    Landing slots: 08:15, 09:20 check, 16:15, in deploy/com.pati.genseo-landing.macbook.plist, with the same caffeinate prefix. The landing script is read from this checkout, so its in-script assertion arrives with the pull. The new interval still needs that plist copied and bootstrapped.
 # checklist: 7. Landing code updates by the pull: launchd runs scripts/run_landing_daily.sh from this checkout (DAILY-RUN.md). That script waits for the same DNS names before its first Shopify read. It is not copied to ~/bin. MacBook plist, from the install comment in deploy/com.pati.genseo-landing.macbook.plist:
 # checklist:    cp deploy/com.pati.genseo-landing.macbook.plist ~/Library/LaunchAgents/com.pati.genseo-landing.plist
 # checklist:    launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.pati.genseo-landing.plist
 # checklist:    Copy or bootstrap that plist only when the agent is not already loaded. This script does not.
 # checklist: 8. Start the Cursor private worker yourself: agent worker start --name MacBook-Pro
 # checklist:    LaunchAgent label: com.pati.cursor-agent-worker. This repo does not contain that plist. This script does not start the worker.
-# checklist: 9. Read-only verify on dry-run (against origin/main) and after --apply (against the work tree): scripts/genseo_model_map.json maps claude-opus-5-5 to PATI-Alpha-Plan-Review and claude-fable-5 to PATI-Fable-5. The landing daily lane stays draft-only and never passes --live. Do not start grokbot-genseo-daily.sh or run_landing_daily.sh from this reconcile. The next 07:30 / 14:47 and 08:15 / 16:15 slots run them. Starting them here would publish or open a Shopify draft.
+# checklist: 9. Read-only verify on dry-run (against origin/main) and after --apply (against the work tree): scripts/genseo_model_map.json maps claude-opus-5-5 to PATI-Alpha-Plan-Review and claude-fable-5 to PATI-Fable-5. The landing daily lane stays draft-only and never passes --live. Do not start grokbot-genseo-daily.sh or run_landing_daily.sh from this reconcile. The next 07:30 / 08:05 / 14:47 and 08:15 / 09:20 / 16:15 slots run them. Starting them here would publish or open a Shopify draft.
 #
 # Does not: genseo_daily_lock_acquire, shopify_publisher, landing_publisher, launchctl,
 # agent worker start, git push, git reset, git checkout, git stash, git clean, rm -r.
@@ -808,6 +810,7 @@ reconcile_verify() {
     printf '%s\n' "verify_wrapper_feed_retry: missing"
     printf '%s\n' "verify_wrapper_role_default: missing"
     printf '%s\n' "verify_wrapper_net_wait: missing"
+    printf '%s\n' "verify_wrapper_power_assert: missing"
     fail=1
   else
     if grep -F -q 'GENSEO_LIVE_FEED_RETRIES' "$path"; then
@@ -829,17 +832,35 @@ reconcile_verify() {
       printf '%s\n' "verify_wrapper_net_wait: missing"
       fail=1
     fi
+    if grep -F -q 'genseo_power_assert_arm' "$path"; then
+      printf '%s\n' "verify_wrapper_power_assert: ok"
+    else
+      printf '%s\n' "verify_wrapper_power_assert: missing"
+      fail=1
+    fi
   fi
 
   path=$(reconcile_take_file "deploy/com.pati.genseo-daily.macbook.plist" "$plist_f" || true)
   if [ -z "$path" ]; then
     printf '%s\n' "verify_repo_plist_role: absent"
+    printf '%s\n' "verify_repo_plist_wake: absent"
   elif grep -F -q '<key>GENSEO_HOST_ROLE</key><string>primary</string>' "$path" \
     && grep -F -q '<key>GENSEO_TICKET_PREFIX</key><string>MB</string>' "$path"; then
     printf '%s\n' "verify_repo_plist_role: ok"
   else
     printf '%s\n' "verify_repo_plist_role: not-primary"
     fail=1
+  fi
+  if [ -n "$path" ]; then
+    if grep -F -q '<string>/usr/bin/caffeinate</string>' "$path" \
+      && grep -F -q '<key>Hour</key><integer>7</integer><key>Minute</key><integer>30</integer>' "$path" \
+      && grep -F -q '<key>Hour</key><integer>8</integer><key>Minute</key><integer>5</integer>' "$path" \
+      && grep -F -q '<key>Hour</key><integer>14</integer><key>Minute</key><integer>47</integer>' "$path"; then
+      printf '%s\n' "verify_repo_plist_wake: ok"
+    else
+      printf '%s\n' "verify_repo_plist_wake: missing"
+      fail=1
+    fi
   fi
 
   rm -f "$map_f" "$land_f" "$pub_f" "$head_f" "$wrap_f" "$plist_f"

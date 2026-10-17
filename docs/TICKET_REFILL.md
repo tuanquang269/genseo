@@ -63,7 +63,7 @@ bash scripts/install_mac_daily_wrapper.sh
 
 That copies the wrapper into `~/bin`, checks the copy is executable, and prints whether
 `scripts/genseo_daily_lock.sh` and `scripts/genseo_group_timeout.sh` are in the checkout. A wrapper
-that sources `scripts/genseo_wait_for_network.sh` is not copied while that file is missing. It does not
+that sources `scripts/genseo_wait_for_network.sh` or `scripts/genseo_power_assert.sh` is not copied while that file is missing. It does not
 start launchd. After days offline, `bash scripts/mac_return_reconcile.sh` (dry-run, then `--apply`)
 does the fast-forward and this reinstall, so `~/bin/grokbot-genseo-daily.sh` is the wrapper that waits
 for DNS before the first live-feed read. It does not publish. See DAILY-RUN.md.

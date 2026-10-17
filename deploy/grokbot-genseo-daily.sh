@@ -1,6 +1,6 @@
 #!/bin/bash
 # GenSeo daily batch — runs on WHICHEVER Mac is online (Kevin 2026-10-06: no automation may depend on one Mac).
-# launchd com.pati.genseo-daily: 07:30 batch + 14:47 catch-up (same slots as the Mini).
+# launchd com.pati.genseo-daily: 07:30 batch, 08:05 check, 14:47 catch-up.
 # Loops run_ticket_headless.sh (one ticket per call) until today's ICT live count reaches GENSEO_DAILY_TARGET.
 # GENSEO_AUTO_REFILL=1: when fewer tickets are open than are still to publish today, scripts/refill_tickets.py
 # tops daily-tickets.md up once per run (gated, lint-checked; docs/TICKET_REFILL.md). Default off.
@@ -31,7 +31,7 @@
 #      no-publish; the EXIT trap releases state/daily.lock when this wrapper returns.
 # launchd runs ~/bin/grokbot-genseo-daily.sh, a copy of this file. After git pull:
 #   bash ~/genseo/scripts/install_mac_daily_wrapper.sh
-# Pulling alone is not enough. That copy is what 07:30 and 14:47 execute. The
+# Pulling alone is not enough. That copy is what 07:30, 08:05, and 14:47 execute. The
 # installer does not start launchd and does not change the loaded plist. The role
 # is LaunchAgent environment: copy deploy/com.pati.genseo-daily.macbook.plist over
 # ~/Library/LaunchAgents/com.pati.genseo-daily.plist and bootstrap the agent again,
@@ -61,9 +61,35 @@
 # needs: bash scripts/install_mac_daily_wrapper.sh
 # That does not reload launchd. Later edits of this file are read from the
 # repo on the re-exec. Pulling alone does not update ~/bin.
+# Sleep (2026-10-17): the Mac was in maintenance sleep at 07:27 and dark-woke
+# at 07:38 with DNS down until 07:39. pmset "sleep 1" is an idle timer, so a
+# running batch can be suspended without a power assertion. Before the stable
+# copy, this file arms caffeinate -i -s -w of its own PID
+# (scripts/genseo_power_assert.sh). That covers the DNS wait and every ticket.
+# -i blocks idle sleep. -s blocks system sleep on AC, including a dark wake
+# returning to sleep. On battery -s is not enforced. No sudo and no pmset
+# change. A missing caffeinate is logged and the run continues. The loaded
+# plist should also put /usr/bin/caffeinate -i -s in front of this file so the
+# assertion starts at launchd's exec. Copy the plist and bootstrap again or
+# launchd keeps the previous program and the previous intervals.
+# The 08:05 slot is this same job. launchd does not start a second instance
+# while one is still running, and the daily lock exits 0 if a second copy
+# does start. A count that has already reached the daily target does not
+# start a ticket. A 07:30 that never fired, or that exited early, is retried
+# at 08:05 instead of waiting until 14:47. Intervals the Mac slept through
+# coalesce into one fire on wake. The DNS wait below still bounds a resolver
+# that is down for about a minute (the 07:38 dark wake) inside its 600s budget.
 set -uo pipefail
 export PATH="$HOME/.local/bin:$HOME/.npm-global/bin:$HOME/.codex/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 G="$HOME/genseo"; PY=/usr/bin/python3
+if [ -f "$G/scripts/genseo_power_assert.sh" ]; then
+  # shellcheck source=../scripts/genseo_power_assert.sh
+  . "$G/scripts/genseo_power_assert.sh" || {
+    printf '%s\n' "FATAL: could not load scripts/genseo_power_assert.sh" >&2
+    exit 1
+  }
+  genseo_power_assert_arm || true
+fi
 if [ -f "$G/scripts/genseo_sync_main.sh" ]; then
   # shellcheck source=../scripts/genseo_sync_main.sh
   . "$G/scripts/genseo_sync_main.sh" || {
@@ -105,6 +131,9 @@ LOCK="$G/state/daily.lock"
 ts(){ date '+%F %T'; }
 say(){ echo "[$(ts)] [$HOST/$ROLE] $*" | tee -a "$LOG"; }
 export GENSEO_DAILY_TARGET="$TARGET"
+if declare -F genseo_power_assert_note >/dev/null 2>&1; then
+  genseo_power_assert_note || true
+fi
 
 if [ ! -f "$G/scripts/genseo_daily_lock.sh" ] || [ ! -f "$G/scripts/genseo_group_timeout.sh" ]; then
   say "FATAL: missing scripts/genseo_daily_lock.sh or scripts/genseo_group_timeout.sh — git pull ~/genseo, then bash scripts/install_mac_daily_wrapper.sh"

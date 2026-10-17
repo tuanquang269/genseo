@@ -86,7 +86,7 @@ Also: never `rm` repo files (move them to `_superseded/`); never put CDN URLs in
   claim membership.
 
 ## The two daily lanes
-- **Articles — 5/day (`GENSEO_DAILY_TARGET`).** `deploy/grokbot-genseo-daily.sh` (launchd 07:30 + 14:47 ICT, on
+- **Articles — 5/day (`GENSEO_DAILY_TARGET`).** `deploy/grokbot-genseo-daily.sh` (launchd 07:30 + 08:05 check + 14:47 ICT, on
   whichever Mac is online) loops `scripts/run_ticket_headless.sh`: one open `- [ ]` ticket of `daily-tickets.md`
   per run, through the `genseo-auto-publish` skill (STEP 0 suggest.json dedup → STEP 0.5 `topic_fitness.py` →
   write → gate → publish). The public site is the double-publish lock (`genseo_published_today.py`). The wrapper
@@ -99,7 +99,7 @@ Also: never `rm` repo files (move them to `_superseded/`); never put CDN URLs in
   `GENSEO_HOST_ROLE=standby` still waits for a healthy peer; the MacBook plist does not set it.
   Pulling alone does not update `~/bin/grokbot-genseo-daily.sh`.
 - **Landing pages — 1 unpublished draft/day, never counted in the 5.** `scripts/build_landing_tickets.py` →
-  `daily-landing-tickets.md` → `scripts/run_landing_daily.sh`; `gsl-preview-*` pages that Kevin approves. Skill
+  `daily-landing-tickets.md` → `scripts/run_landing_daily.sh` (launchd 08:15 + 09:20 check + 16:15); `gsl-preview-*` pages that Kevin approves. Skill
   `genseo-landing-pages`.
 
 ## Read-only checks a cloud agent can run

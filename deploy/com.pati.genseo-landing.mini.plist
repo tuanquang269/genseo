@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <!-- GenSeo daily listicle landing DRAFT (1/day, never published). mini = primary.
+     Slots: 08:15, 09:20 check, 16:15 catch-up. Same job: a running instance is
+     not started again, and state/landing-daily.lock exits 0 if one is.
+     /usr/bin/caffeinate -i -s is a user-level assertion. No sudo, no pmset.
+     The script also arms caffeinate; a pull picks that up. These intervals do not.
      install: cp deploy/com.pati.genseo-landing.mini.plist ~/Library/LaunchAgents/com.pati.genseo-landing.plist
+              launchctl bootout gui/$(id -u) ~/Library/LaunchAgents/com.pati.genseo-landing.plist
               launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.pati.genseo-landing.plist -->
 <plist version="1.0">
 <dict>
@@ -9,6 +14,9 @@
     <string>com.pati.genseo-landing</string>
     <key>ProgramArguments</key>
     <array>
+        <string>/usr/bin/caffeinate</string>
+        <string>-i</string>
+        <string>-s</string>
         <string>/bin/bash</string>
         <string>/Users/kevinkreative/genseo/scripts/run_landing_daily.sh</string>
     </array>
@@ -22,6 +30,7 @@
     <key>StartCalendarInterval</key>
     <array>
         <dict><key>Hour</key><integer>8</integer><key>Minute</key><integer>15</integer></dict>
+        <dict><key>Hour</key><integer>9</integer><key>Minute</key><integer>20</integer></dict>
         <dict><key>Hour</key><integer>16</integer><key>Minute</key><integer>15</integer></dict>
     </array>
     <key>RunAtLoad</key>

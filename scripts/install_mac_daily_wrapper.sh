@@ -1,6 +1,6 @@
 #!/bin/bash
 # Copy deploy/grokbot-genseo-daily.sh to ~/bin/grokbot-genseo-daily.sh.
-# launchd (07:30 and 14:47) runs that ~/bin copy. git pull does not update it.
+# launchd (07:30, 08:05 check, and 14:47) runs that ~/bin copy. git pull does not update it.
 #
 # On each Mac, after pull:
 #   bash ~/genseo/scripts/install_mac_daily_wrapper.sh
@@ -25,7 +25,8 @@ for arg in "$@"; do
         "Copies deploy/grokbot-genseo-daily.sh to ~/bin/grokbot-genseo-daily.sh." \
         "Does not start launchd." \
         "Does not copy the LaunchAgent plist. Pulling alone does not update ~/bin." \
-        "A wrapper that sources scripts/genseo_sync_main.sh is not copied while that file is missing."
+        "A wrapper that sources scripts/genseo_sync_main.sh is not copied while that file is missing." \
+        "A wrapper that sources scripts/genseo_power_assert.sh is not copied while that file is missing."
       exit 0
       ;;
     *)
@@ -86,6 +87,15 @@ if grep -F -q 'genseo_sync_main.sh' "$SRC"; then
   else
     printf 'helper %s: MISSING\n' "$sync_rel"
     die "wrapper requires $sync_rel — git pull in $GENSEO_HOME, then re-run. Nothing was copied."
+  fi
+fi
+if grep -F -q 'genseo_power_assert.sh' "$SRC"; then
+  pow_rel="scripts/genseo_power_assert.sh"
+  if [ -f "$GENSEO_HOME/$pow_rel" ]; then
+    printf 'helper %s: present\n' "$pow_rel"
+  else
+    printf 'helper %s: MISSING\n' "$pow_rel"
+    die "wrapper requires $pow_rel — git pull in $GENSEO_HOME, then re-run. Nothing was copied."
   fi
 fi
 
