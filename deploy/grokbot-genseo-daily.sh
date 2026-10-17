@@ -48,13 +48,17 @@
 # cap 30), then fail closed. A readable count does not sleep there and still
 # runs the peer-active check. That retry is not the wake wait.
 # Checkout: after that wait succeeds, scripts/genseo_sync_main.sh runs
-# `git fetch origin main` and `git merge --ff-only origin/main` when HEAD is
-# main and the work tree is clean. A dirty checkout, or local commits that are
-# not on origin, is logged and this run continues. The fetch runs from a copy
-# of this file so git does not rewrite the script bash is reading. A
-# fast-forward re-execs ~/genseo/deploy/grokbot-genseo-daily.sh (same PID, so
-# state/daily.lock stays held). launchd runs ~/bin, so the first time this
-# ships the Mac still needs: bash scripts/install_mac_daily_wrapper.sh
+# `git fetch origin main` and `git merge --ff-only origin/main` when local
+# main can fast-forward. Untracked files that would not be overwritten stay.
+# A tracked edit that would be overwritten is stashed or backed up and logged.
+# A publish/* branch returns to main (the branch ref is kept). The fetch runs
+# from a copy of this file so git does not rewrite the script bash is reading.
+# It does not fast-forward while another GenSeo job holds a lane lock or has
+# a checkout script open. A fast-forward re-execs
+# ~/genseo/deploy/grokbot-genseo-daily.sh (same PID, so state/daily.lock stays
+# held). After each ticket, HEAD is switched back to main when it is still on
+# publish/*. launchd runs ~/bin, so the first time this ships the Mac still
+# needs: bash scripts/install_mac_daily_wrapper.sh
 # That does not reload launchd. Later edits of this file are read from the
 # repo on the re-exec. Pulling alone does not update ~/bin.
 set -uo pipefail
@@ -128,7 +132,9 @@ if [ "$lock_owned" != 1 ]; then
     *) exit "$lock_rc" ;;
   esac
 fi
-if declare -F genseo_stable_copy_release >/dev/null 2>&1; then
+if declare -F genseo_return_publish_branch_to_main >/dev/null 2>&1 && declare -F genseo_stable_copy_release >/dev/null 2>&1; then
+  trap 'genseo_return_publish_branch_to_main || true; genseo_daily_lock_release; genseo_stable_copy_release now || true' EXIT
+elif declare -F genseo_stable_copy_release >/dev/null 2>&1; then
   trap 'genseo_daily_lock_release; genseo_stable_copy_release now || true' EXIT
 else
   trap 'genseo_daily_lock_release' EXIT
@@ -206,6 +212,9 @@ for i in $(seq 1 $(( MAX_RUNS + ${GENSEO_PEER_MAX_WAITS:-6} ))); do
   before="$(live_urls | sort)"
   say "run $i: live $n/$TARGET, $open open ticket(s) → run_ticket_headless.sh"
   /bin/bash "$G/scripts/genseo_group_timeout.sh" "$TICKET_TIMEOUT" /bin/bash "$G/scripts/run_ticket_headless.sh"; rrc=$?
+  if declare -F genseo_return_publish_branch_to_main >/dev/null 2>&1; then
+    genseo_return_publish_branch_to_main || true
+  fi
   after="$(live_urls | sort)"
   new="$(comm -13 <(echo "$before") <(echo "$after") | sed '/^$/d')"
   if [ -n "$new" ]; then

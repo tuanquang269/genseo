@@ -116,6 +116,21 @@ if [ -e "$DEST" ] && [ ! -f "$DEST" ]; then
   die "dest exists and is not a file: $DEST"
 fi
 
+# Bash reads the launcher as it runs. Replacing that file while a job has
+# it open is the garbled-token failure. A /tmp stable copy is a different path.
+if [ -f "$DEST" ]; then
+  open_pids=""
+  if [ -x /usr/sbin/lsof ]; then
+    open_pids=$(/usr/sbin/lsof -t -- "$DEST" 2>/dev/null || true)
+  elif command -v lsof >/dev/null 2>&1; then
+    open_pids=$(lsof -t -- "$DEST" 2>/dev/null || true)
+  fi
+  for pid in $open_pids; do
+    [ "$pid" = "$$" ] && continue
+    die "refusing to replace $DEST — another process has it open (pid $pid). Nothing was copied."
+  done
+fi
+
 mkdir -p "$DEST_DIR" || die "could not create $DEST_DIR"
 tmp=$(mktemp "$DEST_DIR/.grokbot-genseo-daily.XXXXXX") || die "could not stage in $DEST_DIR"
 cleanup_tmp() { rm -f "$tmp"; }

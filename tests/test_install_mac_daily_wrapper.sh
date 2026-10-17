@@ -249,5 +249,28 @@ has "$WORK/out" "helper scripts/genseo_sync_main.sh: present" "sync helper prese
 cmp -s "$FIX/deploy/grokbot-genseo-daily.sh" "$HOME_DIR/bin/grokbot-genseo-daily.sh" \
   && ok "sync wrapper bytes match" || bad "sync wrapper bytes differ"
 
+echo "13. an open launcher is not replaced"
+fixture busy 1 755
+new_home busy
+run_install "$HOME_DIR" "$FIX" 1 --
+assert_rc 0 "first launcher copy exits 0"
+dest="$HOME_DIR/bin/grokbot-genseo-daily.sh"
+before_ck=$(cksum "$dest")
+printf '\n%s\n' 'echo changed' >>"$FIX/deploy/grokbot-genseo-daily.sh"
+sleep 120 <"$dest" &
+hold=$!
+run_install "$HOME_DIR" "$FIX" 1 --
+held=$RC
+kill "$hold" 2>/dev/null || true
+wait "$hold" 2>/dev/null || true
+RC=$held
+assert_rc 1 "open launcher is not replaced"
+has "$WORK/err" "another process has it open" "open launcher names the holder"
+has "$WORK/err" "Nothing was copied." "open launcher copies nothing"
+[ "$(cksum "$dest")" = "$before_ck" ] && ok "open launcher left the previous bytes" || bad "open launcher replaced the file"
+run_install "$HOME_DIR" "$FIX" 1 --
+assert_rc 0 "launcher copy succeeds once the holder exits"
+cmp -s "$FIX/deploy/grokbot-genseo-daily.sh" "$dest" && ok "later copy matches the new source" || bad "later copy did not update"
+
 printf '\n%d passed, %d failed\n' "$PASS" "$FAIL"
 [ "$FAIL" = 0 ]
