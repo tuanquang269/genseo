@@ -811,7 +811,7 @@ plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check th
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** creatine + seniors checked 2026-10-11 against 110 live articles (blog listing + sitemap + Atom) and all 57 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#MB1012-4 — turkesterone over 60** — `Turkesterone Over 60: 5 Checks for Older Lifters (US 2026)`
+- [DONE 2026-10-17 https://wellnessnest.co/blogs/news/turkesterone-over-60-5-checks-in-the-us] **#MB1012-4 — turkesterone over 60** — `Turkesterone Over 60: 5 Checks for Older Lifters (US 2026)`
   - **Primary keyword:** `turkesterone over 60` · **Secondary:** turkesterone for older men, turkesterone for seniors, turkesterone at 60, is turkesterone safe for older men
   - **Search intent:** lifter 60+ deciding whether turkesterone is worth trying
   - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-11 18:49 ICT)
