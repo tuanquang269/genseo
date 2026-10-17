@@ -724,6 +724,1056 @@
     "turkesterone-side-effects-4-ingredients-to-check-us-2026",
     "turkesterone-for-women-3-trials-85-men-0-women-us-2026"
    ]
+  },
+  {
+   "id": "creatine-gummies-while-traveling",
+   "product": "fusiforce-creatine-gummies",
+   "primary": "how much creatine gummies while traveling",
+   "title": "Creatine Gummies While Traveling: How Much? (US {year})",
+   "secondary": [
+    "creatine gummies on vacation",
+    "creatine gummies on a flight",
+    "packing creatine gummies",
+    "creatine travel routine"
+   ],
+   "segment": "travel",
+   "intent": "person packing for a US trip who wants the gummy habit to survive the suitcase",
+   "template": "LISTICLE",
+   "angle": "The home storage page covers shelf life. This page is the trip: carry-on, a hot US car, time zones, and the same chew you already use. Do not restate grams or the expire rules. Link those pages. No medical claims.",
+   "fanout": [
+    "do creatine gummies go in a carry-on",
+    "does a hot car change them",
+    "do you skip days you travel",
+    "does the amount change on the road"
+   ],
+   "evidence": "FusiForce directions from the live PDP. Any travel or stability note only from a page fetched at write time. No invented gram amount.",
+   "link": [
+    "do-creatine-gummies-expire-6-storage-facts-us-2026",
+    "creatine-gummies-dosage-how-many-a-day-us-2026",
+    "best-time-to-take-creatine-before-or-after-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "creatine-gummies-cycling",
+   "product": "fusiforce-creatine-gummies",
+   "primary": "how much creatine gummies cycling",
+   "title": "Creatine Gummies Cycling: How Much Changes? (US {year})",
+   "secondary": [
+    "do you cycle creatine",
+    "creatine on and off",
+    "creatine gummies weeks off",
+    "should you stop creatine"
+   ],
+   "segment": "cycle",
+   "intent": "lifter who has read that some supplements need weeks off and wants the creatine answer",
+   "template": "EDITORIAL",
+   "angle": "Loading is a different page. This asks whether you stop for weeks. Answer from the ISSN creatine position stand if you fetch it: creatine is usually taken every day, not in on-and-off blocks. If you cannot fetch that line, say what you did fetch. Link the loading page and the how-long page. Do not restate the gram amount.",
+   "fanout": [
+    "do you take weeks off creatine",
+    "is cycling different from loading",
+    "what happens if you stop",
+    "does a gummy change that"
+   ],
+   "evidence": "ISSN creatine position stand (Kreider et al. 2017) — fetch before citing. FusiForce directions from the live PDP only.",
+   "link": [
+    "creatine-gummies-loading-phase-is-it-needed-us-2026",
+    "how-long-does-creatine-take-to-work-week-by-week-us-2026",
+    "creatine-gummies-on-rest-days-keep-taking-them-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "creatine-gummies-worth-it",
+   "product": "fusiforce-creatine-gummies",
+   "primary": "are creatine gummies worth it how much",
+   "title": "Are Creatine Gummies Worth It? How Much You Get ({year})",
+   "secondary": [
+    "creatine gummies review",
+    "are creatine gummies legit",
+    "creatine gummies honest check",
+    "fusiforce creatine gummies review"
+   ],
+   "segment": "reviews",
+   "intent": "shopper who wants a straight answer before paying for gummies instead of powder",
+   "template": "COMPARISON",
+   "angle": "Not a price page and not the powder comparison. Compare what a shopper can verify on the live FusiForce PDP (creatine monohydrate named, and only the amounts the panel prints) with what a review page often skips. No invented star rating or buyer quotes. Link the powder page and the where-to-buy page.",
+   "fanout": [
+    "what can you verify on the label",
+    "what a review cannot prove",
+    "how do gummies differ from powder",
+    "what should you ignore in ads"
+   ],
+   "evidence": "Live FusiForce PDP, fetched at write time. Any third-party gummy test only from a fetched report, and only if that report names the product.",
+   "link": [
+    "creatine-gummies-vs-powder-which-should-you-actually-take",
+    "where-to-buy-creatine-gummies-5-label-checks-us-2026",
+    "creatine-gummies-dosage-how-many-a-day-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "creatine-gummies-ingredients",
+   "product": "fusiforce-creatine-gummies",
+   "primary": "creatine gummies ingredients how much",
+   "title": "Creatine Gummies Ingredients: How Much Is Named ({year})",
+   "secondary": [
+    "what is in creatine gummies",
+    "creatine monohydrate gummies ingredients",
+    "fusiforce ingredients",
+    "creatine gummies label"
+   ],
+   "segment": "ingredients",
+   "intent": "label reader who wants the ingredient list, not another shopping checklist",
+   "template": "LISTICLE",
+   "angle": "Read the live panel: creatine monohydrate and whatever else the PDP actually prints. Do not invent a gram amount. Link the dosage page for the daily amount and the where-to-buy page for the five label checks. This page is the ingredient list, not the shopping checklist.",
+   "fanout": [
+    "is the creatine monohydrate",
+    "what else is on the panel",
+    "what if the front and the panel disagree",
+    "where is the daily amount explained"
+   ],
+   "evidence": "FusiForce ingredient list from the live PDP only. No invented gram, count, or sweetener the page does not print.",
+   "link": [
+    "creatine-gummies-dosage-how-many-a-day-us-2026",
+    "where-to-buy-creatine-gummies-5-label-checks-us-2026",
+    "creatine-gummies-side-effects-4-real-3-myths-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "fake-creatine-gummies",
+   "product": "fusiforce-creatine-gummies",
+   "primary": "fake creatine gummies how much",
+   "title": "Fake Creatine Gummies: How Much Is Missing? ({year})",
+   "secondary": [
+    "are creatine gummies real",
+    "under filled creatine gummies",
+    "creatine gummies counterfeit",
+    "real or fake creatine gummies"
+   ],
+   "segment": "authenticity",
+   "intent": "shopper who heard some gummies contain less creatine than the front implies",
+   "template": "STORY",
+   "angle": "Some gummies have been reported under-filled. Cite that only from a report you fetch, and never say FusiForce was in that report unless the report says so. Give the checks a US shopper can do on a label. Link the where-to-buy page instead of restating it. Do not lead on a certificate.",
+   "fanout": [
+    "how can a gummy be under-filled",
+    "what does the panel have to name",
+    "was FusiForce in any public test",
+    "what should you do if the label is vague"
+   ],
+   "evidence": "A fetched primary report of creatine gummy content, only if you can open it. Live FusiForce PDP for what this product prints. No invented test result.",
+   "link": [
+    "where-to-buy-creatine-gummies-5-label-checks-us-2026",
+    "creatine-gummies-vs-powder-which-should-you-actually-take",
+    "creatine-gummies-dosage-how-many-a-day-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "shilajit-rest-days",
+   "product": "shilasource-himalayan-shilajit-resin",
+   "primary": "shilajit on rest days with food",
+   "title": "Shilajit on Rest Days, With Food (US {year})",
+   "secondary": [
+    "shilajit on off days",
+    "shilajit on a day off",
+    "shilajit rest day routine",
+    "take shilajit every day"
+   ],
+   "segment": "rest-days",
+   "intent": "person who takes shilajit on gym days and wants the day off answered separately",
+   "template": "EDITORIAL",
+   "angle": "The athletes page is the strength trial. This page is the off day: do you still take resin when you are not in the gym, and does a meal change that. If no trial compared rest days, say so. Link the athletes page and the how-to-take page. No milligram and no serving count beyond the pack-label line.",
+   "fanout": [
+    "do you take shilajit on days off",
+    "does a meal change the off-day routine",
+    "what if you only take it on gym days",
+    "where is the dissolve method"
+   ],
+   "evidence": "Any human trial that reported rest-day use — fetch it or say you found none. Pack-label facts only from product_refs/shilasource-himalayan-shilajit-resin.label.json.",
+   "link": [
+    "shilajit-for-athletes-what-a-trial-found-in-the-us",
+    "how-to-take-shilajit-resin-dissolve-it-right-us-2026",
+    "when-to-take-shilajit-morning-or-night-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "shilajit-while-traveling",
+   "product": "premium-himalayan-shilajit-gummies",
+   "primary": "shilajit gummies while traveling with food",
+   "title": "Shilajit Gummies While Traveling, With Food ({year})",
+   "secondary": [
+    "shilajit gummies on a flight",
+    "shilajit gummies on vacation",
+    "travel with shilajit gummies",
+    "shilajit gummies in a hotel"
+   ],
+   "segment": "travel",
+   "intent": "traveler who wants shilajit without packing a resin jar",
+   "template": "LISTICLE",
+   "angle": "Gummies on a trip: what you carry, heat in a US car, and keeping one daily habit. Do not restate the resin-versus-gummies page. Link it. Gummies, resin, gold resin, and drops are different products. No milligram the live gummy PDP does not print.",
+   "fanout": [
+    "are gummies easier to pack than resin",
+    "what does heat do on a trip",
+    "do you take them with a meal",
+    "what if you miss a travel day"
+   ],
+   "evidence": "Live gummy PDP for what the label prints. No invented milligram. Resin routine stays a link.",
+   "link": [
+    "shilajit-resin-vs-gummies-which-works-better-us-2026",
+    "how-to-take-shilajit-resin-dissolve-it-right-us-2026",
+    "how-much-shilajit-per-day-dosage-by-form-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "shilajit-cycling",
+   "product": "shilasource-himalayan-shilajit-resin",
+   "primary": "shilajit cycling with food",
+   "title": "Do You Cycle Shilajit? With Food Rules ({year})",
+   "secondary": [
+    "shilajit on and off",
+    "shilajit weeks off",
+    "should you cycle shilajit",
+    "shilajit breaks"
+   ],
+   "segment": "cycle",
+   "intent": "user who has been taking resin for months and wonders whether to pause",
+   "template": "COMPARISON",
+   "angle": "The how-long page asks how many weeks people take it. This page asks whether you plan weeks off. If you cannot fetch a trial that used an on-and-off schedule, say that is the evidence. Link the how-long page. No milligram beyond the pack-label line.",
+   "fanout": [
+    "do you need weeks off",
+    "is a pause different from stopping",
+    "what did trials actually do",
+    "does a meal change a pause"
+   ],
+   "evidence": "Any human shilajit trial schedule you fetch. If none used a planned pause, say so. Pack-label line only for the resin.",
+   "link": [
+    "for-how-long-can-we-take-shilajit",
+    "how-much-shilajit-per-day-dosage-by-form-us-2026",
+    "shilajit-side-effects-7-signs-to-watch-for-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "shilajit-and-alcohol",
+   "product": "shilasource-himalayan-shilajit-resin",
+   "primary": "shilajit and alcohol with food",
+   "title": "Shilajit and Alcohol, With Food (US {year})",
+   "secondary": [
+    "shilajit and drinking",
+    "shilajit hangover",
+    "shilajit after alcohol",
+    "can you take shilajit with alcohol"
+   ],
+   "segment": "alcohol",
+   "intent": "adult who drinks and wants to know if resin the same day is a studied idea",
+   "template": "STORY",
+   "angle": "What fetched research says about shilajit and alcohol, and what it does not say. A meal is not a hangover fix. Not a treatment. Link the side-effects page. No milligram beyond the pack-label line.",
+   "fanout": [
+    "is there a human study",
+    "does a meal change anything",
+    "is it a hangover aid",
+    "when should you skip it"
+   ],
+   "evidence": "PubMed or DOI search on shilajit and alcohol — fetch a paper or state that you found none. No treatment claim.",
+   "link": [
+    "shilajit-side-effects-7-signs-to-watch-for-us-2026",
+    "how-to-take-shilajit-resin-dissolve-it-right-us-2026",
+    "when-to-take-shilajit-morning-or-night-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "shilajit-and-coffee",
+   "product": "shilasource-himalayan-shilajit-resin",
+   "primary": "shilajit and coffee with food",
+   "title": "Shilajit and Coffee, With Food (US {year})",
+   "secondary": [
+    "shilajit with coffee",
+    "shilajit and caffeine",
+    "shilajit in the morning with coffee",
+    "shilajit beside coffee"
+   ],
+   "segment": "caffeine",
+   "intent": "morning coffee drinker deciding whether resin belongs in the same cup routine",
+   "template": "EDITORIAL",
+   "angle": "Morning coffee plus resin is a common habit, not a studied pairing. Say what you could and could not fetch. Link the morning-or-night page for the clock, and do not restate it. Drops are a different product; do not borrow that label. No milligram beyond the resin pack-label line. Do not claim a caffeine amount.",
+   "fanout": [
+    "can resin go with morning coffee",
+    "does coffee change the routine",
+    "is there any caffeine in the resin",
+    "what if your stomach objects"
+   ],
+   "evidence": "Any fetched paper on shilajit and caffeine. If none, say so. Pack-label line only. No invented caffeine amount.",
+   "link": [
+    "when-to-take-shilajit-morning-or-night-us-2026",
+    "how-to-take-shilajit-resin-dissolve-it-right-us-2026",
+    "shilajit-side-effects-7-signs-to-watch-for-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "shilajit-storage",
+   "product": "pure-shilajit-gold-resin",
+   "primary": "shilajit storage with food",
+   "title": "Shilajit Storage at Home, With Food Nearby ({year})",
+   "secondary": [
+    "how to store shilajit resin",
+    "shilajit jar heat",
+    "shilajit shelf life",
+    "shilajit in the kitchen"
+   ],
+   "segment": "storage",
+   "intent": "jar owner who wants to know where gold resin should sit at home",
+   "template": "LISTICLE",
+   "angle": "Gold resin in a jar: lid on, heat, and keeping it out of strong kitchen smells. Do not invent a shelf-life, a temperature, or a milligram. The pack-label line is the only serving fact. Link the how-to-take page for dissolving. Gummies and drops are different products.",
+   "fanout": [
+    "does the jar need a fridge",
+    "what does heat do to resin",
+    "can it sit near food",
+    "what does the label actually say about servings"
+   ],
+   "evidence": "Live gold-resin PDP and product_refs/pure-shilajit-gold-resin.label.json only. No invented temperature or shelf-life.",
+   "link": [
+    "how-to-take-shilajit-resin-dissolve-it-right-us-2026",
+    "shilajit-gold-resin-review-is-75-worth-it-us-2026",
+    "how-much-shilajit-per-day-dosage-by-form-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "shilajit-gummy-ingredients",
+   "product": "premium-himalayan-shilajit-gummies",
+   "primary": "shilajit gummies ingredients with food",
+   "title": "Shilajit Gummy Ingredients, Taken With Food ({year})",
+   "secondary": [
+    "what is in shilajit gummies",
+    "shilajit gummy label",
+    "shilajit gummies ingredient list",
+    "shilajit gummies panel"
+   ],
+   "segment": "ingredients",
+   "intent": "buyer who wants the gummy ingredient list before comparing it with resin",
+   "template": "LISTICLE",
+   "angle": "What the gummy PDP actually lists, fetched the day you write. Resin, gold resin, and drops are different products with different labels; link the resin-versus-gummies page instead of rebuilding it. No milligram you did not read on that page. Do not lead with lab testing.",
+   "fanout": [
+    "what does the gummy label name",
+    "how is that different from resin",
+    "what if a word is missing",
+    "do you take them with a meal"
+   ],
+   "evidence": "Live gummy PDP ingredient list, fetched at write time. No borrowed resin percentage.",
+   "link": [
+    "shilajit-resin-vs-gummies-which-works-better-us-2026",
+    "how-to-choose-shilajit-gummies-7-checks-us-2026",
+    "best-shilajit-gummies-6-us-labels-compared-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "shilajit-for-hair",
+   "product": "shilasource-himalayan-shilajit-resin",
+   "primary": "shilajit for hair with food",
+   "title": "Shilajit for Hair, Taken With Food (US {year})",
+   "secondary": [
+    "shilajit hair growth",
+    "shilajit and hair",
+    "does shilajit help hair",
+    "shilajit hair claims"
+   ],
+   "segment": "hair",
+   "intent": "reader who has seen hair claims and wants the human evidence separated from the ads",
+   "template": "EDITORIAL",
+   "angle": "Search for human trials of shilajit and hair. If you cannot fetch one, say so, and do not promote a hair result from a different outcome. Not a hair treatment. Link the side-effects page. No milligram beyond the pack-label line.",
+   "fanout": [
+    "is there a human hair trial",
+    "what did the studies actually measure",
+    "does a meal change anything",
+    "when should you skip the claim"
+   ],
+   "evidence": "PubMed or DOI search for shilajit and hair — fetch each paper and label it human or not. No unfetched result.",
+   "link": [
+    "shilajit-side-effects-7-signs-to-watch-for-us-2026",
+    "shilajit-benefits-for-men-4-claims-ranked-us-2026",
+    "how-much-shilajit-per-day-dosage-by-form-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "shilajit-loading",
+   "product": "shilasource-himalayan-shilajit-resin",
+   "primary": "shilajit loading with food",
+   "title": "Shilajit Loading, With Food or Not? ({year})",
+   "secondary": [
+    "shilajit loading phase",
+    "shilajit bigger start",
+    "do you load shilajit",
+    "shilajit opening week"
+   ],
+   "segment": "loading",
+   "intent": "new user who saw a loading week mentioned and wants to know if trials did that",
+   "template": "COMPARISON",
+   "angle": "Some pages imply a bigger start. If you cannot fetch a human trial that used a loading week, say so and point at the dosage page for the steady amount. Do not invent a load. No milligram beyond the pack-label line.",
+   "fanout": [
+    "did any trial use a bigger start",
+    "is a loading week required",
+    "what does the steady page cover",
+    "does a meal change the start"
+   ],
+   "evidence": "Human shilajit trials you fetch — describe the schedule they used. If none loaded, say so.",
+   "link": [
+    "how-much-shilajit-per-day-dosage-by-form-us-2026",
+    "how-to-take-shilajit-resin-dissolve-it-right-us-2026",
+    "shilajit-for-beginners-5-checks-before-your-first-pouch"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "nmn-rest-days",
+   "product": "ageaura-pure-nmn-tmg-nad-complex",
+   "primary": "nmn on rest days with food",
+   "title": "NMN Capsules on a Day Off, With Food (US {year})",
+   "secondary": [
+    "nmn on off days",
+    "nmn when you skip the gym",
+    "nmn rest day capsules",
+    "take nmn every day"
+   ],
+   "segment": "rest-days",
+   "intent": "person who times NMN around workouts and wants the day off",
+   "template": "STORY",
+   "angle": "The exercise page covers workout timing. This page is the day you do not train. Link that page and the morning-or-night page. AgeAura Pure NMN + TMG NAD+ Complex only. Do not invent a milligram. Do not restate the dose page.",
+   "fanout": [
+    "do you take NMN on days off",
+    "does a meal matter more on a rest day",
+    "what if you only take it on gym days",
+    "where is the clock-time page"
+   ],
+   "evidence": "Any trial that reported non-training days — fetch it or say you found none. No invented milligram. AgeAura Pure NMN + TMG NAD+ Complex only.",
+   "link": [
+    "nmn-and-exercise-before-or-after-a-workout-us-2026",
+    "when-to-take-nmn-morning-or-night-us-2026",
+    "how-much-nmn-per-day-what-trials-used-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "nmn-while-traveling",
+   "product": "ageaura-pure-nmn-tmg-nad-complex",
+   "primary": "nmn while traveling with food",
+   "title": "NMN While Traveling, With Food (US {year})",
+   "secondary": [
+    "nmn capsules on a flight",
+    "nmn on vacation",
+    "packing nmn capsules",
+    "nmn time zone"
+   ],
+   "segment": "travel",
+   "intent": "traveler with a capsule bottle who wants a simple trip routine",
+   "template": "LISTICLE",
+   "angle": "Capsules in a bag, a missed day, and a time-zone shift. Follow the pack label for how you swallow them. Link the morning-or-night page. Do not invent a milligram. AgeAura Pure NMN + TMG NAD+ Complex only.",
+   "fanout": [
+    "do capsules go in a carry-on",
+    "what if you miss a day",
+    "does the clock change in a new time zone",
+    "do you take them with a meal"
+   ],
+   "evidence": "Pack-label directions and the live PDP. No invented milligram. No invented airport rule. AgeAura Pure NMN + TMG NAD+ Complex only.",
+   "link": [
+    "when-to-take-nmn-morning-or-night-us-2026",
+    "nmn-side-effects-6-checks-before-you-start-us-2026",
+    "how-much-nmn-per-day-what-trials-used-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "nmn-worth-it",
+   "product": "ageaura-pure-nmn-tmg-nad-complex",
+   "primary": "is nmn worth it with food",
+   "title": "Is NMN Worth It, With Food? (US {year})",
+   "secondary": [
+    "nmn review",
+    "is nmn legit",
+    "nmn honest check",
+    "is the nmn tmg complex worth it"
+   ],
+   "segment": "reviews",
+   "intent": "US shopper who wants a straight worth-it check after marketplace listings changed",
+   "template": "COMPARISON",
+   "angle": "Not the ingredients page and not the where-to-buy regulatory story. What a US shopper can check on the live AgeAura Pure NMN + TMG NAD+ Complex only PDP, and what human trials have not shown. No invented reviews or star ratings. Link those two pages. Do not invent a milligram.",
+   "fanout": [
+    "what can you verify on the bottle",
+    "what trials have not shown",
+    "is a meal part of the decision",
+    "where is the regulatory story"
+   ],
+   "evidence": "Live PDP for AgeAura Pure NMN + TMG NAD+ Complex only. Human trials only from papers you fetch. No invented review.",
+   "link": [
+    "where-to-buy-nmn-in-the-us-fda-status-explained-2026",
+    "ageaura-nmn-tmg-ingredients-what-each-one-does-us",
+    "nmn-side-effects-6-checks-before-you-start-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "nmn-storage",
+   "product": "ageaura-pure-nmn-tmg-nad-complex",
+   "primary": "nmn storage with food",
+   "title": "Where Should NMN Capsules Sit, With Food Nearby? ({year})",
+   "secondary": [
+    "how to store nmn",
+    "nmn bottle heat",
+    "nmn shelf life",
+    "nmn in the kitchen"
+   ],
+   "segment": "storage",
+   "intent": "bottle owner deciding where capsules should sit at home",
+   "template": "LISTICLE",
+   "angle": "Bottle closed, heat, and the date printed on the pack if there is one. Do not invent an expiry. Link the morning-or-night page for the routine. Do not invent a milligram. AgeAura Pure NMN + TMG NAD+ Complex only.",
+   "fanout": [
+    "does the bottle need a fridge",
+    "what does heat do",
+    "can it sit near food",
+    "what if the pack prints a date"
+   ],
+   "evidence": "Live PDP and the pack-label file only. No invented expiry or temperature. AgeAura Pure NMN + TMG NAD+ Complex only.",
+   "link": [
+    "when-to-take-nmn-morning-or-night-us-2026",
+    "nmn-side-effects-6-checks-before-you-start-us-2026",
+    "how-much-nmn-per-day-what-trials-used-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "nmn-loading",
+   "product": "ageaura-pure-nmn-tmg-nad-complex",
+   "primary": "nmn loading with food",
+   "title": "NMN Loading Phase, With Food or Not? ({year})",
+   "secondary": [
+    "nmn loading week",
+    "nmn bigger start",
+    "do you load nmn",
+    "nmn front load"
+   ],
+   "segment": "loading",
+   "intent": "reader who saw a loading week claimed and wants the trial schedule",
+   "template": "EDITORIAL",
+   "angle": "If the human trials you fetch used a steady amount rather than a front-load, say that and link the dosage page. Do not invent a loading protocol or a milligram. AgeAura Pure NMN + TMG NAD+ Complex only. It is not a drug.",
+   "fanout": [
+    "did human trials use a bigger start",
+    "is a loading week required",
+    "where is the steady amount",
+    "does a meal change the start"
+   ],
+   "evidence": "Human NMN trials you fetch — describe the schedule. If none used a load, say so. No invented milligram. AgeAura Pure NMN + TMG NAD+ Complex only.",
+   "link": [
+    "how-much-nmn-per-day-what-trials-used-us-2026",
+    "how-long-does-nmn-take-to-work-week-1-to-12-us-2026",
+    "nmn-side-effects-6-checks-before-you-start-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "nmn-for-hair",
+   "product": "ageaura-pure-nmn-tmg-nad-complex",
+   "primary": "nmn for hair with food",
+   "title": "NMN and Hair Claims, Taken With Food (US {year})",
+   "secondary": [
+    "nmn hair growth",
+    "nmn and hair",
+    "does nmn help hair",
+    "nmn hair claims"
+   ],
+   "segment": "hair",
+   "intent": "reader who has seen hair claims and wants human papers kept apart from animal headlines",
+   "template": "EDITORIAL",
+   "angle": "Separate human papers from animal papers before any number. If you cannot fetch a human hair trial, say so. Not a hair treatment. Link the side-effects page. Do not invent a milligram. AgeAura Pure NMN + TMG NAD+ Complex only.",
+   "fanout": [
+    "is there a human hair trial",
+    "what did animal papers measure",
+    "does a meal change the claim",
+    "when should you ignore the ad"
+   ],
+   "evidence": "PubMed or DOI papers on NMN and hair — fetch each one and label human or animal. No borrowed result. AgeAura Pure NMN + TMG NAD+ Complex only.",
+   "link": [
+    "nmn-side-effects-6-checks-before-you-start-us-2026",
+    "nmn-for-women-what-the-all-female-trial-missed-us-2026",
+    "how-much-nmn-per-day-what-trials-used-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "real-or-fake-nmn",
+   "product": "ageaura-pure-nmn-tmg-nad-complex",
+   "primary": "real or fake nmn with food",
+   "title": "Real or Fake NMN, With Food Checks (US {year})",
+   "secondary": [
+    "fake nmn capsules",
+    "counterfeit nmn",
+    "is my nmn real",
+    "nmn bottle check"
+   ],
+   "segment": "authenticity",
+   "intent": "US shopper trying to tell a real labeled bottle from a listing that does not match its panel",
+   "template": "STORY",
+   "angle": "This is not the regulatory history; link the where-to-buy page for that. This page is how a US shopper spots a bottle that does not match its own label. Use only the live AgeAura Pure NMN + TMG NAD+ Complex only panel as the example. Do not invent a milligram the page does not print. Do not lead on a certificate.",
+   "fanout": [
+    "what should the panel name",
+    "how do listings go wrong",
+    "what is the regulatory page for",
+    "what can you check without a lab"
+   ],
+   "evidence": "Live PDP for AgeAura Pure NMN + TMG NAD+ Complex only. No invented test. The where-to-buy article holds the regulatory dates.",
+   "link": [
+    "where-to-buy-nmn-in-the-us-fda-status-explained-2026",
+    "ageaura-nmn-tmg-ingredients-what-each-one-does-us",
+    "nmn-capsules-vs-powder-vs-sublingual-best-form-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "how-to-take-turkesterone",
+   "product": "turkesterone-advanced-formula",
+   "primary": "how to take turkesterone",
+   "title": "How to Take Turkesterone Capsules (US {year})",
+   "secondary": [
+    "turkesterone capsule routine",
+    "swallow turkesterone",
+    "turkesterone with water",
+    "turkesterone directions"
+   ],
+   "segment": "how-to-take",
+   "intent": "buyer who has the jar and wants the physical routine, not another clock or cost page",
+   "template": "STORY",
+   "angle": "Swallow with water, the same time you will remember, and what the jar front actually is. Do not state a milligram, a serving count, a capsule count, or a day-supply. The pack-label line is the only label fact. Link the timing page and the dosing page instead of restating them.",
+   "fanout": [
+    "do you swallow the capsules",
+    "do you take them with water",
+    "what if you miss one",
+    "where is the clock-time page"
+   ],
+   "evidence": "Live PDP directions and product_refs/turkesterone-advanced-formula.label.json. No milligram and no extra capsule count beyond the split badge the ticket line prints.",
+   "link": [
+    "turkesterone-timing-food-protein-or-fasted-us-2026",
+    "turkesterone-benefits-dosing-whats-real-us-2026",
+    "turkesterone-side-effects-4-ingredients-to-check-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "turkesterone-rest-days",
+   "product": "turkesterone-advanced-formula",
+   "primary": "how much turkesterone on rest days",
+   "title": "Turkesterone on Rest Days: How Much Changes? ({year})",
+   "secondary": [
+    "turkesterone on off days",
+    "turkesterone on a day off",
+    "turkesterone rest day capsules",
+    "turkesterone every day"
+   ],
+   "segment": "rest-days",
+   "intent": "lifter who takes it on gym days and wants the off-day answer",
+   "template": "EDITORIAL",
+   "angle": "The athletes page is the drug-test guide. This page is the off day. If no study compared gym days and off days, say so. Do not state a milligram, a serving count, a capsule count, or a day-supply. Link the athletes page and the timing page.",
+   "fanout": [
+    "do you take it on days off",
+    "does the amount change",
+    "what if you only take it on gym days",
+    "where is the drug-test page"
+   ],
+   "evidence": "Any human trial that reported rest days — fetch it or say you found none. No milligram.",
+   "link": [
+    "turkesterone-for-athletes-drug-test-guide-us-2026",
+    "turkesterone-timing-food-protein-or-fasted-us-2026",
+    "how-long-does-turkesterone-take-to-work-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "turkesterone-while-traveling",
+   "product": "turkesterone-advanced-formula",
+   "primary": "how much turkesterone while traveling",
+   "title": "Turkesterone While Traveling: How Much to Pack? ({year})",
+   "secondary": [
+    "turkesterone on a flight",
+    "turkesterone on vacation",
+    "packing turkesterone",
+    "turkesterone hotel routine"
+   ],
+   "segment": "travel",
+   "intent": "lifter packing a jar who should not invent a capsule count for the trip",
+   "template": "LISTICLE",
+   "angle": "The jar goes in the bag. You do not split capsules into a count this ticket does not have. Missed days and hotel heat. Do not state a milligram, a serving count, a capsule count, or a day-supply. Link the timing page and the side-effects page.",
+   "fanout": [
+    "does the whole jar travel",
+    "what if you miss a day",
+    "what does hotel heat change",
+    "where is the daily routine"
+   ],
+   "evidence": "Live PDP and the pack-label file. No invented capsule count or temperature.",
+   "link": [
+    "turkesterone-timing-food-protein-or-fasted-us-2026",
+    "turkesterone-side-effects-4-ingredients-to-check-us-2026",
+    "where-to-buy-turkesterone-in-the-us-what-to-check-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "turkesterone-and-coffee",
+   "product": "turkesterone-advanced-formula",
+   "primary": "turkesterone and coffee with food",
+   "title": "Turkesterone and Coffee, With Food (US {year})",
+   "secondary": [
+    "turkesterone with coffee",
+    "turkesterone and caffeine",
+    "turkesterone morning coffee",
+    "turkesterone beside coffee"
+   ],
+   "segment": "caffeine",
+   "intent": "lifter who takes capsules with morning coffee and wants the evidence",
+   "template": "EDITORIAL",
+   "angle": "Lifters often take capsules with morning coffee. Fetch any human evidence before you claim an interaction. If you find none, say so. Do not state a milligram, a serving count, a capsule count, or a day-supply. Link the timing page. No stimulant claim.",
+   "fanout": [
+    "can capsules go with coffee",
+    "is there an interaction study",
+    "does a meal change it",
+    "where is the timing page"
+   ],
+   "evidence": "PubMed or DOI search for turkesterone and caffeine — fetch a paper or state that you found none. No milligram.",
+   "link": [
+    "turkesterone-timing-food-protein-or-fasted-us-2026",
+    "turkesterone-side-effects-4-ingredients-to-check-us-2026",
+    "turkesterone-benefits-dosing-whats-real-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "turkesterone-storage",
+   "product": "turkesterone-advanced-formula",
+   "primary": "how much heat turkesterone storage",
+   "title": "Turkesterone Storage: How Much Heat Matters? ({year})",
+   "secondary": [
+    "how to store turkesterone",
+    "turkesterone jar heat",
+    "turkesterone shelf life",
+    "turkesterone in a hot car"
+   ],
+   "segment": "storage",
+   "intent": "jar owner deciding where capsules should sit in a hot US kitchen or car",
+   "template": "LISTICLE",
+   "angle": "Closed jar, a hot US car, and a bathroom cabinet. Do not invent a temperature or a shelf-life the label file does not list. Do not state a milligram, a serving count, a capsule count, or a day-supply. Link the side-effects page for stop signs only.",
+   "fanout": [
+    "does the jar need a fridge",
+    "what does a hot car change",
+    "what does the label say about storage",
+    "what if the capsules soften"
+   ],
+   "evidence": "Live PDP and product_refs/turkesterone-advanced-formula.label.json. No invented temperature.",
+   "link": [
+    "turkesterone-side-effects-4-ingredients-to-check-us-2026",
+    "where-to-buy-turkesterone-in-the-us-what-to-check-2026",
+    "turkesterone-benefits-dosing-whats-real-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "turkesterone-loading",
+   "product": "turkesterone-advanced-formula",
+   "primary": "how much turkesterone loading",
+   "title": "Turkesterone Loading: How Much the Start Changes? ({year})",
+   "secondary": [
+    "turkesterone loading phase",
+    "turkesterone bigger start",
+    "do you load turkesterone",
+    "turkesterone front load"
+   ],
+   "segment": "loading",
+   "intent": "lifter who saw a loading week claimed and wants the trial schedule",
+   "template": "COMPARISON",
+   "angle": "The cycle page covers planned pauses. This page asks whether a bigger start exists. If you cannot fetch a trial that used a load, say so. Do not invent one. Do not state a milligram, a serving count, a capsule count, or a day-supply. Link the cycle page.",
+   "fanout": [
+    "did any trial use a bigger start",
+    "is a loading week required",
+    "how is that different from a pause",
+    "what should you not invent"
+   ],
+   "evidence": "Human turkesterone trials you fetch — describe the schedule or say you found no loading protocol. No milligram.",
+   "link": [
+    "turkesterone-cycle-do-you-need-breaks-us-2026",
+    "how-long-does-turkesterone-take-to-work-us-2026",
+    "turkesterone-benefits-dosing-whats-real-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "how-to-take-vaginal-probiotics",
+   "product": "florafresh-vaginal-probiotics-gummies",
+   "primary": "how to take vaginal probiotics",
+   "title": "How to Take Vaginal Probiotics (US {year})",
+   "secondary": [
+    "vaginal probiotic gummy routine",
+    "chew vaginal probiotics",
+    "vaginal probiotics with water",
+    "vaginal probiotic directions"
+   ],
+   "segment": "how-to-take",
+   "intent": "buyer who has the pouch and wants the daily chew, not another clock or CFU page",
+   "template": "LISTICLE",
+   "angle": "Chew the gummies, water, and the same time you will remember. The best-time page owns the clock; link it. The dosage page owns the count; link it. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.",
+   "fanout": [
+    "do you chew them",
+    "do you take them with water",
+    "what if you miss a day",
+    "where is the clock-time page"
+   ],
+   "evidence": "Live PDP directions for the routine. Strain and CFU only from the Supplement Facts label.",
+   "link": [
+    "best-time-to-take-vaginal-probiotics-6-rules-us-2026",
+    "vaginal-probiotic-dosage-how-many-cfu-a-day-us-2026",
+    "florafresh-gummies-vs-capsules-5-format-facts-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "vaginal-probiotics-empty-stomach",
+   "product": "florafresh-vaginal-probiotics-gummies",
+   "primary": "vaginal probiotics on an empty stomach",
+   "title": "Vaginal Probiotics on an Empty Stomach (US {year})",
+   "secondary": [
+    "vaginal probiotics without food",
+    "vaginal probiotics before breakfast",
+    "probiotic gummies before eating",
+    "vaginal probiotics with a meal"
+   ],
+   "segment": "fasting",
+   "intent": "reader who wants the meal question separated from the morning-or-night question",
+   "template": "EDITORIAL",
+   "angle": "The best-time page answers morning or night. This page answers with a meal or without one, from probiotic-survival research you fetch. Do not restate the clock. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.",
+   "fanout": [
+    "does a meal change survival",
+    "is an empty stomach required",
+    "what if the label is silent",
+    "where is the clock-time page"
+   ],
+   "evidence": "Tompkins et al. 2011, Beneficial Microbes, or a newer fetched paper on probiotic survival with a meal. Confirm before citing.",
+   "link": [
+    "best-time-to-take-vaginal-probiotics-6-rules-us-2026",
+    "vaginal-probiotics-side-effects-normal-vs-stop-us-2026",
+    "vaginal-probiotic-dosage-how-many-cfu-a-day-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "vaginal-probiotics-worth-it",
+   "product": "florafresh-vaginal-probiotics-gummies",
+   "primary": "are vaginal probiotics worth it how much",
+   "title": "Are Vaginal Probiotics Worth It? How Much You Check ({year})",
+   "secondary": [
+    "vaginal probiotics review",
+    "are vaginal probiotics legit",
+    "florafresh honest check",
+    "vaginal probiotic gummies review"
+   ],
+   "segment": "reviews",
+   "intent": "shopper who wants a straight worth-it check without a fake star rating",
+   "template": "COMPARISON",
+   "angle": "Not the where-to-buy checklist and not a star-rating roundup. No invented reviews. What the Supplement Facts label lets you verify, and what the live PDP still has to show for the current offer. Link the where-to-buy page. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.",
+   "fanout": [
+    "what can you verify without a review",
+    "what a star rating cannot prove",
+    "what do you still read on the product page",
+    "where is the buy checklist"
+   ],
+   "evidence": "Supplement Facts label plus the live PDP offer, fetched at write time. No invented review or rating.",
+   "link": [
+    "where-to-buy-vaginal-probiotics-in-the-us-5-checks-2026",
+    "florafresh-gummies-vs-capsules-5-format-facts-us-2026",
+    "vaginal-probiotics-which-strains-actually-work-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "vaginal-probiotics-and-alcohol",
+   "product": "florafresh-vaginal-probiotics-gummies",
+   "primary": "how much vaginal probiotics and alcohol",
+   "title": "Vaginal Probiotics and Alcohol: How Much Matters? ({year})",
+   "secondary": [
+    "probiotics and drinking",
+    "vaginal probiotics after alcohol",
+    "probiotics and wine",
+    "alcohol and vaginal flora"
+   ],
+   "segment": "alcohol",
+   "intent": "woman who drinks and wants the limit of any probiotic claim around alcohol",
+   "template": "STORY",
+   "angle": "Not a treatment for anything alcohol does. Fetch papers on alcohol and the vaginal microbiome before citing a number. The gummy organism may not be the one those papers used; say so if it is not. Link the side-effects page. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.",
+   "fanout": [
+    "is there a human study",
+    "does the gummy match the papers",
+    "is it a next-morning fix",
+    "when should you see a clinician"
+   ],
+   "evidence": "Fetched papers on alcohol and the vaginal microbiome only. No treatment claim.",
+   "link": [
+    "vaginal-probiotics-side-effects-normal-vs-stop-us-2026",
+    "vaginal-probiotics-which-strains-actually-work-us-2026",
+    "probiotics-for-bv-do-they-actually-work-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "vaginal-probiotic-storage",
+   "product": "florafresh-vaginal-probiotics-gummies",
+   "primary": "how much vaginal probiotic storage",
+   "title": "Vaginal Probiotic Gummies at Home: How Much Heat? ({year})",
+   "secondary": [
+    "do probiotic gummies need a fridge",
+    "vaginal probiotic shelf life",
+    "probiotic gummies in a cupboard",
+    "probiotic gummies heat"
+   ],
+   "segment": "storage",
+   "intent": "pouch owner deciding between a cupboard and a fridge at home",
+   "template": "LISTICLE",
+   "angle": "Home shelf, not the suitcase. The travel page owns planes and hotels; link it. Do not invent a fridge rule the PDP does not print. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.",
+   "fanout": [
+    "does the pouch need a fridge",
+    "what does heat do at home",
+    "how is that different from a trip",
+    "what if the gummies soften"
+   ],
+   "evidence": "Live PDP storage line, if it prints one. If it does not, say so. No invented temperature.",
+   "link": [
+    "vaginal-probiotics-while-traveling-7-us-rules",
+    "florafresh-gummies-vs-capsules-5-format-facts-us-2026",
+    "vaginal-probiotics-side-effects-normal-vs-stop-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "vaginal-probiotic-ingredients",
+   "product": "florafresh-vaginal-probiotics-gummies",
+   "primary": "vaginal probiotic ingredients how much",
+   "title": "Vaginal Probiotic Ingredients: How Much to Read ({year})",
+   "secondary": [
+    "what is in vaginal probiotic gummies",
+    "florafresh label panel",
+    "vaginal probiotic gummy ingredients",
+    "probiotic gummies sweetener"
+   ],
+   "segment": "ingredients",
+   "intent": "label reader who wants the rest of the panel, not another organism roundup",
+   "template": "COMPARISON",
+   "angle": "The organism page owns which organisms were studied. Link it. This page is the rest of the Supplement Facts label: the named organism, the CFU line, vitamin C, pineapple fruit powder, and the sweeteners. Never the PDP description. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.",
+   "fanout": [
+    "what else is on the panel",
+    "where is the organism page",
+    "what sweetener is named",
+    "what should you not copy from the product description"
+   ],
+   "evidence": "Supplement Facts label only for formula facts. Live PDP for the offer, not the formula.",
+   "link": [
+    "vaginal-probiotics-which-strains-actually-work-us-2026",
+    "florafresh-gummies-vs-capsules-5-format-facts-us-2026",
+    "vaginal-probiotic-dosage-how-many-cfu-a-day-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "vaginal-probiotics-together",
+   "product": "florafresh-vaginal-probiotics-gummies",
+   "primary": "how much else with vaginal probiotics together",
+   "title": "Vaginal Probiotics Together: How Much Else? ({year})",
+   "secondary": [
+    "vaginal probiotics with other supplements",
+    "probiotics same day as vitamins",
+    "can you combine vaginal probiotics",
+    "probiotic gummies with a multivitamin"
+   ],
+   "segment": "stack",
+   "intent": "woman who already takes other supplements and wants the same-day limit",
+   "template": "EDITORIAL",
+   "angle": "Other supplements the same day: what to ask a clinician about, and what was not studied as a combination. Link the antibiotics page for that case. Do not name an amount for a product this ticket does not sell. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.",
+   "fanout": [
+    "can you take them with a multivitamin",
+    "what was not studied together",
+    "where is the antibiotics page",
+    "when should you ask a clinician"
+   ],
+   "evidence": "Fetched papers on combining oral probiotics with other supplements, or say you found none. No invented combination result.",
+   "link": [
+    "probiotics-after-antibiotics-for-women-when-to-start-us",
+    "vaginal-probiotics-side-effects-normal-vs-stop-us-2026",
+    "best-time-to-take-vaginal-probiotics-6-rules-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "vaginal-probiotics-for-athletes",
+   "product": "florafresh-vaginal-probiotics-gummies",
+   "primary": "vaginal probiotics for athletes",
+   "title": "Vaginal Probiotics for Athletes (US {year})",
+   "secondary": [
+    "probiotics for active women",
+    "vaginal probiotics and exercise",
+    "athlete probiotic gummies",
+    "probiotic gummies on gym days"
+   ],
+   "segment": "athletes",
+   "intent": "woman who trains and wants to know whether the gummy routine changes",
+   "template": "EDITORIAL",
+   "angle": "A gym habit does not change the gummy routine. Say what research did not test in athletes. No performance claim and no cure claim. Link the beginners page and the side-effects page. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.",
+   "fanout": [
+    "does a gym habit change the routine",
+    "were athletes in the trials",
+    "is there a performance claim",
+    "where is the beginners page"
+   ],
+   "evidence": "Any oral-probiotic trial that enrolled women athletes — fetch it or say you found none. No performance claim.",
+   "link": [
+    "vaginal-probiotics-for-beginners-what-to-expect-in-the-us",
+    "vaginal-probiotics-side-effects-normal-vs-stop-us-2026",
+    "vaginal-probiotics-which-strains-actually-work-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
   }
  ]
 }
