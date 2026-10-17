@@ -13,6 +13,7 @@ import sys, os, re, glob, json, subprocess, tempfile, urllib.request, urllib.err
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import genseo_roster
 import brand_rules as _br
+import geo_citability
 
 # Single source of truth: roster.json (see scripts/genseo_roster.py). Empty roster
 # blocks publishing by design — fill roster.json with real, consenting people.
@@ -223,7 +224,11 @@ def main():
     # TITLE CTR check (draft mode only — the `# ` line IS the title that earns the SERP click)
     if draft_mode and h1s:
         t=re.sub(r'<[^>]*>','',h1s[0]).strip()
-        if len(t)>65: warns.append(f"title {len(t)} chars (>65 truncates in Google → lower CTR): {t[:60]}…")
+        # The theme appends " – Wellness Nest" (~16). An H1 over 50 makes a title
+        # tag over ~66, which is the band that truncated on the 2026-10-17 audit.
+        if len(t)>50: warns.append(
+            f"title {len(t)} chars (>50). The theme appends ' – Wellness Nest' (~16), "
+            f"so the title tag truncates past ~70: {t[:60]}…")
         if re.match(r'(?i)^(the ultimate guide to|complete guide to|the complete guide to)\b', t) \
            or re.search(r'(?i)(complete|ultimate).{0,20}(review|guide).{0,15}(&|and).{0,15}(guide|sourcing)', t):
             warns.append(f"title uses generic boilerplate (low CTR) — add a number/benefit/hook: {t[:60]}")
@@ -246,21 +251,8 @@ def main():
     # answer block: the first REAL paragraph (skip publisher-injected spacer/comment/hidden
     # paragraphs, e.g. <p><img style="display:none" alt="spacer"><!-- meta_description --></p>).
     # A "real" paragraph has >=20 words of visible text after stripping tags+comments.
-    def visible_text(frag):
-        f=re.sub(r'<!--.*?-->','',frag,flags=re.S)   # drop HTML comments
-        f=re.sub(r'<[^>]*>','',f)                     # drop tags
-        return f.strip()
-    answer=None
-    for pm in re.finditer(r'<p[^>]*>(.*?)</p>', html, re.S|re.I):
-        # skip hidden/spacer paragraphs
-        if 'display:none' in pm.group(0).lower() or 'spacer' in pm.group(0).lower():
-            continue
-        txt=visible_text(pm.group(1))
-        if len(txt.split())>=20:
-            answer=txt; break
-    if answer is not None:
-        aw=len(answer.split())
-        if not (30<=aw<=90): warns.append(f"answer block {aw} words (target 40–60)")
+    answer=geo_citability.opening_paragraph(html)
+    if answer:
         if not MARKET_RE.search(answer): fails.append("answer block missing US-market anchor (US / United States / American)")
     else:
         fails.append("no opening <p> answer block (>=20 words)")
@@ -279,10 +271,8 @@ def main():
     # FAQ + FAQPage schema (in draft mode, schema is added post-conversion -> warn only)
     if 'FAQPage' not in html:
         (warns if draft_mode else fails).append("no FAQPage schema (publisher must append it after md->html)")
-    # FAQ questions can be <p><strong>Q?</strong> OR <h3>Q?</h3> (publisher uses h3)
-    faq_qs=re.findall(r'<p[^>]*>\s*<strong>([^<]*\?)\s*</strong>', html)
-    faq_qs+=re.findall(r'<h3[^>]*>([^<]*\?)\s*</h3>', html)
-    if len(faq_qs)<3: warns.append(f"only {len(faq_qs)} visible FAQ questions")
+    # FAQ count, question-style H2s, product/related/primary links, alt text,
+    # meta length, hand-written dates, and disease claims: geo_citability.assess.
     # author: named staff member + live page
     author_pages=set(re.findall(r'(/pages/[a-z-]+)', html))
     if not ROSTER_PAGES:
@@ -309,15 +299,12 @@ def main():
             fails.append("author bio is not the approved sentence for that staff member")
     # brand mentions
     if html.count('Wellness Nest')<2: warns.append("brand 'Wellness Nest' used <2 times")
-    # images alt
-    imgs=re.findall(r'<img[^>]*>', html)
-    noalt=[i for i in imgs if 'alt=' not in i or re.search(r'alt=["\']\s*["\']',i)]
-    if imgs and noalt: warns.append(f"{len(noalt)} image(s) missing alt text")
     # inline image COUNT — HARD gate (added 2026-07-26). The cheap model silently stopped generating
     # in-body images ~Jul22 and 18 articles published with ZERO inline images because the rule (SKILL
     # STEP 5: "1 lifestyle image per product, hero is never enough") was instruction-only — nothing
     # mechanical enforced it. This is that enforcement. Hero/cover is set as article.image (NOT body),
     # and publisher spacer imgs are display:none, so real in-body <img> = actual inline product images.
+    imgs=re.findall(r'<img[^>]*>', html)
     real_imgs=[i for i in imgs if 'display:none' not in i.lower() and 'spacer' not in i.lower()]
     # In a .md draft the FIRST image tag is the hero: shopify_publisher.do_publish promotes it to
     # article.image and STRIPS it from the body. So a draft needs hero + MIN_INLINE_IMAGES tags to
@@ -371,8 +358,18 @@ def main():
     _v=_br.violations(html)
     if _v: fails.append("brand rule — banned link(s)/mentions/claims: "+"; ".join(_v[:6]))
 
-    # link liveness (products, collections, author pages)
-    urls=set(re.findall(r'https://wellnessnest\.co/(?:products|collections|blogs)/[a-z0-9-]+', html))
+    # Citability (answer shape, FAQ, question H2s, product + related article,
+    # primary source, alt text, draft meta length, no hand-written Published date).
+    cite_fails, cite_warns = geo_citability.assess(html, require_meta=draft_mode)
+    fails.extend(cite_fails)
+    warns.extend(cite_warns)
+    dead_cites, soft_cites = geo_citability.citation_issues(
+        [(u, *geo_citability.fetch_status(u)) for u in geo_citability.external_urls(html)])
+    fails.extend(dead_cites)
+    warns.extend(soft_cites)
+
+    # link liveness (products, collections, article URLs, pages, policies, author pages)
+    urls=set(geo_citability.internal_urls(html))
     dead=[u for u in urls if not http_ok(u)]
     # author pages
     for ap in (author_pages & ROSTER_PAGES):

@@ -169,7 +169,10 @@ and in AI Overviews. Treat this step as writing an ad, not a label.
 - **Drafting — Answer-First Structure:** Write the article in Markdown following these critical rules:
   - **CRITICAL FORMATTING RULE:** DO NOT include any YAML frontmatter (e.g., no `---`). The very first line of the markdown file MUST be the H1 Title (e.g., `# Your Title Here`). The second line MUST be the meta description comment (e.g., `<!-- meta_description: ... -->`). The publisher reads the H1 to set the Shopify article `title` field, then **automatically strips it from the rendered body HTML** — so it will NOT appear twice. Do NOT remove it from the draft.
   - **⚠️ HERO PLACEMENT (corrected 2026-08-07 — the code is the authority):** the Hero Banner MUST be the FIRST `![...]()` image tag in the body markdown. `shopify_publisher.py do_publish` takes the FIRST local image found in the body, sets it as `article.image` (the Shopify featured image the theme renders on top), and STRIPS that one tag from the body — so the hero never appears twice. The old instruction ("do not embed the hero in the body") was wrong: with no hero in the body the publisher silently promoted-and-stripped the first lifestyle image instead, and the live article came out one inline image short. Never reference the hero a second time in the body.
-  - **ANSWER-FIRST INTRODUCTION (AEO CRITICAL):** The first paragraph (40–60 words) MUST directly and completely answer the primary question with zero fluff. No throat-clearing, no "In this article we will..." — answer first, then expand. This "answer block" is the #1 signal for featured snippets and AI Overview selection.
+  - **ANSWER-FIRST INTRODUCTION (AEO CRITICAL):** The first paragraph (40–60 words) MUST directly and completely answer the primary question with zero fluff. No throat-clearing, no "In this article we will..." — answer first, then expand. This "answer block" is the #1 signal for featured snippets and AI Overview selection. The gate fails an opener under 30 words or one that starts with throat-clearing, and warns outside 40–70.
+  - **QUESTION-STYLE H2s:** At least two `##` headings must be questions (`What` / `How` / `Does` / `Is` / `Can` / `Should` / `When` / `Where` / `Why`, or a heading that ends in `?`). Numbered steps ("1. Check the label") do not count. The gate fails a draft with fewer than two.
+  - **H1 LENGTH:** Keep the H1 at 50 characters or under. The theme appends ` – Wellness Nest` (~16), and title tags over ~70 truncate. The gate warns above 50.
+  - **DO NOT WRITE A DATE LINE:** Do not add `Published: Month D, YYYY` or `Last updated:`. The theme already prints the date. A hand-written date has disagreed with that header by one day (US Pacific vs UTC). The gate fails a `Published:` line.
   - **Self-Contained Sections:** Each H2 section must be independently comprehensible without reading previous sections. AI systems may extract and quote a single section out of context. NEVER use "As mentioned above..." or "Building on the previous point..."
   - **Body Structure for AEO:** Under each heading, start with a direct 1–2 sentence answer, then expand with details (examples, data, pros/cons). Use scannable formatting: short paragraphs, bullet/numbered lists, and comparison tables.
   - **MANDATORY LENGTH:** Determine the Search Intent and write to these exact target lengths:
@@ -188,6 +191,11 @@ and in AI Overviews. Treat this step as writing an ad, not a label.
     - `ultimately,` (4), `in summary,`, `delve into`, `by leveraging` (2)
     Write the sentence directly instead of reaching for a connector. If a paragraph only exists to introduce the next paragraph, delete the paragraph.
   - **CITE OR DROP NUMBERS:** if you write a statistic, a percentage, a study reference, or a "X times more effective" comparison, put a real source link next to it. If there is no source, do not write the number. The validator flags articles that make 3+ factual claims with zero citations.
+  - **PRIMARY SOURCE (HARD):** at least one link to PubMed, NIH, FDA, CDC, WHO, a DOI, regulations.gov, Examine, USADA, or WADA. A Flickr credit or a retailer blog does not count. The gate also resolves outbound links and fails a 404, a 410, or a redirect loop. A publisher 403 (bot wall) is a warning, not a pass to invent a different URL — confirm the link opens.
+  - **INTERNAL LINKS (HARD):** at least one `https://wellnessnest.co/products/<handle>` for the product the article is about, and at least one related `https://wellnessnest.co/blogs/news/<handle>` article. Both must be live.
+  - **META DESCRIPTION:** the line-2 `<!-- meta_description: ... -->` must be 120–165 characters.
+  - **ALT TEXT:** every image alt is a real phrase (not empty, not "image" / "photo"). The gate fails a short or missing alt.
+  - **NO DISEASE OR APPROVAL CLAIMS:** do not write that a product cures, treats, or prevents a disease, and do not call it FDA-approved or clinically proven. Saying a supplement does not treat an infection is correct and stays.
   - MUST follow all EEAT and AEO/GEO guidelines from the knowledge base.
   - MUST embed the `curl`-fetched Internal Links absolutely (e.g. `https://wellnessnest.co/products/handle`).
   - MUST format the FAQ precisely using `## Frequently Asked Questions` > `### Question`.
@@ -236,10 +244,14 @@ python3 ~/genseo/scripts/validate_article.py ~/genseo/published_drafts/<article_
 
 The validator checks, as code: word count ≥900, exactly the right heading structure, an
 answer block containing "the US", a comparison `<table>`, a $ price range, ≥2
-`/collections/` links, a named roster author with a LIVE `/pages/` link, 4 FAQs, brand
-mentions, image alt text, **topic fitness** (hard-fails dead flavour/recipe titles + collection-
-owned head-terms — see STEP 0.5) — AND that every product/collection/author URL returns HTTP 200
-(no guessed 404 links).
+`/collections/` links, a named roster author with a LIVE `/pages/` link, an FAQ heading
+plus ≥3 FAQ questions, ≥2 question-style H2s, a product URL, a related article URL, a
+primary-source link, a 120–165 character meta description, descriptive image alt text,
+no hand-written `Published:` date, no affirmative cure / FDA-approval / clinically-proven
+claim, **topic fitness** (hard-fails dead flavour/recipe titles + collection-
+owned head-terms — see STEP 0.5) — AND that every product/collection/article/page/author
+URL returns HTTP 200 and that outbound citations are not 404, 410, or stuck in a redirect
+loop (a 403 bot-wall is a warning). H1 titles over 50 characters warn.
 
 **It also scores the PROSE (added 2026-07-30), and this part hard-fails too.** The structural
 checks above only prove an article has a table and a price; they never measured whether the
