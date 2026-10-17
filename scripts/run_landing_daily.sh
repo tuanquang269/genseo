@@ -6,6 +6,13 @@
 # REAL storefront in a ~40 s gsl-preview window (on -> screenshot -> off in a finally) so approval never rests on a local
 # render. GENSEO_LANDING_REAL_QA_WINDOW=0 keeps the parity checks but skips the window.
 # launchd com.pati.genseo-landing: 08:15, 09:20 check, 16:15 catch-up, on WHICHEVER Mac is online (deploy/com.pati.genseo-landing.*.plist).
+# Queue low-water is on by default. Once per run, after the lane lock, scripts/build_landing_tickets.py --ensure
+# GENSEO_LANDING_LOW_WATER (default 2, one draft a day for two days) tops daily-landing-tickets.md up.
+# That builder reads the public storefront only. It does not write Shopify and it does not call a paid API.
+# An angle already on an open line is not queued again. A short angle bank (exit 3), a timeout, or any other
+# builder failure writes state/landing-queue-low-water.marker and the run continues when a line is already open.
+# An empty queue still stops. GENSEO_LANDING_LOW_WATER=0 keeps the old "add one if the queue is empty, exit 1
+# if the builder fails" path.
 #
 # One-page-per-day guarantee across the two Macs (they share no writable state -> Shopify is the shared state):
 #   1. DNS first: scripts/genseo_wait_for_network.sh, after the lock and before the first
@@ -58,6 +65,14 @@ set -uo pipefail
 export PATH="$HOME/.local/bin:$HOME/.npm-global/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 for d in "$HOME"/.nvm/versions/node/*/bin; do [ -d "$d" ] && PATH="$d:$PATH"; done; export PATH
 G="$HOME/genseo"; PY=/usr/bin/python3; cd "$G" || exit 1
+mkdir -p "$G/logs" "$G/state"
+if [ -f "$G/scripts/genseo_errlog.sh" ]; then
+  # shellcheck source=genseo_errlog.sh
+  . "$G/scripts/genseo_errlog.sh" || printf '%s\n' "WARN: could not load scripts/genseo_errlog.sh" >&2
+  if declare -F genseo_errlog_begin >/dev/null 2>&1; then
+    genseo_errlog_begin "$G/logs/launchd-landing.err.log" || true
+  fi
+fi
 if [ -f "$G/scripts/genseo_power_assert.sh" ]; then
   # shellcheck source=genseo_power_assert.sh
   . "$G/scripts/genseo_power_assert.sh" || {
@@ -80,12 +95,33 @@ LANDING_TIMEOUT="${GENSEO_LANDING_TIMEOUT_SEC:-5400}"
 case "$LANDING_TIMEOUT" in
   ''|*[!0-9]*|0) LANDING_TIMEOUT=5400 ;;
 esac
+# Default 2 is two days at one unpublished draft a day. 0 is the old single-add path.
+# A non-numeric value is ignored so a bad plist cannot turn the guard off.
+LANDING_LOW_RAW="${GENSEO_LANDING_LOW_WATER-}"
+LANDING_LOW_BAD=0
+case "$LANDING_LOW_RAW" in
+  '') LANDING_LOW=2 ;;
+  *[!0-9]*) LANDING_LOW=2; LANDING_LOW_BAD=1 ;;
+  *) LANDING_LOW=$LANDING_LOW_RAW ;;
+esac
 HOST="$(hostname -s)"; DAY="$(TZ=Asia/Saigon date +%F)"
 LOGDIR="$G/logs/landing-daily"; mkdir -p "$LOGDIR" "$G/state"; LOG="$LOGDIR/$DAY.log"
 LOCK="$G/state/landing-daily.lock"; MINE="$G/state/landing-by-$HOST.log"; ART_LOCK="$G/state/daily.lock"
 QUEUE="daily-landing-tickets.md"
 ts(){ date '+%F %T'; }
 say(){ echo "[$(ts)] [$HOST/$ROLE] $*" | tee -a "$LOG"; }
+_landing_queue_low_marker() {
+  local rc=$1 marker="$G/state/landing-queue-low-water.marker"
+  mkdir -p "$(dirname "$marker")"
+  {
+    printf '%s\n' "LANDING QUEUE LOW"
+    printf 'time=%s\n' "$(date '+%F %T')"
+    printf 'threshold=%s\n' "$LANDING_LOW"
+    printf 'exit=%s\n' "$rc"
+    printf '%s\n' "action=add an angle in templates/landing/listicle-angles.json or free a product"
+    printf '%s\n' "paid_api=not called"
+  } > "$marker"
+}
 if declare -F genseo_power_assert_note >/dev/null 2>&1; then
   genseo_power_assert_note || true
 fi
@@ -208,7 +244,29 @@ fi
 
 # reviews (real 4-5★ only); a failure is not fatal — the agent then leaves the review slot as a placeholder
 NODE_PATH="$(npm root -g)" node scripts/trustpilot_reviews.mjs >> "$LOG" 2>&1 || say "WARN: Trustpilot refresh failed — page will carry a review placeholder"
-$PY scripts/build_landing_tickets.py >> "$LOG" 2>&1 || { say "ticket builder failed — see log"; exit 1; }
+if [ "${LANDING_LOW_BAD:-0}" = 1 ]; then
+  say "LANDING QUEUE LOW: ignoring bad GENSEO_LANDING_LOW_WATER — using $LANDING_LOW"
+fi
+if [ "$LANDING_LOW" = 0 ]; then
+  $PY scripts/build_landing_tickets.py >> "$LOG" 2>&1 || { say "ticket builder failed — see log"; exit 1; }
+else
+  BUILD_TIMEOUT="${GENSEO_LANDING_BUILD_TIMEOUT_SEC:-300}"
+  case "$BUILD_TIMEOUT" in
+    ''|*[!0-9]*|0) BUILD_TIMEOUT=300 ;;
+  esac
+  # Ticket-only. --ensure reuses the builder's rotation and open-angle dedupe.
+  # Public products.json only. No Shopify write and no paid API. A non-zero
+  # exit writes the marker and continues; the empty-line check below still stops.
+  /bin/bash "$G/scripts/genseo_group_timeout.sh" "$BUILD_TIMEOUT" \
+    "$PY" scripts/build_landing_tickets.py --ensure "$LANDING_LOW" >> "$LOG" 2>&1
+  brc=$?
+  if [ "$brc" != 0 ]; then
+    say "landing queue low-water failed (exit $brc) — fail-soft if an open line remains; no paid API"
+    _landing_queue_low_marker "$brc"
+  else
+    rm -f "$G/state/landing-queue-low-water.marker"
+  fi
+fi
 if ! $PY scripts/lint_tickets.py "$QUEUE" >> "$LOG" 2>&1; then say "lint_tickets FAILED on $QUEUE — stopping"; exit 1; fi
 LINE="$(grep -m1 -E '^- \[ \] ' "$QUEUE")"
 [ -z "$LINE" ] && { say "no open landing ticket — stopping"; exit 1; }

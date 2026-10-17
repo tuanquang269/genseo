@@ -8,6 +8,11 @@ queue ran empty and the daily runner stopped at 1/5).
   python3 scripts/refill_tickets.py --count 8 --prefix MB --day 2026-10-12  # ids for that date; stamp stays now
   python3 scripts/refill_tickets.py --self-test             # offline fixtures: no network, writes nothing
 
+The daily low-water call is --if-below, --count, and --prefix only. That path stays
+ticket-only: public storefront reads, then append daily-tickets.md and board/ideas.csv.
+Do not add a paid Ads or LLM miner behind those flags. A short bank is exit 3; the
+wrapper writes state/queue-low-water.marker and does not spend money.
+
 Candidates: board/ideas.csv rows with status=idea first, then templates/article-topic-bank.json topics
 (priority, then the family with the fewest live articles). Each must pass, in order, against the store
 read live at run time:

@@ -49,6 +49,13 @@ landing run that has fast-forwarded `main` reinstalls this copy when the bytes d
 than the re-exec, so the next launchd start is the first one that can self-apply.
 Offline: `bash tests/test_install_mac_daily_wrapper.sh` and `bash tests/test_self_apply.sh`.
 
+**Launchd stderr.** `logs/launchd-daily.err.log` and `logs/launchd-landing.err.log` are append-only, so an old
+`run_ticket_headless.sh` parse error stayed at the top after the script itself was fixed. Each wrapper copies
+the previous bytes to that path plus `.prev` (the middle is trimmed past 1 MB) and writes a timestamp header,
+once per process, and only when stderr is that file. A fast-forward re-exec keeps `GENSEO_ERRLOG_ROTATED`, so
+this run's header is not wiped. `scripts/genseo_group_timeout.sh` no longer prints the perl `qw` comma warning
+or the unreachable-statement warning on every ticket.
+
 **Idle sleep and dark wake (2026-10-17).** `pmset sleep 1` is an idle timer. A running batch does not keep the Mac awake, and a dark wake can start the job before DNS is up and then go back to sleep. The wrappers arm `caffeinate -i -s -w` of their own PID (`scripts/genseo_power_assert.sh`) before the DNS wait, and the plists start with `/usr/bin/caffeinate -i -s`. That is a user-level assertion. It does not change `pmset` and it does not need sudo. `-i` blocks idle sleep. `-s` blocks system sleep on AC (a dark wake returning to sleep); on battery `-s` is not enforced. The article DNS wait still allows about ten minutes (`GENSEO_NET_WAIT_MAX_SEC`, default 600) for `wellnessnest.co` and `wellnessnest1.myshopify.com` to resolve before any feed read. A one-minute DNS gap, as on the 07:38 dark wake, is inside that budget. The 08:05 article slot and the 09:20 landing slot are the same jobs as 07:30 and 08:15. launchd does not start a second instance while one is running. `state/daily.lock` and `state/landing-daily.lock` exit 0 if a second copy does start. A live count that has already reached 5 does not start another ticket. A `gsl-` draft that already exists today does not build another page. Intervals the Mac slept through coalesce into one fire on wake, so a missed 07:30 is retried at 08:05 instead of waiting until 14:47. After a successful fast-forward, or when `main` was already current, `scripts/genseo_self_apply.sh` runs before the first feed read. It compares `~/bin/grokbot-genseo-daily.sh` and each installed LaunchAgent to this checkout. Matching wrapper bytes are left alone. Matching plist bytes that this script has already loaded are left alone. A different wrapper is reinstalled with `bash scripts/install_mac_daily_wrapper.sh`. A different plist is copied. The label of the job that is running is not reloaded in that process: a detached helper waits until that PID has exited, then bootout and bootstrap. `RunAtLoad` stays false. The helper does not kickstart and does not start either wrapper. The other label is reloaded in that run only when `state/daily.lock` or `state/landing-daily.lock` is free and no job for that lane is running. A MacBook uses `deploy/com.pati.genseo-daily.macbook.plist` and `deploy/com.pati.genseo-landing.macbook.plist`. A Mini uses `deploy/com.pati.genseo-landing.mini.plist` and does not install an article agent from here. A plist that is not already in `~/Library/LaunchAgents` is not created. If the reinstall or the reload fails, the run continues on the previous setup and `logs/self-apply.log` records the failure. Pulling alone is not enough to update `~/bin` before that scheduled run. When `~/bin` predates the re-exec, or an agent was never loaded, the one-time step on the MacBook is still:
 
 ```bash
@@ -197,7 +204,11 @@ Follow the `genseo-auto-publish` skill end to end. The two steps that actually k
 
 ### 1.3 Gate, publish, record
 1. `python3 scripts/validate_article.py <draft>.md --draft` → must print `✓ PASS`.
-   Publishing without a PASS is hard rule 1.
+   Publishing without a PASS is hard rule 1. A measured QRG failure (overall below 80, filler
+   or AI-pattern at 25 or above) fails that gate. A missing claude-seo launcher does not: the
+   validator prints `QRG scoring unavailable: <reason>` and the draft still passes. The scorer
+   is `~/.claude/plugins/marketplaces/*claude-seo*/bin/claude-seo` on the Mac. It is not a paid
+   call, and this repo does not invent a score when the launcher is absent.
 2. `python3 scripts/shopify_publisher.py …` — the **only** publish path. Shopify MCP /
    GraphQL / REST drop the JSON-LD. Publish **live/visible**, never draft (Kevin, standing:
    *"just auto publish visible. I will do QA step even after you publish"*).
@@ -217,8 +228,16 @@ back to Kevin through Eugene.
 
 **First run the gated refill:** `python3 scripts/refill_tickets.py --count 8 --dry-run`, read it, then drop
 `--dry-run`. It appends product-mapped tickets from `templates/article-topic-bank.json` + `board/ideas.csv`
-after the same dedup and fitness gates as below; the daily wrapper can call it on its own
-(`GENSEO_AUTO_REFILL=1`). See `docs/TICKET_REFILL.md`. Mine by hand only when it exits 3 (sources ran dry).
+after the same dedup and fitness gates as below. See `docs/TICKET_REFILL.md`. Mine by hand only when it exits 3 (sources ran dry).
+
+**Low-water (on by default).** Before the empty-queue stop, and also on a day that already hit the target,
+the article wrapper refills when open tickets are under `GENSEO_QUEUE_LOW_WATER` (default `2 * GENSEO_DAILY_TARGET`,
+so 10). The call is `refill_tickets.py --if-below <threshold> --count <threshold − open> --prefix <MB|MM>`,
+ticket-only, under a 600s group timeout. Exit 3, a timeout, or a missing script writes `state/queue-low-water.marker`
+and the run continues. It does not call Ads or an LLM. `GENSEO_QUEUE_LOW_WATER=0` turns that guard off.
+`GENSEO_AUTO_REFILL` stays off; that older hook only fills what is still due today. The landing wrapper keeps
+`GENSEO_LANDING_LOW_WATER` open lines (default 2) with `build_landing_tickets.py --ensure`. A builder failure
+leaves `state/landing-queue-low-water.marker` and still builds when a line is already open.
 
 **GSC is unauthorised on this Mac and the google-ads MCP is not connected**, so the two
 normal demand sources are unavailable. Mine at $0 from what is on the machine:

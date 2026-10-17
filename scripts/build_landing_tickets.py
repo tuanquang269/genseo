@@ -4,6 +4,11 @@
   /usr/bin/python3 scripts/build_landing_tickets.py            # add ONE ticket if the queue has no open one
   /usr/bin/python3 scripts/build_landing_tickets.py --dry-run  # show the pick, write nothing
   /usr/bin/python3 scripts/build_landing_tickets.py --force    # add one even if an open ticket exists
+  /usr/bin/python3 scripts/build_landing_tickets.py --ensure 2 # top up until 2 open lines; no-op when already there
+
+--ensure is the daily low-water (default 2 = two days at one draft a day). It reuses this
+file's rotation and will not queue an angle that is already on an open line. It reads
+products.json only. It does not write Shopify and it does not call a paid API.
 
 Queue: daily-landing-tickets.md, one line per ticket:
   - [ ] listicle | <store> | product=<handle> · angle: <brief> (added YYYY-MM-DD)
@@ -154,6 +159,23 @@ def collect_uses(queue_text, specs):
     return {"real": sorted(real), "open": open_handles}
 
 
+def load_specs(drafts_dir=None):
+    """landing_drafts/*.json. A file that does not parse is skipped. mtime is not read."""
+    folder = drafts_dir or os.path.join(ROOT, "landing_drafts")
+    specs = []
+    if not os.path.isdir(folder):
+        return specs
+    for name in sorted(os.listdir(folder)):
+        if not name.endswith(".json"):
+            continue
+        try:
+            with open(os.path.join(folder, name), encoding="utf-8") as fh:
+                specs.append(json.load(fh))
+        except Exception:
+            continue
+    return specs
+
+
 def history(queue_path=None, drafts_dir=None):
     """Dated landings from the queue file and landing_drafts/*.json.
 
@@ -164,18 +186,7 @@ def history(queue_path=None, drafts_dir=None):
     if os.path.exists(path):
         with open(path, encoding="utf-8") as fh:
             text = fh.read()
-    folder = drafts_dir or os.path.join(ROOT, "landing_drafts")
-    specs = []
-    if os.path.isdir(folder):
-        for name in sorted(os.listdir(folder)):
-            if not name.endswith(".json"):
-                continue
-            try:
-                with open(os.path.join(folder, name), encoding="utf-8") as fh:
-                    specs.append(json.load(fh))
-            except Exception:
-                continue
-    return collect_uses(text, specs)
+    return collect_uses(text, load_specs(drafts_dir))
 
 
 def schedule(uses, today):
@@ -284,17 +295,66 @@ def next_product(uses, eligible, order=None, on=None, priority=None):
     return choose_product(eligible, events, day, order, priority), day
 
 
-def angle_counts(handle):
+class LandingAngleBlocked(Exception):
+    """The product rotation picked a handle whose angles are already open lines."""
+
+    def __init__(self, handle):
+        self.handle = handle
+        Exception.__init__(self, "angles already open for %s" % handle)
+
+
+def _angle_of(line):
+    m = re.search(r"angle: (.*?)(?: · audience:.*?)?(?: \(added \d{4}-\d{2}-\d{2}\))?$", line.strip())
+    return m.group(1) if m else ""
+
+
+def _queue_text(text):
+    """None reads the live queue file. A string, including empty, is used as-is."""
+    if text is not None:
+        return text
+    if not os.path.exists(QUEUE):
+        return ""
+    with open(QUEUE, encoding="utf-8") as fh:
+        return fh.read()
+
+
+def angle_counts(handle, text=None):
     c = {}
-    if os.path.exists(QUEUE):
-        with open(QUEUE, encoding="utf-8") as fh:
-            queued = fh.readlines()
-        for line in queued:
-            if f"product={handle} " in line or line.rstrip().endswith(f"product={handle}"):
-                m = re.search(r"angle: (.*?)(?: · audience:.*?)?(?: \(added \d{4}-\d{2}-\d{2}\))?$", line.strip())
-                if m:
-                    c[m.group(1)] = c.get(m.group(1), 0) + 1
+    for line in _queue_text(text).splitlines():
+        if f"product={handle} " in line or line.rstrip().endswith(f"product={handle}"):
+            angle = _angle_of(line)
+            if angle:
+                c[angle] = c.get(angle, 0) + 1
     return c
+
+
+def open_angles(handle, text=None):
+    """Angles already sitting on an open line. A second open copy is a duplicate topic."""
+    found = set()
+    for line in _queue_text(text).splitlines():
+        if not line.startswith("- [ ] "):
+            continue
+        if f"product={handle} " not in line and not line.rstrip().endswith(f"product={handle}"):
+            continue
+        angle = _angle_of(line)
+        if angle:
+            found.add(angle)
+    return found
+
+
+def select_angle(handle, meta, queue_text=None):
+    """Least-used angle that is not already an open line for this product.
+
+    queue_text=None counts the live queue file (the one-ticket path). A string
+    counts that text only, so an in-memory top-up sees the line it just added.
+    """
+    counts = angle_counts(handle, queue_text)
+    used_open = open_angles(handle, queue_text)
+    ranked = sorted(meta.get("angles") or [], key=lambda a: (counts.get(a, 0), (meta.get("angles") or []).index(a)))
+    for angle in ranked:
+        if angle not in used_open:
+            return angle
+    return None
 
 
 def refused_angle_keys(angles):
@@ -360,60 +420,149 @@ def eligible_handles(products, angles):
     return cands, why, order
 
 
-def pick(products, angles, uses, on=None):
+def pick(products, angles, uses, on=None, queue_text=None):
     day = on or today()
     cands, why, order = eligible_handles(products, angles)
     if not cands:
-        sys.exit(f"✗ no eligible product: {why}")
+        raise ValueError("no eligible product: %s" % (why,))
     events, slot = schedule(uses, day)
     handle = choose_product(cands, events, slot, order)
     meta = angles[handle]
-    cnt = angle_counts(handle)
-    angle = sorted(meta["angles"], key=lambda a: (cnt.get(a, 0), meta["angles"].index(a)))[0]
+    angle = select_angle(handle, meta, queue_text)
+    if angle is None:
+        raise LandingAngleBlocked(handle)
     last = [when for when, used in events if used == handle and when < slot]
     age = (slot - max(last)).days if last else 99999
     return handle, meta, angle, slot, age, why
 
 
-def main():
-    dry, force = "--dry-run" in sys.argv, "--force" in sys.argv
-    q = open(QUEUE).read() if os.path.exists(QUEUE) else HEADER
-    open_lines = [l for l in q.splitlines() if l.startswith("- [ ] ")]
-    if open_lines and not force:
-        print(f"queue already has an open ticket: {open_lines[0]}")
-        return
+def _open_lines(text):
+    return [line for line in (text or "").splitlines() if line.startswith("- [ ] ")]
+
+
+def ensure_open(queue_text, products, angles, minimum, specs=None, on=None):
+    """Append lines until `minimum` are open. Idempotent. Does not fetch or write.
+
+    An angle already on an open line is not queued again. A product whose
+    angles are all open is skipped and the rotation runs again without it.
+    Returns (text, added_lines).
+    """
+    if minimum < 1:
+        return queue_text or "", []
+    text = queue_text or ""
+    if text and not text.endswith("\n"):
+        text += "\n"
+    added = []
+    blocked = set()
+    stamp = (on or today()).isoformat()
+    limit = max(minimum, 1) + len([k for k in angles if not str(k).startswith("_")]) + 2
+    guard = 0
+    while guard < limit:
+        guard += 1
+        if len(_open_lines(text)) >= minimum:
+            break
+        prod = {h: p for h, p in products.items() if h not in blocked}
+        uses = collect_uses(text, specs or [])
+        try:
+            handle, meta, angle, _slot, _age, _why = pick(
+                prod, angles, uses, on=on, queue_text=text)
+        except LandingAngleBlocked as exc:
+            blocked.add(exc.handle)
+            continue
+        except ValueError:
+            break
+        try:
+            line = br.prepare_ticket(ticket_line(
+                handle, meta["store"], angle, meta.get("audience", ""), stamp))
+        except br.GuardError:
+            blocked.add(handle)
+            continue
+        if br.violations(line) or line in text.splitlines():
+            blocked.add(handle)
+            continue
+        text += line + "\n"
+        added.append(line)
+    return text, added
+
+
+def _argv_int(flag):
+    argv = sys.argv[1:]
+    if flag not in argv:
+        return None
+    i = argv.index(flag)
+    if i + 1 >= len(argv) or not str(argv[i + 1]).isdigit():
+        sys.exit("✗ %s needs a non-negative integer" % flag)
+    return int(argv[i + 1])
+
+
+def _load_angles():
     raw_angles = json.load(open(ANGLES))
     angles = {}
     for key in refused_angle_keys(raw_angles):
-        print(f"ageaura guard: dropped landing angle key {key}")
+        print("ageaura guard: dropped landing angle key %s" % key)
     for key, meta in raw_angles.items():
-        if key.startswith("_") or ar.classify_handle(key) != "deny":
+        if str(key).startswith("_") or ar.classify_handle(key) != "deny":
             angles[key] = meta
-    h, meta, angle, slot, age, why = pick(live_products(), angles, history())
+    return angles
+
+
+def add_until(original, minimum, dry, on=None):
+    """Write tickets until `minimum` open lines exist. Exit 3 when the bank of angles is short."""
+    angles = _load_angles()
     try:
-        line = ticket_line(h, meta["store"], angle, meta.get("audience", ""), today())
-        line = br.prepare_ticket(line)
-    except br.GuardError as e:
-        sys.exit(f"✗ brand_rules rejected the ticket: {e}")
-    v = br.violations(line)
-    if v:
-        sys.exit(f"✗ brand_rules rejected the ticket: {v}")
-    when = "never" if age > 10000 else f"{age} day(s) before {slot.isoformat()}"
-    print(f"pick: {h} ({when})")
+        products = live_products()
+    except (OSError, ValueError, KeyError) as exc:
+        sys.exit("✗ live store unreadable (%s: %s)" % (type(exc).__name__, exc))
+    _cands, why, _order = eligible_handles(products, angles)
     if why:
-        print("skipped:", "; ".join(f"{k}: {v}" for k, v in why.items()))
-    print(line)
+        print("skipped:", "; ".join("%s: %s" % (k, v) for k, v in why.items()))
+    text, added = ensure_open(original, products, angles, minimum, load_specs(), on or today())
+    opens = len(_open_lines(text))
+    for line in added:
+        found = _PRODUCT.search(line)
+        print("pick: %s" % (found.group(1) if found else "?"))
+        print(line)
+    short = opens < minimum
+    if not added and short:
+        print("✗ landing queue has %d open ticket(s); wanted %d and no further non-duplicate angle passed"
+              % (len(_open_lines(original)), minimum))
+        return 3
+    if short:
+        print("! landing queue reached %d open of %d requested" % (opens, minimum))
     if dry:
-        return
-    if not q.endswith("\n"):
-        q += "\n"
-    open(QUEUE, "w").write(q + line + "\n")
-    r = subprocess.run(["/usr/bin/python3", os.path.join(ROOT, "scripts", "lint_tickets.py"), QUEUE], capture_output=True, text=True)
+        print("dry-run: %d line(s); queue untouched" % len(added))
+        return 3 if short else 0
+    if not added:
+        return 0
+    open(QUEUE, "w").write(text)
+    r = subprocess.run(["/usr/bin/python3", os.path.join(ROOT, "scripts", "lint_tickets.py"), QUEUE],
+                       capture_output=True, text=True)
     if r.returncode != 0:
-        open(QUEUE, "w").write(q)  # roll back
-        sys.exit(f"✗ lint_tickets failed, ticket NOT added:\n{r.stdout}{r.stderr}")
+        open(QUEUE, "w").write(original)
+        sys.exit("✗ lint_tickets failed, ticket NOT added:\n%s%s" % (r.stdout, r.stderr))
     print("added to daily-landing-tickets.md (lint ok)")
+    return 3 if short else 0
+
+
+def main():
+    dry, force = "--dry-run" in sys.argv, "--force" in sys.argv
+    ensure = _argv_int("--ensure")
+    if os.path.exists(QUEUE):
+        with open(QUEUE, encoding="utf-8") as fh:
+            original = fh.read()
+    else:
+        original = HEADER
+    open_lines = _open_lines(original)
+    if ensure is not None:
+        if len(open_lines) >= ensure:
+            print("landing queue: %d open ticket(s) >= %d — nothing to do" % (len(open_lines), ensure))
+            return 0
+        return add_until(original, ensure, dry)
+    if open_lines and not force:
+        print("queue already has an open ticket: %s" % open_lines[0])
+        return 0
+    return add_until(original, len(open_lines) + 1, dry)
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main() or 0)

@@ -26,7 +26,8 @@ for arg in "$@"; do
         "Does not start launchd." \
         "Does not copy the LaunchAgent plist. Pulling alone does not update ~/bin." \
         "A wrapper that sources scripts/genseo_sync_main.sh is not copied while that file is missing." \
-        "A wrapper that sources scripts/genseo_power_assert.sh is not copied while that file is missing."
+        "A wrapper that sources scripts/genseo_power_assert.sh is not copied while that file is missing." \
+        "A wrapper that sources scripts/genseo_errlog.sh is not copied while that file is missing."
       exit 0
       ;;
     *)
@@ -96,6 +97,15 @@ if grep -F -q 'genseo_power_assert.sh' "$SRC"; then
   else
     printf 'helper %s: MISSING\n' "$pow_rel"
     die "wrapper requires $pow_rel — git pull in $GENSEO_HOME, then re-run. Nothing was copied."
+  fi
+fi
+if grep -F -q 'genseo_errlog.sh' "$SRC"; then
+  err_rel="scripts/genseo_errlog.sh"
+  if [ -f "$GENSEO_HOME/$err_rel" ]; then
+    printf 'helper %s: present\n' "$err_rel"
+  else
+    printf 'helper %s: MISSING\n' "$err_rel"
+    die "wrapper requires $err_rel — git pull in $GENSEO_HOME, then re-run. Nothing was copied."
   fi
 fi
 

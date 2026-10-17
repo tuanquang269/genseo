@@ -11,6 +11,7 @@ import os
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "scripts"))
@@ -286,6 +287,81 @@ class PaletteTests(unittest.TestCase):
             self.assertIn("Do not force a chromatic hue.", line)
             self.assertEqual(br.violations(line), [])
             self.assertNotIn("urolithin", line.lower())
+
+
+class EnsureOpenTests(unittest.TestCase):
+    def _angles(self):
+        with open(os.path.join(ROOT, "templates", "landing", "listicle-angles.json"), encoding="utf-8") as fh:
+            return json.load(fh)
+
+    def _products(self, handles=None):
+        return {
+            handle: {"product_type": "Supplement", "variants": [{"available": True}]}
+            for handle in (handles or ORDER)
+        }
+
+    def test_two_open_lines_from_an_empty_queue_are_the_priorities(self):
+        text, added = landing.ensure_open("", self._products(), self._angles(), 2, specs=[], on=ON)
+        handles = []
+        for line in added:
+            found = landing._PRODUCT.search(line)
+            self.assertIsNotNone(found, line)
+            handles.append(found.group(1))
+        self.assertEqual(handles, [SHILA, AGE])
+        again, more = landing.ensure_open(text, self._products(), self._angles(), 2, specs=[], on=ON)
+        self.assertEqual(more, [])
+        self.assertEqual(again, text)
+
+    def test_one_product_stops_when_its_angles_are_already_open(self):
+        angles = {SHILA: self._angles()[SHILA]}
+        products = self._products([SHILA])
+        text, added = landing.ensure_open("", products, angles, 5, specs=[], on=ON)
+        self.assertEqual(len(added), 3)
+        self.assertEqual(len({landing._angle_of(line) for line in added}), 3)
+        _text, more = landing.ensure_open(text, products, angles, 5, specs=[], on=ON)
+        self.assertEqual(more, [])
+
+    def test_ensure_open_does_not_fetch_the_store(self):
+        def boom():
+            raise AssertionError("live_products")
+
+        with mock.patch.object(landing, "live_products", boom):
+            text, added = landing.ensure_open("", {}, {}, 2, specs=[], on=ON)
+        self.assertEqual(added, [])
+        self.assertEqual(text, "")
+
+    def test_main_ensure_when_stocked_does_not_fetch_or_write(self):
+        def boom():
+            raise AssertionError("live_products")
+
+        with tempfile.TemporaryDirectory() as tmp:
+            path = os.path.join(tmp, "daily-landing-tickets.md")
+            body = (
+                "- [ ] listicle | wellnessnest | product=%s · angle: a (added 2026-10-17)\n"
+                "- [ ] listicle | wellnessnest | product=%s · angle: b (added 2026-10-17)\n"
+            ) % (SHILA, AGE)
+            with open(path, "w", encoding="utf-8") as fh:
+                fh.write(body)
+            with mock.patch.object(landing, "live_products", boom), \
+                    mock.patch.object(landing, "QUEUE", path):
+                old = sys.argv
+                try:
+                    sys.argv = ["build_landing_tickets.py", "--ensure", "2"]
+                    self.assertEqual(landing.main(), 0)
+                finally:
+                    sys.argv = old
+            with open(path, encoding="utf-8") as fh:
+                self.assertEqual(fh.read(), body)
+
+    def test_ensure_rejects_a_non_integer(self):
+        old = sys.argv
+        try:
+            sys.argv = ["build_landing_tickets.py", "--ensure", "nope"]
+            with self.assertRaises(SystemExit) as caught:
+                landing.main()
+        finally:
+            sys.argv = old
+        self.assertIn("--ensure", str(caught.exception))
 
 
 class OpenQueueTests(unittest.TestCase):

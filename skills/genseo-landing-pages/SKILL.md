@@ -144,7 +144,7 @@ Unpublished headless runs do not ask. A local preview, `GENSEO_LANDING_DRAFT=1`,
   counts Shopify pages with a `gsl-` handle CREATED today (ICT). ≥1 → stand down;
   Shopify unreadable → fail closed. `landing_publisher.py` (env `GENSEO_LANDING_DAILY=1`) re-checks it right before
   POSTing a new page, refuses `--live`, and requires a `gsl-preview-` handle.
-- Queue `daily-landing-tickets.md` ← `scripts/build_landing_tickets.py` (live products.json → real single SKUs that pass
+- Queue `daily-landing-tickets.md` ← `scripts/build_landing_tickets.py` (the daily wrapper calls `--ensure` with `GENSEO_LANDING_LOW_WATER`, default 2, and does not repeat an angle already on an open line; live products.json → real single SKUs that pass
   `brand_rules` + have `product_refs/<handle>.png` + an entry in `templates/landing/listicle-angles.json`; priority-weighted
   rotation — ShilaSource resin and AgeAura NMN+TMG at least as often as any other product in any 7-day window, no
   back-to-back day unless one product is eligible, undated specs are not a use; least-used angle) → `lint_tickets.py`.

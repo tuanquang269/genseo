@@ -265,6 +265,12 @@ validator now prints a `QRG:` line and fails on:
 Warnings only (fix if easy): repetition >= 20, information density < 0.55, and 3+ factual
 claims with no citation.
 
+A missing scorer prints `QRG scoring unavailable: <reason>` and does not fail the draft.
+The scorer is the external claude-seo launcher
+(`~/.claude/plugins/marketplaces/*claude-seo*/bin/claude-seo`), not a paid API call.
+Do not invent a score. `GENSEO_QRG_ADVISORY=1` downgrades a measured failure to a warning;
+it does not change a skip.
+
 When it fails on filler or AI-pattern, the validator prints a `content_humanize.py` command
 that does deterministic 1:1 phrase swaps. Review its diff; it does not add content. Better:
 do not write the banned phrases in STEP 5 in the first place.
@@ -376,6 +382,11 @@ EOF
 - **Refresh Flag:** Note the publish date. Flag this article for content refresh review in 90 days via the `genseo-refresh-planner` skill.
 
 ### TICKET REFILL: when the queue runs low (< 3 pending `[ ]` tickets)
+
+The daily wrapper stocks the queue itself when open tickets are under `GENSEO_QUEUE_LOW_WATER`
+(default two days of `GENSEO_DAILY_TARGET`, 10 when the target is 5). That unattended call is
+`refill_tickets.py --if-below` only. Exit 3 writes `state/queue-low-water.marker` and does not
+call Ads or an LLM. The mining recipe below is for an interactive session, not the unattended path.
 
 First: `python3 scripts/refill_tickets.py --count 8 --dry-run`, then without `--dry-run` — gated,
 product-mapped tickets from `templates/article-topic-bank.json` + `board/ideas.csv`
