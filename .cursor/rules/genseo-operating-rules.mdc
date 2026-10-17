@@ -92,12 +92,14 @@ Also: never `rm` repo files (move them to `_superseded/`); never put CDN URLs in
   write → gate → publish). The public site is the double-publish lock (`genseo_published_today.py`). The wrapper
   hard-stops when no ticket is open, so keep the queue stocked with `scripts/refill_tickets.py`
   (`docs/TICKET_REFILL.md`). launchd executes `~/bin/grokbot-genseo-daily.sh`, a copy of
-  `deploy/grokbot-genseo-daily.sh`. After pull, on the Mac: `bash scripts/install_mac_daily_wrapper.sh`
-  (does not start launchd). The MacBook article LaunchAgent is primary (`GENSEO_TICKET_PREFIX=MB`,
+  `deploy/grokbot-genseo-daily.sh`. After a successful sync, the scheduled run reinstalls `~/bin`
+  when the bytes differ and reloads a changed LaunchAgent only after that job exits.
+  `bash scripts/install_mac_daily_wrapper.sh` (does not start launchd) remains the one-time step
+  when `~/bin` predates that re-exec. The MacBook article LaunchAgent is primary (`GENSEO_TICKET_PREFIX=MB`,
   no-face images) until a Mini failover release is explicit. The Mini stays unloaded until that
   handover, then its daily plist is primary with `MM` ids. Do not load both.
   `GENSEO_HOST_ROLE=standby` still waits for a healthy peer; the MacBook plist does not set it.
-  Pulling alone does not update `~/bin/grokbot-genseo-daily.sh`.
+  Pulling alone does not update `~/bin/grokbot-genseo-daily.sh` until the next scheduled run.
 - **Landing pages — 1 unpublished draft/day, never counted in the 5.** `scripts/build_landing_tickets.py` →
   `daily-landing-tickets.md` → `scripts/run_landing_daily.sh` (launchd 08:15 + 09:20 check + 16:15); `gsl-preview-*` pages that Kevin approves. Skill
   `genseo-landing-pages`.
@@ -116,4 +118,5 @@ python3 scripts/refill_tickets.py --self-test           # offline fixtures + top
 python3 scripts/refill_tickets.py --count 8 --dry-run   # storefront reads only; queue + board untouched
 python3 scripts/sync_cursor_skills.py --check           # .cursor/skills pointers match skills/
 bash tests/test_install_mac_daily_wrapper.sh            # daily wrapper copy into a temp HOME; no launchd, no Shopify
+bash tests/test_self_apply.sh                           # wrapper and plist drift after a sync; no launchd, no Shopify
 ```

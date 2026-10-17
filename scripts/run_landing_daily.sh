@@ -40,10 +40,12 @@
 # GenSeo job holds a lane lock or has a checkout script open. A fast-forward
 # re-execs this file (same PID, so state/landing-daily.lock stays held).
 # Before this run commits, and again on exit, HEAD is switched back to main
-# when it is still on publish/*. The first time this ships, the Mac needs
-# `cd ~/genseo && git pull`. The plist already points at this path, so the
-# in-script assertion below does not need a launchd reload. The 09:20 interval
-# and the /usr/bin/caffeinate prefix do: copy the plist and bootstrap again.
+# when it is still on publish/*. The plist already points at this path.
+# After a successful sync, scripts/genseo_self_apply.sh reinstalls ~/bin when
+# the article wrapper bytes differ and reloads a changed LaunchAgent only
+# after this process exits. It does not start a run and it does not publish.
+# The 09:20 interval and the /usr/bin/caffeinate prefix arrive that way.
+# An agent that was never loaded still needs one manual copy and bootstrap.
 # Sleep: before the stable copy, this file arms caffeinate -i -s -w of its own
 # PID (scripts/genseo_power_assert.sh). Idle sleep (pmset sleep 1) and an AC
 # dark wake cannot suspend the DNS wait or the draft build. No sudo, no pmset
@@ -174,6 +176,14 @@ if [ "${GENSEO_MAIN_SYNCED:-}" != 1 ]; then
     genseo_sync_origin_main "$G/scripts/run_landing_daily.sh" "$@"
   else
     say "WARN: origin/main not updated — missing scripts/genseo_sync_main.sh — continuing on the current checkout"
+  fi
+fi
+# Only after a successful sync. A refused fast-forward does not touch launchd.
+if [ "${GENSEO_MAIN_SYNCED:-}" = 1 ] && [ -f "$G/scripts/genseo_self_apply.sh" ]; then
+  # shellcheck source=genseo_self_apply.sh
+  . "$G/scripts/genseo_self_apply.sh" || say "WARN: self-apply could not be loaded — continuing on the current setup"
+  if declare -F genseo_self_apply >/dev/null 2>&1; then
+    genseo_self_apply com.pati.genseo-landing || say "WARN: self-apply failed — continuing on the current setup"
   fi
 fi
 guard; g=$?
