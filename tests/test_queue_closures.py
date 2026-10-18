@@ -4,8 +4,11 @@ No Shopify, no network. A temp git repo stands in for the day-run branch.
 
     python3 -m unittest tests/test_queue_closures.py
 """
+import contextlib
+import io
 import json
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -76,6 +79,75 @@ class ClosureUnitTests(unittest.TestCase):
                 fh.write(ARTICLE)
             rc = qc.main(["count", "--queue", queue, "--repo", tmp])
             self.assertEqual(rc, 2)
+
+
+CLOSED_IDS = ("CA1016-2", "CA1016-3", "CA1016-4", "CA1016-5", "CA1016-6")
+LIVE_URLS = (
+    "https://wellnessnest.co/blogs/news/shilajit-on-an-empty-stomach-yes-or-no-in-the-us",
+    "https://wellnessnest.co/blogs/news/vaginal-probiotics-price-us-cost-2026",
+    "https://wellnessnest.co/blogs/news/turkesterone-for-fertility-the-us-evidence-2026",
+    "https://wellnessnest.co/blogs/news/creatine-gummies-price-69-99-in-the-us-2026",
+    "https://wellnessnest.co/blogs/news/nmn-for-fertility-human-evidence-in-the-us-2026",
+)
+GUMMIES_ANGLE = "choose shilajit gummies over resin"
+FLORA_ANGLE = "easier to stick with"
+OPEN_HEAD = re.compile(r"^(?:- \[ \]|## \[ \])")
+
+
+def first_line(queue, repo):
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        rc = qc.main(["first", "--queue", queue, "--repo", repo])
+    return rc, buf.getvalue().strip()
+
+
+class FreshCheckoutTests(unittest.TestCase):
+    def test_tracked_files_close_todays_tickets_without_a_ledger(self):
+        article_path = os.path.join(ROOT, "daily-tickets.md")
+        landing_path = os.path.join(ROOT, "daily-landing-tickets.md")
+        with open(article_path, encoding="utf-8") as fh:
+            article = fh.read()
+        with open(landing_path, encoding="utf-8") as fh:
+            landing = fh.read()
+        with tempfile.TemporaryDirectory() as tmp:
+            self.assertFalse(os.path.exists(os.path.join(tmp, "state", "queue-closures.json")))
+            rc, article_first = first_line(article_path, tmp)
+            self.assertEqual(rc, 0)
+            self.assertIn("#CA1016-7", article_first)
+            rc, landing_first = first_line(landing_path, tmp)
+            self.assertEqual(rc, 0)
+            self.assertFalse(os.path.exists(os.path.join(tmp, "state", "queue-closures.json")))
+        self.assertIn("florafresh-vaginal-probiotics-gummies", landing_first)
+        self.assertIn(FLORA_ANGLE, landing_first)
+        self.assertNotIn(GUMMIES_ANGLE, landing_first)
+        for ticket_id in CLOSED_IDS:
+            self.assertNotIn("#" + ticket_id, article_first)
+        article_open = [line for line in article.splitlines() if OPEN_HEAD.match(line)]
+        landing_open = [line for line in landing.splitlines() if OPEN_HEAD.match(line)]
+        helper_article = qc.effective_open_lines(article, [], "daily-tickets.md")
+        helper_landing = qc.effective_open_lines(landing, [], "daily-landing-tickets.md")
+        self.assertEqual(article_open, helper_article)
+        self.assertEqual(landing_open, helper_landing)
+        self.assertIn("#CA1016-7", article_open[0])
+        for ticket_id in CLOSED_IDS:
+            self.assertFalse(any("#" + ticket_id in line for line in article_open))
+            self.assertIn(
+                "- [DONE 2026-10-18 %s] **#%s" % (LIVE_URLS[CLOSED_IDS.index(ticket_id)], ticket_id),
+                article,
+            )
+        self.assertIn("florafresh-vaginal-probiotics-gummies", landing_open[0])
+        self.assertIn(FLORA_ANGLE, landing_open[0])
+        self.assertFalse(any(GUMMIES_ANGLE in line for line in landing_open))
+        self.assertIn("- [DRAFT 2026-10-18 page 166299173179]", landing)
+        self.assertTrue(any(
+            "premium-himalayan-shilajit-gummies" in line and "missed day" in line
+            for line in landing_open
+        ))
+        with open(os.path.join(ROOT, "PUBLISHED_ARTICLES_TRACKER.csv"), encoding="utf-8") as fh:
+            tracker = fh.read()
+        for ticket_id, url in zip(CLOSED_IDS, LIVE_URLS):
+            self.assertIn(ticket_id + ",", tracker)
+            self.assertIn(url, tracker)
 
 
 class ClosureGitTests(unittest.TestCase):

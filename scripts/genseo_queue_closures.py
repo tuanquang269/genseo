@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 """Remember tickets closed on a day-run branch so a return to origin/main does not reopen them.
 
-daily-tickets.md and daily-landing-tickets.md on origin/main stay the open
-queue. A publish that landed on article/* or publish/* flips those lines only
-in that branch. Checking main back out would put the same tickets first in
-the batch; three duplicate skips then stop the day.
+A checkbox that is not a single space in daily-tickets.md or
+daily-landing-tickets.md is closed on every machine. DONE, DRAFT, FAILED,
+and SKIPPED lines are closed from that tracked file alone. A fresh checkout
+with no state/queue-closures.json does not offer them again.
 
-state/queue-closures.json is gitignored per-Mac state. The daily open-count
-and the QUEUE POINTER skip entries in it. The branch ref keeps the commits.
+state/queue-closures.json is gitignored per-Mac state. It only hides lines
+that are still open in the checked-out file because the close lives on an
+article/* or publish/* branch and has not been merged. The daily open-count
+and the QUEUE POINTER skip those entries. The branch ref keeps the commits.
 
     genseo_queue_closures.py count --queue daily-tickets.md
     genseo_queue_closures.py first --queue daily-tickets.md
@@ -165,6 +167,11 @@ def hidden(row, entries, queue):
 
 
 def effective_open_lines(text, entries, queue):
+    """Open checkboxes, minus per-Mac ledger hides.
+
+    A non-space checkbox is closed from the file alone. entries only suppress
+    lines that are still open in text.
+    """
     out = []
     for row in checkbox_lines(text):
         if row["open"] and not hidden(row, entries, queue):
