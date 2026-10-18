@@ -933,7 +933,7 @@ plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check th
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** turkesterone + fertility checked 2026-10-16 against 123 live articles (blog listing + sitemap + Atom + local caches) and all 63 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1016-5 — creatine gummies price** — `Creatine Gummies Price: Cost Per Bottle (US 2026)`
+- [DONE 2026-10-18 https://wellnessnest.co/blogs/news/creatine-gummies-price-69-99-in-the-us-2026] **#CA1016-5 — creatine gummies price** — `Creatine Gummies Price: Cost Per Bottle (US 2026)`
   - **Primary keyword:** `creatine gummies price` · **Secondary:** how much do creatine gummies cost, creatine gummies cost per day, are creatine gummies expensive, creatine gummy price
   - **Search intent:** shopper comparing what a bottle of creatine gummies costs before choosing a format
   - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-16 18:52 ICT)
