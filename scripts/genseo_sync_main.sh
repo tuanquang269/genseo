@@ -6,15 +6,18 @@
 # Do not enable set -e here. Does not publish, push, rebase, or reset.
 #
 # git fetch origin main, then git merge --ff-only origin/main, when HEAD
-# is main (or a publish/* branch that can be switched back to main) and
-# every commit on local main is already on origin/main. Ignored logs and
-# state do not count. Untracked files that the incoming tree does not
-# overwrite are left in place. A tracked edit that would be overwritten is
-# stashed, or copied under /tmp/genseo-preserve-<stamp>-<pid>/, and that
-# path is logged. A publish/* ref is never deleted: if its commits are not
-# on origin/main the ref keeps them and HEAD still returns to main when
-# that switch is safe. Any other branch, a detached HEAD, or local commits
-# on main that are not on origin are logged and left as they are.
+# is main (or a publish/* or article/* branch that can be switched back to
+# main) and every commit on local main is already on origin/main. Ignored
+# logs and state do not count. Untracked files that the incoming tree does
+# not overwrite are left in place. A tracked edit that would be overwritten
+# is stashed, or copied under /tmp/genseo-preserve-<stamp>-<pid>/, and that
+# path is logged. A publish/* or article/* ref is never deleted: if its
+# commits are not on origin/main the ref keeps them and HEAD still returns
+# to main when that switch is safe. Before the switch, ticket lines closed
+# on that branch and still open on the tree HEAD will land on are appended
+# to state/queue-closures.json so the open queue does not list them again.
+# Any other branch, a detached HEAD, or local commits on main that are not
+# on origin are logged and left as they are.
 #
 # The fast-forward does not run while another GenSeo job holds
 # state/daily.lock or state/landing-daily.lock, while another job is
@@ -475,18 +478,92 @@ genseo_sync_clear_preserve_flag() {
   GENSEO_SYNC_PRESERVE=""
 }
 
-# Switch publish/* to local main. Does not fast-forward and does not delete
-# the publish ref. Returns 1 when the caller should stop without merging.
+# publish/* and article/* both return to main. Other names stay put.
+genseo_sync_is_day_branch() {
+  case "$1" in
+    publish/*|article/*) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
+genseo_sync_closure_script() {
+  local src=""
+  src=${BASH_SOURCE[0]}
+  src=$(cd "$(dirname "$src")" && pwd)
+  printf '%s\n' "$src/genseo_queue_closures.py"
+}
+
+# The ticket file HEAD will show after the switch and, when main can
+# fast-forward, after that fast-forward. Closures are recorded against it.
+genseo_sync_closure_base() {
+  if genseo_sync_git rev-parse --verify --quiet refs/heads/main >/dev/null; then
+    if genseo_sync_git merge-base --is-ancestor refs/heads/main origin/main; then
+      printf '%s\n' "origin/main"
+      return 0
+    fi
+    printf '%s\n' "refs/heads/main"
+    return 0
+  fi
+  printf '%s\n' "origin/main"
+}
+
+# Append closed-on-this-branch / open-on-base ticket lines to the gitignored
+# ledger. Dry-run prints the count and does not write. Returns 1 when the
+# ledger cannot be written and the branch has a ticket file: switching
+# without it would reopen published tickets.
+genseo_sync_record_queue_closures() {
+  local script="" py="" base="" out="" rc=0
+  script=$(genseo_sync_closure_script)
+  if [ ! -f "$script" ]; then
+    if genseo_sync_git cat-file -e "HEAD:daily-tickets.md" >/dev/null 2>&1 \
+      || genseo_sync_git cat-file -e "HEAD:daily-landing-tickets.md" >/dev/null 2>&1; then
+      genseo_sync_note "WARN: queue closures not recorded — missing scripts/genseo_queue_closures.py"
+      return 1
+    fi
+    return 0
+  fi
+  py=/usr/bin/python3
+  if [ ! -x "$py" ]; then
+    py=$(command -v python3 2>/dev/null || true)
+  fi
+  if [ -z "$py" ]; then
+    genseo_sync_note "WARN: queue closures not recorded — python3 missing"
+    return 1
+  fi
+  base=$(genseo_sync_closure_base) || return 1
+  if [ "${GENSEO_SYNC_DRY_RUN:-}" = 1 ]; then
+    out=$("$py" "$script" record --repo "$GENSEO_SYNC_REPO" --base "$base" --dry-run 2>&1) || rc=$?
+  else
+    out=$("$py" "$script" record --repo "$GENSEO_SYNC_REPO" --base "$base" 2>&1) || rc=$?
+  fi
+  if [ -n "$out" ]; then
+    genseo_sync_note "$out"
+  fi
+  if [ "$rc" != 0 ]; then
+    genseo_sync_note "WARN: queue closures not recorded"
+    return 1
+  fi
+  return 0
+}
+
+# Switch publish/* or article/* to local main. Does not fast-forward and
+# does not delete the branch ref. Returns 1 when the caller should stop
+# without merging.
 genseo_sync_publish_to_main() {
-  local branch="" hit="" counts="" dry=0
+  local branch="" hit="" counts="" dry=0 kind="publish"
   branch=$(genseo_sync_git symbolic-ref --quiet --short HEAD 2>/dev/null || true)
+  if ! genseo_sync_is_day_branch "$branch"; then
+    return 0
+  fi
   case "$branch" in
-    publish/*) ;;
-    *) return 0 ;;
+    article/*) kind="day" ;;
   esac
   [ "${GENSEO_SYNC_DRY_RUN:-}" = 1 ] && dry=1
+  if ! genseo_sync_record_queue_closures; then
+    return 1
+  fi
   if genseo_sync_git merge-base --is-ancestor HEAD origin/main; then
-    genseo_sync_note "publish branch $branch is contained in origin/main"
+    genseo_sync_note "$kind branch $branch is contained in origin/main"
   else
     counts=$(genseo_sync_git rev-list --left-right --count origin/main...HEAD 2>/dev/null || true)
     genseo_sync_note "preserving branch $branch (commits not on origin/main: $counts)"
@@ -555,8 +632,9 @@ genseo_sync_publish_to_main() {
   return 0
 }
 
-# End of an article or landing run. publish/* returns to main. No fetch, no
-# fast-forward, no delete of the publish ref.
+# End of an article or landing run. publish/* and article/* return to main.
+# No fetch, no fast-forward, no delete of the branch ref. Queue closures
+# are recorded first so the open lines on main stay out of the queue.
 genseo_return_publish_branch_to_main() {
   local repo="" branch="" gitdir=""
   GENSEO_SYNC_PRESERVE=""
@@ -574,13 +652,10 @@ genseo_return_publish_branch_to_main() {
     return 0
   fi
   branch=$(genseo_sync_git symbolic-ref --quiet --short HEAD 2>/dev/null || true)
-  case "$branch" in
-    publish/*) ;;
-    *)
-      unset GENSEO_SYNC_REPO
-      return 0
-      ;;
-  esac
+  if ! genseo_sync_is_day_branch "$branch"; then
+    unset GENSEO_SYNC_REPO
+    return 0
+  fi
   gitdir=$(genseo_sync_git rev-parse --git-dir 2>/dev/null || true)
   case "$gitdir" in
     "") ;;
@@ -703,7 +778,7 @@ genseo_sync_origin_main() {
   fi
   if [ "$branch" != "main" ]; then
     case "$branch" in
-      publish/*)
+      publish/*|article/*)
         if ! genseo_sync_publish_to_main; then
           genseo_sync_undo_preserve
           unset GENSEO_SYNC_REPO
@@ -721,17 +796,16 @@ genseo_sync_origin_main() {
   [ "${GENSEO_SYNC_DRY_RUN:-}" = 1 ] && dry=1
   origin=$(genseo_sync_git rev-parse origin/main)
   head=$(genseo_sync_git rev-parse HEAD)
-  # A dry-run on publish/* logs the switch and leaves HEAD there. Judge the
-  # fast-forward against local main, which is where HEAD would land.
+  # A dry-run on publish/* or article/* logs the switch and leaves HEAD
+  # there. Judge the fast-forward against local main, which is where HEAD
+  # would land.
   if [ "$dry" = 1 ]; then
     branch=$(genseo_sync_git symbolic-ref --quiet --short HEAD 2>/dev/null || true)
-    case "$branch" in
-      publish/*)
-        if genseo_sync_git rev-parse --verify --quiet refs/heads/main >/dev/null; then
-          head=$(genseo_sync_git rev-parse refs/heads/main)
-        fi
-        ;;
-    esac
+    if genseo_sync_is_day_branch "$branch"; then
+      if genseo_sync_git rev-parse --verify --quiet refs/heads/main >/dev/null; then
+        head=$(genseo_sync_git rev-parse refs/heads/main)
+      fi
+    fi
   fi
 
   if genseo_sync_has_untracked; then

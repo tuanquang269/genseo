@@ -56,13 +56,14 @@
 # `git fetch origin main` and `git merge --ff-only origin/main` when local
 # main can fast-forward. Untracked files that would not be overwritten stay.
 # A tracked edit that would be overwritten is stashed or backed up and logged.
-# A publish/* branch returns to main (the branch ref is kept). The fetch runs
+# A publish/* or article/* branch returns to main (the branch ref is kept)
+# after queue closures are recorded in state/queue-closures.json. The fetch runs
 # from a copy of this file so git does not rewrite the script bash is reading.
 # It does not fast-forward while another GenSeo job holds a lane lock or has
 # a checkout script open. A fast-forward re-execs
 # ~/genseo/deploy/grokbot-genseo-daily.sh (same PID, so state/daily.lock stays
 # held). After each ticket, HEAD is switched back to main when it is still on
-# publish/*. launchd runs ~/bin. After a successful sync this file sources
+# publish/* or article/*. launchd runs ~/bin. After a successful sync this file sources
 # scripts/genseo_self_apply.sh, which reinstalls ~/bin when the bytes differ
 # (bash scripts/install_mac_daily_wrapper.sh) and reloads a changed LaunchAgent
 # only after this process exits. It does not start a run. Later edits of this
@@ -200,6 +201,27 @@ live_urls(){ $PY "$G/scripts/genseo_published_today.py" --json 2>/dev/null | $PY
 d=json.load(sys.stdin); [print(e["url"]) for e in d.get("entries",[])]' 2>/dev/null; }
 live_count(){ local n; n="$($PY "$G/scripts/genseo_published_today.py" 2>/dev/null | tail -1)"; case "$n" in ''|*[!0-9-]*) n=-1;; esac; echo "$n"; }
 
+# Open checkbox lines, minus tickets this Mac already closed on article/* or
+# publish/* (state/queue-closures.json). A checkout that predates the helper
+# keeps the old grep. A helper that cannot read the ledger fails closed:
+# falling back to grep would reopen published tickets.
+queue_open_count() {
+  local n="" script="$G/scripts/genseo_queue_closures.py"
+  if [ ! -f "$script" ]; then
+    n=$(grep -cE '^(- \[ \]|## \[ \])' "$1" 2>/dev/null || true)
+    case "$n" in
+      ''|*[!0-9]*) n=0 ;;
+    esac
+    printf '%s\n' "$n"
+    return 0
+  fi
+  n="$($PY "$script" count --queue "$1" 2>/dev/null)" || return 1
+  case "$n" in
+    ''|*[!0-9]*) return 1 ;;
+  esac
+  printf '%s\n' "$n"
+}
+
 _queue_low_marker() {
   local marker=$1 open_n=$2 rc=$3 why=$4
   mkdir -p "$(dirname "$marker")"
@@ -229,7 +251,7 @@ genseo_queue_low_water() {
     return 0
   fi
   marker="$G/state/queue-low-water.marker"
-  open=$(grep -cE '^(- \[ \]|## \[ \])' "$G/daily-tickets.md" 2>/dev/null || true)
+  open=$(queue_open_count "$G/daily-tickets.md") || { say "queue closures unreadable — fail closed, exit"; exit 1; }
   case "${open:-}" in
     ''|*[!0-9]*) open=0 ;;
   esac
@@ -339,7 +361,7 @@ for i in $(seq 1 $(( MAX_RUNS + ${GENSEO_PEER_MAX_WAITS:-6} ))); do
     say "$peer — other Mac is publishing; wait ${PEER_WIN} min ($pw/$PEER_MAX_WAITS) then re-check (take over if it went quiet)"
     sleep $(( PEER_WIN * 60 )); continue
   fi
-  open=$(grep -cE '^(- \[ \]|## \[ \])' "$G/daily-tickets.md" 2>/dev/null || true)
+  open=$(queue_open_count "$G/daily-tickets.md") || { say "queue closures unreadable — fail closed, exit"; exit 1; }
   need=$(( TARGET - n ))
   if [ "$REFILL" = "1" ] && [ "$refilled" = 0 ] && [ "${open:-0}" -lt "$need" ]; then
     refilled=1
@@ -353,7 +375,7 @@ for i in $(seq 1 $(( MAX_RUNS + ${GENSEO_PEER_MAX_WAITS:-6} ))); do
     esac
     git -C "$G" add -- daily-tickets.md board/ideas.csv 2>/dev/null \
       && git -C "$G" commit -q -m "queue: refill_tickets.py on $HOST" -- daily-tickets.md board/ideas.csv >/dev/null 2>&1
-    open=$(grep -cE '^(- \[ \]|## \[ \])' "$G/daily-tickets.md" 2>/dev/null || true)
+    open=$(queue_open_count "$G/daily-tickets.md") || { say "queue closures unreadable — fail closed, exit"; exit 1; }
   fi
   if [ "${open:-0}" -eq 0 ]; then say "ticket queue EMPTY at $n/$TARGET — hard stop (no empty-queue model burn); refill daily-tickets.md"; exit 0; fi
   if ! lint="$($PY "$G/scripts/lint_tickets.py" "$G/daily-tickets.md" 2>&1)"; then

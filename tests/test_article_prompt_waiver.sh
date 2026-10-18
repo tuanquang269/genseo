@@ -139,8 +139,8 @@ then ok "prompt and CLAUDE.md keep the two waivers apart"; else bad "prompt asse
 # queue head id is not stable. The invariant is that the failure ticket is
 # not what the next run would pick.
 echo "2. the 2026-10-12 failure ticket is not the open queue head"
-first="$(grep -m1 -E '^(- \[ \]|## \[ \])' "$ROOT/daily-tickets.md" | tr -d '\r' || true)"
-open_n="$(grep -cE '^(- \[ \]|## \[ \])' "$ROOT/daily-tickets.md" || true)"
+first="$(/usr/bin/python3 "$ROOT/scripts/genseo_queue_closures.py" first --queue "$ROOT/daily-tickets.md" | tr -d '\r' || true)"
+open_n="$(/usr/bin/python3 "$ROOT/scripts/genseo_queue_closures.py" count --queue "$ROOT/daily-tickets.md" || true)"
 if [ -n "$first" ]; then
   ok "an open ticket remains"
   got="$(pointer_first "$TMP/article.txt")"

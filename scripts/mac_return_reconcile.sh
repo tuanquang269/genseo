@@ -12,7 +12,7 @@
 # checklist: 4. A lock is cleared only when you pass --apply-stale-lock, the lock is older than its documented threshold, and no live writer PID is running. The report prints the rmdir command on a dry-run and does not run it. If that directory changes before removal, it is left in place.
 # checklist:    daily.lock threshold is 21600 seconds (6h), GENSEO_LOCK_STALE_SEC in scripts/genseo_daily_lock.sh. A live grokbot-genseo-daily or run_ticket_headless.sh blocks removal at any age.
 # checklist:    landing-daily.lock threshold is 14400 seconds (4h), hardcoded in scripts/run_landing_daily.sh. A live run_landing_daily.sh or run_landing_headless.sh blocks removal at any age.
-# checklist: 5. --apply fast-forwards main only: git merge --ff-only origin/main. It runs only when HEAD is main, the work tree is clean, fetch succeeded, and every local branch commit is already on origin. Otherwise it prints instructions and changes nothing. Local commits that are not on origin stay local. This script does not rebase them and does not push. Do not run git push --force.
+# checklist: 5. --apply on article/* or publish/* records queue closures (state/queue-closures.json) and switches HEAD to main, keeping that branch ref and its unpushed commits. It does not delete the ref. Untracked files stay. Tracked local edits block the switch. Then it fast-forwards main: git merge --ff-only origin/main, only when HEAD is main, there is no tracked local edit, fetch succeeded, and every commit on HEAD is already on origin. Other branches are not switched. Local commits that are not on origin stay on their branch. This script does not rebase them and does not push. Do not run git push --force.
 # checklist: 6. When that fast-forward is allowed, or main is already up to date, --apply reinstalls the daily wrapper: bash scripts/install_mac_daily_wrapper.sh. Dry-run prints the plan and does not copy. The installer does not start launchd.
 # checklist:    Docs: DAILY-RUN.md and docs/TICKET_REFILL.md. launchd label com.pati.genseo-daily runs ~/bin/grokbot-genseo-daily.sh. Pulling alone does not update ~/bin.
 # checklist:    That wrapper waits for DNS before the first live-feed read (scripts/genseo_wait_for_network.sh). --apply copies the wrapper into ~/bin. The helper stays in this checkout.
@@ -29,8 +29,11 @@
 # checklist: 9. Read-only verify on dry-run (against origin/main) and after --apply (against the work tree): scripts/genseo_model_map.json maps claude-opus-5-5 to PATI-Alpha-Plan-Review and claude-fable-5 to PATI-Fable-5. The landing daily lane stays draft-only and never passes --live. Do not start grokbot-genseo-daily.sh or run_landing_daily.sh from this reconcile. The next 07:30 / 08:05 / 14:47 and 08:15 / 09:20 / 16:15 slots run them. Starting them here would publish or open a Shopify draft.
 #
 # Does not: genseo_daily_lock_acquire, shopify_publisher, landing_publisher, launchctl,
-# agent worker start, git push, git reset, git checkout, git stash, git clean, rm -r.
-# --apply is git merge --ff-only origin/main when that fast-forward is allowed,
+# agent worker start, git push, git reset, git clean, rm -r.
+# --apply on article/* or publish/* sources scripts/genseo_sync_main.sh and returns
+# that branch to main after recording queue closures. The ref is kept. This file
+# does not stash, reset, or delete it. Any other branch is left as it is.
+# --apply then runs git merge --ff-only origin/main when that fast-forward is allowed,
 # then scripts/install_mac_daily_wrapper.sh. It does not publish or start launchd.
 # Fetch and that merge set gc.auto=0 so auto-gc cannot prune a local dangling commit.
 # --apply-stale-lock moves one stale lock directory aside, checks it is still the
@@ -45,8 +48,10 @@ usage() {
     "usage: bash scripts/mac_return_reconcile.sh [--dry-run] [--apply] [--apply-stale-lock]" \
     "GENSEO_HOME defaults to the checkout that contains this script (~/genseo on the Mac)." \
     "Default is dry-run: fetch and report. No merge, no lock delete, no push, no wrapper copy, no publish." \
-    "--apply           git merge --ff-only origin/main when main is clean and every local commit is already on origin," \
-    "                  then bash scripts/install_mac_daily_wrapper.sh. Does not publish or start launchd." \
+    "--apply           On article/* or publish/*, record queue closures and switch to main (ref kept)," \
+    "                  then git merge --ff-only origin/main when HEAD has no tracked local edits and" \
+    "                  every commit on HEAD is already on origin. Untracked files stay." \
+    "                  Then bash scripts/install_mac_daily_wrapper.sh. Does not publish or start launchd." \
     "--apply-stale-lock  remove one stale lock dir when its identity is unchanged and no writer is live." \
     "Read-only verify: scripts/genseo_model_map.json and a draft-only landing lane (never --live)." \
     "Exit 0 report finished. A dry-run verify failure still exits 0 and prints result: verify-failed." \
@@ -939,12 +944,85 @@ reconcile_install_wrapper() {
   return 0
 }
 
+# Split porcelain into tracked edits (block a fast-forward) and untracked
+# files (kept, same rule as scripts/genseo_sync_main.sh).
+reconcile_split_porcelain() {
+  local line=""
+  TRACKED_PORCELAIN=""
+  UNTRACKED_N=0
+  if [ -z "${PORCELAIN:-}" ]; then
+    return 0
+  fi
+  while IFS= read -r line; do
+    [ -n "$line" ] || continue
+    case "$line" in
+      \?\?*) UNTRACKED_N=$((UNTRACKED_N + 1)) ;;
+      *) TRACKED_PORCELAIN="${TRACKED_PORCELAIN}${line}
+" ;;
+    esac
+  done <<< "$PORCELAIN"
+}
+
+# article/* and publish/* return to main before the fast-forward. The branch
+# ref and its commits stay. Queue closures are recorded by the sync helper.
+# Returns 1 when a day-run branch could not be returned. Returns 0 when there
+# is nothing to do or the switch landed on main.
+reconcile_return_day_branch() {
+  local sync="" now="" kept=""
+  case "$BRANCH" in
+    publish/*|article/*) ;;
+    *) return 0 ;;
+  esac
+  if [ -n "${TRACKED_PORCELAIN:-}" ]; then
+    printf '%s\n' "day_branch_return: skipped tracked-dirty"
+    return 0
+  fi
+  sync="$SCRIPT_DIR/genseo_sync_main.sh"
+  if [ ! -f "$sync" ]; then
+    printf '%s\n' "day_branch_return: failed missing-sync"
+    return 1
+  fi
+  # shellcheck source=genseo_sync_main.sh
+  . "$sync" || {
+    printf '%s\n' "day_branch_return: failed could-not-load-sync"
+    return 1
+  }
+  kept=$BRANCH
+  G=$REPO
+  GENSEO_SYNC_REPO=$REPO
+  unset GENSEO_SYNC_DRY_RUN
+  if ! genseo_sync_publish_to_main; then
+    unset GENSEO_SYNC_REPO
+    printf '%s\n' "day_branch_return: failed"
+    return 1
+  fi
+  unset GENSEO_SYNC_REPO
+  now=$(git -C "$REPO" rev-parse --abbrev-ref HEAD 2>/dev/null || printf 'unknown')
+  if [ "$now" != main ]; then
+    printf 'day_branch_return: failed still-on-%s\n' "$now"
+    return 1
+  fi
+  printf 'day_branch_return: switched %s to main\n' "$kept"
+  printf '%s\n' "day_branch_ref: kept"
+  BRANCH=$now
+  HEAD_SHA=$(git -C "$REPO" rev-parse HEAD 2>/dev/null || printf 'unknown')
+  ORIGIN_MAIN=$(git -C "$REPO" rev-parse origin/main 2>/dev/null || printf '')
+  STATUS_RC=0
+  PORCELAIN=$(git -C "$REPO" status --porcelain 2>/dev/null) || STATUS_RC=$?
+  reconcile_split_porcelain
+  # Commits that stayed on the day-run branch are not on HEAD. They must not
+  # block the fast-forward of main. HEAD's own unpushed commits still do.
+  LOCAL_N=$(git -C "$REPO" rev-list --count HEAD --not --remotes=origin 2>/dev/null) || LOCAL_N=""
+  printf 'apply_head_commits_not_on_origin: %s\n' "${LOCAL_N:-unknown}"
+  return 0
+}
+
 # 0 when --apply must not fast-forward. Local-only commits stay local: no rebase, no push.
 reconcile_catchup_blocked() {
   if [ "${FETCH_RC:-1}" != 0 ] || [ "${BRANCH:-}" != main ] || [ "${GIT_BUSY:-1}" = 1 ]; then
     return 0
   fi
-  if [ "${STATUS_RC:-1}" != 0 ] || [ -n "${PORCELAIN:-}" ]; then
+  if [ "${STATUS_RC:-1}" != 0 ] || [ -n "${TRACKED_PORCELAIN:-}" ]; then
     return 0
   fi
   case "${LOCAL_N:-}" in
@@ -959,6 +1037,11 @@ reconcile_catchup_blocked() {
 
 reconcile_catchup_plan() {
   printf '%s\n' "catchup_cmd: git merge --ff-only origin/main"
+  case "$BRANCH" in
+    publish/*|article/*)
+      printf 'day_branch_return: would record queue closures and switch %s to main on --apply (ref kept)\n' "$BRANCH"
+      ;;
+  esac
   CATCHUP_STATE=blocked
   if reconcile_catchup_blocked; then
     printf '%s\n' "catchup: blocked"
@@ -1100,6 +1183,9 @@ reconcile_historical 289803e
 
 STATUS_RC=0
 PORCELAIN=$(git -C "$REPO" status --porcelain 2>/dev/null) || STATUS_RC=$?
+TRACKED_PORCELAIN=""
+UNTRACKED_N=0
+reconcile_split_porcelain
 PERSONAS_DIRTY=0
 if [ "$STATUS_RC" != 0 ]; then
   printf '%s\n' "dirty: unknown"
@@ -1113,6 +1199,9 @@ elif [ -n "$PORCELAIN" ]; then
   done <<< "$PORCELAIN"
 else
   printf '%s\n' "dirty: none"
+fi
+if [ "${UNTRACKED_N:-0}" -gt 0 ]; then
+  printf 'untracked_kept: %s\n' "$UNTRACKED_N"
 fi
 if [ "$STATUS_RC" != 0 ]; then
   printf '%s\n' "personas_index: unknown"
@@ -1202,7 +1291,14 @@ apply_allowed() {
   fi
   if [ "$BRANCH" != main ]; then
     printf '%s\n' "apply_block: not-on-main"
-    printf '%s\n' "apply_next: this script does not switch branches. Review this branch, then fast-forward main yourself when it is clean."
+    case "$BRANCH" in
+      publish/*|article/*)
+        printf '%s\n' "apply_next: day-branch return did not land on main. The ref was kept. This script does not reset."
+        ;;
+      *)
+        printf '%s\n' "apply_next: this script does not switch branches other than article/* and publish/*. Review this branch, then fast-forward main yourself when it is clean."
+        ;;
+    esac
     APPLY_ALLOWED=0
   fi
   if [ "$GIT_BUSY" = 1 ]; then
@@ -1213,7 +1309,7 @@ apply_allowed() {
     printf '%s\n' "apply_block: status-failed"
     APPLY_ALLOWED=0
   fi
-  if [ -n "$PORCELAIN" ]; then
+  if [ -n "$TRACKED_PORCELAIN" ]; then
     printf '%s\n' "apply_block: dirty"
     printf '%s\n' "apply_next: git status --short"
     printf '%s\n' "apply_next: this script does not stash, commit, or reset."
@@ -1267,7 +1363,10 @@ elif [ "$LOCK_PROBLEM" != 0 ]; then
   printf '%s\n' "apply: skipped because a lock was not cleared"
   APPLY_RESULT=skipped-lock
 else
-  if apply_allowed; then
+  if ! reconcile_return_day_branch; then
+    printf '%s\n' "apply: refused"
+    APPLY_RESULT=refused
+  elif apply_allowed; then
     BEFORE=$(git -C "$REPO" rev-parse HEAD)
     MERGE_RC=0
     printf '%s\n' "catchup_cmd: git merge --ff-only origin/main"
