@@ -891,7 +891,7 @@ plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check th
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** turkesterone + price checked 2026-10-16 against 123 live articles (blog listing + sitemap + Atom + local caches) and all 63 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1016-2 — shilajit on an empty stomach** — `Shilajit on an Empty Stomach: Yes or No? (2026)`
+- [DONE 2026-10-18 https://wellnessnest.co/blogs/news/shilajit-on-an-empty-stomach-yes-or-no-in-the-us] **#CA1016-2 — shilajit on an empty stomach** — `Shilajit on an Empty Stomach: Yes or No? (2026)`
   - **Primary keyword:** `shilajit on an empty stomach` · **Secondary:** shilajit empty stomach, shilajit without food, shilajit before breakfast, shilajit resin on an empty stomach
   - **Search intent:** new user who was told to take shilajit before eating and wants to know if that is required
   - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-16 18:52 ICT)
