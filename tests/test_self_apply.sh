@@ -20,6 +20,7 @@ FIX=""
 HOME_DIR=""
 LABEL="com.pati.genseo-daily"
 APPLY_ENV=""
+APPLY_PATH=""
 START_STATUS="$(git -C "$ROOT" status --porcelain)"
 
 cleanup() {
@@ -137,6 +138,7 @@ new_fix() {
   : >"$LAUNCH_LOG"
   LABEL="com.pati.genseo-daily"
   APPLY_ENV="GENSEO_SELF_APPLY_TEST=1 GENSEO_INSTALL_WRAPPER_TEST=1 GENSEO_HOST_KIND=macbook"
+  APPLY_PATH=""
 }
 
 seed_wrapper_match() {
@@ -200,7 +202,8 @@ run_apply() {
   # APPLY_ENV is a list of KEY=value assignments with no spaces in the values.
   env -i \
     HOME="$HOME_DIR" \
-    PATH="/usr/bin:/bin" \
+    PATH="${APPLY_PATH:-/usr/bin:/bin}" \
+    PYTHONDONTWRITEBYTECODE=1 \
     G="$FIX" \
     GENSEO_SELF_APPLY_LOG="$LOGF" \
     GENSEO_SELF_APPLY_SH="$SELF" \
@@ -275,9 +278,23 @@ grep -F -q 'GENSEO_DAILY_TARGET:-5' "$ARTICLE" && ok "article target default sta
 grep -F -q 'GENSEO_LANDING_DRAFT=1' "$LANDING" && ok "landing stays draft-only" || bad "landing draft env missing"
 
 echo "2. off a Mac, disabled, and sync dry-run copy nothing"
+# on_mac is `uname -s` == Darwin when the test flag is unset. Fake only -s
+# so a Darwin runner hits the same skip a Linux runner hits. No production
+# hook: a real Mac must still be allowed to copy.
+mkdir -p "$WORK/uname-linux"
+cat >"$WORK/uname-linux/uname" <<'EOF'
+#!/bin/bash
+if [ "${1:-}" = "-s" ]; then
+  printf '%s\n' Linux
+  exit 0
+fi
+exec /usr/bin/uname "$@"
+EOF
+chmod 755 "$WORK/uname-linux/uname"
 new_fix offmac
 seed_plist "com.pati.genseo-daily.plist" "OLD-DAILY"
 APPLY_ENV=""
+APPLY_PATH="$WORK/uname-linux:/usr/bin:/bin"
 run_apply
 assert_continued "not a Mac"
 has "$LOGF" "self-apply: skipped — not a Mac" "logs not a Mac"
@@ -434,7 +451,9 @@ run_apply
 assert_continued "wrapper install failure"
 has "$LOGF" "self-apply: wrapper install failed (rc 1) — continuing on the current setup" "logs the installer rc"
 [ ! -e "$HOME_DIR/bin/grokbot-genseo-daily.sh" ] && ok "failed install leaves ~/bin absent" || bad "failed install wrote ~/bin"
-[ ! -e "$HOME_DIR/Library" ] && ok "failed install creates no agent" || bad "failed install created an agent"
+# Apple's /usr/bin/python3 writes ~/Library/Caches while checking a plist.
+# That cache is not an installed agent. LaunchAgents is the install path.
+[ ! -e "$HOME_DIR/Library/LaunchAgents" ] && ok "failed install creates no agent" || bad "failed install created an agent"
 
 echo "6. unchanged, missing, and symlink plists"
 new_fix same-plist
@@ -460,7 +479,7 @@ run_apply
 assert_continued "plist not installed"
 has "$LOGF" "self-apply: com.pati.genseo-daily skipped — not installed" "daily not installed"
 has "$LOGF" "self-apply: com.pati.genseo-landing skipped — not installed" "landing not installed"
-[ ! -e "$HOME_DIR/Library" ] && ok "missing agents are not created" || bad "missing agents created a Library dir"
+[ ! -e "$HOME_DIR/Library/LaunchAgents" ] && ok "missing agents are not created" || bad "missing agents created LaunchAgents"
 
 new_fix symlink
 seed_wrapper_match
