@@ -154,10 +154,36 @@ chmod 755 "$WORK/bin-caffeinate"
 : >"$WORK/caff-pids"
 
 reset_caff() {
+  local p
+  # A holder from the previous case is not this shell's child. Kill it
+  # before truncating so a late append cannot land in the next case's log.
+  if [ -f "$WORK/caff-pids" ]; then
+    while IFS= read -r p; do
+      case "$p" in
+        ''|*[!0-9]*) continue ;;
+      esac
+      kill -KILL "$p" 2>/dev/null || true
+    done <"$WORK/caff-pids"
+  fi
   : >"$WORK/caff.log"
   : >"$WORK/caff-pids"
   : >"$WORK/out"
   : >"$WORK/err"
+}
+
+# arm() returns as soon as the grandchild pid exists. The fake's log write
+# can land after that. Wait for the first line, then long enough for a
+# second immediate spawn to show up too.
+settle_caff() {
+  local i=0
+  while [ "$i" -lt 20 ]; do
+    if [ -s "$WORK/caff.log" ]; then
+      break
+    fi
+    sleep 0.05
+    i=$((i + 1))
+  done
+  sleep 0.15
 }
 
 echo "1. syntax, direct exec, and the assertion is armed before the DNS wait"
@@ -214,7 +240,8 @@ bounded 15 env -i \
   GENSEO_POWER_HELPER="$HELPER" \
   /bin/bash "$WORK/reexec.sh" >"$WORK/out" 2>"$WORK/err"
 assert_rc 0 "re-exec fixture exits 0"
-has "$WORK/out" "power assertion: caffeinate -i -s -w" "logs the assertion"
+has "$WORK/out" "(holder " "logs the assertion"
+settle_caff
 lines=$(grep -c . "$WORK/caff.log" || true)
 [ "$lines" = 1 ] && ok "caffeinate spawned once across a second arm and an exec" || bad "caffeinate lines were $lines, want 1"
 wpid=$(sed -n 's/^wrapper_pid://p' "$WORK/out")
@@ -274,8 +301,11 @@ has "$WORK/out" "continued" "disable continues"
 [ ! -s "$WORK/caff.log" ] && ok "disable did not spawn" || bad "disable spawned"
 
 reset_caff
+# Without the test flag the hook is ignored and `command -v caffeinate` is
+# used. /usr/bin/caffeinate exists on Darwin and is absent on Linux, so this
+# PATH keeps the real binary out of the lookup on both.
 bounded 10 env -i \
-  PATH="$WORK:/usr/bin:/bin" \
+  PATH="$WORK:/bin" \
   GENSEO_CAFFEINATE="$WORK/bin-caffeinate" \
   GENSEO_CAFFEINATE_LOG="$WORK/caff.log" \
   GENSEO_CAFFEINATE_PIDS="$WORK/caff-pids" \
@@ -406,7 +436,7 @@ bounded 20 env -i \
   /bin/bash "$ARTICLE" >"$WORK/out" 2>"$WORK/err"
 assert_rc 0 "locked retry exits 0"
 has "$WORK/out" "another batch is running" "locked retry logs the other batch"
-has "$WORK/out" "power assertion: caffeinate -i -s -w" "locked retry still armed caffeinate"
+has "$WORK/out" "(holder " "locked retry still armed caffeinate"
 lacks "$WORK/out" "start (target" "locked retry does not read the live count"
 lacks "$WORK/out" "run 1:" "locked retry does not start a ticket run"
 [ ! -e "$H/genseo/state/ticket-called" ] && ok "locked retry did not exec the ticket runner" || bad "locked retry exec'd the ticket runner"
@@ -414,6 +444,7 @@ lacks "$WORK/out" "run 1:" "locked retry does not start a ticket run"
 [ -d "$H/genseo/state/daily.lock" ] && ok "locked retry left the lock" || bad "locked retry removed the lock"
 [ "$(tr -cd '0-9' <"$H/genseo/state/daily.lock/pid")" = "$sleeper" ] && ok "locked retry left the owner pid" || bad "locked retry replaced the owner pid"
 kill -0 "$sleeper" 2>/dev/null && ok "original batch still alive" || bad "original batch died"
+settle_caff
 clock=$(grep -c . "$WORK/caff.log" || true)
 [ "$clock" = 1 ] && ok "locked retry spawned one caffeinate" || bad "locked retry caffeinate lines were $clock"
 lacks "$WORK/out" "shopify_publisher.py" "locked retry does not name the publisher"
@@ -521,12 +552,13 @@ bounded 20 env -i \
   /bin/bash "$LANDING" >"$WORK/out" 2>"$WORK/err"
 assert_rc 0 "landing stand-down exits 0"
 has "$WORK/out" "today's gsl- landing draft already exists" "landing retry stands down"
-has "$WORK/out" "power assertion: caffeinate -i -s -w" "landing retry armed caffeinate"
+has "$WORK/out" "(holder " "landing retry armed caffeinate"
 lacks "$WORK/out" "landing_publisher.py" "landing retry does not build a page"
 [ ! -e "$H/genseo/state/publisher-called" ] && ok "landing publisher was not executed" || bad "landing publisher ran"
 [ ! -e "$H/genseo/state/agent-called" ] && ok "landing agent was not executed" || bad "landing agent ran"
 [ ! -e "$H/genseo/state/landing-daily.lock" ] && ok "landing lock released" || bad "landing lock still held"
 [ ! -s "$H/genseo/state/guard-codes" ] && ok "guard ran once" || bad "guard was not consumed"
+settle_caff
 land_lines=$(grep -c . "$WORK/caff.log" || true)
 [ "$land_lines" = 1 ] && ok "landing retry spawned one caffeinate" || bad "landing caffeinate lines were $land_lines"
 if awk '
