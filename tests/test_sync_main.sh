@@ -414,6 +414,117 @@ else
   [ "$(git -C "$REPO" symbolic-ref --short HEAD)" = "side" ] && ok "non-publish branch stayed" || bad "non-publish branch was switched"
 fi
 
+echo "3c. an article branch returns to main and the open queue skips published tickets"
+if ! init_repo artret; then
+  bad "artret fixture"
+else
+  ok "artret fixture"
+  cat >"$REPO/daily-tickets.md" <<'EOF'
+- [ ] **#CA1016-2 — shilajit on an empty stomach** — `Shilajit on an Empty Stomach`
+- [ ] **#CA1016-7 — vaginal probiotics over 60** — `Vaginal Probiotics Over 60`
+EOF
+  cat >"$REPO/daily-landing-tickets.md" <<'EOF'
+- [ ] listicle | wellnessnest | product=premium-himalayan-shilajit-gummies · angle: gummies (added 2026-10-16)
+- [ ] listicle | wellnessnest | product=florafresh-vaginal-probiotics-gummies · angle: flora (added 2026-10-16)
+EOF
+  git_cfg "$REPO"
+  git -C "$REPO" add daily-tickets.md daily-landing-tickets.md
+  git -C "$REPO" commit -m "queue" >/dev/null 2>&1 || { bad "artret queue commit"; }
+  git -C "$REPO" push origin main >/dev/null 2>&1 || { bad "artret push"; }
+  if ! advance_origin artret; then
+    bad "artret origin"
+  fi
+  git -C "$REPO" checkout -b article/ca1016-2 >/dev/null 2>&1 || { bad "artret branch"; }
+  python3 - "$REPO/daily-tickets.md" "$REPO/daily-landing-tickets.md" <<'PY'
+import pathlib, sys
+tickets, landing = sys.argv[1:]
+path = pathlib.Path(tickets)
+path.write_text(path.read_text().replace(
+    "- [ ] **#CA1016-2",
+    "- [DONE 2026-10-18 https://wellnessnest.co/blogs/news/shilajit-on-an-empty-stomach-yes-or-no-in-the-us] **#CA1016-2",
+    1,
+))
+path = pathlib.Path(landing)
+path.write_text(path.read_text().replace(
+    "- [ ] listicle | wellnessnest | product=premium-himalayan-shilajit-gummies",
+    "- [DRAFT 2026-10-18 page 166299173179] listicle | wellnessnest | product=premium-himalayan-shilajit-gummies",
+    1,
+))
+PY
+  git -C "$REPO" add daily-tickets.md daily-landing-tickets.md
+  git -C "$REPO" commit -m "publish" >/dev/null 2>&1 || { bad "artret publish commit"; }
+  kept=$(head_of "$REPO")
+  printf '%s\n' 'scratch' >"$REPO/scratch.txt"
+  SYNC_ENV="GENSEO_SYNC_DRY_RUN=1"
+  run_sync
+  unset SYNC_ENV
+  assert_rc 0 "article dry-run exits 0"
+  has "$WORK/out" "would record: 2 queue closure(s)" "article dry-run names both closures"
+  has "$WORK/out" "would switch article/ca1016-2 to main" "article dry-run would switch"
+  [ "$(git -C "$REPO" symbolic-ref --short HEAD)" = "article/ca1016-2" ] && ok "article dry-run stayed on the branch" || bad "article dry-run left the branch"
+  [ ! -e "$REPO/state/queue-closures.json" ] && ok "article dry-run wrote no ledger" || bad "article dry-run wrote a ledger"
+  run_sync
+  assert_rc 0 "article branch exits 0"
+  has "$WORK/out" "preserving branch article/ca1016-2" "article commits are preserved"
+  has "$WORK/out" "recorded: 2 queue closure(s)" "article branch records both closures"
+  has "$WORK/out" "switched article/ca1016-2 to main" "article branch switches to main"
+  [ "$(git -C "$REPO" symbolic-ref --short HEAD)" = "main" ] && ok "article branch left HEAD on main" || bad "article branch did not leave HEAD on main"
+  [ "$(head_of "$REPO")" = "$(git -C "$REPO" rev-parse origin/main)" ] && ok "article branch HEAD matches origin/main" || bad "article branch HEAD is not origin/main"
+  [ "$(git -C "$REPO" rev-parse article/ca1016-2)" = "$kept" ] && ok "article ref still points at its commit" || bad "article ref moved"
+  git -C "$REPO" cat-file -e "article/ca1016-2:daily-tickets.md" && ok "closed queue still exists on the article ref" || bad "closed queue missing from the article ref"
+  grep -F -q -- '- [ ] **#CA1016-2' "$REPO/daily-tickets.md" && ok "main work tree has the open article line" || bad "main work tree lost the open article line"
+  grep -F -q 'CA1016-2' "$REPO/state/queue-closures.json" && ok "ledger names CA1016-2" || bad "ledger missing CA1016-2"
+  grep -F -q 'premium-himalayan-shilajit-gummies' "$REPO/state/queue-closures.json" && ok "ledger names the landing line" || bad "ledger missing the landing line"
+  first=$(/usr/bin/python3 "$ROOT/scripts/genseo_queue_closures.py" first --queue "$REPO/daily-tickets.md")
+  case "$first" in
+    *'#CA1016-7'*) ok "effective article queue starts at CA1016-7" ;;
+    *) bad "effective article queue is $first" ;;
+  esac
+  land=$(/usr/bin/python3 "$ROOT/scripts/genseo_queue_closures.py" first --queue "$REPO/daily-landing-tickets.md")
+  case "$land" in
+    *florafresh*) ok "effective landing queue skips the drafted gummies line" ;;
+    *) bad "effective landing queue is $land" ;;
+  esac
+  [ "$(cat "$REPO/scratch.txt")" = "scratch" ] && ok "article return kept the untracked file" || bad "article return lost the untracked file"
+  [ -f "$REPO/FROM_ORIGIN" ] && ok "article return took the origin file" || bad "article return missed the origin file"
+fi
+
+echo "3d. end of run returns an article branch without a fast-forward"
+if ! init_repo artend; then
+  bad "artend fixture"
+else
+  ok "artend fixture"
+  printf '%s\n' '- [ ] **#CA1016-2 — shilajit on an empty stomach** — `Title`' >"$REPO/daily-tickets.md"
+  git_cfg "$REPO"
+  git -C "$REPO" add daily-tickets.md
+  git -C "$REPO" commit -m "queue" >/dev/null 2>&1 || { bad "artend queue commit"; }
+  git -C "$REPO" push origin main >/dev/null 2>&1 || { bad "artend push"; }
+  git -C "$REPO" checkout -b article/ca1016-2 >/dev/null 2>&1 || { bad "artend branch"; }
+  printf '%s\n' '- [DONE 2026-10-18 https://wellnessnest.co/blogs/news/shilajit-on-an-empty-stomach-yes-or-no-in-the-us] **#CA1016-2 — shilajit on an empty stomach** — `Title`' >"$REPO/daily-tickets.md"
+  git -C "$REPO" add daily-tickets.md
+  git -C "$REPO" commit -m "publish" >/dev/null 2>&1 || { bad "artend publish commit"; }
+  before=$(head_of "$REPO")
+  : >"$WORK/out"
+  : >"$WORK/err"
+  env -i PATH="/usr/bin:/bin" GIT_TERMINAL_PROMPT=0 \
+    bash -c '
+      set -uo pipefail
+      G=$1
+      . "$2"
+      genseo_return_publish_branch_to_main
+      printf "sync_rc:%s\n" "$?"
+    ' _ "$REPO" "$HELPER" >"$WORK/out" 2>"$WORK/err"
+  RC=$?
+  assert_rc 0 "article return-to-main exits 0"
+  has "$WORK/out" "sync_rc:0" "article return-to-main returns 0"
+  has "$WORK/out" "recorded: 1 queue closure(s)" "article return records the closure"
+  [ "$(git -C "$REPO" symbolic-ref --short HEAD)" = "main" ] && ok "article return left HEAD on main" || bad "article return did not leave HEAD on main"
+  [ "$(git -C "$REPO" rev-parse article/ca1016-2)" = "$before" ] && ok "article return kept the ref" || bad "article return moved the ref"
+  grep -F -q -- '- [ ] **#CA1016-2' "$REPO/daily-tickets.md" && ok "article return restored the open line on main" || bad "article return left the DONE line on main"
+  grep -F -q 'CA1016-2' "$REPO/state/queue-closures.json" && ok "article return ledger names CA1016-2" || bad "article return ledger missing CA1016-2"
+  lacks "$WORK/out" "fast-forwarded" "article return did not fast-forward"
+fi
+
 if ! init_repo dryff || ! advance_origin dryff; then
   bad "dryff fixture"
 else

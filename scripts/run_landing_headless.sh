@@ -28,7 +28,11 @@ if [ "${GENSEO_LANDING_PRINT_PROMPT:-0}" = "1" ]; then PRINT_PROMPT=1; fi
 QUEUE="landing-tickets.md"
 if [ "$1" = "--queue" ]; then QUEUE="$2"; shift 2; fi   # daily lane: --queue daily-landing-tickets.md --next
 if [ "$1" = "--next" ]; then
-  LINE="$(grep -m1 -E '^- \[ \] ' "$QUEUE" 2>/dev/null)"
+  if [ -f "$HOME/genseo/scripts/genseo_queue_closures.py" ]; then
+    LINE="$(/usr/bin/python3 "$HOME/genseo/scripts/genseo_queue_closures.py" first --queue "$QUEUE")" || exit 1
+  else
+    LINE="$(grep -m1 -E '^- \[ \] ' "$QUEUE" 2>/dev/null)"
+  fi
   [ -z "$LINE" ] && { echo "landing queue empty"; exit 0; }
   # format: - [ ] <listicle|advertorial> | <store> | <brief>
   TEMPLATE="$(echo "$LINE" | sed -E 's/^- \[ \] *//' | cut -d'|' -f1 | xargs)"

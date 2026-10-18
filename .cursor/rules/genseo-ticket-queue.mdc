@@ -7,7 +7,10 @@ alwaysApply: false
 # GenSeo ticket queue
 
 `daily-tickets.md` is consumed top to bottom: the runner takes the FIRST heading that still contains `[ ]`, and
-the wrapper counts open tickets with `grep -cE '^(- \[ \]|## \[ \])'`. Zero open = the day stops.
+the wrapper counts open tickets with `scripts/genseo_queue_closures.py` (the same checkbox pattern, minus
+ids in gitignored `state/queue-closures.json`). That ledger is how a return to `origin/main` keeps a ticket
+closed after it was marked DONE on `article/*` or `publish/*`. Do not delete the ledger to reopen a ticket
+that already went live. Zero open = the day stops.
 
 ## Editing rules
 - Append only, as a new `# BATCH <YYYY-MM-DD> (...)` section at the end. Never reorder, rewrite or delete

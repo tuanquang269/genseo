@@ -41,13 +41,14 @@
 # `git fetch origin main` and `git merge --ff-only origin/main` when local
 # main can fast-forward. Untracked files that would not be overwritten stay.
 # A tracked edit that would be overwritten is stashed or backed up and logged.
-# A publish/* branch returns to main (the branch ref is kept). launchd executes
+# A publish/* or article/* branch returns to main (the branch ref is kept)
+# after queue closures are recorded in state/queue-closures.json. launchd executes
 # this file, so the fetch runs from a copy outside the repo: git must not
 # rewrite the script bash is reading. It does not fast-forward while another
 # GenSeo job holds a lane lock or has a checkout script open. A fast-forward
 # re-execs this file (same PID, so state/landing-daily.lock stays held).
 # Before this run commits, and again on exit, HEAD is switched back to main
-# when it is still on publish/*. The plist already points at this path.
+# when it is still on publish/* or article/*. The plist already points at this path.
 # After a successful sync, scripts/genseo_self_apply.sh reinstalls ~/bin when
 # the article wrapper bytes differ and reloads a changed LaunchAgent only
 # after this process exits. It does not start a run and it does not publish.
@@ -268,7 +269,11 @@ else
   fi
 fi
 if ! $PY scripts/lint_tickets.py "$QUEUE" >> "$LOG" 2>&1; then say "lint_tickets FAILED on $QUEUE — stopping"; exit 1; fi
-LINE="$(grep -m1 -E '^- \[ \] ' "$QUEUE")"
+if [ -f "$G/scripts/genseo_queue_closures.py" ]; then
+  LINE="$($PY "$G/scripts/genseo_queue_closures.py" first --queue "$QUEUE")" || { say "landing queue closures unreadable — fail closed"; exit 1; }
+else
+  LINE="$(grep -m1 -E '^- \[ \] ' "$QUEUE")"
+fi
 [ -z "$LINE" ] && { say "no open landing ticket — stopping"; exit 1; }
 say "ticket: $LINE"
 STAMP="$(date +%Y%m%d-%H%M)"; RUNLOG="logs/landing-daily-$STAMP.log"; START=$(date +%s)
