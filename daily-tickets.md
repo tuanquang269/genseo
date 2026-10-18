@@ -919,7 +919,7 @@ plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check th
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** probiotic + price checked 2026-10-16 against 123 live articles (blog listing + sitemap + Atom + local caches) and all 63 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1016-4 — turkesterone for fertility** — `Turkesterone for Fertility: What Is Known (2026)`
+- [DONE 2026-10-18 https://wellnessnest.co/blogs/news/turkesterone-for-fertility-the-us-evidence-2026] **#CA1016-4 — turkesterone for fertility** — `Turkesterone for Fertility: What Is Known (2026)`
   - **Primary keyword:** `turkesterone for fertility` · **Secondary:** turkesterone and sperm, turkesterone male fertility, turkesterone while trying to conceive, does turkesterone affect fertility
   - **Search intent:** man trying to conceive who has seen turkesterone marketed for hormones and wants fertility evidence
   - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-16 18:52 ICT)
