@@ -946,7 +946,7 @@ plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check th
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** creatine + price checked 2026-10-16 against 123 live articles (blog listing + sitemap + Atom + local caches) and all 63 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1016-6 — nmn for fertility** — `NMN for Fertility: What Human Studies Show (2026)`
+- [DONE 2026-10-18 https://wellnessnest.co/blogs/news/nmn-for-fertility-human-evidence-in-the-us-2026] **#CA1016-6 — nmn for fertility** — `NMN for Fertility: What Human Studies Show (2026)`
   - **Primary keyword:** `nmn for fertility` · **Secondary:** nmn and fertility, nmn ovarian reserve, nmn and sperm, nmn while trying to conceive
   - **Search intent:** person trying to conceive who has seen NMN claimed for fertility and wants human evidence, not animal headlines
   - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-16 18:52 ICT)
