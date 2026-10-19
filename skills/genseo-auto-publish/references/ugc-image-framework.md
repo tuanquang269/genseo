@@ -205,7 +205,7 @@ description to the prompt (prompt text overrides the ref image when they disagre
 - `--qc` → vision QC via `gem9` (9router subscription — NEVER per-token): sends output + refs with a
   strict rubric (packaging matches PDP ref? UGC-not-stock? no rendered text? face natural, matches
   persona?) → verdict `QC:PASS` / `QC:FAIL <reason>`; FAIL = re-roll with the reason folded into the
-  prompt, max 2 re-rolls then STOP and report. Daily runs use `--qc` on every UGC image.
+  prompt, max 2 re-rolls. A face image that is still refused or still failing QC falls back to one human no-face shot for that image only (a hand, a forearm, or a body cropped below the eyes; no --persona-ref). An empty pack-only still life is not that fallback. Daily runs use `--qc` on every UGC image.
 
 ## Filled example (inline, no-face, product in frame)
 

@@ -88,7 +88,7 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.pati.genseo-daily.pl
 
 `bootout` fails if that label is not loaded; `bootstrap` loads the new environment. Do not start
 `grokbot-genseo-daily.sh` by hand. The repo plist is `primary` with `GENSEO_TICKET_PREFIX=MB`
-and `GENSEO_NO_FACE=1`. `GENSEO_STANDBY_DELAY_MIN=20` stays in the plist and applies only if
+and `GENSEO_NO_FACE=0`. `GENSEO_STANDBY_DELAY_MIN=20` stays in the plist and applies only if
 the role is later set back to `standby`.
 
 **Headless model lane (2026-10-10).** `run_ticket_headless.sh` and `run_landing_headless.sh` share `scripts/genseo_model_lane.sh`. A `PATI-*` writer or fallback (defaults `PATI-Alpha-Plan-Review` and `PATI-Fable-5`) never uses the native Claude login lane: Claude Code does not know those ids (`unrecognized_model`, landing 2026-10-10 09:30). Native login (`~/.claude-genseo`, `loggedIn: true`) is only for a writer and fallback that are not `PATI-*`. For a PATI writer, and whenever native does not apply, local 9router `:20128` is used only when `GET /v1/models` includes `GENSEO_WRITER_MODEL`. MacBook local 9router can be up and still list only `ag/gemini-*` ids. That is not a writer lane: headless falls through to hosted `GENSEO_ROUTER_BASE` (default `https://ai.patigroup.com`) with `NINE_ROUTER_KEY`. The run log records `native`, `local-9router`, or `hosted-9router` and does not print the key.
@@ -140,9 +140,7 @@ one-way; the Mini's repo commits are unpushed), so the PUBLIC SITE is the lock:
    (`docs/TICKET_REFILL.md`) so the next slot picks this up. It does not start launchd.
    Helpers load from `~/genseo/scripts/`. Offline: `bash tests/test_daily_lock.sh`.
 
-**MacBook lane = all images NO-FACE** until `personas/index.json` is re-synced from the Mini
-(angles spent there since 2026-08-15 are unknown here — re-spending one breaks Kevin's
-one-angle-per-model rule). QC fails any image with a recognizable face on the no-face lane.
+**Article images include people.** The hero is the persona the picker prints, plus the real pack, unless that pick is the every-3rd no-face hero or the bank is empty. One inline image uses the same face. The other inline images have no recognizable face and still show a hand, a forearm, or a body cropped below the eyes. A no-face frame is the fallback for that one image after ima2 refuses the face or QC fails twice. It is not a batch-wide lane. `GENSEO_NO_FACE` on the article plist is `0`. A stale LaunchAgent that still exports `1` does not switch the article runner. Landing pages stay no-face. Angles the Mini spent after the last shared `personas/index.json` are still unknown here; the picker enforces one angle per model against the index it can read.
 
 **Fact-check log:** every run writes `logs/claims/<slug>.md` (claim | source | confirmed) and drops
 unconfirmed claims before publish (SEL 2026-10-06: Google calls manual fact-checking critical).

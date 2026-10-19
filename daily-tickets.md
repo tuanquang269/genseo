@@ -627,8 +627,7 @@ A topic is a brief, not copy: source every claim or cut it.
 **Rules for this batch:** from the 2026-10-08 batch rules — fan-out answers, a "Where to buy <product> in the US"
 section (live price, the ticket's product link only), roster.json byline only (never an invented person or
 credential), the logged fact-check pass (`logs/claims/<slug>.md`; delete unconfirmed claims), the brand gate.
-Blog 104008483131, publish `--live`. Images: no batch-wide override — runner rule D decides per host (the MacBook
-plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check the PDP while writing.
+Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py once. The hero is the picked face plus the real pack unless pick prints NO-FACE. One inline image uses that face. The other inline images have no recognizable face but still show a hand, forearm, or body cropped below the eyes. A no-face image is the fallback for one frame after a face refusal or two QC misses, not a batch-wide ban. The MacBook article plist sets `GENSEO_NO_FACE=0`, and that value does not switch the lane. Prices were read live at build time; re-check the PDP while writing.
 
 - [DONE 2026-10-12 https://wellnessnest.co/blogs/news/turkesterone-for-athletes-drug-test-guide-us-2026] **#CA1009-1 — turkesterone for athletes** — `Turkesterone for Athletes: What Drug Tests Check (US 2026)`
   - **Primary keyword:** `turkesterone for athletes` · **Secondary:** is turkesterone banned, turkesterone drug test, turkesterone wada, turkesterone ncaa
@@ -776,8 +775,7 @@ A topic is a brief, not copy: source every claim or cut it.
 **Rules for this batch:** from the 2026-10-08 batch rules — fan-out answers, a "Where to buy <product> in the US"
 section (live price, the ticket's product link only), roster.json byline only (never an invented person or
 credential), the logged fact-check pass (`logs/claims/<slug>.md`; delete unconfirmed claims), the brand gate.
-Blog 104008483131, publish `--live`. Images: no batch-wide override — runner rule D decides per host (the MacBook
-plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check the PDP while writing.
+Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py once. The hero is the picked face plus the real pack unless pick prints NO-FACE. One inline image uses that face. The other inline images have no recognizable face but still show a hand, forearm, or body cropped below the eyes. A no-face image is the fallback for one frame after a face refusal or two QC misses, not a batch-wide ban. The MacBook article plist sets `GENSEO_NO_FACE=0`, and that value does not switch the lane. Prices were read live at build time; re-check the PDP while writing.
 
 - [DONE 2026-10-16 https://wellnessnest.co/blogs/news/creatine-gummies-for-runners-what-trials-show-us-2026] **#MB1012-1 — creatine gummies for runners** — `Creatine Gummies for Runners: What Trials Show (US 2026)`
   - **Primary keyword:** `creatine gummies for runners` · **Secondary:** creatine for runners, creatine for endurance athletes, does creatine slow you down, creatine water weight runners
@@ -874,8 +872,7 @@ A topic is a brief, not copy: source every claim or cut it.
 **Rules for this batch:** from the 2026-10-08 batch rules — fan-out answers, a "Where to buy <product> in the US"
 section (live price, the ticket's product link only), roster.json byline only (never an invented person or
 credential), the logged fact-check pass (`logs/claims/<slug>.md`; delete unconfirmed claims), the brand gate.
-Blog 104008483131, publish `--live`. Images: no batch-wide override — runner rule D decides per host (the MacBook
-plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check the PDP while writing.
+Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py once. The hero is the picked face plus the real pack unless pick prints NO-FACE. One inline image uses that face. The other inline images have no recognizable face but still show a hand, forearm, or body cropped below the eyes. A no-face image is the fallback for one frame after a face refusal or two QC misses, not a batch-wide ban. The MacBook article plist sets `GENSEO_NO_FACE=0`, and that value does not switch the lane. Prices were read live at build time; re-check the PDP while writing.
 
 - [DONE 2026-10-17 https://wellnessnest.co/blogs/news/turkesterone-price-5-cost-checks-in-the-us-2026] **#CA1016-1 — turkesterone price** — `Turkesterone Price: What a Bottle Costs (US 2026)`
   - **Primary keyword:** `turkesterone price` · **Secondary:** how much does turkesterone cost, turkesterone supplement price, is turkesterone expensive, turkesterone cost per bottle
@@ -1065,8 +1062,7 @@ A topic is a brief, not copy: source every claim or cut it.
 **Rules for this batch:** from the 2026-10-08 batch rules — fan-out answers, a "Where to buy <product> in the US"
 section (live price, the ticket's product link only), roster.json byline only (never an invented person or
 credential), the logged fact-check pass (`logs/claims/<slug>.md`; delete unconfirmed claims), the brand gate.
-Blog 104008483131, publish `--live`. Images: no batch-wide override — runner rule D decides per host (the MacBook
-plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check the PDP while writing.
+Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py once. The hero is the picked face plus the real pack unless pick prints NO-FACE. One inline image uses that face. The other inline images have no recognizable face but still show a hand, forearm, or body cropped below the eyes. A no-face image is the fallback for one frame after a face refusal or two QC misses, not a batch-wide ban. The MacBook article plist sets `GENSEO_NO_FACE=0`, and that value does not switch the lane. Prices were read live at build time; re-check the PDP while writing.
 
 - [ ] **#CA1017-1 — how to take vaginal probiotics** — `How to Take Vaginal Probiotics (US 2026)`
   - **Primary keyword:** `how to take vaginal probiotics` · **Secondary:** vaginal probiotic gummy routine, chew vaginal probiotics, vaginal probiotics with water, vaginal probiotic directions
