@@ -156,7 +156,7 @@ L. ShilaSource Himalayan Shilajit Resin pack label is product_refs/shilasource-h
 T. Turkesterone Advanced Formula pack label is product_refs/turkesterone-advanced-formula.label.json. Repeat only that file'\''s required and optional lines. No milligram amount and no Supplement Facts panel were read into that file. Do not add one. The capsule badge is the separate lines 60 and Capsules. Do not state a milligram amount, a serving count, a different capsule count, or a day-supply. python3 scripts/turkesterone_rules.py --brief prints the line. Bare turkesterone (the ingredient) is not this SKU. Premium Himalayan Shilajit Gummies, Shilajit Shockwave, Pure Shilajit Gold Resin, and ShilaSource resin are separate products and are not covered by this rule.
 F. Never run Bash commands in the background (no run_in_background, no trailing &): this is a one-shot -p run and it ENDS when you stop talking, killing background image jobs (2026-10-06 10:47 a run exited mid-images). Run image generations in the foreground, one or several per command.
 E. NEVER modify an existing live post: no [REFRESH EXISTING], no shopify_publisher.py update on an article you did not create in this run. If STEP 0/0.5 says refresh or duplicate, mark the ticket SKIPPED and move to the next one.
-D. If the ticket batch header says "ALL images NO-FACE" (MacBook failover lane, or the env value GENSEO_NO_FACE is exactly 1; this run: '"${GENSEO_NO_FACE:-0}"'): that OVERRIDES the HERO / PERSONA ROTATION / FACE ANGLE rules above for this run — do NOT run persona_picker.py at all, never pass --persona-ref, make the hero a NO-FACE real-pack-in-a-real-scene image (--product-ref + --qc, no --ugc) and all 3 inline images no-face (--ugc --qc). Log "persona: none (failover no-face)" in the tracker/report.
+D. People are the default article image lane (the env value GENSEO_NO_FACE is exactly 1; this run: '"${GENSEO_NO_FACE:-0}"'). That printed value does not switch this run onto a no-face lane, including when a stale LaunchAgent still exports 1. A ticket batch header that says "ALL images NO-FACE", including the 2026-10-06 MacBook failover batches, does not switch this run either. Run persona_picker.py once and follow the HERO / PERSONA ROTATION / FACE ANGLE rules. The hero shows the picked face and the real pack unless pick prints hero NO-FACE (every 3rd hero, or an empty bank). One inline image uses that same face. The other inline images have no recognizable face but still show a person (a hand, a forearm, or a body cropped below the eyes), not an empty pack-only still life. If ima2 refuses a face prompt or that one image fails QC after the two allowed re-rolls, replace only that image with this human no-face fallback and release the angle if the published article will not use it. Do not turn the rest of the article into empty product shots. Log "persona: none (failover no-face)" only when pick itself printed hero NO-FACE.
 
 SCOPE_WAIVER (Kevin, standing approval for the daily blog article):
 - This run writes and publishes one blog article from daily-tickets.md. Kevin already approved that package on 2026-08-09 (auto publish visible). Do not ask a human to proceed. Do not stop on a scope gate.
@@ -181,14 +181,12 @@ OPEN_N="$(queue_open_count "$TICKET_FILE")" || exit 1
 case "$OPEN_N" in
   ''|*[!0-9]*) OPEN_N=0 ;;
 esac
-# MacBook plist sets GENSEO_NO_FACE=1. The long persona block below is easy to
-# follow anyway (2026-10-16 #CA1009-8 committed a face and personas/index.json).
-# Put the override first, before those rules.
-if [ "${GENSEO_NO_FACE:-0}" = "1" ]; then
-  PROMPT="NO-FACE LANE (GENSEO_NO_FACE=1). Do not run persona_picker.py. Do not pass --persona-ref. Do not edit or commit personas/index.json. The hero is a no-face pack in a real scene (--product-ref + --qc, no --ugc). All inline images are no-face. This overrides the persona, gaze, and face-angle rules later in this prompt.
-
-$PROMPT"
-fi
+# 2026-10-16 7a33142 put a NO-FACE LANE banner on the first line whenever
+# GENSEO_NO_FACE=1. The MacBook article plist has exported 1 since 2026-10-06
+# (26a706e). After that banner, every article through 2026-10-19 logged
+# "persona: none" and the pictures lost people. The value is still printed in
+# rule D so a stale plist is visible. It does not switch the lane. No-face is
+# the per-image fallback in rule D, after a face refusal or two QC misses.
 if [ -n "$FIRST_OPEN" ]; then
   PROMPT="$PROMPT
 

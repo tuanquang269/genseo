@@ -97,7 +97,7 @@ Also: never `rm` repo files (move them to `_superseded/`); never put CDN URLs in
   when the bytes differ and reloads a changed LaunchAgent only after that job exits.
   `bash scripts/install_mac_daily_wrapper.sh` (does not start launchd) remains the one-time step
   when `~/bin` predates that re-exec. The MacBook article LaunchAgent is primary (`GENSEO_TICKET_PREFIX=MB`,
-  no-face images) until a Mini failover release is explicit. The Mini stays unloaded until that
+  persona images; a no-face shot is only the per-image fallback) until a Mini failover release is explicit. The Mini stays unloaded until that
   handover, then its daily plist is primary with `MM` ids. Do not load both.
   `GENSEO_HOST_ROLE=standby` still waits for a healthy peer; the MacBook plist does not set it.
   Pulling alone does not update `~/bin/grokbot-genseo-daily.sh` until the next scheduled run.
