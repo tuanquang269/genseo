@@ -226,6 +226,27 @@ class ReportLine(unittest.TestCase):
     def test_drop_date_constant(self):
         self.assertEqual(report.SUSPECTED_UTM_DROP, datetime.date(2026, 10, 9))
 
+    def test_in_progress_day_stays_in_the_table_and_out_of_the_average(self):
+        direct = [
+            _row("2026-10-09", "/guides/how-to-take-nmn", 7),
+            _row("2026-10-19", "/pages/listicle", 1),
+        ]
+        totals = [
+            {"day": "2026-10-09", "sessions": 20},
+            {"day": "2026-10-19", "sessions": 10},
+        ]
+        text = report.render_report(
+            direct, totals, self.columns, self.total_columns,
+            today=datetime.date(2026, 10, 19),
+        )
+        self.assertIn("| 2026-10-19 | 1 | 10 | 10.0% | day still in progress |", text)
+        self.assertIn("On and after 2026-10-09 (2026-10-09 .. 2026-10-09, 1 day): direct_deep 7 / total 20 (35.0%)", text)
+        self.assertIn(
+            "2026-10-19 is still in progress: direct_deep 1 / total 10 so far (10.0%). Left out of the before/after averages.",
+            text,
+        )
+        self.assertNotIn("direct_deep 8 / total 30", text)
+
 
 if __name__ == "__main__":
     unittest.main()

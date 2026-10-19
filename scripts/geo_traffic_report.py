@@ -149,8 +149,21 @@ def _window_line(label, items):
     )
 
 
-def render_report(direct_rows, total_rows, direct_columns, total_columns, since=None, until=None, truncated=False):
-    """Text of the report. Numbers come only from the rows passed in."""
+def _note(day, today):
+    notes = []
+    if day == SUSPECTED_UTM_DROP:
+        notes.append("suspected UTM drop")
+    if today is not None and day == today:
+        notes.append("day still in progress")
+    return "; ".join(notes)
+
+
+def render_report(direct_rows, total_rows, direct_columns, total_columns, since=None, until=None, truncated=False, today=None):
+    """Text of the report. Numbers come only from the rows passed in.
+
+    `today` is the calendar day still in progress. That day stays in the table
+    with the count the source returned, and stays out of the before/after averages.
+    """
     if truncated:
         return data_not_available(
             "the ShopifyQL pull hit its row limit, so the totals would be partial"
@@ -192,8 +205,7 @@ def render_report(direct_rows, total_rows, direct_columns, total_columns, since=
             return data_not_available(
                 f"direct_deep sessions exceed total sessions on {day.isoformat()}"
             )
-        note = "suspected UTM drop" if day == SUSPECTED_UTM_DROP else ""
-        items.append({"day": day, "deep": deep, "total": total, "note": note})
+        items.append({"day": day, "deep": deep, "total": total, "note": _note(day, today)})
 
     window = ""
     if since and until:
@@ -214,8 +226,9 @@ def render_report(direct_rows, total_rows, direct_columns, total_columns, since=
             f"| {item['day'].isoformat()} | {item['deep']} | {item['total']} | "
             f"{_pct(item['deep'], item['total'])} | {item['note']} |"
         )
-    before = [item for item in items if item["day"] < SUSPECTED_UTM_DROP]
-    after = [item for item in items if item["day"] >= SUSPECTED_UTM_DROP]
+    complete = [item for item in items if today is None or item["day"] != today]
+    before = [item for item in complete if item["day"] < SUSPECTED_UTM_DROP]
+    after = [item for item in complete if item["day"] >= SUSPECTED_UTM_DROP]
     lines.append("")
     lines.append(_window_line("Before 2026-10-09", before))
     lines.append(_window_line("On and after 2026-10-09", after))
@@ -226,6 +239,14 @@ def render_report(direct_rows, total_rows, direct_columns, total_columns, since=
             "Daily-average change (on and after minus before): "
             f"{after_avg - before_avg:+.1f} direct_deep sessions"
         )
+    for item in items:
+        if today is not None and item["day"] == today:
+            lines.append(
+                f"{item['day'].isoformat()} is still in progress: "
+                f"direct_deep {item['deep']} / total {item['total']} so far "
+                f"({_pct(item['deep'], item['total'])}). "
+                "Left out of the before/after averages."
+            )
     return "\n".join(line for line in lines if line is not None).rstrip() + "\n"
 
 
@@ -314,6 +335,7 @@ def fetch_report(since, until, limit=ROW_LIMIT):
         total_columns,
         since=since.isoformat(),
         until=until.isoformat(),
+        today=datetime.date.today(),
     )
 
 
