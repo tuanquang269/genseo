@@ -1,0 +1,154 @@
+{
+ "page_id": 166314115387,
+ "checks": {
+  "template_in_main_theme": {
+   "ok": true,
+   "info": "templates/page.gsl-ref-listicle-v2.liquid in theme 183190880571 (WN Shopify Theme - 02072026)"
+  },
+  "template_matches_local": {
+   "ok": true,
+   "info": "live eb61b67a3c31 vs local eb61b67a3c31 (a CSS change needs a NEW suffix; never overwrite)"
+  },
+  "template_suffix": {
+   "ok": true,
+   "info": "page 'gsl-ref-listicle-v2' vs spec 'gsl-ref-listicle-v2'"
+  },
+  "body_text_matches_local": {
+   "ok": true,
+   "info": "Shopify body_html visible text vs local body.html (old body pushed?)"
+  },
+  "images_on_cdn": {
+   "ok": true,
+   "info": "20 srcs"
+  },
+  "hidden_again": {
+   "ok": true,
+   "info": "published_at=None"
+  },
+  "desktop_http": {
+   "ok": true,
+   "info": "200"
+  },
+  "desktop_premium_css": {
+   "ok": true,
+   "info": "hero 24px kicker 999px"
+  },
+  "desktop_offer_is_current": {
+   "ok": true,
+   "info": "offer box shows: FLORAFRESH GUMMIES A gummy option for your daily routine 4.2 TrustScore · 1,144 store revi"
+  },
+  "desktop_no_overflow": {
+   "ok": true,
+   "info": ""
+  },
+  "desktop_images_ok": {
+   "ok": true,
+   "info": "[]"
+  },
+  "desktop_no_clipped_text": {
+   "ok": true,
+   "info": ""
+  },
+  "desktop_palette_matches_pack": {
+   "ok": true,
+   "info": "{\"cta_bg\": \"rgb(86, 27, 38)\", \"accent\": \"rgb(164, 73, 88)\", \"kicker\": \"rgb(164, 73, 88)\", \"topbar_bg\": \"rgb(86, 27, 38)\", \"pill_bg\": \"rgb(86, 27, 38)\", \"offer_c"
+  },
+  "mobile_http": {
+   "ok": true,
+   "info": "200"
+  },
+  "mobile_premium_css": {
+   "ok": true,
+   "info": "hero 20px kicker 999px"
+  },
+  "mobile_offer_is_current": {
+   "ok": true,
+   "info": "offer box shows: FLORAFRESH GUMMIES A gummy option for your daily routine 4.2 TrustScore · 1,144 store revi"
+  },
+  "mobile_no_overflow": {
+   "ok": true,
+   "info": ""
+  },
+  "mobile_images_ok": {
+   "ok": true,
+   "info": "[]"
+  },
+  "mobile_no_clipped_text": {
+   "ok": true,
+   "info": ""
+  },
+  "mobile_palette_matches_pack": {
+   "ok": true,
+   "info": "{\"cta_bg\": \"rgb(86, 27, 38)\", \"accent\": \"rgb(164, 73, 88)\", \"kicker\": \"rgb(164, 73, 88)\", \"topbar_bg\": \"rgb(86, 27, 38)\", \"pill_bg\": \"rgb(86, 27, 38)\", \"offer_c"
+  },
+  "sticky_cta": {
+   "ok": true,
+   "info": "{\"top\": \"off(scrollY=0 vh=812 offerTop=9045 bridgeTop=7250 rows=8 cls=gslp-sticky)\", \"after_bridge\": true, \"on_offer\": \"off(scrollY=9195 vh=812 offerTop=-150 bridgeTop=-1945 rows=8 cls=gslp-sticky)\"}"
+  }
+ },
+ "fails": [],
+ "was_hidden": true,
+ "storefront": {
+  "url": "https://wellnessnest.co/pages/gsl-preview-florafresh-listicle-261019?v=1792380042424",
+  "desktop": {
+   "http": 200,
+   "title": "7 Ways to Make a Probiotic Habit Easier – Wellness Nest",
+   "status_text": "Skip to content\n\n↩️ 90-Day Refund Policy — Eligibility Applies\n\n🚚 Free Shipping",
+   "body_class": "gradient link-btns--glow action-btns--glow klaviyo-prevent-body-scrolling",
+   "gsl_ref": true,
+   "premium_markup": true,
+   "premium_css_applied": "24px",
+   "premium_kicker_radius": "999px",
+   "premium_css_in_dom": true,
+   "offer_text": "FLORAFRESH GUMMIES A gummy option for your daily routine 4.2 TrustScore · 1,144 store reviews on Trustpilot $35.25 $40.99 MONTHLY SUBSCRIPTION One product every month with Subscribe & Save. $40.99 one-time. Recurring del",
+   "old_v2_offer_copy": false,
+   "sticky": true,
+   "imgs": 16,
+   "broken": [],
+   "overflow": false,
+   "height": 8986,
+   "clipped": [],
+   "palette": {
+    "cta_bg": "rgb(86, 27, 38)",
+    "accent": "rgb(164, 73, 88)",
+    "kicker": "rgb(164, 73, 88)",
+    "topbar_bg": "rgb(86, 27, 38)",
+    "pill_bg": "rgb(86, 27, 38)",
+    "offer_cta_bg": "rgb(86, 27, 38)"
+   }
+  },
+  "mobile": {
+   "http": 200,
+   "title": "7 Ways to Make a Probiotic Habit Easier – Wellness Nest",
+   "status_text": "Skip to content\n\n↩️ 90-Day Refund Policy — Eligibility Applies\n\n🚚 Free Shipping",
+   "body_class": "gradient link-btns--glow action-btns--glow klaviyo-prevent-body-scrolling",
+   "gsl_ref": true,
+   "premium_markup": true,
+   "premium_css_applied": "20px",
+   "premium_kicker_radius": "999px",
+   "premium_css_in_dom": true,
+   "offer_text": "FLORAFRESH GUMMIES A gummy option for your daily routine 4.2 TrustScore · 1,144 store reviews on Trustpilot $35.25 $40.99 MONTHLY SUBSCRIPTION One product every month with Subscribe & Save. $40.99 one-time. Recurring del",
+   "old_v2_offer_copy": false,
+   "sticky": true,
+   "imgs": 16,
+   "broken": [],
+   "overflow": false,
+   "height": 12457,
+   "clipped": [],
+   "palette": {
+    "cta_bg": "rgb(86, 27, 38)",
+    "accent": "rgb(164, 73, 88)",
+    "kicker": "rgb(164, 73, 88)",
+    "topbar_bg": "rgb(86, 27, 38)",
+    "pill_bg": "rgb(86, 27, 38)",
+    "offer_cta_bg": "rgb(86, 27, 38)"
+   },
+   "sticky_check": {
+    "top": "off(scrollY=0 vh=812 offerTop=9045 bridgeTop=7250 rows=8 cls=gslp-sticky)",
+    "after_bridge": true,
+    "on_offer": "off(scrollY=9195 vh=812 offerTop=-150 bridgeTop=-1945 rows=8 cls=gslp-sticky)"
+   }
+  }
+ },
+ "verdict": "PASS"
+}

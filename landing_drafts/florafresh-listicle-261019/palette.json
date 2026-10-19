@@ -1,0 +1,54 @@
+{
+ "hue": 12.3,
+ "chroma": 0.109,
+ "hex": "#d17a85",
+ "sot": true,
+ "handle": "florafresh-vaginal-probiotics-gummies",
+ "images": [
+  "product_refs/florafresh-vaginal-probiotics-gummies.png"
+ ],
+ "pack": [
+  {
+   "hex": "#d17a85",
+   "share": 0.286,
+   "L": 0.677,
+   "C": 0.109,
+   "h": 12.3
+  },
+  {
+   "hex": "#db8b95",
+   "share": 0.2217,
+   "L": 0.722,
+   "C": 0.098,
+   "h": 11.7
+  },
+  {
+   "hex": "#e39ba5",
+   "share": 0.1538,
+   "L": 0.763,
+   "C": 0.087,
+   "h": 10.2
+  },
+  {
+   "hex": "#c56875",
+   "share": 0.1393,
+   "L": 0.628,
+   "C": 0.119,
+   "h": 12.2
+  },
+  {
+   "hex": "#e9b2b8",
+   "share": 0.1134,
+   "L": 0.815,
+   "C": 0.065,
+   "h": 11.3
+  },
+  {
+   "hex": "#efd7d9",
+   "share": 0.0857,
+   "L": 0.899,
+   "C": 0.027,
+   "h": 11.9
+  }
+ ]
+}
