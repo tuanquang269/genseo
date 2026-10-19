@@ -373,7 +373,7 @@ class OpenQueueTests(unittest.TestCase):
         draft_lines = [line for line in lines if line.startswith("- [DRAFT")]
         failed_lines = [line for line in lines if line.startswith("- [FAILED")]
         self.assertGreaterEqual(len(open_lines), 7)
-        self.assertEqual(len(draft_lines), 8)
+        self.assertEqual(len(draft_lines), 9)
         self.assertEqual(len(failed_lines), 4)
         self.assertTrue(any("page 166279512379" in line and AGE in line for line in draft_lines))
         self.assertTrue(any(
@@ -389,7 +389,7 @@ class OpenQueueTests(unittest.TestCase):
                 self.assertIn(found.group(1) + ".palette.json", line)
                 self.assertEqual(br.violations(line), [])
         self.assertEqual(handles, [
-            FLORA, GOLD, SHOCK, FLORA, GUM, TURK, SHILA, AGE, SHILA,
+            GOLD, SHOCK, FLORA, GUM, TURK, SHILA, AGE, SHILA,
         ])
         self.assertGreaterEqual(handles.count(SHILA), 2)
         self.assertGreaterEqual(handles.count(AGE), 1)
