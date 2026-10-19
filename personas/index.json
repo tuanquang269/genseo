@@ -718,7 +718,7 @@
   "m3039-wh-21": {
    "handle": "m3039-wh-21",
    "pool_id": "m3039",
-   "status": "active",
+   "status": "retired",
    "ref": "/Users/kevinkreative/genseo/personas/m3039-wh-21/ref.jpg",
    "identity_key": "openimages:87493affba5cc5c8",
    "used_count": 0,
@@ -1337,7 +1337,7 @@
   "f5059-wh-05": {
    "handle": "f5059-wh-05",
    "pool_id": "f5059",
-   "status": "active",
+   "status": "retired",
    "ref": "/Users/kevinkreative/genseo/personas/f5059-wh-05/ref.jpg",
    "identity_key": "openimages:b6069ec2019ba8b6",
    "used_count": 0,
@@ -1418,7 +1418,7 @@
   "m5059-wh-05": {
    "handle": "m5059-wh-05",
    "pool_id": "m4049",
-   "status": "active",
+   "status": "retired",
    "ref": "/Users/kevinkreative/genseo/personas/m5059-wh-05/ref.jpg",
    "identity_key": "openimages:190adb2308d76eee",
    "used_count": 0,
