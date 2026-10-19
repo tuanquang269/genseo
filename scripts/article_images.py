@@ -523,6 +523,11 @@ def _ensure_serve(env):
 # deploy/grokbot-genseo-daily.sh then counts a ticket that puts nothing new
 # live, and stops the day after three of those. A dropped stream, a 429/5xx,
 # a timeout, or a reset is the upstream blipping — retry a few times, briefly.
+# 2026-10-19 #CA1016-7: ima2 3.23.1 printed a different line for the same
+# blip, "Responses request failed before receiving a response" with
+# "Hint: Network/proxy failed" (code NETWORK_FAILED, HTTP 502). That
+# wording did not match the 2026-10-12 pattern, so gen_png exited on the
+# first try and the wrapper stopped after three no-publish runs.
 # Auth, content policy, and a bad request are the same call again: do not
 # retry them, and do not retry an error we cannot classify. ad_assets.py's
 # 3-try loop is a different gate (wrong aspect ratio after a file landed).
@@ -550,6 +555,10 @@ _IMA2_KILL_GRACE_SEC = 0.2
 # ("500 mg") or our own "--timeout 360" flag must not look transient.
 _IMA2_TRANSIENT_RE = (
     re.compile(r"responses stream returned an error", re.I),
+    re.compile(r"responses request failed before receiving a response", re.I),
+    re.compile(r"oauth image request failed before receiving a response", re.I),
+    re.compile(r"\bNETWORK_FAILED\b"),
+    re.compile(r"network/proxy failed", re.I),
     re.compile(r"\b(?:response|responses|event) stream\b[^.\n]{0,80}\b(?:error|interrupted|closed|failed)\b", re.I),
     re.compile(r"\bstream (?:error|interrupted|closed|failed|disconnected)\b", re.I),
     re.compile(r"\b(?:econnreset|econnrefused|etimedout|econnaborted|epipe|enotconn|enetunreach|ehostunreach)\b", re.I),

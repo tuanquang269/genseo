@@ -75,6 +75,11 @@ class Ima2ErrorClassTests(unittest.TestCase):
         samples = (
             STREAM,
             "ima2: Responses stream returned an error",
+            "Responses request failed before receiving a response",
+            "OAuth image request failed before receiving a response",
+            "✗ Responses request failed before receiving a response\n"
+            "Hint: Network/proxy failed. This is not a moderation refusal.",
+            "NETWORK_FAILED",
             "HTTP 502 bad gateway",
             "status 503",
             "error: 504",
@@ -110,6 +115,9 @@ class Ima2ErrorClassTests(unittest.TestCase):
             "HTTP 400 bad request",
             # A stream wrapper around an auth failure is still auth.
             "Responses stream returned an error: HTTP 401 Unauthorized",
+            "Responses request failed before receiving a response\n"
+            "Hint: Network/proxy failed. This is not a moderation refusal.\n"
+            "HTTP 401 Unauthorized",
             "rate limit reached; quota exceeded",
         )
         for sample in samples:
@@ -194,6 +202,21 @@ class GenPngRetryTests(unittest.TestCase):
         self.assertIn("attempt 2/3", log)
         self.assertIn("retrying in 15s", log)
         self.assertNotIn("giving up", log)
+
+    def test_network_failed_before_response_then_success(self):
+        # 2026-10-19 ima2 3.23.1 CLI text. Exit 6 is NETWORK_FAILED.
+        # One fast 502 must not end the ticket.
+        caught, log, runner = self._go([
+            (6, "Responses request failed before receiving a response\n"
+             "Hint: Network/proxy failed. This is not a moderation refusal.", "", 0),
+            (0, "", "", MIN_BYTES),
+        ])
+        self.assertIsNone(caught)
+        self.assertEqual(len(runner.calls), 2)
+        self.assertEqual(self.sleeps, [5])
+        self.assertIn("transient, retrying in 5s", log)
+        self.assertIn("Network/proxy failed", log)
+        self.assertGreaterEqual(os.path.getsize(self.out), MIN_BYTES)
         cmd = runner.calls[0][0]
         self.assertEqual(cmd[0], ai.IMA2)
         self.assertIn("--provider", cmd)
