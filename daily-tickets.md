@@ -1013,7 +1013,7 @@ plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check th
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** probiotic + fertility checked 2026-10-16 against 123 live articles (blog listing + sitemap + Atom + local caches) and all 63 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1016-11 — nmn price** — `NMN Price: What a Bottle Costs in the US (2026)`
+- [DONE 2026-10-19 https://wellnessnest.co/blogs/news/nmn-price-bottle-vs-serving-cost-in-the-us] **#CA1016-11 — nmn price** — `NMN Price: What a Bottle Costs in the US (2026)`
   - **Primary keyword:** `nmn price` · **Secondary:** how much does nmn cost, nmn supplement price, is nmn expensive, nmn cost per bottle
   - **Search intent:** US shopper who wants the real bottle price of an NMN supplement after marketplace listings changed
   - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-16 18:52 ICT)
