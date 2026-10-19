@@ -959,7 +959,7 @@ plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check th
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** nmn + fertility checked 2026-10-16 against 123 live articles (blog listing + sitemap + Atom + local caches) and all 63 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1016-7 — vaginal probiotics over 60** — `Vaginal Probiotics Over 60: 5 Checks (US 2026)`
+- [DONE 2026-10-19 https://wellnessnest.co/blogs/news/vaginal-probiotics-over-60-5-checks-in-the-us] **#CA1016-7 — vaginal probiotics over 60** — `Vaginal Probiotics Over 60: 5 Checks (US 2026)`
   - **Primary keyword:** `vaginal probiotics over 60` · **Secondary:** vaginal probiotics for older women, probiotics after menopause, vaginal probiotics at 60, probiotics for postmenopausal women
   - **Search intent:** woman over 60, or someone buying for her, checking whether a vaginal probiotic gummy fits that age
   - **Template:** LISTICLE · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-16 18:52 ICT)
