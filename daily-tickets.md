@@ -999,7 +999,7 @@ plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check th
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** nmn + how-to-take checked 2026-10-16 against 123 live articles (blog listing + sitemap + Atom + local caches) and all 63 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1016-10 — vaginal probiotics for fertility** — `Vaginal Probiotics for Fertility: The Limits (2026)`
+- [DONE 2026-10-19 https://wellnessnest.co/blogs/news/vaginal-probiotics-for-fertility-limits-in-the-us] **#CA1016-10 — vaginal probiotics for fertility** — `Vaginal Probiotics for Fertility: The Limits (2026)`
   - **Primary keyword:** `vaginal probiotics for fertility` · **Secondary:** probiotics while trying to conceive, vaginal probiotics and conception, probiotics and fertility, probiotics before pregnancy
   - **Search intent:** woman trying to conceive who has been told a vaginal probiotic might help and wants the limit of that claim
   - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-16 18:52 ICT)
