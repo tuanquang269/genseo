@@ -973,7 +973,7 @@ plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check th
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** probiotic + seniors checked 2026-10-16 against 123 live articles (blog listing + sitemap + Atom + local caches) and all 63 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1016-8 — creatine gummies on an empty stomach** — `Creatine Gummies on an Empty Stomach (US 2026)`
+- [DONE 2026-10-19 https://wellnessnest.co/blogs/news/creatine-gummies-on-an-empty-stomach-us-guide] **#CA1016-8 — creatine gummies on an empty stomach** — `Creatine Gummies on an Empty Stomach (US 2026)`
   - **Primary keyword:** `creatine gummies on an empty stomach` · **Secondary:** creatine empty stomach, creatine without food, can you take creatine fasted, creatine gummies before breakfast
   - **Search intent:** person who trains fasted or skips breakfast and wants to know if creatine still makes sense without a meal
   - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-16 18:52 ICT)
