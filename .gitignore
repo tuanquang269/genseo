@@ -51,3 +51,6 @@ board/burn-pick-*.md
 
 # Scratch dirs from one-off runs.
 .run-*/
+
+# Local output of scripts/apply_geo_live_fixes.py --apply. Live pages stay unchanged.
+docs/geo-live-fixes-out/
