@@ -986,7 +986,7 @@ plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check th
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** creatine + fasting checked 2026-10-16 against 123 live articles (blog listing + sitemap + Atom + local caches) and all 63 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1016-9 — how to take nmn** — `How to Take NMN: A Simple Capsule Routine (2026)`
+- [DONE 2026-10-19 https://wellnessnest.co/blogs/news/how-to-take-nmn-a-capsule-routine-in-the-us] **#CA1016-9 — how to take nmn** — `How to Take NMN: A Simple Capsule Routine (2026)`
   - **Primary keyword:** `how to take nmn` · **Secondary:** how to use nmn capsules, nmn capsule directions, swallow or dissolve nmn, nmn with water
   - **Search intent:** buyer who already has capsules and wants the daily routine, not another clock-time or dose article
   - **Template:** STORY · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 1 match(es), none targets this primary: How Long Does NMN Take to Work? Week 1 to 12 (US 2026) (2026-10-16 18:52 ICT)
