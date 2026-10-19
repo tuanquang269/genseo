@@ -26,6 +26,7 @@ This skill acts as the Execution layer for the "Feedback Loop". It takes a Strat
 2. **Patching (Execution):**
    - Inject the new optimizations dictated by the Strategist (e.g., adding an Entity Table, restructuring the top paragraph, or adding the strict `## Frequently Asked Questions` block).
    - *CRITICAL:* Do not ruin the overall flow. Only apply the surgical patches requested by the Brief.
+   - Do not invent a testimonial, a star rating, or a "we tested it" line. A first-hand quote is appended only when `python3 scripts/experience_block.py render --draft <draft>.md` prints one (`usage_allowed: true` in `data/experience_quotes.json`). Empty stdout means add nothing. See `docs/first-hand-experience-block.md`.
    - Retain existing Shopify image CDN links wherever possible to avoid broken images.
    - **⚠️ Image Rule During Refresh (MANDATORY):** If the refresh adds or expands coverage of any product that does not already have a dedicated image in that section, you MUST generate one. Follow the same rule as new articles: **1 lifestyle image per product, per section**. Download the real product image from the Shopify CDN first (`curl -o`), then pass it into `ImagePaths` when calling `generate_image`. Never add a new product section without a corresponding image.
 

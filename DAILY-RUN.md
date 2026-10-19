@@ -207,6 +207,11 @@ Follow the `genseo-auto-publish` skill end to end. The two steps that actually k
    validator prints `QRG scoring unavailable: <reason>` and the draft still passes. The scorer
    is `~/.claude/plugins/marketplaces/*claude-seo*/bin/claude-seo` on the Mac. It is not a paid
    call, and this repo does not invent a score when the launcher is absent.
+   A missing first-hand experience block is a warning, not a failure, while
+   `data/experience_quotes.json` has no eligible quote (`usage_allowed: true`, and not an
+   `example` row). Do not invent a quote to clear that warning. A testimonial, star rating,
+   or personal-use line that is not in that file fails the gate. See
+   `docs/first-hand-experience-block.md`.
 2. `python3 scripts/shopify_publisher.py …` — the **only** publish path. Shopify MCP /
    GraphQL / REST drop the JSON-LD. Publish **live/visible**, never draft (Kevin, standing:
    *"just auto publish visible. I will do QA step even after you publish"*).

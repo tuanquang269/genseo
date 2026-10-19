@@ -87,6 +87,16 @@ swap only text/href. Blank line REQUIRED before and after each block in the .md 
 </div>
 ```
 
+### 7. First-hand notes (only the script's stdout)
+
+Do not hand-write this block. Run `python3 scripts/experience_block.py render --draft <draft>.md`.
+Paste the stdout verbatim, with a blank line before and after, above `### About the Author`.
+A row renders only when `usage_allowed` is true and `example` is not set in
+`data/experience_quotes.json`. Empty stdout means omit the block: no heading, no placeholder,
+no star rating, no invented customer. The optional label-check line is a separate command,
+`render --with-method`, and only when that command prints one. See
+`docs/first-hand-experience-block.md`.
+
 ## Per-template blueprint
 
 **EDITORIAL** (unchanged default): answer-first intro → `##` sections → markdown table → FAQ.
