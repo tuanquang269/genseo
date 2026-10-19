@@ -196,6 +196,7 @@ and in AI Overviews. Treat this step as writing an ad, not a label.
   - **META DESCRIPTION:** the line-2 `<!-- meta_description: ... -->` must be 120–165 characters.
   - **ALT TEXT:** every image alt is a real phrase (not empty, not "image" / "photo"). The gate fails a short or missing alt.
   - **NO DISEASE OR APPROVAL CLAIMS:** do not write that a product cures, treats, or prevents a disease, and do not call it FDA-approved or clinically proven. Saying a supplement does not treat an infection is correct and stays.
+  - **FIRST-HAND EXPERIENCE (optional, evidence only):** Do not invent a testimonial, a customer name, a reviewer handle, a star rating, or a line that says you, "our team", or the byline persona tried or uses the product. The only quote block allowed is stdout from `python3 scripts/experience_block.py render --draft <draft>.md`. Paste it verbatim, blank line before and after, immediately above `### About the Author`. If stdout is empty, omit the block. Do not add a heading or a placeholder in its place. Rows render only when `usage_allowed` is true and `example` is not true in `data/experience_quotes.json`. An optional label-check line is printed only by `python3 scripts/experience_block.py render --draft <draft>.md --with-method`, and only when the article gate already checks that product's label. Paste that line only if it is printed. Do not write your own "How we checked this" sentence. The byline stays the roster sentence. See `docs/first-hand-experience-block.md`.
   - MUST follow all EEAT and AEO/GEO guidelines from the knowledge base.
   - MUST embed the `curl`-fetched Internal Links absolutely (e.g. `https://wellnessnest.co/products/handle`).
   - MUST format the FAQ precisely using `## Frequently Asked Questions` > `### Question`.
@@ -248,7 +249,10 @@ answer block containing "the US", a comparison `<table>`, a $ price range, ≥2
 plus ≥3 FAQ questions, ≥2 question-style H2s, a product URL, a related article URL, a
 primary-source link, a 120–165 character meta description, descriptive image alt text,
 no hand-written `Published:` date, no affirmative cure / FDA-approval / clinically-proven
-claim, **topic fitness** (hard-fails dead flavour/recipe titles + collection-
+claim, no testimonial or star rating that is not an eligible row in
+`data/experience_quotes.json` (`usage_allowed: true`, not an `example` row — a missing
+first-hand block is a warning, not a failure; do not invent a quote to clear it),
+**topic fitness** (hard-fails dead flavour/recipe titles + collection-
 owned head-terms — see STEP 0.5) — AND that every product/collection/article/page/author
 URL returns HTTP 200 and that outbound citations are not 404, 410, or stuck in a redirect
 loop (a 403 bot-wall is a warning). H1 titles over 50 characters warn.

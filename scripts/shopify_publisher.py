@@ -13,6 +13,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import genseo_config as _gcfg
 import genseo_roster
 import brand_rules
+import experience_block
 import florafresh_rules
 import gold_resin_rules
 import shilasource_resin_rules
@@ -54,6 +55,24 @@ def _refuse_guarded_draft(title, body):
         print(f"  Turkesterone Advanced Formula pack label: {turkesterone_rules.LABEL_LINE}")
         print("  Packaging palette: product_refs/<handle>.palette.json (docs/PACKAGING_PALETTE_GUARD.md)")
         sys.exit(2)
+
+
+def _refuse_experience_block(md_text):
+    """Stop a publish/update whose quotes are not in the experience evidence file.
+
+    Runs before any Shopify call. A missing block is a warning: the evidence file
+    has no eligible quote, and the article must not grow a placeholder to fill it.
+    """
+    fails, warns = experience_block.audit(md_text)
+    for warning in warns:
+        print("  ⚠ " + warning)
+    if not fails:
+        return
+    print("✗ ABORT: first-hand experience block. Quotes render only from "
+          "data/experience_quotes.json. See docs/first-hand-experience-block.md.")
+    for reason in fails[:8]:
+        print("  " + reason)
+    sys.exit(2)
 
 
 def ping_indexnow(shop, token, blog_id, article_handle):
@@ -652,6 +671,7 @@ def do_publish(file_path, blog_id, live=False):
         sys.exit(2)
 
     _refuse_guarded_draft(title, md_text)
+    _refuse_experience_block(md_text)
 
     # ── Strip H1 title + any leaked front-matter from body (theme renders title separately) ──
     # Remove a leading YAML front-matter block (--- ... ---) or a leaked key: "value" header.
@@ -853,6 +873,7 @@ def do_update(file_path, blog_id, article_id, replace_cover=False, no_carry_cred
         sys.exit(2)
 
     _refuse_guarded_draft(title, md_text)
+    _refuse_experience_block(md_text)
 
     # ── TITLE GUARD: changing a ranking page's title resets its relevance signals.
     # Mechanical enforcement (skill instructions alone proved unreliable, Jun 2026):
