@@ -18,6 +18,7 @@ import gold_resin_rules
 import shilasource_resin_rules
 import shockwave_rules
 import turkesterone_rules
+import canonical_urls
 
 CONFIG_PATH = _gcfg.CONFIG_PATH
 API = _gcfg.API
@@ -54,6 +55,31 @@ def _refuse_guarded_draft(title, body):
         print(f"  Turkesterone Advanced Formula pack label: {turkesterone_rules.LABEL_LINE}")
         print("  Packaging palette: product_refs/<handle>.palette.json (docs/PACKAGING_PALETTE_GUARD.md)")
         sys.exit(2)
+
+
+def _canonical_prepare(md_text):
+    """Normalise internal links, then refuse a bad Article identity URL.
+
+    Called before image upload so a failing draft never touches Shopify.
+    Locale prefixes and unknown query parameters are warnings, not a block.
+    """
+    fails, warns = canonical_urls.gate_messages(md_text)
+    for line in warns:
+        if line.startswith("canonical autofix"):
+            continue
+        print("  canonical: " + line)
+    if fails:
+        print("✗ ABORT: canonical URL check. An Article mainEntityOfPage, url, or @id "
+              "GenSeo would emit does not match one clean article URL.")
+        for line in fails[:8]:
+            print("  " + line)
+        sys.exit(2)
+    md_text, changes = canonical_urls.normalise_document(md_text)
+    if changes:
+        print("  canonical: normalised %d internal URL(s) before publish" % len(changes))
+        for line in changes[:6]:
+            print("    " + line)
+    return md_text
 
 
 def ping_indexnow(shop, token, blog_id, article_handle):
@@ -672,6 +698,7 @@ def do_publish(file_path, blog_id, live=False):
             continue
         stripped_lines.append(line)
     md_text = '\n'.join(stripped_lines).lstrip('\n')
+    md_text = _canonical_prepare(md_text)
 
     # ── Image credits — read BEFORE the upload step, which is destructive to this ──
     # information: _process_images_for_publish rewrites every local path in md_text to a CDN
@@ -898,6 +925,7 @@ def do_update(file_path, blog_id, article_id, replace_cover=False, no_carry_cred
             continue
         stripped_lines.append(line)
     md_text = '\n'.join(stripped_lines).lstrip('\n')
+    md_text = _canonical_prepare(md_text)
 
     # ── Credits before upload, for the reason given in do_publish ──
     # A refresh re-sends the WHOLE body, so a credits block omitted here is not merely absent

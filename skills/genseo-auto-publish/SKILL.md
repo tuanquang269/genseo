@@ -103,7 +103,7 @@ wasted image-generation + writing cost of a doomed article.)
   2. **"People Also Ask" questions** — harvest these to seed your FAQ section
   3. **Content gaps** the competitors missed that you can fill better
 - **Read Knowledge Base:** Read `~/genseo/knowledge_base/SEO_EEAT_GUIDELINES.md` and `AEO_GEO_GUIDELINES.md`.
-> **Official-source GEO rules (2026-10-09):** AEO_GEO_GUIDELINES.md §6 overrides §1–§5 when they conflict. Rules 20–39 add crawler user agents, citation patterns, llms.txt and schema caveats, and the Kevin-GO list in §6.9. After writing each article, run `python3 scripts/geo_official_lint.py <article.html>` (WARN-only, never blocks) and fix the warnings you can. Vault digests: `~/PATI/LLM-Wiki/90-sources/geo-official/digests/` (newest on this Mac: 2026-10-08).
+> **Official-source GEO rules (2026-10-09):** AEO_GEO_GUIDELINES.md §6 overrides §1–§5 when they conflict. Rules 20–39 add crawler user agents, citation patterns, llms.txt and schema caveats, and the Kevin-GO list in §6.9. After writing each article, run `python3 scripts/geo_official_lint.py <article.html>` (WARN-only, never blocks) and fix the warnings you can. The same lint prints `canonical-mismatch`, `canonical-ambiguous`, and `canonical-autofix` (SEL canonicalization guide, 2026-10-17 digest). A mismatch hard-fails STEP 6; the publisher applies the autofix. Vault digests: `~/PATI/LLM-Wiki/90-sources/geo-official/digests/` (newest on this Mac: 2026-10-19, no rule change that day).
 - **Build an Outline** that covers what the SERP shows plus gaps, following this skeleton:
   - H1: Main benefit + keyword + "the US"
   - H2: Direct answer / short definition (the AEO answer block)
@@ -252,6 +252,13 @@ claim, **topic fitness** (hard-fails dead flavour/recipe titles + collection-
 owned head-terms — see STEP 0.5) — AND that every product/collection/article/page/author
 URL returns HTTP 200 and that outbound citations are not 404, 410, or stuck in a redirect
 loop (a 403 bot-wall is a warning). H1 titles over 50 characters warn.
+Canonical URLs (2026-10-19): internal wellnessnest.co links are normalised before
+publish when the fix is unambiguous (https, apex host, lower case, no trailing
+slash, tracking and variant parameters removed,
+`/collections/<collection>/products/<handle>` rewritten to `/products/<handle>`).
+A locale prefix or any other query parameter warns and is left as written.
+An Article `mainEntityOfPage`, `url`, or `@id` that is not the article URL
+hard-fails. Theme JSON-LD is out of this gate (draft PR #65).
 
 **It also scores the PROSE (added 2026-07-30), and this part hard-fails too.** The structural
 checks above only prove an article has a table and a price; they never measured whether the
