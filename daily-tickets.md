@@ -1036,7 +1036,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** creatine + how-to-take checked 2026-10-16 against 123 live articles (blog listing + sitemap + Atom + local caches) and all 63 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1016-13 — creatine gummies for fertility** — `Creatine Gummies for Fertility: What We Know (2026)`
+- [DONE 2026-10-20 https://wellnessnest.co/blogs/news/creatine-gummies-for-fertility-us-evidence] **#CA1016-13 — creatine gummies for fertility** — `Creatine Gummies for Fertility: What We Know (2026)`
   - **Primary keyword:** `creatine gummies for fertility` · **Secondary:** creatine and sperm, creatine male fertility, creatine and pregnancy, does creatine affect fertility
   - **Search intent:** person trying to conceive who has seen creatine mentioned for sperm or pregnancy and wants the actual evidence
   - **Template:** STORY · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-16 18:52 ICT)
