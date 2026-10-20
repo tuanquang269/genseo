@@ -1078,7 +1078,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** probiotic + how-to-take checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1017-2 — shilajit on rest days with food** — `Shilajit on Rest Days, With Food (US 2026)`
+- [DONE 2026-10-20 https://wellnessnest.co/blogs/news/shilajit-on-rest-days-with-food-in-the-us] **#CA1017-2 — shilajit on rest days with food** — `Shilajit on Rest Days, With Food (US 2026)`
   - **Primary keyword:** `shilajit on rest days with food` · **Secondary:** shilajit on off days, shilajit on a day off, shilajit rest day routine, take shilajit every day
   - **Search intent:** person who takes shilajit on gym days and wants the day off answered separately
   - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)

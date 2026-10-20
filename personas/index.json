@@ -1,29 +1,29 @@
 {
  "_doc": "Machine-readable rotation state for the persona bank. persona.json holds IMMUTABLE provenance; this file holds MUTABLE rotation history. Written only by scripts/persona_picker.py commit (atomic tmp+rename). Never hand-edit during a run.",
  "schema_version": 1,
- "seq": 47,
+ "seq": 51,
  "seeded_from": "PUBLISHED_ARTICLES_TRACKER.csv tickets 1-10 (free-text hero/gaze notes)",
  "recent_shots": [
-  "through-doorway",
   "over-shoulder",
   "wide-room",
   "high-angle-down",
   "mid-subject-fg-pack",
-  "over-shoulder"
+  "over-shoulder",
+  "wide-room"
  ],
  "recent_heroes": [
-  "NO-FACE",
   "m3039-hl-04",
   "f3039-as-01",
   "NO-FACE",
   "f3039-as-02",
   "f3039-bl-02",
   "NO-FACE",
-  "f3039-hl-03"
+  "f3039-hl-03",
+  "m3039-wh-05"
  ],
  "no_face_cycle": {
   "period": 3,
-  "position": 1,
+  "position": 2,
   "_doc": "every 3rd hero is no-face: one adult + one pack for 200 rows running is the structural tell that rotating the pose cannot reach. Briefly 1 on 2026-08-10 as a safety default after ima2 was measured reproducing the reference person recognisably; restored to 3 the same day when Kevin reaffirmed the 200-face bank. The rights exposure that motivated 1 is real and unresolved \u2014 it is recorded in CLAUDE.md and accepted by Kevin, not fixed by this number."
  },
  "personas": {
@@ -517,11 +517,17 @@
    "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m3039-wh-05/ref.jpg",
    "identity_key": "openimages:8ca8aca0e6174572",
-   "used_count": 0,
-   "last_used_seq": 0,
-   "gaze_used": [],
-   "last_gaze": null,
-   "angles_used": [],
+   "used_count": 1,
+   "last_used_seq": 51,
+   "gaze_used": [
+    "at-lens",
+    "at-another-person"
+   ],
+   "last_gaze": "at-lens",
+   "angles_used": [
+    "3q-left+level",
+    "front+chin-down"
+   ],
    "angles_reserved": []
   },
   "m3039-wh-06": {
@@ -1704,9 +1710,12 @@
    "ref": "/Users/kevinkreative/genseo/personas/m3039-hl-05/ref.jpg",
    "identity_key": "openimages:5efa6c71df3f170c",
    "used_count": 0,
-   "last_used_seq": 0,
-   "gaze_used": [],
-   "last_gaze": null,
+   "last_used_seq": 48,
+   "gaze_used": [
+    "off-into-room",
+    "down-at-product"
+   ],
+   "last_gaze": "off-into-room",
    "angles_used": [],
    "angles_reserved": []
   },
@@ -1717,9 +1726,12 @@
    "ref": "/Users/kevinkreative/genseo/personas/m3039-hl-06/ref.jpg",
    "identity_key": "openimages:9043a88f31784535",
    "used_count": 0,
-   "last_used_seq": 0,
-   "gaze_used": [],
-   "last_gaze": null,
+   "last_used_seq": 49,
+   "gaze_used": [
+    "at-another-person",
+    "just-past-lens"
+   ],
+   "last_gaze": "at-another-person",
    "angles_used": [],
    "angles_reserved": []
   },
@@ -1916,9 +1928,12 @@
    "ref": "/Users/kevinkreative/genseo/personas/m3039-mx-02/ref.jpg",
    "identity_key": "openimages:8370e4fd70032c86",
    "used_count": 0,
-   "last_used_seq": 0,
-   "gaze_used": [],
-   "last_gaze": null,
+   "last_used_seq": 50,
+   "gaze_used": [
+    "just-past-lens",
+    "at-another-person"
+   ],
+   "last_gaze": "just-past-lens",
    "angles_used": [],
    "angles_reserved": []
   }
