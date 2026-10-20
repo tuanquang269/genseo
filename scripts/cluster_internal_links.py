@@ -99,6 +99,56 @@ class ShopifyArticles:
             return resp.status
 
 
+LIVE_BASE = "https://wellnessnest.co/blogs/news/"
+
+
+def _plain(html_text):
+    import html as _h, re as _re
+    text = _re.sub(r"<script.*?</script>|<style.*?</style>", " ", html_text or "", flags=_re.S | _re.I)
+    text = _h.unescape(_re.sub(r"<[^>]+>", " ", text))
+    return _re.sub(r"\s+", " ", text).strip()
+
+
+def body_snippets(body_html, n=3, size=48):
+    """A few plain-text runs from the stored body, used to prove the live page renders body_html."""
+    text = _plain(body_html)
+    words = [w for w in text.split(" ") if w]
+    out = []
+    step = max(1, len(words) // (n + 1))
+    for i in range(1, n + 1):
+        chunk = " ".join(words[i * step:i * step + 8])
+        if len(chunk) >= 20:
+            out.append(chunk[:size])
+    return out
+
+
+def live_uses_gempages(handle, body_html="", fetch=None):
+    """True when the live article page does not render body_html (GemPages or another page builder),
+    so body edits would be invisible. Rule: live HTML has heavy GemPages markup (>= 10 hits) or none of
+    the stored body snippets appear in the live text. Fetch errors count as True (skip, never edit blind)."""
+    url = LIVE_BASE + handle
+    try:
+        if fetch is not None:
+            html = fetch(url)
+        else:
+            req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 GenSEO-cluster-links"})
+            with urllib.request.urlopen(req, timeout=40) as resp:
+                html = resp.read().decode("utf-8", "replace")
+    except Exception:
+        return True
+    if html.lower().count("gempages") >= 10:
+        return True
+    snippets = body_snippets(body_html)
+    if not snippets:
+        return False
+    live = _plain(html)
+    return not any(sn in live for sn in snippets)
+
+
+def body_is_gempages(body_html):
+    return "gempages" in (body_html or "").lower()
+
+
 def plan_updates(articles, cluster_map, limit=None):
     updates = []
     skipped = []
@@ -109,6 +159,9 @@ def plan_updates(articles, cluster_map, limit=None):
             continue
         if not wc.safe_handle(handle):
             skipped.append((handle or "?", "skipped landing or unsafe handle"))
+            continue
+        if body_is_gempages(article.get("body_html")):
+            skipped.append((handle, "GemPages body"))
             continue
         cluster = wc.article_cluster(cluster_map, handle)
         if not cluster or cluster.get("id") == "other":
@@ -242,7 +295,20 @@ def run(args, store=None, articles=None, cluster_map=None):
         else:
             print("pass --articles or --from-shopify")
             return 1
-    updates, skipped = plan_updates(articles, cluster_map, limit=args.limit)
+    updates, skipped = plan_updates(articles, cluster_map, limit=None)
+    if not getattr(args, "no_live_check", False) and (apply or args.from_shopify):
+        kept = []
+        for row in updates:
+            if args.limit is not None and len(kept) >= args.limit:
+                break
+            if live_uses_gempages(row["handle"], row.get("old_body", ""), fetch=getattr(args, "live_fetch", None)):
+                skipped.append((row["handle"], "live page rendered by GemPages"))
+                print("skip %s: live page rendered by GemPages" % row["handle"])
+                continue
+            kept.append(row)
+        updates = kept
+    elif args.limit is not None:
+        updates = updates[:args.limit]
     report, link_count = render_report(updates, skipped, cluster_map, applied=apply)
     if args.report:
         folder = os.path.dirname(os.path.abspath(args.report))
@@ -287,6 +353,7 @@ def main(argv=None):
     ap.add_argument("--apply", action="store_true", help="PUT body_html after a full backup")
     ap.add_argument("--limit", type=int, default=None)
     ap.add_argument("--report", help="markdown report path")
+    ap.add_argument("--no-live-check", action="store_true", help="skip the live-HTML GemPages check (tests only)")
     ap.add_argument("--rollback", help="backup JSON from a previous --apply")
     args = ap.parse_args(argv)
     return run(args)
