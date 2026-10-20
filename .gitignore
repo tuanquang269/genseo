@@ -11,6 +11,8 @@ ALL_ARTICLES.csv
 PUBLISHED_ARTICLES_TRACKER.csv
 # working dirs
 published_drafts/
+# legacy AEO ticket written by scripts/aeo_tracker.py when GEMINI_API_KEY is unset
+AEO_ACTION_TICKETS.md
 tmp_images/
 backups/
 logs/
