@@ -3,9 +3,10 @@
 repair_schema.py — Self-healing schema fixer. Works on the LIVE article HTML, so it repairs
 any article regardless of how it was published (python publisher, MCP, GraphQL, curl).
 
-For the given article(s): if the live body is missing Article JSON-LD or FAQPage schema,
-build them FROM THE RENDERED HTML (not the markdown draft) and inject via the Shopify API.
-Also fixes a generic author field/schema when a named /pages/ byline exists in the body.
+For the given article(s): if the live body is missing FAQPage schema, build it FROM THE
+RENDERED HTML (not the markdown draft) and inject via the Shopify API. Article JSON-LD is
+not injected: the theme main-article section already emits it (Kevin 2026-10-20). Also
+fixes a generic author field when a named /pages/ byline exists in the body.
 
 Usage:
   python3 repair_schema.py <ARTICLE_ID> [BLOG_ID]      # one article
@@ -76,26 +77,10 @@ def repair(aid, blog="104008483131"):
             print(f"  [{aid}] ⚠ SKIP author repair — byline '{current or '(empty)'}' not in roster.json | {a.get('handle')}")
             author_name=None
 
-    # Clean up old invalid Article schema to force a rebuild if it was Organization but we resolved a Person handle
-    for m_json in re.finditer(r'<script type="application/ld\+json">(.*?)</script>', body, re.S):
-        try:
-            js = json.loads(m_json.group(1).strip())
-            if js.get("@type") == "Article":
-                author_type = js.get("author", {}).get("@type")
-                if author_type != "Person" and handle:
-                    body = body.replace(m_json.group(0), "")
-                    changed.append("Reset-Article")
-        except Exception:
-            pass
-
+    # Theme main-article already emits Article JSON-LD (headline, description, image,
+    # dates, author, publisher). Do not append a second Article block to body_html.
+    # Kevin 2026-10-20. FAQPage in the body stays; add it when the live body has none.
     add=""
-    if "application/ld+json" not in body or '"@type": "Article"' not in body:
-        art={"@context":"https://schema.org","@type":"Article","headline":title,
-             "author":({"@type":"Person","name":author_name,"url":f"https://wellnessnest.co/pages/{handle}"} if handle and author_name else {"@type":"Organization","name":"Wellness Nest"}),
-             "publisher":{"@type":"Organization","name":"Wellness Nest","logo":{"@type":"ImageObject","url":"https://wellnessnest.co/cdn/shop/files/WNN_Main_Logo_eb77747f-0bd5-4316-a9ba-92349ddbe5cc.png"}},
-             "dateModified":datetime.date.today().isoformat()}
-        add+=f'\n<script type="application/ld+json">\n{json.dumps(art,indent=2)}\n</script>\n'
-        changed.append("Article")
     if "FAQPage" not in body:
         faqs=extract_faqs(body)
         if faqs:
