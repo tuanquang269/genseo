@@ -1023,7 +1023,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** nmn + price checked 2026-10-16 against 123 live articles (blog listing + sitemap + Atom + local caches) and all 63 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1016-12 — how to take creatine gummies** — `How to Take Creatine Gummies Each Day (US 2026)`
+- [DONE 2026-10-19 https://wellnessnest.co/blogs/news/how-to-take-creatine-gummies-in-the-us-2026] **#CA1016-12 — how to take creatine gummies** — `How to Take Creatine Gummies Each Day (US 2026)`
   - **Primary keyword:** `how to take creatine gummies` · **Secondary:** how to use creatine gummies, creatine gummies directions, chew or swallow creatine gummies, creatine gummies with water
   - **Search intent:** first buyer who has the bottle and wants the physical daily routine, not another dose debate
   - **Template:** LISTICLE · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-16 18:52 ICT)
