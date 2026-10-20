@@ -1,0 +1,131 @@
+{
+  "version": "2026-10-20",
+  "purpose": "Proposed canonical name per entity for newly published GenSeo articles. This file does not change the live theme, Shopify titles, or publisher output.",
+  "entities": [
+    {
+      "id": "wellness-nest",
+      "canonical": "Wellness Nest",
+      "kind": "organization",
+      "handles": [],
+      "token": "wellness[\\s\\-]?nest",
+      "warn_patterns": ["WellnessNest", "Wellness-Nest"],
+      "sources": [
+        "scripts/shopify_publisher.py ORG_NAME",
+        "scripts/repair_schema.py publisher name"
+      ]
+    },
+    {
+      "id": "ageaura-pure-nmn-tmg",
+      "canonical": "AgeAura Pure NMN + TMG NAD+ Complex",
+      "kind": "product",
+      "handles": ["ageaura-pure-nmn-tmg-nad-complex"],
+      "token": "age[\\s\\-]?aura",
+      "warn_patterns": ["Age Aura", "Age-Aura", "Longevity Duo"],
+      "sources": [
+        "scripts/ageaura_rules.py PRODUCT_LABEL",
+        "product_refs/ageaura-pure-nmn-tmg-nad-complex.label.json required lines AgeAura, NMN + TMG, NAD + Complex"
+      ]
+    },
+    {
+      "id": "shilasource-resin",
+      "canonical": "ShilaSource Himalayan Shilajit Resin",
+      "kind": "product",
+      "handles": ["shilasource-himalayan-shilajit-resin"],
+      "token": "shila[\\s\\-]?source",
+      "warn_patterns": ["Shila Source", "Shila-Source"],
+      "sources": [
+        "product_refs/shilasource-himalayan-shilajit-resin.label.json required lines ShilaSource, Himalayan, Shilajit, Resin"
+      ]
+    },
+    {
+      "id": "florafresh-gummies",
+      "canonical": "FloraFresh Vaginal Probiotics Gummies",
+      "kind": "product",
+      "handles": ["florafresh-vaginal-probiotics-gummies"],
+      "token": "flora[\\s\\-]?fresh",
+      "warn_patterns": ["Flora Fresh", "Flora-Fresh"],
+      "label_formula": "Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies",
+      "sources": [
+        "scripts/florafresh_rules.py PRODUCT_NAME, STRAIN, CFU",
+        "product_refs/florafresh-vaginal-probiotics-gummies.label.json front lines FloraFresh, Vaginal, Probiotic, Gummies"
+      ]
+    },
+    {
+      "id": "pure-shilajit-gold-resin",
+      "canonical": "Pure Shilajit Gold Resin",
+      "kind": "product",
+      "handles": ["pure-shilajit-gold-resin"],
+      "token": "gold resin",
+      "warn_patterns": [],
+      "sources": [
+        "product_refs/pure-shilajit-gold-resin.label.json required line Pure Shilajit Gold Resin"
+      ]
+    },
+    {
+      "id": "shilajit-shockwave",
+      "canonical": "Shilajit Shockwave",
+      "kind": "product",
+      "handles": ["shilajit-shockwave"],
+      "token": "shockwave",
+      "warn_patterns": [],
+      "sources": [
+        "product_refs/shilajit-shockwave.label.json required lines SHILAJIT, SHOCKWAVE"
+      ]
+    },
+    {
+      "id": "premium-himalayan-shilajit-gummies",
+      "canonical": "Premium Himalayan Shilajit Gummies",
+      "kind": "product",
+      "handles": ["premium-himalayan-shilajit-gummies"],
+      "token": "premium himalayan shilajit gummies",
+      "warn_patterns": [],
+      "sources": [
+        "product_refs/premium-himalayan-shilajit-gummies.label.json required lines PREMIUM HIMALAYAN, SHILAJIT GUMMIES"
+      ]
+    },
+    {
+      "id": "fusiforce-creatine-gummies",
+      "canonical": "FusiForce Creatine Monohydrate Gummies",
+      "kind": "product",
+      "handles": ["fusiforce-creatine-gummies"],
+      "token": "fusi[\\s\\-]?force",
+      "warn_patterns": ["Fusi Force", "Fusi-Force"],
+      "sources": [
+        "product_refs/fusiforce-creatine-gummies.label.json required lines FusiForce, Creatine, Monohydrate, Gummies"
+      ]
+    },
+    {
+      "id": "turkesterone-advanced-formula",
+      "canonical": "Turkesterone Advanced Formula",
+      "kind": "product",
+      "handles": ["turkesterone-advanced-formula"],
+      "token": "turkesterone",
+      "warn_patterns": [],
+      "sources": [
+        "product_refs/turkesterone-advanced-formula.label.json required lines TURKESTERONE, ADVANCED, FORMULA"
+      ]
+    },
+    {
+      "id": "shilajit-gummies-single-jar",
+      "canonical": "Shilajit Gummies Single Jar",
+      "kind": "product",
+      "handles": ["shilajit-gummies-single-jar"],
+      "token": "shilajit gummies single jar",
+      "warn_patterns": [],
+      "sources": [
+        "Product JSON-LD name on https://wellnessnest.co/products/shilajit-gummies-single-jar, crawl 2026-10-20. No product_refs label file."
+      ]
+    },
+    {
+      "id": "shilajit-gummies-two-jar-pack",
+      "canonical": "Shilajit Gummies Two-Jar Pack",
+      "kind": "product",
+      "handles": ["shilajit-gummies-two-jar-pack"],
+      "token": "shilajit gummies two-jar pack",
+      "warn_patterns": [],
+      "sources": [
+        "Product JSON-LD name on https://wellnessnest.co/products/shilajit-gummies-two-jar-pack, crawl 2026-10-20. No product_refs label file."
+      ]
+    }
+  ]
+}
