@@ -105,6 +105,29 @@ class FixFile(unittest.TestCase):
         blob = json.dumps(data)
         self.assertNotIn("myshopify", blob)
         self.assertNotIn("/admin/api/", blob)
+        self.assertNotIn("1 billion CFU", blob)
+        self.assertNotIn("1B CFU", blob)
+        flora_replacements = [
+            rep["replace"]
+            for post in data["posts"]
+            for rep in post["replacements"]
+            if rep["kind"] == "florafresh_label" and "CFU" in rep["replace"]
+        ]
+        self.assertEqual(len(flora_replacements), 6)
+        for text in flora_replacements:
+            self.assertIn("15B CFU", text)
+            self.assertIn("SNZ-1969", text)
+
+    def test_15b_of_snz_1969_is_not_the_stale_pdp_fingerprint(self):
+        good = (
+            "FloraFresh. The Supplement Facts label lists Bacillus coagulans "
+            "SNZ-1969 at 15B CFU per 2 gummies."
+        )
+        self.assertEqual(ap.flora_problems(good), [])
+        bare = "FloraFresh lists 15 billion CFU per serving."
+        self.assertTrue(any("15 billion" in item for item in ap.flora_problems(bare)), ap.flora_problems(bare))
+        strains = "FloraFresh uses four Lactobacillus strains and is sugar-free."
+        self.assertTrue(ap.flora_problems(strains))
 
     def test_script_has_no_shopify_write(self):
         with open(SCRIPT, encoding="utf-8") as fh:

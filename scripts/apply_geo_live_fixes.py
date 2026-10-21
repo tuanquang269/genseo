@@ -153,9 +153,27 @@ def check_jsonld(ticket, before, after):
             )
 
 
+# Kevin 2026-10-21: the label count is 15B CFU of SNZ-1969. florafresh_rules.py
+# on this branch still calls that figure the rejected PDP count. Drop only that
+# stale fingerprint when the patched body states the label strain and 15B CFU.
+# Lactobacillus, XOS, D-mannose, sugar-free, and a bare 15 billion claim stay failures.
+_STALE_15B_VIOLATION = "15 billion CFU is the wrong PDP figure"
+_LABEL_COUNT = re.compile(r"\b15\s*B\s*CFU\b|\b15\s*billion\s*CFU\b", re.I)
+
+
+def flora_problems(body):
+    states_label = "SNZ-1969" in (body or "") and bool(_LABEL_COUNT.search(body or ""))
+    problems = []
+    for item in florafresh_rules.violations(body):
+        if states_label and _STALE_15B_VIOLATION in item:
+            continue
+        problems.append(item)
+    return problems
+
+
 def check_clean(ticket, body):
     fails, _warns = geo_citability.assess(body, require_meta=False)
-    flora = florafresh_rules.violations(body)
+    flora = flora_problems(body)
     problems = [f"gate: {item}" for item in fails] + [f"florafresh: {item}" for item in flora]
     if problems:
         raise ApplyError(ticket + " still fails after the patch: " + "; ".join(problems[:6]))
