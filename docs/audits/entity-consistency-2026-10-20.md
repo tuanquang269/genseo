@@ -35,7 +35,9 @@ Use these in newly published GenSeo articles. The map file is `data/entity_canon
 | `shilajit-gummies-single-jar` | Shilajit Gummies Single Jar | Product JSON-LD name on https://wellnessnest.co/products/shilajit-gummies-single-jar, crawl 2026-10-20. No product_refs label file. |
 | `shilajit-gummies-two-jar-pack` | Shilajit Gummies Two-Jar Pack | Product JSON-LD name on https://wellnessnest.co/products/shilajit-gummies-two-jar-pack, crawl 2026-10-20. No product_refs label file. |
 
-AgeAura articles name only **AgeAura Pure NMN + TMG NAD+ Complex**. FloraFresh formula, from its Supplement Facts label: **Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies**.
+AgeAura articles name only **AgeAura Pure NMN + TMG NAD+ Complex**. FloraFresh formula, from its Supplement Facts label: **Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies**. 15 billion CFU is the same count. 1 billion CFU is the retired count.
+
+Blog byline for new articles is Mike Moretti, Co-founder, Wellness Nest, linking `/pages/mike-moretti`. Crawl records of live pages were not rewritten.
 
 ## Measured name fields
 
@@ -175,15 +177,7 @@ Canonical product handle is not among the product URLs in the default-locale pro
 
 ### label_contradiction — 1
 
-15 billion CFU is the rejected PDP figure. Supplement Facts label: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies.
-
-- https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies; field=og:description; sentence=Support vaginal health, pH balance, microbiome with Vaginal Probiotics. 15 Billion CFU probiotics, D-Mannose, prebiotics, and Vitamin C for daily feminine care.
-- https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies; field=meta description; sentence=Support vaginal health, pH balance, microbiome with Vaginal Probiotics. 15 Billion CFU probiotics, D-Mannose, prebiotics, and Vitamin C for daily feminine care.
-- https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies; field=Product.description; sentence=ehensive blend of probiotics, prebiotics, and supportive nutrients. Each serving delivers 15 billion CFU from four clinically studied Lactobacillus strains - Lactobacillus rhamnosus, Lactobacill
-
-### label_contradiction — 1
-
-D-mannose is the rejected PDP formula. Supplement Facts label: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies.
+D-mannose is the rejected PDP formula. Supplement Facts label: Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies.
 
 - https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies; field=og:description; sentence=aginal health, pH balance, microbiome with Vaginal Probiotics. 15 Billion CFU probiotics, D-Mannose, prebiotics, and Vitamin C for daily feminine care.
 - https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies; field=meta description; sentence=aginal health, pH balance, microbiome with Vaginal Probiotics. 15 Billion CFU probiotics, D-Mannose, prebiotics, and Vitamin C for daily feminine care.
@@ -191,13 +185,13 @@ D-mannose is the rejected PDP formula. Supplement Facts label: Bacillus coagulan
 
 ### label_contradiction — 1
 
-Lactobacillus strains are the rejected PDP formula. Supplement Facts label: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies.
+Lactobacillus strains are the rejected PDP formula. Supplement Facts label: Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies.
 
 - https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies; field=Product.description; sentence=d supportive nutrients. Each serving delivers 15 billion CFU from four clinically studied Lactobacillus strains - Lactobacillus rhamnosus, Lactobacillus reuteri, Lactobacillus salivarius, and L
 
 ### label_contradiction — 1
 
-XOS is the rejected PDP formula. Supplement Facts label: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies.
+XOS is the rejected PDP formula. Supplement Facts label: Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies.
 
 - https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies; field=Product.description; sentence=ginal microbiome and helping maintain the natural balance of vaginal flora. Combined with XOS prebiotics, D-Mannose, and Vitamin C, FloraFresh provides targeted support for women look
 

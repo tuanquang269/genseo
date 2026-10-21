@@ -53,9 +53,19 @@ SITE_SUFFIX_RE = re.compile(
     re.I,
 )
 
+# Kevin 2026-10-21. florafresh_rules.CFU on this branch is still the retired
+# count until the formula-guard change lands. 15B CFU is the label count.
+# "15 billion CFU" is the same count and is not a contradiction by itself.
+LABEL_CFU = "15B CFU"
+_RETIRED_CFU_RE = re.compile(
+    r"(?<![\d.])\b1[\s-]*(?:billion|bn)\b[\s-]*(?:(?:live|active|viable)[\s-]*)?(?:cfus?|colony[\s-]+forming)"
+    r"|(?<![\d.])\b1[\s-]*b\b(?=[\s-]*(?:cfus?|colony|live|active|viable|probiotics?|cultures)\b)",
+    re.I,
+)
+
 FLORAFRESH_CONTRADICTIONS = (
-    ("cfu_15_billion", re.compile(r"15\s*billion(?:\s*cfu)?", re.I),
-     "15 billion CFU is the rejected PDP figure"),
+    ("cfu_retired_1_billion", _RETIRED_CFU_RE,
+     "retired probiotic count"),
     ("lactobacillus", re.compile(r"lactobacillus", re.I),
      "Lactobacillus strains are the rejected PDP formula"),
     ("sugar_free", re.compile(r"sugar[\s\-]*free", re.I),
@@ -65,6 +75,11 @@ FLORAFRESH_CONTRADICTIONS = (
     ("xos", re.compile(r"\bXOS\b"),
      "XOS is the rejected PDP formula"),
 )
+
+
+def florafresh_label_formula():
+    return florafresh_rules.STRAIN + ", " + LABEL_CFU + " per " + florafresh_rules.SERVING
+
 
 REPO_FILES = (
     "scripts/shopify_publisher.py",
@@ -677,8 +692,7 @@ def build_report(pages, canonical_map, labels, repo_hits, constants, fetch_meta)
                                 "handle": handle,
                                 "detail": (
                                     why + ". Supplement Facts label: "
-                                    + florafresh_rules.STRAIN + ", " + florafresh_rules.CFU
-                                    + " per " + florafresh_rules.SERVING + "."
+                                    + florafresh_label_formula() + "."
                                 ),
                                 "count": 0,
                                 "examples": [],
@@ -899,7 +913,7 @@ def build_report(pages, canonical_map, labels, repo_hits, constants, fetch_meta)
         },
         "canonical_map": "data/entity_canonical_names.json",
         "label_formulas": {
-            "florafresh-gummies": florafresh_rules.STRAIN + ", " + florafresh_rules.CFU + " per " + florafresh_rules.SERVING,
+            "florafresh-gummies": florafresh_label_formula(),
         },
     }
 
@@ -957,8 +971,14 @@ def render_markdown(report):
     lines.append("")
     lines.append(
         "AgeAura articles name only **AgeAura Pure NMN + TMG NAD+ Complex**. "
-        "FloraFresh formula, from its Supplement Facts label: **%s**."
-        % summary.get("label_formulas", {}).get("florafresh-gummies", florafresh_rules.FORMULA_LINE)
+        "FloraFresh formula, from its Supplement Facts label: **%s**. "
+        "15 billion CFU is the same count. 1 billion CFU is the retired count."
+        % summary.get("label_formulas", {}).get("florafresh-gummies", florafresh_label_formula())
+    )
+    lines.append("")
+    lines.append(
+        "Blog byline for new articles is Mike Moretti, Co-founder, Wellness Nest, "
+        "linking `/pages/mike-moretti`. Crawl records of live pages were not rewritten."
     )
     lines.append("")
     lines.append("## Measured name fields")
@@ -1182,7 +1202,7 @@ def self_test():
 <title>FloraFresh Vaginal Probiotics Gummies | Wellness Nest</title>
 <meta property="og:site_name" content="Wellness Nest">
 <meta property="og:title" content="FloraFresh - Vaginal Probiotics Gummies | Wellness Nest">
-<meta property="og:description" content="Support vaginal health. 15 Billion CFU probiotics, D-Mannose, and sugar-free gummies.">
+<meta property="og:description" content="Support vaginal health. 15 Billion CFU probiotics, D-Mannose, and sugar-free gummies. Older copy said 1 billion CFU.">
 </head><body>
 <h1>Shilajit Gummies Single Jar</h1>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Product","name":"FloraFresh - Vaginal Probiotics Gummies","brand":{"@type":"Brand","name":"Wellness Nest"},"description":"Daily feminine care."}</script>
@@ -1210,8 +1230,16 @@ def self_test():
     for required in ("h1_disagrees_with_product_name", "sameas_missing", "organization_conflicting", "sameas_dead"):
         if required not in codes and not any(code.startswith(required) for code in codes):
             raise SystemExit("self-test missing " + required)
-    if not any(item.get("kind") == "cfu_15_billion" for item in summary["findings"]):
-        raise SystemExit("self-test: flora contradiction")
+    kinds = {item.get("kind") for item in summary["findings"]}
+    if "cfu_15_billion" in kinds:
+        raise SystemExit("self-test: 15 billion CFU is the label count")
+    if "cfu_retired_1_billion" not in kinds:
+        raise SystemExit("self-test: retired 1 billion count")
+    if "d_mannose" not in kinds or "sugar_free" not in kinds:
+        raise SystemExit("self-test: pdp strain story")
+    formula = summary["label_formulas"]["florafresh-gummies"]
+    if formula != florafresh_label_formula() or "1 billion" in formula:
+        raise SystemExit("self-test: label formula " + formula)
     warnings = entity_names.variant_warnings("WellnessNest ships the AgeAura Pure NMN + TMG NAD+ Complex across the US.")
     if not warnings:
         raise SystemExit("self-test: warn")

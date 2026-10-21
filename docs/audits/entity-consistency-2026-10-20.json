@@ -940,33 +940,9 @@
    },
    {
     "code": "label_contradiction",
-    "kind": "cfu_15_billion",
-    "handle": "florafresh-vaginal-probiotics-gummies",
-    "detail": "15 billion CFU is the rejected PDP figure. Supplement Facts label: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies.",
-    "count": 1,
-    "examples": [
-     {
-      "url": "https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies",
-      "field": "og:description",
-      "sentence": "Support vaginal health, pH balance, microbiome with Vaginal Probiotics. 15 Billion CFU probiotics, D-Mannose, prebiotics, and Vitamin C for daily feminine care."
-     },
-     {
-      "url": "https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies",
-      "field": "meta description",
-      "sentence": "Support vaginal health, pH balance, microbiome with Vaginal Probiotics. 15 Billion CFU probiotics, D-Mannose, prebiotics, and Vitamin C for daily feminine care."
-     },
-     {
-      "url": "https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies",
-      "field": "Product.description",
-      "sentence": "ehensive blend of probiotics, prebiotics, and supportive nutrients. Each serving delivers 15 billion CFU from four clinically studied Lactobacillus strains - Lactobacillus rhamnosus, Lactobacill"
-     }
-    ]
-   },
-   {
-    "code": "label_contradiction",
     "kind": "d_mannose",
     "handle": "florafresh-vaginal-probiotics-gummies",
-    "detail": "D-mannose is the rejected PDP formula. Supplement Facts label: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies.",
+    "detail": "D-mannose is the rejected PDP formula. Supplement Facts label: Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies.",
     "count": 1,
     "examples": [
      {
@@ -990,7 +966,7 @@
     "code": "label_contradiction",
     "kind": "lactobacillus",
     "handle": "florafresh-vaginal-probiotics-gummies",
-    "detail": "Lactobacillus strains are the rejected PDP formula. Supplement Facts label: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies.",
+    "detail": "Lactobacillus strains are the rejected PDP formula. Supplement Facts label: Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies.",
     "count": 1,
     "examples": [
      {
@@ -1004,7 +980,7 @@
     "code": "label_contradiction",
     "kind": "xos",
     "handle": "florafresh-vaginal-probiotics-gummies",
-    "detail": "XOS is the rejected PDP formula. Supplement Facts label: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies.",
+    "detail": "XOS is the rejected PDP formula. Supplement Facts label: Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies.",
     "count": 1,
     "examples": [
      {
@@ -1222,7 +1198,7 @@
   },
   "canonical_map": "data/entity_canonical_names.json",
   "label_formulas": {
-   "florafresh-gummies": "Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies"
+   "florafresh-gummies": "Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies"
   }
  },
  "pages": [

@@ -44,9 +44,9 @@
       "handles": ["florafresh-vaginal-probiotics-gummies"],
       "token": "flora[\\s\\-]?fresh",
       "warn_patterns": ["Flora Fresh", "Flora-Fresh"],
-      "label_formula": "Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies",
+      "label_formula": "Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies",
       "sources": [
-        "scripts/florafresh_rules.py PRODUCT_NAME, STRAIN, CFU",
+        "Kevin 2026-10-21: 15B CFU of Bacillus coagulans SNZ-1969 per 2 gummies. scripts/florafresh_rules.py PRODUCT_NAME and STRAIN. That module's CFU constant is the retired count until the formula-guard change lands.",
         "product_refs/florafresh-vaginal-probiotics-gummies.label.json front lines FloraFresh, Vaginal, Probiotic, Gummies"
       ]
     },
