@@ -6,7 +6,7 @@ The daily 5 article job does not set that variable, so this picker stays off.
 
 Products: ShilaSource Himalayan Shilajit Resin, AgeAura Pure NMN + TMG
 (https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex only),
-and FloraFresh (Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies).
+and FloraFresh (Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies).
 """
 from __future__ import annotations
 

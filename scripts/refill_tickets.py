@@ -772,8 +772,9 @@ def render(c, tid, ctx, info):
     if info["links"]:
         out.append("  - **Link, don't restate:** " + ", ".join(f"`/blogs/{BLOG}/{h}`" for h in info["links"]))
     src = "blog listing + sitemap + Atom" + (" + local caches" if ctx["local"] else "")
-    out += ["  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, "
-            "reviewer or credential",
+    out += ["  - **Author:** Mike Moretti (/pages/mike-moretti) — Co-founder, Wellness Nest. "
+            "Copy that role from roster.json verbatim. TODO: no approved headshot and the author page "
+            "is not confirmed live — do not invent a bio, credential, or photo.",
             f"  - **Dedup note:** {c['family']} + {c['segment']} checked {ctx['day']} against "
             f"{len(ctx['live_handles'])} live articles ({src}) and all {len(ctx['queue'])} tickets in this file; "
             "STEP 0 re-checks at write time"]
@@ -1042,8 +1043,10 @@ def self_test():
          dict(product="ageaura-pure-nmn-tmg-p2", primary="nmn morning or night",
               title="NMN: Morning or Night? (US 2026)"), "brand_rules"),
         ("Urolithin in the angle", ctx, dict(angle="Compare it with Urolithin A."), "banned"),
-        ("FloraFresh 15 billion CFU in the secondary (label: 1 billion)", ctx,
-         dict(secondary=["15 billion cfu probiotic"]), "banned"),
+        ("FloraFresh 1 billion CFU in the secondary (label: 15B CFU)", ctx,
+         dict(secondary=["1 billion cfu probiotic"]), "banned"),
+        ("FloraFresh 1B CFU in the secondary (label: 15B CFU)", ctx,
+         dict(secondary=["1B CFU probiotic"]), "banned"),
         ("FloraFresh formula cited from the PDP", ctx,
          dict(evidence="FloraFresh CFU and strains from the live PDP."), "banned"),
         ("sold-out hero product", ctx, dict(product="shilajit-shockwave", primary="shilajit shockwave for athletes",
