@@ -1119,7 +1119,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** turkesterone + rest-days checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1017-5 — nmn while traveling with food** — `NMN While Traveling, With Food (US 2026)`
+- [DONE 2026-10-21 https://wellnessnest.co/blogs/news/nmn-while-traveling-with-food-5-us-tips] **#CA1017-5 — nmn while traveling with food** — `NMN While Traveling, With Food (US 2026)`
   - **Primary keyword:** `nmn while traveling with food` · **Secondary:** nmn capsules on a flight, nmn on vacation, packing nmn capsules, nmn time zone
   - **Search intent:** traveler with a capsule bottle who wants a simple trip routine
   - **Template:** LISTICLE · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
@@ -1132,7 +1132,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** nmn + travel checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1017-6 — vaginal probiotics on an empty stomach** — `Vaginal Probiotics on an Empty Stomach (US 2026)`
+- [DONE 2026-10-21 https://wellnessnest.co/blogs/news/vaginal-probiotics-on-an-empty-stomach-us-guide-1] **#CA1017-6 — vaginal probiotics on an empty stomach** — `Vaginal Probiotics on an Empty Stomach (US 2026)`
   - **Primary keyword:** `vaginal probiotics on an empty stomach` · **Secondary:** vaginal probiotics without food, vaginal probiotics before breakfast, probiotic gummies before eating, vaginal probiotics with a meal
   - **Search intent:** reader who wants the meal question separated from the morning-or-night question
   - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
