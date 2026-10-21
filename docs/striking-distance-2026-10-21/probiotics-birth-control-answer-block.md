@@ -2,7 +2,7 @@
 
 Status: **DRAFT. Not published. Not a ticket. No Shopify write.**
 
-This is a refresh block for the blog post that already ranks. Do not open a second URL. Do not change the title, the handle, or the byline until Kevin says GO.
+This is a refresh block for the blog post that already ranks. Do not open a second URL. Do not change the title or the handle. The byline to apply is Mike Moretti, Co-founder, Wellness Nest. Applying the refresh still waits on a live `/pages/mike-moretti` (HTTP 404 on 2026-10-21, recorded in PR #88).
 
 | Field | Value |
 |---|---|
@@ -10,7 +10,7 @@ This is a refresh block for the blog post that already ranks. Do not open a seco
 | Owning URL | https://wellnessnest.co/blogs/news/probiotics-and-birth-control-can-you-take-both-us-2026 |
 | Same article, other locale path | https://wellnessnest.co/sk/blogs/news/probiotics-and-birth-control-can-you-take-both-us-2026 (1 impression on the first query) |
 | Action | Refresh the opening and add the query-shaped FAQ lines below. Keep the existing sections, including the IUD section. |
-| Byline | Keep **Dr. Marcus Hale**, the live Article author, who is in `roster.json`. Mike Moretti is not in `roster.json`. |
+| Byline | **Mike Moretti**, role `Co-founder, Wellness Nest` (Kevin 2026-10-21). The earlier draft recorded the live Article author as Dr. Marcus Hale. This pass does not update the post. `/pages/mike-moretti` returned HTTP 404 on 2026-10-21 (PR #88; HEAD during this edit was 404 again), so the apply waits on Kevin creating that page. |
 | Title | Keep `Probiotics and Birth Control: Can You Take Both? (US 2026)`. |
 
 Apply only the block between the markers. It replaces the first paragraph and adds FAQ lines. It does not replace the rest of the article.
@@ -32,18 +32,18 @@ Apply only the block between the markers. It replaces the first paragraph and ad
 <h3>Do probiotics make the pill less effective?</h3>
 <p><strong>The CDC table does not list them as a reason the pill works less well.</strong> It does list rifampin or rifabutin therapy as category 3 for combined hormonal contraceptives, with the note that the interaction is likely to reduce effectiveness. Ask your prescriber if you take either drug.</p>
 <h3>Where can I buy FloraFresh in the US?</h3>
-<p><strong>On the Wellness Nest product page, checked 2026-10-21.</strong> <a href="https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies">FloraFresh Vaginal Probiotics Gummies</a> listed at $40.99. The Supplement Facts label, per 2 gummies, is Bacillus coagulans SNZ-1969 (spore-based) 1 billion CFU, vitamin C 30 mg, and pineapple fruit powder 100 mg (with bromelain). The gummies are sweetened with maltitol and isomalt, so they are not sugar-free. That product is in the <a href="https://wellnessnest.co/collections/womens-essentials-collection">Women's Essentials collection</a> and the <a href="https://wellnessnest.co/collections/best-seller">Best Seller collection</a>. For timing, read <a href="https://wellnessnest.co/blogs/news/vaginal-probiotics-how-long-until-they-work-us-2026">how long vaginal probiotics take to work</a>.</p>
+<p><strong>On the Wellness Nest product page, checked 2026-10-21.</strong> <a href="https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies">FloraFresh Vaginal Probiotics Gummies</a> listed at $40.99. The Supplement Facts label, per 2 gummies, is Bacillus coagulans SNZ-1969 (spore-based) 15B CFU, vitamin C 30 mg, and pineapple fruit powder 100 mg (with bromelain). The gummies are sweetened with maltitol and isomalt, so they are not sugar-free. That product is in the <a href="https://wellnessnest.co/collections/womens-essentials-collection">Women's Essentials collection</a> and the <a href="https://wellnessnest.co/collections/best-seller">Best Seller collection</a>. For timing, read <a href="https://wellnessnest.co/blogs/news/vaginal-probiotics-how-long-until-they-work-us-2026">how long vaginal probiotics take to work</a>.</p>
 <!-- /proposed-block -->
 
 ## What to replace in the live where-to-buy sentence
 
-The live article's FloraFresh serving sentence does not match `scripts/florafresh_rules.py`. When this refresh is applied, replace that sentence with the where-to-buy FAQ above. Cite the Supplement Facts label. Do not copy strain or CFU wording from the store page.
+When this refresh is applied, replace the live FloraFresh serving sentence with the where-to-buy FAQ above. Cite the Supplement Facts label (Kevin 2026-10-21): Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies, vitamin C 30 mg, pineapple fruit powder 100 mg (with bromelain), maltitol and isomalt. Do not copy the PDP strain story.
 
 ## Sources checked 2026-10-21
 
 - CDC, Appendix D, Classifications for Combined Hormonal Contraceptives, from the 2024 U.S. Medical Eligibility Criteria. The page says the drug-interaction rows cover the pill, patch, and ring. Probiotics do not appear on that page. Most broad-spectrum antibiotics are category 1. Rifampin or rifabutin therapy is category 3: "likely to reduce the effectiveness of CHCs." https://www.cdc.gov/contraception/hcp/usmec/combined-hormonal-contraceptives.html
 - Category meanings on the same page: 1 = no restriction; 3 = theoretical or proven risks usually outweigh the advantages.
-- FloraFresh formula: `scripts/florafresh_rules.py` and `docs/FLORAFRESH_FORMULA_GUARD.md` (Supplement Facts label, Kevin 2026-10-09). Price: public `products/florafresh-vaginal-probiotics-gummies.js` variant price 4099 cents ($40.99) on 2026-10-21.
+- FloraFresh formula: Kevin 2026-10-21, as encoded in PR #88 `scripts/florafresh_rules.py` on `cursor/florafresh-15b-mike-moretti-0e04` (Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies, vitamin C 30 mg, pineapple fruit powder 100 mg with bromelain, maltitol and isomalt). This proposal does not edit that script. Price: public `products/florafresh-vaginal-probiotics-gummies.js` variant price 4099 cents ($40.99) on 2026-10-21.
 - Collection membership the same day: the product handle is in `womens-essentials-collection` and `best-seller` (`products.json`).
 - Sibling article returned HTTP 200: `vaginal-probiotics-how-long-until-they-work-us-2026`.
 

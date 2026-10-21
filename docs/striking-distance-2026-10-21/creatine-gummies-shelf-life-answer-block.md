@@ -2,14 +2,14 @@
 
 Status: **DRAFT. Not published. Not a ticket. No Shopify write.**
 
-This is a refresh block for the blog post that already ranks for both queries. Do not open a second URL for "how long do they last." Do not change the title, the handle, or the byline until Kevin says GO.
+This is a refresh block for the blog post that already ranks for both queries. Do not open a second URL for "how long do they last." Do not change the title or the handle. The byline to apply is Mike Moretti, Co-founder, Wellness Nest. Applying the refresh still waits on a live `/pages/mike-moretti` (HTTP 404 on 2026-10-21, recorded in PR #88).
 
 | Field | Value |
 |---|---|
 | Queries | "how long do creatine gummies last" (5 imp, pos 8.2, 0 clicks); "do creatine gummies expire" (6 imp, pos 10.2, 0 clicks) |
 | Owning URL | https://wellnessnest.co/blogs/news/do-creatine-gummies-expire-6-storage-facts-us-2026 |
 | Action | Refresh the opening so the first sentences answer both "expire" and "how long," and add those FAQ lines. Keep the existing storage sections. |
-| Byline | Keep **Dr. Marcus Hale** (`roster.json`). Mike Moretti is not in the roster. |
+| Byline | **Mike Moretti**, role `Co-founder, Wellness Nest` (Kevin 2026-10-21). The earlier draft recorded the live Article author as Dr. Marcus Hale. This pass does not update the post. `/pages/mike-moretti` returned HTTP 404 on 2026-10-21 (PR #88; HEAD during this edit was 404 again), so the apply waits on Kevin creating that page. |
 | Title | Keep `Do Creatine Gummies Expire? 6 Storage Facts (US 2026)`. |
 
 `topic_fitness.py` can return REVIEW for "how long" because that phrase is not in the title. Search Console still gives every impression for that query to this URL. The refresh stays on this URL.
