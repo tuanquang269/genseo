@@ -35,7 +35,7 @@ Yes for every metric the gate can enforce on the draft. No for the theme date an
 | Meta description 130–165 characters | 32/32 | 10/10 |
 | Opening answer 40–70 words | 32/32 in the audit's "answers the headline" band | 10/10 |
 | FAQ heading and at least 4 questions | 32/32 | 10/10 |
-| Body byline Dr. Marcus Hale → `/pages/dr-marcus-hale` | 32/32 | 10/10 |
+| Body byline Mike Moretti, Co-founder, Wellness Nest → `/pages/mike-moretti` | 0/32 (fetched bodies still name Dr. Marcus Hale) | 0/10 (fetched bodies still name Dr. Marcus Hale) |
 | Product URL present | 32/32 | 10/10 |
 | Descriptive image alt | 32/32 | 10/10 |
 | FAQPage + Person JSON-LD | 32/32 | 10/10 |
@@ -52,6 +52,8 @@ Yes for every metric the gate can enforce on the draft. No for the theme date an
 | Confirmed dead citation (404) | 1 URL | none |
 | Citation 403 from this machine (bot-wall) | 20 URLs on 12 articles | 5 URLs on 4 articles |
 | `geo_citability.assess` hard fail on the live body | 14/32 (they predate the gate) | **0/10** |
+
+The byline row uses Kevin's 2026-10-21 rule: Mike Moretti, Co-founder, Wellness Nest, linking `/pages/mike-moretti`. On the 2026-10-19 fetch every sampled body still named Dr. Marcus Hale and linked `/pages/dr-marcus-hale`. That page was live. `/pages/mike-moretti` is not, so this audit does not rewrite the live bylines. The other rows are unchanged observations from that fetch.
 
 Question H2s on the new posts are real questions (`What does the evidence say…?`, `Can you take creatine without food?`), not statement headings that merely start with "What". Primary links resolve: PubMed returned 203, PMC and FDA and NCCIH and NHS returned 200. The 403s are Europe PMC search URLs, two CDC pages, and one Oxford University Press article. The gate warns on 403 and does not fail the draft. None of those URLs is a 404. FloraFresh copy on `#CA1016-3`, `#CA1016-7`, and `#CA1016-10` does not trip `florafresh_rules.py`.
 
@@ -140,4 +142,4 @@ Checked 2026-10-19 with the same HEAD-then-GET curl the gate uses.
 | `#CA1009-2` and `#MB1012-2` | https://www.nccih.nih.gov/health/probiotics-usefulness-and-safety | 200 | NCCIH: different types of probiotics may have different effects. |
 | `#MB1012-4` related article | https://wellnessnest.co/blogs/news/how-long-does-turkesterone-take-to-work-us-2026 | 200 | Existing turkesterone article. |
 
-FloraFresh replacements name Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, vitamin C 30 mg, pineapple fruit powder 100 mg, sweetened with maltitol and isomalt (not sugar-free). They do not repeat 15 billion CFU, four Lactobacillus strains, XOS, or D-mannose. Paragraphs about Lactobacillus in the vaginal microbiome, cited to papers, are left as research copy. After the patch, `florafresh_rules.violations` is empty on those three bodies, and `geo_citability.assess` reports no hard fail on any of the 22 patched bodies (checked against the fetched HTML, not against Shopify).
+FloraFresh replacements name Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies, vitamin C 30 mg, pineapple fruit powder 100 mg, sweetened with maltitol and isomalt (not sugar-free). 15 billion CFU is the same count. They do not use the retired 1 billion CFU figure, and they do not repeat four Lactobacillus strains, XOS, or D-mannose. Paragraphs about Lactobacillus in the vaginal microbiome, cited to papers, are left as research copy. The `find` strings still quote the live Lactobacillus wording so the patch can match those posts. This file does not publish. When the file was first prepared, `geo_citability.assess` reported no hard fail on any of the 22 patched bodies (checked against the fetched HTML, not against Shopify).

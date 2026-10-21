@@ -154,13 +154,13 @@
         {
           "kind": "florafresh_label",
           "find": "They contain 15 billion CFU from four Lactobacillus strains: L. rhamnosus, L. reuteri, L. salivarius, and L. gasseri. They also include an XOS prebiotic, D-Mannose, and vitamin C. They are vegan, gluten-free, and sugar-free, with a pineapple flavor.",
-          "replace": "The Supplement Facts label lists Bacillus coagulans SNZ-1969 at 1 billion CFU per 2 gummies, plus vitamin C 30 mg and pineapple fruit powder 100 mg. The gummies are sweetened with maltitol and isomalt, so they are not sugar-free. Label badges include Vegan and Gluten Free, and the flavor is pineapple.",
+          "replace": "The Supplement Facts label lists Bacillus coagulans SNZ-1969 at 15B CFU per 2 gummies, plus vitamin C 30 mg and pineapple fruit powder 100 mg. The gummies are sweetened with maltitol and isomalt, so they are not sugar-free. Label badges include Vegan and Gluten Free, and the flavor is pineapple.",
           "count": 1
         },
         {
           "kind": "florafresh_label",
           "find": "Four Lactobacillus strains in a daily pineapple gummy, easy to keep taking through every day of your cycle.",
-          "replace": "Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, in a pineapple gummy you can keep taking through your cycle.",
+          "replace": "Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies, in a pineapple gummy you can keep taking through your cycle.",
           "count": 2
         }
       ],
@@ -204,13 +204,13 @@
         {
           "kind": "florafresh_label",
           "find": "Each serving lists 15 billion CFU from 4 strains (L. rhamnosus, L. reuteri, L. salivarius and L. gasseri), plus XOS prebiotic, D-Mannose and vitamin C. The gummies are vegan, gluten-free and sugar-free.",
-          "replace": "The Supplement Facts label lists Bacillus coagulans SNZ-1969 at 1 billion CFU per 2 gummies, plus vitamin C 30 mg and pineapple fruit powder 100 mg. The gummies are sweetened with maltitol and isomalt, so they are not sugar-free. Label badges include Vegan and Gluten Free.",
+          "replace": "The Supplement Facts label lists Bacillus coagulans SNZ-1969 at 15B CFU per 2 gummies, plus vitamin C 30 mg and pineapple fruit powder 100 mg. The gummies are sweetened with maltitol and isomalt, so they are not sugar-free. Label badges include Vegan and Gluten Free.",
           "count": 1
         },
         {
           "kind": "florafresh_label",
           "find": "Each serving lists 15 billion CFU from 4 Lactobacillus strains, plus XOS prebiotic, D-Mannose and vitamin C. The gummies are vegan, gluten-free and sugar-free, with a pineapple flavor.",
-          "replace": "The Supplement Facts label lists Bacillus coagulans SNZ-1969 at 1 billion CFU per 2 gummies, plus vitamin C 30 mg and pineapple fruit powder 100 mg. The gummies are sweetened with maltitol and isomalt, so they are not sugar-free. Label badges include Vegan and Gluten Free, and the flavor is pineapple.",
+          "replace": "The Supplement Facts label lists Bacillus coagulans SNZ-1969 at 15B CFU per 2 gummies, plus vitamin C 30 mg and pineapple fruit powder 100 mg. The gummies are sweetened with maltitol and isomalt, so they are not sugar-free. Label badges include Vegan and Gluten Free, and the flavor is pineapple.",
           "count": 2
         }
       ],
@@ -256,13 +256,13 @@
         {
           "kind": "florafresh_label",
           "find": "The product page lists 15 billion CFU per serving from 4 Lactobacillus strains: L. rhamnosus, L. reuteri, L. salivarius and L. gasseri. It also lists XOS prebiotics, D-Mannose and vitamin C in a vegan, gluten-free, sugar-free gummy.",
-          "replace": "The Supplement Facts label lists Bacillus coagulans SNZ-1969 at 1 billion CFU per 2 gummies, plus vitamin C 30 mg and pineapple fruit powder 100 mg. The gummies are sweetened with maltitol and isomalt, so they are not sugar-free. Label badges include Vegan and Gluten Free.",
+          "replace": "The Supplement Facts label lists Bacillus coagulans SNZ-1969 at 15B CFU per 2 gummies, plus vitamin C 30 mg and pineapple fruit powder 100 mg. The gummies are sweetened with maltitol and isomalt, so they are not sugar-free. Label badges include Vegan and Gluten Free.",
           "count": 1
         },
         {
           "kind": "florafresh_label",
           "find": "15 billion CFU from 4 Lactobacillus strains, 2 gummies a day with a meal.",
-          "replace": "Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, taken with a meal.",
+          "replace": "Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies, taken with a meal.",
           "count": 1
         },
         {
