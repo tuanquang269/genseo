@@ -1159,7 +1159,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** shilajit + travel checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1017-8 — how much creatine gummies cycling** — `Creatine Gummies Cycling: How Much Changes? (US 2026)`
+- [DONE 2026-10-22 https://wellnessnest.co/blogs/news/creatine-gummies-cycling-breaks-us-2026] **#CA1017-8 — how much creatine gummies cycling** — `Creatine Gummies Cycling: How Much Changes? (US 2026)`
   - **Primary keyword:** `how much creatine gummies cycling` · **Secondary:** do you cycle creatine, creatine on and off, creatine gummies weeks off, should you stop creatine
   - **Search intent:** lifter who has read that some supplements need weeks off and wants the creatine answer
   - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
