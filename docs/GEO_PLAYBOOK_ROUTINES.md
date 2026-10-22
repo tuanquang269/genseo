@@ -62,6 +62,16 @@ GENSEO_CLUSTER_PICKER=1 python3 scripts/refill_tickets.py --count 8 --dry-run
 
 The launchd job must keep `GENSEO_CLUSTER_PICKER` unset. New topics from the picker are only ShilaSource resin, AgeAura Pure NMN + TMG, and FloraFresh on its Supplement Facts label.
 
+## Weekly AI referrers, not on the plist
+
+Count last week's AI sessions and orders by referrer domain. This does not publish, and it does not edit a page, product, collection, or theme. It does not request a new Shopify scope.
+
+```bash
+python3 scripts/ai_referrer_report.py --since YYYY-MM-DD --until YYYY-MM-DD
+```
+
+The default with no dates is the seven complete days ending yesterday. UTM is not the count. 2026-10-15 through 2026-10-20 is flagged in the output as a possible ChatGPT UTM-bug window. Read `docs/AI_REFERRER_WEEKLY.md` before treating a zero as a traffic drop. A missing read stays `unknown`.
+
 ## If an apply is later approved
 
 `--apply` writes `backups/<date>/cluster-links-<time>.json` for every article it will change, then PUTs `body_html` on blog `104008483131` only.
