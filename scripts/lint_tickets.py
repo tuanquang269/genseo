@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Fail (exit 2) if any OPEN ticket names a banned AgeAura SKU or a bare AgeAura with no NMN + TMG product,
-makes a FloraFresh formula claim its Supplement Facts label does not support (15 billion CFU, Lactobacillus
+makes a FloraFresh formula claim its Supplement Facts label does not support (1 billion CFU, 1B CFU, Lactobacillus
 strains, XOS, D-mannose, sugar-free, or strains/CFU taken from the PDP description), or states a FusiForce
 pack count, milligram amount, serving count, or ginseng claim that is not in
 product_refs/fusiforce-creatine-gummies.label.json (90 gummies and creatine monohydrate are; 84, 25 mg,
