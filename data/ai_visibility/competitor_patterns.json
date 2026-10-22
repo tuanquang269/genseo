@@ -1,0 +1,348 @@
+{
+  "schema": 1,
+  "note": "Detection strings copied from scripts/offpage_listicle_gap.py _BRANDS on cursor/offpage-listicle-gap-1020 (draft PR #75). A pattern hit is not an observation until an answer text is supplied. FloraFresh has no list because that draft did not record one. Do not treat an unmatched name as a confirmed absence.",
+  "patterns": [
+    {
+      "brand_id": "ageaura",
+      "name": "Transparent Labs",
+      "pattern": "transparent\\s+labs",
+      "flags": "i"
+    },
+    {
+      "brand_id": "ageaura",
+      "name": "Renue By Science",
+      "pattern": "renue\\s+by\\s+science|\\brenue\\b",
+      "flags": "i"
+    },
+    {
+      "brand_id": "ageaura",
+      "name": "Neurogan",
+      "pattern": "\\bneurogan\\b",
+      "flags": "i"
+    },
+    {
+      "brand_id": "ageaura",
+      "name": "Toniiq",
+      "pattern": "\\btoniiq\\b",
+      "flags": "i"
+    },
+    {
+      "brand_id": "ageaura",
+      "name": "Codeage",
+      "pattern": "\\bcodeage\\b",
+      "flags": "i"
+    },
+    {
+      "brand_id": "ageaura",
+      "name": "Nutricost",
+      "pattern": "\\bnutricost\\b",
+      "flags": "i"
+    },
+    {
+      "brand_id": "ageaura",
+      "name": "ProHealth",
+      "pattern": "pro\\s*health",
+      "flags": "i"
+    },
+    {
+      "brand_id": "ageaura",
+      "name": "Elysium",
+      "pattern": "\\belysium\\b",
+      "flags": "i"
+    },
+    {
+      "brand_id": "ageaura",
+      "name": "Cata-Kor",
+      "pattern": "cata-?kor",
+      "flags": "i"
+    },
+    {
+      "brand_id": "ageaura",
+      "name": "California Gold Nutrition",
+      "pattern": "california\\s+gold\\s+nutrition",
+      "flags": "i"
+    },
+    {
+      "brand_id": "ageaura",
+      "name": "Double Wood",
+      "pattern": "double\\s+wood",
+      "flags": "i"
+    },
+    {
+      "brand_id": "ageaura",
+      "name": "PartiQlar",
+      "pattern": "partiqlar",
+      "flags": "i"
+    },
+    {
+      "brand_id": "ageaura",
+      "name": "Wonderfeel",
+      "pattern": "\\bwonderfeel\\b",
+      "flags": "i"
+    },
+    {
+      "brand_id": "ageaura",
+      "name": "Omre",
+      "pattern": "\\bomre\\b",
+      "flags": "i"
+    },
+    {
+      "brand_id": "ageaura",
+      "name": "Welzo",
+      "pattern": "\\bwelzo\\b",
+      "flags": "i"
+    },
+    {
+      "brand_id": "ageaura",
+      "name": "GenuinePurity",
+      "pattern": "genuine\\s*purity",
+      "flags": "i"
+    },
+    {
+      "brand_id": "ageaura",
+      "name": "Hello100",
+      "pattern": "hello\\s*100",
+      "flags": "i"
+    },
+    {
+      "brand_id": "ageaura",
+      "name": "BulkSupplements",
+      "pattern": "bulk\\s*supplements",
+      "flags": "i"
+    },
+    {
+      "brand_id": "ageaura",
+      "name": "Natural Factors",
+      "pattern": "natural\\s+factors",
+      "flags": "i"
+    },
+    {
+      "brand_id": "ageaura",
+      "name": "Genex Formulas",
+      "pattern": "genex\\s+formulas",
+      "flags": "i"
+    },
+    {
+      "brand_id": "ageaura",
+      "name": "Upnourish",
+      "pattern": "\\bupnourish\\b",
+      "flags": "i"
+    },
+    {
+      "brand_id": "ageaura",
+      "name": "Innerbody Labs",
+      "pattern": "innerbody\\s+labs",
+      "flags": "i"
+    },
+    {
+      "brand_id": "ageaura",
+      "name": "Tru Niagen",
+      "pattern": "tru\\s+niagen|\\bniagen\\b",
+      "flags": "i"
+    },
+    {
+      "brand_id": "ageaura",
+      "name": "Life Extension",
+      "pattern": "life\\s+extension",
+      "flags": "i"
+    },
+    {
+      "brand_id": "ageaura",
+      "name": "Thorne",
+      "pattern": "\\bthorne\\b",
+      "flags": "i"
+    },
+    {
+      "brand_id": "ageaura",
+      "name": "NOVOS",
+      "pattern": "\\bnovos\\b",
+      "flags": "i"
+    },
+    {
+      "brand_id": "ageaura",
+      "name": "DoNotAge",
+      "pattern": "do\\s*not\\s*age",
+      "flags": "i"
+    },
+    {
+      "brand_id": "ageaura",
+      "name": "Jinfiniti",
+      "pattern": "\\bjinfiniti\\b",
+      "flags": "i"
+    },
+    {
+      "brand_id": "ageaura",
+      "name": "Solensis",
+      "pattern": "\\bsolensis\\b",
+      "flags": "i"
+    },
+    {
+      "brand_id": "ageaura",
+      "name": "Manapura",
+      "pattern": "\\bmanapura\\b",
+      "flags": "i"
+    },
+    {
+      "brand_id": "ageaura",
+      "name": "Oakrus",
+      "pattern": "\\boakrus\\b",
+      "flags": "i"
+    },
+    {
+      "brand_id": "ageaura",
+      "name": "For Youth",
+      "pattern": "for\\s+youth\\s+the\\s+repair",
+      "flags": "i"
+    },
+    {
+      "brand_id": "shilasource",
+      "name": "Natural Shilajit",
+      "pattern": "naturalshilajit\\.com|(?<!Himalayan )Natural Shilajit",
+      "flags": ""
+    },
+    {
+      "brand_id": "shilasource",
+      "name": "Mountaindrop",
+      "pattern": "\\bmountaindrop\\b",
+      "flags": "i"
+    },
+    {
+      "brand_id": "shilasource",
+      "name": "Chuga",
+      "pattern": "\\bchuga\\b",
+      "flags": "i"
+    },
+    {
+      "brand_id": "shilasource",
+      "name": "Pure Himalayan Shilajit",
+      "pattern": "pure\\s+himalayan\\s+shilajit",
+      "flags": "i"
+    },
+    {
+      "brand_id": "shilasource",
+      "name": "Life Cykel",
+      "pattern": "life\\s+cykel",
+      "flags": "i"
+    },
+    {
+      "brand_id": "shilasource",
+      "name": "Pürblack",
+      "pattern": "p[uü]rblack|p[uü]r\\s+shilajit",
+      "flags": "i"
+    },
+    {
+      "brand_id": "shilasource",
+      "name": "Puralis",
+      "pattern": "\\bpuralis\\b",
+      "flags": "i"
+    },
+    {
+      "brand_id": "shilasource",
+      "name": "Lotus Blooming",
+      "pattern": "lotus\\s+blooming",
+      "flags": "i"
+    },
+    {
+      "brand_id": "shilasource",
+      "name": "Essencraft",
+      "pattern": "\\bessencraft\\b",
+      "flags": "i"
+    },
+    {
+      "brand_id": "shilasource",
+      "name": "Xara",
+      "pattern": "\\bxara\\b",
+      "flags": "i"
+    },
+    {
+      "brand_id": "shilasource",
+      "name": "Sunmed",
+      "pattern": "\\bsunmed\\b",
+      "flags": "i"
+    },
+    {
+      "brand_id": "shilasource",
+      "name": "Root Labs",
+      "pattern": "root\\s+labs",
+      "flags": "i"
+    },
+    {
+      "brand_id": "shilasource",
+      "name": "Novomins",
+      "pattern": "\\bnovomins\\b",
+      "flags": "i"
+    },
+    {
+      "brand_id": "shilasource",
+      "name": "Nootropics Depot",
+      "pattern": "nootropics\\s+depot",
+      "flags": "i"
+    },
+    {
+      "brand_id": "shilasource",
+      "name": "PrimaVie",
+      "pattern": "\\bprimavie\\b",
+      "flags": "i"
+    },
+    {
+      "brand_id": "shilasource",
+      "name": "Nugenix",
+      "pattern": "\\bnugenix\\b",
+      "flags": "i"
+    },
+    {
+      "brand_id": "shilasource",
+      "name": "WOWMD",
+      "pattern": "\\bwowmd\\b",
+      "flags": "i"
+    },
+    {
+      "brand_id": "shilasource",
+      "name": "VitaUp",
+      "pattern": "\\bvitaup\\b",
+      "flags": "i"
+    },
+    {
+      "brand_id": "shilasource",
+      "name": "Black Lotus",
+      "pattern": "black\\s+lotus",
+      "flags": "i"
+    },
+    {
+      "brand_id": "shilasource",
+      "name": "Double Wood",
+      "pattern": "double\\s+wood",
+      "flags": "i"
+    },
+    {
+      "brand_id": "shilasource",
+      "name": "YourHealthier",
+      "pattern": "your\\s*healthier",
+      "flags": "i"
+    },
+    {
+      "brand_id": "shilasource",
+      "name": "Organifi",
+      "pattern": "\\borganifi\\b",
+      "flags": "i"
+    },
+    {
+      "brand_id": "shilasource",
+      "name": "Vitadote",
+      "pattern": "\\bvitadote\\b",
+      "flags": "i"
+    },
+    {
+      "brand_id": "shilasource",
+      "name": "Moon Juice",
+      "pattern": "moon\\s+juice",
+      "flags": "i"
+    },
+    {
+      "brand_id": "shilasource",
+      "name": "Sulaiman Aftabi",
+      "pattern": "sulaiman\\s+aftabi",
+      "flags": "i"
+    }
+  ]
+}
