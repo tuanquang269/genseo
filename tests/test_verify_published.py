@@ -1,4 +1,4 @@
-"""Post-publish author check uses the theme Article node or a visible byline."""
+"""Post-publish author check expects Mike Moretti, and still accepts the theme author."""
 import os
 import sys
 import unittest
@@ -10,25 +10,32 @@ import verify_published as vp
 
 FAQ = '<script type="application/ld+json">{"@type":"FAQPage","mainEntity":[]}</script>'
 TABLE = "<table><tr><td>dose</td></tr></table>"
-BYLINE = '<h3>About the Author</h3><p><a href="/pages/dr-marcus-hale">Dr. Marcus Hale</a></p>'
+BYLINE = (
+    '<h3>About the Author</h3><p><a href="/pages/%s">%s</a>, %s</p>'
+    % (vp.EXPECTED_BLOG_AUTHOR_HANDLE, vp.EXPECTED_BLOG_AUTHOR, vp.EXPECTED_BLOG_ROLE)
+)
+_AUTHOR_LD = (
+    '{"@type":"Person","name":"%s","jobTitle":"%s","url":"%s"}'
+    % (vp.EXPECTED_BLOG_AUTHOR, vp.EXPECTED_BLOG_ROLE, vp.EXPECTED_BLOG_AUTHOR_URL)
+)
 BODY_ARTICLE = (
     '<script type="application/ld+json">'
-    '{"@type":"Article","author":{"@type":"Person","name":"Dr. Marcus Hale"}}'
+    '{"@type":"Article","author":%s}'
     "</script>"
-)
+) % _AUTHOR_LD
 THEME = """<html><head>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Wellness Nest","sameAs":[""]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"How to take it","author":{"@type":"Person","name":"Dr. Marcus Hale"},"publisher":{"@type":"Organization","name":"Wellness Nest"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"How to take it","author":%s,"publisher":{"@type":"Organization","name":"Wellness Nest"}}</script>
 </head><body>
 <nav><a href="https://wellnessnest.co/pages/about-us">About</a></nav>
-</body></html>"""
+</body></html>""" % _AUTHOR_LD
 
 
 def _article(body, **overrides):
     article = {
         "title": "How to take shilajit resin",
-        "author": "Dr. Marcus Hale",
+        "author": vp.EXPECTED_BLOG_AUTHOR,
         "handle": "how-to-take-shilajit-resin",
         "published_at": "2026-10-20T01:00:00Z",
         "body_html": body,
@@ -51,11 +58,11 @@ class AuthorEvidenceTests(unittest.TestCase):
         self.assertNotIn("Person", body)
         self.assertEqual(vp.verification_failures(_article(body), None), [])
         self.assertTrue(vp.visible_author_byline(
-            '<a href="https://wellnessnest.co/pages/dr-marcus-hale">Dr. Marcus Hale</a>'
+            '<a href="%s">%s</a>' % (vp.EXPECTED_BLOG_AUTHOR_URL, vp.EXPECTED_BLOG_AUTHOR)
         ))
 
     def test_body_article_person_block_is_not_evidence(self):
-        body = FAQ + TABLE + BODY_ARTICLE + "<p>See /pages/dr-marcus-hale in prose.</p>"
+        body = FAQ + TABLE + BODY_ARTICLE + "<p>See /pages/mike-moretti in prose.</p>"
         self.assertIn("Person", body)
         fails = vp.verification_failures(_article(body), None)
         self.assertEqual(fails, [vp.AUTHOR_EVIDENCE_FAIL])
@@ -84,7 +91,7 @@ class AuthorEvidenceTests(unittest.TestCase):
         self.assertFalse(vp.article_jsonld_has_author(person_only))
 
     def test_other_body_checks_still_fail(self):
-        body = "<p><a href=\"/pages/dr-marcus-hale\">Dr. Marcus Hale</a></p>"
+        body = "<p><a href=\"/pages/mike-moretti\">Mike Moretti</a>, Co-founder, Wellness Nest</p>"
         fails = vp.verification_failures(
             _article(body, title="Generated Article", author="Your Brand Research Team"),
             THEME,
@@ -127,6 +134,39 @@ class AuthorEvidenceTests(unittest.TestCase):
         self.assertIsNone(vp.storefront_article_url(unpublished, vp.NEWS_BLOG_ID))
         self.assertIsNone(vp.live_html_for(unpublished, vp.NEWS_BLOG_ID, opener=opener))
         self.assertEqual(seen, ["https://wellnessnest.co/blogs/news/how-to-take-shilajit-resin"])
+
+    def test_expected_blog_author_is_mike_moretti(self):
+        self.assertEqual(vp.EXPECTED_BLOG_AUTHOR, "Mike Moretti")
+        self.assertEqual(vp.EXPECTED_BLOG_ROLE, "Co-founder, Wellness Nest")
+        self.assertEqual(vp.EXPECTED_BLOG_AUTHOR_HANDLE, "mike-moretti")
+        self.assertEqual(vp.EXPECTED_BLOG_AUTHOR_URL, "https://wellnessnest.co/pages/mike-moretti")
+        self.assertIn("Mike Moretti", BYLINE)
+        self.assertIn("Co-founder, Wellness Nest", BYLINE)
+        self.assertIn("/pages/mike-moretti", BYLINE)
+        body = FAQ + TABLE + BYLINE
+        self.assertEqual(vp.verification_failures(_article(body), None), [])
+
+    def test_theme_author_can_still_be_the_live_hale_name(self):
+        # Live observation: the theme Article author can still be Dr. Marcus Hale.
+        # That is not the expected blog author. The check stays tolerant of it.
+        theme = THEME.replace(vp.EXPECTED_BLOG_AUTHOR, "Dr. Marcus Hale").replace(
+            vp.EXPECTED_BLOG_ROLE, "resident health researcher"
+        )
+        body = FAQ + TABLE
+        self.assertEqual(
+            vp.verification_failures(_article(body, author="Dr. Marcus Hale"), theme),
+            [],
+        )
+        self.assertTrue(vp.article_jsonld_has_author(theme))
+        self.assertIn("Dr. Marcus Hale", theme)
+
+    def test_without_theme_author_field_must_be_mike_moretti(self):
+        body = FAQ + TABLE + BYLINE
+        fails = vp.verification_failures(_article(body, author="Dr. Marcus Hale"), None)
+        self.assertEqual(
+            fails,
+            ["author field is 'Dr. Marcus Hale'; expected blog author is Mike Moretti, Co-founder, Wellness Nest"],
+        )
 
     def test_source_does_not_require_a_body_person_block(self):
         path = os.path.join(ROOT, "scripts", "verify_published.py")

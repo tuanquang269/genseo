@@ -53,9 +53,17 @@ SITE_SUFFIX_RE = re.compile(
     re.I,
 )
 
+# Kevin 2026-10-21. florafresh_rules.CFU on this branch is still the retired
+# "1 billion CFU" until that rules change lands. Do not copy it into this report.
+# "15 billion CFU" is the same count as 15B CFU.
+FLORAFRESH_LABEL_CFU = "15B CFU"
+FLORAFRESH_LABEL = (
+    florafresh_rules.STRAIN + ", " + FLORAFRESH_LABEL_CFU
+    + " per " + florafresh_rules.SERVING
+)
 FLORAFRESH_CONTRADICTIONS = (
     ("cfu_15_billion", re.compile(r"15\s*billion(?:\s*cfu)?", re.I),
-     "15 billion CFU is the rejected PDP figure"),
+     "Live observation: the page states 15 billion CFU, the same count as the label"),
     ("lactobacillus", re.compile(r"lactobacillus", re.I),
      "Lactobacillus strains are the rejected PDP formula"),
     ("sugar_free", re.compile(r"sugar[\s\-]*free", re.I),
@@ -672,14 +680,10 @@ def build_report(pages, canonical_map, labels, repo_hits, constants, fetch_meta)
                         if regex.search(text):
                             key = (handle, code)
                             slot = contradictions.setdefault(key, {
-                                "code": "label_contradiction",
+                                "code": "live_observation" if code == "cfu_15_billion" else "label_contradiction",
                                 "kind": code,
                                 "handle": handle,
-                                "detail": (
-                                    why + ". Supplement Facts label: "
-                                    + florafresh_rules.STRAIN + ", " + florafresh_rules.CFU
-                                    + " per " + florafresh_rules.SERVING + "."
-                                ),
+                                "detail": why + ". Supplement Facts label: " + FLORAFRESH_LABEL + ".",
                                 "count": 0,
                                 "examples": [],
                             })
@@ -899,7 +903,7 @@ def build_report(pages, canonical_map, labels, repo_hits, constants, fetch_meta)
         },
         "canonical_map": "data/entity_canonical_names.json",
         "label_formulas": {
-            "florafresh-gummies": florafresh_rules.STRAIN + ", " + florafresh_rules.CFU + " per " + florafresh_rules.SERVING,
+            "florafresh-gummies": FLORAFRESH_LABEL,
         },
     }
 
@@ -958,9 +962,25 @@ def render_markdown(report):
     lines.append(
         "AgeAura articles name only **AgeAura Pure NMN + TMG NAD+ Complex**. "
         "FloraFresh formula, from its Supplement Facts label: **%s**."
-        % summary.get("label_formulas", {}).get("florafresh-gummies", florafresh_rules.FORMULA_LINE)
+        % summary.get("label_formulas", {}).get("florafresh-gummies", FLORAFRESH_LABEL)
     )
     lines.append("")
+    notes = [page for page in (report.get("pages") or []) if page.get("live_observation")]
+    if notes:
+        lines.append("## Live observations")
+        lines.append("")
+        lines.append(
+            "Crawl records below are what the live store returned on 2026-10-20. "
+            "They were not rewritten. The blog Article author for new posts is "
+            "Mike Moretti, Co-founder, Wellness Nest "
+            "(https://wellnessnest.co/pages/mike-moretti — do not create that page). "
+            "The FloraFresh label count is 15B CFU per 2 gummies. "
+            "1 billion CFU is the retired count."
+        )
+        lines.append("")
+        for page in notes:
+            lines.append("- %s — %s" % (page.get("url"), page.get("live_observation")))
+        lines.append("")
     lines.append("## Measured name fields")
     lines.append("")
     if not summary.get("consistent"):
@@ -1028,7 +1048,8 @@ def render_markdown(report):
     lines.append("- Theme / Organization schema: fill `sameAs` with profiles Kevin confirms, and remove empty strings. A duplicated Organization node (theme header plus article publisher) needs a theme or app decision before anyone deletes a block.")
     lines.append("- GemPages / product templates: an H1 that names a different product is a template binding. Changing it is a theme edit.")
     lines.append("- Shopify product SEO titles and Product.brand: retitling a live product, or switching Product.brand between the line name and Wellness Nest, needs a store edit. AgeAura's brand field is the line name today; whether that should match the store Organization is Kevin's call.")
-    lines.append("- Descriptions that contradict a pack label (FloraFresh CFU, strain, sweeteners, or a milligram amount the label file does not list) stay until Kevin approves a PDP rewrite.")
+    lines.append("- FloraFresh PDP strain story (Lactobacillus, XOS, D-mannose, sugar-free) stays until Kevin approves a PDP rewrite. The label count is 15B CFU per 2 gummies (Kevin 2026-10-21). 15 billion CFU on the PDP is that same count and is a live observation. 1 billion CFU is retired.")
+    lines.append("- Blog Article author for new posts is Mike Moretti, Co-founder, Wellness Nest. https://wellnessnest.co/pages/mike-moretti is not created from this repo. Live pages that still name Dr. Marcus Hale stay crawl observations.")
     lines.append("- Social profiles: this crawl found no non-empty `sameAs` URLs to check. Do not invent profile URLs.")
     lines.append("- Marketplaces: not in this crawl. Do not change Amazon or other marketplace titles from this report.")
     lines.append("- AgeAura handles outside `ageaura-pure-nmn-tmg-nad-complex` stay off new articles. Unpublishing a live product is a separate GO.")
@@ -1210,8 +1231,19 @@ def self_test():
     for required in ("h1_disagrees_with_product_name", "sameas_missing", "organization_conflicting", "sameas_dead"):
         if required not in codes and not any(code.startswith(required) for code in codes):
             raise SystemExit("self-test missing " + required)
-    if not any(item.get("kind") == "cfu_15_billion" for item in summary["findings"]):
-        raise SystemExit("self-test: flora contradiction")
+    cfu = [item for item in summary["findings"] if item.get("kind") == "cfu_15_billion"]
+    if len(cfu) != 1 or cfu[0].get("code") != "live_observation":
+        raise SystemExit("self-test: 15 billion count is a live observation")
+    detail = cfu[0].get("detail") or ""
+    if "1 billion CFU" in detail or "rejected PDP figure" in detail or "15B CFU" not in detail:
+        raise SystemExit("self-test: label count wording")
+    formula = summary["label_formulas"]["florafresh-gummies"]
+    if formula != FLORAFRESH_LABEL or "1 billion CFU" in formula:
+        raise SystemExit("self-test: label formula")
+    for item in summary["findings"]:
+        blob = json.dumps(item)
+        if "1 billion CFU" in blob:
+            raise SystemExit("self-test: retired CFU in " + item.get("kind", item.get("code", "")))
     warnings = entity_names.variant_warnings("WellnessNest ships the AgeAura Pure NMN + TMG NAD+ Complex across the US.")
     if not warnings:
         raise SystemExit("self-test: warn")

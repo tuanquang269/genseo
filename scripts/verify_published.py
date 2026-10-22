@@ -7,9 +7,15 @@ failure where a model publishes via the wrong path (MCP/GraphQL/curl) that skips
 Author evidence (Kevin 2026-10-20): the theme main-article section emits Article
 JSON-LD with an author. That block is not appended to body_html. When this script
 fetches the public article HTML and that HTML has an Article node with an author,
-the author check passes. Otherwise the only author requirement is a visible byline
-link to /pages/<author> in body_html. A body Article or Person JSON-LD block is
-never required.
+the author check passes. The theme author can be a different person than the
+expected blog author; that tolerance stays. Otherwise the only author requirement
+is a visible byline link to /pages/<author> in body_html. A body Article or Person
+JSON-LD block is never required.
+
+Expected blog author (Kevin 2026-10-21): Mike Moretti, Co-founder, Wellness Nest,
+https://wellnessnest.co/pages/mike-moretti. That page 404s. This script does not
+create it. Without a theme Article author, the Shopify author field must be
+Mike Moretti.
 
 Usage: python3 verify_published.py <ARTICLE_ID> [BLOG_ID]
 Exit 0 = live article is good. Exit 1 = something missing → re-publish via the python publisher.
@@ -24,6 +30,12 @@ import urllib.request
 NEWS_BLOG_ID = "104008483131"
 NEWS_BLOG_HANDLE = "news"
 PUBLIC_ORIGIN = "https://wellnessnest.co"
+
+# Blog Article author (Kevin 2026-10-21). Role is exactly this string.
+EXPECTED_BLOG_AUTHOR = "Mike Moretti"
+EXPECTED_BLOG_ROLE = "Co-founder, Wellness Nest"
+EXPECTED_BLOG_AUTHOR_HANDLE = "mike-moretti"
+EXPECTED_BLOG_AUTHOR_URL = PUBLIC_ORIGIN + "/pages/" + EXPECTED_BLOG_AUTHOR_HANDLE
 _UA = "GenSeoVerify/1.0 (post-publish check; +https://wellnessnest.co)"
 
 _JSONLD_RE = re.compile(
@@ -167,6 +179,26 @@ def live_html_for(article, blog_id, opener=None, blog_handle=None):
         return None
 
 
+def author_field_failures(raw_author, theme_author_present):
+    """Shopify author field.
+
+    Mike Moretti is the expected blog author. A non-empty theme Article author
+    still passes when the field names someone else (live pages can still say
+    Dr. Marcus Hale). An empty or placeholder field fails either way.
+    """
+    name = (raw_author or "").strip()
+    if name == EXPECTED_BLOG_AUTHOR:
+        return []
+    if not name or name == "Your Brand Research Team":
+        return ["author field is generic ('%s')" % (raw_author,)]
+    if theme_author_present:
+        return []
+    return [
+        "author field is '%s'; expected blog author is %s, %s"
+        % (name, EXPECTED_BLOG_AUTHOR, EXPECTED_BLOG_ROLE)
+    ]
+
+
 def verification_failures(article, live_html=None):
     """Failure strings for one article. Empty means the post-publish check passed."""
     body = article.get("body_html") or ""
@@ -179,11 +211,10 @@ def verification_failures(article, live_html=None):
         )
     if "application/ld+json" not in body:
         fails.append("no JSON-LD schema at all (wrong publish path)")
+    theme_author = live_html is not None and article_jsonld_has_author(live_html)
     if not has_author_evidence(body, live_html):
         fails.append(AUTHOR_EVIDENCE_FAIL)
-    author = (article.get("author") or "").strip()
-    if not author or author == "Your Brand Research Team":
-        fails.append(f"author field is generic ('{article.get('author')}')")
+    fails.extend(author_field_failures(article.get("author"), theme_author))
     if "<table" not in body:
         fails.append("no comparison <table> in live body")
     return fails
