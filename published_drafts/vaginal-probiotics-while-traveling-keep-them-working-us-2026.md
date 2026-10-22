@@ -9,7 +9,7 @@ Vaginal probiotics while traveling are easiest to manage when you protect the pa
 
 Travel does not automatically ruin a probiotic routine. The practical priorities are simple: follow the product's storage directions, avoid leaving gummies in a hot vehicle or direct sun, keep them accessible during transit, and use a meal as the daily reminder. Evidence from other spore-based strains suggests temperature effects can be product- and matrix-specific, so it does not justify promising that every gummy is stable in every travel condition.
 
-FloraFresh's package directions say to store it in a cool, dry place, take 2 gummies daily with water, and take them with meals for maximum absorption. Those directions matter more than an improvised travel hack. The formula on the Supplement Facts label is Bacillus coagulans SNZ-1969, a spore-based probiotic blend, with 1 billion CFU per 2 gummies, plus Vitamin C and pineapple fruit powder with bromelain. The label also identifies maltitol and isomalt as sweeteners, so this is not a sugar-free product.
+FloraFresh's package directions say to store it in a cool, dry place, take 2 gummies daily with water, and take them with meals for maximum absorption. Those directions matter more than an improvised travel hack. The formula on the Supplement Facts label is Bacillus coagulans SNZ-1969, a spore-based probiotic blend, with 15 billion CFU per 2 gummies, plus Vitamin C and pineapple fruit powder with bromelain. The label also identifies maltitol and isomalt as sweeteners, so this is not a sugar-free product.
 
 The separate [best-time-to-take vaginal probiotics guide](https://wellnessnest.co/blogs/news/best-time-to-take-vaginal-probiotics-6-rules-us-2026) covers timing in more depth. The [how-long-until-vaginal-probiotics-work article](https://wellnessnest.co/blogs/news/vaginal-probiotics-how-long-until-they-work-us-2026) covers expectations about onset. This travel guide focuses on keeping a routine intact while moving.
 
@@ -24,7 +24,7 @@ The first rule is the least exciting and the most dependable: follow the pouch d
 
 “Cool” does not mean you need to invent a refrigerator itinerary. It means choose the coolest sensible place available. A bedroom drawer, hotel desk drawer, or interior pocket of a cabin bag is usually more practical than a windowsill. Do not put the pouch next to a heater, in a parked car, or against a hot laptop vent.
 
-The label is the source for FloraFresh's formula. It lists Bacillus coagulans SNZ-1969, a spore-based probiotic blend, 1 billion CFU per 2 gummies, Vitamin C 30 mg, and pineapple fruit powder with bromelain 100 mg. It also carries Allergen Free, Vegan, Halal, and Gluten Free badges. None of those label facts turns a warm travel location into a validated storage condition.
+The label is the source for FloraFresh's formula. It lists Bacillus coagulans SNZ-1969, a spore-based probiotic blend, 15 billion CFU per 2 gummies, Vitamin C 30 mg, and pineapple fruit powder with bromelain 100 mg. It also carries Allergen Free, Vegan, Halal, and Gluten Free badges. None of those label facts turns a warm travel location into a validated storage condition.
 
 <div style="display:flex;align-items:center;gap:14px;margin:34px 0 2px;">
 <div style="background:#54b94a;color:#ffffff;font-weight:800;font-size:1.3em;border-radius:50%;width:46px;height:46px;line-height:46px;text-align:center;flex:none;">2</div>
@@ -172,10 +172,10 @@ Wellness Nest lists FloraFresh Vaginal Probiotics Gummies for $40.99. You can bu
 
 ### What is in FloraFresh Vaginal Probiotics Gummies?
 
-The Supplement Facts label lists Bacillus coagulans SNZ-1969 as a spore-based probiotic blend, 1 billion CFU per 2 gummies, Vitamin C 30 mg, and pineapple fruit powder with bromelain 100 mg. It also lists maltitol and isomalt as sweeteners and shows Allergen Free, Vegan, Halal, and Gluten Free badges.
+The Supplement Facts label lists Bacillus coagulans SNZ-1969 as a spore-based probiotic blend, 15 billion CFU per 2 gummies, Vitamin C 30 mg, and pineapple fruit powder with bromelain 100 mg. It also lists maltitol and isomalt as sweeteners and shows Allergen Free, Vegan, Halal, and Gluten Free badges.
 
 ### About the Author
 
-[Dr. Marcus Hale](/pages/dr-marcus-hale) — Dr. Marcus Hale is the resident health researcher behind Wellness Nest's editorial team, translating peer-reviewed sports-nutrition and longevity research into practical daily guidance for US readers.
+[Mike Moretti](/pages/mike-moretti) — Co-founder, Wellness Nest
 
 *This article is educational and is not medical advice. Talk to a US-licensed clinician about symptoms, diagnosis, treatment, or individual supplement and medicine questions.*
