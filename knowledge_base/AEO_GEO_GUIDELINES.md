@@ -127,7 +127,7 @@ Rules 1–19 were absorbed on 2026-10-08. **Rules 20–39, and the dated bullets
 - **2026-10-09** Never claim IndexNow, Google Search Console, or Bing Webmaster Tools is live, verified, or receiving pings for wellnessnest.co (§6.9).
 - **2026-10-09** Never put a CAPTCHA, age gate, or forced interstitial on an article or landing. Anthropic's bots will not bypass CAPTCHAs (§6.6 rule 28).
 - **2026-10-09** Never add a script that traps the Back button (§6.6 rule 26).
-- **2026-10-09** Product identity is not a GEO choice. AgeAura links only to https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex (NMN + TMG). FloraFresh copy follows the Supplement Facts label: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies. Guards: `scripts/brand_rules.py`, `docs/AGEAURA_PRODUCT_GUARD.md`, `docs/FLORAFRESH_FORMULA_GUARD.md`.
+- **2026-10-09** Product identity is not a GEO choice. AgeAura links only to https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex (NMN + TMG). FloraFresh copy follows the Supplement Facts label: Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies (Kevin 2026-10-21; 1 billion CFU and 1B CFU are retired). Guards: `scripts/brand_rules.py`, `docs/AGEAURA_PRODUCT_GUARD.md`, `docs/FLORAFRESH_FORMULA_GUARD.md`.
 - **2026-10-10** Premium Himalayan Shilajit Gummies pack claims follow `product_refs/premium-himalayan-shilajit-gummies.label.json`: 60 gummies and a 60-day supply. A 30-serving panel is not on that file. Do not state a milligram amount the file does not list. Guard: `scripts/shilajit_gummies_rules.py`, `docs/SHILAJIT_GUMMIES_LABEL_GUARD.md`. Shockwave, Gold Resin, and ShilaSource resin are separate products.
 
 ### 6.6 Crawlers, user agents, and robots.txt (2026-10-09)

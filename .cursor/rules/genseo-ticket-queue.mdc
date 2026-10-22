@@ -18,7 +18,8 @@ the wrapper counts open tickets with `grep -cE '^(- \[ \]|## \[ \])'`. Zero open
   a Urolithin mention, a FloraFresh claim its Supplement Facts label does not support, or a Premium Himalayan
   Shilajit Gummies pack count / milligram the label file does not list, inside an open ticket).
 - FloraFresh tickets take strain, CFU and sugar facts from its Supplement Facts label (Bacillus coagulans SNZ-1969,
-  1 billion CFU per 2 gummies, not sugar-free), never from the PDP description, which is wrong until Kevin's GO;
+  15B CFU per 2 gummies, not sugar-free; Kevin 2026-10-21). 1 billion CFU and 1B CFU are retired. Never take the
+  strain story from the PDP description, which is still wrong until Kevin's GO;
   `refill_tickets.py` adds the label line under the hero product (`docs/FLORAFRESH_FORMULA_GUARD.md`).
 
 ## Ticket format (what `refill_tickets.py` renders)

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Fail (exit 2) if any OPEN ticket names a banned AgeAura SKU or a bare AgeAura with no NMN + TMG product,
-makes a FloraFresh formula claim its Supplement Facts label does not support (15 billion CFU, Lactobacillus
+makes a FloraFresh formula claim its Supplement Facts label does not support (1 billion CFU, 1B CFU, Lactobacillus
 strains, XOS, D-mannose, sugar-free, or strains/CFU taken from the PDP description), or states a Premium
 Himalayan Shilajit Gummies pack count, serving count, or milligram amount that is not in
 product_refs/premium-himalayan-shilajit-gummies.label.json (60 gummies and a 60-day supply are; a 30-serving

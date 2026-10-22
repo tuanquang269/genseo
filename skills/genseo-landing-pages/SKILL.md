@@ -65,9 +65,9 @@ testimonials, no sticky). Surface the choice to Kevin; never silently downgrade 
 3. **AgeAura = the NMN + TMG Complex only** (`/products/ageaura-pure-nmn-tmg-nad-complex`, Kevin 2026-10-06). No other
    AgeAura handle, bundle (`-p2`) or collection link; never Urolithin A or peptides. `brand/ageaura.json`
    (`allowed_products`, `forbidden_terms`) + `validate_landing.py` block them in any store's page.
-   **FloraFresh = its Supplement Facts label** (Kevin 2026-10-09): Bacillus coagulans SNZ-1969, 1 billion CFU per
+   **FloraFresh = its Supplement Facts label** (Kevin 2026-10-09, count updated 2026-10-21): Bacillus coagulans SNZ-1969, 15B CFU per
    2 gummies, Vitamin C 30 mg, pineapple fruit powder 100 mg (with bromelain), maltitol + isomalt (not sugar-free).
-   The live PDP description (15 billion CFU, four Lactobacillus strains, XOS, D-mannose, sugar-free) is wrong until
+   1 billion CFU and 1B CFU are the retired count. The live PDP description still tells a wrong strain story (four Lactobacillus strains, XOS, D-mannose, sugar-free) until
    Kevin's GO rewrites it, so for FloraFresh the PDP gives price, offer and directions, never the formula.
    `validate_landing.py` fails any FloraFresh claim the label does not support (`scripts/florafresh_rules.py`).
    **Premium Himalayan Shilajit Gummies = the pack-label whitelist** (`product_refs/premium-himalayan-shilajit-gummies.label.json`):
