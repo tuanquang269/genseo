@@ -82,6 +82,10 @@ Also: never `rm` repo files (move them to `_superseded/`); never put CDN URLs in
 - No COA / "lab-tested" / "clinically tested" as the lead advantage (house rule `no-coa-competitive-advantage`).
 - Every claim (dose, study, number, mechanism) must come from a source actually fetched, logged in
   `logs/claims/<slug>.md`; unconfirmed claims are deleted, not softened. FDA structure/function language only.
+- **First-hand quotes** render only from `data/experience_quotes.json` via `scripts/experience_block.py`.
+  `example: true` never renders. `usage_allowed` must be boolean true, with a source and a consent note.
+  No eligible quote means omit the block. Never invent a testimonial, star rating, customer name, or a
+  byline that says the persona used the product. See `docs/first-hand-experience-block.md`.
 - Articles need ≥2 live `/collections/` links; a collection the product is not in is a browse link only — never
   claim membership.
 
@@ -115,6 +119,7 @@ python3 scripts/shockwave_rules.py <draft>.md           # Shockwave copy vs its 
 python3 scripts/gold_resin_rules.py <draft>.md          # Gold Resin copy vs its pack-label whitelist -> exit 1
 python3 scripts/shilasource_resin_rules.py <draft>.md   # ShilaSource resin copy vs its pack-label whitelist -> exit 1
 python3 scripts/turkesterone_rules.py <draft>.md        # Turkesterone copy vs its pack-label whitelist -> exit 1
+python3 scripts/experience_block.py lint                # example rows only, or real rows that pass the quote gate
 python3 scripts/packaging_palette.py --spec <landing>.json  # listicle colors vs the pack palette file -> exit 1
 python3 scripts/refill_tickets.py --self-test           # offline fixtures + topic-bank lint
 python3 scripts/refill_tickets.py --count 8 --dry-run   # storefront reads only; queue + board untouched

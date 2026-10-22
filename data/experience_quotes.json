@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "notes": "Checked-in first-hand quotes for blog articles. A row renders only when example is not true, usage_allowed is true, consent is filled in, a real source_url or source_id is present, and the claim gate accepts the quote. example: true rows document the shape and never render. Do not put a real-looking sentence here. See docs/first-hand-experience-block.md.",
+  "quotes": [
+    {
+      "id": "example-shape-only",
+      "example": true,
+      "product": "example-product-handle",
+      "topic_tags": ["example-topic"],
+      "quote": "EXAMPLE SHAPE ONLY. This sentence is not a customer, creator, or staff statement.",
+      "attribution": "Example entry",
+      "source_type": "verified_review",
+      "source_url": "",
+      "source_id": "example-source-id",
+      "date": "2026-01-01",
+      "usage_allowed": false,
+      "consent": "example row; no consent on file",
+      "received_product": "none",
+      "disclosure": "",
+      "persona_handle": ""
+    },
+    {
+      "id": "example-excluded-even-if-complete",
+      "example": true,
+      "product": "florafresh-vaginal-probiotics-gummies",
+      "topic_tags": ["probiotics"],
+      "quote": "EXAMPLE SHAPE ONLY. This sentence is a schema sample and is not a statement by a customer, creator, or employee.",
+      "attribution": "Example entry",
+      "source_type": "creator_submission",
+      "source_url": "https://example.com/experience-quote-shape",
+      "source_id": "example-source-id-2",
+      "date": "2026-01-02",
+      "usage_allowed": true,
+      "consent": "example row; no consent on file",
+      "received_product": "free",
+      "disclosure": "",
+      "persona_handle": ""
+    }
+  ]
+}

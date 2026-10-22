@@ -13,6 +13,7 @@ import sys, os, re, glob, json, subprocess, tempfile, urllib.request, urllib.err
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import genseo_roster
 import brand_rules as _br
+import experience_block
 import geo_citability
 
 # Single source of truth: roster.json (see scripts/genseo_roster.py). Empty roster
@@ -432,6 +433,11 @@ def main():
     cite_fails, cite_warns = geo_citability.assess(html, require_meta=draft_mode)
     fails.extend(cite_fails)
     warns.extend(cite_warns)
+    # First-hand quotes render only from data/experience_quotes.json. A missing
+    # block is a coverage warning. A testimonial that is not an eligible row fails.
+    exp_fails, exp_warns = experience_block.audit(html)
+    fails.extend(exp_fails)
+    warns.extend(exp_warns)
     dead_cites, soft_cites = geo_citability.citation_issues(
         [(u, *geo_citability.fetch_status(u)) for u in geo_citability.external_urls(html)])
     fails.extend(dead_cites)
