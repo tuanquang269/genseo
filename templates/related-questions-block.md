@@ -18,7 +18,7 @@ Rules:
 - 3 to 5 questions when the cluster has enough siblings. Fewer is allowed when the cluster is small.
 - Each question links to the sibling article that answers it (or the pillar).
 - Anchor text is the question. Do not paste a footer list with no sentence around the in-body cluster links. Those sentences come from `scripts/cluster_internal_links.py`.
-- Do not invent a dose, a study result, or a product that is not ShilaSource Himalayan Shilajit Resin, AgeAura Pure NMN + TMG (`/products/ageaura-pure-nmn-tmg-nad-complex`), or FloraFresh (Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies).
+- Do not invent a dose, a study result, or a product that is not ShilaSource Himalayan Shilajit Resin, AgeAura Pure NMN + TMG (`/products/ageaura-pure-nmn-tmg-nad-complex`), or FloraFresh (Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies).
 - Do not use `gsl-*` or landing-page URLs.
 
 HTML equivalent used by backfill (marker `data-genseo-cluster-link`):
