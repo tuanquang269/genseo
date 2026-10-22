@@ -1186,7 +1186,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** turkesterone + travel checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1017-10 — are vaginal probiotics worth it how much** — `Are Vaginal Probiotics Worth It? How Much You Check (2026)`
+- [DONE 2026-10-22 https://wellnessnest.co/blogs/news/are-vaginal-probiotics-worth-it-40-99-us-check-2026] **#CA1017-10 — are vaginal probiotics worth it how much** — `Are Vaginal Probiotics Worth It? How Much You Check (2026)`
   - **Primary keyword:** `are vaginal probiotics worth it how much` · **Secondary:** vaginal probiotics review, are vaginal probiotics legit, florafresh honest check, vaginal probiotic gummies review
   - **Search intent:** shopper who wants a straight worth-it check without a fake star rating
   - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
