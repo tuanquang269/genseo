@@ -9,6 +9,7 @@ import html as htmlmod
 import re
 import subprocess
 
+import canonical_urls
 import geo_official_lint
 
 # Hosts that count as a citable study or regulator. geo_official_lint.AUTH_DOMAINS
@@ -334,4 +335,9 @@ def assess(html, require_meta=False):
                 fails.append(f"meta description {len(desc)} characters (need 120–165)")
 
     fails.extend(compliance_issues(html))
+    # Canonical URL consistency (SEL 2026-10-17). Autofix is a warning; the
+    # publisher rewrites those links. A bad Article identity URL fails.
+    canon_fails, canon_warns = canonical_urls.gate_messages(html)
+    fails.extend(canon_fails)
+    warns.extend(canon_warns)
     return fails, warns
