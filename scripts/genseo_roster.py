@@ -19,11 +19,23 @@ Rules (enforced by validate_article.py):
   * bios must be the approved sentence verbatim — no invented credentials
     (no Dr./MD/PhD/RD/CISSN unless the person actually holds it)
   * empty roster = publishing is blocked, by design
+  * the Wellness Nest blog byline is Mike Moretti (Kevin 2026-10-21). Bio is
+    exactly "Co-founder, Wellness Nest". Headshot and /pages/mike-moretti are TODO.
+    Dr. Marcus Hale stays on the roster for older landing specs. New blog drafts
+    must not use that byline.
+
+ROSTER_PATH stays the Mac repo path. A cloud VM that does not have that file
+sees an empty roster; that is expected. Do not retarget this path.
 """
 import json
 import os
 
 ROSTER_PATH = "/Users/kevinkreative/genseo/roster.json"
+
+# Blog default (Kevin 2026-10-21). These do not depend on the Mac roster file.
+DEFAULT_BLOG_HANDLE = "mike-moretti"
+DEFAULT_BLOG_NAME = "Mike Moretti"
+DEFAULT_BLOG_ROLE = "Co-founder, Wellness Nest"
 
 
 def load():
