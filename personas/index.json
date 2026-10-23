@@ -1,29 +1,29 @@
 {
  "_doc": "Machine-readable rotation state for the persona bank. persona.json holds IMMUTABLE provenance; this file holds MUTABLE rotation history. Written only by scripts/persona_picker.py commit (atomic tmp+rename). Never hand-edit during a run.",
  "schema_version": 1,
- "seq": 73,
+ "seq": 75,
  "seeded_from": "PUBLISHED_ARTICLES_TRACKER.csv tickets 1-10 (free-text hero/gaze notes)",
  "recent_shots": [
-  "wide-room",
-  "over-shoulder",
   "mid-subject-fg-pack",
   "through-doorway",
   "wide-room",
-  "low-table-level"
+  "low-table-level",
+  "high-angle-down",
+  "through-doorway"
  ],
  "recent_heroes": [
-  "m3039-wh-09",
-  "NO-FACE",
   "f4049-wh-04",
   "m2029-mx-01",
   "NO-FACE",
   "m2029-wh-03",
   "f4049-wh-06",
-  "NO-FACE"
+  "NO-FACE",
+  "f4049-wh-11",
+  "f4049-wh-13"
  ],
  "no_face_cycle": {
   "period": 3,
-  "position": 0,
+  "position": 2,
   "_doc": "every 3rd hero is no-face: one adult + one pack for 200 rows running is the structural tell that rotating the pose cannot reach. Briefly 1 on 2026-08-10 as a safety default after ima2 was measured reproducing the reference person recognisably; restored to 3 the same day when Kevin reaffirmed the 200-face bank. The rights exposure that motivated 1 is real and unresolved \u2014 it is recorded in CLAUDE.md and accepted by Kevin, not fixed by this number."
  },
  "personas": {
@@ -929,14 +929,19 @@
    "ref": "/Users/kevinkreative/genseo/personas/f4049-wh-11/ref.jpg",
    "identity_key": "openimages:c4be7e5b8e7812ff",
    "used_count": 0,
-   "last_used_seq": 32,
+   "last_used_seq": 74,
    "gaze_used": [
     "up-and-away",
-    "at-lens"
+    "at-lens",
+    "at-another-person",
+    "just-past-lens"
    ],
-   "last_gaze": "up-and-away",
+   "last_gaze": "at-another-person",
    "angles_used": [],
-   "angles_reserved": []
+   "angles_reserved": [
+    "profile-right+chin-up",
+    "3q-right+level"
+   ]
   },
   "f4049-wh-12": {
    "handle": "f4049-wh-12",
@@ -957,14 +962,19 @@
    "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/f4049-wh-13/ref.jpg",
    "identity_key": "openimages:34eabfbfc6812fab",
-   "used_count": 0,
-   "last_used_seq": 41,
+   "used_count": 1,
+   "last_used_seq": 75,
    "gaze_used": [
     "up-and-away",
-    "at-another-person"
+    "at-another-person",
+    "off-into-room",
+    "just-past-lens"
    ],
-   "last_gaze": "up-and-away",
-   "angles_used": [],
+   "last_gaze": "off-into-room",
+   "angles_used": [
+    "profile-right+chin-up",
+    "3q-left+chin-up"
+   ],
    "angles_reserved": []
   },
   "f4049-wh-14": {
@@ -2065,6 +2075,17 @@
    "inline_gaze": null,
    "shot": "high-angle-down",
    "cycle_position_before": 2
+  },
+  "74": {
+   "seq": 74,
+   "hero": "f4049-wh-11",
+   "audience": "adults-50-70",
+   "hero_face_angle": "profile-right+chin-up",
+   "inline_face_angle": "3q-right+level",
+   "hero_gaze": "at-another-person",
+   "inline_gaze": "just-past-lens",
+   "shot": "high-angle-down",
+   "cycle_position_before": 0
   }
  }
 }
