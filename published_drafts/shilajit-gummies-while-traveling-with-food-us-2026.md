@@ -112,4 +112,4 @@ Anyone who takes medication, has a medical condition, is pregnant, or is nursing
 
 ### About the Author
 
-[Dr. Marcus Hale](/pages/dr-marcus-hale) Dr. Marcus Hale is the resident health researcher behind Wellness Nest's editorial team, translating peer-reviewed sports-nutrition and longevity research into practical daily guidance for US readers.
+[Mike Moretti](/pages/mike-moretti) — Co-founder, Wellness Nest
