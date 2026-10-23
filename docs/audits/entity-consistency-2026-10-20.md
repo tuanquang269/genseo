@@ -35,7 +35,9 @@ Use these in newly published GenSeo articles. The map file is `data/entity_canon
 | `shilajit-gummies-single-jar` | Shilajit Gummies Single Jar | Product JSON-LD name on https://wellnessnest.co/products/shilajit-gummies-single-jar, crawl 2026-10-20. No product_refs label file. |
 | `shilajit-gummies-two-jar-pack` | Shilajit Gummies Two-Jar Pack | Product JSON-LD name on https://wellnessnest.co/products/shilajit-gummies-two-jar-pack, crawl 2026-10-20. No product_refs label file. |
 
-AgeAura articles name only **AgeAura Pure NMN + TMG NAD+ Complex**. FloraFresh formula, from its Supplement Facts label: **Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies**.
+AgeAura articles name only **AgeAura Pure NMN + TMG NAD+ Complex**. FloraFresh formula, from its Supplement Facts label: **Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies**. 15 billion CFU is the same count. 1 billion CFU is the retired count.
+
+Blog byline for new articles is Mike Moretti, Co-founder, Wellness Nest, linking `/pages/mike-moretti`. Crawl records of live pages were not rewritten. Paid-traffic landing and listicle bylines were left as crawled.
 
 ## Live observations
 
@@ -182,14 +184,6 @@ Canonical product handle is not among the product URLs in the default-locale pro
 
 - https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin; handle=shilasource-himalayan-shilajit-resin; canonical=ShilaSource Himalayan Shilajit Resin
 
-### live_observation — 1
-
-Live observation: the page states 15 billion CFU, the same count as the label. Supplement Facts label: Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies.
-
-- https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies; field=og:description; sentence=Support vaginal health, pH balance, microbiome with Vaginal Probiotics. 15 Billion CFU probiotics, D-Mannose, prebiotics, and Vitamin C for daily feminine care.
-- https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies; field=meta description; sentence=Support vaginal health, pH balance, microbiome with Vaginal Probiotics. 15 Billion CFU probiotics, D-Mannose, prebiotics, and Vitamin C for daily feminine care.
-- https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies; field=Product.description; sentence=ehensive blend of probiotics, prebiotics, and supportive nutrients. Each serving delivers 15 billion CFU from four clinically studied Lactobacillus strains - Lactobacillus rhamnosus, Lactobacill
-
 ### label_contradiction — 1
 
 D-mannose is the rejected PDP formula. Supplement Facts label: Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies.
@@ -258,7 +252,7 @@ This pass does not edit the theme, product titles, schema on the live site, soci
 - GemPages / product templates: an H1 that names a different product is a template binding. Changing it is a theme edit.
 - Shopify product SEO titles and Product.brand: retitling a live product, or switching Product.brand between the line name and Wellness Nest, needs a store edit. AgeAura's brand field is the line name today; whether that should match the store Organization is Kevin's call.
 - FloraFresh PDP strain story (Lactobacillus, XOS, D-mannose, sugar-free) stays until Kevin approves a PDP rewrite. The label count is 15B CFU per 2 gummies (Kevin 2026-10-21). 15 billion CFU on the PDP is that same count and is a live observation. 1 billion CFU is retired.
-- Blog Article author for new posts is Mike Moretti, Co-founder, Wellness Nest. https://wellnessnest.co/pages/mike-moretti is not created from this repo. Live pages that still name Dr. Marcus Hale stay crawl observations.
+- Blog Article author for new posts is Mike Moretti, Co-founder, Wellness Nest. https://wellnessnest.co/pages/mike-moretti is not created from this repo. Live pages that still name Dr. Marcus Hale stay crawl observations. Paid-traffic landing and listicle bylines stay as they are.
 - Social profiles: this crawl found no non-empty `sameAs` URLs to check. Do not invent profile URLs.
 - Marketplaces: not in this crawl. Do not change Amazon or other marketplace titles from this report.
 - AgeAura handles outside `ageaura-pure-nmn-tmg-nad-complex` stay off new articles. Unpublishing a live product is a separate GO.

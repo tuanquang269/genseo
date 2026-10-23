@@ -53,17 +53,21 @@ SITE_SUFFIX_RE = re.compile(
     re.I,
 )
 
-# Kevin 2026-10-21. florafresh_rules.CFU on this branch is still the retired
-# "1 billion CFU" until that rules change lands. Do not copy it into this report.
-# "15 billion CFU" is the same count as 15B CFU.
-FLORAFRESH_LABEL_CFU = "15B CFU"
-FLORAFRESH_LABEL = (
-    florafresh_rules.STRAIN + ", " + FLORAFRESH_LABEL_CFU
-    + " per " + florafresh_rules.SERVING
+# Kevin 2026-10-21. The label count is 15B CFU of Bacillus coagulans SNZ-1969
+# per 2 gummies. "15 billion CFU" is the same count and is not a contradiction
+# by itself. 1 billion CFU and 1B CFU are the retired count. The count is not
+# read from florafresh_rules.CFU, so this stays correct before and after the
+# formula-guard change.
+LABEL_CFU = "15B CFU"
+_RETIRED_CFU_RE = re.compile(
+    r"(?<![\d.])\b1[\s-]*(?:billion|bn)\b[\s-]*(?:(?:live|active|viable)[\s-]*)?(?:cfus?|colony[\s-]+forming)"
+    r"|(?<![\d.])\b1[\s-]*b\b(?=[\s-]*(?:cfus?|colony|live|active|viable|probiotics?|cultures)\b)",
+    re.I,
 )
+
 FLORAFRESH_CONTRADICTIONS = (
-    ("cfu_15_billion", re.compile(r"15\s*billion(?:\s*cfu)?", re.I),
-     "Live observation: the page states 15 billion CFU, the same count as the label"),
+    ("cfu_retired_1_billion", _RETIRED_CFU_RE,
+     "retired probiotic count"),
     ("lactobacillus", re.compile(r"lactobacillus", re.I),
      "Lactobacillus strains are the rejected PDP formula"),
     ("sugar_free", re.compile(r"sugar[\s\-]*free", re.I),
@@ -73,6 +77,11 @@ FLORAFRESH_CONTRADICTIONS = (
     ("xos", re.compile(r"\bXOS\b"),
      "XOS is the rejected PDP formula"),
 )
+
+
+def florafresh_label_formula():
+    return florafresh_rules.STRAIN + ", " + LABEL_CFU + " per " + florafresh_rules.SERVING
+
 
 REPO_FILES = (
     "scripts/shopify_publisher.py",
@@ -680,10 +689,13 @@ def build_report(pages, canonical_map, labels, repo_hits, constants, fetch_meta)
                         if regex.search(text):
                             key = (handle, code)
                             slot = contradictions.setdefault(key, {
-                                "code": "live_observation" if code == "cfu_15_billion" else "label_contradiction",
+                                "code": "label_contradiction",
                                 "kind": code,
                                 "handle": handle,
-                                "detail": why + ". Supplement Facts label: " + FLORAFRESH_LABEL + ".",
+                                "detail": (
+                                    why + ". Supplement Facts label: "
+                                    + florafresh_label_formula() + "."
+                                ),
                                 "count": 0,
                                 "examples": [],
                             })
@@ -903,7 +915,7 @@ def build_report(pages, canonical_map, labels, repo_hits, constants, fetch_meta)
         },
         "canonical_map": "data/entity_canonical_names.json",
         "label_formulas": {
-            "florafresh-gummies": FLORAFRESH_LABEL,
+            "florafresh-gummies": florafresh_label_formula(),
         },
     }
 
@@ -961,8 +973,15 @@ def render_markdown(report):
     lines.append("")
     lines.append(
         "AgeAura articles name only **AgeAura Pure NMN + TMG NAD+ Complex**. "
-        "FloraFresh formula, from its Supplement Facts label: **%s**."
-        % summary.get("label_formulas", {}).get("florafresh-gummies", FLORAFRESH_LABEL)
+        "FloraFresh formula, from its Supplement Facts label: **%s**. "
+        "15 billion CFU is the same count. 1 billion CFU is the retired count."
+        % summary.get("label_formulas", {}).get("florafresh-gummies", florafresh_label_formula())
+    )
+    lines.append("")
+    lines.append(
+        "Blog byline for new articles is Mike Moretti, Co-founder, Wellness Nest, "
+        "linking `/pages/mike-moretti`. Crawl records of live pages were not rewritten. "
+        "Paid-traffic landing and listicle bylines were left as crawled."
     )
     lines.append("")
     notes = [page for page in (report.get("pages") or []) if page.get("live_observation")]
@@ -1049,7 +1068,7 @@ def render_markdown(report):
     lines.append("- GemPages / product templates: an H1 that names a different product is a template binding. Changing it is a theme edit.")
     lines.append("- Shopify product SEO titles and Product.brand: retitling a live product, or switching Product.brand between the line name and Wellness Nest, needs a store edit. AgeAura's brand field is the line name today; whether that should match the store Organization is Kevin's call.")
     lines.append("- FloraFresh PDP strain story (Lactobacillus, XOS, D-mannose, sugar-free) stays until Kevin approves a PDP rewrite. The label count is 15B CFU per 2 gummies (Kevin 2026-10-21). 15 billion CFU on the PDP is that same count and is a live observation. 1 billion CFU is retired.")
-    lines.append("- Blog Article author for new posts is Mike Moretti, Co-founder, Wellness Nest. https://wellnessnest.co/pages/mike-moretti is not created from this repo. Live pages that still name Dr. Marcus Hale stay crawl observations.")
+    lines.append("- Blog Article author for new posts is Mike Moretti, Co-founder, Wellness Nest. https://wellnessnest.co/pages/mike-moretti is not created from this repo. Live pages that still name Dr. Marcus Hale stay crawl observations. Paid-traffic landing and listicle bylines stay as they are.")
     lines.append("- Social profiles: this crawl found no non-empty `sameAs` URLs to check. Do not invent profile URLs.")
     lines.append("- Marketplaces: not in this crawl. Do not change Amazon or other marketplace titles from this report.")
     lines.append("- AgeAura handles outside `ageaura-pure-nmn-tmg-nad-complex` stay off new articles. Unpublishing a live product is a separate GO.")
@@ -1203,7 +1222,7 @@ def self_test():
 <title>FloraFresh Vaginal Probiotics Gummies | Wellness Nest</title>
 <meta property="og:site_name" content="Wellness Nest">
 <meta property="og:title" content="FloraFresh - Vaginal Probiotics Gummies | Wellness Nest">
-<meta property="og:description" content="Support vaginal health. 15 Billion CFU probiotics, D-Mannose, and sugar-free gummies.">
+<meta property="og:description" content="Support vaginal health. 15 Billion CFU probiotics, D-Mannose, and sugar-free gummies. Older copy said 1 billion CFU.">
 </head><body>
 <h1>Shilajit Gummies Single Jar</h1>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Product","name":"FloraFresh - Vaginal Probiotics Gummies","brand":{"@type":"Brand","name":"Wellness Nest"},"description":"Daily feminine care."}</script>
@@ -1231,19 +1250,33 @@ def self_test():
     for required in ("h1_disagrees_with_product_name", "sameas_missing", "organization_conflicting", "sameas_dead"):
         if required not in codes and not any(code.startswith(required) for code in codes):
             raise SystemExit("self-test missing " + required)
-    cfu = [item for item in summary["findings"] if item.get("kind") == "cfu_15_billion"]
-    if len(cfu) != 1 or cfu[0].get("code") != "live_observation":
-        raise SystemExit("self-test: 15 billion count is a live observation")
-    detail = cfu[0].get("detail") or ""
-    if "1 billion CFU" in detail or "rejected PDP figure" in detail or "15B CFU" not in detail:
-        raise SystemExit("self-test: label count wording")
+    kinds = {item.get("kind") for item in summary["findings"]}
+    if "cfu_15_billion" in kinds:
+        raise SystemExit("self-test: 15 billion CFU is the label count")
+    if "cfu_retired_1_billion" not in kinds:
+        raise SystemExit("self-test: retired 1 billion count")
+    if "d_mannose" not in kinds or "sugar_free" not in kinds:
+        raise SystemExit("self-test: pdp strain story")
     formula = summary["label_formulas"]["florafresh-gummies"]
-    if formula != FLORAFRESH_LABEL or "1 billion CFU" in formula:
-        raise SystemExit("self-test: label formula")
-    for item in summary["findings"]:
-        blob = json.dumps(item)
-        if "1 billion CFU" in blob:
-            raise SystemExit("self-test: retired CFU in " + item.get("kind", item.get("code", "")))
+    if formula != florafresh_label_formula() or "1 billion" in formula:
+        raise SystemExit("self-test: label formula " + formula)
+    rendered = render_markdown({"summary": summary, "pages": []})
+    if "Mike Moretti" not in rendered or "Co-founder, Wellness Nest" not in rendered:
+        raise SystemExit("self-test: blog byline")
+    if "15B CFU" not in rendered or "1 billion CFU is the retired count" not in rendered:
+        raise SystemExit("self-test: label wording")
+    noted = render_markdown({
+        "summary": summary,
+        "pages": [{
+            "url": "https://wellnessnest.co/pages/dr-marcus-hale",
+            "live_observation": (
+                "Live observation: Dr. Marcus Hale appears on this live URL. "
+                "Not the blog Article author."
+            ),
+        }],
+    })
+    if "Not the blog Article author" not in noted:
+        raise SystemExit("self-test: landing byline observation")
     warnings = entity_names.variant_warnings("WellnessNest ships the AgeAura Pure NMN + TMG NAD+ Complex across the US.")
     if not warnings:
         raise SystemExit("self-test: warn")

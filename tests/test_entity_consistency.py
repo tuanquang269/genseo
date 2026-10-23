@@ -39,11 +39,11 @@ class CanonicalMapTests(unittest.TestCase):
         self.assertEqual(by_id["ageaura-pure-nmn-tmg"]["canonical"], ageaura_rules.PRODUCT_LABEL)
         self.assertEqual(by_id["florafresh-gummies"]["canonical"], florafresh_rules.PRODUCT_NAME)
         formula = by_id["florafresh-gummies"]["label_formula"]
-        self.assertEqual(formula, audit.FLORAFRESH_LABEL)
         self.assertIn(florafresh_rules.STRAIN, formula)
         self.assertIn("15B CFU", formula)
+        self.assertNotIn("1 billion", formula)
         self.assertIn(florafresh_rules.SERVING, formula)
-        self.assertNotIn("1 billion CFU", formula)
+        self.assertEqual(formula, audit.florafresh_label_formula())
         with open(os.path.join(ROOT, "scripts", "shopify_publisher.py"), encoding="utf-8") as fh:
             publisher = fh.read()
         self.assertIn('ORG_NAME = "Wellness Nest"', publisher)

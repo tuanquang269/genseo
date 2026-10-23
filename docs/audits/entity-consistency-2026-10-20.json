@@ -939,30 +939,6 @@
     ]
    },
    {
-    "code": "live_observation",
-    "kind": "cfu_15_billion",
-    "handle": "florafresh-vaginal-probiotics-gummies",
-    "detail": "Live observation: the page states 15 billion CFU, the same count as the label. Supplement Facts label: Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies.",
-    "count": 1,
-    "examples": [
-     {
-      "url": "https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies",
-      "field": "og:description",
-      "sentence": "Support vaginal health, pH balance, microbiome with Vaginal Probiotics. 15 Billion CFU probiotics, D-Mannose, prebiotics, and Vitamin C for daily feminine care."
-     },
-     {
-      "url": "https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies",
-      "field": "meta description",
-      "sentence": "Support vaginal health, pH balance, microbiome with Vaginal Probiotics. 15 Billion CFU probiotics, D-Mannose, prebiotics, and Vitamin C for daily feminine care."
-     },
-     {
-      "url": "https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies",
-      "field": "Product.description",
-      "sentence": "ehensive blend of probiotics, prebiotics, and supportive nutrients. Each serving delivers 15 billion CFU from four clinically studied Lactobacillus strains - Lactobacillus rhamnosus, Lactobacill"
-     }
-    ]
-   },
-   {
     "code": "label_contradiction",
     "kind": "d_mannose",
     "handle": "florafresh-vaginal-probiotics-gummies",
