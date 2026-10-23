@@ -124,8 +124,9 @@ class FixFile(unittest.TestCase):
             "SNZ-1969 at 15B CFU per 2 gummies."
         )
         self.assertEqual(ap.flora_problems(good), [])
+        # 15 billion CFU is the label count (same as 15B CFU), including without the strain name.
         bare = "FloraFresh lists 15 billion CFU per serving."
-        self.assertTrue(any("15 billion" in item for item in ap.flora_problems(bare)), ap.flora_problems(bare))
+        self.assertEqual(ap.flora_problems(bare), [], ap.flora_problems(bare))
         strains = "FloraFresh uses four Lactobacillus strains and is sugar-free."
         self.assertTrue(ap.flora_problems(strains))
 

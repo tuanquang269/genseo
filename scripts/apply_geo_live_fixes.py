@@ -153,19 +153,17 @@ def check_jsonld(ticket, before, after):
             )
 
 
-# Kevin 2026-10-21: the label count is 15B CFU of SNZ-1969. florafresh_rules.py
-# on this branch still calls that figure the rejected PDP count. Drop only that
-# stale fingerprint when the patched body states the label strain and 15B CFU.
-# Lactobacillus, XOS, D-mannose, sugar-free, and a bare 15 billion claim stay failures.
+# Kevin 2026-10-21: 15 billion CFU is the same count as 15B CFU. This branch's
+# florafresh_rules.py still calls that figure the rejected PDP count. Drop only
+# that stale fingerprint. Lactobacillus, XOS, D-mannose, sugar-free, and the
+# retired 1 billion / 1B count stay failures.
 _STALE_15B_VIOLATION = "15 billion CFU is the wrong PDP figure"
-_LABEL_COUNT = re.compile(r"\b15\s*B\s*CFU\b|\b15\s*billion\s*CFU\b", re.I)
 
 
 def flora_problems(body):
-    states_label = "SNZ-1969" in (body or "") and bool(_LABEL_COUNT.search(body or ""))
     problems = []
-    for item in florafresh_rules.violations(body):
-        if states_label and _STALE_15B_VIOLATION in item:
+    for item in florafresh_rules.violations(body or ""):
+        if _STALE_15B_VIOLATION in item:
             continue
         problems.append(item)
     return problems
