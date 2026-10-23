@@ -251,6 +251,15 @@ def _author_fails(md):
     return fails
 
 
+def extend_entity_warnings(html, warns):
+    """Non-canonical entity spellings are a WARN. They do not fail the publish gate."""
+    try:
+        import entity_names
+        warns.extend(entity_names.variant_warnings(html))
+    except Exception as e:
+        warns.append(f"entity name check skipped ({e})")
+
+
 def main():
     if "--self-check-author" in sys.argv:
         test_author_gate(); return 0
@@ -426,6 +435,10 @@ def main():
     # scripts/turkesterone_rules.py).
     _v=_br.violations(html)
     if _v: fails.append("brand rule — banned link(s)/mentions/claims: "+"; ".join(_v[:6]))
+
+    # Entity names (SEL 2026-10-15). Non-canonical spellings WARN only.
+    # data/entity_canonical_names.json is the proposal. This does not fail publish.
+    extend_entity_warnings(html, warns)
 
     # Citability (answer shape, FAQ, question H2s, product + related article,
     # primary source, alt text, draft meta length, no hand-written Published date).
