@@ -186,7 +186,9 @@ class SpecsAndCallers(unittest.TestCase):
         self.assertIn(br.AGEAURA_OK, br.prepare_ticket("AgeAura review for adults over 40"))
         self.assertEqual(br.spec_violations({"title": "AgeAura Pure NMN + TMG NAD Complex"}), [])
         self.assertTrue(any("Urolithin" in r for r in br.spec_violations({"title": "AgeAura Pure Urolithin A"})))
-        flora = br.assess("FloraFresh delivers 15 billion CFU.")
+        # Sugar-free stays a FloraFresh denial before and after the 15B CFU rules.
+        # "15 billion CFU" is that label count once florafresh_rules.CFU is 15B CFU.
+        flora = br.assess("FloraFresh is sugar-free.")
         self.assertEqual(flora.action, "deny")
         self.assertTrue(any(r.startswith("FloraFresh") for r in flora.reasons))
         self.assertFalse(any(r.startswith("Shilajit gummies") for r in flora.reasons))
@@ -199,7 +201,7 @@ class SpecsAndCallers(unittest.TestCase):
         self.assertNotEqual(tf.assess("Premium Himalayan Shilajit Gummies 60 gummies review")[1],
                             "shilajit-gummies-label")
         self.assertEqual(tf.assess("urolithin a benefits review")[1], "ageaura-sku")
-        self.assertEqual(tf.assess("FloraFresh 15 billion CFU review")[1], "florafresh-formula")
+        self.assertEqual(tf.assess("FloraFresh sugar free gummies review")[1], "florafresh-formula")
         self.assertNotEqual(tf.assess("shilajit benefits for men")[1], "shilajit-gummies-label")
 
     def test_builders_refuse_the_wrong_count(self):
