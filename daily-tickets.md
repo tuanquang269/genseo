@@ -1227,7 +1227,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** nmn + rest-days checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1017-13 — are creatine gummies worth it how much** — `Are Creatine Gummies Worth It? How Much You Get (2026)`
+- [DONE 2026-10-23 https://wellnessnest.co/blogs/news/creatine-gummies-worth-it-us-2026-check] **#CA1017-13 — are creatine gummies worth it how much** — `Are Creatine Gummies Worth It? How Much You Get (2026)`
   - **Primary keyword:** `are creatine gummies worth it how much` · **Secondary:** creatine gummies review, are creatine gummies legit, creatine gummies honest check, fusiforce creatine gummies review
   - **Search intent:** shopper who wants a straight answer before paying for gummies instead of powder
   - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
