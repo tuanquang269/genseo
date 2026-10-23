@@ -186,7 +186,9 @@ class SpecsAndCallers(unittest.TestCase):
         self.assertEqual(tf.assess("FusiForce 25 mg ginseng review")[1], "fusiforce-label")
         self.assertNotEqual(tf.assess("FusiForce creatine monohydrate gummies review")[1], "fusiforce-label")
         self.assertEqual(tf.assess("urolithin a benefits review")[1], "ageaura-sku")
-        self.assertEqual(tf.assess("FloraFresh 15 billion CFU review")[1], "florafresh-formula")
+        # Sugar-free stays a FloraFresh failure before and after the 15B CFU rules.
+        # "15 billion CFU" is that label count once florafresh_rules.CFU is 15B CFU.
+        self.assertEqual(tf.assess("FloraFresh sugar free gummies review")[1], "florafresh-formula")
 
     def test_builders_refuse_the_wrong_count(self):
         with self.assertRaises(br.GuardError):

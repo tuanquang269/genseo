@@ -265,7 +265,11 @@ def self_check():
         ("MenoMate Menopause Probiotic Review", None, [], 'PASS', 17.1),  # weak rank + stocked brand -> genuine
         ("Urolithin A benefits review", None, [], 'FAIL'),                 # banned AgeAura SKU
         ("AgeAura review", None, [], 'PASS'),                              # brand is allowed; ticket builder locks the SKU
-        ("FloraFresh 15 billion CFU review", None, [], 'FAIL'),            # wrong PDP figure (label: 1 billion CFU)
+        # Follow florafresh_rules.CFU. After PR #88, 15B / 15 billion pass and 1 billion / 1B fail.
+        ("FloraFresh 15 billion CFU review", None, [], 'PASS' if ff.CFU == "15B CFU" else 'FAIL'),
+        ("FloraFresh 15B CFU review", None, [], 'PASS' if ff.CFU == "15B CFU" else 'FAIL'),
+        ("FloraFresh 1 billion CFU review", None, [], 'FAIL' if ff.CFU == "15B CFU" else 'PASS'),
+        ("FloraFresh 1B CFU review", None, [], 'FAIL' if ff.CFU == "15B CFU" else 'PASS'),
         ("FloraFresh sugar free gummies review", None, [], 'FAIL'),        # label: maltitol + isomalt
         ("FloraFresh Bacillus coagulans SNZ-1969 review", None, [], 'PASS'),  # the label strain
     ]
