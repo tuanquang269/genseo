@@ -14,7 +14,9 @@ import genseo_config as _gcfg
 import genseo_roster
 import brand_rules
 import florafresh_rules
+import fusiforce_rules
 import gold_resin_rules
+import shilajit_gummies_rules
 import shilasource_resin_rules
 import shockwave_rules
 import turkesterone_rules
@@ -32,7 +34,10 @@ def _refuse_guarded_draft(title, body):
     Shilajit Shockwave dose the pack-label whitelist does not list, that states a Pure Shilajit
     Gold Resin dose its pack-label whitelist does not list, that states a ShilaSource
     Himalayan Shilajit Resin dose its pack-label whitelist does not list, that states a
-    Turkesterone Advanced Formula dose its pack-label whitelist does not list, or that is a
+    Turkesterone Advanced Formula dose its pack-label whitelist does not list, that states a
+    FusiForce pack count, milligram, serving count, or ginseng claim the pack label does not
+    list, that states a Premium Himalayan Shilajit Gummies pack count or milligram amount the
+    pack label does not list, or that is a
     landing-ticket line whose colors conflict with product_refs/<handle>.palette.json."""
     try:
         brand_rules.assert_publishable(title, body)
@@ -42,12 +47,17 @@ def _refuse_guarded_draft(title, body):
               "a Shilajit Shockwave dose the pack-label whitelist does not list, a Pure Shilajit "
               "Gold Resin dose its pack-label whitelist does not list, a ShilaSource Himalayan "
               "Shilajit Resin dose its pack-label whitelist does not list, a Turkesterone "
-              "Advanced Formula dose its pack-label whitelist does not list, or a listicle/landing palette "
+              "Advanced Formula dose its pack-label whitelist does not list, a FusiForce pack-count, "
+              "milligram, serving-count, or ginseng claim the pack label whitelist does not list, "
+              "a Premium Himalayan Shilajit Gummies pack-count, serving-count, or milligram claim "
+              "the pack label whitelist does not list, or a listicle/landing palette "
               "that conflicts with product_refs/<handle>.palette.json.")
         for reason in e.reasons[:8]:
             print(f"  {reason}")
         print(f"  Allowed AgeAura product: {brand_rules.AGEAURA_OK_URL}")
         print(f"  FloraFresh label formula: {florafresh_rules.FORMULA_LINE}")
+        print(f"  FusiForce pack label: {fusiforce_rules.LABEL_LINE}")
+        print(f"  Shilajit gummies pack label: {shilajit_gummies_rules.LABEL_LINE}")
         print(f"  Shilajit Shockwave pack label: {shockwave_rules.LABEL_LINE}")
         print(f"  Pure Shilajit Gold Resin pack label: {gold_resin_rules.LABEL_LINE}")
         print(f"  ShilaSource resin pack label: {shilasource_resin_rules.LABEL_LINE}")

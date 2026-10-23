@@ -131,7 +131,7 @@ class LabelCopyPasses(unittest.TestCase):
             "| Pure Shilajit Gold Resin | jar |\n| Brand X | 500 mg | 30 servings | 30 ml |",
             "Premium Himalayan Shilajit Gummies list 1500 mg, 60 gummies, and a 60-day supply.",
             "ShilaSource resin, 70% Fulvic Acid, 1.06oz (30g), 75 servings.",
-            "FusiForce has 90 gummies and 30 servings.",
+            "FusiForce has 90 gummies.",
             "FloraFresh: Vitamin C 30 mg per 2 gummies, 15B CFU.",
             "The trial used 250 mg of purified shilajit. Pure Shilajit Gold Resin is a jar.",
             "Premium Himalayan Shilajit Gummies are 60 gummies and a 60-day supply. "

@@ -146,7 +146,7 @@ class LabelCopyPasses(unittest.TestCase):
             "| Turkesterone Advanced Formula | jar |\n| Brand X | 500 mg | 30 servings | 90 capsules |",
             "Premium Himalayan Shilajit Gummies list 1500 mg, 60 gummies, and a 60-day supply.",
             "ShilaSource resin, 70% Fulvic Acid, 1.06oz (30g), 75 servings.",
-            "FusiForce has 90 gummies and 30 servings.",
+            "FusiForce has 90 gummies.",
             "FloraFresh: Vitamin C 30 mg per 2 gummies, 15B CFU.",
             "The trial used 250 mg of turkesterone. Turkesterone Advanced Formula is a jar.",
             "A randomized trial of turkesterone used 10 mg. Turkesterone Advanced Formula is a jar.",

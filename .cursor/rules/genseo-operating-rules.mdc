@@ -49,6 +49,14 @@ Also: never `rm` repo files (move them to `_superseded/`); never put CDN URLs in
   are the retired count and the linter rejects them. The live PDP description still tells a wrong strain story
   (four Lactobacillus strains, XOS, D-mannose, sugar-free) until Kevin's GO rewrites it:
   never take formula facts from it or from older FloraFresh articles. See `docs/FLORAFRESH_FORMULA_GUARD.md`.
+- **FusiForce pack label = `product_refs/fusiforce-creatine-gummies.label.json`** (2026-10-09;
+  `scripts/fusiforce_rules.py`, run by `brand_rules.py`): creatine monohydrate, **90 gummies**. Do not state 84
+  gummies, 25 mg, 50 mg, 30 servings, any other serving count, any milligram amount, or ginseng unless that exact
+  token is in the whitelist file. See `docs/FUSIFORCE_LABEL_GUARD.md`.
+- **Premium Himalayan Shilajit Gummies = the pack-label whitelist** (`product_refs/premium-himalayan-shilajit-gummies.label.json`;
+  `scripts/shilajit_gummies_rules.py`, run by `brand_rules.py`): 60 gummies and a 60-day supply. A 30-serving panel is not
+  on that file. Do not state a milligram amount the file does not list (`1500mg Shilajit` is on it; `150 mg` is not).
+  Shockwave, Gold Resin, and ShilaSource resin are separate products. See `docs/SHILAJIT_GUMMIES_LABEL_GUARD.md`.
 - **Shilajit Shockwave = its OCR-accepted pack label only** (`scripts/shockwave_rules.py`, run by
   `brand_rules.py`): wellness, nest, SHILAJIT, SHOCKWAVE, EXPERIENCE FOCUSED ENERGY, PEAK PERFORMANCE.
   The whitelist has no milligram amount, no serving count, and no volume line. Do not invent one.
@@ -115,6 +123,8 @@ Also: never `rm` repo files (move them to `_superseded/`); never put CDN URLs in
 python3 scripts/ageaura_rules.py --brief                 # AgeAura handle allowlist (do not paste into a ticket)
 python3 scripts/lint_tickets.py daily-tickets.md        # banned link or claim in an open ticket -> exit 2
 python3 scripts/florafresh_rules.py <draft>.md          # FloraFresh copy vs its Supplement Facts label -> exit 1
+python3 scripts/fusiforce_rules.py <draft>.md           # FusiForce copy vs its pack label whitelist -> exit 1
+python3 scripts/shilajit_gummies_rules.py <draft>.md    # Shilajit gummies copy vs its pack label whitelist -> exit 1
 python3 scripts/shockwave_rules.py <draft>.md           # Shockwave copy vs its pack-label whitelist -> exit 1
 python3 scripts/gold_resin_rules.py <draft>.md          # Gold Resin copy vs its pack-label whitelist -> exit 1
 python3 scripts/shilasource_resin_rules.py <draft>.md   # ShilaSource resin copy vs its pack-label whitelist -> exit 1

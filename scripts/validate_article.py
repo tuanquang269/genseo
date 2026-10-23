@@ -441,6 +441,11 @@ def main():
     # NAD Complex only. Any other AgeAura handle, and a bare "AgeAura" with no NMN + TMG
     # product, are hard fails. FloraFresh claims follow its Supplement Facts label, never the
     # PDP description (Kevin 2026-10-09; scripts/brand_rules.py + florafresh_rules.py).
+    # FusiForce pack count and doses follow product_refs/fusiforce-creatine-gummies.label.json
+    # (90 gummies, creatine monohydrate; scripts/fusiforce_rules.py).
+    # Premium Himalayan Shilajit Gummies pack count and doses follow
+    # product_refs/premium-himalayan-shilajit-gummies.label.json
+    # (60 gummies, 60-day supply; scripts/shilajit_gummies_rules.py).
     # Shilajit Shockwave doses follow product_refs/shilajit-shockwave.label.json
     # (no milligram token; scripts/shockwave_rules.py).
     # Pure Shilajit Gold Resin doses follow product_refs/pure-shilajit-gold-resin.label.json

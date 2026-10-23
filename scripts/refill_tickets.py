@@ -24,9 +24,15 @@ read live at run time:
     label, never the PDP description; Shilajit Shockwave doses = its pack-label whitelist, which has no
     milligram token; Pure Shilajit Gold Resin doses = its pack-label whitelist, which has the OCR
     serving line and 75% Fulvic and no milligram token; ShilaSource Himalayan Shilajit Resin doses =
-    its pack-label whitelist, front-of-pack lines only, no milligram token) + the bank's banned terms,
+    its pack-label whitelist, front-of-pack lines only, no milligram token; FusiForce pack count =
+    90 gummies from its label whitelist, no milligram amount, serving count, or ginseng unless that
+    token is in the whitelist; Premium Himalayan Shilajit Gummies pack count = 60 gummies and a
+    60-day supply from its label whitelist, no 30-serving panel and no milligram amount unless that
+    token is in the whitelist) + the bank's banned terms,
     on the brief and on the rendered ticket.
     A FloraFresh ticket also carries florafresh_rules.TICKET_LINE (the label formula).
+    A FusiForce ticket also carries fusiforce_rules.TICKET_LINE (the pack label).
+    A Shilajit gummies ticket also carries shilajit_gummies_rules.TICKET_LINE (the pack label).
     A Shilajit Shockwave ticket also carries shockwave_rules.TICKET_LINE (the pack label).
     A Pure Shilajit Gold Resin ticket also carries gold_resin_rules.TICKET_LINE (the pack label).
     A ShilaSource resin ticket also carries shilasource_resin_rules.TICKET_LINE (the pack label).
@@ -58,7 +64,9 @@ sys.path.insert(0, os.path.join(ROOT, "scripts"))
 import ageaura_rules as ar  # noqa: E402
 import brand_rules as br  # noqa: E402
 import florafresh_rules as ff  # noqa: E402
+import fusiforce_rules as fu  # noqa: E402
 import gold_resin_rules as gr  # noqa: E402
+import shilajit_gummies_rules as sg  # noqa: E402
 import shilasource_resin_rules as sr  # noqa: E402
 import shockwave_rules as sw  # noqa: E402
 import turkesterone_rules as tk  # noqa: E402
@@ -756,6 +764,10 @@ def render(c, tid, ctx, info):
             f"`/products/{h}` ({bank['products'][h]['name']}, {money(prods[h]['price'])})" for h in c["inline"]))
     if ff.HANDLE in [c["product"]] + c["inline"]:
         out.append("  - " + ff.TICKET_LINE)
+    if fu.HANDLE in [c["product"]] + c["inline"]:
+        out.append("  - " + fu.TICKET_LINE)
+    if sg.HANDLE in [c["product"]] + c["inline"]:
+        out.append("  - " + sg.TICKET_LINE)
     if sw.HANDLE in [c["product"]] + c["inline"]:
         out.append("  - " + sw.TICKET_LINE)
     if gr.HANDLE in [c["product"]] + c["inline"]:
@@ -1028,7 +1040,28 @@ def self_test():
         t("rendered ticket counts as open for the wrapper", OPEN_RX.match(text) is not None)
         t("rendered ticket is brand-clean", not banned(text, bank), banned(text, bank))
         t("FloraFresh ticket carries the Supplement Facts label formula", ff.TICKET_LINE in text)
+        t("FloraFresh ticket: no FusiForce pack-label line", fu.TICKET_LINE not in text)
+        t("FloraFresh ticket: no Shilajit gummies pack-label line", sg.TICKET_LINE not in text)
         t("FloraFresh ticket: no Shockwave pack-label line", sw.TICKET_LINE not in text)
+        fu_c = {"product": fu.HANDLE, "primary": "where to buy creatine gummies",
+                "title": "Where to Buy Creatine Gummies (US 2026)", "secondary": [], "intent": "buy",
+                "template": "LISTICLE", "angle": "Check the pouch count off the pack label.",
+                "fanout": [], "evidence": "Pack label whitelist only.", "inline": [],
+                "family": "creatine", "segment": "buy"}
+        info_fu = {"colls": ["best-seller", "mens-essential-collection"],
+                   "verdict": ("PASS", "brand"), "suggest": "skip", "links": []}
+        ctx_fu = dict(ctx, products={fu.HANDLE: {"price": "69.99"}, sg.HANDLE: {"price": "49.99"}})
+        text_fu = render(fu_c, "CA1009-3", ctx_fu, info_fu)
+        t("FusiForce ticket carries the pack-label line", fu.TICKET_LINE in text_fu)
+        t("FusiForce ticket is brand-clean", not banned(text_fu, bank), banned(text_fu, bank))
+        shil = {"product": sg.HANDLE, "primary": "shilajit gummies for men",
+                "title": "Shilajit Gummies for Men (US 2026)", "secondary": [], "intent": "buy",
+                "template": "LISTICLE", "angle": "Read the pouch count off the pack label.",
+                "fanout": [], "evidence": "Pack label whitelist only.", "inline": [],
+                "family": "shilajit", "segment": "for-men"}
+        text_s = render(shil, "CA1010-1", ctx_fu, info_fu)
+        t("Shilajit gummies ticket carries the pack-label line", sg.TICKET_LINE in text_s)
+        t("Shilajit gummies ticket is brand-clean", not banned(text_s, bank), banned(text_s, bank))
         t("FloraFresh ticket: no Gold Resin pack-label line", gr.TICKET_LINE not in text)
         t("FloraFresh ticket: no ShilaSource resin pack-label line", sr.TICKET_LINE not in text)
         t("FloraFresh ticket: no Turkesterone pack-label line", tk.TICKET_LINE not in text)

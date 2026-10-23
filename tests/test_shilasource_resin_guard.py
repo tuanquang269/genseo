@@ -159,7 +159,7 @@ class LabelCopyPasses(unittest.TestCase):
             "and 85+ trace minerals.",
             "Pure Shilajit Gold Resin, 1.06 oz (30g) - 75 servings, 75% fulvic.",
             "Shilajit Shockwave, EXPERIENCE FOCUSED ENERGY, PEAK PERFORMANCE.",
-            "FusiForce has 90 gummies and 30 servings.",
+            "FusiForce has 90 gummies.",
             "FloraFresh: Vitamin C 30 mg per 2 gummies, 15B CFU.",
             "The trial used 250 mg of purified shilajit. ShilaSource is a jar.",
             "Premium Himalayan Shilajit Gummies are 60 gummies and a 60-day supply. "
