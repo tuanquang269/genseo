@@ -1267,7 +1267,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** shilajit + caffeine checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1017-16 — how to take turkesterone** — `How to Take Turkesterone Capsules (US 2026)`
+- [DONE 2026-10-23 https://wellnessnest.co/blogs/news/how-to-take-turkesterone-in-the-us-2026] **#CA1017-16 — how to take turkesterone** — `How to Take Turkesterone Capsules (US 2026)`
   - **Primary keyword:** `how to take turkesterone` · **Secondary:** turkesterone capsule routine, swallow turkesterone, turkesterone with water, turkesterone directions
   - **Search intent:** buyer who has the jar and wants the physical routine, not another clock or cost page
   - **Template:** STORY · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 1 match(es), none targets this primary: How Long Does Turkesterone Take to Work? (US 2026) (2026-10-17 14:56 ICT)
