@@ -67,11 +67,16 @@ Unpublished headless runs do not ask. A local preview, `GENSEO_LANDING_DRAFT=1`,
    AgeAura handle, bundle (`-p2`) or collection link; never Urolithin A or peptides. `scripts/ageaura_rules.py`
    fails closed if a ticket or spec targets `ageaura-pure-urolithin-a` or any other Urolithin A AgeAura handle.
    `brand/ageaura.json` (`allowed_products`, `forbidden_terms`) + `validate_landing.py` block them in any store's page.
-   **FloraFresh = its Supplement Facts label** (Kevin 2026-10-09): Bacillus coagulans SNZ-1969, 1 billion CFU per
+   **FloraFresh = its Supplement Facts label** (Kevin 2026-10-09, count updated 2026-10-21): Bacillus coagulans SNZ-1969, 15B CFU per
    2 gummies, Vitamin C 30 mg, pineapple fruit powder 100 mg (with bromelain), maltitol + isomalt (not sugar-free).
-   The live PDP description (15 billion CFU, four Lactobacillus strains, XOS, D-mannose, sugar-free) is wrong until
+   1 billion CFU and 1B CFU are the retired count. The live PDP description still tells a wrong strain story (four Lactobacillus strains, XOS, D-mannose, sugar-free) until
    Kevin's GO rewrites it, so for FloraFresh the PDP gives price, offer and directions, never the formula.
    `validate_landing.py` fails any FloraFresh claim the label does not support (`scripts/florafresh_rules.py`).
+   **FusiForce** pack count comes only from `product_refs/fusiforce-creatine-gummies.label.json` (creatine monohydrate, 90 gummies). Do not state 84, a milligram amount, a serving count, or ginseng unless that token is in the file. `validate_landing.py` fails those claims (`scripts/fusiforce_rules.py`).
+   **Premium Himalayan Shilajit Gummies = the pack-label whitelist** (`product_refs/premium-himalayan-shilajit-gummies.label.json`):
+   60 gummies and a 60-day supply. Do not state a 30-serving panel or a milligram amount that file does not list.
+   Shockwave, Gold Resin, and ShilaSource resin are separate products.
+   `validate_landing.py` fails those claims (`scripts/shilajit_gummies_rules.py`).
    **Shilajit Shockwave** pack-label doses come only from `product_refs/shilajit-shockwave.label.json` (identity lines; no milligram, serving count, or volume token). `validate_landing.py` fails a dose that file does not list (`scripts/shockwave_rules.py`).
    **Pure Shilajit Gold Resin** pack-label doses come only from `product_refs/pure-shilajit-gold-resin.label.json` (identity lines, `75% Fulvic`, and `1.06 oz (30g) - 75 servings`; no milligram token). `validate_landing.py` fails a dose that file does not list (`scripts/gold_resin_rules.py`).
    **ShilaSource Himalayan Shilajit Resin** pack-label doses come only from `product_refs/shilasource-himalayan-shilajit-resin.label.json` (front-of-pack lines: `70% Fulvic Acid*`, `1.06oz (30g)`, and the split `75` / `SERVINGS` badge; no milligram token). `validate_landing.py` fails a dose that file does not list (`scripts/shilasource_resin_rules.py`).
@@ -100,6 +105,8 @@ Unpublished headless runs do not ask. A local preview, `GENSEO_LANDING_DRAFT=1`,
    price, variants, images[0] (real packaging for the product/offer block). Read the vault product note
    `~/PATI/LLM-Wiki/20-brands/21-wellnessnest-products/<product>.md` if present. FloraFresh formula facts come
    from its Supplement Facts label only (`python3 scripts/florafresh_rules.py --brief`), never the PDP description.
+   FusiForce pack counts come from `python3 scripts/fusiforce_rules.py --brief`.
+   Premium Himalayan Shilajit Gummies pack counts come from `python3 scripts/shilajit_gummies_rules.py --brief`.
 2. **Evidence.** 3–6 sources max. Confirm every figure in the abstract (Europe PMC REST:
    `https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI:<doi>&resultType=core&format=json`).
 3. **Spec.** Write `landing_drafts/<slug>.json` (schema in `templates/landing/README.md`; copy a sample:

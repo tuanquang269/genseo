@@ -14,8 +14,19 @@ product is not a second SKU: callers either reject it or lock it to the
 allowed product via prepare_ticket / prepare_image_request.
 
 FloraFresh copy follows its Supplement Facts label (Bacillus coagulans SNZ-1969,
-1 billion CFU per 2 gummies), not the wrong PDP description. florafresh_rules.py
-holds those facts.
+15B CFU per 2 gummies; Kevin 2026-10-21). 1 billion CFU and 1B CFU are the retired
+count. florafresh_rules.py holds those facts.
+
+FusiForce copy follows product_refs/fusiforce-creatine-gummies.label.json:
+creatine monohydrate, 90 gummies, plus vault_servings from Kevin 2026-10-23
+(30 servings, 3 gummies per serving). fusiforce_rules.py rejects 84, milligram
+amounts, other serving counts, and ginseng unless that exact token is in the file.
+
+Premium Himalayan Shilajit Gummies copy follows
+product_refs/premium-himalayan-shilajit-gummies.label.json: 60 gummies and a
+60-day supply. shilajit_gummies_rules.py rejects a 30-serving panel, any other
+pack count, and a milligram amount that file does not list. Shockwave, Gold
+Resin, and ShilaSource resin are not this product.
 
 Shilajit Shockwave copy follows product_refs/shilajit-shockwave.label.json.
 shockwave_rules.py rejects a milligram amount, a serving count, or any other
@@ -48,8 +59,9 @@ Supplement Facts panel were read. Bare "turkesterone" is the ingredient and is
 not this SKU. Gummies, Shockwave, Gold Resin, and ShilaSource resin are not
 this product.
 
-assess() denies any FloraFresh, Shockwave, Gold Resin, ShilaSource resin, or
-Turkesterone claim those modules reject, so every caller below enforces them.
+assess() denies any FloraFresh, FusiForce, Shilajit-gummies, Shockwave, Gold
+Resin, ShilaSource resin, or Turkesterone claim those modules reject, so every
+caller below enforces them.
 Landing specs use spec_violations().
 
 Listicle and advertorial UI colors follow product_refs/<handle>.palette.json
@@ -74,9 +86,11 @@ import re
 
 import ageaura_rules
 import florafresh_rules as florafresh
+import fusiforce_rules as fusiforce
 import gold_resin_rules as gold_resin
 import llms_formula
 import packaging_palette
+import shilajit_gummies_rules as shilajit_gummies
 import shilasource_resin_rules as shilasource_resin
 import shockwave_rules as shockwave
 import turkesterone_rules as turkesterone
@@ -169,13 +183,18 @@ def assess(text):
             volume, weight, fulvic percentage, mineral count, day-supply, or
             other dose its pack-label whitelist does not list, or a
             Turkesterone Advanced Formula milligram, serving, capsule count,
-            day-supply, or other dose its pack-label whitelist does not list
+            day-supply, or other dose its pack-label whitelist does not list,
+            a FusiForce pack-count, milligram, serving-count, or ginseng claim
+            the label whitelist does not list, or a Shilajit-gummies pack-count,
+            serving-count, or milligram claim the label whitelist does not list
     force — AgeAura is named and the Pure NMN + TMG product is not
     allow — no AgeAura, or AgeAura is tied to that one product, and no FloraFresh,
-            Shockwave, Gold Resin, ShilaSource resin, or Turkesterone label miss
+            FusiForce, Shilajit-gummies, Shockwave, Gold Resin, ShilaSource resin,
+            or Turkesterone label miss
     """
     decision = _ageaura_decision(text)
-    extra = (florafresh.violations(text) + shockwave.violations(text)
+    extra = (florafresh.violations(text) + fusiforce.violations(text)
+             + shilajit_gummies.violations(text) + shockwave.violations(text)
              + gold_resin.violations(text) + shilasource_resin.violations(text)
              + turkesterone.violations(text))
     if not extra:
@@ -216,7 +235,8 @@ def violations(text):
     Ambiguous AgeAura is a violation until prepare_ticket / prepare_promotion
     locks the copy to the allowed SKU. Denied SKUs, FloraFresh formula claims,
     Shockwave pack-label claims, Gold Resin pack-label claims, ShilaSource
-    resin pack-label claims, and Turkesterone pack-label claims stay violations
+    resin pack-label claims, Turkesterone pack-label claims, FusiForce
+    pack-label claims, and Shilajit-gummies pack-label claims stay violations
     either way. A landing-ticket line that opts out of a committed packaging
     palette, or forces a hue that file does not list, is a violation too
     (scripts/packaging_palette.py).
@@ -227,8 +247,9 @@ def violations(text):
 def spec_violations(spec):
     """violations() for a landing spec (the parsed JSON).
 
-    AgeAura reads the whole spec, as the gates always did. FloraFresh, Shockwave,
-    Gold Resin, ShilaSource resin, and Turkesterone are checked field by field,
+    AgeAura reads the whole spec, as the gates always did. FloraFresh, FusiForce,
+    Shilajit gummies, Shockwave, Gold Resin, ShilaSource resin, and Turkesterone
+    are checked field by field,
     so source notes and the citation list may record what a PDP says; product,
     offer, sticky_cta, trust, chip, and bullets count as product claims. A
     listicle/advertorial created on or after 2026-10-09 is also checked against
@@ -236,7 +257,9 @@ def spec_violations(spec):
     """
     out = _decision_violations(_ageaura_decision(json.dumps(spec)))
     out = _dedupe(out + ageaura_rules.spec_target_violations(spec))
-    return _dedupe(out + florafresh.spec_violations(spec) + shockwave.spec_violations(spec)
+    return _dedupe(out + florafresh.spec_violations(spec) + fusiforce.spec_violations(spec)
+                   + shilajit_gummies.spec_violations(spec)
+                   + shockwave.spec_violations(spec)
                    + gold_resin.spec_violations(spec)
                    + shilasource_resin.spec_violations(spec)
                    + turkesterone.spec_violations(spec)

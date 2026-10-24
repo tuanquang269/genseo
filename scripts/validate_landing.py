@@ -13,7 +13,10 @@ pack-label whitelist, which has the OCR serving line and 75% Fulvic and no milli
 scripts/gold_resin_rules.py; ShilaSource Himalayan Shilajit Resin doses = its pack-label whitelist,
 front-of-pack lines only, no milligram token — scripts/shilasource_resin_rules.py; Turkesterone
 Advanced Formula doses = its pack-label whitelist, front-of-pack lines only, split capsule badge,
-no milligram token — scripts/turkesterone_rules.py; listicle/advertorial
+no milligram token — scripts/turkesterone_rules.py; FusiForce pack count = its pack-label whitelist,
+90 gummies and creatine monohydrate, no 84, milligram, serving count, or ginseng the file omits —
+scripts/fusiforce_rules.py; Premium Himalayan Shilajit Gummies pack count = its pack-label whitelist,
+60 gummies and a 60-day supply, no 30-serving panel — scripts/shilajit_gummies_rules.py; listicle/advertorial
 UI colors vs product_refs/<handle>.palette.json — scripts/packaging_palette.py, hard for specs created
 >= 2026-10-09), forbidden terms per store (AgeAura: urolithin/peptide), banned filler, every
 number in copy carries a source link or a placeholder, testimonials/expert quotes are either

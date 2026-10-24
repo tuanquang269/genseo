@@ -146,8 +146,8 @@ class LabelCopyPasses(unittest.TestCase):
             "| Turkesterone Advanced Formula | jar |\n| Brand X | 500 mg | 30 servings | 90 capsules |",
             "Premium Himalayan Shilajit Gummies list 1500 mg, 60 gummies, and a 60-day supply.",
             "ShilaSource resin, 70% Fulvic Acid, 1.06oz (30g), 75 servings.",
-            "FusiForce has 90 gummies and 30 servings.",
-            "FloraFresh: Vitamin C 30 mg per 2 gummies, 1 billion CFU.",
+            "FusiForce has 90 gummies.",
+            "FloraFresh: Vitamin C 30 mg per 2 gummies, 15B CFU.",
             "The trial used 250 mg of turkesterone. Turkesterone Advanced Formula is a jar.",
             "A randomized trial of turkesterone used 10 mg. Turkesterone Advanced Formula is a jar.",
             "Premium Himalayan Shilajit Gummies are 60 gummies and a 60-day supply. "
@@ -164,7 +164,7 @@ class LabelCopyPasses(unittest.TestCase):
         text = "\n".join([
             "Turkesterone Advanced Formula, 60 capsules. Dietary Supplement.",
             "Shilajit Shockwave, EXPERIENCE FOCUSED ENERGY, PEAK PERFORMANCE.",
-            "FloraFresh: per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 1 billion CFU, "
+            "FloraFresh: per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 15B CFU, "
             "Vitamin C 30 mg and pineapple fruit powder 100 mg.",
             "FusiForce Creatine Monohydrate Gummies, 90 gummies.",
             "Premium Himalayan Shilajit Gummies, 60 gummies, 60-day supply, 1500 mg.",
@@ -177,7 +177,7 @@ class LabelCopyPasses(unittest.TestCase):
     def test_other_guards_still_fire(self):
         self.assertTrue(br.violations("Shilajit Shockwave provides 500 mg."))
         self.assertEqual(br.violations("Shilajit Shockwave. PEAK PERFORMANCE."), [])
-        self.assertTrue(br.violations("FloraFresh delivers 15 billion CFU."))
+        self.assertTrue(br.violations("FloraFresh delivers 1B CFU."))
         self.assertTrue(br.violations("AgeAura Pure Urolithin A"))
         self.assertEqual(br.violations("AgeAura Pure NMN + TMG NAD Complex"), [])
         self.assertEqual(sw.violations("Turkesterone Advanced Formula has 30 capsules."), [])
@@ -272,7 +272,7 @@ class Gates(unittest.TestCase):
         self.assertEqual(ingredient[0], "PASS")
         self.assertNotEqual(ingredient[1], "turkesterone-label")
         self.assertEqual(tf.assess("Shilajit Shockwave 500 mg review", articles=[])[1], "shockwave-label")
-        self.assertEqual(tf.assess("FloraFresh 15 billion CFU review", articles=[])[1], "florafresh-formula")
+        self.assertEqual(tf.assess("FloraFresh 1B CFU review", articles=[])[1], "florafresh-formula")
 
     def test_landing_spec_fields(self):
         clean = {

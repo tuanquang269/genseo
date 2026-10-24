@@ -4,10 +4,10 @@
 A sentence is included only when it matches that product's label source of truth.
 Anything else is omitted. This module does not upload and does not call Shopify.
 
-  FloraFresh — scripts/florafresh_rules.py (Supplement Facts: SNZ-1969, 1 billion CFU).
-  FusiForce — product_refs/fusiforce-creatine-gummies.label.json ("90" + "Gummies").
-    The front-of-pouch OCR does not state a serving count or a ginseng milligram,
-    so the sentence does not state one.
+  FloraFresh — scripts/florafresh_rules.py (Supplement Facts: SNZ-1969, 15B CFU).
+  FusiForce — product_refs/fusiforce-creatine-gummies.label.json ("90" + "Gummies"),
+    plus vault_servings (Kevin 2026-10-23: 30 servings, 3 gummies per serving).
+    The short sentence states 90 gummies. It does not state a milligram amount or ginseng.
   Shilajit gummies — optional tokens "60 GUMMIES" and "60-DAY SUPPLY".
     A 30-serving panel is not that label.
 """
@@ -17,6 +17,7 @@ import re
 
 import ageaura_rules
 import florafresh_rules as ff
+import fusiforce_rules as fu
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -44,6 +45,9 @@ def label_spec(handle, root=None):
 
 def _blob(spec):
     parts = [str(part) for part in (spec.get("required") or []) + (spec.get("optional") or [])]
+    vault = spec.get("vault_servings") or {}
+    if isinstance(vault, dict):
+        parts.extend(str(part) for part in (vault.get("lines") or []))
     return " ".join(parts)
 
 
@@ -74,6 +78,8 @@ def matches_label(handle, sentence, root=None):
         for match in _EXTRA_NUMBER.finditer(sentence):
             if match.group(0).lower() not in blob.lower():
                 return False
+        if fu.violations(sentence):
+            return False
         return True
     if handle == SHIL:
         if "60 GUMMIES" not in blob or "60-DAY SUPPLY" not in blob:

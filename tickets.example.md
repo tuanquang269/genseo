@@ -25,7 +25,7 @@ thì model rẻ càng ít phải đoán. Đây là lý do chất lượng ổn �
 - **Hero product:** `/products/<handle-thật-đang-còn-hàng>`
 - **Comparison table:** 4 sản phẩm creatine — giá/lần dùng, dạng, hàm lượng
 - **Angle:** không tồn tại query "creatine nào tốt nhất", chỉ có "loading hay không" — trả lời trước ở answer block
-- **Author:** <name from roster.json>
+- **Author:** Mike Moretti (/pages/mike-moretti) — Co-founder, Wellness Nest. TODO: no approved headshot and the author page is not confirmed live.
 - **Dedup note:** chưa có bài nào nhắm keyword này (đã check ngày <date>)
 
 ## [ ] Ticket #2 — REFRESH EXISTING

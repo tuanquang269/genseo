@@ -106,11 +106,11 @@ class LabelCopyPasses(unittest.TestCase):
             "Unlike other brands' 500 mg, Shilajit Shockwave lists no milligram on the pack.",
             "Shilajit Shockwave is not 30 servings and not 1 fl oz.",
             "| Shilajit Shockwave | drops |\n| Brand X | 500 mg | 30 servings | 30 ml |",
-            "Premium Himalayan Shilajit Gummies list 1500 mg and 30 servings.",
+            "Premium Himalayan Shilajit Gummies list 1500 mg, 60 gummies, and a 60-day supply.",
             "Pure Shilajit Gold Resin, 1.06 oz (30g) - 75 servings, 75% Fulvic.",
             "ShilaSource resin, 70% Fulvic Acid, 1.06oz (30g), 75 servings.",
-            "FusiForce has 90 gummies and 30 servings.",
-            "FloraFresh: Vitamin C 30 mg per 2 gummies, 1 billion CFU.",
+            "FusiForce has 90 gummies.",
+            "FloraFresh: Vitamin C 30 mg per 2 gummies, 15B CFU.",
             "The trial used 250 mg of purified shilajit. Shilajit Shockwave is a dropper bottle.",
             "Premium Himalayan Shilajit Gummies are 60 gummies and a 60-day supply. "
             "Shilajit Shockwave is a dropper bottle.",
@@ -122,7 +122,7 @@ class LabelCopyPasses(unittest.TestCase):
     def test_other_products_in_the_same_piece_keep_their_own_doses(self):
         text = "\n".join([
             "Shilajit Shockwave is sold as drops.",
-            "FloraFresh: per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 1 billion CFU, "
+            "FloraFresh: per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 15B CFU, "
             "Vitamin C 30 mg and pineapple fruit powder 100 mg.",
             "FusiForce Creatine Monohydrate Gummies, 90 gummies.",
             "Premium Himalayan Shilajit Gummies, 60 gummies, 60-day supply.",

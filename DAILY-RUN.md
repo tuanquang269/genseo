@@ -304,7 +304,7 @@ based and every house brand already has a page. Do not wait on it.
 | ⛔ | **Never mention or link MuscleMax** (competitor). Never link a product or collection that does not exist — 404 links fail the gate. |
 | 🧾 | **No COA / "clinically tested" claims where none exists** (house rule `no-coa-competitive-advantage`). Proxy proof only. |
 | 🗑 | Never `rm`. Move to `_superseded/` instead. Never touch `frozen_articles.txt` articles. |
-| ✍️ | One author: **Dr. Marcus Hale**, `roster.json` is the sole source. The approved bio sentence must appear **intact, after** the link: `[Dr. Marcus Hale](/pages/dr-marcus-hale) — Dr. Marcus Hale is the resident health researcher behind …` The validator matches the first 60 chars of the bio as a substring; putting the link *inside* the sentence breaks it. |
+| ✍️ | Blog byline (Kevin 2026-10-21): **Mike Moretti**, Co-founder, Wellness Nest. Copy it intact, after the link: `[Mike Moretti](/pages/mike-moretti) — Co-founder, Wellness Nest`. The validator matches the first 60 chars of the bio as a substring; putting the link *inside* the sentence breaks it. TODO: no approved headshot, and `/pages/mike-moretti` is not confirmed live — do not invent a photo or a longer bio, and do not create the page. Do not byline Dr. Marcus Hale. He remains in `roster.json` for older landing specs. |
 | 🔒 | `status="pending"` default, the `{active, flagged}` allow-list, and `approve` as the sole pending→active transition in the persona system must stay untouched. |
 | 🖼 | Faces come **only** from `~/genseo/personas/`. Never invent a face. New personas need Kevin's one-time real-face gate. |
 
@@ -357,16 +357,17 @@ what is on Shopify. The live article itself is fine.
 - GSC: path A (Kevin creates the OAuth desktop client) vs path B (manual Queries CSV export).
 
 **Open product/compliance flags (report, don't fix in an article):**
-FloraFresh — the PDP description contradicts its Supplement Facts label (15 billion CFU, four
-Lactobacillus strains, XOS, D-mannose, "sugar-free" vs Bacillus coagulans SNZ-1969, 1 billion
-CFU, maltitol + isomalt). Kevin confirmed the label on 2026-10-09: our copy follows the label
+FloraFresh — the PDP description still tells a wrong strain story (four
+Lactobacillus strains, XOS, D-mannose, "sugar-free"). Kevin 2026-10-21: the label count is
+15B CFU of Bacillus coagulans SNZ-1969. 1 billion CFU and 1B CFU are retired. Our copy follows the label
 and the PDP rewrite waits for his GO (`docs/FLORAFRESH_FORMULA_GUARD.md`). Also "Treats the
 root cause" / "Stays & colonizes" disease claims, "Top OB/GYN recommended formula", "100%
 natural ingredients", three inconsistent social-proof counts (71,180+ / 79,239+ / 7,159+).
 Gold Resin ($75) and Shockwave ($79.99) publish **no milligram serving size at all** while
 both $59.99 SKUs do, and both still carry un-rewritten hype copy. Packaging discrepancies:
-shilajit gummies front "60-DAY SUPPLY" vs panel 30 servings; FusiForce front "90 GUMMIES" vs
-panel 28×3=84; FusiForce PDP "25 mg ginseng" vs panel "50 mg".
+shilajit gummies front "60-DAY SUPPLY" vs panel 30 servings. FusiForce copy follows the
+2026-10-23 vault note: 90 gummies / 30 servings (3 gummies per serving). Still open, and
+not whitelisted: 5,000 mg, and Panax ginseng (PDP 25 mg vs panel 50 mg).
 
 AgeAura promotion is handle-locked (`scripts/ageaura_rules.py`, `docs/AGEAURA_PRODUCT_GUARD.md`):
 new tickets and landing specs may target only `ageaura-pure-nmn-tmg-nad-complex`.

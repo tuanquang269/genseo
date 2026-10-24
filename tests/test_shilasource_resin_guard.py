@@ -159,8 +159,8 @@ class LabelCopyPasses(unittest.TestCase):
             "and 85+ trace minerals.",
             "Pure Shilajit Gold Resin, 1.06 oz (30g) - 75 servings, 75% fulvic.",
             "Shilajit Shockwave, EXPERIENCE FOCUSED ENERGY, PEAK PERFORMANCE.",
-            "FusiForce has 90 gummies and 30 servings.",
-            "FloraFresh: Vitamin C 30 mg per 2 gummies, 1 billion CFU.",
+            "FusiForce has 90 gummies.",
+            "FloraFresh: Vitamin C 30 mg per 2 gummies, 15B CFU.",
             "The trial used 250 mg of purified shilajit. ShilaSource is a jar.",
             "Premium Himalayan Shilajit Gummies are 60 gummies and a 60-day supply. "
             "ShilaSource is a jar.",
@@ -176,7 +176,7 @@ class LabelCopyPasses(unittest.TestCase):
         text = "\n".join([
             "ShilaSource Himalayan Shilajit Resin, 70% Fulvic Acid*, 1.06oz (30g), 75 servings.",
             "Shilajit Shockwave, EXPERIENCE FOCUSED ENERGY, PEAK PERFORMANCE.",
-            "FloraFresh: per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 1 billion CFU, "
+            "FloraFresh: per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 15B CFU, "
             "Vitamin C 30 mg and pineapple fruit powder 100 mg.",
             "FusiForce Creatine Monohydrate Gummies, 90 gummies.",
             "Premium Himalayan Shilajit Gummies, 60 gummies, 60-day supply, 1500 mg, 85+ trace minerals.",
@@ -188,7 +188,7 @@ class LabelCopyPasses(unittest.TestCase):
     def test_other_guards_still_fire(self):
         self.assertTrue(br.violations("Shilajit Shockwave provides 500 mg."))
         self.assertEqual(br.violations("Shilajit Shockwave. PEAK PERFORMANCE."), [])
-        self.assertTrue(br.violations("FloraFresh delivers 15 billion CFU."))
+        self.assertTrue(br.violations("FloraFresh delivers 1 billion CFU."))
         self.assertTrue(br.violations("AgeAura Pure Urolithin A"))
         self.assertEqual(br.violations("AgeAura Pure NMN + TMG NAD Complex"), [])
         self.assertEqual(sw.violations("ShilaSource resin, 300 mg per serving."), [])
@@ -273,7 +273,7 @@ class Gates(unittest.TestCase):
         self.assertEqual(
             tf.assess("Premium Himalayan Shilajit Gummies 1500 mg review", articles=[])[0], "PASS")
         self.assertEqual(tf.assess("Shilajit Shockwave 500 mg review", articles=[])[1], "shockwave-label")
-        self.assertEqual(tf.assess("FloraFresh 15 billion CFU review", articles=[])[1], "florafresh-formula")
+        self.assertEqual(tf.assess("FloraFresh 1 billion CFU review", articles=[])[1], "florafresh-formula")
         bare = tf.assess("himalayan shilajit resin 500 mg review", articles=[])
         self.assertNotEqual(bare[1], "shilasource-resin-label")
 
