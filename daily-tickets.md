@@ -1281,7 +1281,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** turkesterone + how-to-take checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1017-17 — is nmn worth it with food** — `Is NMN Worth It, With Food? (US 2026)`
+- [DONE 2026-10-24 https://wellnessnest.co/blogs/news/is-nmn-worth-it-with-food-us-check] **#CA1017-17 — is nmn worth it with food** — `Is NMN Worth It, With Food? (US 2026)`
   - **Primary keyword:** `is nmn worth it with food` · **Secondary:** nmn review, is nmn legit, nmn honest check, is the nmn tmg complex worth it
   - **Search intent:** US shopper who wants a straight worth-it check after marketplace listings changed
   - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
