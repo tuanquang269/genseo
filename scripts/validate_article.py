@@ -442,7 +442,7 @@ def main():
     # product, are hard fails. FloraFresh claims follow its Supplement Facts label, never the
     # PDP description (Kevin 2026-10-09; scripts/brand_rules.py + florafresh_rules.py).
     # FusiForce pack count and doses follow product_refs/fusiforce-creatine-gummies.label.json
-    # (90 gummies, creatine monohydrate; scripts/fusiforce_rules.py).
+    # (90 gummies, 30 servings, 3 gummies per serving, creatine monohydrate; scripts/fusiforce_rules.py).
     # Premium Himalayan Shilajit Gummies pack count and doses follow
     # product_refs/premium-himalayan-shilajit-gummies.label.json
     # (60 gummies, 60-day supply; scripts/shilajit_gummies_rules.py).

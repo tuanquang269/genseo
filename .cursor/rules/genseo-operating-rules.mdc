@@ -49,10 +49,11 @@ Also: never `rm` repo files (move them to `_superseded/`); never put CDN URLs in
   are the retired count and the linter rejects them. The live PDP description still tells a wrong strain story
   (four Lactobacillus strains, XOS, D-mannose, sugar-free) until Kevin's GO rewrites it:
   never take formula facts from it or from older FloraFresh articles. See `docs/FLORAFRESH_FORMULA_GUARD.md`.
-- **FusiForce pack label = `product_refs/fusiforce-creatine-gummies.label.json`** (2026-10-09;
-  `scripts/fusiforce_rules.py`, run by `brand_rules.py`): creatine monohydrate, **90 gummies**. Do not state 84
-  gummies, 25 mg, 50 mg, 30 servings, any other serving count, any milligram amount, or ginseng unless that exact
-  token is in the whitelist file. See `docs/FUSIFORCE_LABEL_GUARD.md`.
+- **FusiForce pack label = `product_refs/fusiforce-creatine-gummies.label.json`** (OCR 2026-10-08; servings
+  override Kevin 2026-10-23 in `vault_servings`; `scripts/fusiforce_rules.py`, run by `brand_rules.py`): creatine
+  monohydrate, **90 gummies**, **30 servings** (3 gummies per serving). Do not state 84 gummies, 25 mg, 50 mg,
+  5,000 mg, any other serving count, any milligram amount, or ginseng unless that exact token is in the whitelist
+  file. See `docs/FUSIFORCE_LABEL_GUARD.md`.
 - **Premium Himalayan Shilajit Gummies = the pack-label whitelist** (`product_refs/premium-himalayan-shilajit-gummies.label.json`;
   `scripts/shilajit_gummies_rules.py`, run by `brand_rules.py`): 60 gummies and a 60-day supply. A 30-serving panel is not
   on that file. Do not state a milligram amount the file does not list (`1500mg Shilajit` is on it; `150 mg` is not).

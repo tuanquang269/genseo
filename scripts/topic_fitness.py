@@ -161,8 +161,8 @@ def assess(topic, sg_imp=None, articles=None, collections=None, pos=None):
     if fu_bad:
         return ('FAIL', 'fusiforce-label',
                 'FusiForce follows its pack label (' + fu.LABEL_LINE + '); '
-                '84 gummies, milligram amounts, serving counts, and ginseng are not on that whitelist: '
-                + '; '.join(fu_bad))
+                'a pack count, serving count, milligram amount, or ginseng line that file does not list '
+                'fails closed: ' + '; '.join(fu_bad))
 
     sg_bad = sg.violations(topic)
     if sg_bad:
@@ -324,6 +324,7 @@ def self_check():
         ("FloraFresh sugar free gummies review", None, [], 'FAIL'),        # label: maltitol + isomalt
         ("FloraFresh Bacillus coagulans SNZ-1969 review", None, [], 'PASS'),  # the label strain
         ("FusiForce 84 gummies review", None, [], 'FAIL'),                     # pack label is 90 gummies
+        ("FusiForce 30 servings review", None, [], 'PASS'),                    # Kevin 2026-10-23 vault
         ("FusiForce creatine monohydrate gummies review", None, [], 'PASS'),   # whitelist identity
         ("Premium Himalayan Shilajit Gummies 30 servings review", None, [], 'FAIL'),  # not on the pack label
         ("Premium Himalayan Shilajit Gummies review", None, [], 'PASS'),       # 60 gummies, no invented panel

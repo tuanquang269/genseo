@@ -18,8 +18,9 @@ FloraFresh copy follows its Supplement Facts label (Bacillus coagulans SNZ-1969,
 count. florafresh_rules.py holds those facts.
 
 FusiForce copy follows product_refs/fusiforce-creatine-gummies.label.json:
-creatine monohydrate, 90 gummies. fusiforce_rules.py rejects 84, milligram
-amounts, serving counts, and ginseng unless that exact token is in the file.
+creatine monohydrate, 90 gummies, plus vault_servings from Kevin 2026-10-23
+(30 servings, 3 gummies per serving). fusiforce_rules.py rejects 84, milligram
+amounts, other serving counts, and ginseng unless that exact token is in the file.
 
 Premium Himalayan Shilajit Gummies copy follows
 product_refs/premium-himalayan-shilajit-gummies.label.json: 60 gummies and a

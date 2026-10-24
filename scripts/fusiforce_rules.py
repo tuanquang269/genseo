@@ -6,11 +6,13 @@ The pack-label whitelist is the source of truth:
     product_refs/fusiforce-creatine-gummies.label.json
 
 That file's required lines include Creatine, Monohydrate, Gummies, and 90.
-They do not include 84, a milligram amount, a serving count, or ginseng.
-Copy that names FusiForce may say creatine monohydrate and 90 gummies.
-It may not state 84 gummies, 25 mg, 50 mg, 30 servings, any other serving
-count, any milligram amount, or ginseng unless that exact token is in the
-whitelist file.
+Kevin 2026-10-23 (vault note newer than the 2026-10-08 OCR) adds
+vault_servings: 30 servings and 3 gummies per serving. Those lines are not a
+second pack count. The file does not include 84, a milligram amount, or ginseng.
+Copy that names FusiForce may say creatine monohydrate, 90 gummies, 30 servings,
+and 3 gummies per serving. It may not state 84 gummies, 25 mg, 50 mg, 5,000 mg,
+any other serving count, any milligram amount, or ginseng unless that exact
+token is in the whitelist file.
 
 brand_rules.assess() merges these violations. Landing specs go through
 brand_rules.spec_violations(). Keep the whitelist in the label file; do not
@@ -34,14 +36,15 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LABEL_PATH = os.path.join(ROOT, LABEL_REL)
 
 _PREFIX = "FusiForce label: "
-LABEL_LINE = "Creatine Monohydrate Gummies, 90 gummies"
+LABEL_LINE = "Creatine Monohydrate Gummies, 90 gummies, 30 servings (3 gummies per serving)"
 TICKET_LINE = (
     "**FusiForce pack label (source of truth):** " + LABEL_LINE + ". "
-    "The pack label whitelist has no milligram amount and no serving count. Do not add one. "
+    "Kevin 2026-10-23: write 90 gummies / 30 servings (3 gummies per serving). "
+    "Do not state 84 gummies, 25 mg, 50 mg, 5,000 mg, or ginseng. "
     "File: " + LABEL_REL + "."
 )
 LANDING_NOTE = (
-    "pack label: " + LABEL_LINE + " (" + LABEL_REL + "); no milligram amount or serving count "
+    "pack label: " + LABEL_LINE + " (" + LABEL_REL + "); no milligram amount and no ginseng "
     "beyond that file"
 )
 
@@ -118,7 +121,12 @@ def load_label():
             data = json.load(fh)
     except (OSError, json.JSONDecodeError):
         return None
-    tokens = [str(x).strip() for x in (data.get("required") or []) + (data.get("optional") or [])]
+    vault = data.get("vault_servings") or {}
+    extra = vault.get("lines") if isinstance(vault, dict) else []
+    tokens = [
+        str(x).strip()
+        for x in (data.get("required") or []) + (data.get("optional") or []) + list(extra or [])
+    ]
     tokens = [t for t in tokens if t]
     return tokens or None
 

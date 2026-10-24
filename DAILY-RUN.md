@@ -365,8 +365,9 @@ root cause" / "Stays & colonizes" disease claims, "Top OB/GYN recommended formul
 natural ingredients", three inconsistent social-proof counts (71,180+ / 79,239+ / 7,159+).
 Gold Resin ($75) and Shockwave ($79.99) publish **no milligram serving size at all** while
 both $59.99 SKUs do, and both still carry un-rewritten hype copy. Packaging discrepancies:
-shilajit gummies front "60-DAY SUPPLY" vs panel 30 servings; FusiForce front "90 GUMMIES" vs
-panel 28×3=84; FusiForce PDP "25 mg ginseng" vs panel "50 mg".
+shilajit gummies front "60-DAY SUPPLY" vs panel 30 servings. FusiForce copy follows the
+2026-10-23 vault note: 90 gummies / 30 servings (3 gummies per serving). Still open, and
+not whitelisted: 5,000 mg, and Panax ginseng (PDP 25 mg vs panel 50 mg).
 
 AgeAura promotion is handle-locked (`scripts/ageaura_rules.py`, `docs/AGEAURA_PRODUCT_GUARD.md`):
 new tickets and landing specs may target only `ageaura-pure-nmn-tmg-nad-complex`.

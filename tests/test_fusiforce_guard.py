@@ -1,8 +1,9 @@
 """FusiForce copy follows product_refs/fusiforce-creatine-gummies.label.json.
 
-Pack count is 90 gummies. Creatine monohydrate is on that file. 84, 25 mg, 50 mg,
-30 servings, any other serving count, any milligram amount, and ginseng are not,
-so those claims fail closed.
+Pack count is 90 gummies. Kevin 2026-10-23 allows 30 servings and 3 gummies per
+serving. Creatine monohydrate is on that file. 84, 25 mg, 50 mg, 5,000 mg, any
+other serving count, any milligram amount, and ginseng are not, so those claims
+fail closed.
 """
 import json
 import os
@@ -33,13 +34,17 @@ class WhitelistFile(unittest.TestCase):
         tokens = fu.load_label()
         with open(LABEL, encoding="utf-8") as fh:
             data = json.load(fh)
-        self.assertEqual(tokens, data["required"] + data["optional"])
+        vault = data["vault_servings"]["lines"]
+        self.assertEqual(vault, ["30 servings", "3 gummies per serving"])
+        self.assertEqual(tokens, data["required"] + data["optional"] + vault)
         self.assertEqual(fu.pack_count(tokens), 90)
         self.assertTrue(fu.listed("Creatine", tokens))
         self.assertTrue(fu.listed("Monohydrate", tokens))
         self.assertTrue(fu.listed("90", tokens))
-        for phrase in ("84", "25 mg", "50 mg", "30 servings", "30 serving", "ginseng", "panax",
-                       "ginsenoside", "5000 mg", "5,000 mg", "3 gummies per serving"):
+        self.assertTrue(fu.listed("30 servings", tokens))
+        self.assertTrue(fu.listed("3 gummies per serving", tokens))
+        for phrase in ("84", "25 mg", "50 mg", "28 servings", "ginseng", "panax",
+                       "ginsenoside", "5000 mg", "5,000 mg", "4 gummies per serving"):
             self.assertFalse(fu.listed(phrase, tokens), phrase)
         self.assertIsNone(fu.pack_count(["Creatine", "Gummies"]))
         self.assertIsNone(fu.pack_count(["90", "84", "Creatine"]))
@@ -60,6 +65,7 @@ class LabelCopyPasses(unittest.TestCase):
     def test_label_lines_pass_every_gate(self):
         for text in (fu.LABEL_LINE, fu.TICKET_LINE, fu.LANDING_NOTE,
                      "FusiForce Creatine Monohydrate Gummies, 90 gummies, Green Apple flavor.",
+                     "FusiForce: 90 gummies / 30 servings (3 gummies per serving).",
                      "FusiForce: Promotes Lean Muscle Growth. Enhances Recovery. 90 gummies. Dietary Supplement."):
             self.assertEqual(fu.violations(text), [], text)
             self.assertEqual(br.violations(text), [], text)
@@ -75,7 +81,7 @@ class LabelCopyPasses(unittest.TestCase):
             "Creatine Gummies for Beginners: Your First 30 Days. Hero: FusiForce.",
             "FusiForce serving facts from the live PDP.",
             "FusiForce is not 84 gummies. The pouch says 90 gummies.",
-            "Do not claim 25 mg or 50 mg or 30 servings for FusiForce.",
+            "Do not claim 25 mg or 50 mg or 28 servings for FusiForce.",
             "Unlike other brands' 84-count tubs, FusiForce is 90 gummies.",
             "| FusiForce | 90 gummies |\n| Brand X | 84 gummies | 30 servings |",
             "Shilajit gummies: 30 servings and ginseng.",
@@ -105,13 +111,25 @@ class WrongCountsRejected(unittest.TestCase):
         self.assertRejected("FusiForce ships 60 gummies per pouch.", "60 gummies")
         self.assertRejected("FusiForce, 120 count.", "120")
 
+    def test_vault_servings_pass(self):
+        for text in (
+            "FusiForce has 90 gummies.",
+            "FusiForce has 30 servings.",
+            "FusiForce is a 30-serving pouch.",
+            "FusiForce: 3 gummies per serving.",
+            "FusiForce is a 3-gummy serving.",
+            "FusiForce: 90 gummies / 30 servings (3 gummies per serving).",
+        ):
+            self.assertEqual(fu.violations(text), [], text)
+            self.assertEqual(br.violations(text), [], text)
+            self.assertEqual(br.assess(text).action, "allow", text)
+
     def test_invented_serving_counts_fail(self):
-        self.assertRejected("FusiForce has 30 servings.", "30 servings")
         self.assertRejected("FusiForce has 28 servings per pouch.", "28 servings")
         self.assertRejected("FusiForce pouch: 45 servings.", "45 servings")
-        self.assertRejected("FusiForce is a 3-gummy serving.", "3 gummies per serving")
-        self.assertRejected("FusiForce: 3 gummies per serving.", "3 gummies per serving")
-        self.assertRejected("FusiForce delivers 5,000 mg per serving (3 gummies).", "3 gummies per serving", "5,000 mg")
+        dose = "FusiForce delivers 5,000 mg per serving (3 gummies)."
+        bad = self.assertRejected(dose, "5,000 mg")
+        self.assertFalse(any("3 gummies per serving" in r for r in bad), bad)
         self.assertRejected("FusiForce, 4 gummies per serving.", "4 gummies per serving")
         self.assertRejected("Take FusiForce per 2-gummy serving.", "2 gummies per serving")
 
@@ -137,7 +155,7 @@ class SpecsAndCallers(unittest.TestCase):
                 "offer": {"bullets": ["25 mg Panax ginseng"]}}
         bad = br.spec_violations(spec)
         self.assertTrue(any("84 gummies" in r and r.endswith("(product)") for r in bad), bad)
-        self.assertTrue(any("30 servings" in r and r.endswith("(product)") for r in bad), bad)
+        self.assertFalse(any("30 servings" in r for r in bad), bad)
         self.assertTrue(any("25 mg" in r and r.endswith("(offer)") for r in bad), bad)
 
     def test_provenance_notes_may_quote_the_disputed_panel(self):
@@ -162,7 +180,7 @@ class SpecsAndCallers(unittest.TestCase):
         bad = fu.violations(raw)
         self.assertTrue(any("ginseng" in r.lower() or "Panax" in r for r in bad), bad)
         self.assertTrue(any("5,000 mg" in r or "5000 mg" in r for r in bad), bad)
-        self.assertTrue(any("3 gummies per serving" in r for r in bad), bad)
+        self.assertFalse(any("3 gummies per serving" in r for r in bad), bad)
         self.assertTrue(fu.spec_violations(json.loads(raw)))
 
     def test_ageaura_stays_nmn_tmg_only(self):
@@ -182,7 +200,9 @@ class SpecsAndCallers(unittest.TestCase):
         verdict, code, why = tf.assess("FusiForce 84 gummies review")
         self.assertEqual((verdict, code), ("FAIL", "fusiforce-label"))
         self.assertIn("90 gummies", why)
-        self.assertEqual(tf.assess("FusiForce 30 servings review")[1], "fusiforce-label")
+        verdict, code, _why = tf.assess("FusiForce 30 servings review")
+        self.assertEqual((verdict, code), ("PASS", "brand_intent"))
+        self.assertEqual(tf.assess("FusiForce 28 servings review")[1], "fusiforce-label")
         self.assertEqual(tf.assess("FusiForce 25 mg ginseng review")[1], "fusiforce-label")
         self.assertNotEqual(tf.assess("FusiForce creatine monohydrate gummies review")[1], "fusiforce-label")
         self.assertEqual(tf.assess("urolithin a benefits review")[1], "ageaura-sku")
@@ -194,11 +214,13 @@ class SpecsAndCallers(unittest.TestCase):
         with self.assertRaises(br.GuardError):
             br.prepare_ticket("- [ ] listicle | wellnessnest | product=" + fu.HANDLE + " · angle: 84 gummies")
         with self.assertRaises(br.GuardError):
-            br.prepare_image_request("FusiForce pouch labeled 30 servings", [fu.HANDLE])
+            br.prepare_image_request("FusiForce pouch labeled 28 servings", [fu.HANDLE])
         prompt, specs = br.prepare_image_request(
-            "FusiForce creatine monohydrate pouch, 90 gummies, no people's faces", [fu.HANDLE])
+            "FusiForce creatine monohydrate pouch, 90 gummies, 30 servings, 3 gummies per serving, no people's faces",
+            [fu.HANDLE])
         self.assertEqual(specs, [fu.HANDLE])
         self.assertIn("90 gummies", prompt)
+        self.assertIn("30 servings", prompt)
 
     def test_publisher_gate(self):
         with self.assertRaises(br.GuardError):

@@ -28,9 +28,10 @@ that already went live. Zero open = the day stops.
   15B CFU per 2 gummies, not sugar-free; Kevin 2026-10-21). 1 billion CFU and 1B CFU are retired. Never take the
   strain story from the PDP description, which is still wrong until Kevin's GO;
   `refill_tickets.py` adds the label line under the hero product (`docs/FLORAFRESH_FORMULA_GUARD.md`).
-- FusiForce tickets take the pack count from `product_refs/fusiforce-creatine-gummies.label.json` (creatine
-  monohydrate, 90 gummies). Do not state 84, a milligram amount, a serving count, or ginseng unless that token is
-  in the file. `refill_tickets.py` adds the pack-label line (`docs/FUSIFORCE_LABEL_GUARD.md`).
+- FusiForce tickets take pack facts from `product_refs/fusiforce-creatine-gummies.label.json` (creatine
+  monohydrate, 90 gummies, 30 servings, 3 gummies per serving; Kevin 2026-10-23). Do not state 84, a milligram
+  amount, another serving count, or ginseng unless that token is in the file. `refill_tickets.py` adds the
+  pack-label line (`docs/FUSIFORCE_LABEL_GUARD.md`).
 - Premium Himalayan Shilajit Gummies tickets take the pack count from
   `product_refs/premium-himalayan-shilajit-gummies.label.json` (60 gummies, 60-day supply). A 30-serving panel
   is not on that file. Do not state a milligram amount the file does not list. `refill_tickets.py` adds the

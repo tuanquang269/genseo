@@ -6,18 +6,20 @@ The pack-label whitelist is the source of truth for FusiForce Creatine Gummies (
 
 Required lines in that file: FusiForce, Creatine, Monohydrate, Gummies, 90, Dietary Supplement. Optional lines include Green Apple flavor and the four front-of-pouch benefit lines (Promotes Lean Muscle Growth, Enhances Recovery, Boosts Energy Levels, Supports Cognitive Function). The file was read off the pack shot with `scripts/tools/label_ocr.swift` on 2026-10-08. The same pouch shots in `product_refs/fusiforce-creatine-gummies.png` and `fusiforce-creatine-gummies-cutout.png` show **90 GUMMIES** and Creatine Monohydrate. They do not show a milligram line or ginseng.
 
-Copy that names FusiForce may say creatine monohydrate and **90 gummies**. It fails closed when it states any of the following and that exact token is not in the whitelist file:
+`vault_servings` on that file is not an OCR line. It copies the 2026-10-23 vault instruction, which is newer than the OCR file: write **90 gummies / 30 servings (3 gummies per serving)**. See the quote below. `load_label()` appends those lines. They do not add a second integer pack count, so the pack count stays 90. The image label gate still reads `required` and `optional` only, so a generated pack shot is still checked for 90 gummies.
+
+Copy that names FusiForce may say creatine monohydrate, **90 gummies**, **30 servings**, and **3 gummies per serving**. It fails closed when it states any of the following and that exact token is not in the whitelist file:
 
 - a pack count other than 90 (including **84** gummies, an 84-count, or 28 × 3 = 84)
-- **25 mg**, **50 mg**, or any other milligram amount
-- **30 servings**, or any other serving count (`28 servings`, `3 gummies per serving`, `3-gummy serving`)
+- **25 mg**, **50 mg**, **5,000 mg**, or any other milligram amount
+- a serving count other than 30 servings / 3 gummies per serving (`28 servings`, `4 gummies per serving`, `2 gummies per serving`)
 - ginseng, Panax, or ginsenosides
 
-A partial sachet in the cutout photo is not a whitelist line, so it is not a serving size. Creatine and monohydrate are allowed because those words are whitelist lines. Ginseng is not a whitelist line. `scripts/fusiforce_rules.py` reads the file on each check: if a token is added to the file later, that token is allowed; if the file is missing or no longer has exactly one integer line, pack-count claims fail closed.
+A partial sachet in the cutout photo is not a whitelist line. Creatine and monohydrate are allowed because those words are whitelist lines. Ginseng is not a whitelist line. `scripts/fusiforce_rules.py` reads the file on each check: if a token is added to the file later, that token is allowed; if the file is missing or no longer has exactly one integer line, pack-count claims fail closed.
 
 `brand_rules.assess()` merges these violations, so every `brand_rules` caller enforces them: `lint_tickets.py` (open tickets only), `validate_article.py`, `validate_landing.py` / `landing_render.py` / `landing_publisher.py` (through `brand_rules.spec_violations()`), `topic_fitness.py` (`FAIL [fusiforce-label]`), the ticket and landing builders, image prompts, and `shopify_publisher.py` (publish and update). `refill_tickets.py` adds the pack-label line to every FusiForce ticket. `build_landing_tickets.py` adds a label note to FusiForce landing briefs. AgeAura rules are unchanged (NMN + TMG only; never Urolithin A).
 
-Negations ("not 84 gummies") and another brand's row ("Brand X | 84 gummies") pass. A FusiForce sentence that states 84, a serving count, a milligram amount, or ginseng does not.
+Negations ("not 84 gummies") and another brand's row ("Brand X | 84 gummies") pass. A FusiForce sentence that states 84, a serving count other than the vault lines, a milligram amount, or ginseng does not.
 
 ```bash
 python3 -m unittest tests/test_fusiforce_guard.py
@@ -28,7 +30,7 @@ python3 scripts/fusiforce_rules.py --spec landing_drafts/<slug>.json
 ## Left as they are
 
 - No Shopify write, no PDP edit, no theme or robots change.
-- `landing_drafts/fusiforce-creatine-listicle-261008.json` still states 5,000 mg, a 3-gummy serving, and Panax ginseng. Those tokens are not in the whitelist file. `brand_rules` now rejects that copy. The draft was not rewritten here.
+- `landing_drafts/fusiforce-creatine-listicle-261008.json` still states 5,000 mg and Panax ginseng. Those tokens are not in the whitelist file. `brand_rules` rejects that copy. The same draft's 3-gummy serving now matches `vault_servings`. The draft was not rewritten here.
 - Open FusiForce tickets that do not state those tokens stay as they are. New FusiForce tickets from `refill_tickets.py` carry the 90-gummy line.
 
 ## Supplement Facts read, 2026-10-10
@@ -69,4 +71,19 @@ Marketing tiles, not a facts panel: image 11 reads `CLINICALLY STUDIED DOSE • 
 
 Creative stills in that FusiForce folder returned `90` and, on some frames, `GUMMIES`. They did not return a Supplement Facts panel.
 
-A photo of the printed Supplement Facts on the green-apple 90-count pouch is still required before `5 g`, `50 mg`, `3 gummies`, `28`, or ginseng can be added to the whitelist.
+A photo of the printed Supplement Facts on the green-apple 90-count pouch is still required before `5 g`, `50 mg`, `28`, or ginseng can be added to the whitelist. `30 servings` and `3 gummies per serving` are in `vault_servings` because the 2026-10-23 note says to write them, not because a new OCR read found them.
+
+## Vault servings, 2026-10-23
+
+Source, newer than the 2026-10-08 OCR file: `~/PATI/LLM-Wiki/20-brands/21-wellnessnest-products/4-fusiforce.md`
+
+> **Servings — write 90 gummies / 30 servings (3 gummies per serving) everywhere (Kevin 2026-10-23).** Today Green Apple has 90 gummies and Blueberry has 84; the next production run will be 90 for both.
+
+The same sentence is why 84 stays rejected: the instruction is to write 90 for both flavors. `28 servings`, `4 gummies per serving`, and `112` stay rejected.
+
+## Open questions (not whitelisted)
+
+The 2026-10-23 servings sentence does not state these. They stay rejected:
+
+- **5,000 mg** (and `5000 mg`). The same product page has an undated dose bullet, "5,000mg creatine monohydrate", and the Shopify title includes "5,000 mg". A 2026-10-11 copy note says "5 g on the label". None of that is the servings sentence, so the milligram spelling is not a whitelist line.
+- **Panax ginseng** (and `25 mg` / `50 mg`). The undated dose bullet names Panax Ginseng with no amount. The 2026-10-23 FF-90 report says the Shopify description says 25 mg and the panel and PDP say 50 mg. That is a conflict, not a token to allow.

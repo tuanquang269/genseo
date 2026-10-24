@@ -9,8 +9,8 @@ serving count, volume, weight, fulvic percentage, mineral count, day-supply, or 
 pack-label whitelist does not list, states a Turkesterone Advanced Formula milligram,
 serving count, capsule count, day-supply, or other dose its pack-label whitelist does not list,
 states a FusiForce pack count, milligram amount, serving count, or ginseng claim that is not in
-product_refs/fusiforce-creatine-gummies.label.json (90 gummies and creatine monohydrate are; 84, 25 mg,
-50 mg, and 30 servings are not), states a Premium Himalayan Shilajit Gummies pack count, serving count,
+product_refs/fusiforce-creatine-gummies.label.json (90 gummies, 30 servings, 3 gummies per serving, and creatine monohydrate are; 84, 25 mg,
+50 mg, 5,000 mg, and ginseng are not), states a Premium Himalayan Shilajit Gummies pack count, serving count,
 or milligram amount that is not in product_refs/premium-himalayan-shilajit-gummies.label.json
 (60 gummies and a 60-day supply are; a 30-serving panel is not),
 or an open landing ticket opts out of a committed packaging
