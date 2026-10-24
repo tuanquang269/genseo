@@ -92,7 +92,7 @@ Unpublished headless runs do not ask. A local preview, `GENSEO_LANDING_DRAFT=1`,
    uncropped, `object-fit:contain`. Lifestyle shots that show no package must also show no OTHER package (the QC
    fails any tub/jar without a reference; describe a shaker/scoop/scene instead).
 11. House voice from `brand/<store>.json` → `voice` (plain, evidence-led, honest about what a study did NOT test,
-   e.g. "purified extract, not our resin"). Byline must be on `roster.json` (default Dr. Marcus Hale).
+   e.g. "purified extract, not our resin"). Byline must be on `roster.json`. This landing lane stays Dr. Marcus Hale. Blog articles use Mike Moretti (`roster.json` `default_for` includes `blog`).
 12. Never publish live. Never edit an existing live page/article.
 
 ## Workflow

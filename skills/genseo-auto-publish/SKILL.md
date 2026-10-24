@@ -222,14 +222,18 @@ and in AI Overviews. Treat this step as writing an ad, not a label.
   sync by hand. If `roster.json` is empty, the gate blocks publishing — that means Kevin
   has not approved the roster yet; STOP and tell him, never fill it yourself.
 
-  **Pick the byline whose scope genuinely fits the topic.**
+  **Blog default (Kevin, 2026-10-21):** Mike Moretti, Co-founder, Wellness Nest. Format `[Mike Moretti](/pages/mike-moretti)` and copy his `bio` from `roster.json` verbatim. He is not a doctor. Do not add a degree, a year-count, a medical-reviewer line, or a headshot. `headshot` is null until a real photo is on the roster.
+
+  **Dr. Marcus Hale** stays on the roster and still passes the gate. Use him when the draft or ticket already names him. Landing pages keep Hale as their default (`skills/genseo-landing-pages`). On a refresh, leave the live article's byline as it is.
+
+  **The author page has to already be live.** `/pages/mike-moretti` was 404 when Mike was added. If `validate_article.py` reports that URL as dead, stop and tell Kevin. Do not create the Shopify page from this skill.
 
   **⛔ NEVER invent a byline.** A name that is not in `roster.json` is a
   fabricated identity on YMYL health content — the single most damaging thing
   this pipeline can do. The banned-name list (donor placeholders + anything
   ever removed) is `FAKE_AUTHORS` in `scripts/validate_article.py`.
 
-  **⛔ Never write "Dr.", "MD", "PhD", "RD", "Registered Dietitian", "CISSN", or any certification next to any byline.** Never attach a credential to a byline unless that person actually holds it.
+  **⛔ Never write "Dr.", "MD", "PhD", "RD", "Registered Dietitian", "CISSN", or any certification next to any byline.** Never attach a credential to a byline unless that person actually holds it. Mike Moretti does not. Do not call him a medical reviewer. The only vetted "Dr." is the one already inside Dr. Marcus Hale's roster name and bio.
 
   Format the bio as `[Name](/pages/handle)` followed by the exact sentence. DO NOT write "Connect with them on LinkedIn" and DO NOT put their LinkedIn URL in the visible markdown text. Store the LinkedIn URL only in the JSON-LD schema.
 

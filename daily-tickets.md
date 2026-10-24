@@ -11,7 +11,7 @@ Agent được lệnh *"continue with the next ticket in daily-tickets.md"* → 
 
 1. Mọi internal link phải trỏ tới URL đang LIVE. Link 404 sẽ bị gate chặn.
 2. Không tạo bài mới cho keyword đã có bài — STEP 0 check trước, trùng thì refresh.
-3. Byline lấy từ `/Users/kevinkreative/genseo/roster.json`. Roster rỗng = STOP, báo Kevin.
+3. Blog byline mặc định: **Mike Moretti**, Co-founder (`/pages/mike-moretti`), bio chép đúng câu trong `roster.json`. **Dr. Marcus Hale** vẫn hợp lệ; landing vẫn mặc định Hale. Không bịa credential, bằng cấp, năm kinh nghiệm, medical reviewer, hay headshot (`headshot` đang null). Roster rỗng = STOP, báo Kevin. `/pages/mike-moretti` phải HTTP 200 trước khi bài của Mike qua gate; không tự tạo trang đó.
 4. Publish bằng `scripts/shopify_publisher.py` (mặc định DRAFT — Kevin duyệt trong admin).
 5. Ảnh: `scripts/article_images.py` (ima2 OAuth). **HARD RULE (Kevin 2026-08-07):** ảnh CÓ
    sản phẩm trong khung → bắt buộc `--product-ref <handle>` (tự tải pack shot thật từ
