@@ -304,7 +304,7 @@ based and every house brand already has a page. Do not wait on it.
 | ⛔ | **Never mention or link MuscleMax** (competitor). Never link a product or collection that does not exist — 404 links fail the gate. |
 | 🧾 | **No COA / "clinically tested" claims where none exists** (house rule `no-coa-competitive-advantage`). Proxy proof only. |
 | 🗑 | Never `rm`. Move to `_superseded/` instead. Never touch `frozen_articles.txt` articles. |
-| ✍️ | One author: **Dr. Marcus Hale**, `roster.json` is the sole source. The approved bio sentence must appear **intact, after** the link: `[Dr. Marcus Hale](/pages/dr-marcus-hale) — Dr. Marcus Hale is the resident health researcher behind …` The validator matches the first 60 chars of the bio as a substring; putting the link *inside* the sentence breaks it. |
+| ✍️ | Blog byline: **Mike Moretti**, Co-founder (`/pages/mike-moretti`), bio copied verbatim from `roster.json`. He is not a doctor: no degree, year-count, medical-reviewer line, or headshot (`headshot` is null). **Dr. Marcus Hale** remains valid; landing pages stay on Hale. The validator matches the first 60 chars of that person's bio after the link. Putting the link inside the sentence breaks it. `/pages/mike-moretti` has to return HTTP 200 before a Mike draft can publish. Do not create that page from a run. |
 | 🔒 | `status="pending"` default, the `{active, flagged}` allow-list, and `approve` as the sole pending→active transition in the persona system must stay untouched. |
 | 🖼 | Faces come **only** from `~/genseo/personas/`. Never invent a face. New personas need Kevin's one-time real-face gate. |
 

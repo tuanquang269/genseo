@@ -17,10 +17,17 @@ import geo_citability
 
 # Single source of truth: roster.json (see scripts/genseo_roster.py). Empty roster
 # blocks publishing by design — fill roster.json with real, consenting people.
-ROSTER_PAGES=genseo_roster.PAGES
-APPROVED_BIOS=genseo_roster.BIOS
+# Read PAGES/BIOS off the module at check time so a checkout-local roster
+# (worktree roster.json) is what this process actually loaded.
 FAKE_AUTHORS=("Author One","Author Two","Author Three","Author Four",
               "Author Five","Author Six","Author Seven")
+# What a model adds around a vetted byline. The approved sentence is stripped
+# first, so "Dr. Marcus Hale" stays legal and "Dr. Mike Moretti" does not.
+# "medical reviewer" is the claim Mike must not grow: he is not a doctor.
+CREDENTIAL_RE=re.compile(
+    r'(?i)\b(Dr\.|\bMD\b|PhD|\bRD\b|Registered Dietitian|CISSN|Certified [A-Z]|'
+    r'\d+\+?\s*years of experience|Strength Coach|Endocrinolog|Naturopath|Physician|'
+    r'medical reviewer)')
               # Donor package's sanitized placeholder bylines — a model must never
               # resurrect them. Add any byline you ever have to remove.
 # US-market anchor: the answer block must place the reader geographically the way the
@@ -36,10 +43,59 @@ def _strip_approved(text):
     """Drop roster-approved bios and names before the invented-credential scan.
     Kevin's call 2026-08-07: the approved byline itself may carry a title
     ("Dr. Marcus Hale"), so the gate polices only what a model ADDS beyond the
-    vetted roster entry — strip bios first, then names (bios contain the name)."""
-    for b in APPROVED_BIOS: text = text.replace(b, "")
+    vetted roster entry — strip bios first, then names (bios contain the name).
+    Mike Moretti's sentence has no title. Adding Dr. or "medical reviewer"
+    around his name fails."""
+    for b in genseo_roster.BIOS: text = text.replace(b, "")
     for n in genseo_roster.NAMES.values(): text = text.replace(n, "")
     return text
+
+
+def _roster_handles_in(text):
+    found=[]
+    for h in re.findall(r'/pages/([a-z0-9-]+)', text or ""):
+        if h in genseo_roster.ROSTER and h not in found:
+            found.append(h)
+    return found
+
+
+def _bio_ok(section):
+    """True when every linked roster author is followed by that person's sentence.
+    No roster link in the section: any approved sentence still counts."""
+    handles=_roster_handles_in(section)
+    if not handles:
+        return any((s or "")[:60].lower() in section.lower() for s in genseo_roster.BIOS)
+    for h in handles:
+        bio=genseo_roster.ROSTER[h].get("bio") or ""
+        if not bio or bio[:60].lower() not in section.lower():
+            return False
+    return True
+
+
+def _headshot_fail(section):
+    """A photo in the author section is allowed only when that person's roster
+    headshot is a real path. null is a placeholder, not a licence to invent one."""
+    if not section or not re.search(r'!\[[^\]]*\]\([^)]+\)|<img\b', section, re.I):
+        return None
+    handles=_roster_handles_in(section) or list(genseo_roster.ROSTER)
+    for h in handles:
+        if not genseo_roster.ROSTER[h].get("headshot"):
+            return ("author headshot is not on the roster "
+                    "(null placeholder — do not invent a photo)")
+    return None
+
+
+def _bio_credential_fails(section, prefix):
+    fails=[]
+    if not section:
+        return fails
+    cred=CREDENTIAL_RE.search(_strip_approved(section))
+    if cred: fails.append(f"{prefix}: {cred.group(1)}")
+    if not _bio_ok(section):
+        fails.append("author bio is not the approved sentence for that staff member")
+    shot=_headshot_fail(section)
+    if shot: fails.append(shot)
+    return fails
 
 # ---------------------------------------------------------------------------
 # QRG content-quality gate (added 2026-07-30)
@@ -216,21 +272,27 @@ def http_ok(url):
 def test_author_gate():
     """python3 scripts/validate_article.py --self-check-author"""
     if not genseo_roster.ROSTER:
-        print("✗ roster.json is EMPTY — fill /Users/kevinkreative/genseo/roster.json with real people")
+        print("✗ roster.json is EMPTY — fill %s with real people" % genseo_roster.roster_path())
         print("  (see scripts/genseo_roster.py for the format). Publishing is blocked until then.")
         sys.exit(1)
-    handle, entry = next(iter(genseo_roster.ROSTER.items()))
-    name, bio = entry["name"], entry["bio"]
-    good=(f"## Frequently Asked Questions\n### Q?\nA.\n\n### About the Author\n"
-          f"[{name}](/pages/{handle}) — {bio} "
-          f"{name} contributes product comparisons and supplement buying guidance for US readers.")
-    assert not _author_fails(good), _author_fails(good)
-    assert _author_fails(good.replace(bio, f"{name} is a Strength Coach with over 8 years of experience."))
-    assert _author_fails(good.replace(f"{name}](/pages/{handle}", "Author Four](/pages/author-four"))
-    # the real --draft path sees HTML headings, not markdown ones
-    as_html=good.replace("### About the Author", "<h3>About the Author</h3>")
-    assert not _author_fails(as_html), _author_fails(as_html)
-    assert _author_fails(as_html.replace(bio, f"{name} is a Strength Coach & Fitness Specialist."))
+    for handle, entry in genseo_roster.ROSTER.items():
+        name, bio = entry["name"], entry["bio"]
+        good=(f"## Frequently Asked Questions\n### Q?\nA.\n\n### About the Author\n"
+              f"[{name}](/pages/{handle}) — {bio} "
+              f"{name} contributes product comparisons and supplement buying guidance for US readers.")
+        assert not _author_fails(good), (handle, _author_fails(good))
+        assert _author_fails(good.replace(bio, f"{name} is a Strength Coach with over 8 years of experience."))
+        assert _author_fails(good.replace(bio, f"{name} is a medical reviewer for this article."))
+        assert _author_fails(good.replace(f"{name}](/pages/{handle}", "Author Four](/pages/author-four"))
+        # the real --draft path sees HTML headings, not markdown ones
+        as_html=good.replace("### About the Author", "<h3>About the Author</h3>")
+        assert not _author_fails(as_html), (handle, _author_fails(as_html))
+        assert _author_fails(as_html.replace(bio, f"{name} is a Strength Coach & Fitness Specialist."))
+    mike = genseo_roster.ROSTER.get("mike-moretti")
+    hale = genseo_roster.ROSTER.get("dr-marcus-hale")
+    if mike and hale:
+        swapped = f"### About the Author\n[Mike Moretti](/pages/mike-moretti) — {hale['bio']}"
+        assert _author_fails(swapped), _author_fails(swapped)
     print(f"author gate self-check OK — roster has {len(genseo_roster.ROSTER)} author(s), "
           "invented credential and resurrected placeholder byline both fail")
 
@@ -242,12 +304,7 @@ def _author_fails(md):
         if re.search(rf"\b{re.escape(name)}\b", md): fails.append(f"fabricated byline: {name}")
     bio=BIO_RE.search(md)
     if bio:
-        bio=bio.group(1)
-        cred=re.search(r'(?i)\b(Dr\.|\bMD\b|PhD|\bRD\b|Registered Dietitian|CISSN|Certified [A-Z]|'
-                       r'\d+\+?\s*years of experience|Strength Coach|Endocrinolog|Naturopath|Physician)', _strip_approved(bio))
-        if cred: fails.append(f"invented credential: {cred.group(1)}")
-        if not any(s[:60].lower() in bio.lower() for s in APPROVED_BIOS):
-            fails.append("bio not approved sentence")
+        fails.extend(_bio_credential_fails(bio.group(1), "invented credential"))
     return fails
 
 
@@ -344,28 +401,24 @@ def main():
     # meta length, hand-written dates, and disease claims: geo_citability.assess.
     # author: named staff member + live page
     author_pages=set(re.findall(r'(/pages/[a-z-]+)', html))
-    if not ROSTER_PAGES:
-        fails.append("author roster EMPTY — fill /Users/kevinkreative/genseo/roster.json (real people only)")
-    elif not (author_pages & ROSTER_PAGES): fails.append("no roster author /pages/ link")
-    if author_pages & ROSTER_PAGES and not re.search(r'"@type"\s*:\s*"Person"', html):
+    if not genseo_roster.PAGES:
+        fails.append("author roster EMPTY — fill %s (real people only)" % genseo_roster.roster_path())
+    elif not (author_pages & genseo_roster.PAGES): fails.append("no roster author /pages/ link")
+    if author_pages & genseo_roster.PAGES and not re.search(r'"@type"\s*:\s*"Person"', html):
         # publisher injects Person JSON-LD after md->html, so a draft can't have it yet
         (warns if draft_mode else fails).append("staff author must use Person schema (publisher adds it post-conversion)")
     # A real name with an invented credential is the same YMYL fabrication as a fake doctor, and
-    # instructions in SKILL.md have not held before, so it is enforced here as code. Only the
-    # vetted bio sentence per author is allowed; anything the model adds about them fails.
+    # instructions in SKILL.md have not held before, so it is enforced here as code. The sentence
+    # has to be the approved one for the linked /pages/ handle. Mike Moretti's sentence does not
+    # make him a medical reviewer, and a null headshot is not a photo.
     for name in FAKE_AUTHORS:
         # case-sensitive: the Title Case placeholder names can't collide with prose
         # like "the author one might expect"
         if re.search(rf"\b{re.escape(name)}\b", html):
             fails.append(f"fabricated author byline: {name}")
-    bio=BIO_RE.search(html)
-    bio=bio.group(1) if bio else ""
-    if bio:
-        cred=re.search(r'(?i)\b(Dr\.|\bMD\b|PhD|\bRD\b|Registered Dietitian|CISSN|Certified [A-Z]|'
-                       r'\d+\+?\s*years of experience|Strength Coach|Endocrinolog|Naturopath|Physician)', _strip_approved(bio))
-        if cred: fails.append(f"invented credential in author bio: {cred.group(1)}")
-        if not any(s[:60].lower() in bio.lower() for s in APPROVED_BIOS):
-            fails.append("author bio is not the approved sentence for that staff member")
+    bio_m=BIO_RE.search(html)
+    if bio_m:
+        fails.extend(_bio_credential_fails(bio_m.group(1), "invented credential in author bio"))
     # brand mentions
     if html.count('Wellness Nest')<2: warns.append("brand 'Wellness Nest' used <2 times")
     # inline image COUNT — HARD gate (added 2026-07-26). The cheap model silently stopped generating
@@ -441,7 +494,7 @@ def main():
     urls=set(geo_citability.internal_urls(html))
     dead=[u for u in urls if not http_ok(u)]
     # author pages
-    for ap in (author_pages & ROSTER_PAGES):
+    for ap in (author_pages & genseo_roster.PAGES):
         if not http_ok("https://wellnessnest.co"+ap): dead.append("https://wellnessnest.co"+ap)
     if dead:
         fails.append("dead/404 links: "+", ".join(d.replace('https://wellnessnest.co','') for d in dead[:6]))
