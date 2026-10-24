@@ -13,6 +13,7 @@ import sys, os, re, glob, json, subprocess, tempfile, urllib.request, urllib.err
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import genseo_roster
 import brand_rules as _br
+import first_hand_experience as _fh
 import geo_citability
 
 # Single source of truth: roster.json (see scripts/genseo_roster.py). Empty roster
@@ -426,6 +427,15 @@ def main():
     # scripts/turkesterone_rules.py).
     _v=_br.violations(html)
     if _v: fails.append("brand rule — banned link(s)/mentions/claims: "+"; ".join(_v[:6]))
+
+    # First-hand experience quotes (blog articles only). The helper omits any
+    # registry line that is not rights_confirmed with approved_by set. A draft
+    # that pastes one of those lines, or a block that fails the claim lint, fails
+    # here. No block and no registry sentence is silent, so live output is unchanged
+    # until Kevin clears a line.
+    fh_fails, fh_warns = _fh.article_findings(html)
+    fails.extend(fh_fails)
+    warns.extend(fh_warns)
 
     # Citability (answer shape, FAQ, question H2s, product + related article,
     # primary source, alt text, draft meta length, no hand-written Published date).
