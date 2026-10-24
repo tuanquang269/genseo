@@ -3,13 +3,13 @@
 
 ![FloraFresh pouch beside a woman in a morning routine](https://cdn.shopify.com/s/files/1/0810/1563/6283/files/hero_9f17c634-99a9-4375-af5c-b4d37fae91b9.webp?v=1791803907)
 
-For vaginal probiotic dosage, there is no universal CFU target that guarantees a result. Human studies have tested different strains, products, and schedules; one registered pregnancy trial used 2 billion CFU per day of two named Lactobacillus strains, while FloraFresh provides 1 billion CFU per 2 gummies from Bacillus coagulans SNZ-1969. In the US, compare strain identity, potency basis, directions, and safety—not CFU alone.
+For vaginal probiotic dosage, there is no universal CFU target that guarantees a result. Human studies have tested different strains, products, and schedules; one registered pregnancy trial used 2 billion CFU per day of two named Lactobacillus strains, while FloraFresh provides 15 billion CFU per 2 gummies from Bacillus coagulans SNZ-1969. In the US, compare strain identity, potency basis, directions, and safety—not CFU alone.
 
 ## What CFU means on a vaginal probiotic label
 
 CFU means colony-forming units. It is a laboratory estimate of viable microorganisms able to form colonies under specified test conditions. It is not a direct measurement of how many organisms will colonize the vagina, and it is not a guarantee that a product will change symptoms.
 
-A label can state potency at manufacture or through the end of shelf life. Those are different promises. A product labeled at manufacture may have a lower count by its expiration date; a product with an expiry guarantee gives the buyer a more useful quality signal. Check the serving size before comparing numbers: “1 billion CFU” may mean one capsule, two gummies, or an entire daily serving.
+A label can state potency at manufacture or through the end of shelf life. Those are different promises. A product labeled at manufacture may have a lower count by its expiration date; a product with an expiry guarantee gives the buyer a more useful quality signal. Check the serving size before comparing numbers. In trial reports, “1 billion CFU” may mean one capsule, two gummies, or an entire daily serving.
 
 The most useful label questions are:
 
@@ -21,11 +21,11 @@ The most useful label questions are:
 
 ![FloraFresh pouch beside a water glass and weekly organizer](https://cdn.shopify.com/s/files/1/0810/1563/6283/files/inline-label_e27fb6e9-e26a-4c91-bf7d-e105386332b5.webp?v=1791803913)
 
-## Is 1 billion CFU enough for vaginal health?
+## Is the trial's 1 billion CFU enough for vaginal health?
 
-One billion CFU can be a meaningful label amount, but “enough” cannot be answered from the number alone. The relevant clinical question is whether the exact strain, dose, route, population, and outcome were studied together. A larger count from an unstudied strain is not automatically a better choice than a smaller count from a studied strain.
+A trial dose of one billion CFU can be a meaningful label amount, but “enough” cannot be answered from the number alone. The relevant clinical question is whether the exact strain, dose, route, population, and outcome were studied together. A larger count from an unstudied strain is not automatically a better choice than a smaller count from a studied strain.
 
-The public registry for NCT03688321 describes a randomized, triple-masked pregnancy study using two capsules before sleep. Each capsule contained 1 billion CFU of *Lactobacillus rhamnosus* GR-1 and *Lactobacillus reuteri* RC-14, for a stated total of 2 billion CFU per day. The record lists 204 actual participants and a 12-week intervention after confirmation of Group B Streptococcus positivity. That is evidence about a particular research setup, not a universal dosage recommendation for nonpregnant adults.
+The public registry for NCT03688321 describes a randomized, triple-masked pregnancy study using two capsules before sleep. The study dosed each capsule at 1 billion CFU of *Lactobacillus rhamnosus* GR-1 and *Lactobacillus reuteri* RC-14, for a stated total of 2 billion CFU per day. The record lists 204 actual participants and a 12-week intervention after confirmation of Group B Streptococcus positivity. That is evidence about a particular research setup, not a universal dosage recommendation for nonpregnant adults.
 
 Another registered randomized pregnancy study, NCT02795845, describes a multi-strain probiotic capsule taken twice daily but does not state a CFU amount in its public intervention description. That missing number matters: it prevents a clean comparison with the 1-billion-CFU-per-capsule example.
 
@@ -33,7 +33,7 @@ Neither registry entry proves that a product with the same number will prevent, 
 
 ## Strain matters more than a bigger number
 
-CFU is a quantity. Strain identity is part of the biological identity. Two products may both list 1 billion CFU while containing different organisms with different research histories, survival characteristics, and label directions.
+CFU is a quantity. Strain identity is part of the biological identity. In studies, two products may both list 1 billion CFU while containing different organisms with different research histories, survival characteristics, and label directions.
 
 This is why a comparison should separate three questions:
 
@@ -49,9 +49,9 @@ A multi-strain formula is not automatically superior. More strains can make a la
 
 ## FloraFresh dosage: what the label actually says
 
-FloraFresh Vaginal Probiotic Gummies list a serving of 2 gummies. The Supplement Facts source used for this article states that serving provides 1 billion CFU from Bacillus coagulans SNZ-1969, a spore-based probiotic. It also lists Vitamin C 30 mg and pineapple fruit powder with bromelain 100 mg. The formula is sweetened with maltitol and isomalt, so it is not sugar-free.
+FloraFresh Vaginal Probiotic Gummies list a serving of 2 gummies. The Supplement Facts source used for this article states that serving provides 15 billion CFU from Bacillus coagulans SNZ-1969, a spore-based probiotic. It also lists Vitamin C 30 mg and pineapple fruit powder with bromelain 100 mg. The formula is sweetened with maltitol and isomalt, so it is not sugar-free.
 
-That means FloraFresh can be compared honestly with a 1-billion-CFU daily label amount, but it should not be described as the same formula tested in a GR-1/RC-14 trial. Bacillus coagulans SNZ-1969 is a different strain identity from the Lactobacillus strains in that registry record. The CFU number alone does not bridge that evidence gap.
+That means FloraFresh’s 15 billion CFU per 2 gummies should not be described as the same formula tested in a GR-1/RC-14 trial, which used 2 billion CFU per day. Bacillus coagulans SNZ-1969 is a different strain identity from the Lactobacillus strains in that registry record. The CFU number alone does not bridge that evidence gap.
 
 The pouch identifies FloraFresh Vaginal Probiotic Gummies and 60 dietary supplement gummies. The live product price checked for this article was $40.99. Follow the product label for serving and storage directions; do not increase the serving simply to match a number from another study.
 
@@ -61,7 +61,7 @@ The table below is a label-reading framework, not a dosing prescription. “1 bi
 
 | Label amount or format | What it tells you | What it does not tell you | Buyer check |
 |---|---|---|---|
-| 1 billion CFU per daily serving | The stated daily quantity | Whether the strain has vaginal-health evidence | Read the exact strain and expiry basis |
+| In trials, 1 billion CFU per daily serving | The stated daily quantity | Whether the strain has vaginal-health evidence | Read the exact strain and expiry basis |
 | 1–10 billion CFU per serving | A broad commercial range | Whether a higher number works better | Compare strain identity before count |
 | 10+ billion CFU per serving | A higher stated quantity | Whether the count remains viable through expiry | Check the potency guarantee and storage |
 | CFU per capsule or gummy | Quantity for one unit | The actual daily dose | Multiply by the labeled serving size |
@@ -71,7 +71,7 @@ The goal is not to chase the largest number. The goal is to buy a product whose 
 
 <div style="background:#1e3a29;border-radius:14px;padding:20px 24px;margin:26px 0;">
 <p style="margin:0 0 6px;color:#8ee085;font-weight:700;letter-spacing:.04em;">OUR VERDICT</p>
-<p style="margin:0;color:#ffffff;">Choose by strain, potency basis, directions, and quality disclosure before choosing by CFU. FloraFresh’s label provides 1 billion CFU per 2 gummies from Bacillus coagulans SNZ-1969; that is a clear product fact, not proof that it matches a trial of different strains.</p>
+<p style="margin:0;color:#ffffff;">Choose by strain, potency basis, directions, and quality disclosure before choosing by CFU. FloraFresh’s label provides 15 billion CFU per 2 gummies from Bacillus coagulans SNZ-1969; that is a clear product fact, not proof that it matches a trial of different strains.</p>
 </div>
 
 ## Can you take too many vaginal probiotics?
@@ -106,7 +106,7 @@ For a deeper strain discussion, read [which vaginal probiotic strains actually w
 
 ## Frequently Asked Questions
 
-### Is 1 billion CFU enough for a vaginal probiotic?
+### Is the trial's 1 billion CFU enough for a vaginal probiotic?
 
 It may be a clear label amount, but there is no universal CFU threshold. Check the exact strain, potency basis, serving size, and whether the product was studied for the outcome you care about.
 
@@ -132,4 +132,4 @@ Do not use a supplement as a substitute for diagnosis or treatment. Odor, itchin
 
 ### About the Author
 
-[Dr. Marcus Hale](/pages/dr-marcus-hale) Dr. Marcus Hale is the resident health researcher behind Wellness Nest's editorial team, translating peer-reviewed sports-nutrition and longevity research into practical daily guidance for US readers.
+[Mike Moretti](/pages/mike-moretti) — Co-founder, Wellness Nest
