@@ -1362,7 +1362,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** turkesterone + storage checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1017-23 — nmn for hair with food** — `NMN and Hair Claims, Taken With Food (US 2026)`
+- [DONE 2026-10-25 https://wellnessnest.co/blogs/news/nmn-for-hair-with-food-us-evidence] **#CA1017-23 — nmn for hair with food** — `NMN and Hair Claims, Taken With Food (US 2026)`
   - **Primary keyword:** `nmn for hair with food` · **Secondary:** nmn hair growth, nmn and hair, does nmn help hair, nmn hair claims
   - **Search intent:** reader who has seen hair claims and wants human papers kept apart from animal headlines
   - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
