@@ -12,7 +12,7 @@ The US Food and Drug Administration explains its role with dietary supplements o
 
 ## How do shilajit gummies compare with resin for a United States shopper?
 
-Premium Himalayan Shilajit Gummies and ShilaSource Himalayan Shilajit Resin are separate products. The ShilaSource name covers the resin, not the gummies. One unit of either product is $69.99. A two-unit one-time order is $59.99 per unit, and a three-unit one-time order is $49.99 per unit. Automatic refill is $49.99, $44.99, or $39.99 per unit for one, two, or three units.
+Premium Himalayan Shilajit Gummies and ShilaSource Himalayan Shilajit Resin are separate products. The ShilaSource name covers the resin, not the gummies. One unit of either product is $69.99 one-time. Automatic Refill is $49.99 every 30 days, $44.99 every 60 days, or $39.99 every 90 days.
 
 <table>
 <thead>
@@ -39,19 +39,19 @@ Premium Himalayan Shilajit Gummies and ShilaSource Himalayan Shilajit Resin are 
 <td>$69.99</td>
 </tr>
 <tr>
-<td>Two units, one-time, per unit</td>
-<td>$59.99</td>
-<td>$59.99</td>
-</tr>
-<tr>
-<td>Three units, one-time, per unit</td>
+<td>Automatic Refill, every 30 days</td>
 <td>$49.99</td>
 <td>$49.99</td>
 </tr>
 <tr>
-<td>Automatic refill, per unit, for 1, 2, or 3 units</td>
-<td>$49.99 / $44.99 / $39.99</td>
-<td>$49.99 / $44.99 / $39.99</td>
+<td>Automatic Refill, every 60 days</td>
+<td>$44.99</td>
+<td>$44.99</td>
+</tr>
+<tr>
+<td>Automatic Refill, every 90 days</td>
+<td>$39.99</td>
+<td>$39.99</td>
 </tr>
 </tbody>
 </table>
@@ -384,7 +384,7 @@ This page describes shilajit as a humic substance, about 60-80% humus, with the 
 
 ### How do Wellness Nest shilajit gummies compare with the resin on price?
 
-Premium Himalayan Shilajit Gummies and ShilaSource Himalayan Shilajit Resin use the same per-unit prices. One unit is $69.99. Two units are $59.99 each, and three units are $49.99 each, on a one-time order. Automatic refill is $49.99, $44.99, or $39.99 per unit for one, two, or three units. The ShilaSource name covers the resin, not the gummies.
+Premium Himalayan Shilajit Gummies and ShilaSource Himalayan Shilajit Resin use the same one-time price and the same Automatic Refill plans. One unit is $69.99 one-time. Automatic Refill is $49.99 every 30 days, $44.99 every 60 days, or $39.99 every 90 days. The ShilaSource name covers the resin, not the gummies.
 
 ### Where can I buy shilajit gummies and resin in the United States?
 
