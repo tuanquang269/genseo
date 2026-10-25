@@ -24,6 +24,9 @@
 # executing a checkout script, or while this process is still reading a
 # script inside the checkout. GENSEO_SYNC_DRY_RUN=1 fetches and logs
 # "already up to date" or "would ff" and does not switch, stash, or merge.
+# GENSEO_SYNC_PS, when set to an executable, replaces that process list.
+# Tests point it at an empty script so a live landing or article job on
+# the machine does not block a temp repo. Unset, or set empty, ps is real.
 #
 # Bash reads a script as it runs. A fast-forward that rewrites that file
 # mid-run has produced a garbled token (the 2026-10 ontAsk failure). The
@@ -270,10 +273,15 @@ genseo_sync_cmd_is_job() {
 }
 
 # 0 when another live GenSeo job is executing. ps failure fails closed.
+# GENSEO_SYNC_PS replaces the list when it is a non-empty executable path.
 genseo_sync_other_job_script() {
   local tmp="" pid="" cmd="" saw=1
   tmp=$(mktemp "${TMPDIR:-/tmp}/genseo-sync-ps.XXXXXX") || return 0
-  if ps -axww -o pid=,args= >"$tmp" 2>/dev/null; then
+  if [ -n "${GENSEO_SYNC_PS:-}" ]; then
+    if [ -x "$GENSEO_SYNC_PS" ] && "$GENSEO_SYNC_PS" >"$tmp" 2>/dev/null; then
+      saw=0
+    fi
+  elif ps -axww -o pid=,args= >"$tmp" 2>/dev/null; then
     saw=0
   elif ps -eo pid=,args= >"$tmp" 2>/dev/null; then
     saw=0

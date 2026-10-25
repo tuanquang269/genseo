@@ -30,7 +30,9 @@ cleanup() {
     wait "$p" 2>/dev/null || true
   done
   if command -v pgrep >/dev/null 2>&1; then
-    for p in $(pgrep -f 'bash /tmp/genseo-self-apply.' 2>/dev/null || true); do
+    # Helpers this test spawned live under $WORK. A live job's helper is
+    # elsewhere and must not be killed.
+    for p in $(pgrep -f "bash $WORK/genseo-self-apply." 2>/dev/null || true); do
       kill "$p" 2>/dev/null || true
     done
   fi
@@ -202,6 +204,7 @@ run_apply() {
   # APPLY_ENV is a list of KEY=value assignments with no spaces in the values.
   env -i \
     HOME="$HOME_DIR" \
+    TMPDIR="$WORK" \
     PATH="${APPLY_PATH:-/usr/bin:/bin}" \
     PYTHONDONTWRITEBYTECODE=1 \
     G="$FIX" \
@@ -523,6 +526,7 @@ chmod 755 "$WORK/grokbot-genseo-daily"
 : >"$WORK/child.err"
 env -i \
   HOME="$HOME_DIR" \
+  TMPDIR="$WORK" \
   PATH="/usr/bin:/bin" \
   G="$FIX" \
   GENSEO_SELF_APPLY_LOG="$LOGF" \
@@ -580,7 +584,7 @@ cmp -s "$(landing_plist)" "$HOME_DIR/Library/LaunchAgents/.genseo-self-apply/com
 before_lines=$(wc -l <"$LAUNCH_LOG" | tr -d ' ')
 : >"$LOGF"
 env -i \
-  HOME="$HOME_DIR" PATH="/usr/bin:/bin" G="$FIX" \
+  HOME="$HOME_DIR" TMPDIR="$WORK" PATH="/usr/bin:/bin" G="$FIX" \
   GENSEO_SELF_APPLY_LOG="$LOGF" GENSEO_SELF_APPLY_SH="$SELF" \
   GENSEO_SELF_APPLY_TEST=1 GENSEO_INSTALL_WRAPPER_TEST=1 GENSEO_HOST_KIND=macbook \
   GENSEO_LAUNCHCTL="$WORK/lc-mac" \
@@ -622,7 +626,7 @@ exit 0
 EOF
 chmod 755 "$WORK/run_landing_daily.sh"
 env -i \
-  HOME="$HOME_DIR" PATH="/usr/bin:/bin" G="$FIX" \
+  HOME="$HOME_DIR" TMPDIR="$WORK" PATH="/usr/bin:/bin" G="$FIX" \
   GENSEO_SELF_APPLY_LOG="$LOGF" GENSEO_SELF_APPLY_SH="$SELF" $APPLY_ENV \
   /bin/bash "$WORK/run_landing_daily.sh" >"$WORK/child.out" 2>"$WORK/child.err" &
 CHILD=$!
@@ -731,6 +735,34 @@ assert_continued "ps unreadable"
 has "$LOGF" "self-apply: com.pati.genseo-landing left in place — process list unreadable" "unreadable ps is fail-closed"
 [ "$(cat "$(landing_plist)")" = "OLD-LANDING" ] && ok "unreadable ps does not copy" || bad "unreadable ps copied"
 
+echo "9b. test mode ignores a landing process that is actually running"
+new_fix live-ps
+seed_wrapper_match
+mkdir -p "$HOME_DIR/Library/LaunchAgents"
+cp "$FIX/deploy/com.pati.genseo-daily.macbook.plist" "$(daily_plist)"
+stamp_loaded "com.pati.genseo-daily.plist"
+seed_plist "com.pati.genseo-landing.plist" "OLD-LANDING"
+cat >"$WORK/run_landing_daily.sh" <<'EOF'
+#!/bin/bash
+sleep 180
+EOF
+chmod 755 "$WORK/run_landing_daily.sh"
+"$WORK/run_landing_daily.sh" >/dev/null 2>&1 &
+LIVE=$!
+HOLD_PIDS="$HOLD_PIDS $LIVE"
+write_launchctl ok "$WORK/lc-live"
+# No GENSEO_SELF_APPLY_PS: test mode must not read the machine process list.
+APPLY_ENV="GENSEO_SELF_APPLY_TEST=1 GENSEO_INSTALL_WRAPPER_TEST=1 GENSEO_HOST_KIND=macbook GENSEO_LAUNCHCTL=$WORK/lc-live"
+run_apply
+assert_continued "live landing process"
+lacks "$LOGF" "a job is running" "test mode does not scan the machine process list"
+has "$LOGF" "self-apply: com.pati.genseo-landing reloaded" "landing label reloads while a landing process exists"
+cmp -s "$FIX/deploy/com.pati.genseo-landing.macbook.plist" "$(landing_plist)" \
+  && ok "landing bytes were copied beside the live process" || bad "landing bytes were not copied"
+kill "$LIVE" 2>/dev/null || true
+wait "$LIVE" 2>/dev/null || true
+HOLD_PIDS=""
+
 echo "10. reload failure restores the previous plist"
 new_fix fail-once
 seed_wrapper_match
@@ -798,7 +830,7 @@ mkdir -p "$HOME_DIR/Library/LaunchAgents"
 cp "$FIX/deploy/com.pati.genseo-daily.macbook.plist" "$(daily_plist)"
 write_launchctl ok "$WORK/lc-self"
 env -i \
-  HOME="$HOME_DIR" PATH="/usr/bin:/bin" G="$FIX" \
+  HOME="$HOME_DIR" TMPDIR="$WORK" PATH="/usr/bin:/bin" G="$FIX" \
   GENSEO_SELF_APPLY_LOG="$LOGF" GENSEO_SELF_APPLY_TEST=1 \
   GENSEO_LAUNCHCTL="$WORK/lc-self" \
   /bin/bash -c '
@@ -862,7 +894,7 @@ sleep 30
 EOF
 chmod 755 "$WORK/grokbot-genseo-daily"
 env -i \
-  HOME="$HOME_DIR" PATH="/usr/bin:/bin" G="$FIX" \
+  HOME="$HOME_DIR" TMPDIR="$WORK" PATH="/usr/bin:/bin" G="$FIX" \
   GENSEO_SELF_APPLY_LOG="$LOGF" GENSEO_SELF_APPLY_SH="$SELF" \
   GENSEO_SELF_APPLY_TEST=1 GENSEO_INSTALL_WRAPPER_TEST=1 GENSEO_HOST_KIND=macbook \
   GENSEO_LAUNCHCTL="$WORK/lc-time" \

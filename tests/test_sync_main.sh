@@ -11,6 +11,9 @@ ARTICLE="$ROOT/deploy/grokbot-genseo-daily.sh"
 LANDING="$ROOT/scripts/run_landing_daily.sh"
 INSTALL="$ROOT/scripts/install_mac_daily_wrapper.sh"
 WORK="$(mktemp -d "${TMPDIR:-/tmp}/sync-main.XXXXXX")" || exit 1
+PS_EMPTY="$WORK/ps-empty"
+printf '%s\n' '#!/bin/bash' 'exit 0' >"$PS_EMPTY"
+chmod 755 "$PS_EMPTY"
 PASS=0
 FAIL=0
 RC=0
@@ -92,7 +95,11 @@ bare_main() { git -C "$BARE" rev-parse main; }
 run_sync() {
   : >"$WORK/out"
   : >"$WORK/err"
+  # Default process list is empty. SYNC_ENV may set GENSEO_SYNC_PS again:
+  # a fixture path, or GENSEO_SYNC_PS= to read the real process list.
+  # Later env assignments win.
   env -i PATH="/usr/bin:/bin" GIT_TERMINAL_PROMPT=0 \
+    GENSEO_SYNC_PS="$PS_EMPTY" \
     ${SYNC_ENV:-} \
     bash -c '
       set -uo pipefail
@@ -196,6 +203,37 @@ EOF
   [ "$(cat "$REPO/logs/noise")" = "keep-log" ] && ok "ignored log survived" || bad "ignored log changed"
   [ ! -e "$REPO/HOOK_RAN" ] && ok "post-merge hook did not run" || bad "post-merge hook ran"
   [ "$(bare_main)" = "$bare_before" ] && ok "fast-forward did not push" || bad "fast-forward pushed"
+fi
+
+echo "2b. a live landing process blocks the real process list and not the isolated one"
+if ! init_repo livejob || ! advance_origin livejob; then
+  bad "livejob fixture"
+else
+  ok "livejob fixture"
+  cat >"$WORK/run_landing_daily.sh" <<'EOF'
+#!/bin/bash
+sleep 180
+EOF
+  chmod 755 "$WORK/run_landing_daily.sh"
+  "$WORK/run_landing_daily.sh" >/dev/null 2>&1 &
+  LIVE=$!
+  HOLD_PIDS="$HOLD_PIDS $LIVE"
+  before=$(head_of "$REPO")
+  SYNC_ENV="GENSEO_SYNC_PS="
+  run_sync
+  unset SYNC_ENV
+  assert_rc 0 "real process list exits 0"
+  has "$WORK/out" "another GenSeo job has a script open" "real process list sees the landing process"
+  [ "$(head_of "$REPO")" = "$before" ] && ok "real process list did not fast-forward" || bad "real process list fast-forwarded"
+  [ ! -e "$REPO/FROM_ORIGIN" ] && ok "real process list did not take the origin file" || bad "real process list took the origin file"
+  run_sync
+  assert_rc 0 "isolated process list exits 0"
+  has "$WORK/out" "origin/main: fast-forwarded" "isolated process list still fast-forwards"
+  [ "$(head_of "$REPO")" = "$(git -C "$REPO" rev-parse origin/main)" ] && ok "isolated process list HEAD matches origin/main" || bad "isolated process list HEAD is not origin/main"
+  [ "$(head_of "$REPO")" != "$before" ] && ok "isolated process list HEAD moved" || bad "isolated process list HEAD stayed"
+  kill "$LIVE" 2>/dev/null || true
+  wait "$LIVE" 2>/dev/null || true
+  HOLD_PIDS=""
 fi
 
 echo "3. untracked files that do not overlap fast-forward; overlapping edits are preserved"
@@ -379,6 +417,7 @@ else
   : >"$WORK/out"
   : >"$WORK/err"
   env -i PATH="/usr/bin:/bin" GIT_TERMINAL_PROMPT=0 \
+    GENSEO_SYNC_PS="$PS_EMPTY" \
     bash -c '
       set -uo pipefail
       G=$1
@@ -403,6 +442,7 @@ else
   : >"$WORK/out"
   : >"$WORK/err"
   env -i PATH="/usr/bin:/bin" GIT_TERMINAL_PROMPT=0 \
+    GENSEO_SYNC_PS="$PS_EMPTY" \
     bash -c '
       set -uo pipefail
       G=$1
@@ -507,6 +547,7 @@ else
   : >"$WORK/out"
   : >"$WORK/err"
   env -i PATH="/usr/bin:/bin" GIT_TERMINAL_PROMPT=0 \
+    GENSEO_SYNC_PS="$PS_EMPTY" \
     bash -c '
       set -uo pipefail
       G=$1
@@ -589,8 +630,16 @@ EOF
   "$REPO/scripts/run_ticket_headless.sh" >/dev/null 2>&1 &
   HOLD_PIDS="$HOLD_PIDS $!"
   open_pid=$!
+  cat >"$WORK/ps-openjob" <<EOF
+#!/bin/bash
+printf '%s %s\n' "$open_pid" "bash $REPO/scripts/run_ticket_headless.sh"
+exit 0
+EOF
+  chmod 755 "$WORK/ps-openjob"
   before=$(head_of "$REPO")
+  SYNC_ENV="GENSEO_SYNC_PS=$WORK/ps-openjob"
   run_sync
+  unset SYNC_ENV
   assert_rc 0 "open script exits 0"
   has "$WORK/out" "another GenSeo job has a script open" "open script warns"
   [ "$(head_of "$REPO")" = "$before" ] && ok "open script left HEAD" || bad "open script moved HEAD"
@@ -644,6 +693,7 @@ else
   : >"$WORK/out"
   : >"$WORK/err"
   env -i PATH="/usr/bin:/bin" GIT_TERMINAL_PROMPT=0 \
+    GENSEO_SYNC_PS="$PS_EMPTY" \
     GIT_DIR="$DECOY/.git" GIT_WORK_TREE="$DECOY" \
     bash -c '
       set -uo pipefail
@@ -747,6 +797,7 @@ EOF
   : >"$WORK/out"
   : >"$WORK/err"
   env -i HOME="$link_home" PATH="/usr/bin:/bin" GIT_TERMINAL_PROMPT=0 \
+    GENSEO_SYNC_PS="$PS_EMPTY" \
     bash "$REPO/deploy/grokbot-genseo-daily.sh" >"$WORK/out" 2>"$WORK/err"
   RC=$?
   assert_rc 0 "re-exec exits 0"
@@ -805,6 +856,7 @@ EOF
   : >"$WORK/out"
   : >"$WORK/err"
   env -i HOME="$link_home" PATH="/usr/bin:/bin" GIT_TERMINAL_PROMPT=0 \
+    GENSEO_SYNC_PS="$PS_EMPTY" \
     bash "$WORK/bin/grokbot-genseo-daily.sh" >"$WORK/out" 2>"$WORK/err"
   RC=$?
   assert_rc 0 "stale launcher exits 0"
@@ -836,6 +888,7 @@ EOF
   : >"$WORK/out"
   : >"$WORK/err"
   env -i PATH="/usr/bin:/bin" GIT_TERMINAL_PROMPT=0 \
+    GENSEO_SYNC_PS="$PS_EMPTY" \
     bash "$REPO/inside.sh" >"$WORK/out" 2>"$WORK/err"
   RC=$?
   assert_rc 0 "inside-checkout exits 0"
