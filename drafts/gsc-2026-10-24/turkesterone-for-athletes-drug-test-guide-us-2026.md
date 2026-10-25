@@ -1,6 +1,6 @@
-# Turkesterone for Athletes: Drug-Test Guide (US 2026)
-<!-- meta_description: Is turkesterone banned by WADA? The 2026 Prohibited List does not name it. Ecdysterone is monitored. US athletes should check the product. -->
-<!-- refresh-of: turkesterone-for-athletes-drug-test-guide-us-2026 article 634907001147. Same URL. Opening and 2026 WADA paragraph updated. Do not publish. -->
+# Is Turkesterone Banned by WADA? No (US 2026)
+<!-- meta_description: No. The 2026 WADA Prohibited List does not name turkesterone. Ecdysterone is monitored, not on that list. US athletes should still check the product with USADA. -->
+<!-- refresh-of: turkesterone-for-athletes-drug-test-guide-us-2026 article 634907001147. Same URL. Title and meta rewritten for the WADA query. Opening answer kept. Do not publish. -->
 
 No. The [2026 WADA Prohibited List](https://www.wada-ama.org/sites/default/files/2025-09/2026list_en_final_clean_september_2025.pdf), in force since 1 January 2026, does not name turkesterone. The [2026 Monitoring Program](https://www.wada-ama.org/sites/default/files/2025-09/2026_list_monitoring_program_en_final_clean_september_2025.pdf) names ecdysterone, not turkesterone, as a substance that is not on the Prohibited List. [USADA](https://www.usada.org/dietary-supplements/athletes-need-know-ecdysteroids/) says ecdysteroids, including turkesterone, are not currently prohibited. Tested athletes in the United States should still check the exact product with USADA.
 
