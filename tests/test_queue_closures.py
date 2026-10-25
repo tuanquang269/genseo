@@ -117,7 +117,11 @@ class FreshCheckoutTests(unittest.TestCase):
             rc, landing_first = first_line(landing_path, tmp)
             self.assertEqual(rc, 0)
             self.assertFalse(os.path.exists(os.path.join(tmp, "state", "queue-closures.json")))
-            self.assertIn("pure-shilajit-gold-resin", landing_first)
+            # 729ced5 pinned this head as gold resin. 1d67c19 drafted that
+            # ticket (page 166333972795), so a ledger-less checkout must not
+            # return it. The head is whatever checkbox is still open.
+            self.assertNotIn("page 166333972795", landing_first)
+            self.assertNotIn("taking shilajit resin daily", landing_first)
             self.assertNotIn(FLORA_ANGLE, landing_first)
             self.assertNotIn(GUMMIES_ANGLE, landing_first)
         for ticket_id in CLOSED_IDS:
@@ -128,6 +132,8 @@ class FreshCheckoutTests(unittest.TestCase):
         helper_landing = qc.effective_open_lines(landing, [], "daily-landing-tickets.md")
         self.assertEqual(article_open, helper_article)
         self.assertEqual(landing_open, helper_landing)
+        self.assertEqual(article_first, article_open[0])
+        self.assertEqual(landing_first, landing_open[0])
         self.assertIn("#CA1016-7", article_open[0])
         for ticket_id in CLOSED_IDS:
             self.assertFalse(any("#" + ticket_id in line for line in article_open))
@@ -135,13 +141,24 @@ class FreshCheckoutTests(unittest.TestCase):
                 "- [DONE 2026-10-18 %s] **#%s" % (LIVE_URLS[CLOSED_IDS.index(ticket_id)], ticket_id),
                 article,
             )
-        self.assertIn("pure-shilajit-gold-resin", landing_open[0])
+        self.assertNotIn("page 166333972795", landing_open[0])
         self.assertNotIn(FLORA_ANGLE, landing_open[0])
         self.assertFalse(any(GUMMIES_ANGLE in line for line in landing_open))
+        self.assertFalse(any("page 166333972795" in line for line in landing_open))
         self.assertIn("- [DRAFT 2026-10-18 page 166299173179]", landing)
         self.assertIn("- [DRAFT 2026-10-19 page 166314115387]", landing)
+        self.assertIn("- [DRAFT 2026-10-20 page 166333972795]", landing)
+        self.assertIn("pure-shilajit-gold-resin", landing)
         self.assertIn(FLORA_ANGLE, landing)
+        # ce4216d closed the gummies "missed day" line as FAILED. It stays in
+        # the file and is not an open ticket without a ledger.
         self.assertTrue(any(
+            line.startswith("- [FAILED 2026-10-22 ")
+            and "premium-himalayan-shilajit-gummies" in line
+            and "missed day" in line
+            for line in landing.splitlines()
+        ))
+        self.assertFalse(any(
             "premium-himalayan-shilajit-gummies" in line and "missed day" in line
             for line in landing_open
         ))
