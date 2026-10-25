@@ -1348,7 +1348,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** probiotic + alcohol checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1017-22 — how much heat turkesterone storage** — `Turkesterone Storage: How Much Heat Matters? (2026)`
+- [DONE 2026-10-25 https://wellnessnest.co/blogs/news/turkesterone-storage-heat-rules-for-the-us] **#CA1017-22 — how much heat turkesterone storage** — `Turkesterone Storage: How Much Heat Matters? (2026)`
   - **Primary keyword:** `how much heat turkesterone storage` · **Secondary:** how to store turkesterone, turkesterone jar heat, turkesterone shelf life, turkesterone in a hot car
   - **Search intent:** jar owner deciding where capsules should sit in a hot US kitchen or car
   - **Template:** LISTICLE · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
