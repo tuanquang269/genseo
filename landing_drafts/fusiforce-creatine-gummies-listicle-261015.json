@@ -212,10 +212,10 @@
     "source": "https://wellnessnest.co/products/fusiforce-creatine-gummies (price, variants and product facts fetched 2026-10-15); 90-Day Guarantee and free-shipping threshold verified from Wellness Nest policy and site banner.",
     "rating_html": "<b>4.2</b> TrustScore · 1,144 reviews on Trustpilot",
     "price": {
-      "now": "$59.99",
-      "was": "$79.99",
+      "now": "$59.99/pouch",
+      "was": "$79.99/pouch",
       "tag": "Automatic Refill",
-      "note": "every 30 days. Every 60 days is $54.99. Every 90 days is $49.99. Pause or cancel anytime. Or $79.99 one-time."
+      "note": "1 pouch every 30 days at $59.99/pouch. 2 pouches are $54.99/pouch every 60 days. 3 pouches are $49.99/pouch every 90 days. Pause or cancel anytime. Or $79.99/pouch one-time."
     },
     "bullets": [
       "5,000 mg creatine monohydrate per 3-gummy serving",
@@ -279,7 +279,7 @@
   "trust_source": "TrustScore and review count: state/trustpilot/wellnessnest.json, read 2026-10-15. Guarantee, shipping threshold and formula facts: live Wellness Nest product and policy pages, fetched 2026-10-15.",
   "sticky_cta": {
     "name": "FusiForce Creatine",
-    "note": "$59.99 every 30 days",
+    "note": "$59.99/pouch every 30 days",
     "cta": "SEE SERVING",
     "href": "https://wellnessnest.co/products/fusiforce-creatine-gummies"
   },

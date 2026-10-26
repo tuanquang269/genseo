@@ -46,3 +46,7 @@ Now stated: One-time $79.99 on both Green Apple and Blueberry (variant price 799
 
 Source: https://wellnessnest.co/products/fusiforce-creatine-gummies.js fetched 2026-10-26 at 2026-10-26T01:40:31Z. One-time price also matched https://wellnessnest.co/collections/all/products.json and https://wellnessnest.co/collections/best-seller/products.json.
 Not stated: a multi-unit one-time total from a 2026-10-08 buy-box note. It is not in the 2026-10-26 public JSON.
+
+## Mac re-check 2026-10-26
+
+Same Mac re-check as the FusiForce product JSON: per-pouch prices, 1/2/3 pouches on the 30/60/90-day plans. The page now says that.

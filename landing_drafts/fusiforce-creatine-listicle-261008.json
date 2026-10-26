@@ -193,7 +193,7 @@
   "pill": "⚡️ FUSIFORCE CREATINE GUMMIES",
   "accent": "Creatine Monohydrate",
   "title": "in a Chewable Gummy",
-  "sub": "Creatine monohydrate in a green apple or blueberry gummy. $79.99 one-time on the product page.",
+  "sub": "Creatine monohydrate in a green apple or blueberry gummy. $79.99/pouch one-time on the product page.",
   "cta": "SEE INGREDIENTS",
   "href": "https://wellnessnest.co/products/fusiforce-creatine-gummies",
   "meta": [
@@ -206,10 +206,10 @@
   "source": "https://wellnessnest.co/products/fusiforce-creatine-gummies (fetched 2026-10-08); refund + free-shipping threshold from /policies/refund-policy and the site ticker banner",
   "rating_html": "<b>4.2</b> TrustScore · 1,144 reviews on Trustpilot",
   "price": {
-   "now": "$59.99",
-   "was": "$79.99",
+   "now": "$59.99/pouch",
+   "was": "$79.99/pouch",
    "tag": "Automatic Refill",
-   "note": "every 30 days. Every 60 days is $54.99. Every 90 days is $49.99. Pause or cancel anytime. Or $79.99 one-time."
+   "note": "1 pouch every 30 days at $59.99/pouch. 2 pouches are $54.99/pouch every 60 days. 3 pouches are $49.99/pouch every 90 days. Pause or cancel anytime. Or $79.99/pouch one-time."
   },
   "bullets": [
    "<b>5,000 mg creatine monohydrate</b> per 3-gummy serving",
@@ -282,7 +282,7 @@
  "trust_source": "TrustScore/count: state/trustpilot/wellnessnest.json (trustpilot.com/review/wellnessnest.co, read 2026-10-08). Guarantee + free-shipping threshold: /policies/refund-policy and the site ticker. Lab-tested: PDP description 'lab-tested after cooking in ISO 17025-accredited facilities' (Kevin-approved 2026-10-08, pending manual update).",
  "sticky_cta": {
   "name": "FusiForce Creatine Gummies",
-  "note": "$59.99 every 30 days",
+  "note": "$59.99/pouch every 30 days",
   "cta": "SEE INGREDIENTS",
   "href": "https://wellnessnest.co/products/fusiforce-creatine-gummies"
  },

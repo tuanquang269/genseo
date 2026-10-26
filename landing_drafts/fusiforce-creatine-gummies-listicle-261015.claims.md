@@ -33,3 +33,7 @@ Removed from this draft: One-time $69.99 and an Every 4 weeks plan at $52.49, sh
 Now stated: One-time $79.99 on both Green Apple and Blueberry (variant price 7999). Automatic Refill every 30 days $59.99 (plan 10022650171), every 60 days $54.99 (plan 10022682939), every 90 days $49.99 (plan 10022715707). No percent-off is stated. compare_at 11473 is not used as a strike price. quantity_price_breaks empty.
 
 Source: https://wellnessnest.co/products/fusiforce-creatine-gummies.js fetched 2026-10-26 at 2026-10-26T01:40:31Z. One-time price also matched https://wellnessnest.co/collections/all/products.json and https://wellnessnest.co/collections/best-seller/products.json.
+
+## Mac re-check 2026-10-26
+
+FusiForce prices re-checked on this Mac against https://wellnessnest.co/products/fusiforce-creatine-gummies.js and products.json. Both variants are 7999. Plans 10022650171 / 10022682939 / 10022715707 allocate 5999 / 5499 / 4999 per pouch. The 2026-10-23 pricing table maps 1/2/3 pouches to every 30/60/90 days. The page now says that. compare_at 11473 is still not the strike price. No percent badge is stated.

@@ -36,3 +36,7 @@ Removed from this draft: Subscribe & Save $67.50, described as 10% off every 4 w
 Now stated: One-time $75.00 (price 7500). Compare-at $119.98 (compare_at_price 11998) is the struck price. selling_plan_groups is empty, so no subscription price is stated. quantity_price_breaks empty.
 
 Source: https://wellnessnest.co/products/pure-shilajit-gold-resin.js fetched 2026-10-26 at 2026-10-26T01:40:31Z. One-time price also matched https://wellnessnest.co/collections/all/products.json and https://wellnessnest.co/collections/shilajit/products.json.
+
+## Mac re-check 2026-10-26
+
+Gold Resin re-checked on this Mac against https://wellnessnest.co/products/pure-shilajit-gold-resin.js and products.json. Price 7500, compare_at 11998, selling_plan_groups empty. The card now prints $75.00/jar and $119.98/jar. No subscription price is stated.

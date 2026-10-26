@@ -6,7 +6,7 @@ Fetched: 2026-10-25. Product: `ageaura-pure-nmn-tmg-nad-complex`.
 |---|---|---|
 | AgeAura product identity is Pure NMN + TMG NAD+ Complex | https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex | Live PDP and `/products/<handle>.js` fetched this run; `scripts/ageaura_rules.py --brief` checked the handle allowlist. |
 | PDP one-time price is $79.99 | https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex.js | Re-fetched 2026-10-26; variant price was `7999`. compare_at_price is null. |
-| Automatic Refill | https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex.js | Re-fetched 2026-10-26. One-time $79.99 (variant price 7999, compare_at_price null). Automatic Refill every 30 days $59.99 (plan 10022551867), every 60 days $54.99 (plan 10022584635), every 90 days $49.99 (plan 10022617403). Card shows the 30-day price. Sticky says "$59.99 every 30 days". Plan descriptions say pause or cancel anytime. |
+| Automatic Refill | https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex.js | Re-fetched 2026-10-26. One-time $79.99 (variant price 7999, compare_at_price null). Automatic Refill every 30 days $59.99 (plan 10022551867), every 60 days $54.99 (plan 10022584635), every 90 days $49.99 (plan 10022617403). Card shows $59.99/bottle for 1 bottle every 30 days. The note prices 2 bottles at $54.99/bottle every 60 days and 3 bottles at $49.99/bottle every 90 days. Sticky says "$59.99/bottle every 30 days". Plan descriptions say pause or cancel anytime. |
 | PDP lists 500 mg NMN and 250 mg TMG per daily serving | https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex | PDP HTML fetched this run; amounts kept in product and offer blocks only. |
 | Product label states 60 Capsules and 30 Servings | `product_refs/ageaura-pure-nmn-tmg-nad-complex.label.json` | Existing OCR-accepted label record; no dosage claim added to narrative. |
 | Huang trial tested NMN in 66 adults aged 40 to 65 for 60 days; serum NAD+/NADH rose 38% from baseline in the NMN group and 14.3% in placebo | https://doi.org/10.3389/fragi.2022.851698 | Europe PMC core record fetched this run; figures copied from abstract. |
@@ -40,6 +40,10 @@ Re-fetched public product JSON on 2026-10-26 at 2026-10-26T01:40:31Z.
 
 Removed from this draft: No change to the one-time $79.99 or the 30-day $59.99. The sticky line said "From $59.99", and the 60-day and 90-day plans were not on the card.
 
-Now stated: One-time $79.99 (variant price 7999, compare_at_price null). Automatic Refill every 30 days $59.99 (plan 10022551867), every 60 days $54.99 (plan 10022584635), every 90 days $49.99 (plan 10022617403). Card shows the 30-day price. Sticky says "$59.99 every 30 days".
+Now stated: One-time $79.99 (variant price 7999, compare_at_price null). Automatic Refill every 30 days $59.99 (plan 10022551867), every 60 days $54.99 (plan 10022584635), every 90 days $49.99 (plan 10022617403). Card shows $59.99/bottle for 1 bottle every 30 days. The note prices 2 bottles at $54.99/bottle every 60 days and 3 bottles at $49.99/bottle every 90 days. Sticky says "$59.99/bottle every 30 days".
 
 Source: https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex.js fetched 2026-10-26 at 2026-10-26T01:40:31Z. One-time price also matched https://wellnessnest.co/collections/all/products.json.
+
+## Mac re-check 2026-10-26
+
+Same Mac re-check as the AgeAura product JSON: per-bottle prices, 1/2/3 bottles on the 30/60/90-day plans. The page now says that.

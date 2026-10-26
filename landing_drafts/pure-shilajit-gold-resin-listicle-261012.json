@@ -179,10 +179,10 @@
     "source": "https://wellnessnest.co/products/pure-shilajit-gold-resin.js (one-time $75.00, compare-at $119.98, no selling plan, fetched 2026-10-26); refund + free-shipping threshold from /policies/refund-policy and the site ticker banner",
     "rating_html": "<b>4.2</b> TrustScore · 1,144 reviews on Trustpilot",
     "price": {
-      "now": "$75.00",
-      "was": "$119.98",
+      "now": "$75.00/jar",
+      "was": "$119.98/jar",
       "tag": "COMPARE AT PRICE",
-      "note": "one-time price on the product page. Compare-at is the struck price. No selling plan was listed in the product JSON."
+      "note": "one-time price per jar on the product page. Compare-at is the struck price per jar. No selling plan was listed in the product JSON."
     },
     "bullets": [
       "Himalayan Shilajit, 75% Fulvic Acid",
@@ -243,7 +243,7 @@
   "trust_source": "TrustScore/count: state/trustpilot/wellnessnest.json (trustpilot.com/review/wellnessnest.co, read 2026-10-12). Guarantee + free-shipping threshold: /policies/refund-policy, site ticker. Raw resin: PDP label.",
   "sticky_cta": {
     "name": "Pure Shilajit Gold Resin",
-    "note": "$75.00 one-time",
+    "note": "$75.00/jar one-time",
     "cta": "SEE THE LABEL",
     "href": "https://wellnessnest.co/products/pure-shilajit-gold-resin"
   },

@@ -194,7 +194,7 @@
   "pill": "⚡️ FLORAFRESH PROBIOTIC GUMMIES",
   "accent": "Two Gummies",
   "title": "in One Daily Habit",
-  "sub": "A pineapple-flavored daily gummy. $40.99 one-time on the product page.",
+  "sub": "A pineapple-flavored daily gummy. $40.99/pouch one-time on the product page.",
   "cta": "SEE INGREDIENTS",
   "href": "https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies",
   "meta": [
@@ -207,10 +207,10 @@
   "source": "https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies (price $40.99, fetched 2026-10-09); refund terms from /policies/refund-policy (90-Day MBG, first order of each product), free-shipping threshold from the site ticker",
   "rating_html": "<b>4.2</b> TrustScore · 1,144 reviews on Trustpilot",
   "price": {
-   "now": "$35.25",
-   "was": "$40.99",
+   "now": "$35.25/pouch",
+   "was": "$40.99/pouch",
    "tag": "Automatic Refill",
-   "note": "Automatic Refill every month. Every 60 days is $31.15. Every 90 days is $27.05. Pause or cancel anytime. Or $40.99 one-time."
+   "note": "1 pouch every month at $35.25/pouch. 2 pouches are $31.15/pouch every 60 days. 3 pouches are $27.05/pouch every 90 days. Pause or cancel anytime. Or $40.99/pouch one-time."
   },
   "bullets": [
    "<b>2 gummies daily</b>, best taken with meals",
@@ -275,7 +275,7 @@
  "trust_source": "TrustScore/count: state/trustpilot/wellnessnest.json (fetched 2026-10-09). Guarantee: /policies/refund-policy. Free shipping $70+: site ticker. Vegan + pineapple: Supplement Facts label (VEGAN badge, Pineapple Fruit Powder) and pack label.",
  "sticky_cta": {
   "name": "FloraFresh Gummies",
-  "note": "$35.25 every month",
+  "note": "$35.25/pouch every month",
   "cta": "SEE INGREDIENTS",
   "href": "https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies"
  },

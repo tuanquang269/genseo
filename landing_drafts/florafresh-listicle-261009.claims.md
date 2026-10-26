@@ -44,3 +44,7 @@ Removed from this draft: Subscribe & Save Every 4 weeks at $23.91 (old plan 9849
 Now stated: One-time $40.99 (variant 51093850390843, price 4099). Automatic Refill every month $35.25 (plan 10022486331, fixed_amount 574 cents, allocation 3525), every 60 days $31.15 (plan 10027041083), every 90 days $27.05 (plan 10022846779). No percent-off is stated. compare_at 5799 is not used as a strike price.
 
 Source: https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies.js fetched 2026-10-26 at 2026-10-26T01:40:31Z. One-time price also matched https://wellnessnest.co/collections/all/products.json.
+
+## Mac re-check 2026-10-26
+
+FloraFresh prices re-checked on this Mac against https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies.js and products.json. Variant 4099, compare_at 5799 still not used as the strike. Plan 10022486331 is fixed_amount 574, allocation 3525, every month. Plan 10027041083 allocates 3115 every 60 days. Plan 10022846779 allocates 2705 every 90 days. The 2026-10-24 storefront carts billed qty 1 / 2 / 3 on those plans at $35.25 / $62.30 / $81.15, which is $35.25 / $31.15 / $27.05 per pouch. The page now says the per-pouch prices and the pack counts. No percent-off is stated. FloraFresh is not on the 2026-10-23 AgeAura / FusiForce / ShilaSource price ladder.

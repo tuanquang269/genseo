@@ -31,3 +31,7 @@ Removed from this draft: No price change. The 2026-10-23 figures still match.
 Now stated: One-time $75.00 (price 7500). Compare-at $119.98 (compare_at_price 11998). selling_plan_groups is empty. quantity_price_breaks empty. The draft's "no Subscribe and Save" line remains accurate because no selling plan is listed.
 
 Source: https://wellnessnest.co/products/turkesterone-advanced-formula.js fetched 2026-10-26 at 2026-10-26T01:40:31Z. One-time price also matched https://wellnessnest.co/collections/all/products.json.
+
+## Mac re-check 2026-10-26
+
+Same Mac re-check as the Turkesterone product JSON. Price 7500, compare_at 11998, no selling plan. No customer-facing price line was changed.
