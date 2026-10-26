@@ -1403,7 +1403,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** probiotic + storage checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1017-26 — how much turkesterone loading** — `Turkesterone Loading: How Much the Start Changes? (2026)`
+- [DONE 2026-10-26 https://wellnessnest.co/blogs/news/turkesterone-loading-is-it-needed-in-the-us-1] **#CA1017-26 — how much turkesterone loading** — `Turkesterone Loading: How Much the Start Changes? (2026)`
   - **Primary keyword:** `how much turkesterone loading` · **Secondary:** turkesterone loading phase, turkesterone bigger start, do you load turkesterone, turkesterone front load
   - **Search intent:** lifter who saw a loading week claimed and wants the trial schedule
   - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
