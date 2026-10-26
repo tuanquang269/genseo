@@ -1458,7 +1458,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** probiotic + ingredients checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1017-30 — shilajit storage with food** — `Shilajit Storage at Home, With Food Nearby (2026)`
+- [DONE 2026-10-26 https://wellnessnest.co/blogs/news/shilajit-storage-6-home-rules-for-the-us] **#CA1017-30 — shilajit storage with food** — `Shilajit Storage at Home, With Food Nearby (2026)`
   - **Primary keyword:** `shilajit storage with food` · **Secondary:** how to store shilajit resin, shilajit jar heat, shilajit shelf life, shilajit in the kitchen
   - **Search intent:** jar owner who wants to know where gold resin should sit at home
   - **Template:** LISTICLE · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
