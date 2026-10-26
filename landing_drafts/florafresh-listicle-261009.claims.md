@@ -10,7 +10,7 @@ Sources fetched this run: live PDP `/products/florafresh-vaginal-probiotics-gumm
 | 544 women diagnosed with BV / vaginal infection, double-blind, oral capsules 6 weeks; cytologist swab reads; 61.5% vs 26.9%; 12 weeks 51.1% vs 20.8% (p<0.001) | Vujic 2013, doi:10.1016/j.ejogrb.2012.12.031 (PMID 23395559) | Europe PMC abstract |
 | Pregnancy trial (UK), GR-1 + RC-14 daily from 9-14 weeks to end of pregnancy; BV 15% (19/123) vs 9% (10/115) at 18-20 weeks, no difference; no change in microbiome composition | Husain 2020, doi:10.1111/1471-0528.15675 (PMID 30932317) | Europe PMC abstract |
 | Evidence gap: all 3 trials = capsules of one Lactobacillus strain pair; no gummy or spore-based (Bacillus coagulans) arm; no abstract reports odor | the 3 abstracts above + Europe PMC searches (D-mannose + probiotic + vaginal RCT; gummy probiotic vaginal RCT: no matching trial) | Europe PMC search 2026-10-09 |
-| Price $40.99 one-time; S&S "Every 4 weeks" $23.91 (41.67% off, shown "Save 41%") | PDP .js selling plan 9849831739 | curl 2026-10-09 |
+| Price | /products/florafresh-vaginal-probiotics-gummies.js | One-time $40.99 (variant 51093850390843, price 4099). Automatic Refill every month $35.25 (plan 10022486331, fixed_amount 574 cents, allocation 3525), every 60 days $31.15 (plan 10027041083), every 90 days $27.05 (plan 10022846779). No percent-off is stated. compare_at 5799 is not used as a strike price. |
 | 2 gummies daily with water, best with meals; 60 gummies; 30-day supply; pineapple flavor | PDP FAQ + pack label | PDP HTML + OCR of product_refs pack |
 | Vegan, gluten-free (offer bullet + trust strip) | Supplement Facts image badges (VEGAN, GLUTEN FREE) | image read 2026-10-09; "sugar-free" dropped: PDP description only, not on the label |
 | Formula (offer bullet + product card + bridge + row 06): per 2-gummy serving, SNZ-1969 Probiotic Blend (Bacillus coagulans, spore-based) 1B CFU, Vitamin C 30mg, Pineapple Fruit Powder 100mg | Supplement Facts image FloraFresh_Supplement_Fact.webp | **Kevin confirmed 2026-10-09** the label is the correct formula |
@@ -27,10 +27,20 @@ Sources fetched this run: live PDP `/products/florafresh-vaginal-probiotics-gumm
 
 ## Deliberately left out
 - PDP social proof: "79,239+ women", "71,180+ happy ladies", "4.8/5 based on 7,139 reviews", "7,159+ raw reviews", the 93% / 89% / 91% / 95% "after 2 weeks" stats, "Top OB/GYN recommended formula", the "medical advisory board" doctors, the Facebook-style testimonials, the "how we compare" chart. Not sourced; not allowed.
-- compare_at $57.99: not used as "was"; anchor is S&S vs one-time.
+- compare_at $57.99: not used as "was"; anchor is Automatic Refill vs the one-time price.
 - Any claim that FloraFresh contains GR-1 / RC-14: the PDP lists species only (or B. coagulans on the facts panel). Row 03 says a species-only label cannot be matched to these trials.
 - Odor, pH, discomfort, dryness, UTI, yeast-treatment claims: not measured as such in the abstracts used, and disease claims are not allowed.
 - Reid's yeast/coliform culture findings: left out to avoid an infection-prevention reading.
 - Reviews skipped: ALESSANDRA VICEDOMINI (5★ tag but text "Terrible never received the goods!"); Shilajit effect reviews (other product, health claims); "Makes me feel good even with perimenopause" (product unknown, health effect).
 - PDP return text also mentions 30 days; the policy page and ticker say 90-Day for first orders, used as worded there.
 - Images: no faces; pack shots only hero, bridge, expert, offer (+ product card = product_refs pack as webp). No cutout/label.json exists for FloraFresh, so pack_images is not set.
+
+## Price correction 2026-10-26
+
+Re-fetched public product JSON on 2026-10-26 at 2026-10-26T01:40:31Z.
+
+Removed from this draft: Subscribe & Save Every 4 weeks at $23.91 (old plan 9849831739), shown as Save 41% / 41.67% off. One-time $40.99 was already correct.
+
+Now stated: One-time $40.99 (variant 51093850390843, price 4099). Automatic Refill every month $35.25 (plan 10022486331, fixed_amount 574 cents, allocation 3525), every 60 days $31.15 (plan 10027041083), every 90 days $27.05 (plan 10022846779). No percent-off is stated. compare_at 5799 is not used as a strike price.
+
+Source: https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies.js fetched 2026-10-26 at 2026-10-26T01:40:31Z. One-time price also matched https://wellnessnest.co/collections/all/products.json.

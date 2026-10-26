@@ -2,7 +2,7 @@
 
 | Claim | Source | How verified |
 |---|---|---|
-| ShilaSource product name, format, current one-time price, and refill pricing | `https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin.js`, fetched 2026-10-24 | Live Shopify product JSON. One-time price is $69.99; Automatic Refill every 30 days is $49.99. |
+| ShilaSource product name, format, current one-time price, and refill pricing | `https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin.js`, fetched 2026-10-24 | Re-fetched 2026-10-26. One-time $69.99 (variant price 6999). Automatic Refill every 30 days $49.99 (plan 10022748475), every 60 days $44.99 (plan 10022781243), every 90 days $39.99 (plan 10022814011). Card shows the 30-day price. Sticky says "$49.99 every 30 days" (not "From", because $39.99 is lower). compare_at 9998 is not used as a strike price. quantity_price_breaks empty. Not stated: selling plan 9830990139, name "Delivery every 8 weeks", options include Product Quantity 2 and Order Frequency 8-week, adjustment value_type percentage value 19, allocation price 5669. Charge semantics are unclear, so the draft does not quote that plan. |
 | Pack label lines | `product_refs/shilasource-himalayan-shilajit-resin.label.json` | Existing OCR whitelist. Only required and optional lines used. No milligram claim or Supplement Facts panel added. |
 | Pack visuals | Live PDP image index 0 and `product_refs/shilasource-himalayan-shilajit-resin-cutout.png` | Generated images used the real cutout as reference. Every pack shot passed image QC. |
 | Human testosterone study | https://doi.org/10.1111/and.12482 | Europe PMC metadata fetched 2026-10-24, PMID 26395129. Copy limits result to the specified preparation, population, and testosterone outcome. |
@@ -20,3 +20,14 @@
 - No specific laboratory result, COA, purity advantage, or third-party testing advantage.
 - No invented expert credentials, clinical quote, scarcity, countdown, or product-effect testimonial.
 - Stale PDP HTML description pricing was omitted because current product JSON is the source used for the offer.
+
+## Price correction 2026-10-26
+
+Re-fetched public product JSON on 2026-10-26 at 2026-10-26T01:40:31Z.
+
+Removed from this draft: Nothing in the one-time $69.99 or 30-day $49.99 figures. The sticky line said "From $49.99", which is not the lowest Automatic Refill price.
+
+Now stated: One-time $69.99 (variant price 6999). Automatic Refill every 30 days $49.99 (plan 10022748475), every 60 days $44.99 (plan 10022781243), every 90 days $39.99 (plan 10022814011). Card shows the 30-day price. Sticky says "$49.99 every 30 days" (not "From", because $39.99 is lower). compare_at 9998 is not used as a strike price. quantity_price_breaks empty.
+
+Source: https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin.js fetched 2026-10-26 at 2026-10-26T01:40:31Z. One-time price also matched https://wellnessnest.co/collections/all/products.json and https://wellnessnest.co/collections/shilajit/products.json.
+Not stated: selling plan 9830990139, name "Delivery every 8 weeks", options include Product Quantity 2 and Order Frequency 8-week, adjustment value_type percentage value 19, allocation price 5669. Charge semantics are unclear, so the draft does not quote that plan.

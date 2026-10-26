@@ -15,7 +15,7 @@ All study facts read from Europe PMC abstracts (REST API, 2026-10-08). Numbers c
 | Creatine safe and well tolerated in healthy people, studies up to five years | Kreider RB et al., JISSN 2017;14:18, doi:10.1186/s12970-017-0173-z | Abstract: "short and long-term supplementation (up to 30 g/day for 5 years) is safe and well-tolerated in healthy individuals" |
 | Bridge: creatine monohydrate in a green apple or blueberry gummy, Panax ginseng extract on the same label | https://wellnessnest.co/products/fusiforce-creatine-gummies (+ .js variants Green Apple / Blueberry) | PDP 2026-10-08 |
 | Offer: 5,000 mg creatine monohydrate per 3-gummy serving; Panax ginseng root extract (10% ginsenosides); 90 gummies per pouch | PDP title "Creatine Monohydrate Gummies 5,000 mg", PDP description, pack label "90 GUMMIES" | PDP + pack OCR 2026-10-08 |
-| Price: $49.99 Subscribe & Save every 4 weeks, $69.99 one-time ("Save $20" = 69.99 - 49.99) | /products/fusiforce-creatine-gummies.js: price 6999; plan 9850224955 "Deliver every 4 weeks" 28.58% = 4999; buy box "Billed every 4 weeks $49.99" | Shopify JSON + rendered buy box 2026-10-08 |
+| Price | /products/fusiforce-creatine-gummies.js | One-time $79.99 on both Green Apple and Blueberry (variant price 7999). Automatic Refill every 30 days $59.99 (plan 10022650171), every 60 days $54.99 (plan 10022682939), every 90 days $49.99 (plan 10022715707). No percent-off is stated. compare_at 11473 is not used as a strike price. quantity_price_breaks empty. |
 | 90-day money-back guarantee (first order), free shipping $70+ | /policies/refund-policy, site ticker | fetched 2026-10-08 |
 | TrustScore 4.2 / 1,144 reviews; expert quote Sesseobe Nicaise Deeo 5★ (verified, 2025-11-07); cards Miloslav Kral, Mel Barrett, Lesley Pegrum (5★) | state/trustpilot/wellnessnest.json (fetched 2026-10-08T04:16Z), review ids in URLs | Verbatim text + name; store-level service/quality reviews |
 
@@ -27,7 +27,7 @@ Kevin approved (15:51 ICT) restoring the lab-tested claim, exact PDP wording, no
 - "85+ minerals" / fulvic acid: not on the FusiForce pack or PDP, so not added.
 
 ## Deliberately NOT used
-- compare_at_price $114.73 (no strike-through against it; it is ~1.6x the one-time price and not a price the product sells at). The PDP buy box also shows "$114.73" struck next to the 12-week plan and "One-time purchase • $209.97" (3 units): confusing, flagged to Kevin, not mirrored.
+- compare_at_price $114.73 (no strike-through against it; it is not the one-time selling price and is not used as a strike-through. A 2026-10-08 buy-box note mentioned a multi-unit one-time total. The 2026-10-26 public JSON has empty quantity_price_breaks, so that multi-unit total is not stated.
 - Panax ginseng amount: the PDP supplement-facts images disagree (25 mg vs 50 mg; 3 vs 4 gummies per serving), so no ginseng mg is printed.
 - PDP marketing claims ("8 of 10 Amazon brands failed", Eurofins / COA-per-batch lines etc.), pack claims (lean muscle growth, energy, cognitive function) — not independently verified.
 - Body copy carries no dosage-with-units (PATI #6); doses appear only in the offer card and chart source lines.
@@ -35,3 +35,14 @@ Kevin approved (15:51 ICT) restoring the lab-tested claim, exact PDP wording, no
 
 ## Images
 Pack shots (hero, offer, dark/expert, bridge) generated with --ref product_refs/fusiforce-creatine-gummies-cutout.png (subject lift of PDP image 0) + PACK FACE WHITELIST; each passed scripts/landing_label_gate.py (product_refs/fusiforce-creatine-gummies.label.json) and a 2x mark zoom check. Row scenes: no products, no faces.
+
+## Price correction 2026-10-26
+
+Re-fetched public product JSON on 2026-10-26 at 2026-10-26T01:40:31Z.
+
+Removed from this draft: Subscribe & Save every 4 weeks at $49.99 (old plan 9850224955, described as 28.58% off) and one-time $69.99, shown as Save $20.
+
+Now stated: One-time $79.99 on both Green Apple and Blueberry (variant price 7999). Automatic Refill every 30 days $59.99 (plan 10022650171), every 60 days $54.99 (plan 10022682939), every 90 days $49.99 (plan 10022715707). No percent-off is stated. compare_at 11473 is not used as a strike price. quantity_price_breaks empty.
+
+Source: https://wellnessnest.co/products/fusiforce-creatine-gummies.js fetched 2026-10-26 at 2026-10-26T01:40:31Z. One-time price also matched https://wellnessnest.co/collections/all/products.json and https://wellnessnest.co/collections/best-seller/products.json.
+Not stated: a multi-unit one-time total from a 2026-10-08 buy-box note. It is not in the 2026-10-26 public JSON.

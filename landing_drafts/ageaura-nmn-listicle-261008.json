@@ -199,7 +199,7 @@
   "pill": "⚡️ AGEAURA NMN + TMG COMPLEX",
   "accent": "NMN + TMG",
   "title": "in One Daily Serving",
-  "sub": "A daily two-capsule NMN + TMG formula. $69.95 on the product page.",
+  "sub": "A daily two-capsule NMN + TMG formula. $79.99 one-time on the product page.",
   "cta": "SEE INGREDIENTS",
   "href": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex",
   "meta": [
@@ -209,13 +209,13 @@
   "guarantee": "Your first order is covered by our 90-Day Money-Back Guarantee.",
   "image": "tmp_images/landing-ageaura-nmn-listicle-261008/v3-gen-offer.webp",
   "alt": "AgeAura Pure NMN + TMG NAD+ Complex bottle on stacked travertine discs",
-  "source": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex (price $69.95, fetched 2026-10-08); refund + free-shipping threshold from the PDP's 90-Day Guarantee accordion, /policies/refund-policy, and the site ticker banner",
+  "source": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex (one-time $79.99 and Automatic Refill plans, fetched 2026-10-26); refund + free-shipping threshold from the PDP's 90-Day Guarantee accordion, /policies/refund-policy, and the site ticker banner",
   "rating_html": "<b>4.2</b> TrustScore · 1,144 reviews on Trustpilot",
   "price": {
-   "now": "$59.46",
-   "was": "$69.95",
-   "tag": "Save 15%",
-   "note": "with Subscribe & Save, delivered every 4 weeks. Or $69.95 one-time."
+   "now": "$59.99",
+   "was": "$79.99",
+   "tag": "Automatic Refill",
+   "note": "every 30 days. Every 60 days is $54.99. Every 90 days is $49.99. Pause or cancel anytime. Or $79.99 one-time."
   },
   "bullets": [
    "<b>500 mg NMN + 250 mg TMG</b> in every daily serving",
@@ -223,7 +223,7 @@
    "60 vegan capsules · 30 servings per bottle",
    "90-day money-back guarantee on your first order"
   ],
-  "price_source": "PDP /products/ageaura-pure-nmn-tmg-nad-complex.js 2026-10-08: price 69.95, selling plan '1 product every 4 weeks at 15% discount' (69.95 x 0.85 = 59.46). Bullets = PDP ingredients accordion + label."
+  "price_source": "Live public JSON fetched 2026-10-26 (2026-10-26T01:40:31Z) from /products/ageaura-pure-nmn-tmg-nad-complex.js: variant price 7999 ($79.99 one-time), compare_at_price null. Automatic Refill plan 10022551867 every 30 days at $59.99; plan 10022584635 every 60 days at $54.99; plan 10022617403 every 90 days at $49.99. quantity_price_breaks empty. The public products.json listing for this handle also shows variant price 79.99. Bullets = PDP ingredients accordion + label."
  },
  "product": {
   "name": "AgeAura Pure NMN + TMG NAD+ Complex",
@@ -283,7 +283,7 @@
  "trust_source": "TrustScore/count: state/trustpilot/wellnessnest.json (trustpilot.com/review/wellnessnest.co, read 2026-10-08). Guarantee + free-shipping threshold: PDP 90-Day Guarantee accordion, /policies/refund-policy, site ticker. Vegan capsules: PDP label.",
  "sticky_cta": {
   "name": "AgeAura NMN + TMG",
-  "note": "From $59.46",
+  "note": "$59.99 every 30 days",
   "cta": "SEE INGREDIENTS",
   "href": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex"
  },

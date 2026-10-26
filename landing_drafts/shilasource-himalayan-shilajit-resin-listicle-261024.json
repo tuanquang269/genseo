@@ -159,9 +159,9 @@
     "alt": "ShilaSource Himalayan Shilajit Resin tube and amber glass jar on stacked travertine discs",
     "source": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin.js and https://wellnessnest.co/policies/refund-policy fetched 2026-10-24. One-time price $69.99 and refill plans from current product JSON.",
     "rating_html": "<b>4.2</b> TrustScore · 1,144 reviews on Trustpilot",
-    "price": {"now": "$49.99", "was": "$69.99", "tag": "AUTOMATIC REFILL", "note": "with the every 30 days plan. Or $69.99 one-time."},
+    "price": {"now": "$49.99", "was": "$69.99", "tag": "AUTOMATIC REFILL", "note": "every 30 days. Every 60 days is $44.99. Every 90 days is $39.99. Pause or cancel anytime. Or $69.99 one-time."},
     "bullets": ["ShilaSource Himalayan Shilajit Resin", "Dietary Supplement", "70% Fulvic Acid* and Lab-Tested for Purity* as printed on the pack", "1.06oz (30g), with the split 75 SERVINGS badge as printed on the pack", "90-day money-back guarantee on first orders"],
-    "price_source": "Live PDP /products/shilasource-himalayan-shilajit-resin.js fetched 2026-10-24: $69.99 one-time; Automatic Refill every 30 days at $49.99. Guarantee from live refund policy. Pack lines from product_refs/shilasource-himalayan-shilajit-resin.label.json."
+    "price_source": "Live public JSON fetched 2026-10-26 (2026-10-26T01:40:31Z) from /products/shilasource-himalayan-shilajit-resin.js: variant price 6999 ($69.99 one-time). Automatic Refill plan 10022748475 every 30 days at $49.99; plan 10022781243 every 60 days at $44.99; plan 10022814011 every 90 days at $39.99. quantity_price_breaks empty. compare_at 9998 is not used as a strike price. Plan 9830990139 (Delivery every 8 weeks) is not stated. Guarantee from live refund policy. Pack lines from product_refs/shilasource-himalayan-shilajit-resin.label.json."
   },
   "product": {
     "name": "ShilaSource Himalayan Shilajit Resin",
@@ -176,6 +176,6 @@
     {"label": "Das A et al. Skin Transcriptome of Middle-Aged Women Supplemented With Natural Herbo-mineral Shilajit. J Med Food 2019. doi:10.1080/07315724.2018.1564088", "url": "https://doi.org/10.1080/07315724.2018.1564088"},
     {"label": "Kamgar E et al. Quantifying of thallium in Shilajit and its supplements. BMC Chemistry 2025;19:20. doi:10.1186/s13065-025-01384-7", "url": "https://doi.org/10.1186/s13065-025-01384-7"}
   ],
-  "sticky_cta": {"name": "ShilaSource Shilajit Resin", "note": "From $49.99", "cta": "SEE THE LABEL", "href": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin"},
+  "sticky_cta": {"name": "ShilaSource Shilajit Resin", "note": "$49.99 every 30 days", "cta": "SEE THE LABEL", "href": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin"},
   "pack_images": ["tmp_images/landing-shilasource-himalayan-shilajit-resin-listicle-261024/pack-required.webp"]
 }

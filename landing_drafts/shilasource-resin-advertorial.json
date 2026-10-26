@@ -70,41 +70,47 @@
   "tps": [
    "90-day money-back guarantee (first order)",
    "Free shipping on orders over $70",
-   "Subscribe and save on every delivery",
+   "Automatic Refill every 30, 60, or 90 days",
    "Questions? support@wellnessnest.co"
   ],
-  "options_title": "Subscribe & Save:",
+  "options_title": "Automatic Refill:",
   "options": [
    {
-    "title": "1 Jar",
-    "sub": "4-week refill",
-    "badge": "33% OFF",
-    "compare": "$59.99",
+    "title": "Every 30 days",
+    "sub": "Automatic Refill",
+    "compare": "$69.99",
+    "price": "$49.99",
+    "variant_id": 51117944340795,
+    "qty": 1,
+    "selling_plan": 10022748475
+   },
+   {
+    "title": "Every 60 days",
+    "sub": "Automatic Refill",
+    "compare": "$69.99",
+    "price": "$44.99",
+    "variant_id": 51117944340795,
+    "qty": 1,
+    "selling_plan": 10022781243
+   },
+   {
+    "title": "Every 90 days",
+    "sub": "Automatic Refill",
+    "compare": "$69.99",
     "price": "$39.99",
     "variant_id": 51117944340795,
     "qty": 1,
-    "selling_plan": 9850323259
-   },
-   {
-    "title": "3 Jars",
-    "sub": "12-week refill",
-    "badge": "35% OFF",
-    "compare": "$179.97",
-    "price": "$116.97",
-    "variant_id": 51117944340795,
-    "qty": 3,
-    "selling_plan": 9850356027,
-    "tag": "BEST VALUE"
+    "selling_plan": 10022814011
    }
   ],
-  "cta": "GET STARTED NOW",
+    "cta": "GET STARTED NOW",
   "icon_row": [
    "Renews until canceled",
    "Free shipping over $70",
    "90-Day Money-Back Guarantee"
   ],
   "buy_once": {
-   "text": "Buy once for $59.99",
+   "text": "Buy once for $69.99",
    "note": "One jar, no subscription.",
    "variant_id": 51117944340795
   },
@@ -131,7 +137,7 @@
    }
   ],
   "url": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin",
-  "source": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin (one-time $59.99; subscription $39.99 every 4 weeks for one jar; $116.97 every 12 weeks for three jars; 'Subscriptions renew automatically at the selected cadence until canceled.'; fetched 2026-10-06). % OFF and per-jar price computed from those prices."
+  "source": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin.js fetched 2026-10-26 (2026-10-26T01:40:31Z): variant 51117944340795 price 6999 ($69.99 one-time). Automatic Refill plan 10022748475 every 30 days allocation 4999 ($49.99); plan 10022781243 every 60 days allocation 4499 ($44.99); plan 10022814011 every 90 days allocation 3999 ($39.99). quantity_price_breaks empty, so no multi-jar one-time price and no percent-off are stated. compare_at_price 9998 is not used. Plan 9830990139 (Delivery every 8 weeks) is not stated. Allocation compare_at_price on the Automatic Refill plans is 6999, the one-time price."
  },
  "testimonials_heading": "What Our Customers Say",
  "testimonials": [

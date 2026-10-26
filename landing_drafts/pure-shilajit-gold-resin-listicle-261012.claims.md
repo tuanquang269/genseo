@@ -11,7 +11,7 @@
 | "A 2025 lab survey tested raw shilajit and finished shilajit supplements for thallium... Trace amounts turned up in both" | Fetched abstract via DOI this run | Kamgar E et al. BMC Chem 2025;19:20. doi:10.1186/s13065-025-01384-7 |
 | "Some finished products tested higher than the raw material they came from" | Stated in the same abstract's findings | Kamgar E et al. BMC Chem 2025, doi:10.1186/s13065-025-01384-7 |
 | Product name, bullets (Himalayan Shilajit, 75% Fulvic Acid, Lab-Tested, 1.06 oz (30g) - 75 servings, Dietary Supplements) | OCR-confirmed front-of-pack lines (no milligram token on this label) + live PDP copy | `product_refs/pure-shilajit-gold-resin.label.json`; `https://wellnessnest.co/products/pure-shilajit-gold-resin` fetched 2026-10-12 |
-| Price $75.00, Subscribe & Save $67.50 (10% off, every 4 weeks) | Direct from Shopify product JSON (cents) | `pure-shilajit-gold-resin.js` fetched 2026-10-12: price 7500, selling_plan price 6750 |
+| Price | /products/pure-shilajit-gold-resin.js | One-time $75.00 (price 7500). Compare-at $119.98 (compare_at_price 11998) is the struck price. selling_plan_groups is empty, so no subscription price is stated. quantity_price_breaks empty. |
 | "90-Day Money-Back Guarantee" | Verbatim text match | `/policies/refund-policy` fetched 2026-10-12 |
 | "Free shipping on orders $70+" | Verbatim from live site ticker | Site ticker banner, fetched 2026-10-12 |
 | Trustpilot TrustScore 4.2, 1,144 reviews (thousands comma as displayed) | Read exactly from the refreshed file, not re-scraped this run | `state/trustpilot/wellnessnest.json` |
@@ -26,3 +26,13 @@
 - No face appears in any generated image (hero/offer/expert/product all reuse the OCR-passed label crop `pack-ref.webp`; scene images are no-face UGC lane).
 - No countdown timer, stock counter, or fake scarcity messaging anywhere on the page.
 - No rating/review below 4 stars used; no review edited or paraphrased.
+
+## Price correction 2026-10-26
+
+Re-fetched public product JSON on 2026-10-26 at 2026-10-26T01:40:31Z.
+
+Removed from this draft: Subscribe & Save $67.50, described as 10% off every 4 weeks.
+
+Now stated: One-time $75.00 (price 7500). Compare-at $119.98 (compare_at_price 11998) is the struck price. selling_plan_groups is empty, so no subscription price is stated. quantity_price_breaks empty.
+
+Source: https://wellnessnest.co/products/pure-shilajit-gold-resin.js fetched 2026-10-26 at 2026-10-26T01:40:31Z. One-time price also matched https://wellnessnest.co/collections/all/products.json and https://wellnessnest.co/collections/shilajit/products.json.

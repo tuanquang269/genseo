@@ -197,7 +197,7 @@
     "pill": "⚡️ HIMALAYAN SHILAJIT GUMMIES",
     "accent": "Shilajit + 7 Botanicals",
     "title": "in Two Gummies a Day",
-    "sub": "A chewable shilajit and botanical blend. $59.99 one-time on the product page.",
+    "sub": "A chewable shilajit and botanical blend. $69.99 one-time on the product page.",
     "cta": "SEE INGREDIENTS",
     "href": "https://wellnessnest.co/products/premium-himalayan-shilajit-gummies",
     "meta": [
@@ -210,10 +210,10 @@
     "source": "https://wellnessnest.co/products/premium-himalayan-shilajit-gummies (live PDP fetched 2026-10-22); refund and shipping terms from the live PDP and site policy/ticker.",
     "rating_html": "<b>4.2</b> TrustScore · 1,144 reviews on Trustpilot",
     "price": {
-      "now": "$44.99",
-      "was": "$59.99",
-      "tag": "SUBSCRIBE & SAVE",
-      "note": "with the Every 4 weeks plan. Or $59.99 one-time."
+      "now": "$49.99",
+      "was": "$69.99",
+      "tag": "AUTOMATIC REFILL",
+      "note": "every 30 days. Every 60 days is $44.99. Every 90 days is $39.99. Pause or cancel anytime. Or $69.99 one-time."
     },
     "bullets": [
       "<b>150 mg shilajit extract (10:1)</b> per 2-gummy serving",
@@ -222,7 +222,7 @@
       "60 gummies · 30 servings per pouch",
       "90-day money-back guarantee on your first order"
     ],
-    "price_source": "Live PDP /products/premium-himalayan-shilajit-gummies.js fetched 2026-10-22: one-time $59.99; Every 4 weeks selling plan 9807954235 at $44.99. Pack and formula lines from the live PDP and product_refs label file."
+    "price_source": "Live public JSON fetched 2026-10-26 (2026-10-26T01:40:31Z) from /products/premium-himalayan-shilajit-gummies.js: variant price 6999 ($69.99 one-time). Automatic Refill plan 10022748475 every 30 days at $49.99; plan 10022781243 every 60 days at $44.99; plan 10022814011 every 90 days at $39.99. quantity_price_breaks empty, so no two-unit or three-unit one-time price is stated. compare_at 9998 is not used as a strike price. Also confirmed on /collections/shilajit/products.json and /collections/all/products.json variant price 69.99. Pack and formula lines from the live PDP and product_refs label file."
   },
   "product": {
     "name": "Premium Himalayan Shilajit Gummies",
@@ -258,7 +258,7 @@
   ],
   "sticky_cta": {
     "name": "Shilajit Gummies",
-    "note": "From $44.99",
+    "note": "$49.99 every 30 days",
     "cta": "SEE INGREDIENTS",
     "href": "https://wellnessnest.co/products/premium-himalayan-shilajit-gummies"
   },
