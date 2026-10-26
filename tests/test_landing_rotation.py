@@ -372,9 +372,11 @@ class OpenQueueTests(unittest.TestCase):
         open_lines = [line for line in lines if line.startswith("- [ ] ")]
         draft_lines = [line for line in lines if line.startswith("- [DRAFT")]
         failed_lines = [line for line in lines if line.startswith("- [FAILED")]
-        self.assertGreaterEqual(len(open_lines), 7)
-        self.assertEqual(len(draft_lines), 9)
-        self.assertEqual(len(failed_lines), 4)
+        # Snapshot of the tracked queue after the 2026-10-20 through 2026-10-25
+        # daily runs. `- [DRAFT` also matches DRAFT-QA-FAIL.
+        self.assertEqual(len(open_lines), 1)
+        self.assertEqual(len(draft_lines), 13)
+        self.assertEqual(len(failed_lines), 7)
         self.assertTrue(any(
             "page 166314115387" in line and FLORA in line and "easier to stick with" in line
             for line in draft_lines
@@ -384,6 +386,11 @@ class OpenQueueTests(unittest.TestCase):
             "page 166299173179" in line and GUM in line and "choose shilajit gummies over resin" in line
             for line in draft_lines
         ))
+        self.assertTrue(any("page 166333972795" in line and GOLD in line for line in draft_lines))
+        self.assertTrue(any("page 166395937083" in line and TURK in line for line in draft_lines))
+        self.assertTrue(any("page 166415401275" in line and SHILA in line for line in draft_lines))
+        self.assertTrue(any("page 166430736699" in line and AGE in line for line in draft_lines))
+        self.assertTrue(any(GUM in line and "missed day" in line for line in failed_lines))
         handles = []
         for line in open_lines:
             found = landing._PRODUCT.search(line)
@@ -392,11 +399,8 @@ class OpenQueueTests(unittest.TestCase):
             if found.group(1) in landing.PRIORITY_HANDLES:
                 self.assertIn(found.group(1) + ".palette.json", line)
                 self.assertEqual(br.violations(line), [])
-        self.assertEqual(handles, [
-            GOLD, SHOCK, FLORA, GUM, TURK, SHILA, AGE, SHILA,
-        ])
-        self.assertGreaterEqual(handles.count(SHILA), 2)
-        self.assertGreaterEqual(handles.count(AGE), 1)
+        self.assertEqual(handles, [SHILA])
+        self.assertIn("N checks before a shilajit resin habit sticks", open_lines[0])
         self.assertEqual(handles.count(FUSI), 0)
         self.assertTrue(all(a != b for a, b in zip(handles, handles[1:])))
 
