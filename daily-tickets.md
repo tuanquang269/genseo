@@ -1526,7 +1526,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** shilajit + hair checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1017-35 — shilajit loading with food** — `Shilajit Loading, With Food or Not? (2026)`
+- [DONE 2026-10-27 https://wellnessnest.co/blogs/news/shilajit-loading-with-food-us-trial-evidence] **#CA1017-35 — shilajit loading with food** — `Shilajit Loading, With Food or Not? (2026)`
   - **Primary keyword:** `shilajit loading with food` · **Secondary:** shilajit loading phase, shilajit bigger start, do you load shilajit, shilajit opening week
   - **Search intent:** new user who saw a loading week mentioned and wants to know if trials did that
   - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
