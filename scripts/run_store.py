@@ -194,13 +194,13 @@ def main(argv=None):
             path = packages/f"{row['day']}-{row['slot']}.json"
             if not path.exists() and args.generate:
                 template, _ = profile.template(row['style'])
-                handles = {row['target_product_handle']} | set(re.findall(r'/products/([a-z0-9-]+)', template))
+                handles = {row['target_product_handle']} | profile.linked_handles(template)
                 live_products = {h: api.product(h) for h in handles}
                 generate(profile, row, path, live_products)
             require(path.is_file(), 'Missing article package: '+str(path))
             candidate = json.loads(path.read_text())
             profile.check_text(candidate.get('body_html',''))
-            handles = {row['target_product_handle']} | set(re.findall(r'/products/([a-z0-9-]+)',candidate.get('body_html','')))
+            handles = {row['target_product_handle']} | profile.linked_handles(candidate.get('body_html',''))
             live_products = {h:api.product(h) for h in handles}
             package = read_package(path, profile, row, live_products)
             duplicate_guard(package, row, existing)

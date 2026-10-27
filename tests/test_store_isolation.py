@@ -57,6 +57,13 @@ class StoreIsolationTests(unittest.TestCase):
         p=Profile('cherish'); p.data['credential']['prefix']='SHOPIFY_CHERISH_'
         with self.assertRaises(StoreGuardError): p.validate_credentials_metadata()
 
+    def test_competitor_product_link_is_not_an_own_handle(self):
+        p = Profile('cherish')
+        text = ('<a href="/products/alticoddle-six-layer-muslin-cotton-blanket">a</a> <a href="https://thecherishcompany.com/products/lumibliss-cotton-waffle-weave-blanket">b</a> '
+                '<a href="https://www.brooklinen.com/products/classic-core-sheet-set">c</a>')
+        self.assertEqual(p.linked_handles(text), {'alticoddle-six-layer-muslin-cotton-blanket', 'lumibliss-cotton-waffle-weave-blanket'})
+        p.check_text(text)   # the citation itself stays legal
+
     def test_write_payload_is_checked_as_decoded_json(self):
         # A JSON-encoded body holds href=\\"/products/<handle>\\"; the escaped quote must not become part of the handle.
         p = Profile('cherish')

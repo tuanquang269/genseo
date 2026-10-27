@@ -102,6 +102,16 @@ class Profile:
                 continue
             self.check_handle(handle)
 
+    def linked_handles(self, text):
+        """Own-store product handles linked in `text`: relative /products/<h> or a link on this store's domain. A competitor page that happens to
+        use /products/ (a legal citation, see check_text) is not one of our products."""
+        out = set()
+        for match in re.finditer(r'(?:https?://[^\s<>"\')]+)?/products/([a-z0-9-]+)', text, re.I):
+            host = (urlsplit(match.group(0)).hostname or '').removeprefix('www.')
+            if not host or host in (self.data['domain'], self.data['shop']):
+                out.add(match.group(1))
+        return out
+
     def credential_domain(self):
         c = self.data['credential']
         if self.store == 'wellnessnest':
