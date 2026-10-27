@@ -116,7 +116,7 @@ class HeroBudgetTests(unittest.TestCase):
         with self.assertRaises(Exception):
             jf.check_hero_set({'550': ok['550']})
         with self.assertRaises(Exception):
-            jf.check_hero_set({**ok, '700': 'http://example.com/a.webp'})
+            jf.check_hero_set({**ok, '750': 'http://example.com/a.webp'})
         jf.check_hero_weight(jf.HERO_BUDGET_KB)
         with self.assertRaises(Exception):
             jf.check_hero_weight(jf.HERO_BUDGET_KB + 1)
