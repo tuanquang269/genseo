@@ -4,6 +4,7 @@ import json
 import re
 import sys
 import unittest
+import unittest.mock
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -53,7 +54,8 @@ class JournalFieldsTests(unittest.TestCase):
         with self.assertRaises(jf.JournalError):
             jf.check_unique_hero('https://cdn/x/cherish-PDP-0620.webp', [{'id': 1, 'image': {'src': 'https://cdn/y/cherish-PDP-0620.webp?v=1'}}])
 
-    def test_publisher_writes_journal_package_and_reads_it_back(self):
+    @unittest.mock.patch.object(jf, 'served_kb', return_value=100)   # the hero budget check would call the CDN: no network in this test
+    def test_publisher_writes_journal_package_and_reads_it_back(self, _served):
         profile = Profile('cherish')
         self.assertEqual(profile.data['article_contract'], 'journal-v1')
         post = importlib.import_module('p6').POST
