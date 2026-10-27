@@ -45,7 +45,7 @@ def read_package(path, profile, row, live_products=None):
     match = re.search(r'<script[^>]*id="rules-machine"[^>]*>(.*?)</script>', body, re.S)
     require(match is not None and json.loads(match.group(1)) == rules, 'Article changed approved template rules')
     require(not re.search(r'clinically proven|cures? insomnia|softer every wash|softer by day 100|\bluxury\b', body, re.I), 'Unsupported or banned claim')
-    package['raw_html'], package['style'] = body, row['style']  # journal-v1 reads the full page; prepare_html strips the sticky bar
+    package['raw_html'], package['style'], package['keyword'] = body, row['style'], row['primary_keyword']  # journal-v1 reads the full page; prepare_html strips the sticky bar
     body = prepare_html(body, template)
     package['body_html'] = body
     validate_schema(body, package, profile)

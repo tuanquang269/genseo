@@ -37,7 +37,7 @@ class JournalFieldsTests(unittest.TestCase):
         for name in POSTS:
             post = importlib.import_module(name).POST
             page = next(SEO.glob(f"day1/style-{post['style']}-*.html")).read_text()
-            a, b = convert.from_post(post), jf.from_document(page, post['style'])
+            a, b = convert.from_post(post), jf.from_document(page, post['style'], post['keyword'])
             self.assertEqual(a['body_html'], b['body_html'], name)
             shared = {m['key'] for m in b['metafields']}   # the converter also writes the optional keys (about, word_count, hero)
             by_key = lambda rows: sorted(rows, key=lambda m: m['key'])
@@ -67,6 +67,10 @@ class JournalFieldsTests(unittest.TestCase):
                 self.profile = profile
 
             def request(self, path, payload=None, method=None):
+                if path.endswith('/graphql.json'):   # journal.hero: Files lookup by file name (read only)
+                    name = payload['variables']['q'].split(':', 1)[1]
+                    return {'data': {'files': {'nodes': [{'id': 'gid://shopify/MediaImage/77', 'fileStatus': 'READY',
+                                                          'image': {'url': 'https://cdn.shopify.com/s/files/1/0/1/files/' + name + '?v=1'}}]}}}
                 calls.append((method or ('POST' if payload else 'GET'), path))
                 if '/articles.json' in path and payload is None:
                     return {'articles': []}
@@ -85,17 +89,33 @@ class JournalFieldsTests(unittest.TestCase):
                 pass
 
         package = {'title': post['h1'], 'handle': post['slug'], 'meta_description': 'm' * 130, 'tags': ['Buying guides', 'Night sweats'],
-                   'raw_html': page, 'style': post['style']}
+                   'keyword': post['keyword'], 'raw_html': page, 'style': post['style']}
         out = Fake().publish(package, 1, False)
         self.assertEqual(out['template_suffix'], 'style-4c')
         self.assertFalse(re.search(r'<style|<script|ld\+json', out['body_html']))
         self.assertEqual(store['tags'], 'Buying guides, Night sweats')
         self.assertEqual(sum(k['key'] in jf.KEYS for k in store['metafields']), 13)
+        # optional keys the shell reads: about (keyword), word_count, hero (Files id, not the re-encoded article.image)
+        extra = {m['key']: m for m in store['metafields'] if m['namespace'] == 'journal'}
+        self.assertEqual(extra['hero']['value'], 'gid://shopify/MediaImage/77')
+        self.assertEqual(extra['hero']['type'], 'file_reference')
+        self.assertEqual(extra['about']['value'], post['keyword'])
+        self.assertEqual(int(extra['word_count']['value']), convert.word_count(post))
         self.assertEqual([m for m, _ in calls].count('PUT'), 0)
         # live: unpublished first, then one PUT. A readback that lost a metafield never reaches the PUT.
         calls.clear(); store.clear()
         Fake().publish(package, 1, True)
         self.assertEqual([m for m, _ in calls].count('PUT'), 1)
+        calls.clear(); store.clear()
+        # a hero file that is not in Files exactly once blocks the write before any article exists
+        class Empty(Fake):
+            def request(self, path, payload=None, method=None):
+                if path.endswith('/graphql.json'):
+                    return {'data': {'files': {'nodes': []}}}
+                return super().request(path, payload, method)
+        with self.assertRaises(Exception):
+            Empty().publish(package, 1, True)
+        self.assertEqual(calls, [])
         calls.clear(); store.clear()
 
         class Lossy(Fake):

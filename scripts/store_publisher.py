@@ -8,6 +8,9 @@ from store_article import article_fragment, validate_schema, soup
 import journal_fields
 
 
+FILES_QUERY = 'query($q:String!){ files(first:5, query:$q){ nodes{ id fileStatus ... on MediaImage{ image{ url } } } } }'
+
+
 class Shopify:
     def __init__(self, profile):
         require(profile.store == 'cherish', 'Use the legacy publisher for Wellness Nest')
@@ -69,9 +72,20 @@ class Shopify:
         require(rows[0]['status'] == 'active', 'Product is not active')
         return rows[0]
 
+    def hero_gid(self, src):
+        """Files id (MediaImage) of the hero file named in `src`. Read-only GraphQL query; exactly one READY image must match."""
+        name = journal_fields.file_name(src)
+        out = self.request('/admin/api/2026-04/graphql.json', {'query': FILES_QUERY, 'variables': {'q': 'filename:' + name}})
+        hits = [n for n in out['data']['files']['nodes']
+                if n.get('image') and journal_fields.file_name(n['image']['url']) == name and n.get('fileStatus') == 'READY']
+        require(len(hits) == 1, f'Hero file {name} must exist once in Shopify Files (journal.hero needs its id)')
+        return hits[0]['id']
+
     def publish_journal(self, package, blog, live):
         """Contract journal-v1: body + journal.* metafields + template_suffix. No CSS, no JSON-LD in the body."""
-        parts = journal_fields.from_document(package['raw_html'], package['style'])
+        parts = journal_fields.from_document(package['raw_html'], package['style'], package.get('keyword'))
+        # journal.hero: the original upload from Files, not the re-encoded article.image (the fidelity gate fails on that encode noise)
+        parts['metafields'].append(journal_fields.hero_field(self.hero_gid(parts['image']['src'])))
         tags = journal_fields.check_tags(package.get('tags'))
         journal_fields.check_unique_hero(parts['image']['src'], self.articles(blog))
         budget = self.profile.data.get('hero_budget_kb')   # opt-in per store profile (cherish: 120): a hero over budget needs a hero set

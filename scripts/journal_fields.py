@@ -196,8 +196,8 @@ def readback_check(parts, body_html, metafields):
 
 
 # ---------------------------------------------------------------- full approved-template document
-def from_document(doc_html, style):
-    """Parse the writer's full approved-template page (header, article, rail, band, JSON-LD)."""
+def from_document(doc_html, style, keyword=None):
+    """Parse the writer's full approved-template page (header, article, rail, band, JSON-LD). keyword adds journal.about; journal.word_count is always added."""
     from bs4 import BeautifulSoup
     soup = BeautifulSoup(doc_html, 'html.parser')
     art = soup.select_one('.layout article')
@@ -248,7 +248,9 @@ def from_document(doc_html, style):
     hero_set = hero_set_from_srcset(hero.get('srcset', ''))
     # with a hero set the article image (social card, fallback) is the largest file of the set, like journal.hero
     src = bare_image(hero_set['2200'] if hero_set else hero['src'])
-    return assemble(body, fields, {'src': src, 'alt': html.unescape(hero['alt'])}, hero_set)
+    parts = assemble(body, fields, {'src': src, 'alt': html.unescape(hero['alt'])}, hero_set)
+    parts['metafields'] += optional_fields(doc_html[doc_html.index('<article'):doc_html.index('</article>')], keyword)
+    return parts
 
 
 def handle_of(href):
@@ -259,6 +261,31 @@ def handle_of(href):
 
 def bare_image(src):
     return re.sub(r'&(?:amp;)?width=\d+$', '', src)
+
+
+def file_name(url):
+    """File name of a Shopify CDN URL, query string dropped."""
+    return (url or '').split('?')[0].rsplit('/', 1)[-1]
+
+
+def count_words(article_html):
+    """BlogPosting wordCount, same rule as the day-1 builder: article text (header + hero + inline TOC + body), spec labels removed."""
+    return len(re.findall(r"[A-Za-z0-9][A-Za-z0-9'’-]*", plain(re.sub(r'<p class="spec">.*?</p>', '', article_html, flags=re.S))))
+
+
+def optional_fields(article_html, keyword=None):
+    """Optional journal.* keys the shell reads in journal-jsonld: about (the post's primary keyword) and word_count."""
+    out = [{'namespace': NAMESPACE, 'key': 'word_count', 'type': 'number_integer', 'value': str(count_words(article_html))}]
+    if keyword:
+        out.insert(0, {'namespace': NAMESPACE, 'key': 'about', 'type': 'single_line_text_field', 'value': plain(keyword)})
+    return out
+
+
+def hero_field(gid):
+    """journal.hero = Files id (MediaImage) of the ORIGINAL hero upload. Shopify re-encodes an article image, so only a Files id gives a
+    hero that is byte-equal to the approved template (the shell prints journal.hero, then falls back to article.image)."""
+    need(re.fullmatch(r'gid://shopify/MediaImage/\d+', gid or ''), 'journal.hero needs a MediaImage id')
+    return {'namespace': NAMESPACE, 'key': 'hero', 'type': 'file_reference', 'value': gid}
 
 
 # ---------------------------------------------------------------- data rules for the blog index
