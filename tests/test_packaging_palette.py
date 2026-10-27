@@ -305,7 +305,7 @@ class TicketAndCallSites(unittest.TestCase):
         ok = ("- [ ] listicle | wellnessnest | product=%s · %s · %s"
               % (FF, ff.LANDING_NOTE, pp.landing_note(FF)))
         self.assertEqual(br.violations(ok), [], ok)
-        self.assertIn("1 billion CFU", ok)
+        self.assertIn("15B CFU", ok)
         self.assertIn("#d17a85", ok)
         bad = "- [ ] listicle | wellnessnest | product=%s · palette: off" % FF
         reasons = br.violations(bad)
