@@ -392,4 +392,4 @@ Both are sold on wellnessnest.co. They are in the Wellness Nest shilajit collect
 
 ### About the Author
 
-[Dr. Marcus Hale](https://wellnessnest.co/pages/dr-marcus-hale) Dr. Marcus Hale is the resident health researcher behind Wellness Nest's editorial team, translating peer-reviewed sports-nutrition and longevity research into practical daily guidance for US readers.
+[Mike Moretti](https://wellnessnest.co/pages/mike-moretti) Mike Moretti is a co-founder of Wellness Nest and the brand's public face.

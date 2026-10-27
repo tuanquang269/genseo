@@ -36,7 +36,7 @@ Image `alt` text was filled from the pictures already on the page (cliff, resin 
 
 ## Open questions
 
-- Mike Moretti is the public co-founder (vault `20-brands/1-wellnessnest.md`, Kevin 2026-10-11). The live byline on this article is "Mkt Staff". `roster.json` lists only Dr. Marcus Hale, and the article gate requires that approved sentence. The draft uses Dr. Marcus Hale. It does not invent a Mike Moretti roster bio.
+- Mike Moretti is the public co-founder (vault `20-brands/1-wellnessnest.md`, Kevin 2026-10-11; blog byline Kevin 2026-10-21). The live byline on this article is "Mkt Staff". The draft About the Author block uses his roster sentence from the same entry as draft PR #94: he is a co-founder of Wellness Nest and the brand's public face. No headshot was added. `/pages/mike-moretti` has to return HTTP 200 before this draft can publish.
 - The 60-80% humus figure and the trace-element list in the 2023 body were not tied to a primary study in this refresh. The only outbound source already on the page is `purehimalayanshilajit.com`.
 - Vault `3-shilasource.md` also mentions 3/6/12-month ShilaSource reserve packs. They were not in the collection `products.json` checked here, so the draft does not mention them.
 - Two-unit and three-unit one-time prices ($59.99 and $49.99 per unit) were removed on 2026-10-25. Public product `.js` and the shilajit collection `products.json` show one variant at $69.99 for each of these two products. They do not list a two-unit or three-unit one-time price. The earlier figures were only in a vault pricing table that is not in this repo.

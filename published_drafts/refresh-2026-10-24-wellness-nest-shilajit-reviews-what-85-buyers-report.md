@@ -147,7 +147,7 @@ The [Wellness Nest shilajit collection](https://wellnessnest.co/collections/shil
 <h3>Where can I browse the Wellness Nest shilajit collection in the United States?</h3>
 <p>Order from wellnessnest.co, which ships across the United States. The <a href="https://wellnessnest.co/collections/shilajit-wellness-stack">Wellness Nest shilajit collection</a> includes Premium Himalayan Shilajit Gummies, ShilaSource Himalayan Shilajit Resin, <a href="https://wellnessnest.co/products/pure-shilajit-gold-resin">Himalayan Pure Shilajit Gold Resin</a>, and <a href="https://wellnessnest.co/products/shilajit-shockwave">Shilajit Shockwave Energy Drops</a>. The <a href="https://wellnessnest.co/collections/best-seller">Wellness Nest best-seller collection</a> includes Premium Himalayan Shilajit Gummies and ShilaSource Himalayan Shilajit Resin.</p>
 <h3>About the Author</h3>
-<p><a href="https://wellnessnest.co/pages/dr-marcus-hale">Dr. Marcus Hale</a> — Dr. Marcus Hale is the resident health researcher behind Wellness Nest's editorial team, translating peer-reviewed sports-nutrition and longevity research into practical daily guidance for US readers.</p>
+<p><a href="https://wellnessnest.co/pages/mike-moretti">Mike Moretti</a> — Mike Moretti is a co-founder of Wellness Nest and the brand's public face.</p>
 
 
 
