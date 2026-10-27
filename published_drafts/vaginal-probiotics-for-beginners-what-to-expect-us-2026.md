@@ -32,7 +32,7 @@ Expectations should stay modest. A supplement cannot confirm whether symptoms co
 
 Start with the serving and timing printed on the package. Do not double the serving because you want faster results, combine several products with overlapping ingredients without checking, or insert an oral gummy vaginally. Store the product as its label directs and check the package condition before use.
 
-For FloraFresh, the Supplement Facts label lists, per 2 gummies, Bacillus coagulans SNZ-1969 (a spore-based probiotic) at 1 billion CFU, Vitamin C at 30 mg, and pineapple fruit powder with bromelain at 100 mg. The label also lists maltitol and isomalt as sweeteners, so it should not be described as sugar-free. Those are label facts, not a promise to prevent or treat disease.
+For FloraFresh, the Supplement Facts label lists, per 2 gummies, Bacillus coagulans SNZ-1969 (a spore-based probiotic) at 15 billion CFU, Vitamin C at 30 mg, and pineapple fruit powder with bromelain at 100 mg. The label also lists maltitol and isomalt as sweeteners, so it should not be described as sugar-free. Those are label facts, not a promise to prevent or treat disease.
 
 ![Hands reviewing a generic probiotic wellness note at a home desk](https://cdn.shopify.com/s/files/1/0810/1563/6283/files/mechanism-microbiome.webp?v=1792133529)
 
@@ -102,4 +102,4 @@ Seek care for pelvic pain, fever, sores, unusual bleeding, painful urination, st
 
 ### About the Author
 
-[Dr. Marcus Hale](/pages/dr-marcus-hale) — Dr. Marcus Hale is the resident health researcher behind Wellness Nest's editorial team, translating peer-reviewed sports-nutrition and longevity research into practical daily guidance for US readers.
+[Mike Moretti](/pages/mike-moretti) — Co-founder, Wellness Nest
