@@ -13,13 +13,34 @@ The 30 prompts extend the 51 hypothesised prompts from PR #81. They do not copy 
 
 ## How a row was scored
 
-Coverage uses titles and handles from `docs/CLUSTER_MAP.md` (built 2026-10-20, 141 articles) plus 3 DONE `/blogs/news/` URLs in `daily-tickets.md` that are not already in the map. Open tickets are not treated as published articles. They do block a new proposal.
+Coverage uses titles and handles from `docs/CLUSTER_MAP.md` (built 2026-10-20, 141 articles) plus 21 DONE `/blogs/news/` URLs in `daily-tickets.md` that are not already in the map. Open tickets are not treated as published articles. They do block a new proposal.
+
+Added from the queue and used as the closest article:
+
+- `are-vaginal-probiotics-worth-it-40-99-us-check-2026` — Are Vaginal Probiotics Worth It? How Much You Check (2026) (prompt ff-over-40)
 
 Added from the queue, and not used as the matching article for any of the 30:
 
 - `shilajit-on-rest-days-with-food-in-the-us` — Shilajit on Rest Days, With Food (US 2026)
 - `nmn-while-traveling-with-food-5-us-tips` — NMN While Traveling, With Food (US 2026)
 - `vaginal-probiotics-on-an-empty-stomach-us-guide-1` — Vaginal Probiotics on an Empty Stomach (US 2026)
+- `shilajit-gummies-while-traveling-5-us-tips` — Shilajit Gummies While Traveling, With Food (2026)
+- `nmn-on-rest-days-take-it-with-food-us` — NMN Capsules on a Day Off, With Food (US 2026)
+- `nmn-storage-with-food-5-us-rules` — Where Should NMN Capsules Sit, With Food Nearby? (2026)
+- `shilajit-and-coffee-with-food-us-guide` — Shilajit and Coffee, With Food (US 2026)
+- `is-nmn-worth-it-with-food-us-check` — Is NMN Worth It, With Food? (US 2026)
+- `nmn-loading-phase-is-it-needed-in-the-us` — NMN Loading Phase, With Food or Not? (2026)
+- `shilajit-cycling-with-food-us-rules` — Do You Cycle Shilajit? With Food Rules (2026)
+- `vaginal-probiotics-and-alcohol-in-the-us-2026` — Vaginal Probiotics and Alcohol: How Much Matters? (2026)
+- `nmn-for-hair-with-food-us-evidence` — NMN and Hair Claims, Taken With Food (US 2026)
+- `shilajit-and-alcohol-with-food-us-guide` — Shilajit and Alcohol, With Food (US 2026)
+- `vaginal-probiotic-storage-7-heat-checks-us` — Vaginal Probiotic Gummies at Home: How Much Heat? (2026)
+- `vaginal-probiotics-together-what-else-in-the-us` — Vaginal Probiotics Together: How Much Else? (2026)
+- `vaginal-probiotic-ingredients-what-to-read-us` — Vaginal Probiotic Ingredients: How Much to Read (2026)
+- `shilajit-storage-6-home-rules-for-the-us` — Shilajit Storage at Home, With Food Nearby (2026)
+- `vaginal-probiotics-for-athletes-us-routine` — Vaginal Probiotics for Athletes (US 2026)
+- `real-or-fake-nmn-6-label-checks-for-us-buyers` — Real or Fake NMN, With Food Checks (US 2026)
+- `shilajit-gummies-ingredients-6-label-checks-in-the-us` — Shilajit Gummy Ingredients, Taken With Food (2026)
 
 - **covered**: a title in that brand's cluster contains every anchor and every focus token, and the title matches the buyer intent (best, vs, where to buy, price, or for-condition).
 - **weak**: a title contains every anchor, and it misses the intent or a focus token. The named article is the closest one. The action is to update that article.
@@ -32,12 +53,12 @@ A gap is offered as a topic proposal only when `topic_fitness`, `wn_clusters.que
 | Status | AgeAura | ShilaSource | FloraFresh | Total |
 | --- | --- | --- | --- | --- |
 | covered | 5 | 5 | 4 | 14 |
-| weak | 4 | 4 | 4 | 12 |
-| gap | 1 | 1 | 2 | 4 |
+| weak | 4 | 4 | 5 | 13 |
+| gap | 1 | 1 | 1 | 3 |
 
 AI visibility rows with `observed: true`: 0. Ledger: missing.
 
-Proposals passed: 0. Withheld: 4.
+Proposals passed: 0. Withheld: 3.
 
 ## The 30 prompts
 
@@ -72,7 +93,7 @@ Proposals passed: 0. Withheld: 4.
 | ff-price-brand | FloraFresh | decision | price | What is the FloraFresh gummies price per pouch? | weak | FloraFresh Gummies vs Capsules: 5 Format Facts (US 2026) (`/blogs/news/florafresh-gummies-vs-capsules-5-format-facts-us-2026`) | unknown | — |
 | ff-over-50 | FloraFresh | consideration | for-condition | What vaginal probiotics should a woman over 50 buy? | weak | Vaginal Probiotics Over 60: 5 Checks in the US (`/blogs/news/vaginal-probiotics-over-60-5-checks-in-the-us`) | unknown | florafresh-vaginal-probiotics-over-60 |
 | ff-runners | FloraFresh | consideration | best | What is the best vaginal probiotic for runners to buy? | gap | — | unknown | — |
-| ff-over-40 | FloraFresh | consideration | best | What is the best vaginal probiotic for a woman over 40? | gap | — | unknown | — |
+| ff-over-40 | FloraFresh | consideration | best | What is the best vaginal probiotic for a woman over 40? | weak | Are Vaginal Probiotics Worth It? How Much You Check (2026) (`/blogs/news/are-vaginal-probiotics-worth-it-40-99-us-check-2026`) — published after the cluster map | unknown | — |
 
 ## Weak: update these articles
 
@@ -90,6 +111,7 @@ Proposals passed: 0. Withheld: 4.
 | ff-vs-oral | Vaginal Probiotics Side Effects: Normal vs Stop (US 2026) (`/blogs/news/vaginal-probiotics-side-effects-normal-vs-stop-us-2026`) | misses oral |
 | ff-price-brand | FloraFresh Gummies vs Capsules: 5 Format Facts (US 2026) (`/blogs/news/florafresh-gummies-vs-capsules-5-format-facts-us-2026`) | misses the price wording |
 | ff-over-50 | Vaginal Probiotics Over 60: 5 Checks in the US (`/blogs/news/vaginal-probiotics-over-60-5-checks-in-the-us`) | misses 50 |
+| ff-over-40 | Are Vaginal Probiotics Worth It? How Much You Check (2026) (`/blogs/news/are-vaginal-probiotics-worth-it-40-99-us-check-2026`) — published after the cluster map | misses the best wording |
 
 ## Gaps and the dup/cluster gate
 
@@ -97,8 +119,7 @@ Proposals passed: 0. Withheld: 4.
 | --- | --- | --- |
 | aa-runners | nmn for runners | already live (nmn + athletes): NMN and Exercise: Before or After a Workout? (US 2026) |
 | ss-runners | shilajit resin for runners | already live (shilajit + athletes): Shilajit for Athletes: What a Trial Found in the US |
-| ff-runners | vaginal probiotics for runners | already queued (probiotic + athletes): #CA1017-31 Vaginal Probiotics for Athletes (US 2026) |
-| ff-over-40 | vaginal probiotics over 40 | topic_fitness FAIL [dup] on the primary: near-duplicate of existing article "Vaginal Probiotics Over 60: 5 Checks in the US" — refresh it, do not recreate |
+| ff-runners | vaginal probiotics for runners | already live (probiotic + athletes): Vaginal Probiotics for Athletes (US 2026) |
 
 ## AI visibility
 

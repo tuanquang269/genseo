@@ -673,12 +673,27 @@ def render_report(result, meta):
         ),
         "",
     ]
+    used = {}
+    for row in rows:
+        article = row.get("article")
+        if article and article.get("source") != "cluster-map":
+            used.setdefault(article["handle"], []).append(row["prompt"]["id"])
     if meta["queue_live"]:
-        lines.append("Added from the queue, and not used as the matching article for any of the 30:")
-        lines.append("")
-        for article in meta["queue_live"]:
-            lines.append("- `%s` — %s" % (article["handle"], article["title"]))
-        lines.append("")
+        matched = [article for article in meta["queue_live"] if article["handle"] in used]
+        unused = [article for article in meta["queue_live"] if article["handle"] not in used]
+        if matched:
+            lines.append("Added from the queue and used as the closest article:")
+            lines.append("")
+            for article in matched:
+                ids = ", ".join(used[article["handle"]])
+                lines.append("- `%s` — %s (prompt %s)" % (article["handle"], article["title"], ids))
+            lines.append("")
+        if unused:
+            lines.append("Added from the queue, and not used as the matching article for any of the 30:")
+            lines.append("")
+            for article in unused:
+                lines.append("- `%s` — %s" % (article["handle"], article["title"]))
+            lines.append("")
     lines += [
         "- **covered**: a title in that brand's cluster contains every anchor and every focus token, and the title matches the buyer intent (best, vs, where to buy, price, or for-condition).",
         "- **weak**: a title contains every anchor, and it misses the intent or a focus token. The named article is the closest one. The action is to update that article.",

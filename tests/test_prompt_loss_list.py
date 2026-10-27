@@ -42,13 +42,33 @@ COVERED = {
 WEAK = {
     "aa-best-tmg", "aa-price-tmg", "aa-where-brand", "aa-women-50",
     "ss-best-resin", "ss-where-brand", "ss-price-brand", "ss-women",
-    "ff-best", "ff-vs-oral", "ff-price-brand", "ff-over-50",
+    "ff-best", "ff-vs-oral", "ff-price-brand", "ff-over-50", "ff-over-40",
 }
-GAPS = {"aa-runners", "ss-runners", "ff-runners", "ff-over-40"}
+GAPS = {"aa-runners", "ss-runners", "ff-runners"}
+# DONE /blogs/news/ URLs in daily-tickets.md that are not already in the cluster map.
+# Open tickets are not articles. Regenerated 2026-10-27 after merging origin/main.
 QUEUE_LIVE = {
     "shilajit-on-rest-days-with-food-in-the-us",
     "nmn-while-traveling-with-food-5-us-tips",
     "vaginal-probiotics-on-an-empty-stomach-us-guide-1",
+    "shilajit-gummies-while-traveling-5-us-tips",
+    "are-vaginal-probiotics-worth-it-40-99-us-check-2026",
+    "nmn-on-rest-days-take-it-with-food-us",
+    "nmn-storage-with-food-5-us-rules",
+    "shilajit-and-coffee-with-food-us-guide",
+    "is-nmn-worth-it-with-food-us-check",
+    "nmn-loading-phase-is-it-needed-in-the-us",
+    "shilajit-cycling-with-food-us-rules",
+    "vaginal-probiotics-and-alcohol-in-the-us-2026",
+    "nmn-for-hair-with-food-us-evidence",
+    "shilajit-and-alcohol-with-food-us-guide",
+    "vaginal-probiotic-storage-7-heat-checks-us",
+    "vaginal-probiotics-together-what-else-in-the-us",
+    "vaginal-probiotic-ingredients-what-to-read-us",
+    "shilajit-storage-6-home-rules-for-the-us",
+    "vaginal-probiotics-for-athletes-us-routine",
+    "real-or-fake-nmn-6-label-checks-for-us-buyers",
+    "shilajit-gummies-ingredients-6-label-checks-in-the-us",
 }
 BANNED_REPORT = ("impressions", "clicks", "share of voice", "mention rate", "$")
 
@@ -125,12 +145,18 @@ class PromptLossTests(unittest.TestCase):
             self.assertEqual(rows[pid]["status"], "gap", pid)
             self.assertNotEqual(rows[pid]["gate"], "pass")
         self.assertEqual(len(result["passed"]), 0)
-        self.assertEqual(len(result["withheld"]), 4)
+        self.assertEqual(len(result["withheld"]), 3)
         self.assertTrue(all(row["ai"] == "unknown" for row in result["rows"]))
         live = {a["handle"] for a in result["meta"]["queue_live"]}
         self.assertEqual(live, QUEUE_LIVE)
-        self.assertTrue(all(row["article"] is None or row["article"]["handle"] not in QUEUE_LIVE
-                            for row in result["rows"]))
+        matched_from_queue = {
+            row["prompt"]["id"]: row["article"]["handle"]
+            for row in result["rows"]
+            if row["article"] and row["article"]["handle"] in live
+        }
+        self.assertEqual(matched_from_queue, {
+            "ff-over-40": "are-vaginal-probiotics-worth-it-40-99-us-check-2026",
+        })
         report = pll.render_report(result, result["meta"])
         proposals = pll.render_proposals(result)
         for word in BANNED_REPORT:
