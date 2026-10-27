@@ -4,11 +4,13 @@ validate_article.py — Mechanical quality gate for GenSeo articles.
 Runs the SELF-AUDIT checklist as code so a cheap model CANNOT publish thin content
 by mistake. The publisher skill calls this FIRST; non-zero exit = do not publish.
 
-Usage: python3 validate_article.py <article.html|article.md>
+Usage: python3 validate_article.py <article.html|article.md> [--draft]
 Exit 0 = PASS (publish allowed). Exit 1 = FAIL (prints what's missing).
-Also verifies that every linked product/collection/author URL returns 200.
+Exit 3 = WARN/UNVERIFIED. The dead-link check still saw HTTP 429 after retries.
+         Publish stays blocked until those links get a real response.
+Also verifies that every linked product/collection/author URL is live.
 """
-import sys, os, re, glob, json, subprocess, tempfile, urllib.request, urllib.error
+import sys, os, re, glob, json, subprocess, tempfile, time, datetime, email.utils, urllib.request
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import genseo_roster
@@ -192,26 +194,191 @@ def qrg_scores(plain_text):
 UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/126.0 Safari/537.36")
 
-def http_ok(url):
-    # Shopify throttles bursts of bare no-UA requests, which made this report live URLs as
-    # dead (2026-08-09: /pages/dr-marcus-hale + both AgeAura PDPs all 200 on manual curl).
-    # Browser UA + retry/backoff, and a throttle/transient code never counts as dead.
-    import subprocess, time
-    for attempt in range(3):
+# Dead-link outcomes. HTTP 429 is indeterminate: Shopify is rate-limiting, so a
+# dead internal URL can wear the same status as a live one.
+OK="ok"
+DEAD="dead"
+UNVERIFIED="unverified"
+# Same convention as fetch_personas: exit 3 means the check did not finish.
+# Exit 0 is the only publishable result. The headless prompt requires exit 0.
+EXIT_UNVERIFIED=3
+LINK_TRIES=3
+# A Retry-After of hours must not stall the daily gate. Typical Shopify
+# buckets ask for a second or two, which sit under this cap.
+RETRY_AFTER_CAP=8.0
+LINK_TIMEOUT=15
+
+class _KeepStatus(urllib.request.HTTPErrorProcessor):
+    """Hand the status back to the dead-link check, including 3xx, 4xx, and 429.
+
+    The default processor turns 3xx into a followed redirect and 4xx into an
+    exception. This check decides what each code means. A 301 stays a 301.
+    """
+    def http_response(self, request, response):
+        return response
+    https_response=http_response
+
+def _status_code(code):
+    if isinstance(code, bool) or code is None:
+        return 0
+    try:
+        return int(code)
+    except (TypeError, ValueError):
         try:
-            res = subprocess.run(
-                ["curl", "-s", "-o", "/dev/null", "-A", UA, "-w", "%{http_code}", url],
-                capture_output=True, text=True, timeout=15)
-            code = res.stdout.strip()
+            return int(str(code).strip() or "0")
+        except (TypeError, ValueError):
+            return 0
+
+def _retry_after_seconds(value, now=None):
+    """Retry-After as delay-seconds, or as seconds until an HTTP-date.
+
+    Unusable values (blank, negative, not a date) return None so the caller
+    keeps its own backoff.
+    """
+    if value is None:
+        return None
+    text=str(value).strip()
+    if not text:
+        return None
+    try:
+        delay=float(text)
+    except ValueError:
+        delay=None
+    if delay is not None:
+        if delay<0:
+            return None
+        return delay
+    try:
+        parsed=email.utils.parsedate_to_datetime(text)
+    except (TypeError, ValueError, OverflowError):
+        return None
+    if parsed is None:
+        return None
+    if parsed.tzinfo is None:
+        parsed=parsed.replace(tzinfo=datetime.timezone.utc)
+    if now is None:
+        now=datetime.datetime.now(datetime.timezone.utc)
+    return (parsed-now).total_seconds()
+
+def _wait_seconds(attempt, retry_after, now=None):
+    """Seconds to sleep before the next try.
+
+    A positive Retry-After is the wait (then capped). A missing, zero, or
+    negative header keeps the previous backoff: 1.5s, then 3s.
+    """
+    fallback=1.5*(attempt+1)
+    honored=_retry_after_seconds(retry_after, now=now)
+    if honored is None or honored<=0:
+        delay=fallback
+    else:
+        delay=honored
+    if delay<0:
+        delay=0.0
+    return min(float(delay), RETRY_AFTER_CAP)
+
+def fetch_link(url, timeout=LINK_TIMEOUT):
+    """GET one URL. Return (status, Retry-After or None).
+
+    Browser UA: Shopify throttles bare clients and that used to mark live
+    pages dead (2026-08-09). Network errors return (0, None).
+    """
+    req=urllib.request.Request(url, headers={"User-Agent": UA}, method="GET")
+    opener=urllib.request.build_opener(_KeepStatus)
+    try:
+        with opener.open(req, timeout=timeout) as resp:
+            headers=getattr(resp, "headers", None)
+            retry=headers.get("Retry-After") if headers is not None else None
+            return _status_code(getattr(resp, "status", 0)), retry
+    except Exception:
+        return 0, None
+
+def check_link(url, fetch=None, sleep=None, tries=LINK_TRIES):
+    """Return OK, DEAD, or UNVERIFIED.
+
+    2xx and 301/302/307/308 are live. 404 and 410 are dead on the first answer.
+    HTTP 429 retries up to `tries` times. The wait honors Retry-After when the
+    header is a positive delay, and falls back to the backoff otherwise.
+    Still 429 is UNVERIFIED. 430 and 503 stay non-dead after that budget
+    (transient responses this gate already refused to call dead). Any other
+    code left at the end is dead.
+    """
+    fetch=fetch or fetch_link
+    sleep=sleep or time.sleep
+    code=0
+    for attempt in range(tries):
+        retry_after=None
+        try:
+            code, retry_after=fetch(url)
         except Exception:
-            code = ""
-        if code.startswith("2") or code in ("301", "302", "307", "308"):
-            return True
-        if code in ("404", "410"):
-            return False          # a real dead link — no point retrying
-        if attempt < 2:
-            time.sleep(1.5 * (attempt + 1))
-    return code in ("429", "430", "503")  # throttled/transient → don't fail the article on it
+            code, retry_after=0, None
+        code=_status_code(code)
+        if 200<=code<300 or code in (301, 302, 307, 308):
+            return OK
+        if code in (404, 410):
+            return DEAD
+        if attempt<tries-1:
+            header=retry_after if code==429 else None
+            sleep(_wait_seconds(attempt, header))
+    if code==429:
+        return UNVERIFIED
+    if code in (430, 503):
+        return OK
+    return DEAD
+
+def unverified_link_warning(url):
+    short=url.replace("https://wellnessnest.co", "") or url
+    return ("WARN/UNVERIFIED link HTTP 429 after %d tries: %s "
+            "(Shopify rate limit; the link was not confirmed live)"
+            % (LINK_TRIES, short))
+
+def assess_internal_links(urls, check=None):
+    """Split internal URLs into dead fails and 429 warnings.
+
+    Returns (fail_messages, warn_messages, link_exit). link_exit is 1 when a
+    link is dead, 3 when the only problem is a rate limit, else 0.
+    """
+    check=check or check_link
+    dead=[]
+    unverified=[]
+    for u in urls:
+        outcome=check(u)
+        if outcome==DEAD:
+            dead.append(u)
+        elif outcome==UNVERIFIED:
+            unverified.append(u)
+        elif outcome!=OK:
+            dead.append(u)
+    fails=[]
+    warns=[]
+    if dead:
+        fails.append("dead/404 links: "+", ".join(
+            d.replace("https://wellnessnest.co", "") for d in dead[:6]))
+    for u in unverified[:6]:
+        warns.append(unverified_link_warning(u))
+    if dead:
+        link_exit=1
+    elif unverified:
+        link_exit=EXIT_UNVERIFIED
+    else:
+        link_exit=0
+    return fails, warns, link_exit
+
+def final_exit(fails, link_exit):
+    """Hard failures exit 1. A 429-only dead-link check exits 3."""
+    if fails or link_exit==1:
+        return 1
+    if link_exit==EXIT_UNVERIFIED:
+        return EXIT_UNVERIFIED
+    return 0
+
+def result_line(exit_code):
+    if exit_code==EXIT_UNVERIFIED:
+        return ("RESULT: ✗ WARN/UNVERIFIED — dead-link check still got HTTP 429 "
+                "after %d tries. Publish stays blocked until wellnessnest.co "
+                "answers those links." % LINK_TRIES)
+    if exit_code!=0:
+        return "RESULT: ✗ DO NOT PUBLISH — fix the above and re-validate."
+    return "RESULT: ✓ PASS — safe to publish."
 
 def test_author_gate():
     """python3 scripts/validate_article.py --self-check-author"""
@@ -437,14 +604,17 @@ def main():
     fails.extend(dead_cites)
     warns.extend(soft_cites)
 
-    # link liveness (products, collections, article URLs, pages, policies, author pages)
-    urls=set(geo_citability.internal_urls(html))
-    dead=[u for u in urls if not http_ok(u)]
-    # author pages
-    for ap in (author_pages & ROSTER_PAGES):
-        if not http_ok("https://wellnessnest.co"+ap): dead.append("https://wellnessnest.co"+ap)
-    if dead:
-        fails.append("dead/404 links: "+", ".join(d.replace('https://wellnessnest.co','') for d in dead[:6]))
+    # link liveness (products, collections, article URLs, pages, policies, author pages).
+    # HTTP 429 is indeterminate: check_link retries, and a rate limit that is
+    # still there becomes WARN/UNVERIFIED (exit 3). Publish stays blocked.
+    urls=list(geo_citability.internal_urls(html))
+    for ap in sorted(author_pages & ROSTER_PAGES):
+        absu="https://wellnessnest.co"+ap
+        if absu not in urls:
+            urls.append(absu)
+    link_fails, link_warns, link_exit=assess_internal_links(urls)
+    fails.extend(link_fails)
+    warns.extend(link_warns)
 
     # ---- QRG prose-quality gate -------------------------------------------
     # Score the VISIBLE PROSE only. Do not hand a whole rendered page to the
@@ -463,27 +633,27 @@ def main():
     if qrg_line: print(qrg_line)
     if warns:
         print("WARNINGS:"); [print("  ⚠ "+w) for w in warns]
+    exit_code=final_exit(fails, link_exit)
     # run-log: ground-truth that the gate fired (read by the operator to confirm the skill loaded)
     try:
-        import datetime
         with open("/Users/kevinkreative/genseo/validate_runs.log","a") as lg:
-            verdict="FAIL" if fails else "PASS"
+            verdict={0:"PASS",1:"FAIL",EXIT_UNVERIFIED:"UNVERIFIED"}.get(exit_code,"FAIL")
             qcol=qrg_log_column(qrg, qrg_note)
-            lg.write(f"{datetime.datetime.now().isoformat(timespec='seconds')}\t{verdict}\twords={words}\t{qcol}\t{path}\t{';'.join(fails)[:200]}\n")
+            bits=list(fails)
+            bits.extend(w for w in warns if "UNVERIFIED" in w)
+            lg.write(f"{datetime.datetime.now().isoformat(timespec='seconds')}\t{verdict}\twords={words}\t{qcol}\t{path}\t{';'.join(bits)[:200]}\n")
     except Exception:
         pass
 
-    if fails:
+    if exit_code==1:
         print("FAILED:"); [print("  ✗ "+f) for f in fails]
         if any(f.startswith(("filler score","AI-pattern score")) for f in fails):
             csbin=_claude_seo_bin()
             if csbin:
                 print(f"\n  Deterministic 1:1 phrase cleanup (review the diff, it does not add content):")
                 print(f"    {csbin} run content_humanize.py {path} -o {path}.cleaned")
-        print("\nRESULT: ✗ DO NOT PUBLISH — fix the above and re-validate.")
-        sys.exit(1)
-    print("\nRESULT: ✓ PASS — safe to publish.")
-    sys.exit(0)
+    print("\n"+result_line(exit_code))
+    sys.exit(exit_code)
 
 if __name__=="__main__":
     main()
