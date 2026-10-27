@@ -84,3 +84,77 @@ Script nào thiếu input sẽ báo lỗi thiếu file — đọc tên file tron
 việc, lệnh cụ thể, lỗi thường gặp). Rồi `LOCALIZE.md` — liệt kê mọi placeholder phải thay cho
 đúng store/thị trường của bạn. Cài đặt: `SETUP.md`. Thêm ngữ cảnh: `docs/WORKFLOW_UPGRADE.md` (vì sao có cái gate),
 `docs/10_step_article.md` (quy trình viết), `docs/internal_linking_strategy.md`.
+
+
+## Multi-store runs (2026-10-27)
+
+Use an explicit store on the new entry point. The existing Wellness Nest launchd job,
+queue, writer prompt, image rules, and schedule stay in place.
+
+```bash
+/usr/bin/python3 scripts/run_store.py --store wellnessnest --dry-run
+/usr/bin/python3 scripts/run_store.py --store cherish --day 2026-10-28 --dry-run
+/usr/bin/python3 scripts/run_store.py --store cherish --day 2026-10-28 --slot 1 --print-prompt
+```
+
+Each `stores/<id>/profile.json` owns its context allowlist, storefront and Admin
+store domains, credential source, blog handle, templates, calendar, daily volume,
+and gates. Cherish uses `SHOPIFY_CHERISH_LIVE_*` through the shared `t3_store.py`
+client-credentials adapter. Secret values never enter writer context. The writer
+receives approved store files only. Cherish uses the verified `cc/claude-sonnet-5-5` model. It has no tools, shared skills, or global
+agent memory. The writer uses the fixed hosted OAuth router at `ai.patigroup.com`.
+It does not use a local model or a per-token AI provider. No model call runs in a dry run.
+
+Cherish reads the approved 250-row calendar. Its current cap is seven posts per day.
+The first 21 rows must retain `approval=kevin`. A later calendar size change needs
+an explicit profile/code review. Each article package is JSON with `store`, `day`,
+`slot`, `title`, `handle`, `meta_description`, `body_html`, and `facts`. Each fact
+has `claim`, `source`, and `quote`. Sources must be approved profile context or the
+row's evidence URLs. Live product facts can cite `shopify://<shop>/products/<handle>`. Use an approved full-page template. Remove preview labels and
+executable scripts. The runner restores the approved CSS. It checks the template's
+unchanged `#rules-machine` rules and FAQ schema against visible answers.
+
+```bash
+# Create missing packages through the OAuth writer, then run all gates.
+/usr/bin/python3 scripts/run_store.py --store cherish --day 2026-10-28 --apply --generate
+# Use packages written by a separate approved writing lane instead.
+/usr/bin/python3 scripts/shopify_publisher.py --store cherish --day 2026-10-28 --apply --packages-dir /absolute/package/directory
+```
+
+Package names are `YYYY-MM-DD-<slot>.json`. Default: `stores/cherish/drafts/`.
+The publish path checks the store and live product catalog, current prices,
+evidence quotes, numerical claims, duplicate titles/handles (including drafts),
+and the existing `blog-styles/tools/check.py` render gate. A failed gate stops
+the run. Registry and calendar handles must belong to the selected store. Links
+to another store's product fail. All Shopify writes re-check the store domain
+and the credential domain. Legacy Wellness Nest scripts refuse a Cherish selection.
+
+The Shopify body contains scoped article CSS, the approved article layout, and
+BlogPosting, BreadcrumbList, and FAQPage schema. It excludes preview controls and
+store header/footer. Every article is created unpublished. A readback checks the returned handle,
+layout, image count, FAQ schema, and store boundary before an auto-approved article
+is changed to live. Per-store locks, completion state, and local
+review notifications live in `state/cherish/`. Review notices also go to stdout.
+No Slack or email message is sent. If a post is already in Shopify but the local
+ledger is absent, the duplicate guard blocks it for operator reconciliation.
+
+`approval=kevin` creates an unpublished article and a review notice.
+`approval=auto` publishes after all gates pass. Fact quotes and number checks are
+mechanical checks. They do not prove every paraphrased claim. Kevin reviews the
+first 21 posts before the coordinator enables daily generation.
+
+The Cherish plist is supplied in `deploy/com.pati.genseo-cherish.plist`. It has
+not been installed or loaded. After Kevin approves the first 21 posts, run:
+
+```bash
+cp /Users/kevinkreative/genseo/deploy/com.pati.genseo-cherish.plist /Users/kevinkreative/Library/LaunchAgents/com.pati.genseo-cherish.plist
+launchctl enable "gui/$(id -u)/com.pati.genseo-cherish"
+launchctl bootstrap "gui/$(id -u)" /Users/kevinkreative/Library/LaunchAgents/com.pati.genseo-cherish.plist
+```
+
+The job runs at 07:45 in the machine's local timezone (Asia/Ho_Chi_Minh on this
+Mac). `RunAtLoad` is false. Check the machine timezone before enabling it elsewhere.
+Use `/usr/bin/python3`; this Mac has BeautifulSoup and Playwright on that interpreter.
+A missing library or browser fails the render gate and blocks publication.
+
+Validation: `/usr/bin/python3 -m unittest discover -s tests -p test_store_isolation.py -v`.

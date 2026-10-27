@@ -1,0 +1,44 @@
+{
+  "id": "cherish",
+  "name": "The Cherish Company",
+  "domain": "thecherishcompany.com",
+  "shop": "uxfaue-s1.myshopify.com",
+  "blog_handle": "news",
+  "daily_volume": 7,
+  "credential": {
+    "kind": "client-credentials",
+    "env_file": "/Users/kevinkreative/PATI/LLM-Wiki/.env",
+    "prefix": "SHOPIFY_CHERISH_LIVE_",
+    "keys": [
+      "SHOPIFY_CHERISH_LIVE_STORE",
+      "SHOPIFY_CHERISH_LIVE_CLIENT_ID",
+      "SHOPIFY_CHERISH_LIVE_CLIENT_SECRET",
+      "SHOPIFY_CHERISH_LIVE_ADMIN_TOKEN",
+      "SHOPIFY_CHERISH_LIVE_ADMIN_TOKEN_EXPIRES"
+    ],
+    "adapter": "/Users/kevinkreative/PATI/work/cherish-launch-tools/t3_store.py"
+  },
+  "context": [
+    "/Users/kevinkreative/PATI/LLM-Wiki/20-brands/23-new-bedding-brand/1-new-bedding-brand-hub.md",
+    "/Users/kevinkreative/PATI/LLM-Wiki/20-brands/23-new-bedding-brand/handover-cherish-2026-10-21/brand-identity-v4/system/cherish-v4-brand-system.md",
+    "/Users/kevinkreative/PATI/LLM-Wiki/20-brands/23-new-bedding-brand/8b-cherish-copy-pdp-core-three.md",
+    "/Users/kevinkreative/PATI/LLM-Wiki/20-brands/23-new-bedding-brand/8c-cherish-copy-pdp-specialty-four.md"
+  ],
+  "templates": [
+    "/Users/kevinkreative/PATI/work/cherish-seo/blog-styles/style-1-problem-solution.html",
+    "/Users/kevinkreative/PATI/work/cherish-seo/blog-styles/style-2-buyers-guide.html",
+    "/Users/kevinkreative/PATI/work/cherish-seo/blog-styles/style-3-care-guide.html",
+    "/Users/kevinkreative/PATI/work/cherish-seo/blog-styles/style-4a-material-vs.html",
+    "/Users/kevinkreative/PATI/work/cherish-seo/blog-styles/style-4b-brand-vs.html",
+    "/Users/kevinkreative/PATI/work/cherish-seo/blog-styles/style-4c-best-x.html",
+    "/Users/kevinkreative/PATI/work/cherish-seo/blog-styles/style-4d-n-reasons.html"
+  ],
+  "calendar": "/Users/kevinkreative/PATI/work/cherish-seo/genseo-400/calendar.csv",
+  "registry": "/Users/kevinkreative/PATI/work/cherish-ids/cherish-id-registry.csv",
+  "gates": [
+    "/Users/kevinkreative/PATI/work/cherish-seo/blog-styles/tools/check.py"
+  ],
+  "voice": "Warm, calm, concrete US English. Use the approved Cherish v4 system. Never invent product, health, certification, price, or care claims. Never use luxury, softer every wash, or softer by day 100 as claims.",
+  "review_first": 21,
+  "writer_model": "cc/claude-sonnet-5-5"
+}

@@ -10,6 +10,12 @@ import time
 import html as html_mod          # `html` alone would shadow the many local html/html_content vars
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+# Explicit-store publishing uses the guarded runner before loading legacy context.
+# Existing Wellness Nest commands retain their original interface.
+if __name__ == "__main__" and "--store" in sys.argv:
+    from run_store import main
+    sys.exit(main())
+
 import genseo_config as _gcfg
 import genseo_roster
 import brand_rules

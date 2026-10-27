@@ -35,6 +35,51 @@ def _load():
     return cfg
 
 
+if os.environ.get("GENSEO_STORE", "wellnessnest") != "wellnessnest":
+    sys.exit("GenSEO: legacy scripts are Wellness Nest only; use run_store.py --store.")
+
 _CFG = _load()
 SHOP = _CFG["shop"]
 TOKEN = _CFG["access_token"]
+
+
+# Legacy scripts are the Wellness Nest compatibility lane. A Cherish run must use
+# run_store.py, which never imports this module or the Wellness Nest knowledge base.
+if SHOP != "wellnessnest1.myshopify.com":
+    sys.exit("GenSEO: Wellness Nest credential domain mismatch.")
+
+
+def assert_legacy_request(request):
+    """Enforce identity on every urllib Shopify write, including old helper scripts."""
+    import urllib.parse
+    from store_profiles import Profile, require
+    if not hasattr(request, "get_method"):
+        return
+    url = urllib.parse.urlsplit(request.full_url)
+    if "/admin/" not in url.path:
+        return
+    require(url.hostname == SHOP, "Legacy Shopify request targets another store")
+    if request.get_method() in ("GET", "HEAD"):
+        return
+    profile = Profile("wellnessnest")
+    profile.credential_domain()
+    headers = {k.lower(): v for k, v in request.header_items()}
+    require(headers.get("x-shopify-access-token") == TOKEN, "Legacy write uses a different credential")
+    if request.data:
+        text = request.data.decode("utf-8", errors="replace")
+        # Admin JSON may encode URLs with escaped slashes.
+        profile.check_text(text.replace("\\/", "/"))
+
+
+# All existing Shopify helpers import this module. Keep one transport guard so
+# alternate publisher functions cannot omit the store assertion.
+import urllib.request as _urllib_request
+if not getattr(_urllib_request.urlopen, "_genseo_store_guard", False):
+    _original_urlopen = _urllib_request.urlopen
+
+    def _guarded_urlopen(request, *args, **kwargs):
+        assert_legacy_request(request)
+        return _original_urlopen(request, *args, **kwargs)
+
+    _guarded_urlopen._genseo_store_guard = True
+    _urllib_request.urlopen = _guarded_urlopen
