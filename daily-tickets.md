@@ -1472,7 +1472,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** shilajit + storage checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1017-31 — vaginal probiotics for athletes** — `Vaginal Probiotics for Athletes (US 2026)`
+- [DONE 2026-10-27 https://wellnessnest.co/blogs/news/vaginal-probiotics-for-athletes-us-routine] **#CA1017-31 — vaginal probiotics for athletes** — `Vaginal Probiotics for Athletes (US 2026)`
   - **Primary keyword:** `vaginal probiotics for athletes` · **Secondary:** probiotics for active women, vaginal probiotics and exercise, athlete probiotic gummies, probiotic gummies on gym days
   - **Search intent:** woman who trains and wants to know whether the gummy routine changes
   - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
