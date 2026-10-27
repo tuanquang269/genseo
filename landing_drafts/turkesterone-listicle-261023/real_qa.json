@@ -1,0 +1,154 @@
+{
+ "page_id": 166395937083,
+ "checks": {
+  "template_in_main_theme": {
+   "ok": true,
+   "info": "templates/page.gsl-ref-listicle-v2.liquid in theme 188284731707 (WN v13.7 + 3 PDP + clones — LIVE 2026-10-23)"
+  },
+  "template_matches_local": {
+   "ok": true,
+   "info": "live eb61b67a3c31 vs local eb61b67a3c31 (a CSS change needs a NEW suffix; never overwrite)"
+  },
+  "template_suffix": {
+   "ok": true,
+   "info": "page 'gsl-ref-listicle-v2' vs spec 'gsl-ref-listicle-v2'"
+  },
+  "body_text_matches_local": {
+   "ok": true,
+   "info": "Shopify body_html visible text vs local body.html (old body pushed?)"
+  },
+  "images_on_cdn": {
+   "ok": true,
+   "info": "20 srcs"
+  },
+  "hidden_again": {
+   "ok": true,
+   "info": "published_at=None"
+  },
+  "desktop_http": {
+   "ok": true,
+   "info": "200"
+  },
+  "desktop_premium_css": {
+   "ok": true,
+   "info": "hero 24px kicker 999px"
+  },
+  "desktop_offer_is_current": {
+   "ok": true,
+   "info": "offer box shows: TURKESTERONE ADVANCED FORMULA TURKESTERONE Advanced Formula, 60 Capsules 4.2 TrustScore · "
+  },
+  "desktop_no_overflow": {
+   "ok": true,
+   "info": ""
+  },
+  "desktop_images_ok": {
+   "ok": true,
+   "info": "[]"
+  },
+  "desktop_no_clipped_text": {
+   "ok": true,
+   "info": ""
+  },
+  "desktop_palette_matches_pack": {
+   "ok": true,
+   "info": "{\"cta_bg\": \"rgb(2, 57, 2)\", \"accent\": \"rgb(50, 116, 47)\", \"kicker\": \"rgb(50, 116, 47)\", \"topbar_bg\": \"rgb(2, 57, 2)\", \"pill_bg\": \"rgb(2, 57, 2)\", \"offer_cta_bg\""
+  },
+  "mobile_http": {
+   "ok": true,
+   "info": "200"
+  },
+  "mobile_premium_css": {
+   "ok": true,
+   "info": "hero 20px kicker 999px"
+  },
+  "mobile_offer_is_current": {
+   "ok": true,
+   "info": "offer box shows: TURKESTERONE ADVANCED FORMULA TURKESTERONE Advanced Formula, 60 Capsules 4.2 TrustScore · "
+  },
+  "mobile_no_overflow": {
+   "ok": true,
+   "info": ""
+  },
+  "mobile_images_ok": {
+   "ok": true,
+   "info": "[]"
+  },
+  "mobile_no_clipped_text": {
+   "ok": true,
+   "info": ""
+  },
+  "mobile_palette_matches_pack": {
+   "ok": true,
+   "info": "{\"cta_bg\": \"rgb(2, 57, 2)\", \"accent\": \"rgb(50, 116, 47)\", \"kicker\": \"rgb(50, 116, 47)\", \"topbar_bg\": \"rgb(2, 57, 2)\", \"pill_bg\": \"rgb(2, 57, 2)\", \"offer_cta_bg\""
+  },
+  "sticky_cta": {
+   "ok": true,
+   "info": "{\"top\": \"off(scrollY=0 vh=812 offerTop=8724 bridgeTop=6743 rows=7 cls=gslp-sticky)\", \"after_bridge\": true, \"on_offer\": \"off(scrollY=8874 vh=812 offerTop=-150 bridgeTop=-2131 rows=7 cls=gslp-sticky)\"}"
+  }
+ },
+ "fails": [],
+ "was_hidden": true,
+ "storefront": {
+  "url": "https://wellnessnest.co/pages/gsl-preview-turkesterone-listicle-261023?v=1792726591807",
+  "desktop": {
+   "http": 200,
+   "title": "6 Things to Check Before You Buy Turkesterone – Wellness Nest",
+   "status_text": "Skip to content\n\n↩️ 90-Day Refund Policy — Eligibility Applies\n\n🚚 Free Shipping",
+   "body_class": "gradient link-btns--glow action-btns--glow",
+   "gsl_ref": true,
+   "premium_markup": true,
+   "premium_css_applied": "24px",
+   "premium_kicker_radius": "999px",
+   "premium_css_in_dom": true,
+   "offer_text": "TURKESTERONE ADVANCED FORMULA TURKESTERONE Advanced Formula, 60 Capsules 4.2 TrustScore · 1,144 reviews on Trustpilot $75.00 $119.98 COMPARE AT PRICE one-time price shown on the product page; no Subscribe and Save sellin",
+   "old_v2_offer_copy": false,
+   "sticky": true,
+   "imgs": 15,
+   "broken": [],
+   "overflow": false,
+   "height": 8629,
+   "clipped": [],
+   "palette": {
+    "cta_bg": "rgb(2, 57, 2)",
+    "accent": "rgb(50, 116, 47)",
+    "kicker": "rgb(50, 116, 47)",
+    "topbar_bg": "rgb(2, 57, 2)",
+    "pill_bg": "rgb(2, 57, 2)",
+    "offer_cta_bg": "rgb(2, 57, 2)"
+   }
+  },
+  "mobile": {
+   "http": 200,
+   "title": "6 Things to Check Before You Buy Turkesterone – Wellness Nest",
+   "status_text": "Skip to content\n\n↩️ 90-Day Refund Policy — Eligibility Applies\n\n🚚 Free Shipping",
+   "body_class": "gradient link-btns--glow action-btns--glow",
+   "gsl_ref": true,
+   "premium_markup": true,
+   "premium_css_applied": "20px",
+   "premium_kicker_radius": "999px",
+   "premium_css_in_dom": true,
+   "offer_text": "TURKESTERONE ADVANCED FORMULA TURKESTERONE Advanced Formula, 60 Capsules 4.2 TrustScore · 1,144 reviews on Trustpilot $75.00 $119.98 COMPARE AT PRICE one-time price shown on the product page; no Subscribe and Save sellin",
+   "old_v2_offer_copy": false,
+   "sticky": true,
+   "imgs": 15,
+   "broken": [],
+   "overflow": false,
+   "height": 12208,
+   "clipped": [],
+   "palette": {
+    "cta_bg": "rgb(2, 57, 2)",
+    "accent": "rgb(50, 116, 47)",
+    "kicker": "rgb(50, 116, 47)",
+    "topbar_bg": "rgb(2, 57, 2)",
+    "pill_bg": "rgb(2, 57, 2)",
+    "offer_cta_bg": "rgb(2, 57, 2)"
+   },
+   "sticky_check": {
+    "top": "off(scrollY=0 vh=812 offerTop=8724 bridgeTop=6743 rows=7 cls=gslp-sticky)",
+    "after_bridge": true,
+    "on_offer": "off(scrollY=8874 vh=812 offerTop=-150 bridgeTop=-2131 rows=7 cls=gslp-sticky)"
+   }
+  }
+ },
+ "verdict": "PASS"
+}
