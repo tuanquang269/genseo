@@ -74,6 +74,9 @@ class Shopify:
         parts = journal_fields.from_document(package['raw_html'], package['style'])
         tags = journal_fields.check_tags(package.get('tags'))
         journal_fields.check_unique_hero(parts['image']['src'], self.articles(blog))
+        budget = self.profile.data.get('hero_budget_kb')   # opt-in per store profile (cherish: 120): a hero over budget needs a hero set
+        if budget and not any(m['key'] == 'hero_set' for m in parts['metafields']):
+            journal_fields.check_hero_weight(journal_fields.served_kb(parts['image']['src']), int(budget))
         self.profile.check_text(' '.join([parts['body_html']] + [m['value'] for m in parts['metafields']]))
         article = {'title': package['title'], 'handle': package['handle'], 'body_html': parts['body_html'],
                    'template_suffix': parts['template_suffix'], 'tags': ', '.join(tags), 'image': parts['image'],

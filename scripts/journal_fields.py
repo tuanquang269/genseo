@@ -68,11 +68,47 @@ def norm(text):
     return re.sub(r'\s+', ' ', plain(text)).strip()
 
 
+# Hero weight budget (A-fix round 4): the hero as Chrome downloads it at width 1100 (WebP) must stay <= HERO_BUDGET_KB, otherwise mobile LCP
+# misses 2.5 s. Shopify's CDN re-encodes any transformed width at a fixed high quality, so the lever is a hero SET: one pass-through file per
+# srcset width (same photo, same aspect ratio, lighter encode), stored as journal.hero_set. Build one with
+# ~/PATI/work/cherish-seo/journal-data/hero_budget.py (build_set) or `convert.py --make-heroes`.
+HERO_BUDGET_KB = 120
+HERO_SET_KEYS = ('550', '700', '1100', '2200')
+
+
+def check_hero_set(hero_set):
+    """journal.hero_set = {"550": url, "700": url, "1100": url, "2200": url}: Shopify Files URLs of pass-through files."""
+    need(isinstance(hero_set, dict) and set(hero_set) == set(HERO_SET_KEYS), 'journal.hero_set needs exactly the keys ' + ', '.join(HERO_SET_KEYS))
+    for k, url in hero_set.items():
+        need(re.match(r'https://cdn\.shopify\.com/s/files/.+\.webp(\?v=\d+)?$', str(url)), f'journal.hero_set[{k}] must be a Shopify Files .webp URL')
+    return hero_set
+
+
+def hero_set_from_srcset(srcset):
+    """A hero srcset of four pass-through Files URLs (no width parameter, descriptors 550 / 700 / 1100 / 2200) is a hero set; any other srcset is not."""
+    entries = [e.strip().rsplit(' ', 1) for e in html.unescape(srcset or '').split(', ') if e.strip()]
+    found = {w[:-1]: u for u, w in entries if len(entries) == 4 and w.endswith('w') and 'width=' not in u}
+    return found if set(found) == set(HERO_SET_KEYS) else None
+
+
+def served_kb(src, width=1100):
+    """The hero as Chrome would download it at `width` (WebP negotiated), in KB. One network GET."""
+    import urllib.request
+    url = f"{src}{'&' if '?' in src else '?'}width={width}"
+    req = urllib.request.Request(url, headers={'Accept': 'image/avif,image/webp,image/apng,image/*,*/*;q=0.8', 'User-Agent': 'Mozilla/5.0 Chrome/130'})
+    return round(len(urllib.request.urlopen(req, timeout=60).read()) / 1024)
+
+
+def check_hero_weight(kb_at_1100, budget=HERO_BUDGET_KB):
+    """kb_at_1100: the hero as served at width 1100 (served_kb)."""
+    need(kb_at_1100 <= budget, f'Hero weighs {kb_at_1100} KB at width 1100, over the {budget} KB budget: build a hero set (journal_fields.HERO_BUDGET_KB, journal-data/hero_budget.py)')
+
+
 def _jd(obj):
     return json.dumps(obj, ensure_ascii=False, separators=(',', ':'))
 
 
-def assemble(body, f, image=None):
+def assemble(body, f, image=None, hero_set=None):
     """body: article body HTML. f: normalised fields. image: {src, alt} of the hero (article.image)."""
     body = body.strip()
     for k in ('style', 'crumb', 'kicker', 'dek', 'updated_on', 'read_minutes', 'meta_note', 'hero_caption',
@@ -110,6 +146,8 @@ def assemble(body, f, image=None):
             v = _jd(v)
         metafields.append({'namespace': NAMESPACE, 'key': key, 'type': TYPES[key], 'value': v})
     parts = {'body_html': body, 'metafields': metafields, 'template_suffix': 'style-' + f['style']}
+    if hero_set:
+        parts['metafields'].append({'namespace': NAMESPACE, 'key': 'hero_set', 'type': 'json', 'value': _jd(check_hero_set(hero_set))})
     if image:
         need(image.get('src', '').startswith('https://') and image.get('alt'), 'Hero image needs an https src and alt')
         parts['image'] = image
@@ -207,7 +245,10 @@ def from_document(doc_html, style):
         'pick': pick, 'band': band, 'faq': faq, 'schema_extra': extra[0] if extra else None}
     hero = art.select_one('figure.hero img')
     need(hero is not None, 'Hero image is missing')
-    return assemble(body, fields, {'src': bare_image(hero['src']), 'alt': html.unescape(hero['alt'])})
+    hero_set = hero_set_from_srcset(hero.get('srcset', ''))
+    # with a hero set the article image (social card, fallback) is the largest file of the set, like journal.hero
+    src = bare_image(hero_set['2200'] if hero_set else hero['src'])
+    return assemble(body, fields, {'src': src, 'alt': html.unescape(hero['alt'])}, hero_set)
 
 
 def handle_of(href):

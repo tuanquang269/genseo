@@ -15,13 +15,16 @@ from store_profiles import Profile, StoreGuardError
 from store_publisher import Shopify
 
 POSTS = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7']
+EXTRA_KEYS = {'about', 'word_count', 'hero'}   # optional keys the shell reads (converter output; hero_set joins them for a lighter hero)
 KEYS = ['style', 'crumb', 'kicker', 'dek', 'updated_on', 'read_minutes', 'meta_note', 'hero_caption', 'toc', 'pick', 'band', 'faq']
 
 
 class JournalFieldsTests(unittest.TestCase):
     def test_p1_keys_and_clean_body(self):
         parts = convert.from_post(importlib.import_module('p1').POST)
-        self.assertEqual([m['key'] for m in parts['metafields']], KEYS)  # style 1 has no schema_extra
+        got = [m['key'] for m in parts['metafields']]
+        self.assertEqual(got[:len(KEYS)], KEYS)  # style 1 has no schema_extra
+        self.assertEqual(sorted(got[len(KEYS):]), sorted(EXTRA_KEYS | ({'hero_set'} if 'hero_set' in got else set())))
         self.assertEqual(parts['template_suffix'], 'style-1')
         self.assertFalse(re.search(r'<style|<script|class="dek"|toc inline|section class="band"', parts['body_html']))
         faq = next(m for m in parts['metafields'] if m['key'] == 'faq')
@@ -35,7 +38,9 @@ class JournalFieldsTests(unittest.TestCase):
             page = next(SEO.glob(f"day1/style-{post['style']}-*.html")).read_text()
             a, b = convert.from_post(post), jf.from_document(page, post['style'])
             self.assertEqual(a['body_html'], b['body_html'], name)
-            self.assertEqual(a['metafields'], b['metafields'], name)
+            shared = {m['key'] for m in b['metafields']}   # the converter also writes the optional keys (about, word_count, hero)
+            by_key = lambda rows: sorted(rows, key=lambda m: m['key'])
+            self.assertEqual(by_key(m for m in a['metafields'] if m['key'] in shared), by_key(b['metafields']), name)
             self.assertEqual(a['image'], b['image'], name)
 
     def test_rules_reject_bad_input(self):
@@ -101,6 +106,18 @@ class JournalFieldsTests(unittest.TestCase):
         with self.assertRaises(jf.JournalError):
             Lossy().publish(package, 1, True)
         self.assertEqual([m for m, _ in calls].count('PUT'), 0)
+
+class HeroBudgetTests(unittest.TestCase):
+    def test_hero_set_and_weight_rules(self):
+        ok = {k: f'https://cdn.shopify.com/s/files/1/0/1/files/cherish-journal-hero-0003-{k}.webp?v=1' for k in jf.HERO_SET_KEYS}
+        self.assertEqual(jf.check_hero_set(ok), ok)
+        with self.assertRaises(Exception):
+            jf.check_hero_set({'550': ok['550']})
+        with self.assertRaises(Exception):
+            jf.check_hero_set({**ok, '700': 'http://example.com/a.webp'})
+        jf.check_hero_weight(jf.HERO_BUDGET_KB)
+        with self.assertRaises(Exception):
+            jf.check_hero_weight(jf.HERO_BUDGET_KB + 1)
 
 
 if __name__ == '__main__':
