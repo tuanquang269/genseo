@@ -4,6 +4,7 @@
   "domain": "thecherishcompany.com",
   "shop": "uxfaue-s1.myshopify.com",
   "blog_handle": "news",
+  "article_contract": "journal-v1",
   "daily_volume": 7,
   "credential": {
     "kind": "client-credentials",

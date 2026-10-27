@@ -5,6 +5,7 @@ import json
 import urllib.request
 from store_profiles import require
 from store_article import article_fragment, validate_schema, soup
+import journal_fields
 
 
 class Shopify:
@@ -68,8 +69,38 @@ class Shopify:
         require(rows[0]['status'] == 'active', 'Product is not active')
         return rows[0]
 
+    def publish_journal(self, package, blog, live):
+        """Contract journal-v1: body + journal.* metafields + template_suffix. No CSS, no JSON-LD in the body."""
+        parts = journal_fields.from_document(package['raw_html'], package['style'])
+        tags = journal_fields.check_tags(package.get('tags'))
+        journal_fields.check_unique_hero(parts['image']['src'], self.articles(blog))
+        self.profile.check_text(' '.join([parts['body_html']] + [m['value'] for m in parts['metafields']]))
+        article = {'title': package['title'], 'handle': package['handle'], 'body_html': parts['body_html'],
+                   'template_suffix': parts['template_suffix'], 'tags': ', '.join(tags), 'image': parts['image'],
+                   'published': False, 'author': self.profile.data['name'],
+                   'metafields': [{'namespace': 'global', 'key': 'description_tag',
+                                   'value': package['meta_description'], 'type': 'single_line_text_field'}] + parts['metafields']}
+        result = self.request(f'/admin/api/2026-04/blogs/{blog}/articles.json', {'article': article})['article']
+        path = f"/admin/api/2026-04/blogs/{blog}/articles/{result['id']}.json"
+        readback = self.request(path)['article']
+        require(readback['handle'] == package['handle'], 'Handle readback failed')
+        require(not readback.get('published_at'), 'Article was not created unpublished')
+        require(readback.get('template_suffix') == parts['template_suffix'], 'template_suffix readback failed')
+        stored = self.request(f"/admin/api/2026-04/articles/{result['id']}/metafields.json")['metafields']
+        journal_fields.readback_check(parts, readback['body_html'], stored)
+        require(len(soup(readback['body_html']).select('img')) == len(soup(parts['body_html']).select('img')),
+                'Images lost in Shopify readback')
+        require(bool(readback.get('image')), 'Hero image (article.image) was not stored')
+        if live:
+            self.request(path, {'article': {'id': result['id'], 'published': True}}, method='PUT')
+            readback = self.request(path)['article']
+            require(bool(readback.get('published_at')), 'Publication status readback failed')
+        return readback
+
     def publish(self, package, blog, live):
         self.identity()
+        if self.profile.data.get('article_contract') == 'journal-v1':
+            return self.publish_journal(package, blog, live)
         fragment = article_fragment(package['body_html'])
         article = {'title': package['title'], 'handle': package['handle'],
                    'body_html': fragment, 'published': False,

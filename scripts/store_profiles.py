@@ -92,9 +92,15 @@ class Profile:
         require(not any(n in text.lower() for n in names), 'Cross-store brand context in content')
         for match in re.finditer(r'(?:https?://[^\s<>"\')]+)?/products/([^\s<>"\')?#/|]+)', text, re.I):
             url = match.group(0)
-            host = urlsplit(url).hostname
-            require(not host or host in (self.data['domain'], self.data['shop']), 'Cross-store product link')
-            self.check_handle(unquote(match.group(1)))
+            host = (urlsplit(url).hostname or '').removeprefix('www.')
+            own = (self.data['domain'], self.data['shop'])
+            handle = unquote(match.group(1))
+            require(host not in foreign, 'Cross-store product link')
+            if host and host not in own:
+                # A third-party page (a competitor citation) is fine. A foreign host that reuses OUR handle is not.
+                require(handle not in self.handles, 'Cross-store product link')
+                continue
+            self.check_handle(handle)
 
     def credential_domain(self):
         c = self.data['credential']
@@ -151,7 +157,14 @@ class Profile:
         return json.dumps({'store': self.store, 'domain': self.data['domain'], 'voice': self.data['voice'],
                            'task': row, 'context': context, 'product_facts': products, 'allowed_product_handles': sorted(self.handles),
                            'approved_template': re.sub(r'<style\b[^>]*>.*?</style>', '<!-- Approved CSS is inserted by the runner. -->', template, flags=re.S), 'rules_machine': rules,
-                           'output_contract': 'Return an article package with store, day, slot, title, handle, meta_description, body_html, and facts. Preserve approved CSS and structure. Include rules-machine exactly. Each facts item needs claim and source (an approved path, evidence URL, or shopify://<shop>/products/<handle> from the supplied live product facts) and quote. Do not invent claims. Do not read global GenSEO skills. Use a style- prefixed HTML filename for the render gate. Publishing is performed by the guarded runner only.'}, ensure_ascii=False, indent=2)
+                           'output_contract': 'Return an article package with store, day, slot, title, handle, meta_description, body_html, and facts. Preserve approved CSS and structure. Include rules-machine exactly. Each facts item needs claim and source (an approved path, evidence URL, or shopify://<shop>/products/<handle> from the supplied live product facts) and quote. Do not invent claims. Do not read global GenSEO skills. Use a style- prefixed HTML filename for the render gate. Publishing is performed by the guarded runner only.' + self.journal_contract()}, ensure_ascii=False, indent=2)
+
+    def journal_contract(self):
+        if self.data.get('article_contract') != 'journal-v1':
+            return ''
+        from journal_fields import CHIP_TAGS
+        return (' The package also needs "tags": 1 to 3 values chosen only from ' + json.dumps(CHIP_TAGS) +
+                '. The runner writes the article body and journal.* metafields from your page; it adds no CSS or JSON-LD to the body.')
 
     def fingerprint(self):
         return hashlib.sha256(self.path.read_bytes()).hexdigest()

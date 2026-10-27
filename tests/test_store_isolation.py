@@ -125,6 +125,7 @@ class StoreIsolationTests(unittest.TestCase):
 
     def test_approval_controls_unpublished_and_live_payloads(self):
         p=Profile('cherish'); template,_=p.template('1')
+        p.data.pop('article_contract')  # legacy fragment path; journal-v1 is covered in test_journal_fields.py
         package={'body_html':prepare_html(template,template),'title':'A store article',
                  'handle':'a-store-article','meta_description':'A description'}
         for live in (False,True):
@@ -148,6 +149,7 @@ class StoreIsolationTests(unittest.TestCase):
 
     def test_bad_shopify_readback_never_publishes_live(self):
         p=Profile('cherish');template,_=p.template('1')
+        p.data.pop('article_contract')  # legacy fragment path; journal-v1 is covered in test_journal_fields.py
         package={'title':'Bedding for Night Sweats: How to Set Up a Bed That Copes',
                  'handle':'bedding-for-night-sweats','body_html':prepare_html(template,template),
                  'meta_description':'A description'}
