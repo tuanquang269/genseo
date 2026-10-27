@@ -121,7 +121,21 @@ class Profile:
     def assert_write(self, domain, body):
         require(domain == self.data['shop'], 'Shopify write domain mismatch')
         require(self.credential_domain() == domain, 'Credential identity changed')
-        self.check_text(body)
+        # The body is a JSON payload: check the decoded strings, not the escaped text (a handle followed by \" reads as 'handle\').
+        try:
+            def strings(o):
+                if isinstance(o, str):
+                    yield o
+                elif isinstance(o, dict):
+                    for v in o.values():
+                        yield from strings(v)
+                elif isinstance(o, list):
+                    for v in o:
+                        yield from strings(v)
+            text = '\n'.join(strings(json.loads(body)))
+        except (TypeError, ValueError):
+            text = body
+        self.check_text(text)
 
     def template(self, style):
         matches = [p for p in self.data['templates'] if Path(p).name.startswith('style-'+style+'-')]

@@ -57,6 +57,16 @@ class StoreIsolationTests(unittest.TestCase):
         p=Profile('cherish'); p.data['credential']['prefix']='SHOPIFY_CHERISH_'
         with self.assertRaises(StoreGuardError): p.validate_credentials_metadata()
 
+    def test_write_payload_is_checked_as_decoded_json(self):
+        # A JSON-encoded body holds href=\\"/products/<handle>\\"; the escaped quote must not become part of the handle.
+        p = Profile('cherish')
+        own = json.dumps({'article': {'body_html': '<a href="/products/alticoddle-six-layer-muslin-cotton-blanket">x</a>'}})
+        foreign = json.dumps({'article': {'body_html': '<a href="/products/fusiforce-creatine-gummies">x</a>'}})
+        with patch.object(p, 'credential_domain', return_value=p.data['shop']):
+            p.assert_write(p.data['shop'], own)
+            with self.assertRaises(StoreGuardError):
+                p.assert_write(p.data['shop'], foreign)
+
     def test_wrong_domain_write_stops_before_auth_or_network(self):
         p=Profile('cherish')
         api=object.__new__(Shopify); api.profile=p; api.domain='wellnessnest1.myshopify.com'
