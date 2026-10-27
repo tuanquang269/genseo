@@ -38,7 +38,7 @@ No page titled Claims Bible turned up under `~/PATI/LLM-Wiki/20-brands` or `~/PA
 | `scripts/cluster_internal_links.py` | In-body links. Default is a dry run. `--apply` writes `backups/<date>/cluster-links-*.json` first. `--rollback` restores that file. Blog `104008483131` only |
 | `scripts/cluster_related_questions.py` | The follow-up block for a new draft |
 
-New tickets from the picker are limited to ShilaSource Himalayan Shilajit Resin, AgeAura Pure NMN + TMG (`/products/ageaura-pure-nmn-tmg-nad-complex`), and FloraFresh (Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies). Gummies, Shockwave, and Gold Resin stay in the map as existing URLs and are not used as new shilajit link targets. Ayurveda pages that do not mention shilajit stay in the unclustered group. Pregnancy, disease, and treatment queries are not turned into tickets.
+New tickets from the picker are limited to ShilaSource Himalayan Shilajit Resin, AgeAura Pure NMN + TMG (`/products/ageaura-pure-nmn-tmg-nad-complex`), and FloraFresh (Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies). The 2026-10-20 draft of this note recorded a 1-billion count; Kevin set the count to 15B CFU on 2026-10-21. Gummies, Shockwave, and Gold Resin stay in the map as existing URLs and are not used as new shilajit link targets. Ayurveda pages that do not mention shilajit stay in the unclustered group. Pregnancy, disease, and treatment queries are not turned into tickets.
 
 The map built on 20 October 2026 used the live blog titles, word counts from `ALL_ARTICLES.csv`, the current Search Console window, and the intake state.
 
