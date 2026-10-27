@@ -73,11 +73,11 @@ def norm(text):
 # srcset width (same photo, same aspect ratio, lighter encode), stored as journal.hero_set. Build one with
 # ~/PATI/work/cherish-seo/journal-data/hero_budget.py (build_set) or `convert.py --make-heroes`.
 HERO_BUDGET_KB = 120
-HERO_SET_KEYS = ('550', '750', '1100', '2200')
+HERO_SET_KEYS = ('550', '750', '1100', '1200', '2200')
 
 
 def check_hero_set(hero_set):
-    """journal.hero_set = {"550": url, "750": url, "1100": url, "2200": url}: Shopify Files URLs of pass-through files."""
+    """journal.hero_set = {"550": url, "750": url, "1100": url, "1200": url, "2200": url}: Shopify Files URLs of pass-through files."""
     need(isinstance(hero_set, dict) and set(hero_set) == set(HERO_SET_KEYS), 'journal.hero_set needs exactly the keys ' + ', '.join(HERO_SET_KEYS))
     for k, url in hero_set.items():
         need(re.match(r'https://cdn\.shopify\.com/s/files/.+\.webp(\?v=\d+)?$', str(url)), f'journal.hero_set[{k}] must be a Shopify Files .webp URL')
@@ -85,9 +85,9 @@ def check_hero_set(hero_set):
 
 
 def hero_set_from_srcset(srcset):
-    """A hero srcset of four pass-through Files URLs (no width parameter, descriptors 550 / 750 / 1100 / 2200) is a hero set; any other srcset is not."""
+    """A hero srcset of five pass-through Files URLs (no width parameter, descriptors 550 / 750 / 1100 / 1200 / 2200) is a hero set; any other srcset is not."""
     entries = [e.strip().rsplit(' ', 1) for e in html.unescape(srcset or '').split(', ') if e.strip()]
-    found = {w[:-1]: u for u, w in entries if len(entries) == 4 and w.endswith('w') and 'width=' not in u}
+    found = {w[:-1]: u for u, w in entries if len(entries) == 5 and w.endswith('w') and 'width=' not in u}
     return found if set(found) == set(HERO_SET_KEYS) else None
 
 
