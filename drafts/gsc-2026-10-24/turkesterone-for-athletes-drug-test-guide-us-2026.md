@@ -111,7 +111,7 @@ Wellness Nest lists Turkesterone Advanced Formula at $75 on its US product page.
 
 ### About the Author
 
-[Dr. Marcus Hale](/pages/dr-marcus-hale) — Dr. Marcus Hale is the resident health researcher behind Wellness Nest's editorial team, translating peer-reviewed sports-nutrition and longevity research into practical daily guidance for US readers.
+[Mike Moretti](/pages/mike-moretti) — Mike Moretti is a co-founder of Wellness Nest and the brand's public face.
 
 This article is for education only and is not medical advice. Talk with a clinician before you change a medicine or a supplement.
 

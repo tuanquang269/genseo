@@ -59,7 +59,7 @@ If you use a copper IUD and get BV often, talk to your clinician. A probiotic is
 
 No spacing is needed, since there is no known interaction. Pick a routine you will keep. Many people take their pill at the same time each day, and adding a probiotic to that moment makes both easier to remember.
 
-The Supplement Facts serving for FloraFresh is 2 gummies of Bacillus coagulans SNZ-1969. This page does not state a CFU count. If you are just starting, see our guide on [how long vaginal probiotics take to work](https://wellnessnest.co/blogs/news/vaginal-probiotics-how-long-until-they-work-us-2026) and our breakdown of [which strains have research behind them](https://wellnessnest.co/blogs/news/vaginal-probiotics-which-strains-actually-work-us-2026).
+The Supplement Facts serving for FloraFresh is 2 gummies of Bacillus coagulans SNZ-1969, 15B CFU. If you are just starting, see our guide on [how long vaginal probiotics take to work](https://wellnessnest.co/blogs/news/vaginal-probiotics-how-long-until-they-work-us-2026) and our breakdown of [which strains have research behind them](https://wellnessnest.co/blogs/news/vaginal-probiotics-which-strains-actually-work-us-2026).
 
 On safety, the NIH's National Center for Complementary and Integrative Health says probiotics have a long history of apparently safe use, mainly in healthy people. The risk of harm is greater in people with a severe illness or a weak immune system. It also notes that probiotics sold as dietary supplements do not need FDA approval before they are sold ([NCCIH](https://www.nccih.nih.gov/health/probiotics-what-you-need-to-know)).
 
@@ -84,8 +84,7 @@ Bring a list of everything you take, including supplements, to that appointment.
 
 ## Where to Buy FloraFresh Vaginal Probiotics in the US
 
-The official source is Wellness Nest at wellnessnest.co. [FloraFresh Vaginal Probiotic Gummies](https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies) cost $40.99. The Supplement Facts serving for FloraFresh is 2 gummies of Bacillus coagulans SNZ-1969, with Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain). They are sweetened with maltitol and isomalt, so they are not sugar-free. Label badges include allergen free, vegan, halal and gluten free. This page does not state a CFU count.
-
+The official source is Wellness Nest at wellnessnest.co. [FloraFresh Vaginal Probiotic Gummies](https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies) cost $40.99. The Supplement Facts serving for FloraFresh is 2 gummies of Bacillus coagulans SNZ-1969, 15B CFU, with Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain). They are sweetened with maltitol and isomalt, so they are not sugar-free. Label badges include allergen free, vegan, halal and gluten free.
 Wellness Nest offers free US shipping on orders over $70 and a 90-day refund policy (eligibility applies). You can also browse the [women's essentials collection](https://wellnessnest.co/collections/womens-essentials-collection) or the store's [best sellers](https://wellnessnest.co/collections/best-seller).
 
 A related page in this cluster is [Probiotics During Your Period: Keep Taking Them? (US 2026)](https://wellnessnest.co/blogs/news/probiotics-during-your-period-keep-taking-them-us-2026).
@@ -117,15 +116,15 @@ Most do not. The CDC rates broad-spectrum antibiotics, antifungals and antiparas
 
 ### What time of day should I take probiotics with birth control?
 
-Any time that fits your routine. There is no known interaction, so you do not need to space them apart. The Supplement Facts serving for FloraFresh is 2 gummies of Bacillus coagulans SNZ-1969. Many people pair the gummies with their daily pill so they remember both. If you take other supplements or medicines with timing rules, check those labels too, and ask your pharmacist if you are unsure.
+Any time that fits your routine. There is no known interaction, so you do not need to space them apart. The Supplement Facts serving for FloraFresh is 2 gummies of Bacillus coagulans SNZ-1969, 15B CFU. Many people pair the gummies with their daily pill so they remember both. If you take other supplements or medicines with timing rules, check those labels too, and ask your pharmacist if you are unsure.
 
 ### Where can I buy FloraFresh in the US?
 
-Buy FloraFresh from the official source, Wellness Nest, at wellnessnest.co. FloraFresh is $40.99, with free US shipping on orders over $70 and a 90-day refund policy (eligibility applies). The Supplement Facts serving for FloraFresh is 2 gummies of Bacillus coagulans SNZ-1969, with Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain). They are sweetened with maltitol and isomalt, so they are not sugar-free. Label badges include allergen free, vegan, halal and gluten free. This page does not state a CFU count. The pouch is pineapple flavor.
+Buy FloraFresh from the official source, Wellness Nest, at wellnessnest.co. FloraFresh is $40.99, with free US shipping on orders over $70 and a 90-day refund policy (eligibility applies). The Supplement Facts serving for FloraFresh is 2 gummies of Bacillus coagulans SNZ-1969, 15B CFU, with Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain). They are sweetened with maltitol and isomalt, so they are not sugar-free. Label badges include allergen free, vegan, halal and gluten free. The pouch is pineapple flavor.
 
 ### About the Author
 
-[Dr. Marcus Hale](/pages/dr-marcus-hale) — Dr. Marcus Hale is the resident health researcher behind Wellness Nest's editorial team, translating peer-reviewed sports-nutrition and longevity research into practical daily guidance for US readers.
+[Mike Moretti](/pages/mike-moretti) — Mike Moretti is a co-founder of Wellness Nest and the brand's public face.
 
 This article is for education only and is not medical advice. Talk to your prescriber before you change any medicine or supplement.
 

@@ -14,9 +14,10 @@ Opening answer block: 55 words. It answers from the Seasonale label fetched for 
 
 - Public product catalog, 24 October 2026: `florafresh-vaginal-probiotics-gummies` price 4099 cents ($40.99), available. https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies.js
 - Supplement Facts lines from `scripts/florafresh_rules.py` (Kevin 2026-10-09 label lock): Bacillus coagulans SNZ-1969, Vitamin C 30 mg, pineapple fruit powder 100 mg with bromelain, per 2 gummies, maltitol and isomalt, so not sugar-free. Badges: allergen free, vegan, halal, gluten free.
-- CFU count is omitted. See open questions.
+- CFU count stated in the draft: 15B CFU per 2 gummies (Kevin, 2026-10-21). The four Lactobacillus strains on the public description were not copied. The strain stays Bacillus coagulans SNZ-1969.
+- Draft byline: Mike Moretti, co-founder. The sentence is the roster bio from the same entry as draft PR #94. No headshot was added.
 - Pouch "60 GUMMIES" and pineapple flavor: `product_refs/florafresh-vaginal-probiotics-gummies.json`.
-- Vault product note, updated 2026-10-23: `~/PATI/LLM-Wiki/20-brands/21-wellnessnest-products/5-florafresh.md` records a live formula conflict (PDP text versus pouch image) and a PDP FAQ figure of 15 billion CFU per 2 gummies. The public description fetched the same day still says 15 billion CFU and four Lactobacillus strains. Those sentences were removed from this draft.
+- Vault product note, updated 2026-10-23: `~/PATI/LLM-Wiki/20-brands/21-wellnessnest-products/5-florafresh.md` records a live formula conflict (PDP text versus pouch image) and a PDP FAQ figure of 15B CFU per 2 gummies. The public description fetched the same day still pairs that count with four Lactobacillus strains. The four-strain sentence was not copied. The draft states 15B CFU from Kevin's 2026-10-21 confirmation.
 
 ## Preserved from the live article, not re-fetched this pass
 

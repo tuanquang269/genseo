@@ -95,8 +95,7 @@ For BV-specific evidence on probiotics, read [do probiotics for BV actually work
 
 In the US, probiotics are dietary supplements. They do not need FDA approval before they go on sale, and labels may only describe support for normal function ([NCCIH](https://www.nccih.nih.gov/health/probiotics-usefulness-and-safety)). Look for named strains, a CFU count, and a format you will take every single day, including period days.
 
-Wellness Nest [FloraFresh Vaginal Probiotic Gummies](https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies) cost $40.99 for 60 gummies. The Supplement Facts serving for FloraFresh is 2 gummies of Bacillus coagulans SNZ-1969, with Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain). They are sweetened with maltitol and isomalt, so they are not sugar-free. Label badges include allergen free, vegan, halal and gluten free. This page does not state a CFU count.
-
+Wellness Nest [FloraFresh Vaginal Probiotic Gummies](https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies) cost $40.99 for 60 gummies. The Supplement Facts serving for FloraFresh is 2 gummies of Bacillus coagulans SNZ-1969, 15B CFU, with Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain). They are sweetened with maltitol and isomalt, so they are not sugar-free. Label badges include allergen free, vegan, halal and gluten free.
 [See the FloraFresh product page →](https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies)
 
 You can also browse the [Women's Essentials collection](https://wellnessnest.co/collections/womens-essentials-collection) or our [best sellers](https://wellnessnest.co/collections/best-seller).
@@ -135,17 +134,17 @@ A mild or slightly metallic smell is normal. A strong fish-like odor, gray disch
 
 ### Where can I buy vaginal probiotics for period support in the US?
 
-Wellness Nest sells FloraFresh Vaginal Probiotic Gummies online at [wellnessnest.co](https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies) for $40.99 per 60-gummy pouch, with shipping to US addresses. Check the product page at checkout for current shipping options.
+Wellness Nest sells FloraFresh Vaginal Probiotic Gummies, 15B CFU, online at [wellnessnest.co](https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies) for $40.99 per 60-gummy pouch, with shipping to US addresses. Check the product page at checkout for current shipping options.
 
 FloraFresh Vaginal Probiotic Gummies
 
-Bacillus coagulans SNZ-1969 in a pineapple gummy. The Supplement Facts serving is 2 gummies. This page does not state a CFU count.
+Bacillus coagulans SNZ-1969, 15B CFU, in a pineapple gummy. The Supplement Facts serving is 2 gummies.
 
 [Shop FloraFresh →](https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies)
 
 ### About the Author
 
-[Dr. Marcus Hale](/pages/dr-marcus-hale) — Dr. Marcus Hale is the resident health researcher behind Wellness Nest's editorial team, translating peer-reviewed sports-nutrition and longevity research into practical daily guidance for US readers.
+[Mike Moretti](/pages/mike-moretti) — Mike Moretti is a co-founder of Wellness Nest and the brand's public face.
 
 This article is for education only and is not medical advice. Talk with a clinician before you change a medicine or a supplement.
 

@@ -6,7 +6,7 @@ SEO title rewritten for the query "is turkesterone banned by WADA" (44 character
 
 Meta description rewritten (160 characters): "No. The 2026 WADA Prohibited List does not name turkesterone. Ecdysterone is monitored, not on that list. US athletes should still check the product with USADA." "Not on that list" repeats the Monitoring Program point already in the opening: the program names ecdysterone as a substance that is not on the Prohibited List.
 
-Opening answer block, unchanged: 57 words. WADA status is taken from the 2026 Prohibited List and the 2026 Monitoring Program, with USADA's ecdysteroids page as the US anti-doping reading of the class. List year stated: 2026, in force 1 January 2026. No body sentence changed in this pass.
+Opening answer block, unchanged: 57 words. WADA status is taken from the 2026 Prohibited List and the 2026 Monitoring Program, with USADA's ecdysteroids page as the US anti-doping reading of the class. List year stated: 2026, in force 1 January 2026. No body sentence changed in this pass. The draft byline is Mike Moretti, co-founder. The sentence is the roster bio from the same entry as draft PR #94. No headshot was added.
 
 ## Fetched for the WADA answer
 
