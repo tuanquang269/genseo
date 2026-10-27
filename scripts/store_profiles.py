@@ -133,7 +133,7 @@ class Profile:
 
     def calendar(self, day):
         rows = list(csv.DictReader(self.read_context(self.data['calendar']).splitlines()))
-        require(len(rows) == 250, 'Calendar row count changed: review the store profile')
+        require(len(rows) == int(self.data['calendar_rows']), 'Calendar row count changed: review the store profile')
         seen = set()
         for r in rows:
             require(r['approval'] in ('kevin', 'auto'), 'Invalid calendar approval')

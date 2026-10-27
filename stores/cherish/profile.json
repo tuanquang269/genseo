@@ -41,5 +41,6 @@
   ],
   "voice": "Warm, calm, concrete US English. Use the approved Cherish v4 system. Never invent product, health, certification, price, or care claims. Never use luxury, softer every wash, or softer by day 100 as claims.",
   "review_first": 21,
-  "writer_model": "cc/claude-sonnet-5-5"
+  "writer_model": "cc/claude-sonnet-5-5",
+  "calendar_rows": 249
 }

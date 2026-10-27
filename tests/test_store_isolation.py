@@ -66,7 +66,7 @@ class StoreIsolationTests(unittest.TestCase):
 
     def test_calendar_and_first_21(self):
         p=Profile('cherish'); rows=list(__import__('csv').DictReader(p.read_context(p.data['calendar']).splitlines()))
-        self.assertEqual(len(rows),250)
+        self.assertEqual(len(rows),int(p.data['calendar_rows']))
         self.assertTrue(all(r['approval']=='kevin' for r in rows[:21]))
         self.assertEqual(len(p.calendar('2026-10-28')),7)
         self.assertEqual(len(p.data['templates']),7)
