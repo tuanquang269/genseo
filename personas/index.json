@@ -1,29 +1,29 @@
 {
  "_doc": "Machine-readable rotation state for the persona bank. persona.json holds IMMUTABLE provenance; this file holds MUTABLE rotation history. Written only by scripts/persona_picker.py commit (atomic tmp+rename). Never hand-edit during a run.",
  "schema_version": 1,
- "seq": 53,
+ "seq": 100,
  "seeded_from": "PUBLISHED_ARTICLES_TRACKER.csv tickets 1-10 (free-text hero/gaze notes)",
  "recent_shots": [
-  "wide-room",
+  "through-doorway",
   "high-angle-down",
-  "mid-subject-fg-pack",
   "over-shoulder",
+  "mid-subject-fg-pack",
   "wide-room",
-  "through-doorway"
+  "high-angle-down"
  ],
  "recent_heroes": [
-  "f3039-as-01",
   "NO-FACE",
-  "f3039-as-02",
-  "f3039-bl-02",
+  "f4049-wh-09",
+  "m3039-wh-17",
   "NO-FACE",
-  "f3039-hl-03",
-  "m3039-wh-05",
-  "NO-FACE"
+  "f5059-wh-06",
+  "m3039-wh-19",
+  "NO-FACE",
+  "m3039-wh-20"
  ],
  "no_face_cycle": {
   "period": 3,
-  "position": 0,
+  "position": 1,
   "_doc": "every 3rd hero is no-face: one adult + one pack for 200 rows running is the structural tell that rotating the pose cannot reach. Briefly 1 on 2026-08-10 as a safety default after ima2 was measured reproducing the reference person recognisably; restored to 3 the same day when Kevin reaffirmed the 200-face bank. The rights exposure that motivated 1 is real and unresolved \u2014 it is recorded in CLAUDE.md and accepted by Kevin, not fixed by this number."
  },
  "personas": {
@@ -155,11 +155,17 @@
    "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/f4049-hl-02/ref.jpg",
    "identity_key": "openimages:e73ecfbd011f3e27",
-   "used_count": 0,
-   "last_used_seq": 0,
-   "gaze_used": [],
-   "last_gaze": null,
-   "angles_used": [],
+   "used_count": 1,
+   "last_used_seq": 61,
+   "gaze_used": [
+    "down-at-product",
+    "down-at-hands"
+   ],
+   "last_gaze": "down-at-product",
+   "angles_used": [
+    "3q-right+chin-down",
+    "profile-left+chin-up"
+   ],
    "angles_reserved": []
   },
   "m4049-hl-02": {
@@ -194,11 +200,17 @@
    "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m2029-hl-02/ref.jpg",
    "identity_key": "openimages:fb65d7561c3b24fd",
-   "used_count": 0,
-   "last_used_seq": 0,
-   "gaze_used": [],
-   "last_gaze": null,
-   "angles_used": [],
+   "used_count": 1,
+   "last_used_seq": 56,
+   "gaze_used": [
+    "down-at-product",
+    "at-another-person"
+   ],
+   "last_gaze": "down-at-product",
+   "angles_used": [
+    "front+chin-down",
+    "3q-left+chin-down"
+   ],
    "angles_reserved": []
   },
   "m5059-hl-02": {
@@ -237,9 +249,12 @@
    "ref": "/Users/kevinkreative/genseo/personas/f4049-bl-02/ref.jpg",
    "identity_key": "openimages:2a0920aa36064697",
    "used_count": 0,
-   "last_used_seq": 0,
-   "gaze_used": [],
-   "last_gaze": null,
+   "last_used_seq": 59,
+   "gaze_used": [
+    "at-another-person",
+    "just-past-lens"
+   ],
+   "last_gaze": "at-another-person",
    "angles_used": [],
    "angles_reserved": []
   },
@@ -266,9 +281,12 @@
    "ref": "/Users/kevinkreative/genseo/personas/m2029-bl-01/ref.jpg",
    "identity_key": "openimages:f3779cec286e9e84",
    "used_count": 0,
-   "last_used_seq": 0,
-   "gaze_used": [],
-   "last_gaze": null,
+   "last_used_seq": 55,
+   "gaze_used": [
+    "down-at-product",
+    "off-into-room"
+   ],
+   "last_gaze": "down-at-product",
    "angles_used": [],
    "angles_reserved": []
   },
@@ -400,11 +418,17 @@
    "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m2029-mx-01/ref.jpg",
    "identity_key": "openimages:a074045ca670ced2",
-   "used_count": 0,
-   "last_used_seq": 0,
-   "gaze_used": [],
-   "last_gaze": null,
-   "angles_used": [],
+   "used_count": 1,
+   "last_used_seq": 67,
+   "gaze_used": [
+    "just-past-lens",
+    "down-at-product"
+   ],
+   "last_gaze": "just-past-lens",
+   "angles_used": [
+    "3q-left+chin-down",
+    "front+chin-up"
+   ],
    "angles_reserved": []
   },
   "f3039-wh-10": {
@@ -550,11 +574,17 @@
    "ref": "/Users/kevinkreative/genseo/personas/m3039-wh-07/ref.jpg",
    "identity_key": "openimages:0cfd32e15fab83ef",
    "used_count": 0,
-   "last_used_seq": 0,
-   "gaze_used": [],
-   "last_gaze": null,
+   "last_used_seq": 54,
+   "gaze_used": [
+    "at-lens",
+    "up-and-away"
+   ],
+   "last_gaze": "at-lens",
    "angles_used": [],
-   "angles_reserved": []
+   "angles_reserved": [
+    "profile-right+level",
+    "3q-right+chin-up"
+   ]
   },
   "m3039-wh-08": {
    "handle": "m3039-wh-08",
@@ -563,11 +593,17 @@
    "ref": "/Users/kevinkreative/genseo/personas/m3039-wh-08/ref.jpg",
    "identity_key": "openimages:da843dbeaa76ac00",
    "used_count": 0,
-   "last_used_seq": 0,
-   "gaze_used": [],
-   "last_gaze": null,
+   "last_used_seq": 63,
+   "gaze_used": [
+    "down-at-product",
+    "up-and-away"
+   ],
+   "last_gaze": "down-at-product",
    "angles_used": [],
-   "angles_reserved": []
+   "angles_reserved": [
+    "profile-right+level",
+    "profile-left+chin-down"
+   ]
   },
   "m3039-wh-09": {
    "handle": "m3039-wh-09",
@@ -575,11 +611,17 @@
    "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m3039-wh-09/ref.jpg",
    "identity_key": "openimages:c2e7e32e1b0b159a",
-   "used_count": 0,
-   "last_used_seq": 0,
-   "gaze_used": [],
-   "last_gaze": null,
-   "angles_used": [],
+   "used_count": 1,
+   "last_used_seq": 64,
+   "gaze_used": [
+    "off-into-room",
+    "down-at-hands"
+   ],
+   "last_gaze": "off-into-room",
+   "angles_used": [
+    "profile-right+chin-up",
+    "3q-left+chin-up"
+   ],
    "angles_reserved": []
   },
   "m3039-wh-10": {
@@ -588,11 +630,17 @@
    "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m3039-wh-10/ref.jpg",
    "identity_key": "openimages:d0cd9fa5e4de2be1",
-   "used_count": 0,
-   "last_used_seq": 0,
-   "gaze_used": [],
-   "last_gaze": null,
-   "angles_used": [],
+   "used_count": 1,
+   "last_used_seq": 81,
+   "gaze_used": [
+    "at-another-person",
+    "down-at-hands"
+   ],
+   "last_gaze": "at-another-person",
+   "angles_used": [
+    "3q-right+chin-up",
+    "3q-right+chin-down"
+   ],
    "angles_reserved": []
   },
   "m3039-wh-11": {
@@ -601,11 +649,17 @@
    "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m3039-wh-11/ref.jpg",
    "identity_key": "openimages:f5e088ba5cbf6de6",
-   "used_count": 0,
-   "last_used_seq": 0,
-   "gaze_used": [],
-   "last_gaze": null,
-   "angles_used": [],
+   "used_count": 1,
+   "last_used_seq": 84,
+   "gaze_used": [
+    "at-lens",
+    "up-and-away"
+   ],
+   "last_gaze": "at-lens",
+   "angles_used": [
+    "3q-right+chin-down",
+    "profile-left+level"
+   ],
    "angles_reserved": []
   },
   "m3039-wh-12": {
@@ -641,9 +695,12 @@
    "ref": "/Users/kevinkreative/genseo/personas/m3039-wh-14/ref.jpg",
    "identity_key": "openimages:4a5dc9f4b83b8a73",
    "used_count": 0,
-   "last_used_seq": 0,
-   "gaze_used": [],
-   "last_gaze": null,
+   "last_used_seq": 88,
+   "gaze_used": [
+    "just-past-lens",
+    "down-at-product"
+   ],
+   "last_gaze": "just-past-lens",
    "angles_used": [],
    "angles_reserved": []
   },
@@ -666,11 +723,17 @@
    "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m3039-wh-16/ref.jpg",
    "identity_key": "openimages:def799dfff596eba",
-   "used_count": 0,
-   "last_used_seq": 0,
-   "gaze_used": [],
-   "last_gaze": null,
-   "angles_used": [],
+   "used_count": 1,
+   "last_used_seq": 89,
+   "gaze_used": [
+    "down-at-hands",
+    "up-and-away"
+   ],
+   "last_gaze": "down-at-hands",
+   "angles_used": [
+    "3q-left+level",
+    "3q-left+chin-up"
+   ],
    "angles_reserved": []
   },
   "m3039-wh-17": {
@@ -679,11 +742,17 @@
    "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m3039-wh-17/ref.jpg",
    "identity_key": "openimages:921e388614f55f1e",
-   "used_count": 0,
-   "last_used_seq": 0,
-   "gaze_used": [],
-   "last_gaze": null,
-   "angles_used": [],
+   "used_count": 1,
+   "last_used_seq": 93,
+   "gaze_used": [
+    "just-past-lens",
+    "at-another-person"
+   ],
+   "last_gaze": "just-past-lens",
+   "angles_used": [
+    "3q-right+chin-up",
+    "front+chin-up"
+   ],
    "angles_reserved": []
   },
   "m3039-wh-18": {
@@ -693,9 +762,12 @@
    "ref": "/Users/kevinkreative/genseo/personas/m3039-wh-18/ref.jpg",
    "identity_key": "openimages:99baa6740383bab7",
    "used_count": 0,
-   "last_used_seq": 0,
-   "gaze_used": [],
-   "last_gaze": null,
+   "last_used_seq": 97,
+   "gaze_used": [
+    "at-lens",
+    "down-at-product"
+   ],
+   "last_gaze": "at-lens",
    "angles_used": [],
    "angles_reserved": []
   },
@@ -705,11 +777,17 @@
    "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m3039-wh-19/ref.jpg",
    "identity_key": "openimages:35c05ec22286b1ff",
-   "used_count": 0,
-   "last_used_seq": 0,
-   "gaze_used": [],
-   "last_gaze": null,
-   "angles_used": [],
+   "used_count": 1,
+   "last_used_seq": 98,
+   "gaze_used": [
+    "at-another-person",
+    "off-into-room"
+   ],
+   "last_gaze": "at-another-person",
+   "angles_used": [
+    "front+level",
+    "front+chin-down"
+   ],
    "angles_reserved": []
   },
   "m3039-wh-20": {
@@ -718,11 +796,17 @@
    "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m3039-wh-20/ref.jpg",
    "identity_key": "openimages:a7cba798059610ed",
-   "used_count": 0,
-   "last_used_seq": 0,
-   "gaze_used": [],
-   "last_gaze": null,
-   "angles_used": [],
+   "used_count": 1,
+   "last_used_seq": 100,
+   "gaze_used": [
+    "down-at-hands",
+    "at-another-person"
+   ],
+   "last_gaze": "down-at-hands",
+   "angles_used": [
+    "profile-left+chin-down",
+    "profile-right+level"
+   ],
    "angles_reserved": []
   },
   "m3039-wh-21": {
@@ -783,11 +867,17 @@
    "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/f4049-wh-04/ref.jpg",
    "identity_key": "openimages:3e675ffb5488216c",
-   "used_count": 0,
-   "last_used_seq": 0,
-   "gaze_used": [],
-   "last_gaze": null,
-   "angles_used": [],
+   "used_count": 1,
+   "last_used_seq": 66,
+   "gaze_used": [
+    "at-another-person",
+    "off-into-room"
+   ],
+   "last_gaze": "at-another-person",
+   "angles_used": [
+    "3q-left+level",
+    "front+level"
+   ],
    "angles_reserved": []
   },
   "f4049-wh-05": {
@@ -809,11 +899,17 @@
    "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/f4049-wh-06/ref.jpg",
    "identity_key": "openimages:732320891b071e3f",
-   "used_count": 0,
-   "last_used_seq": 0,
-   "gaze_used": [],
-   "last_gaze": null,
-   "angles_used": [],
+   "used_count": 1,
+   "last_used_seq": 72,
+   "gaze_used": [
+    "at-another-person",
+    "off-into-room"
+   ],
+   "last_gaze": "at-another-person",
+   "angles_used": [
+    "profile-right+level",
+    "front+level"
+   ],
    "angles_reserved": []
   },
   "f4049-wh-07": {
@@ -822,11 +918,17 @@
    "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/f4049-wh-07/ref.jpg",
    "identity_key": "openimages:624257cd5959f4e0",
-   "used_count": 0,
-   "last_used_seq": 0,
-   "gaze_used": [],
-   "last_gaze": null,
-   "angles_used": [],
+   "used_count": 1,
+   "last_used_seq": 87,
+   "gaze_used": [
+    "up-and-away",
+    "down-at-hands"
+   ],
+   "last_gaze": "up-and-away",
+   "angles_used": [
+    "profile-right+chin-up",
+    "profile-right+chin-down"
+   ],
    "angles_reserved": []
   },
   "f4049-wh-08": {
@@ -836,9 +938,12 @@
    "ref": "/Users/kevinkreative/genseo/personas/f4049-wh-08/ref.jpg",
    "identity_key": "openimages:d2a318bbbd5175d5",
    "used_count": 0,
-   "last_used_seq": 0,
-   "gaze_used": [],
-   "last_gaze": null,
+   "last_used_seq": 91,
+   "gaze_used": [
+    "down-at-product",
+    "up-and-away"
+   ],
+   "last_gaze": "down-at-product",
    "angles_used": [],
    "angles_reserved": []
   },
@@ -848,11 +953,17 @@
    "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/f4049-wh-09/ref.jpg",
    "identity_key": "openimages:4a66bf2820f6f710",
-   "used_count": 0,
-   "last_used_seq": 0,
-   "gaze_used": [],
-   "last_gaze": null,
-   "angles_used": [],
+   "used_count": 1,
+   "last_used_seq": 92,
+   "gaze_used": [
+    "just-past-lens",
+    "up-and-away"
+   ],
+   "last_gaze": "just-past-lens",
+   "angles_used": [
+    "3q-right+chin-down",
+    "profile-left+chin-down"
+   ],
    "angles_reserved": []
   },
   "f4049-wh-10": {
@@ -874,15 +985,25 @@
    "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/f4049-wh-11/ref.jpg",
    "identity_key": "openimages:c4be7e5b8e7812ff",
-   "used_count": 0,
-   "last_used_seq": 32,
+   "used_count": 1,
+   "last_used_seq": 80,
    "gaze_used": [
     "up-and-away",
-    "at-lens"
+    "at-lens",
+    "at-another-person",
+    "just-past-lens",
+    "off-into-room",
+    "down-at-product"
    ],
-   "last_gaze": "up-and-away",
-   "angles_used": [],
-   "angles_reserved": []
+   "last_gaze": "off-into-room",
+   "angles_used": [
+    "3q-left+chin-down",
+    "3q-right+chin-up"
+   ],
+   "angles_reserved": [
+    "profile-right+chin-up",
+    "3q-right+level"
+   ]
   },
   "f4049-wh-12": {
    "handle": "f4049-wh-12",
@@ -903,14 +1024,23 @@
    "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/f4049-wh-13/ref.jpg",
    "identity_key": "openimages:34eabfbfc6812fab",
-   "used_count": 0,
-   "last_used_seq": 41,
+   "used_count": 2,
+   "last_used_seq": 85,
    "gaze_used": [
     "up-and-away",
-    "at-another-person"
+    "at-another-person",
+    "off-into-room",
+    "just-past-lens",
+    "at-lens",
+    "down-at-hands"
    ],
-   "last_gaze": "up-and-away",
-   "angles_used": [],
+   "last_gaze": "at-lens",
+   "angles_used": [
+    "profile-right+chin-up",
+    "3q-left+chin-up",
+    "3q-right+chin-down",
+    "profile-left+level"
+   ],
    "angles_reserved": []
   },
   "f4049-wh-14": {
@@ -1186,9 +1316,12 @@
    "ref": "/Users/kevinkreative/genseo/personas/m2029-wh-02/ref.jpg",
    "identity_key": "openimages:129261ab8eeb8f87",
    "used_count": 0,
-   "last_used_seq": 0,
-   "gaze_used": [],
-   "last_gaze": null,
+   "last_used_seq": 70,
+   "gaze_used": [
+    "down-at-hands",
+    "at-another-person"
+   ],
+   "last_gaze": "down-at-hands",
    "angles_used": [],
    "angles_reserved": []
   },
@@ -1198,11 +1331,17 @@
    "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m2029-wh-03/ref.jpg",
    "identity_key": "openimages:d3735958c238f59e",
-   "used_count": 0,
-   "last_used_seq": 0,
-   "gaze_used": [],
-   "last_gaze": null,
-   "angles_used": [],
+   "used_count": 1,
+   "last_used_seq": 71,
+   "gaze_used": [
+    "at-lens",
+    "at-another-person"
+   ],
+   "last_gaze": "at-lens",
+   "angles_used": [
+    "3q-right+chin-up",
+    "profile-left+level"
+   ],
    "angles_reserved": []
   },
   "m2029-wh-04": {
@@ -1211,11 +1350,17 @@
    "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/m2029-wh-04/ref.jpg",
    "identity_key": "openimages:bcd0385449f0621c",
-   "used_count": 0,
-   "last_used_seq": 0,
-   "gaze_used": [],
-   "last_gaze": null,
-   "angles_used": [],
+   "used_count": 1,
+   "last_used_seq": 77,
+   "gaze_used": [
+    "down-at-hands",
+    "at-another-person"
+   ],
+   "last_gaze": "down-at-hands",
+   "angles_used": [
+    "3q-right+chin-down",
+    "profile-right+level"
+   ],
    "angles_reserved": []
   },
   "m2029-wh-05": {
@@ -1366,11 +1511,25 @@
    "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/f5059-wh-06/ref.jpg",
    "identity_key": "openimages:ddcf18fa4dbef1ad",
-   "used_count": 0,
-   "last_used_seq": 0,
-   "gaze_used": [],
-   "last_gaze": null,
-   "angles_used": [],
+   "used_count": 3,
+   "last_used_seq": 96,
+   "gaze_used": [
+    "up-and-away",
+    "off-into-room",
+    "down-at-hands",
+    "down-at-product",
+    "at-another-person",
+    "at-lens"
+   ],
+   "last_gaze": "at-another-person",
+   "angles_used": [
+    "3q-left+level",
+    "3q-right+chin-down",
+    "profile-right+chin-down",
+    "3q-right+chin-up",
+    "front+level",
+    "3q-left+chin-down"
+   ],
    "angles_reserved": []
   },
   "f5059-wh-07": {
@@ -1646,9 +1805,12 @@
    "ref": "/Users/kevinkreative/genseo/personas/f3039-hl-04/ref.jpg",
    "identity_key": "openimages:ed33dac27acb0874",
    "used_count": 0,
-   "last_used_seq": 0,
-   "gaze_used": [],
-   "last_gaze": null,
+   "last_used_seq": 60,
+   "gaze_used": [
+    "up-and-away",
+    "off-into-room"
+   ],
+   "last_gaze": "up-and-away",
    "angles_used": [],
    "angles_reserved": []
   },
@@ -1938,5 +2100,72 @@
    "angles_reserved": []
   }
  },
- "reservations": {}
+ "reservations": {
+  "54": {
+   "seq": 54,
+   "hero": "m3039-wh-07",
+   "audience": "men-30-55",
+   "hero_face_angle": "profile-right+level",
+   "inline_face_angle": "3q-right+chin-up",
+   "hero_gaze": "at-lens",
+   "inline_gaze": "up-and-away",
+   "shot": "mid-subject-fg-pack",
+   "cycle_position_before": 0
+  },
+  "57": {
+   "seq": 57,
+   "hero": "NO-FACE",
+   "audience": "adults-50-70",
+   "hero_face_angle": null,
+   "inline_face_angle": null,
+   "hero_gaze": null,
+   "inline_gaze": null,
+   "shot": "wide-room",
+   "cycle_position_before": 2
+  },
+  "62": {
+   "seq": 62,
+   "hero": "NO-FACE",
+   "audience": "men-30-55",
+   "hero_face_angle": null,
+   "inline_face_angle": null,
+   "hero_gaze": null,
+   "inline_gaze": null,
+   "shot": "through-doorway",
+   "cycle_position_before": 2
+  },
+  "63": {
+   "seq": 63,
+   "hero": "m3039-wh-08",
+   "audience": "men-30-55",
+   "hero_face_angle": "profile-right+level",
+   "inline_face_angle": "profile-left+chin-down",
+   "hero_gaze": "down-at-product",
+   "inline_gaze": "up-and-away",
+   "shot": "mid-subject-fg-pack",
+   "cycle_position_before": 0
+  },
+  "65": {
+   "seq": 65,
+   "hero": "NO-FACE",
+   "audience": "fusiforce-buyer",
+   "hero_face_angle": null,
+   "inline_face_angle": null,
+   "hero_gaze": null,
+   "inline_gaze": null,
+   "shot": "high-angle-down",
+   "cycle_position_before": 2
+  },
+  "74": {
+   "seq": 74,
+   "hero": "f4049-wh-11",
+   "audience": "adults-50-70",
+   "hero_face_angle": "profile-right+chin-up",
+   "inline_face_angle": "3q-right+level",
+   "hero_gaze": "at-another-person",
+   "inline_gaze": "just-past-lens",
+   "shot": "high-angle-down",
+   "cycle_position_before": 0
+  }
+ }
 }
