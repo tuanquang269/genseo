@@ -166,6 +166,10 @@ class StoreIsolationTests(unittest.TestCase):
         self.assertEqual(api.domain,p.data['shop'])
         self.assertTrue(callable(api.auth.token))
 
+    def test_dry_run_refuses_foreign_credential_domain_at_start(self):
+        with patch.object(Profile,'credential_domain',side_effect=StoreGuardError('Credential store domain mismatch')):
+            with self.assertRaises(StoreGuardError): main(['--store','cherish','--day','2026-10-28','--dry-run'])
+
     def test_store_required(self):
         result=subprocess.run([sys.executable,str(ROOT/'scripts/run_store.py'),'--dry-run'],capture_output=True)
         self.assertEqual(result.returncode,2)

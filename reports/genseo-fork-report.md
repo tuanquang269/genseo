@@ -33,7 +33,7 @@ No Cherish job was installed. No article was created, changed, or published.
 
 ## Verification
 
-- 19 focused isolation, credential, template, schema, approval, and compatibility
+- 20 focused isolation, credential, template, schema, approval, and compatibility
   tests passed with `/usr/bin/python3`. Tests reject foreign context and product
   links in both directions. A wrong-domain write stops before authentication or network.
 - Wellness Nest dry-run output is byte-identical before and after the change.

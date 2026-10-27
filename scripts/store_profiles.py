@@ -63,6 +63,7 @@ class Profile:
         c = self.data['credential']
         if self.store == 'cherish':
             require(c['prefix'] == 'SHOPIFY_CHERISH_LIVE_', 'Wrong credential namespace')
+            require(Path(c['env_file']).resolve() == Path.home()/'PATI/LLM-Wiki/.env', 'Wrong credential file')
             require(all(k.startswith(c['prefix']) for k in c['keys']), 'Cross-store credential key')
             require(Path(c['adapter']).resolve() == Path('/Users/kevinkreative/PATI/work/cherish-launch-tools/t3_store.py'), 'Unapproved credential adapter')
         else:

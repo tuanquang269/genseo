@@ -143,11 +143,11 @@ def main(argv=None):
     ap.add_argument('--packages-dir', type=Path)
     args = ap.parse_args(argv)
     profile = Profile(args.store)
+    profile.credential_domain()
     require(not args.generate or args.apply, '--generate requires --apply')
     require(not args.apply or not (args.dry_run or args.print_prompt), 'Preview flags cannot be combined with --apply')
     if args.store == 'wellnessnest':
         require(not args.generate and not args.packages_dir, 'Legacy Wellness Nest keeps its own writer and queues')
-        profile.credential_domain()
         env = dict(os.environ, GENSEO_STORE='wellnessnest')
         command = ['bash', profile.data['legacy_runner']]
         if args.dry_run or args.print_prompt or not args.apply:
