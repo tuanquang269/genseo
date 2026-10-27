@@ -21,6 +21,16 @@ KEYS = ['style', 'crumb', 'kicker', 'dek', 'updated_on', 'read_minutes', 'meta_n
 
 
 class JournalFieldsTests(unittest.TestCase):
+    def test_readback_accepts_rest_integer_values(self):
+        # Shopify's REST metafields list returns number_integer as an int (6), the write sent '6'; a changed value still fails.
+        parts = {'body_html': '<p>x</p>', 'metafields': [{'namespace': 'journal', 'key': 'read_minutes', 'type': 'number_integer', 'value': '6'},
+                                                         {'namespace': 'journal', 'key': 'style', 'type': 'single_line_text_field', 'value': '1'}]}
+        stored = [{'namespace': 'journal', 'key': 'read_minutes', 'value': 6}, {'namespace': 'journal', 'key': 'style', 'value': '1'}]
+        jf.readback_check(parts, '<p>x</p>', stored)
+        stored[0]['value'] = 7
+        with self.assertRaises(StoreGuardError):
+            jf.readback_check(parts, '<p>x</p>', stored)
+
     def test_p1_keys_and_clean_body(self):
         parts = convert.from_post(importlib.import_module('p1').POST)
         got = [m['key'] for m in parts['metafields']]

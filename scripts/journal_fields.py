@@ -191,7 +191,8 @@ def readback_check(parts, body_html, metafields):
     for m in parts['metafields']:
         row = got.get((m['namespace'], m['key']))
         need(row is not None, 'Metafield missing after write: ' + m['key'])
-        same = (json.loads(row['value']) == json.loads(m['value'])) if m['type'] == 'json' else row['value'] == m['value']
+        # REST returns number_integer values as ints, GraphQL as strings: compare as text
+        same = (json.loads(row['value']) == json.loads(m['value'])) if m['type'] == 'json' else str(row['value']) == str(m['value'])
         need(same, 'Metafield differs after write: ' + m['key'])
 
 
