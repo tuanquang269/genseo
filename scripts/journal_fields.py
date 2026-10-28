@@ -197,6 +197,17 @@ def readback_check(parts, body_html, metafields):
 
 
 # ---------------------------------------------------------------- full approved-template document
+def toc_items(inline, rail, text):
+    """Inline TOC labels; a rail entry whose text differs becomes rail_label (the shell prints it in the rail)."""
+    short = {a['href'].lstrip('#'): text(a) for a in rail.select('li a')} if rail is not None else {}
+    items = []
+    for a in inline.select('li a'):
+        item = {'id': a['href'].lstrip('#'), 'label': text(a)}
+        if short.get(item['id']) not in (None, item['label']):
+            item['rail_label'] = short[item['id']]
+        items.append(item)
+    return items
+
 def from_document(doc_html, style, keyword=None):
     """Parse the writer's full approved-template page (header, article, rail, band, JSON-LD). keyword adds journal.about; journal.word_count is always added."""
     from bs4 import BeautifulSoup
@@ -242,7 +253,7 @@ def from_document(doc_html, style, keyword=None):
         'updated_on': dt.datetime.strptime(meta[1].replace('Updated ', ''), '%b %d, %Y').date().isoformat(),
         'read_minutes': int(meta[2].split()[0]), 'meta_note': meta[3],
         'hero_caption': text(art.select_one('figure.hero figcaption')),
-        'toc': [{'id': a['href'].lstrip('#'), 'label': text(a)} for a in toc_node.select('li a')],
+        'toc': toc_items(toc_node, soup.select_one('aside.rail details.toc'), text),
         'pick': pick, 'band': band, 'faq': faq, 'schema_extra': extra[0] if extra else None}
     hero = art.select_one('figure.hero img')
     need(hero is not None, 'Hero image is missing')
