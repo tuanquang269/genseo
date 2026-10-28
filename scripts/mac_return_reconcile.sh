@@ -8,7 +8,7 @@
 # checklist: 1. cd ~/genseo && bash scripts/mac_return_reconcile.sh
 # checklist:    Default is dry-run. It prints ICT time, git status, main vs HEAD, local commits that are not on origin, and lock ages. It fetches origin. It does not merge, delete a lock, push, reset, copy the wrapper, or publish.
 # checklist: 2. If local commits are not on origin, read them with git show and keep them. Do not run git push --force. Do not run git reset --hard. e1b8519 and 289803e were unpushed publish commits on this Mac. If either is still local, leave it.
-# checklist: 3. If personas/index.json is dirty, leave it. DAILY-RUN.md keeps the MacBook image lane no-face until that file is re-synced from the Mini.
+# checklist: 3. If personas/index.json is dirty, leave it. Do not hand-edit it. The article image lane uses persona_picker.py. A no-face frame is only the per-image fallback after a face refusal or a QC miss.
 # checklist: 4. A lock is cleared only when you pass --apply-stale-lock, the lock is older than its documented threshold, and no live writer PID is running. The report prints the rmdir command on a dry-run and does not run it. If that directory changes before removal, it is left in place.
 # checklist:    daily.lock threshold is 21600 seconds (6h), GENSEO_LOCK_STALE_SEC in scripts/genseo_daily_lock.sh. A live grokbot-genseo-daily or run_ticket_headless.sh blocks removal at any age.
 # checklist:    landing-daily.lock threshold is 14400 seconds (4h), hardcoded in scripts/run_landing_daily.sh. A live run_landing_daily.sh or run_landing_headless.sh blocks removal at any age.
@@ -1206,7 +1206,7 @@ fi
 if [ "$STATUS_RC" != 0 ]; then
   printf '%s\n' "personas_index: unknown"
 elif [ "$PERSONAS_DIRTY" = 1 ]; then
-  printf '%s\n' "personas_index: dirty. Leave it. DAILY-RUN.md keeps the MacBook image lane no-face until personas/index.json is re-synced from the Mini."
+  printf '%s\n' "personas_index: dirty. Leave it. Do not hand-edit it. The article image lane uses persona_picker.py. A no-face frame is only the per-image fallback."
 else
   printf '%s\n' "personas_index: clean"
 fi
@@ -1314,7 +1314,7 @@ apply_allowed() {
     printf '%s\n' "apply_next: git status --short"
     printf '%s\n' "apply_next: this script does not stash, commit, or reset."
     if [ "$PERSONAS_DIRTY" = 1 ]; then
-      printf '%s\n' "apply_next: leave personas/index.json. DAILY-RUN.md keeps the MacBook image lane no-face until it is re-synced from the Mini."
+      printf '%s\n' "apply_next: leave personas/index.json. Do not hand-edit it. The article image lane uses persona_picker.py. A no-face frame is only the per-image fallback."
     fi
     APPLY_ALLOWED=0
   fi

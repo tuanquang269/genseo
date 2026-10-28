@@ -91,7 +91,6 @@ LIVE_URLS = (
 )
 GUMMIES_ANGLE = "choose shilajit gummies over resin"
 FLORA_ANGLE = "easier to stick with"
-GOLD_DAILY_ANGLE = "taking shilajit resin daily"
 OPEN_HEAD = re.compile(r"^(?:- \[ \]|## \[ \])")
 
 
@@ -118,10 +117,9 @@ class FreshCheckoutTests(unittest.TestCase):
             rc, landing_first = first_line(landing_path, tmp)
             self.assertEqual(rc, 0)
             self.assertFalse(os.path.exists(os.path.join(tmp, "state", "queue-closures.json")))
-        self.assertIn("pure-shilajit-gold-resin", landing_first)
-        self.assertIn(GOLD_DAILY_ANGLE, landing_first)
-        self.assertNotIn(FLORA_ANGLE, landing_first)
-        self.assertNotIn(GUMMIES_ANGLE, landing_first)
+            self.assertIn("pure-shilajit-gold-resin", landing_first)
+            self.assertNotIn(FLORA_ANGLE, landing_first)
+            self.assertNotIn(GUMMIES_ANGLE, landing_first)
         for ticket_id in CLOSED_IDS:
             self.assertNotIn("#" + ticket_id, article_first)
         article_open = [line for line in article.splitlines() if OPEN_HEAD.match(line)]
@@ -138,7 +136,6 @@ class FreshCheckoutTests(unittest.TestCase):
                 article,
             )
         self.assertIn("pure-shilajit-gold-resin", landing_open[0])
-        self.assertIn(GOLD_DAILY_ANGLE, landing_open[0])
         self.assertNotIn(FLORA_ANGLE, landing_open[0])
         self.assertFalse(any(GUMMIES_ANGLE in line for line in landing_open))
         self.assertIn("- [DRAFT 2026-10-18 page 166299173179]", landing)

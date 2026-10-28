@@ -1,0 +1,6 @@
+Turkesterone Advanced Formula pack identity and visible front-label wording (Premium Turkesterone, Advanced Formula, Amplify, Muscle, Endurance, Dietary Supplement, 60 Capsules) | https://wellnessnest.co/products/turkesterone-advanced-formula | fetched+confirmed Y
+Turkesterone Advanced Formula current listed price is $75 | https://wellnessnest.co/products/turkesterone-advanced-formula | fetched+confirmed Y
+FDA says dietary supplements can affect the body and may interact with medicines; use consumer guidance when evaluating supplements | https://www.fda.gov/food/dietary-supplements/information-consumers-using-dietary-supplements | fetched+confirmed Y
+PubMed record is relevant context for human ecdysterone research; it does not establish a rest-day-specific turkesterone amount for this product | https://pubmed.ncbi.nlm.nih.gov/36173633/ | fetched+confirmed N (automated request challenged; article makes no study-result claim)
+No rest-day-specific amount is asserted; article explicitly limits the claim to evidence checked for this run | https://pubmed.ncbi.nlm.nih.gov/?term=turkesterone+human+trial | fetched+confirmed N (NCBI abuse redirect; unsupported study claim removed)
+Wellness Nest product and collection URLs used in article returned HTTP 200 during preflight | https://wellnessnest.co/products/turkesterone-advanced-formula | fetched+confirmed Y

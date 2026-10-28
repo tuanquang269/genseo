@@ -1,0 +1,6 @@
+Claim | source URL | fetched+confirmed Y/N
+Athlete-specific oral/vaginal probiotic routine or performance benefit was not established in the evidence reviewed | https://pubmed.ncbi.nlm.nih.gov/?term=probiotics+female+athletes | Y (search reviewed; no qualifying athlete-specific result confirmed)
+FloraFresh formula: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, Vitamin C 30 mg, pineapple fruit powder 100 mg with bromelain, maltitol and isomalt | https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies | Y (label guard and live handle fetched; conflicting PDP formula excluded)
+FloraFresh front pouch: pineapple flavor and 60 gummies | https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies | Y (curated package reference and live product handle fetched)
+FDA regulates dietary supplements under a framework separate from drugs; supplement status does not establish disease treatment | https://www.fda.gov/food/dietary-supplements | Y (page fetched)
+Vaginal symptoms can have different causes and may require evaluation when the cause is uncertain | https://www.cdc.gov/std/treatment-guidelines/vaginal-discharge.htm | Y (page fetched via WebFetch; automated storefront validator returned 403)

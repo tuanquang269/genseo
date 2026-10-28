@@ -181,36 +181,51 @@ else
   ok "#MB1009-7 is not an open ticket"
 fi
 
-echo "2b. GENSEO_NO_FACE=1 leads the prompt and the default prompt does not"
+echo "2b. a stale GENSEO_NO_FACE=1 does not blank the people lane"
 if grep -F -q "NO-FACE LANE (GENSEO_NO_FACE=1)" "$TMP/article.txt"; then
   bad "default prompt carries the no-face banner"
 else
   ok "default prompt has no no-face banner"
 fi
+if grep -F -q "Run persona_picker.py once" "$TMP/article.txt" \
+  && grep -F -q "empty pack-only still life" "$TMP/article.txt" \
+  && grep -F -q "does not switch this run onto a no-face lane" "$TMP/article.txt" \
+  && grep -F -q 'A ticket batch header that says "ALL images NO-FACE"' "$TMP/article.txt" \
+  && ! grep -F -q "Do not run persona_picker.py" "$TMP/article.txt"; then
+  ok "default prompt keeps people and treats no-face as a per-image fallback"
+else
+  bad "default prompt lost the people lane"
+fi
 NOFACE="$TMP/noface.txt"
 if env -i HOME="$TMP/home" PATH="/usr/bin:/bin" GENSEO_NO_FACE=1 /bin/bash "$RUNNER" --print-prompt > "$NOFACE"; then
-  ok "no-face print-prompt exit 0"
+  ok "stale no-face env print-prompt exit 0"
 else
-  bad "no-face print-prompt failed"
+  bad "stale no-face env print-prompt failed"
 fi
 if grep -F -q "NO-FACE LANE (GENSEO_NO_FACE=1)" "$NOFACE" \
-  && grep -F -q "Do not run persona_picker.py" "$NOFACE" \
-  && grep -F -q "Do not edit or commit personas/index.json" "$NOFACE"; then
-  head_line="$(head -n 1 "$NOFACE")"
-  case "$head_line" in
-    "NO-FACE LANE (GENSEO_NO_FACE=1)."*) ok "no-face banner is the first line" ;;
-    *) bad "no-face banner is not the first line: $head_line" ;;
-  esac
+  || grep -F -q "Do not run persona_picker.py" "$NOFACE"; then
+  bad "GENSEO_NO_FACE=1 still bans persona_picker"
 else
-  bad "no-face prompt missing the banner"
+  ok "GENSEO_NO_FACE=1 does not ban persona_picker"
 fi
-assert_publish_lines "$NOFACE" "no-face prompt"
-reject_broken_noface "$NOFACE" "no-face prompt"
+head_line="$(head -n 1 "$NOFACE")"
+case "$head_line" in
+  "ARTICLE ALREADY APPROVED."*) ok "stale no-face env still leads with the article approval" ;;
+  *) bad "stale no-face env lead is not the article approval: $head_line" ;;
+esac
+if grep -F -q "Run persona_picker.py once" "$NOFACE" \
+  && grep -F -q "empty pack-only still life" "$NOFACE"; then
+  ok "stale no-face env still requires people"
+else
+  bad "stale no-face env lost the people lane"
+fi
+assert_publish_lines "$NOFACE" "stale no-face prompt"
+reject_broken_noface "$NOFACE" "stale no-face prompt"
 if grep -F -q 'the env value GENSEO_NO_FACE is exactly 1; this run: 1' "$NOFACE" \
   && grep -F -q '>= 5 (or -1), do NOT publish' "$NOFACE"; then
-  ok "no-face prompt says this run is 1 and keeps the daily target"
+  ok "stale no-face prompt says this run is 1 and keeps the daily target"
 else
-  bad "no-face prompt lost the run value or the daily target"
+  bad "stale no-face prompt lost the run value or the daily target"
 fi
 ZERO="$TMP/noface0.txt"
 if env -i HOME="$TMP/home" PATH="/usr/bin:/bin" GENSEO_NO_FACE=0 /bin/bash "$RUNNER" --print-prompt > "$ZERO"; then
@@ -237,7 +252,7 @@ fi
 if grep -F -q "NO-FACE LANE (GENSEO_NO_FACE=1)" "$TRUEV"; then
   bad "GENSEO_NO_FACE=true was treated as the no-face lane"
 else
-  ok "only exact 1 turns the no-face banner on"
+  ok "non-1 no-face value does not add a no-face banner"
 fi
 if grep -F -q 'this run: true' "$TRUEV"; then
   ok "non-1 no-face value is shown verbatim"
@@ -253,10 +268,11 @@ else
 fi
 if grep -F -q '>= 7 (or -1), do NOT publish' "$BOTH" \
   && ! grep -F -q '>= 5 (or -1), do NOT publish' "$BOTH" \
-  && head -n 1 "$BOTH" | grep -F -q "NO-FACE LANE (GENSEO_NO_FACE=1)."; then
-  ok "banner prepend keeps the expanded daily target"
+  && ! grep -F -q "NO-FACE LANE (GENSEO_NO_FACE=1)" "$BOTH" \
+  && head -n 1 "$BOTH" | grep -F -q "ARTICLE ALREADY APPROVED."; then
+  ok "people lane keeps the expanded daily target"
 else
-  bad "banner prepend broke the daily-target splice"
+  bad "people lane broke the daily-target splice"
 fi
 
 echo "2c. heading tickets, decoys, CRLF, and ticket text is not executed"
@@ -415,15 +431,22 @@ else
 fi
 nf_head="$(head -n 1 "$NFZERO")"
 case "$nf_head" in
-  "NO-FACE LANE (GENSEO_NO_FACE=1)."*) ok "no-face banner still leads a 0-open prompt" ;;
-  *) bad "0-open no-face banner is not first: $nf_head" ;;
+  "ARTICLE ALREADY APPROVED."*) ok "0-open stale no-face env still leads with the article approval" ;;
+  *) bad "0-open stale no-face lead is not the article approval: $nf_head" ;;
 esac
+if grep -F -q "NO-FACE LANE (GENSEO_NO_FACE=1)" "$NFZERO" \
+  || grep -F -q "Do not run persona_picker.py" "$NFZERO"; then
+  bad "0-open stale no-face env still bans persona_picker"
+else
+  ok "0-open stale no-face env does not ban persona_picker"
+fi
 assert_zero "$NFZERO" "no-face zero-open"
 reject_broken_noface "$NFZERO" "no-face zero-open"
-if grep -F -q 'this run: 1' "$NFZERO"; then
-  ok "0-open no-face prompt still says this run: 1"
+if grep -F -q 'this run: 1' "$NFZERO" \
+  && grep -F -q "Run persona_picker.py once" "$NFZERO"; then
+  ok "0-open stale no-face prompt still says this run: 1 and keeps people"
 else
-  bad "0-open no-face prompt lost this run: 1"
+  bad "0-open stale no-face prompt lost this run: 1 or the people lane"
 fi
 
 echo "2e. shell empty-queue exit and live-count guard stay ahead of claude"

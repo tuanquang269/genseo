@@ -7,7 +7,10 @@
      GENSEO_TICKET_PREFIX=MB so refill ids stay #MBmmdd-N and cannot collide
      with Mini MM. A primary host with no prefix would refill as MM.
      GENSEO_STANDBY_DELAY_MIN applies only if GENSEO_HOST_ROLE is later set
-     to standby. GENSEO_NO_FACE=1 stays.
+     to standby. GENSEO_NO_FACE=0. Article images use the persona picker.
+     A no-face shot is only the per-image fallback after a face refusal
+     or two QC misses. Landing plists stay no-face. The article runner
+     does not treat a stale exported 1 as a whole-run ban.
      launchd reads ~/Library/LaunchAgents/com.pati.genseo-daily.plist, not this
      copy. After a successful sync, scripts/genseo_self_apply.sh copies this
      file when the bytes differ and bootstraps it after the running job exits.
@@ -41,7 +44,7 @@
         <key>GENSEO_TICKET_PREFIX</key><string>MB</string>
         <key>GENSEO_STANDBY_DELAY_MIN</key><string>20</string>
         <key>GENSEO_PEER_WINDOW_MIN</key><string>50</string>
-        <key>GENSEO_NO_FACE</key><string>1</string>
+        <key>GENSEO_NO_FACE</key><string>0</string>
     </dict>
     <key>StartCalendarInterval</key>
     <array>
