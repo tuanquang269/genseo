@@ -357,9 +357,9 @@ what is on Shopify. The live article itself is fine.
 - GSC: path A (Kevin creates the OAuth desktop client) vs path B (manual Queries CSV export).
 
 **Open product/compliance flags (report, don't fix in an article):**
-FloraFresh — the PDP description contradicts its Supplement Facts label (15 billion CFU, four
-Lactobacillus strains, XOS, D-mannose, "sugar-free" vs Bacillus coagulans SNZ-1969, 1 billion
-CFU, maltitol + isomalt). Kevin confirmed the label on 2026-10-09: our copy follows the label
+FloraFresh — the PDP description still tells a wrong strain story (four
+Lactobacillus strains, XOS, D-mannose, "sugar-free"). Kevin 2026-10-21: the label count is
+15B CFU of Bacillus coagulans SNZ-1969. 1 billion CFU and 1B CFU are retired. Our copy follows the label
 and the PDP rewrite waits for his GO (`docs/FLORAFRESH_FORMULA_GUARD.md`). Also "Treats the
 root cause" / "Stays & colonizes" disease claims, "Top OB/GYN recommended formula", "100%
 natural ingredients", three inconsistent social-proof counts (71,180+ / 79,239+ / 7,159+).

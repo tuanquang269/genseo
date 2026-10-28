@@ -14,7 +14,7 @@ Kevin 2026-10-08 14:27 ICT asked for "ShilaSource Shilajit Gummies". No ShilaSou
 | Heavy metals: 20.7% of Ayurvedic products bought online contained lead, mercury or arsenic | Saper RB et al., JAMA 2008, doi:10.1001/jama.300.8.915 | Abstract |
 | Bridge: shilajit extract + ashwagandha, gokshura, black musli + four more botanicals (ginger, kaunch, ginseng, akarkara); "Its extract per serving is lower than in the trials above" (150 mg vs 250-500 mg/day in Pandit/Keller/Pingali) | PDP supplement facts 2026-10-08 | Facts image OCR |
 | Offer: 150 mg shilajit extract (10:1) per 2-gummy serving; 60 gummies, 30 servings | PDP supplement facts (serving 2 gummies, 30 servings) + pack "60 GUMMIES" | 2026-10-08 |
-| Price $39.99 Subscribe & Save every 4 weeks (1 pouch), $59.99 one-time | PDP text "One-time purchase is $59.99. Current recurring options are $39.99 every 4 weeks for 1 pouch"; .js plan 9850290491 = 3999 | 2026-10-08 |
+| Price | /products/premium-himalayan-shilajit-gummies.js | One-time $69.99 (variant price 6999). Automatic Refill every 30 days $49.99 (plan 10022748475), every 60 days $44.99 (plan 10022781243), every 90 days $39.99 (plan 10022814011). Card shows $49.99/pouch for 1 pouch every 30 days. The note prices 2 pouches at $44.99/pouch every 60 days and 3 pouches at $39.99/pouch every 90 days. Sticky says "$49.99/pouch every 30 days" (not "From", because the 3-pouch price is $39.99/pouch). compare_at 9998 is not used as a strike price. quantity_price_breaks empty. |
 | Reviews: expert Claudia Elena 5★ (BE, 2025-11-20, mentions Himalayan Shilajit Gummies, no effect claim); cards J collister, Carlee Buford, Νεκτάριος Πιτσιούγκας (5★) | state/trustpilot/wellnessnest.json | Verbatim |
 
 ## Restored claims: Kevin-approved 2026-10-08, pending manual update
@@ -28,3 +28,18 @@ Kevin approved (15:51 ICT) restoring the pack claims exactly as printed, nothing
 - Pack claim "60-DAY SUPPLY" stays out (facts say 30 servings of 2 gummies = 30 days; the pack's 60-day line contradicts it). Vegan / third-party / lab-tested claims stay out: not printed on this pack or PDP.
 - Stephen A McCloskey review ("excellent sources of energy and stamina"): product-effect claim, skipped.
 - compare_at_price $99.98 (no strike-through against it). No dosage-with-units in body copy. No AgeAura/Urolithin. No faces.
+
+## Price correction 2026-10-26
+
+Re-fetched public product JSON on 2026-10-26 at 2026-10-26T01:40:31Z.
+
+Removed from this draft: Subscribe & Save every 4 weeks at $39.99 (old plan 9850290491) and one-time $59.99, plus a 3-pouch recurring price that was in the 2026-10-08 PDP note.
+
+Now stated: One-time $69.99 (variant price 6999). Automatic Refill every 30 days $49.99 (plan 10022748475), every 60 days $44.99 (plan 10022781243), every 90 days $39.99 (plan 10022814011). Card shows $49.99/pouch for 1 pouch every 30 days. The note prices 2 pouches at $44.99/pouch every 60 days and 3 pouches at $39.99/pouch every 90 days. Sticky says "$49.99/pouch every 30 days" (not "From", because the 3-pouch price is $39.99/pouch). compare_at 9998 is not used as a strike price. quantity_price_breaks empty.
+
+Source: https://wellnessnest.co/products/premium-himalayan-shilajit-gummies.js fetched 2026-10-26 at 2026-10-26T01:40:31Z. One-time price also matched https://wellnessnest.co/collections/all/products.json and https://wellnessnest.co/collections/shilajit/products.json.
+Not stated: multi-unit one-time tiers. quantity_price_breaks is empty.
+
+## Mac re-check 2026-10-26
+
+Shilajit gummies prices re-checked on this Mac against https://wellnessnest.co/products/premium-himalayan-shilajit-gummies.js and products.json. Variant 6999. The same ShilaSource Automatic Refill plans allocate 4999 / 4499 / 3999. The 2026-10-23 pricing table maps 1/2/3 units to every 30/60/90 days. This pouch page states those prices per pouch.

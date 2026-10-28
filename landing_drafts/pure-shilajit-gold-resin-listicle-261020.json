@@ -130,7 +130,7 @@
     "pill": "PURE SHILAJIT GOLD RESIN",
     "accent": "Gold Resin",
     "title": "A Raw Resin Routine",
-    "sub": "Himalayan Shilajit resin with 75% Fulvic on the label. $75.00 one-time on the product page.",
+    "sub": "Himalayan Shilajit resin with 75% Fulvic on the label. $75.00/jar one-time on the product page.",
     "cta": "SEE THE LABEL",
     "href": "https://wellnessnest.co/products/pure-shilajit-gold-resin",
     "meta": ["<b>90-Day</b> Guarantee", "<b>FREE</b> shipping $70+"],
@@ -139,9 +139,9 @@
     "alt": "Pure Shilajit Gold Resin tube and jar on stacked travertine discs",
     "source": "https://wellnessnest.co/products/pure-shilajit-gold-resin.js and https://wellnessnest.co/policies/refund-policy fetched 2026-10-20",
     "rating_html": "<b>4.2</b> TrustScore · 1,144 reviews on Trustpilot",
-    "price": {"now": "$67.50", "was": "$75.00", "tag": "Save 10%", "note": "with Subscribe & Save, delivered every 4 weeks. Or $75.00 one-time."},
+    "price": {"now": "$75.00/jar", "was": "$119.98/jar", "tag": "COMPARE AT PRICE", "note": "one-time price per jar on the product page. Compare-at is the struck price per jar. No selling plan was listed in the product JSON."},
     "bullets": ["Himalayan Shilajit, 75% Fulvic", "Lab-Tested", "1.06 oz (30g) - 75 servings", "90-day money-back guarantee on first orders"],
-    "price_source": "PDP /products/pure-shilajit-gold-resin.js fetched 2026-10-20: $75.00 one-time; selling plan $67.50, 10% off, every 4 weeks."
+    "price_source": "Live public JSON fetched 2026-10-26 (2026-10-26T01:40:31Z) from /products/pure-shilajit-gold-resin.js: price 7500 ($75.00 one-time), compare_at_price 11998 ($119.98), selling_plan_groups empty, quantity_price_breaks empty. No subscription price is stated. Also confirmed on /collections/shilajit/products.json variant price 75.00."
   },
   "product": {
     "name": "Himalayan Pure Shilajit Gold Resin",
@@ -164,5 +164,5 @@
     {"icon": "leaf", "html": "<b>Raw resin</b> <small>Himalayan Shilajit</small>"}
   ],
   "trust_source": "Trustpilot data, PDP and refund policy fetched 2026-10-20; label facts from product_refs/pure-shilajit-gold-resin.label.json.",
-  "sticky_cta": {"name": "Pure Shilajit Gold Resin", "note": "From $67.50", "cta": "SEE THE LABEL", "href": "https://wellnessnest.co/products/pure-shilajit-gold-resin"}
+  "sticky_cta": {"name": "Pure Shilajit Gold Resin", "note": "$75.00/jar one-time", "cta": "SEE THE LABEL", "href": "https://wellnessnest.co/products/pure-shilajit-gold-resin"}
 }

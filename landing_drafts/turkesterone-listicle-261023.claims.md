@@ -21,3 +21,17 @@
 - No ingredient dosage (KSM-66 Ashwagandha, Tongkat Ali, Colostrum, BioPerine amounts shown on the live PDP description) repeated in body copy — PATI rule #6, no dosage-with-units outside the product/offer card, and the label file does not carry a milligram token to confirm those PDP description numbers against the physical pack anyway.
 - No claim about muscle growth, strength, recovery, or endurance from using this product — the cited human trial found no significant effect on its measured markers, and no trial tested the combined formula.
 - No mention of the live PDP's own marketing copy (muscle recovery / endurance claims in the product description) since those are unsourced marketing text, not label facts or study findings.
+
+## Price correction 2026-10-26
+
+Re-fetched public product JSON on 2026-10-26 at 2026-10-26T01:40:31Z.
+
+Removed from this draft: No price change. The 2026-10-23 figures still match.
+
+Now stated: One-time $75.00 (price 7500). Compare-at $119.98 (compare_at_price 11998). selling_plan_groups is empty. quantity_price_breaks empty. The draft's "no Subscribe and Save" line remains accurate because no selling plan is listed.
+
+Source: https://wellnessnest.co/products/turkesterone-advanced-formula.js fetched 2026-10-26 at 2026-10-26T01:40:31Z. One-time price also matched https://wellnessnest.co/collections/all/products.json.
+
+## Mac re-check 2026-10-26
+
+Same Mac re-check as the Turkesterone product JSON. Price 7500, compare_at 11998, no selling plan. No customer-facing price line was changed.

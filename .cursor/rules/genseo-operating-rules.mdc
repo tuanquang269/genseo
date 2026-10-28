@@ -40,10 +40,11 @@ Also: never `rm` repo files (move them to `_superseded/`); never put CDN URLs in
   Handle allow/deny: `scripts/ageaura_rules.py` (fail-closed in ticket builders and `validate_landing.py`).
   Never Urolithin A (not as AgeAura, not at all), never `ageaura-pure-nmn-tmg-p2`, the Essential Longevity Duo,
   "rejuvenation duo", peptides, or `/collections/ageaura` (use `/collections/best-seller` as a browse link).
-- **FloraFresh = its Supplement Facts label formula** (Kevin 2026-10-09; `scripts/florafresh_rules.py`, run by
-  `brand_rules.py`): Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, Vitamin C 30 mg, pineapple fruit
-  powder 100 mg (with bromelain), sweetened with maltitol + isomalt, so never "sugar-free". The live PDP description
-  (15 billion CFU, four Lactobacillus strains, XOS, D-mannose, sugar-free) is wrong until Kevin's GO rewrites it:
+- **FloraFresh = its Supplement Facts label formula** (Kevin 2026-10-09, count updated 2026-10-21; `scripts/florafresh_rules.py`, run by
+  `brand_rules.py`): Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies, Vitamin C 30 mg, pineapple fruit
+  powder 100 mg (with bromelain), sweetened with maltitol + isomalt, so never "sugar-free". 1 billion CFU and 1B CFU
+  are the retired count and the linter rejects them. The live PDP description still tells a wrong strain story
+  (four Lactobacillus strains, XOS, D-mannose, sugar-free) until Kevin's GO rewrites it:
   never take formula facts from it or from older FloraFresh articles. See `docs/FLORAFRESH_FORMULA_GUARD.md`.
 - **Shilajit Shockwave = its OCR-accepted pack label only** (`scripts/shockwave_rules.py`, run by
   `brand_rules.py`): wellness, nest, SHILAJIT, SHOCKWAVE, EXPERIENCE FOCUSED ENERGY, PEAK PERFORMANCE.

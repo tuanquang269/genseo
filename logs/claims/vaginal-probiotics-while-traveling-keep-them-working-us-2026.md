@@ -1,6 +1,6 @@
 # Claims log — Vaginal Probiotics While Traveling: 7 US Rules
 
-- FloraFresh Supplement Facts list Bacillus coagulans SNZ-1969 as a spore-based probiotic blend providing 1 billion CFU per 2 gummies — source: Supplement Facts label; confirmed.
+- FloraFresh Supplement Facts list Bacillus coagulans SNZ-1969 as a spore-based probiotic blend providing 15B CFU per 2 gummies — source: Supplement Facts label; confirmed.
 - FloraFresh Supplement Facts list Vitamin C at 30 mg per 2 gummies — source: Supplement Facts label; confirmed.
 - FloraFresh Supplement Facts list pineapple fruit powder with bromelain at 100 mg per 2 gummies — source: Supplement Facts label; confirmed.
 - FloraFresh is sweetened with maltitol and isomalt — source: Supplement Facts label; confirmed.

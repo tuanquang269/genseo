@@ -1,5 +1,5 @@
 Bacillus coagulans SNZ-1969 is listed as the FloraFresh probiotic ingredient | https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies | fetched+confirmed Y (curated Supplement Facts label; PDP formula copy excluded)
-FloraFresh lists 1 billion CFU per 2 gummies | https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies | fetched+confirmed Y (curated Supplement Facts label; PDP formula copy excluded)
+FloraFresh lists 15B CFU per 2 gummies | https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies | fetched+confirmed Y (curated Supplement Facts label; PDP formula copy excluded)
 FloraFresh lists vitamin C 30 mg per 2 gummies | https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies | fetched+confirmed Y (curated Supplement Facts label; PDP formula copy excluded)
 FloraFresh lists pineapple fruit powder with bromelain 100 mg per 2 gummies | https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies | fetched+confirmed Y (curated Supplement Facts label; PDP formula copy excluded)
 FloraFresh lists maltitol and isomalt as sweeteners | https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies | fetched+confirmed Y (curated Supplement Facts label; PDP formula copy excluded)

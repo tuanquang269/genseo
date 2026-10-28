@@ -212,10 +212,10 @@
     "source": "https://wellnessnest.co/products/fusiforce-creatine-gummies (price, variants and product facts fetched 2026-10-15); 90-Day Guarantee and free-shipping threshold verified from Wellness Nest policy and site banner.",
     "rating_html": "<b>4.2</b> TrustScore · 1,144 reviews on Trustpilot",
     "price": {
-      "now": "$52.49",
-      "was": "$69.99",
-      "tag": "Save 25%",
-      "note": "with Subscribe & Save, delivered every 4 weeks. Or $69.99 one-time."
+      "now": "$59.99/pouch",
+      "was": "$79.99/pouch",
+      "tag": "Automatic Refill",
+      "note": "1 pouch every 30 days at $59.99/pouch. 2 pouches are $54.99/pouch every 60 days. 3 pouches are $49.99/pouch every 90 days. Pause or cancel anytime. Or $79.99/pouch one-time."
     },
     "bullets": [
       "5,000 mg creatine monohydrate per 3-gummy serving",
@@ -223,7 +223,7 @@
       "Green Apple or Blueberry flavor",
       "90-day money-back guarantee on first orders"
     ],
-    "price_source": "PDP /products/fusiforce-creatine-gummies.js fetched 2026-10-15: one-time price $69.99; selling plan Every 4 weeks, 25% discount, $52.49."
+    "price_source": "Live public JSON fetched 2026-10-26 (2026-10-26T01:40:31Z) from /products/fusiforce-creatine-gummies.js: both variants price 7999 ($79.99 one-time). Automatic Refill plan 10022650171 every 30 days at $59.99; plan 10022682939 every 60 days at $54.99; plan 10022715707 every 90 days at $49.99. quantity_price_breaks empty. No percent-off is stated. compare_at_price 11473 is not used as a strike price."
   },
   "product": {
     "name": "FusiForce Creatine Monohydrate Gummies 5,000 mg",
@@ -279,7 +279,7 @@
   "trust_source": "TrustScore and review count: state/trustpilot/wellnessnest.json, read 2026-10-15. Guarantee, shipping threshold and formula facts: live Wellness Nest product and policy pages, fetched 2026-10-15.",
   "sticky_cta": {
     "name": "FusiForce Creatine",
-    "note": "From $52.49",
+    "note": "$59.99/pouch every 30 days",
     "cta": "SEE SERVING",
     "href": "https://wellnessnest.co/products/fusiforce-creatine-gummies"
   },

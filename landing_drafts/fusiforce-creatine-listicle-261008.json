@@ -193,7 +193,7 @@
   "pill": "⚡️ FUSIFORCE CREATINE GUMMIES",
   "accent": "Creatine Monohydrate",
   "title": "in a Chewable Gummy",
-  "sub": "Creatine monohydrate in a green apple or blueberry gummy. $69.99 on the product page.",
+  "sub": "Creatine monohydrate in a green apple or blueberry gummy. $79.99/pouch one-time on the product page.",
   "cta": "SEE INGREDIENTS",
   "href": "https://wellnessnest.co/products/fusiforce-creatine-gummies",
   "meta": [
@@ -206,10 +206,10 @@
   "source": "https://wellnessnest.co/products/fusiforce-creatine-gummies (fetched 2026-10-08); refund + free-shipping threshold from /policies/refund-policy and the site ticker banner",
   "rating_html": "<b>4.2</b> TrustScore · 1,144 reviews on Trustpilot",
   "price": {
-   "now": "$49.99",
-   "was": "$69.99",
-   "tag": "Save $20",
-   "note": "with Subscribe & Save, delivered every 4 weeks. Or $69.99 one-time."
+   "now": "$59.99/pouch",
+   "was": "$79.99/pouch",
+   "tag": "Automatic Refill",
+   "note": "1 pouch every 30 days at $59.99/pouch. 2 pouches are $54.99/pouch every 60 days. 3 pouches are $49.99/pouch every 90 days. Pause or cancel anytime. Or $79.99/pouch one-time."
   },
   "bullets": [
    "<b>5,000 mg creatine monohydrate</b> per 3-gummy serving",
@@ -218,7 +218,7 @@
    "Green Apple or Blueberry · 90 gummies per pouch",
    "90-day money-back guarantee on your first order"
   ],
-  "price_source": "PDP /products/fusiforce-creatine-gummies.js 2026-10-08: price 69.99 (both variants); selling plan 'Deliver every 4 weeks' 28.58% = $49.99 (plan 9850224955), shown in the PDP buy box as 'Billed every 4 weeks $49.99'. compare_at_price 114.73 deliberately NOT used (no strike-through against it). Bullets: PDP title/description '5,000 mg per 3-gummy serving', 'Panax ginseng (10% ginsenosides)', variants, pack '90 GUMMIES'."
+  "price_source": "Live public JSON fetched 2026-10-26 (2026-10-26T01:40:31Z) from /products/fusiforce-creatine-gummies.js: both variants price 7999 ($79.99 one-time). Automatic Refill plan 10022650171 every 30 days at $59.99; plan 10022682939 every 60 days at $54.99; plan 10022715707 every 90 days at $49.99. quantity_price_breaks empty. compare_at_price 11473 deliberately NOT used (no strike-through against it). Also confirmed on /collections/all/products.json and /collections/best-seller/products.json. Bullets: PDP title/description '5,000 mg per 3-gummy serving', 'Panax ginseng (10% ginsenosides)', variants, pack '90 GUMMIES'."
  },
  "product": {
   "name": "FusiForce Creatine Monohydrate Gummies",
@@ -282,7 +282,7 @@
  "trust_source": "TrustScore/count: state/trustpilot/wellnessnest.json (trustpilot.com/review/wellnessnest.co, read 2026-10-08). Guarantee + free-shipping threshold: /policies/refund-policy and the site ticker. Lab-tested: PDP description 'lab-tested after cooking in ISO 17025-accredited facilities' (Kevin-approved 2026-10-08, pending manual update).",
  "sticky_cta": {
   "name": "FusiForce Creatine Gummies",
-  "note": "From $49.99",
+  "note": "$59.99/pouch every 30 days",
   "cta": "SEE INGREDIENTS",
   "href": "https://wellnessnest.co/products/fusiforce-creatine-gummies"
  },

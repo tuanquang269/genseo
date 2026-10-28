@@ -1,6 +1,6 @@
 # Claims log — Vaginal Probiotic Storage: 7 Heat Checks (US)
 
-- FloraFresh Supplement Facts list Bacillus coagulans SNZ-1969, a spore-based probiotic, at 1 billion CFU per 2 gummies — source: `product_refs/florafresh-vaginal-probiotics-gummies.label.json` and `scripts/florafresh_rules.py`; fetched and confirmed Y.
+- FloraFresh Supplement Facts list Bacillus coagulans SNZ-1969, a spore-based probiotic, at 15B CFU per 2 gummies — source: `product_refs/florafresh-vaginal-probiotics-gummies.label.json` and `scripts/florafresh_rules.py`; fetched and confirmed Y.
 - FloraFresh Supplement Facts list Vitamin C 30 mg and pineapple fruit powder 100 mg with bromelain per 2 gummies — source: `scripts/florafresh_rules.py`; fetched and confirmed Y.
 - FloraFresh is sweetened with maltitol and isomalt, so this article does not describe it as sugar-free — source: `scripts/florafresh_rules.py`; fetched and confirmed Y.
 - The live FloraFresh product page lists a price of $40.99 and 60 gummies — source: https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies.js; fetched and confirmed Y.
