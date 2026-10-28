@@ -238,6 +238,7 @@ def finalize_page(page, template, row, package, hero, day):
            (' fetchpriority="high"' if approved.has_attr('fetchpriority') else '') + '>')
     page, n = re.subn(r'(<figure class="hero">\s*)<img\b[^>]*>', lambda m: m.group(1) + tag, page, count=1)
     require(n == 1, 'Hero figure is missing')
+    require(len(soup(page).select('article figure')) == 1, 'Use no <figure> except the hero: the approved template has none, and the Journal shell lays a bare figure out differently (put product photos in the approved cards)')
     # Band cards: the 4a-4d templates print <div class="mini"> without data-product, the shell prints it (from journal.band.minis).
     def mini(m):
         card = page[m.end():page.find('</div>', m.end())]   # this card only: never borrow the next card's link
@@ -271,6 +272,7 @@ def finalize_page(page, template, row, package, hero, day):
 WRITER_RULES = """
 WRITER RULES (the runner gates every one; a failure returns here with the error):
 - Fill the approved template. Keep every element, class, id and order. Replace only the text, links, product cards and FAQ. Delete the .preview bar, every .spec / .spec-sec annotation and every executable script. Keep the <!-- Approved CSS is inserted by the runner. --> comment where it is.
+- Images: no <figure> except the hero; product photos go only in the approved cards (.pcard, rail pick, band minis).
 - Hero: keep <figure class="hero"><img ...> with the alt text you see; the runner sets the hero photo, the BlogPosting image, dates, wordCount and about.
 - Date: write "Updated {human}" in the meta row and {iso} for datePublished and dateModified.
 - Every sentence inside <article> that holds a digit (except the meta row) must contain the exact text of at least one facts claim, for example the price "$69.95" or the size "50 × 60 in", and that claim's quote must be in its source. Write offer, guarantee, shipping and competitor numbers as words. Use digits only for product facts the LIVE PRODUCT FACTS prove (prices as $NN.NN or $NN exactly as a variant price).

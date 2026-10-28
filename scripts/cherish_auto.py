@@ -55,7 +55,7 @@ def shell_owned(page):
     """The truth page as the shell prints it: hero and card image boxes, band guarantee line, sticky bar (from journal.pick)."""
     hero = {k: SHELL_IMG[k] for k in ('width', 'height')}
     page = re.sub(r'(<figure class="hero">\s*)(<img\b[^>]*>)', lambda m: m.group(1) + set_attrs(m.group(2), hero), page, count=1)
-    page = re.sub(r'(<div class="(?:pcard|pick|mini)"[^>]*>\s*)(<img\b[^>]*>)', lambda m: m.group(1) + set_attrs(m.group(2), SHELL_IMG), page)
+    page = re.sub(r'(<div class="(?:pick|mini)"[^>]*>\s*)(<img\b[^>]*>)', lambda m: m.group(1) + set_attrs(m.group(2), SHELL_IMG), page)
     page = re.sub(r'(<section class="band"[^>]*>.*?<p class="small">)[^<]*(</p>)', lambda m: m.group(1) + SHIP_LINE + m.group(2), page, count=1, flags=re.S)
     if 'class="stick"' not in page:
         pick = re.search(r'<div class="pick"[^>]*>.*?<b>(.*?)</b>.*?<a class="btn" href="(/products/[a-z0-9-]+)"', page, re.S)
