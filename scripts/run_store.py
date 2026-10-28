@@ -322,7 +322,7 @@ def check_package(api, profile, row, path, existing, state):
     return package
 
 
-def prepare_row(api, profile, row, path, existing, state, generate_on, attempts=4):
+def prepare_row(api, profile, row, path, existing, state, generate_on, attempts=5):
     """Gate a package. With --generate and no package on disk, write it and send each gate failure back to the writer (max `attempts`).
     A package that never passes is moved to <name>.failed.json so a rerun writes a fresh one."""
     if not (generate_on and not path.exists()):
