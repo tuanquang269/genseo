@@ -89,7 +89,7 @@ def repair(aid, blog="104008483131"):
             pass
 
     add=""
-    if "application/ld+json" not in body or '"@type": "Article"' not in body:
+    if False:  # theme renders Article; never add a body Article (duplicate node, 2026-10-20)
         art={"@context":"https://schema.org","@type":"Article","headline":title,
              "author":({"@type":"Person","name":author_name,"url":f"https://wellnessnest.co/pages/{handle}"} if handle and author_name else {"@type":"Organization","name":"Wellness Nest"}),
              "publisher":{"@type":"Organization","name":"Wellness Nest","logo":{"@type":"ImageObject","url":"https://wellnessnest.co/cdn/shop/files/WNN_Main_Logo_eb77747f-0bd5-4316-a9ba-92349ddbe5cc.png"}},
