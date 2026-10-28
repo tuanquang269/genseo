@@ -22,9 +22,34 @@ import turkesterone_rules
 CONFIG_PATH = _gcfg.CONFIG_PATH
 API = _gcfg.API
 
+# Canonical store name and logo. Theme main-article emits these on Article JSON-LD.
+# Body HTML does not get a second Article block (Kevin 2026-10-20).
 ORG_NAME = "Wellness Nest"
 ORG_LOGO = "https://wellnessnest.co/cdn/shop/files/WNN_Main_Logo_eb77747f-0bd5-4316-a9ba-92349ddbe5cc.png"
 FALLBACK_AUTHOR = "Wellness Nest Editorial Team"
+
+
+def load_shop_auth():
+    """Return (shop, access_token) from CONFIG_PATH.
+
+    Publish and update use this same file. Callers must not print the token.
+    """
+    if not os.path.exists(CONFIG_PATH):
+        print("Error: Not authenticated. Please run the auth flow first.")
+        sys.exit(1)
+    try:
+        with open(CONFIG_PATH, "r") as f:
+            auth_data = json.load(f)
+    except (OSError, json.JSONDecodeError):
+        print("Error: Not authenticated. Could not read the Shopify auth file.")
+        sys.exit(1)
+    shop = auth_data.get("shop")
+    token = auth_data.get("access_token")
+    if not shop or not token:
+        print("Error: Not authenticated. Please run the auth flow first.")
+        sys.exit(1)
+    return shop, token
+
 
 def _refuse_guarded_draft(title, body):
     """Stop a publish/update that would promote Urolithin A or any other AgeAura SKU, that makes
@@ -612,15 +637,7 @@ def _faq_main_entity(md_text):
 
 
 def do_publish(file_path, blog_id, live=False):
-    if not os.path.exists(CONFIG_PATH):
-        print("Error: Not authenticated. Please run the auth flow first.")
-        sys.exit(1)
-        
-    with open(CONFIG_PATH, 'r') as f:
-        auth_data = json.load(f)
-        
-    shop  = auth_data['shop']
-    token = auth_data['access_token']
+    shop, token = load_shop_auth()
     
     with open(file_path, 'r', encoding='utf-8') as f:
         md_text = f.read()
@@ -680,15 +697,13 @@ def do_publish(file_path, blog_id, live=False):
     credits_html = persona_credits_html(md_text)
 
     # ── Image Upload ────────────────────────────────────────────────────────
-    md_text, thumbnail_b64, hero_cdn_url, upload_count, fail_count = _process_images_for_publish(shop, token, md_text)
+    md_text, thumbnail_b64, _hero_cdn_url, upload_count, fail_count = _process_images_for_publish(shop, token, md_text)
 
     if fail_count > 0:
         print(f"\n  ⚠  {fail_count} image(s) failed to upload. The article will be published but images will be broken.")
         print(f"     Fix the local image paths in the draft and re-run `update` (patch_images.py is not in this package).")
 
-    import datetime
-
-    # --- Extract the NAMED author from the body byline so schema + author field match what
+    # --- Extract the NAMED author from the body byline so the author field matches what
     # readers see (E-E-A-T). The draft credits an author as [Name](/pages/handle) in the
     # "About the Author" section. Fall back to the org name only if none is found. ---
     ROSTER = genseo_roster.NAMES  # single source: roster.json
@@ -698,32 +713,16 @@ def do_publish(file_path, blog_id, live=False):
     if _am:
         author_handle = _am.group(2)
         author_name = ROSTER.get(author_handle, _am.group(1).strip())
-    article_author = ({"@type":"Person","name":author_name,"url":f"https://wellnessnest.co/pages/{author_handle}"}
-                      if author_handle else {"@type":"Organization","name":author_name})
 
-    article_schema = {
-        "@context": "https://schema.org",
-        "@type": "Article",
-        "headline": title,
-        "author": article_author,
-        "publisher": {
-            "@type": "Organization",
-            "name": ORG_NAME,
-            "logo": {"@type": "ImageObject", "url": ORG_LOGO}
-        },
-        "datePublished": datetime.datetime.utcnow().isoformat() + "Z"
-    }
-    if hero_cdn_url:
-        article_schema["image"] = hero_cdn_url
-
+    # Theme main-article already emits Article JSON-LD (headline, description, image,
+    # dates, author, publisher). Do not append a second Article block to body_html.
+    # Kevin 2026-10-20.
     main_entity = _faq_main_entity(md_text)
     faq_schema = ({"@context": "https://schema.org", "@type": "FAQPage",
                    "mainEntity": main_entity} if main_entity else None)
 
     html_content = markdown.markdown(md_text, extensions=['extra'])
-    html_content += credits_html          # below the article, above the invisible ld+json
-    # The article theme template already renders an Article node; a body Article
-    # made two Article JSON-LD blocks (2026-10-20). Keep article_schema for reference only.
+    html_content += credits_html
     if faq_schema:
         html_content += _ldjson_block(faq_schema)
 
@@ -817,15 +816,7 @@ def do_update(file_path, blog_id, article_id, replace_cover=False, no_carry_cred
             print("  This page is stabilizing its rankings — no updates allowed. Skip this ticket.")
             sys.exit(3)
 
-    if not os.path.exists(CONFIG_PATH):
-        print("Error: Not authenticated. Please run the auth flow first.")
-        sys.exit(1)
-        
-    with open(CONFIG_PATH, 'r') as f:
-        auth_data = json.load(f)
-        
-    shop  = auth_data['shop']
-    token = auth_data['access_token']
+    shop, token = load_shop_auth()
     
     with open(file_path, 'r', encoding='utf-8') as f:
         md_text = f.read()
@@ -927,13 +918,12 @@ def do_update(file_path, blog_id, article_id, replace_cover=False, no_carry_cred
             print('✗ ABORT (update --replace-cover): the draft has no local hero image to use as the new cover.')
             sys.exit(2)
         _hero_alt = _hm.group(1).strip() or None
-    md_text, thumbnail_b64, hero_cdn_url, upload_count, fail_count = _process_images_for_publish(shop, token, md_text, strip_hero=replace_cover)
+    md_text, thumbnail_b64, _hero_cdn_url, upload_count, fail_count = _process_images_for_publish(shop, token, md_text, strip_hero=replace_cover)
 
     if fail_count > 0:
         print(f"\n  ⚠  {fail_count} image(s) failed to upload.")
 
-    # ── Named author (E-E-A-T): match do_publish so refresh keeps the named author + schema ──
-    import datetime
+    # ── Named author (E-E-A-T): match do_publish so refresh keeps the named author ──
     ROSTER = genseo_roster.NAMES  # single source: roster.json
     author_name = FALLBACK_AUTHOR; author_handle = None
     _am = re.search(r'\[([^\]]+)\]\(/pages/([a-z-]+)\)', md_text) \
@@ -944,22 +934,15 @@ def do_update(file_path, blog_id, article_id, replace_cover=False, no_carry_cred
             author_handle = _am.group(2); author_name = ROSTER.get(author_handle, _am.group(1).strip())
         else:
             author_handle = _am.group(1); author_name = ROSTER.get(author_handle, author_name)
-    article_author = ({"@type":"Person","name":author_name,"url":f"https://wellnessnest.co/pages/{author_handle}"}
-                      if author_handle else {"@type":"Organization","name":author_name})
-    article_schema = {"@context":"https://schema.org","@type":"Article","headline":title,
-        "author":article_author,
-        "publisher":{"@type":"Organization","name":ORG_NAME,
-            "logo":{"@type":"ImageObject","url":ORG_LOGO}},
-        "dateModified": datetime.datetime.utcnow().isoformat()+"Z"}
-    if hero_cdn_url: article_schema["image"]=hero_cdn_url
+    # Theme main-article already emits Article JSON-LD (headline, description, image,
+    # dates, author, publisher). Do not append a second Article block to body_html.
+    # Kevin 2026-10-20.
     # FAQ schema (same parse as do_publish)
     me = _faq_main_entity(md_text)
     faq_schema = ({"@context":"https://schema.org","@type":"FAQPage","mainEntity":me} if me else None)
 
     html_content = markdown.markdown(md_text, extensions=['extra'])
-    html_content += credits_html          # below the article, above the invisible ld+json
-    # The article theme template already renders an Article node; a body Article
-    # made two Article JSON-LD blocks (2026-10-20). Keep article_schema for reference only.
+    html_content += credits_html
     if faq_schema:
         html_content += _ldjson_block(faq_schema)
 

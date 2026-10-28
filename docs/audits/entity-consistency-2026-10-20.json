@@ -213,7 +213,7 @@
     "canonical": "FloraFresh Vaginal Probiotics Gummies",
     "kind": "product",
     "sources": [
-     "scripts/florafresh_rules.py PRODUCT_NAME, STRAIN, CFU",
+     "Kevin 2026-10-21: 15B CFU of Bacillus coagulans SNZ-1969 per 2 gummies. 15 billion CFU is the same count. 1 billion CFU is retired.",
      "product_refs/florafresh-vaginal-probiotics-gummies.label.json front lines FloraFresh, Vaginal, Probiotic, Gummies"
     ],
     "token_variants": [
@@ -2359,7 +2359,8 @@
    "meta_description": "",
    "og_description": "",
    "jsonld_errors": 0,
-   "nodes": []
+   "nodes": [],
+   "live_observation": "Live observation: Dr. Marcus Hale appears on this live URL. Not the blog Article author."
   },
   {
    "url": "https://wellnessnest.co/pages/ageaura-av01-dr-hale-f7",
@@ -2373,7 +2374,8 @@
    "meta_description": "",
    "og_description": "",
    "jsonld_errors": 0,
-   "nodes": []
+   "nodes": [],
+   "live_observation": "Live observation: Dr. Marcus Hale appears on this live URL. Not the blog Article author."
   },
   {
    "url": "https://wellnessnest.co/pages/ageaura-listicle",
@@ -2947,7 +2949,8 @@
      "description": "",
      "from": ""
     }
-   ]
+   ],
+   "live_observation": "Live observation: Dr. Marcus Hale appears on this live URL. Not the blog Article author."
   },
   {
    "url": "https://wellnessnest.co/pages/duplicate-from-phuc-le-product-page-2and-x2f-3",
@@ -17759,7 +17762,8 @@
      "description": "",
      "from": "Article.publisher"
     }
-   ]
+   ],
+   "live_observation": "Live observation: this page states the retired count \"1 billion CFU\". The quote was not rewritten."
   },
   {
    "url": "https://wellnessnest.co/blogs/news/vaginal-probiotics-for-beginners-what-to-expect-in-the-us",

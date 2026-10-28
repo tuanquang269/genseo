@@ -26,7 +26,7 @@ Use these in newly published GenSeo articles. The map file is `data/entity_canon
 | `wellness-nest` | Wellness Nest | scripts/shopify_publisher.py ORG_NAME; scripts/repair_schema.py publisher name |
 | `ageaura-pure-nmn-tmg` | AgeAura Pure NMN + TMG NAD+ Complex | scripts/ageaura_rules.py PRODUCT_LABEL; product_refs/ageaura-pure-nmn-tmg-nad-complex.label.json required lines AgeAura, NMN + TMG, NAD + Complex |
 | `shilasource-resin` | ShilaSource Himalayan Shilajit Resin | product_refs/shilasource-himalayan-shilajit-resin.label.json required lines ShilaSource, Himalayan, Shilajit, Resin |
-| `florafresh-gummies` | FloraFresh Vaginal Probiotics Gummies | scripts/florafresh_rules.py PRODUCT_NAME, STRAIN, CFU; product_refs/florafresh-vaginal-probiotics-gummies.label.json front lines FloraFresh, Vaginal, Probiotic, Gummies |
+| `florafresh-gummies` | FloraFresh Vaginal Probiotics Gummies | Kevin 2026-10-21: 15B CFU of Bacillus coagulans SNZ-1969 per 2 gummies. 15 billion CFU is the same count. 1 billion CFU is retired.; product_refs/florafresh-vaginal-probiotics-gummies.label.json front lines FloraFresh, Vaginal, Probiotic, Gummies |
 | `pure-shilajit-gold-resin` | Pure Shilajit Gold Resin | product_refs/pure-shilajit-gold-resin.label.json required line Pure Shilajit Gold Resin |
 | `shilajit-shockwave` | Shilajit Shockwave | product_refs/shilajit-shockwave.label.json required lines SHILAJIT, SHOCKWAVE |
 | `premium-himalayan-shilajit-gummies` | Premium Himalayan Shilajit Gummies | product_refs/premium-himalayan-shilajit-gummies.label.json required lines PREMIUM HIMALAYAN, SHILAJIT GUMMIES |
@@ -37,7 +37,16 @@ Use these in newly published GenSeo articles. The map file is `data/entity_canon
 
 AgeAura articles name only **AgeAura Pure NMN + TMG NAD+ Complex**. FloraFresh formula, from its Supplement Facts label: **Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies**. 15 billion CFU is the same count. 1 billion CFU is the retired count.
 
-Blog byline for new articles is Mike Moretti, Co-founder, Wellness Nest, linking `/pages/mike-moretti`. Crawl records of live pages were not rewritten.
+Blog byline for new articles is Mike Moretti, Co-founder, Wellness Nest, linking `/pages/mike-moretti`. Crawl records of live pages were not rewritten. Paid-traffic landing and listicle bylines were left as crawled.
+
+## Live observations
+
+Crawl records below are what the live store returned on 2026-10-20. They were not rewritten. The blog Article author for new posts is Mike Moretti, Co-founder, Wellness Nest (https://wellnessnest.co/pages/mike-moretti — do not create that page). The FloraFresh label count is 15B CFU per 2 gummies. 1 billion CFU is the retired count.
+
+- https://wellnessnest.co/pages/ageaura-av01-dr-hale-f6 — Live observation: Dr. Marcus Hale appears on this live URL. Not the blog Article author.
+- https://wellnessnest.co/pages/ageaura-av01-dr-hale-f7 — Live observation: Dr. Marcus Hale appears on this live URL. Not the blog Article author.
+- https://wellnessnest.co/pages/dr-marcus-hale — Live observation: Dr. Marcus Hale appears on this live URL. Not the blog Article author.
+- https://wellnessnest.co/blogs/news/vaginal-probiotic-dosage-how-many-cfu-a-day-us-2026 — Live observation: this page states the retired count "1 billion CFU". The quote was not rewritten.
 
 ## Measured name fields
 
@@ -242,7 +251,8 @@ This pass does not edit the theme, product titles, schema on the live site, soci
 - Theme / Organization schema: fill `sameAs` with profiles Kevin confirms, and remove empty strings. A duplicated Organization node (theme header plus article publisher) needs a theme or app decision before anyone deletes a block.
 - GemPages / product templates: an H1 that names a different product is a template binding. Changing it is a theme edit.
 - Shopify product SEO titles and Product.brand: retitling a live product, or switching Product.brand between the line name and Wellness Nest, needs a store edit. AgeAura's brand field is the line name today; whether that should match the store Organization is Kevin's call.
-- Descriptions that contradict a pack label (FloraFresh CFU, strain, sweeteners, or a milligram amount the label file does not list) stay until Kevin approves a PDP rewrite.
+- FloraFresh PDP strain story (Lactobacillus, XOS, D-mannose, sugar-free) stays until Kevin approves a PDP rewrite. The label count is 15B CFU per 2 gummies (Kevin 2026-10-21). 15 billion CFU on the PDP is that same count and is a live observation. 1 billion CFU is retired.
+- Blog Article author for new posts is Mike Moretti, Co-founder, Wellness Nest. https://wellnessnest.co/pages/mike-moretti is not created from this repo. Live pages that still name Dr. Marcus Hale stay crawl observations. Paid-traffic landing and listicle bylines stay as they are.
 - Social profiles: this crawl found no non-empty `sameAs` URLs to check. Do not invent profile URLs.
 - Marketplaces: not in this crawl. Do not change Amazon or other marketplace titles from this report.
 - AgeAura handles outside `ageaura-pure-nmn-tmg-nad-complex` stay off new articles. Unpublishing a live product is a separate GO.

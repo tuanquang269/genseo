@@ -53,9 +53,11 @@ SITE_SUFFIX_RE = re.compile(
     re.I,
 )
 
-# Kevin 2026-10-21. florafresh_rules.CFU on this branch is still the retired
-# count until the formula-guard change lands. 15B CFU is the label count.
-# "15 billion CFU" is the same count and is not a contradiction by itself.
+# Kevin 2026-10-21. The label count is 15B CFU of Bacillus coagulans SNZ-1969
+# per 2 gummies. "15 billion CFU" is the same count and is not a contradiction
+# by itself. 1 billion CFU and 1B CFU are the retired count. The count is not
+# read from florafresh_rules.CFU, so this stays correct before and after the
+# formula-guard change.
 LABEL_CFU = "15B CFU"
 _RETIRED_CFU_RE = re.compile(
     r"(?<![\d.])\b1[\s-]*(?:billion|bn)\b[\s-]*(?:(?:live|active|viable)[\s-]*)?(?:cfus?|colony[\s-]+forming)"
@@ -978,9 +980,26 @@ def render_markdown(report):
     lines.append("")
     lines.append(
         "Blog byline for new articles is Mike Moretti, Co-founder, Wellness Nest, "
-        "linking `/pages/mike-moretti`. Crawl records of live pages were not rewritten."
+        "linking `/pages/mike-moretti`. Crawl records of live pages were not rewritten. "
+        "Paid-traffic landing and listicle bylines were left as crawled."
     )
     lines.append("")
+    notes = [page for page in (report.get("pages") or []) if page.get("live_observation")]
+    if notes:
+        lines.append("## Live observations")
+        lines.append("")
+        lines.append(
+            "Crawl records below are what the live store returned on 2026-10-20. "
+            "They were not rewritten. The blog Article author for new posts is "
+            "Mike Moretti, Co-founder, Wellness Nest "
+            "(https://wellnessnest.co/pages/mike-moretti — do not create that page). "
+            "The FloraFresh label count is 15B CFU per 2 gummies. "
+            "1 billion CFU is the retired count."
+        )
+        lines.append("")
+        for page in notes:
+            lines.append("- %s — %s" % (page.get("url"), page.get("live_observation")))
+        lines.append("")
     lines.append("## Measured name fields")
     lines.append("")
     if not summary.get("consistent"):
@@ -1048,7 +1067,8 @@ def render_markdown(report):
     lines.append("- Theme / Organization schema: fill `sameAs` with profiles Kevin confirms, and remove empty strings. A duplicated Organization node (theme header plus article publisher) needs a theme or app decision before anyone deletes a block.")
     lines.append("- GemPages / product templates: an H1 that names a different product is a template binding. Changing it is a theme edit.")
     lines.append("- Shopify product SEO titles and Product.brand: retitling a live product, or switching Product.brand between the line name and Wellness Nest, needs a store edit. AgeAura's brand field is the line name today; whether that should match the store Organization is Kevin's call.")
-    lines.append("- Descriptions that contradict a pack label (FloraFresh CFU, strain, sweeteners, or a milligram amount the label file does not list) stay until Kevin approves a PDP rewrite.")
+    lines.append("- FloraFresh PDP strain story (Lactobacillus, XOS, D-mannose, sugar-free) stays until Kevin approves a PDP rewrite. The label count is 15B CFU per 2 gummies (Kevin 2026-10-21). 15 billion CFU on the PDP is that same count and is a live observation. 1 billion CFU is retired.")
+    lines.append("- Blog Article author for new posts is Mike Moretti, Co-founder, Wellness Nest. https://wellnessnest.co/pages/mike-moretti is not created from this repo. Live pages that still name Dr. Marcus Hale stay crawl observations. Paid-traffic landing and listicle bylines stay as they are.")
     lines.append("- Social profiles: this crawl found no non-empty `sameAs` URLs to check. Do not invent profile URLs.")
     lines.append("- Marketplaces: not in this crawl. Do not change Amazon or other marketplace titles from this report.")
     lines.append("- AgeAura handles outside `ageaura-pure-nmn-tmg-nad-complex` stay off new articles. Unpublishing a live product is a separate GO.")
@@ -1240,6 +1260,23 @@ def self_test():
     formula = summary["label_formulas"]["florafresh-gummies"]
     if formula != florafresh_label_formula() or "1 billion" in formula:
         raise SystemExit("self-test: label formula " + formula)
+    rendered = render_markdown({"summary": summary, "pages": []})
+    if "Mike Moretti" not in rendered or "Co-founder, Wellness Nest" not in rendered:
+        raise SystemExit("self-test: blog byline")
+    if "15B CFU" not in rendered or "1 billion CFU is the retired count" not in rendered:
+        raise SystemExit("self-test: label wording")
+    noted = render_markdown({
+        "summary": summary,
+        "pages": [{
+            "url": "https://wellnessnest.co/pages/dr-marcus-hale",
+            "live_observation": (
+                "Live observation: Dr. Marcus Hale appears on this live URL. "
+                "Not the blog Article author."
+            ),
+        }],
+    })
+    if "Not the blog Article author" not in noted:
+        raise SystemExit("self-test: landing byline observation")
     warnings = entity_names.variant_warnings("WellnessNest ships the AgeAura Pure NMN + TMG NAD+ Complex across the US.")
     if not warnings:
         raise SystemExit("self-test: warn")
