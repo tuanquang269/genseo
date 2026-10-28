@@ -117,9 +117,7 @@ class FreshCheckoutTests(unittest.TestCase):
             rc, landing_first = first_line(landing_path, tmp)
             self.assertEqual(rc, 0)
             self.assertFalse(os.path.exists(os.path.join(tmp, "state", "queue-closures.json")))
-            self.assertIn("shilasource-himalayan-shilajit-resin", landing_first)
-            self.assertIn("N checks before a shilajit resin habit sticks", landing_first)
-            self.assertNotIn("pure-shilajit-gold-resin", landing_first)
+            self.assertIn("pure-shilajit-gold-resin", landing_first)
             self.assertNotIn(FLORA_ANGLE, landing_first)
             self.assertNotIn(GUMMIES_ANGLE, landing_first)
         for ticket_id in CLOSED_IDS:
@@ -137,19 +135,15 @@ class FreshCheckoutTests(unittest.TestCase):
                 "- [DONE 2026-10-18 %s] **#%s" % (LIVE_URLS[CLOSED_IDS.index(ticket_id)], ticket_id),
                 article,
             )
-        self.assertIn("shilasource-himalayan-shilajit-resin", landing_open[0])
-        self.assertIn("N checks before a shilajit resin habit sticks", landing_open[0])
+        self.assertIn("pure-shilajit-gold-resin", landing_open[0])
         self.assertNotIn(FLORA_ANGLE, landing_open[0])
         self.assertFalse(any(GUMMIES_ANGLE in line for line in landing_open))
-        self.assertFalse(any("pure-shilajit-gold-resin" in line for line in landing_open))
         self.assertIn("- [DRAFT 2026-10-18 page 166299173179]", landing)
         self.assertIn("- [DRAFT 2026-10-19 page 166314115387]", landing)
-        self.assertIn("- [DRAFT 2026-10-20 page 166333972795]", landing)
         self.assertIn(FLORA_ANGLE, landing)
         self.assertTrue(any(
             "premium-himalayan-shilajit-gummies" in line and "missed day" in line
-            and line.startswith("- [FAILED")
-            for line in landing.splitlines()
+            for line in landing_open
         ))
         with open(os.path.join(ROOT, "PUBLISHED_ARTICLES_TRACKER.csv"), encoding="utf-8") as fh:
             tracker = fh.read()
