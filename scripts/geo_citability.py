@@ -51,7 +51,14 @@ _PUBLISHED_LINE = re.compile(
 )
 _NEG = re.compile(
     r"\b(not|no|never|don'?t|do not|does not|cannot|can't|isn't|won't|without|"
+    r"neither|nor|"
     r"medical promise|structure/function|do not claim)\b",
+    re.I,
+)
+# Describing a cure claim is not making one. "We promise to cure an infection"
+# does not match this and still fails.
+_CLAIM_CAUTION = re.compile(
+    r"\bbe cautious with claims\b|\bclaims that promise to cure\b",
     re.I,
 )
 _DISEASE = re.compile(
@@ -180,12 +187,13 @@ def _alt_text(tag):
 def compliance_issues(html):
     """Affirmative disease-cure, FDA-approval, or clinically-proven claims.
 
-    A sentence that negates the claim, asks it as a question, or labels it a
-    medical promise is the copy we want. It is not a failure.
+    A sentence that negates the claim (including neither/nor), asks it as a
+    question, labels it a medical promise, or warns about claims that promise
+    to cure is the copy we want. It is not a failure.
     """
     fails = []
     for sentence in _sentences(html):
-        if "?" in sentence or _NEG.search(sentence):
+        if "?" in sentence or _NEG.search(sentence) or _CLAIM_CAUTION.search(sentence):
             continue
         disease = _DISEASE.search(sentence)
         if disease:
