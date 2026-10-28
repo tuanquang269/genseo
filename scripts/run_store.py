@@ -26,20 +26,25 @@ def norm(text):
     return re.sub(r'[^a-z0-9]+', ' ', text.lower()).strip()
 
 
-# Shopify-hosted sources (bearaby.com) answer a bot user agent with HTTP 429 every time; a browser one gets the page.
-BROWSER_UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36'
+CHROME_GET = ('import sys\nfrom playwright.sync_api import sync_playwright\nwith sync_playwright() as p:\n'
+              ' b=p.chromium.launch(channel="chrome",args=["--disable-gpu"]); pg=b.new_page()\n'
+              ' r=pg.goto(sys.argv[1],wait_until="domcontentloaded",timeout=60000); assert r.status==200, r.status\n'
+              ' sys.stdout.write(pg.content()); b.close()\n')
 
 @functools.lru_cache(maxsize=64)
 def fetch_page(url):
-    """One GET per evidence page per run (the fact gate used to fetch it once per fact and drew HTTP 429). A 429 waits and retries."""
-    for attempt in range(3):
-        try:
-            with urllib.request.urlopen(urllib.request.Request(url, headers={'User-Agent': BROWSER_UA}), timeout=40) as res:
-                return res.read(4_000_000).decode('utf-8', errors='replace')
-        except urllib.error.HTTPError as error:
-            if error.code != 429 or attempt == 2:
-                raise
-            time.sleep(30 * (attempt + 1))
+    """One GET per evidence page per run (the fact gate used to fetch it once per fact and drew HTTP 429).
+    Some stores (bearaby.com) answer every script with HTTP 429 and serve Chrome: a 429 goes to headless Chrome once."""
+    try:
+        with urllib.request.urlopen(urllib.request.Request(url, headers={'User-Agent': 'GenSEO/1.0 fact-check'}), timeout=40) as res:
+            return res.read(4_000_000).decode('utf-8', errors='replace')
+    except urllib.error.HTTPError as error:
+        if error.code != 429:
+            raise
+        out = subprocess.run(['/usr/bin/python3', '-c', CHROME_GET, url], capture_output=True, text=True, timeout=120)
+        if out.returncode:
+            raise
+        return out.stdout[:4_000_000]
 
 
 def read_package(path, profile, row, live_products=None):
