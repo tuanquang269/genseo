@@ -5,7 +5,7 @@ This Knowledge Base must be referenced by the `genseo-seo-strategist` when formu
 ## 1. Experience, Expertise, Authoritativeness, and Trustworthiness (E-E-A-T)
 - **Author Identity**: All factual claims about supplements, side effects, and nutrition must be attributed to the "Wellness Nest Research Team" or specific certified trainers.
 - **Scientific Backing**: When discussing ingredients like Creatine, Whey, or Pre-workouts, reference their mechanism of action (e.g., ATP cycle for creatine).
-- **First-hand Experience**: Use language indicating direct testing or curation: "Our team tested X", "We routinely recommend Y to our gym members".
+- **First-hand Experience**: Do not write "our team tested", "I tried", a customer quote, a star rating, or a byline that says the author uses the product. A first-hand block is allowed only when `scripts/experience_block.py` prints one from `data/experience_quotes.json` (`usage_allowed: true`; `example: true` never renders). If it prints nothing, leave the block out. The optional "How we checked this" line is that script's `--with-method` output, and only when the article gate already checks that product's label. See `docs/first-hand-experience-block.md`.
 
 ## 2. On-Page SEO Formatting Rules
 - **H1 Tag**: Every article MUST have precisely one `<h1>` containing the primary focus keyword.

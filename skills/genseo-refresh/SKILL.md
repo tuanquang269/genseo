@@ -71,6 +71,7 @@ Append only the blocks the page is missing:
 - Target depth: most refreshes should end up **1,200–1,800 words** (deeper than the thin original), but
   never pad — every added sentence must add real value (specs, $prices, comparisons, genuine use cases).
 - Images: if the article lacks product lifestyle images, generate them (image-to-image off real product photos).
+- **First-hand experience block:** append only the stdout of `python3 scripts/experience_block.py render --draft <draft>.md` when it is non-empty and the live body does not already contain `data-gs-experience`. A row needs `usage_allowed: true` and must not be an `example` row. If stdout is empty, add nothing. Do not invent a quote, a star rating, or a byline that says the author uses the product. Do not retitle the page. Optional label-check line: `--with-method`, and only if that command prints one. See `docs/first-hand-experience-block.md`.
 
 ## STEP 3 — TITLE: depends on diagnosis (changing a ranking title is what sank the last batch)
 - **CLIMB pages (pos ≥13): KEEP THE EXISTING TITLE.** Do NOT rewrite it. The only allowed change is
