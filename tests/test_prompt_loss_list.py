@@ -46,7 +46,7 @@ WEAK = {
 }
 GAPS = {"aa-runners", "ss-runners", "ff-runners"}
 # DONE /blogs/news/ URLs in daily-tickets.md that are not already in the cluster map.
-# Open tickets are not articles. Regenerated 2026-10-27 after merging origin/main.
+# Open tickets are not articles. Regenerated 2026-10-28 after merging origin/main.
 QUEUE_LIVE = {
     "shilajit-on-rest-days-with-food-in-the-us",
     "nmn-while-traveling-with-food-5-us-tips",
@@ -69,6 +69,8 @@ QUEUE_LIVE = {
     "vaginal-probiotics-for-athletes-us-routine",
     "real-or-fake-nmn-6-label-checks-for-us-buyers",
     "shilajit-gummies-ingredients-6-label-checks-in-the-us",
+    "shilajit-for-hair-with-food-us-evidence",
+    "shilajit-loading-with-food-us-trial-evidence",
 }
 BANNED_REPORT = ("impressions", "clicks", "share of voice", "mention rate", "$")
 

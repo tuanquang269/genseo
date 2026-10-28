@@ -13,7 +13,7 @@ The 30 prompts extend the 51 hypothesised prompts from PR #81. They do not copy 
 
 ## How a row was scored
 
-Coverage uses titles and handles from `docs/CLUSTER_MAP.md` (built 2026-10-20, 141 articles) plus 21 DONE `/blogs/news/` URLs in `daily-tickets.md` that are not already in the map. Open tickets are not treated as published articles. They do block a new proposal.
+Coverage uses titles and handles from `docs/CLUSTER_MAP.md` (built 2026-10-20, 141 articles) plus 23 DONE `/blogs/news/` URLs in `daily-tickets.md` that are not already in the map. Open tickets are not treated as published articles. They do block a new proposal.
 
 Added from the queue and used as the closest article:
 
@@ -41,6 +41,8 @@ Added from the queue, and not used as the matching article for any of the 30:
 - `vaginal-probiotics-for-athletes-us-routine` — Vaginal Probiotics for Athletes (US 2026)
 - `real-or-fake-nmn-6-label-checks-for-us-buyers` — Real or Fake NMN, With Food Checks (US 2026)
 - `shilajit-gummies-ingredients-6-label-checks-in-the-us` — Shilajit Gummy Ingredients, Taken With Food (2026)
+- `shilajit-for-hair-with-food-us-evidence` — Shilajit for Hair, Taken With Food (US 2026)
+- `shilajit-loading-with-food-us-trial-evidence` — Shilajit Loading, With Food or Not? (2026)
 
 - **covered**: a title in that brand's cluster contains every anchor and every focus token, and the title matches the buyer intent (best, vs, where to buy, price, or for-condition).
 - **weak**: a title contains every anchor, and it misses the intent or a focus token. The named article is the closest one. The action is to update that article.
