@@ -60,7 +60,8 @@ def shell_owned(page):
         srcset = ', '.join(f'{base}&amp;width={w} {w}w' for w in widths)
         return m.group(1) + set_attrs(m.group(2), dict(SHELL_IMG, src=f'{base}&amp;width={widths[1]}', srcset=srcset))
     page = re.sub(r'(<div class="pick"[^>]*>\s*)(<img\b[^>]*>)', lambda m: card(m, (300, 600, 1200)), page)
-    page = re.sub(r'(<div class="mini"[^>]*>\s*)(<img\b[^>]*>)', lambda m: card(m, (200, 400, 800)), page)
+    # band minis only: style 3 also uses .mini inside the article, which the shell prints as written
+    page = re.sub(r'<section class="band".*?</section>', lambda b: re.sub(r'(<div class="mini"[^>]*>\s*)(<img\b[^>]*>)', lambda m: card(m, (200, 400, 800)), b.group(0)), page, flags=re.S)
     page = re.sub(r'(<section class="band"[^>]*>.*?<p class="small">)[^<]*(</p>)', lambda m: m.group(1) + SHIP_LINE + m.group(2), page, count=1, flags=re.S)
     if 'class="stick"' not in page:
         pick = re.search(r'<div class="pick"[^>]*>.*?<b>(.*?)</b>.*?<a class="btn" href="(/products/[a-z0-9-]+)"', page, re.S)
