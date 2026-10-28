@@ -43,5 +43,11 @@
   "review_first": 21,
   "writer_model": "cc/claude-sonnet-5-5",
   "calendar_rows": 249,
-  "hero_budget_kb": 120
+  "hero_budget_kb": 120,
+  "authority_sources": [
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC3427038/",
+    "https://www.nidirect.gov.uk/conditions/night-sweats",
+    "https://medlineplus.gov/ency/article/007259.htm",
+    "https://medlineplus.gov/ency/article/003095.htm"
+  ]
 }

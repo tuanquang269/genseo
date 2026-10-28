@@ -60,7 +60,7 @@ def read_package(path, profile, row, live_products=None):
             profile.check_handle(node['data-product'])
     template, rules = profile.template(row['style'])
     match = re.search(r'<script[^>]*id="rules-machine"[^>]*>(.*?)</script>', body, re.S)
-    require(match is not None and json.loads(match.group(1)) == rules, 'Article changed approved template rules')
+    require(match is not None and match.group(1).strip().startswith('{') and json.loads(match.group(1)) == rules, 'Article changed approved template rules: copy #rules-machine exactly')
     require(not re.search(r'clinically proven|cures? insomnia|softer every wash|softer by day 100|\bluxury\b', body, re.I), 'Unsupported or banned claim')
     package['raw_html'], package['style'], package['keyword'] = body, row['style'], row['primary_keyword']  # journal-v1 reads the full page; prepare_html strips the sticky bar
     body = prepare_html(body, template)
@@ -80,7 +80,7 @@ def read_package(path, profile, row, live_products=None):
             evidence = html.unescape(re.sub(r'<[^>]*>', ' ', json.dumps(live_sources[source],ensure_ascii=False)))
         elif source in profile.data['context'] or source == profile.data['registry']:
             evidence = profile.read_context(source)
-        elif source in row['evidence_urls'].split('|'):
+        elif source in row['evidence_urls'].split('|') + profile.data.get('authority_sources', []):
             evidence = html.unescape(re.sub(r'<[^>]*>', ' ', fetch_page(source)))
         else:
             problems.append('Unapproved fact source: ' + source)
@@ -109,7 +109,8 @@ def render_gate(profile, package, row, directory):
     gate = profile.data['gates'][0]
     done = subprocess.run([sys.executable, gate, str(path)], capture_output=True, text=True, timeout=300)
     sys.stdout.write(done.stdout)
-    require(done.returncode == 0, 'Render gate (check.py) failed: ' + (done.stdout + done.stderr)[-1500:])
+    bad = [l.strip() for l in (done.stdout + done.stderr).splitlines() if re.search(r'FAIL|NUMBERED|Error', l)]
+    require(done.returncode == 0, 'Render gate (check.py) failed: ' + ' | '.join(bad)[-1500:])
 
 
 def duplicate_guard(package, row, existing):
@@ -185,10 +186,10 @@ def router_key():
     return key
 
 
-def fetch_evidence(row):
-    """Readable evidence pages only. A blocked page (403, 429) is listed so the writer does not cite it."""
+def fetch_evidence(row, extra=()):
+    """Readable evidence pages only (row evidence + the profile's approved authority pages). A blocked page (403, 429) is listed so the writer does not cite it."""
     evidence, unreadable = {}, []
-    for source in row['evidence_urls'].split('|'):
+    for source in row['evidence_urls'].split('|') + list(extra):
         try:
             raw = fetch_page(source)
         except (urllib.error.URLError, TimeoutError, ConnectionError, http.client.HTTPException):
@@ -235,8 +236,17 @@ def finalize_page(page, template, row, package, hero, day):
     article = page[page.index('<article'):page.index('</article>')]
     match = re.search(r'(<script type="application/ld\+json">)(.*?)(</script>)', page, re.S)
     require(match is not None, 'JSON-LD is missing')
-    graph = json.loads(match.group(2))
+    try:
+        graph = json.loads(match.group(2))
+    except json.JSONDecodeError as error:
+        raise StoreGuardError(f'The application/ld+json block is not valid JSON: {error}')
     post = next(n for n in graph['@graph'] if n.get('@type') == 'BlogPosting')
+    # FAQPage = the visible FAQ, word for word (validate_schema and the shell's journal.faq both read it this way)
+    faq = [{'@type': 'Question', 'name': d.select_one('summary h3').get_text(' ', strip=True),
+             'acceptedAnswer': {'@type': 'Answer', 'text': d.select_one('div').get_text(' ', strip=True)}}
+           for d in soup(page).select('.faq details') if d.select_one('summary h3') and d.select_one('div')]
+    require(len(faq) >= 3, 'The visible FAQ needs at least 3 questions (summary > h3, then a div answer)')
+    next(n for n in graph['@graph'] if n.get('@type') == 'FAQPage')['mainEntity'] = faq
     post.update({'headline': package['title'], 'description': package['meta_description'], 'image': src.split('?')[0],
                  'datePublished': day.isoformat(), 'dateModified': day.isoformat(),
                  'about': plain(row['primary_keyword']), 'wordCount': count_words(article)})
@@ -250,24 +260,27 @@ WRITER RULES (the runner gates every one; a failure returns here with the error)
 - Date: write "Updated {human}" in the meta row and {iso} for datePublished and dateModified.
 - Every sentence inside <article> that holds a digit (except the meta row) must contain the exact text of at least one facts claim, for example the price "$69.95" or the size "50 × 60 in", and that claim's quote must be in its source. Write offer, guarantee, shipping and competitor numbers as words. Use digits only for product facts the LIVE PRODUCT FACTS prove (prices as $NN.NN or $NN exactly as a variant price).
 - Every facts item: claim = an exact phrase from the article; source = an evidence URL from SOURCE EVIDENCE, an approved context path, or exactly shopify://{shop}/products/<handle> for a supplied live product; quote = 12+ characters copied exactly from that source text (for a live product, from its JSON).
-- Do not cite or link the UNREADABLE SOURCES. Every product link and data-product handle is an allowed product handle. Product card prices equal a current variant price.
+- Authority links (the template's authority count) come from the approved authority pages in SOURCE EVIDENCE (ncbi, nidirect, medlineplus); link them with a sentence their text supports. Do not cite or link the UNREADABLE SOURCES. Every product link and data-product handle is an allowed product handle. Product card prices equal a current variant price.
 - Hit every #rules-machine limit (words, h2, question h2, cards, images, authority links, Journal links, table, rows, sources). Title and H1 are equal and at most 60 characters. Meta description 120 to 165 characters.
 - Numbered list labels use a hash and a digit, never a word: "Reason #1: <full header>" as the H2 of each reason, "Rank #1 ...", "Pick #2: ...", "Setup #1: ...". A TOC item for a numbered section is that section's full H2 text ("Reason #1: An open weave lets air move"; for the rank section, the rank H2), never "Reason one" or "The rank" (Kevin 2026-10-28).
 - No ratings, review counts, or our own reviews. No health, cure, certification or "luxury" claims.
 """
 
 
-def generate(profile, row, path, live_products, hero, day, feedback=None):
+def generate(profile, row, path, live_products, hero, day, feedback=None, previous=None):
     """Use the existing OAuth-backed hosted router. No tools, skills, or global context."""
     key = router_key()
-    evidence, unreadable = fetch_evidence(row)
+    evidence, unreadable = fetch_evidence(row, profile.data.get('authority_sources', []))
     prompt = profile.prompt(row) + '\nLIVE PRODUCT FACTS:\n' + json.dumps(live_products, ensure_ascii=False)
     prompt += '\nSOURCE EVIDENCE:\n' + json.dumps(evidence, ensure_ascii=False)
     prompt += '\nUNREADABLE SOURCES (do not cite):\n' + json.dumps(unreadable)
     prompt += '\nHERO PHOTO (runner-owned):\n' + json.dumps(hero, ensure_ascii=False)
     prompt += WRITER_RULES.format(human=f'{day:%b} {day.day}, {day.year}', iso=day.isoformat(), shop=profile.data['shop'])
-    if feedback:
-        prompt += '\nYOUR PREVIOUS PACKAGE FAILED THIS GATE. Fix it and return a complete new package:\n' + feedback[:4000]
+    if feedback and previous:
+        prompt += ('\nYOUR PREVIOUS PACKAGE:\n' + previous + '\nIT FAILED THESE GATE CHECKS:\n' + feedback[:6000] +
+                   '\nEdit that package: fix every listed problem, keep everything else as it is, and return the complete corrected package.')
+    elif feedback:
+        prompt += '\nYOUR PREVIOUS REPLY FAILED THIS GATE. Return a complete new package:\n' + feedback[:4000]
     prompt += '\nReturn only the JSON package. No code fences. Remove preview controls, spec annotations, and executable scripts. Keep the full HTML document for the render gate. The publisher extracts the article fragment.'
     # The router turns extended thinking on by default; it spent the whole token budget on thinking (stop_reason max_tokens, no text).
     payload = {'model': profile.data['writer_model'], 'max_tokens':32000, 'thinking': {'type': 'disabled'},
@@ -276,7 +289,11 @@ def generate(profile, row, path, live_products, hero, day, feedback=None):
     require(stop == 'end_turn', f'Writer response is incomplete (stop_reason {stop})')
     text = re.sub(r'^```(?:json)?\s*|\s*```$', '', text.strip())
     path.with_suffix('.raw.txt').write_text(text)  # the writer's exact reply, for a failed parse
-    package = json.loads(text[text.find('{'):text.rfind('}') + 1])   # a sentence before or after the JSON is not a failure
+    try:
+        package = json.loads(text[text.find('{'):text.rfind('}') + 1])
+    except json.JSONDecodeError:
+        path.with_suffix('.badjson.txt').write_text(text)
+        raise   # a sentence before or after the JSON is not a failure
     require(package.get('store') == profile.store, 'Writer returned the wrong store')
     template, _ = profile.template(row['style'])
     package['body_html'] = finalize_page(package['body_html'], template, row, package, hero, day)
@@ -305,7 +322,7 @@ def check_package(api, profile, row, path, existing, state):
     return package
 
 
-def prepare_row(api, profile, row, path, existing, state, generate_on, attempts=3):
+def prepare_row(api, profile, row, path, existing, state, generate_on, attempts=4):
     """Gate a package. With --generate and no package on disk, write it and send each gate failure back to the writer (max `attempts`).
     A package that never passes is moved to <name>.failed.json so a rerun writes a fresh one."""
     if not (generate_on and not path.exists()):
@@ -316,13 +333,14 @@ def prepare_row(api, profile, row, path, existing, state, generate_on, attempts=
     live_products = {h: api.product(h) for h in handles}
     hero = pick_hero(api, row, existing, profile.data.get('hero_budget_kb'))
     day = dt.datetime.now(ZoneInfo('Asia/Ho_Chi_Minh')).date()
-    feedback = None
+    feedback = previous = None
     for attempt in range(1, attempts + 1):
         try:
-            generate(profile, row, path, live_products, hero, day, feedback)
+            generate(profile, row, path, live_products, hero, day, feedback, previous)
             return check_package(api, profile, row, path, existing, state)
         except ROW_ERRORS as error:
-            feedback = f'{type(error).__name__}: {error}'
+            feedback = f'{type(error).__name__}: {error}' + (' (the reply was not one JSON object)' if isinstance(error, json.JSONDecodeError) else '')
+            previous = path.read_text() if path.exists() else None   # the package that failed, sent back for an edit
             print(f"Slot {row['slot']} attempt {attempt}/{attempts} failed: {feedback[:300]}", file=sys.stderr)
             if attempt == attempts:
                 if path.exists():
