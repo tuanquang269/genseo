@@ -230,6 +230,12 @@ def finalize_page(page, template, row, package, hero, day):
            (' fetchpriority="high"' if approved.has_attr('fetchpriority') else '') + '>')
     page, n = re.subn(r'(<figure class="hero">\s*)<img\b[^>]*>', lambda m: m.group(1) + tag, page, count=1)
     require(n == 1, 'Hero figure is missing')
+    # Band cards: the 4a-4d templates print <div class="mini"> without data-product, the shell prints it (from journal.band.minis).
+    def mini(m):
+        link = re.search(r'/products/([a-z0-9-]+)', page[m.end():m.end() + 3000])
+        require(link is not None, 'A band card (.mini) has no product link')
+        return f'<div class="mini" data-product="{link.group(1)}">'
+    page = re.sub(r'<div class="mini">', mini, page)
     human = f'{day:%b} {day.day}, {day.year}'
     page, n = re.subn(r'(<p class="meta">.*?<span>)Updated [^<]*(</span>)', lambda m: m.group(1) + 'Updated ' + human + m.group(2), page, count=1, flags=re.S)
     require(n == 1, 'Updated date is missing from the meta row')
