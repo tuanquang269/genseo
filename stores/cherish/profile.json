@@ -44,6 +44,7 @@
   "writer_model": "cc/claude-sonnet-5-5",
   "calendar_rows": 249,
   "hero_budget_kb": 120,
+  "competitor_domains": ["bearaby.com", "brooklinen.com", "cozyearth.com", "ettitude.com", "thefleececompany.com", "moalove.com", "muslincomfort.com", "vivamaison.com", "parachutehome.com", "bollandbranch.com", "buffy.co", "saatva.com", "casper.com", "purple.com", "coopsleepgoods.com", "gravityblankets.com", "sijohome.com", "barefootdreams.com", "comfrt.com", "eliandelm.com", "slumbercloud.com", "lunya.co"],
   "authority_sources": [
     "https://pmc.ncbi.nlm.nih.gov/articles/PMC3427038/",
     "https://www.nidirect.gov.uk/conditions/night-sweats",

@@ -15,6 +15,7 @@ import sys
 import time
 import urllib.error
 import urllib.request
+from urllib.parse import urlsplit
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -89,7 +90,12 @@ def read_package(path, profile, row, live_products=None):
         elif source in profile.data['context'] or source == profile.data['registry']:
             evidence = profile.read_context(source)
         elif source in row['evidence_urls'].split('|') + profile.data.get('authority_sources', []):
-            evidence = html.unescape(re.sub(r'<[^>]*>', ' ', fetch_page(source)))
+            try:
+                evidence = html.unescape(re.sub(r'<[^>]*>', ' ', fetch_page(source)))
+            except (urllib.error.URLError, TimeoutError, ConnectionError, http.client.HTTPException) as error:
+                print(f'SOURCE-CHECK FAIL {source}: {error}', file=sys.stderr, flush=True)
+                problems.append(f'Source could not be read today ({error}); delete every claim that cites it: {source}')
+                continue
         else:
             problems.append('Unapproved fact source: ' + source)
             continue
@@ -106,8 +112,54 @@ def read_package(path, profile, row, live_products=None):
         if re.search(r'\d', re.sub(r'(?<!\w)#\d+\b', '', sentence)):   # a list number ("Reason #1", "Rank #2") is a label, not a claim
             if not any(norm(sentence) in norm(f['claim']) or norm(f['claim']) in norm(sentence) for f in facts):
                 problems.append('Numerical claim lacks fact evidence: ' + sentence[:160])
+    if profile.data.get('competitor_domains'):
+        problems += competitor_problems(package['raw_html'], profile, row)
     require(not problems, ' | '.join(problems))
     return package
+
+
+VAGUE_NOTE = re.compile(r'page title and product menu|checked this week', re.I)
+
+def competitor_host(href, domains):
+    host = (urlsplit(href).hostname or '').lower().removeprefix('www.')
+    return next((d for d in domains if host == d or host.endswith('.' + d)), None)
+
+def nofollow_competitors(page, domains):
+    """Runner-owned: every anchor to a competitor domain gets rel="nofollow noopener" (Kevin 2026-10-28, REFLINK-FIX)."""
+    def fix(m):
+        tag = m.group(0)
+        href = re.search(r'href="([^"]+)"', tag)
+        if not href or not competitor_host(html.unescape(href.group(1)), domains):
+            return tag
+        tag = re.sub(r'\srel="[^"]*"', '', tag)
+        return tag[:-1] + ' rel="nofollow noopener">'
+    return re.sub(r'<a\b[^>]*>', fix, page)
+
+def competitor_problems(page, profile, row):
+    """Competitor link rules (REFLINK-FIX 2026-10-28): a competitor URL only on that brand's "<brand> alternative" article,
+    only its /products/ page, once, inside the Sources list, with nofollow; no vague "checked" note."""
+    domains = profile.data.get('competitor_domains', [])
+    parsed = soup(page)
+    problems = [f'Vague source note: "{m.group(0)}". Write the dated fact you read on the page, or delete the source' for m in VAGUE_NOTE.finditer(parsed.get_text(' '))]
+    links = [(a, competitor_host(html.unescape(a.get('href', '')), domains)) for a in parsed.select('a[href]')]
+    links = [(a, d) for a, d in links if d]
+    topic = norm(row['primary_keyword'] + ' ' + row.get('uniqueness_key', ''))
+    seen = set()
+    for a, domain in links:
+        href = a['href']
+        brand = domain.split('.')[0]
+        if 'alternative' not in topic or brand not in topic.replace(' ', ''):
+            problems.append(f'Competitor link on an article that is not "{brand} alternative": {href}. Name the brand as text; cite a neutral source')
+        elif '/products/' not in urlsplit(href).path:
+            problems.append(f'Competitor link is not a product spec page (blog, care, guide and collection pages are not sources): {href}')
+        elif not a.find_parent('ol', class_='sources'):
+            problems.append(f'Competitor link outside the Sources list: {href}. Keep the brand name as plain text in the body')
+        if 'nofollow' not in (a.get('rel') or []):
+            problems.append(f'Competitor link without rel="nofollow noopener": {href}')
+        if domain in seen:
+            problems.append(f'More than one link to {domain}: keep one product page in the Sources list')
+        seen.add(domain)
+    return problems
 
 
 def render_gate(profile, package, row, directory):
@@ -200,7 +252,9 @@ def fetch_evidence(row, extra=()):
     for source in row['evidence_urls'].split('|') + list(extra):
         try:
             raw = fetch_page(source)
-        except (urllib.error.URLError, TimeoutError, ConnectionError, http.client.HTTPException):
+        except (urllib.error.URLError, TimeoutError, ConnectionError, http.client.HTTPException) as error:
+            # Fail loud: log it and drop the claim. Never let the writer fill the gap with a vague note ("page title and product menu").
+            print(f'SOURCE-CHECK FAIL {source}: {error} (claims from this page are skipped)', file=sys.stderr, flush=True)
             unreadable.append(source)
             continue
         raw = re.sub(r'<(?:script|style)\b[^>]*>.*?</(?:script|style)>', '', raw, flags=re.S)
@@ -280,6 +334,7 @@ WRITER RULES (the runner gates every one; a failure returns here with the error)
 - Authority links (the template's authority count) come from the approved authority pages in SOURCE EVIDENCE (ncbi, nidirect, medlineplus); link them with a sentence their text supports. Do not cite or link the UNREADABLE SOURCES. Every product link and data-product handle is an allowed product handle. Product card prices equal a current variant price.
 - Hit every #rules-machine limit (words, h2, question h2, cards, images, authority links, Journal links, table, rows, sources). Title and H1 are equal and at most 60 characters. Meta description 120 to 165 characters.
 - Numbered list labels use a hash and a digit, never a word: "Reason #1: <full header>" as the H2 of each reason, "Rank #1 ...", "Pick #2: ...", "Setup #1: ...". A TOC item for a numbered section is that section's full H2 text ("Reason #1: An open weave lets air move"; for the rank section, the rank H2), never "Reason one" or "The rank" (Kevin 2026-10-28).
+- Competitor links: only on a "<Brand> alternative" article, only that brand's /products/ spec page, once, inside the Sources list (the runner adds rel="nofollow noopener"). In the body, write the brand name as plain text. Never link a competitor blog, care, guide or collection page: cite a neutral source (NIH, MedlinePlus, Cleveland Clinic, press, Reddit) for the same fact, or drop the fact. Every Sources note names the dated fact read on that page ("Bearaby product page, checked {iso}: 100% organic cotton knit, 10–25 lb"), never "page title and product menu".
 - No ratings, review counts, or our own reviews. No health, cure, certification or "luxury" claims.
 """
 
@@ -313,7 +368,8 @@ def generate(profile, row, path, live_products, hero, day, feedback=None, previo
         raise   # a sentence before or after the JSON is not a failure
     require(package.get('store') == profile.store, 'Writer returned the wrong store')
     template, _ = profile.template(row['style'])
-    package['body_html'] = finalize_page(package['body_html'], template, row, package, hero, day)
+    package['body_html'] = nofollow_competitors(finalize_page(package['body_html'], template, row, package, hero, day),
+                                                profile.data.get('competitor_domains', []))
     path.write_text(json.dumps(package, ensure_ascii=False, indent=2)+'\n')
 
 
