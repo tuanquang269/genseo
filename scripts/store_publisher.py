@@ -2,6 +2,8 @@
 import importlib.util
 import __future__
 import json
+import time
+import urllib.error
 import urllib.request
 from store_profiles import require
 from store_article import article_fragment, validate_schema, soup
@@ -39,8 +41,14 @@ class Shopify:
         request = urllib.request.Request('https://'+self.domain+path,
                    data=body.encode() if body is not None else None,
                    headers={'X-Shopify-Access-Token': token, 'Content-Type': 'application/json'}, method=method)
-        with urllib.request.urlopen(request, timeout=120) as response:
-            return json.load(response)
+        for attempt in range(4):   # Shopify rejects a throttled call (HTTP 429) unapplied, so a retry cannot double-write
+            try:
+                with urllib.request.urlopen(request, timeout=120) as response:
+                    return json.load(response)
+            except urllib.error.HTTPError as error:
+                if error.code != 429 or attempt == 3:
+                    raise
+                time.sleep(float(error.headers.get('Retry-After') or 2) * (attempt + 1))
 
     def identity(self):
         shop = self.request('/admin/api/2026-04/shop.json')['shop']

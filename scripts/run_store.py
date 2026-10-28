@@ -232,8 +232,9 @@ def finalize_page(page, template, row, package, hero, day):
     require(n == 1, 'Hero figure is missing')
     # Band cards: the 4a-4d templates print <div class="mini"> without data-product, the shell prints it (from journal.band.minis).
     def mini(m):
-        link = re.search(r'/products/([a-z0-9-]+)', page[m.end():m.end() + 3000])
-        require(link is not None, 'A band card (.mini) has no product link')
+        card = page[m.end():page.find('</div>', m.end())]   # this card only: never borrow the next card's link
+        link = re.search(r'href="/products/([a-z0-9-]+)', card)
+        require(link is not None, 'A band card (.mini) must link to one product page (/products/<handle>), not a collection')
         return f'<div class="mini" data-product="{link.group(1)}">'
     page = re.sub(r'<div class="mini">', mini, page)
     human = f'{day:%b} {day.day}, {day.year}'
