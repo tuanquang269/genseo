@@ -1,0 +1,262 @@
+{
+ "schema": 1,
+ "source": "PR #81 data/ai_visibility/prompt_set.json",
+ "note": "Frozen id and text only, for the dup gate. No observations.",
+ "prompts": [
+  {
+   "id": "ageaura-01-best-nmn-supplement",
+   "brand_id": "ageaura",
+   "text": "best NMN supplement"
+  },
+  {
+   "id": "ageaura-02-best-nmn-supplement-2026",
+   "brand_id": "ageaura",
+   "text": "best NMN supplement 2026"
+  },
+  {
+   "id": "ageaura-03-best-nmn-with-tmg",
+   "brand_id": "ageaura",
+   "text": "best NMN with TMG"
+  },
+  {
+   "id": "ageaura-04-nmn-vs-nr",
+   "brand_id": "ageaura",
+   "text": "NMN vs NR"
+  },
+  {
+   "id": "ageaura-05-best-nad-plus-supplement-2026",
+   "brand_id": "ageaura",
+   "text": "best NAD+ supplement 2026"
+  },
+  {
+   "id": "ageaura-06-best-nad-booster-supplement",
+   "brand_id": "ageaura",
+   "text": "best NAD booster supplement"
+  },
+  {
+   "id": "ageaura-07-best-nmn-capsules",
+   "brand_id": "ageaura",
+   "text": "best NMN capsules"
+  },
+  {
+   "id": "ageaura-08-nmn-and-tmg-together",
+   "brand_id": "ageaura",
+   "text": "NMN and TMG together"
+  },
+  {
+   "id": "ageaura-09-best-nmn-supplement-reddit",
+   "brand_id": "ageaura",
+   "text": "best NMN supplement reddit"
+  },
+  {
+   "id": "ageaura-10-top-nmn-brands-compared",
+   "brand_id": "ageaura",
+   "text": "top NMN brands compared"
+  },
+  {
+   "id": "ageaura-11-best-liposomal-nmn",
+   "brand_id": "ageaura",
+   "text": "best liposomal NMN"
+  },
+  {
+   "id": "ageaura-12-pure-nmn-supplement-brand",
+   "brand_id": "ageaura",
+   "text": "pure NMN supplement brand"
+  },
+  {
+   "id": "ageaura-13-best-nmn-for-longevity",
+   "brand_id": "ageaura",
+   "text": "best NMN for longevity"
+  },
+  {
+   "id": "ageaura-14-nmn-tmg-stack-review",
+   "brand_id": "ageaura",
+   "text": "NMN TMG stack review"
+  },
+  {
+   "id": "ageaura-15-best-nmn-supplement-third-party-tested",
+   "brand_id": "ageaura",
+   "text": "best NMN supplement third party tested"
+  },
+  {
+   "id": "ageaura-16-nad-plus-precursor-comparison-nmn-nr",
+   "brand_id": "ageaura",
+   "text": "NAD+ precursor comparison NMN NR"
+  },
+  {
+   "id": "ageaura-17-best-nmn-powder",
+   "brand_id": "ageaura",
+   "text": "best NMN powder"
+  },
+  {
+   "id": "ageaura-18-wonderfeel-vs-tru-niagen",
+   "brand_id": "ageaura",
+   "text": "Wonderfeel vs Tru Niagen"
+  },
+  {
+   "id": "shilasource-01-best-shilajit-resin",
+   "brand_id": "shilasource",
+   "text": "best shilajit resin"
+  },
+  {
+   "id": "shilasource-02-best-shilajit-gummies",
+   "brand_id": "shilasource",
+   "text": "best shilajit gummies"
+  },
+  {
+   "id": "shilasource-03-best-shilajit-supplement",
+   "brand_id": "shilasource",
+   "text": "best shilajit supplement"
+  },
+  {
+   "id": "shilasource-04-pure-himalayan-shilajit-brand",
+   "brand_id": "shilasource",
+   "text": "pure Himalayan shilajit brand"
+  },
+  {
+   "id": "shilasource-05-best-shilajit-2026",
+   "brand_id": "shilasource",
+   "text": "best shilajit 2026"
+  },
+  {
+   "id": "shilasource-06-best-shilajit-resin-reddit",
+   "brand_id": "shilasource",
+   "text": "best shilajit resin reddit"
+  },
+  {
+   "id": "shilasource-07-shilajit-resin-vs-gummies",
+   "brand_id": "shilasource",
+   "text": "shilajit resin vs gummies"
+  },
+  {
+   "id": "shilasource-08-best-authentic-shilajit",
+   "brand_id": "shilasource",
+   "text": "best authentic shilajit"
+  },
+  {
+   "id": "shilasource-09-best-shilajit-for-men",
+   "brand_id": "shilasource",
+   "text": "best shilajit for men"
+  },
+  {
+   "id": "shilasource-10-legitimate-shilajit-brands",
+   "brand_id": "shilasource",
+   "text": "legitimate shilajit brands"
+  },
+  {
+   "id": "shilasource-11-best-himalayan-shilajit-resin",
+   "brand_id": "shilasource",
+   "text": "best Himalayan shilajit resin"
+  },
+  {
+   "id": "shilasource-12-best-shilajit-supplement-2026",
+   "brand_id": "shilasource",
+   "text": "best shilajit supplement 2026"
+  },
+  {
+   "id": "shilasource-13-shilajit-brands-compared",
+   "brand_id": "shilasource",
+   "text": "shilajit brands compared"
+  },
+  {
+   "id": "shilasource-14-best-third-party-tested-shilajit",
+   "brand_id": "shilasource",
+   "text": "best third party tested shilajit"
+  },
+  {
+   "id": "shilasource-15-pure-shilajit-resin-brands",
+   "brand_id": "shilasource",
+   "text": "pure shilajit resin brands"
+  },
+  {
+   "id": "shilasource-16-best-shilajit-drops",
+   "brand_id": "shilasource",
+   "text": "best shilajit drops"
+  },
+  {
+   "id": "shilasource-17-shilajit-resin-brands-reddit",
+   "brand_id": "shilasource",
+   "text": "shilajit resin brands reddit"
+  },
+  {
+   "id": "shilasource-18-best-shilajit-gummies-2026",
+   "brand_id": "shilasource",
+   "text": "best shilajit gummies 2026"
+  },
+  {
+   "id": "florafresh-florafresh-morning-or-night",
+   "brand_id": "florafresh",
+   "text": "vaginal probiotics morning or night"
+  },
+  {
+   "id": "florafresh-vaginal-probiotic-dosage",
+   "brand_id": "florafresh",
+   "text": "vaginal probiotic dosage"
+  },
+  {
+   "id": "florafresh-where-to-buy-vaginal-probiotics",
+   "brand_id": "florafresh",
+   "text": "where to buy vaginal probiotics"
+  },
+  {
+   "id": "florafresh-vaginal-probiotics-for-beginners",
+   "brand_id": "florafresh",
+   "text": "vaginal probiotics for beginners"
+  },
+  {
+   "id": "florafresh-vaginal-probiotics-price",
+   "brand_id": "florafresh",
+   "text": "vaginal probiotics price"
+  },
+  {
+   "id": "florafresh-vaginal-probiotics-over-60",
+   "brand_id": "florafresh",
+   "text": "vaginal probiotics over 60"
+  },
+  {
+   "id": "florafresh-vaginal-probiotics-for-fertility",
+   "brand_id": "florafresh",
+   "text": "vaginal probiotics for fertility"
+  },
+  {
+   "id": "florafresh-how-to-take-vaginal-probiotics",
+   "brand_id": "florafresh",
+   "text": "how to take vaginal probiotics"
+  },
+  {
+   "id": "florafresh-vaginal-probiotics-empty-stomach",
+   "brand_id": "florafresh",
+   "text": "vaginal probiotics on an empty stomach"
+  },
+  {
+   "id": "florafresh-vaginal-probiotics-worth-it",
+   "brand_id": "florafresh",
+   "text": "are vaginal probiotics worth it how much"
+  },
+  {
+   "id": "florafresh-vaginal-probiotics-and-alcohol",
+   "brand_id": "florafresh",
+   "text": "how much vaginal probiotics and alcohol"
+  },
+  {
+   "id": "florafresh-vaginal-probiotic-storage",
+   "brand_id": "florafresh",
+   "text": "how much vaginal probiotic storage"
+  },
+  {
+   "id": "florafresh-vaginal-probiotic-ingredients",
+   "brand_id": "florafresh",
+   "text": "vaginal probiotic ingredients how much"
+  },
+  {
+   "id": "florafresh-vaginal-probiotics-together",
+   "brand_id": "florafresh",
+   "text": "how much else with vaginal probiotics together"
+  },
+  {
+   "id": "florafresh-vaginal-probiotics-for-athletes",
+   "brand_id": "florafresh",
+   "text": "vaginal probiotics for athletes"
+  }
+ ]
+}
