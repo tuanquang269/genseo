@@ -61,6 +61,12 @@ def noindex(url):
 
 
 def fidelity(pairs, run_id, theme, qa_copy, rundir):
+    """One retry with a fresh run id (a reused id replays old verdicts): an image that did not load is a network blip; a real difference fails twice."""
+    ok, last = fidelity_once(pairs, run_id, theme, qa_copy, rundir)
+    return (ok, last) if ok else fidelity_once(pairs, run_id + '-r2', theme, qa_copy, rundir)
+
+
+def fidelity_once(pairs, run_id, theme, qa_copy, rundir):
     env = dict(os.environ, JOURNAL_PROFILE=str(GATE_PROFILE))
     env.pop('GATE_QA_COPY', None)
     if qa_copy:
@@ -187,6 +193,11 @@ def profile_gate():
 
 
 def fidelity_selftest(rundir):
+    ok, last = selftest_once(rundir)
+    return (ok, last) if ok else selftest_once(rundir)   # one retry: a control that fails on an unloaded image is a network blip
+
+
+def selftest_once(rundir):
     env = dict(os.environ, JOURNAL_PROFILE=str(GATE_PROFILE))
     env.pop('GATE_QA_COPY', None)
     logf = rundir/'gate-selftest.log'
