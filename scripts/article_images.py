@@ -73,6 +73,14 @@ PROMPT_SUFFIX = (" NO watermark. NO blog name text. NO caption. NO attribution t
 # prompt and split the difference into a generic averaged face. That contradiction, not
 # the size of the persona bank, is the main reason the /blogs/news grid read as AI.
 NO_FACE_CLAUSE = " No recognizable human faces."
+# Printed when a face generation is refused or fails QC. The daily writer used to
+# stop, or swap in an empty pack still life. The fallback keeps a person in frame.
+FACE_FALLBACK_HINT = (
+    "Face image refused or failed QC. After the two allowed re-rolls, replace only "
+    "this image with a human no-face shot (a hand, a forearm, or a body cropped below "
+    "the eyes; no recognizable face; no --persona-ref). Do not substitute an empty "
+    "pack-only still life, and do not drop the other face images in the article."
+)
 PACK_FIDELITY = (" The product package must EXACTLY match the reference image: same package "
                  "format, same shape, same colors, same label layout and text. Do not invent, "
                  "restyle, or substitute the packaging.")
@@ -613,9 +621,12 @@ def _ima2_tail(text, returncode):
     return "exit %s, no output" % returncode
 
 
-def _ima2_give_up(attempt, last_tail, why):
+def _ima2_give_up(attempt, last_tail, why, hint=None):
     print(f"   ✗ ima2 attempt {attempt}/{IMA2_ATTEMPTS}: {last_tail} — {why}", flush=True)
-    sys.exit("✗ ima2 generation failed: " + last_tail)
+    msg = "✗ ima2 generation failed: " + last_tail
+    if hint:
+        msg = msg + "\n" + hint
+    sys.exit(msg)
 
 
 def _ppid_map():
@@ -779,7 +790,8 @@ def _attempt_limit(timeout, remaining):
     return min(timeout + IMA2_TIMEOUT_PAD_SEC, int(remaining))
 
 
-def gen_png(prompt, size, out_png, refs, timeout=360, sleeper=None, clock=None):
+def gen_png(prompt, size, out_png, refs, timeout=360, sleeper=None, clock=None,
+             face_hint=None):
     """Render one PNG via the local ima2 binary.
 
     sleeper defaults to time.sleep. clock defaults to time.monotonic.
@@ -813,6 +825,7 @@ def gen_png(prompt, size, out_png, refs, timeout=360, sleeper=None, clock=None):
                 attempt,
                 "%s (stopped at %ss call budget)" % (last_tail, IMA2_CALL_BUDGET_SEC),
                 "call budget, not retrying",
+                face_hint,
             )
         if os.path.isfile(out_png):
             os.unlink(out_png)
@@ -824,6 +837,7 @@ def gen_png(prompt, size, out_png, refs, timeout=360, sleeper=None, clock=None):
                 attempt,
                 "%s (stopped at %ss call budget)" % (last_tail, IMA2_CALL_BUDGET_SEC),
                 "call budget, not retrying",
+                face_hint,
             )
         try:
             res = _run_ima2(cmd, env, limit)
@@ -857,6 +871,7 @@ def gen_png(prompt, size, out_png, refs, timeout=360, sleeper=None, clock=None):
                     attempt,
                     "%s (stopped at %ss call budget)" % (last_tail, IMA2_CALL_BUDGET_SEC),
                     "call budget, not retrying",
+                    face_hint,
                 )
             print(f"   ✗ ima2 attempt {attempt}/{IMA2_ATTEMPTS}: {last_tail} "
                   f"— transient, retrying in {wait}s", flush=True)
@@ -868,7 +883,7 @@ def gen_png(prompt, size, out_png, refs, timeout=360, sleeper=None, clock=None):
             why = "not retrying"
         else:
             why = "transient, giving up"
-        _ima2_give_up(attempt, last_tail, why)
+        _ima2_give_up(attempt, last_tail, why, face_hint)
 
 
 def compress_webp(src_png, out_webp):
@@ -961,7 +976,8 @@ def main():
 
     size = "1024x1024" if a.square else "1536x1024"
     print(f"⏳ ima2 gen {name} ({size}, {len(a.ref)} ref{', UGC' if a.ugc else ''})...", flush=True)
-    gen_png(a.prompt, size, png, a.ref)
+    gen_png(a.prompt, size, png, a.ref,
+            face_hint=FACE_FALLBACK_HINT if a.persona_ref else None)
     # Unconditional. Raw ima2 output is too HD-clean for anything we publish, and every
     # narrower rule tried here has leaked: gating on --ugc left all heroes glossy, then gating
     # on `ugc or persona_ref` still left the no-face hero glossy — and the no-face hero is what
@@ -974,6 +990,8 @@ def main():
         passed, verdict = qc_gem9(webp, a.ref, a.ugc, bool(a.persona_ref), angle_phrase)
         print(f"QC → {verdict}")
         if not passed:
+            if a.persona_ref:
+                print(FACE_FALLBACK_HINT, flush=True)
             sys.exit(2)  # caller re-rolls with the FAIL reason folded into the prompt (max 2)
     if a.persona_ref:
         # After QC, not before: a render that failed and was thrown away owes nobody a credit,

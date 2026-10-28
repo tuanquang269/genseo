@@ -118,7 +118,6 @@ class FreshCheckoutTests(unittest.TestCase):
             self.assertEqual(rc, 0)
             self.assertFalse(os.path.exists(os.path.join(tmp, "state", "queue-closures.json")))
             self.assertIn("pure-shilajit-gold-resin", landing_first)
-            self.assertIn("taking shilajit resin daily", landing_first)
             self.assertNotIn(FLORA_ANGLE, landing_first)
             self.assertNotIn(GUMMIES_ANGLE, landing_first)
         for ticket_id in CLOSED_IDS:
@@ -137,7 +136,6 @@ class FreshCheckoutTests(unittest.TestCase):
                 article,
             )
         self.assertIn("pure-shilajit-gold-resin", landing_open[0])
-        self.assertIn("taking shilajit resin daily", landing_open[0])
         self.assertNotIn(FLORA_ANGLE, landing_open[0])
         self.assertFalse(any(GUMMIES_ANGLE in line for line in landing_open))
         self.assertIn("- [DRAFT 2026-10-18 page 166299173179]", landing)

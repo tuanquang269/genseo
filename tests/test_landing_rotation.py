@@ -375,6 +375,10 @@ class OpenQueueTests(unittest.TestCase):
         self.assertGreaterEqual(len(open_lines), 7)
         self.assertEqual(len(draft_lines), 9)
         self.assertEqual(len(failed_lines), 4)
+        self.assertTrue(any(
+            "page 166314115387" in line and FLORA in line and "easier to stick with" in line
+            for line in draft_lines
+        ))
         self.assertTrue(any("page 166279512379" in line and AGE in line for line in draft_lines))
         self.assertTrue(any(
             "page 166299173179" in line and GUM in line and "choose shilajit gummies over resin" in line
