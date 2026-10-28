@@ -20,7 +20,7 @@ class RouterStreamTests(unittest.TestCase):
                     '{"type":"content_block_delta","index":0,"delta":{"type":"thinking_delta","thinking":"x"}}',
                     '{"type":"content_block_delta","index":1,"delta":{"type":"text_delta","text":"{\\"a\\":"}}',
                     '{"type":"content_block_delta","index":1,"delta":{"type":"text_delta","text":" 1}"}}',
-                    '{"type":"message_delta","delta":{"stop_reason":"end_turn"}}', '{"type":"message_stop"}')
+                    '{"type":"message_delta","delta":{"stop_reason":"end_turn"}}', '{"type":"message_stop"}', '[DONE]')
         self.assertEqual(read_stream(lines), ('{"a": 1}', 'end_turn'))
 
     def test_cut_stream_and_error_event_retry(self):

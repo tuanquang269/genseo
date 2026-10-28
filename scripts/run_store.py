@@ -3,6 +3,7 @@
 import argparse
 import datetime as dt
 import fcntl
+import functools
 import hashlib
 import html
 import http.client
@@ -23,6 +24,19 @@ from store_article import prepare_html, validate_schema, soup
 
 def norm(text):
     return re.sub(r'[^a-z0-9]+', ' ', text.lower()).strip()
+
+
+@functools.lru_cache(maxsize=64)
+def fetch_page(url):
+    """One GET per evidence page per run (the fact gate used to fetch it once per fact and drew HTTP 429). A 429 waits and retries."""
+    for attempt in range(3):
+        try:
+            with urllib.request.urlopen(urllib.request.Request(url, headers={'User-Agent':'GenSEO/1.0 fact-check'}), timeout=40) as res:
+                return res.read(4_000_000).decode('utf-8', errors='replace')
+        except urllib.error.HTTPError as error:
+            if error.code != 429 or attempt == 2:
+                raise
+            time.sleep(30 * (attempt + 1))
 
 
 def read_package(path, profile, row, live_products=None):
@@ -55,31 +69,36 @@ def read_package(path, profile, row, live_products=None):
     facts = package.get('facts', [])
     require(isinstance(facts, list) and facts, 'Fact-check evidence is required')
     plain = html.unescape(re.sub(r'<[^>]*>', ' ', body))
+    problems = []   # every fact problem in one message, so the writer can fix them all in one round
+    live_sources = {f"shopify://{profile.data['shop']}/products/{h}": product for h,product in (live_products or {}).items()}
     for fact in facts:
         require(set(('claim','source','quote')) <= fact.keys(), 'Fact evidence is incomplete')
-        require(fact['claim'] and norm(fact['claim']) in norm(plain), 'Fact claim is absent from the article')
+        if not (fact['claim'] and norm(fact['claim']) in norm(plain)):
+            problems.append('Fact claim is absent from the article: ' + str(fact['claim'])[:120])
         source = fact['source']
-        live_sources = {f"shopify://{profile.data['shop']}/products/{h}": product
-                        for h,product in (live_products or {}).items()}
         if source in live_sources:
             evidence = html.unescape(re.sub(r'<[^>]*>', ' ', json.dumps(live_sources[source],ensure_ascii=False)))
         elif source in profile.data['context'] or source == profile.data['registry']:
             evidence = profile.read_context(source)
+        elif source in row['evidence_urls'].split('|'):
+            evidence = html.unescape(re.sub(r'<[^>]*>', ' ', fetch_page(source)))
         else:
-            require(source in row['evidence_urls'].split('|'), 'Unapproved fact source')
-            with urllib.request.urlopen(urllib.request.Request(source, headers={'User-Agent':'GenSEO/1.0 fact-check'}), timeout=40) as res:
-                evidence = res.read(4_000_000).decode('utf-8', errors='replace')
-            evidence = html.unescape(re.sub(r'<[^>]*>', ' ', evidence))
-        require(len(fact['quote']) >= 12 and norm(fact['quote']) in norm(evidence), 'Fact quote is not in its source')
+            problems.append('Unapproved fact source: ' + source)
+            continue
+        if not (len(fact['quote']) >= 12 and norm(fact['quote']) in norm(evidence)):
+            problems.append(f"Fact quote is not in its source {source}: {fact['quote'][:120]}")
     # Numerical body claims must be explicitly listed, including prices and dimensions.
     article = re.search(r'<article\b[^>]*>(.*?)</article>', body, re.S)
     require(article is not None, 'Article body missing')
-    prose = re.sub(r'<script\b[^>]*>.*?</script>|<style\b[^>]*>.*?</style>', '', article.group(1), flags=re.S)
+    # p.meta (byline, Updated date, read minutes) is runner-owned page chrome, not a claim
+    prose = re.sub(r'<script\b[^>]*>.*?</script>|<style\b[^>]*>.*?</style>|<p class="meta">.*?</p>', '', article.group(1), flags=re.S)
     prose = html.unescape(re.sub(r'<[^>]*>', ' ', prose))
-    for sentence in re.split(r'[.!?\n]', prose):
+    for sentence in re.split(r'(?<!\d)[.!?]|[.!?](?!\d)|\n', prose):   # $69.95 stays one sentence
         sentence = ' '.join(sentence.split())
-        if re.search(r'\d', sentence):
-            require(any(norm(sentence) in norm(f['claim']) or norm(f['claim']) in norm(sentence) for f in facts), 'Numerical claim lacks fact evidence')
+        if re.search(r'\d', re.sub(r'(?<!\w)#\d+\b', '', sentence)):   # a list number ("Reason #1", "Rank #2") is a label, not a claim
+            if not any(norm(sentence) in norm(f['claim']) or norm(f['claim']) in norm(sentence) for f in facts):
+                problems.append('Numerical claim lacks fact evidence: ' + sentence[:160])
+    require(not problems, ' | '.join(problems))
     return package
 
 
@@ -115,7 +134,7 @@ def read_stream(lines):
     text, stop, done = [], None, False
     for raw in lines:
         line = raw.decode('utf-8') if isinstance(raw, bytes) else raw
-        if not line.startswith('data:'):
+        if not line.startswith('data:') or line[5:].strip() == '[DONE]':  # the router ends with an OpenAI-style [DONE]
             continue
         event = json.loads(line[5:])
         kind = event.get('type')
@@ -171,8 +190,7 @@ def fetch_evidence(row):
     evidence, unreadable = {}, []
     for source in row['evidence_urls'].split('|'):
         try:
-            with urllib.request.urlopen(urllib.request.Request(source, headers={'User-Agent':'GenSEO/1.0 evidence'}), timeout=40) as response:
-                raw = response.read(4_000_000).decode('utf-8', errors='replace')
+            raw = fetch_page(source)
         except (urllib.error.URLError, TimeoutError, ConnectionError, http.client.HTTPException):
             unreadable.append(source)
             continue
@@ -203,6 +221,7 @@ def finalize_page(page, template, row, package, hero, day):
     """Machine-owned values the shell prints from metafields: hero tag, Updated date, and the BlogPosting fields
     (image, dates, description, wordCount, about). The writer cannot count words; the runner can."""
     from journal_fields import count_words, plain
+    require(not soup(page).select('.preview, .spec, .spec-sec'), 'Delete the .preview bar and every .spec / .spec-sec annotation')
     approved = soup(template).select_one('figure.hero img')
     src = hero['src']
     tag = (f'<img src="{src}&width=1100" srcset="' + ', '.join(f'{src}&width={w} {w}w' for w in (550, 750, 1100, 2200)) +
@@ -229,10 +248,11 @@ WRITER RULES (the runner gates every one; a failure returns here with the error)
 - Fill the approved template. Keep every element, class, id and order. Replace only the text, links, product cards and FAQ. Delete the .preview bar, every .spec / .spec-sec annotation and every executable script. Keep the <!-- Approved CSS is inserted by the runner. --> comment where it is.
 - Hero: keep <figure class="hero"><img ...> with the alt text you see; the runner sets the hero photo, the BlogPosting image, dates, wordCount and about.
 - Date: write "Updated {human}" in the meta row and {iso} for datePublished and dateModified.
-- Every digit inside <article> must be in a sentence that a facts item covers (claim text appears in that sentence). Write offer, guarantee, shipping and competitor numbers as words. Use digits only for product facts the LIVE PRODUCT FACTS prove (prices as $NN.NN or $NN exactly as a variant price).
-- Every facts item: claim = an exact phrase from the article; source = an evidence URL from SOURCE EVIDENCE, an approved context path, or shopify://<shop>/products/<handle> for a supplied live product; quote = 12+ characters copied exactly from that source text.
+- Every sentence inside <article> that holds a digit (except the meta row) must contain the exact text of at least one facts claim, for example the price "$69.95" or the size "50 × 60 in", and that claim's quote must be in its source. Write offer, guarantee, shipping and competitor numbers as words. Use digits only for product facts the LIVE PRODUCT FACTS prove (prices as $NN.NN or $NN exactly as a variant price).
+- Every facts item: claim = an exact phrase from the article; source = an evidence URL from SOURCE EVIDENCE, an approved context path, or exactly shopify://{shop}/products/<handle> for a supplied live product; quote = 12+ characters copied exactly from that source text (for a live product, from its JSON).
 - Do not cite or link the UNREADABLE SOURCES. Every product link and data-product handle is an allowed product handle. Product card prices equal a current variant price.
 - Hit every #rules-machine limit (words, h2, question h2, cards, images, authority links, Journal links, table, rows, sources). Title and H1 are equal and at most 60 characters. Meta description 120 to 165 characters.
+- Numbered list labels use a hash and a digit, never a word: "Reason #1: <full header>" as the H2 of each reason, "Rank #1 ...", "Pick #2: ...", "Setup #1: ...". A TOC item for a numbered section is that section's full H2 text ("Reason #1: An open weave lets air move"; for the rank section, the rank H2), never "Reason one" or "The rank" (Kevin 2026-10-28).
 - No ratings, review counts, or our own reviews. No health, cure, certification or "luxury" claims.
 """
 
@@ -245,16 +265,18 @@ def generate(profile, row, path, live_products, hero, day, feedback=None):
     prompt += '\nSOURCE EVIDENCE:\n' + json.dumps(evidence, ensure_ascii=False)
     prompt += '\nUNREADABLE SOURCES (do not cite):\n' + json.dumps(unreadable)
     prompt += '\nHERO PHOTO (runner-owned):\n' + json.dumps(hero, ensure_ascii=False)
-    prompt += WRITER_RULES.format(human=f'{day:%b} {day.day}, {day.year}', iso=day.isoformat())
+    prompt += WRITER_RULES.format(human=f'{day:%b} {day.day}, {day.year}', iso=day.isoformat(), shop=profile.data['shop'])
     if feedback:
         prompt += '\nYOUR PREVIOUS PACKAGE FAILED THIS GATE. Fix it and return a complete new package:\n' + feedback[:4000]
     prompt += '\nReturn only the JSON package. No code fences. Remove preview controls, spec annotations, and executable scripts. Keep the full HTML document for the render gate. The publisher extracts the article fragment.'
-    payload = {'model': profile.data['writer_model'], 'max_tokens':32000,
+    # The router turns extended thinking on by default; it spent the whole token budget on thinking (stop_reason max_tokens, no text).
+    payload = {'model': profile.data['writer_model'], 'max_tokens':32000, 'thinking': {'type': 'disabled'},
                'messages':[{'role':'user','content': prompt}]}
     text, stop = router_call(payload, key)
-    require(stop == 'end_turn', 'Writer response is incomplete')
+    require(stop == 'end_turn', f'Writer response is incomplete (stop_reason {stop})')
     text = re.sub(r'^```(?:json)?\s*|\s*```$', '', text.strip())
-    package = json.loads(text)
+    path.with_suffix('.raw.txt').write_text(text)  # the writer's exact reply, for a failed parse
+    package = json.loads(text[text.find('{'):text.rfind('}') + 1])   # a sentence before or after the JSON is not a failure
     require(package.get('store') == profile.store, 'Writer returned the wrong store')
     template, _ = profile.template(row['style'])
     package['body_html'] = finalize_page(package['body_html'], template, row, package, hero, day)
