@@ -319,6 +319,14 @@ def check_package(api, profile, row, path, existing, state):
         for price in re.findall(r'\$\s*(\d+\.\d{2})', card.get_text(' ',strip=True)):
             require(price in prices, 'Product card price is not current')
     render_gate(profile, package, row, state)
+    if profile.data.get('article_contract') == 'journal-v1':
+        # The publisher's own conversion, before any write: a failure here goes back to the writer, not to Shopify.
+        import journal_fields
+        try:
+            journal_fields.from_document(package['raw_html'], package['style'], package.get('keyword'))
+            journal_fields.check_tags(package.get('tags'))
+        except (KeyError, AttributeError, TypeError, IndexError, StopIteration, ValueError) as error:
+            raise StoreGuardError(f'Publisher conversion failed ({type(error).__name__}: {error}): keep the approved rail, band, card and FAQ markup with every attribute (data-product, href, img src/alt)')
     return package
 
 
