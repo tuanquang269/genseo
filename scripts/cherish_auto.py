@@ -38,6 +38,32 @@ def log(*a):
     print(dt.datetime.now(ICT).strftime('%H:%M:%S'), *a, flush=True)
 
 
+# Values the Journal shell prints from metafields and theme settings, never from the writer's page (the day-23 truth pages carry the same).
+# ponytail: constants mirror the live shell; change them with the theme (journal shell snippet, band guarantee setting).
+SHELL_IMG = {'width': '1122', 'height': '1402', 'sizes': '(min-width:1100px) 720px, 100vw', 'loading': 'eager'}
+SHIP_LINE = '100 nights from delivery · you keep it · no return postage · free US standard shipping at $69+ · fulfilled and shipped in the US in 1–3 working days on average, with tracking'
+
+
+def set_attrs(tag, attrs):
+    for key, value in attrs.items():
+        tag, n = re.subn(rf'\s{key}="[^"]*"', f' {key}="{value}"', tag)
+        tag = tag if n else tag.replace('<img', f'<img {key}="{value}"', 1)
+    return tag
+
+
+def shell_owned(page):
+    """The truth page as the shell prints it: hero and card image boxes, band guarantee line, sticky bar (from journal.pick)."""
+    hero = {k: SHELL_IMG[k] for k in ('width', 'height')}
+    page = re.sub(r'(<figure class="hero">\s*)(<img\b[^>]*>)', lambda m: m.group(1) + set_attrs(m.group(2), hero), page, count=1)
+    page = re.sub(r'(<div class="(?:pcard|pick|mini)"[^>]*>\s*)(<img\b[^>]*>)', lambda m: m.group(1) + set_attrs(m.group(2), SHELL_IMG), page)
+    page = re.sub(r'(<section class="band"[^>]*>.*?<p class="small">)[^<]*(</p>)', lambda m: m.group(1) + SHIP_LINE + m.group(2), page, count=1, flags=re.S)
+    if 'class="stick"' not in page:
+        pick = re.search(r'<div class="pick"[^>]*>.*?<b>(.*?)</b>.*?<a class="btn" href="(/products/[a-z0-9-]+)"', page, re.S)
+        if pick:
+            page = page.replace('</body>', f'<div class="stick" id="stick" aria-hidden="true"><b>{pick.group(1)}</b><a class="btn" href="{pick.group(2)}" tabindex="-1">See it</a></div>\n</body>', 1)
+    return page
+
+
 def gate_page(page, template):
     """The fidelity gate's truth page: the writer's filled template with the approved CSS and the approved sticky-bar script
     (minus the preview label toggle, whose button the writer removed)."""
@@ -47,6 +73,7 @@ def gate_page(page, template):
     marker = '<!-- Approved CSS is inserted by the runner. -->'
     page = page.replace(marker, style, 1) if marker in page else page.replace('</head>', style + '</head>', 1)
     require(style in page and '</body>' in page, 'Gate page assembly failed')
+    page = shell_owned(page)
     return page.replace('</body>', '<script>' + script + '</script>\n</body>', 1)
 
 

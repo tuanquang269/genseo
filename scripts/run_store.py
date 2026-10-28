@@ -26,12 +26,15 @@ def norm(text):
     return re.sub(r'[^a-z0-9]+', ' ', text.lower()).strip()
 
 
+# Shopify-hosted sources (bearaby.com) answer a bot user agent with HTTP 429 every time; a browser one gets the page.
+BROWSER_UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36'
+
 @functools.lru_cache(maxsize=64)
 def fetch_page(url):
     """One GET per evidence page per run (the fact gate used to fetch it once per fact and drew HTTP 429). A 429 waits and retries."""
     for attempt in range(3):
         try:
-            with urllib.request.urlopen(urllib.request.Request(url, headers={'User-Agent':'GenSEO/1.0 fact-check'}), timeout=40) as res:
+            with urllib.request.urlopen(urllib.request.Request(url, headers={'User-Agent': BROWSER_UA}), timeout=40) as res:
                 return res.read(4_000_000).decode('utf-8', errors='replace')
         except urllib.error.HTTPError as error:
             if error.code != 429 or attempt == 2:
