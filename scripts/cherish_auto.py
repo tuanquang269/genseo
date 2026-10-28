@@ -177,8 +177,8 @@ def main(argv=None):
                     pairs = rundir/f"qa-{e['handle']}.json"
                     pairs.write_text(json.dumps([{'style': row['style'], 'slug': e['handle'], 'tpl': str(tpl),
                                                   'live_url': qa_url + '?preview_theme_id={theme}'}], indent=1))
-                    ok, last = fidelity(pairs, f"auto-{args.day}-{row['slot']}-qa", main_theme, True, rundir)
-                    e['gate_run'] = f"auto-{args.day}-{row['slot']}-qa"
+                    ok, last = fidelity(pairs, f"auto-{args.day}-{row['slot']}-{started:%H%M}-qa", main_theme, True, rundir)
+                    e['gate_run'] = f"auto-{args.day}-{row['slot']}-{started:%H%M}-qa"
                     log('gate', row['slot'], e['handle'], last)
                     if ok:
                         passed[topic] = tpl
@@ -195,7 +195,7 @@ def main(argv=None):
                 require(bool(api.request(path)['article'].get('published_at')), 'Publication status readback failed')
                 pairs = rundir/f"live-{e['handle']}.json"
                 pairs.write_text(json.dumps([{'style': row['style'], 'slug': e['handle'], 'tpl': str(tpl), 'url': url}], indent=1))
-                ok, last = fidelity(pairs, f"auto-{args.day}-{row['slot']}-live", main_theme, False, rundir)
+                ok, last = fidelity(pairs, f"auto-{args.day}-{row['slot']}-{started:%H%M}-live", main_theme, False, rundir)
                 log('post-publish gate', row['slot'], e['handle'], last)
             except run_store.ROW_ERRORS as error:
                 ok, last = False, f'publish step error: {error}'
