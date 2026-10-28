@@ -55,7 +55,12 @@ def shell_owned(page):
     """The truth page as the shell prints it: hero and card image boxes, band guarantee line, sticky bar (from journal.pick)."""
     hero = {k: SHELL_IMG[k] for k in ('width', 'height')}
     page = re.sub(r'(<figure class="hero">\s*)(<img\b[^>]*>)', lambda m: m.group(1) + set_attrs(m.group(2), hero), page, count=1)
-    page = re.sub(r'(<div class="(?:pick|mini)"[^>]*>\s*)(<img\b[^>]*>)', lambda m: m.group(1) + set_attrs(m.group(2), SHELL_IMG), page)
+    def card(m, widths):   # the shell prints the image URL list per card type: pick 300/600/1200 (src 600), mini 200/400/800 (src 400)
+        base = re.search(r'src="([^"]+?)&(?:amp;)?width=\d+"', m.group(2)).group(1)
+        srcset = ', '.join(f'{base}&amp;width={w} {w}w' for w in widths)
+        return m.group(1) + set_attrs(m.group(2), dict(SHELL_IMG, src=f'{base}&amp;width={widths[1]}', srcset=srcset))
+    page = re.sub(r'(<div class="pick"[^>]*>\s*)(<img\b[^>]*>)', lambda m: card(m, (300, 600, 1200)), page)
+    page = re.sub(r'(<div class="mini"[^>]*>\s*)(<img\b[^>]*>)', lambda m: card(m, (200, 400, 800)), page)
     page = re.sub(r'(<section class="band"[^>]*>.*?<p class="small">)[^<]*(</p>)', lambda m: m.group(1) + SHIP_LINE + m.group(2), page, count=1, flags=re.S)
     if 'class="stick"' not in page:
         pick = re.search(r'<div class="pick"[^>]*>.*?<b>(.*?)</b>.*?<a class="btn" href="(/products/[a-z0-9-]+)"', page, re.S)
