@@ -126,13 +126,31 @@ def save_ledger(ledger):
     temp.replace(path)
 
 
+def next_day(profile):
+    """One calendar day per run, the first from today that still has an unpublished auto row (Kevin 2026-10-30).
+    "Tomorrow" broke when earlier runs had already published days ahead: 29 and 30 Oct got no new post."""
+    import csv
+    ledger_path = STATE/'articles.json'
+    ledger = json.loads(ledger_path.read_text()) if ledger_path.exists() else {}
+    today = dt.datetime.now(ICT).date().isoformat()
+    rows = csv.DictReader(profile.read_context(profile.data['calendar']).splitlines())
+    open_days = sorted({r['day'] for r in rows if r['day'] >= today and r['approval'] == 'auto'
+                        and not ledger.get(r['uniqueness_key'], {}).get('published')})
+    return open_days[0] if open_days else today
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument('--day', default=(dt.datetime.now(ICT).date() + dt.timedelta(days=1)).isoformat())
+    ap.add_argument('--day', default=None, help='Calendar day; default = first day from today with an unpublished auto row')
     ap.add_argument('--skip-generate', action='store_true', help='Gate and publish rows already held (no writer call)')
     args = ap.parse_args(argv)
     started = dt.datetime.now(ICT)
     profile = Profile('cherish')
+    if args.day is None:
+        # One publishing day per calendar day: the 09:45 catch-up only runs when 07:45 published nothing.
+        report = WORK/'daily'/f'{started.date().isoformat()}.md'
+        if report.exists() and re.search(r'· published: [1-9]', report.read_text()):
+            log('already published today, skip'); return 0
+        args.day = next_day(profile)
     require(profile.credential_domain() == 'uxfaue-s1.myshopify.com', 'Not the Cherish store')
     rows = [r for r in profile.calendar(args.day) if r['approval'] == 'auto']
     rundir = WORK/'genseo-auto/runs'/f"{args.day}-{started:%H%M}"
