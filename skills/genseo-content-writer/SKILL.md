@@ -77,3 +77,5 @@ You are the Execution Layer for the GenSeo system. Your job is to take a "Strate
 
 5. **Output:**
    - Output must be a unified Markdown block ready to copy-paste or push via `genseo-shopify-publisher`.
+
+**2026-10-29 (Kevin):** Parasite SEO tip verdicts live in the vault page `genseo-multistore-journal-flow` § "Parasite SEO tips". Apply only tips marked APPLY. Never use tips marked Never (fake research, fake jobs, expired-domain redirects, URL title swaps).
