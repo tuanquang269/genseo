@@ -48,12 +48,21 @@ def fetch_page(url):
         return out.stdout[:4_000_000]
 
 
+def year_label(row):
+    """Tip #1 (Parasite SEO list, Kevin 2026-10-29): best-of (4c) and buyer's-guide (2) rows dated Oct 1 or later carry next year
+    in the title and H1, so the page is first for "best X <next year>". ponytail: month cut-off fixed at October."""
+    day = dt.date.fromisoformat(row['day'])
+    return str(day.year + 1) if row['style'] in ('2', '4c') and day.month >= 10 else ''
+
 def read_package(path, profile, row, live_products=None):
     package = json.loads(path.read_text())
     for key, value in [('store', profile.store), ('day', row['day']), ('slot', row['slot'])]:
         require(str(package.get(key)) == value, 'Article package identity mismatch: '+key)
     require(re.fullmatch(r'[a-z0-9]+(?:-[a-z0-9]+)*', package.get('handle', '')), 'Invalid article handle')
     require(1 <= len(package.get('title', '')) <= 60, 'Title must be 1–60 characters')
+    if year_label(row):
+        require(package['title'].endswith(f' ({year_label(row)})'), f'Title must end with " ({year_label(row)})"')
+        require(year_label(row) not in package['handle'], 'Handle must not carry the year')
     require(120 <= len(package.get('meta_description', '')) <= 165, 'Meta description must be 120–165 characters')
     body = package.get('body_html', '')
     profile.check_text(' '.join(str(package.get(k,'')) for k in ('title','meta_description','body_html')))
@@ -109,7 +118,7 @@ def read_package(path, profile, row, live_products=None):
     prose = html.unescape(re.sub(r'<[^>]*>', ' ', prose))
     for sentence in re.split(r'(?<!\d)[.!?]|[.!?](?!\d)|\n', prose):   # $69.95 stays one sentence
         sentence = ' '.join(sentence.split())
-        if re.search(r'\d', re.sub(r'(?<!\w)#\d+\b', '', sentence)):   # a list number ("Reason #1", "Rank #2") is a label, not a claim
+        if re.search(r'\d', re.sub(r'(?<!\w)#\d+\b|\(20\d\d\)', '', sentence)):   # a list number ("Reason #1", "Rank #2") is a label, not a claim
             if not any(norm(sentence) in norm(f['claim']) or norm(f['claim']) in norm(sentence) for f in facts):
                 problems.append('Numerical claim lacks fact evidence: ' + sentence[:160])
     if profile.data.get('competitor_domains'):
@@ -348,6 +357,8 @@ def generate(profile, row, path, live_products, hero, day, feedback=None, previo
     prompt += '\nUNREADABLE SOURCES (do not cite):\n' + json.dumps(unreadable)
     prompt += '\nHERO PHOTO (runner-owned):\n' + json.dumps(hero, ensure_ascii=False)
     prompt += WRITER_RULES.format(human=f'{day:%b} {day.day}, {day.year}', iso=day.isoformat(), shop=profile.data['shop'])
+    if year_label(row):
+        prompt += f'- Title and H1 end with " ({year_label(row)})" (next year, Kevin 2026-10-29). The handle has no year.\n'
     if feedback and previous:
         prompt += ('\nYOUR PREVIOUS PACKAGE:\n' + previous + '\nIT FAILED THESE GATE CHECKS:\n' + feedback[:6000] +
                    '\nEdit that package: fix every listed problem, keep everything else as it is, and return the complete corrected package.')
