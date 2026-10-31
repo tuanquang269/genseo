@@ -1,7 +1,13 @@
 {
+  "mike-moretti": {
+    "name": "Mike Moretti",
+    "bio": "Co-founder, Wellness Nest",
+    "headshot": "TODO: no approved headshot. Do not invent one.",
+    "page": "TODO: https://wellnessnest.co/pages/mike-moretti is not confirmed live. Do not create the page from this repo."
+  },
   "dr-marcus-hale": {
     "name": "Dr. Marcus Hale",
     "bio": "Dr. Marcus Hale is the resident health researcher behind Wellness Nest's editorial team, translating peer-reviewed sports-nutrition and longevity research into practical daily guidance for US readers."
   },
-  "_note": "Default author per Kevin's order 2026-08-07 ('mặc định author là Dr. Marcus Hale'). Bio drafted by agent, shown to Kevin in the same session; he can amend the sentence — if he does, update it HERE and on /pages/dr-marcus-hale, never only in an article. Additional real team members may be added later in the same format."
+  "_note": "Blog byline default, Kevin 2026-10-21: Mike Moretti, Co-founder, Wellness Nest. Copy the bio verbatim. Do not add credentials. Headshot and /pages/mike-moretti are TODO — do not invent them and do not create the page from this repo. Dr. Marcus Hale remains so older landing specs still name a roster person; new blog articles must not use that byline (validate_article.py). The 2026-08-07 default was Dr. Marcus Hale."
 }

@@ -150,10 +150,7 @@ class PaletteFiles(unittest.TestCase):
 class SpecGate(unittest.TestCase):
     def test_live_pages_are_not_new_violations(self):
         names = (
-            "florafresh-listicle-261009.json",
             "ageaura-nmn-listicle-261008.json",
-            "fusiforce-creatine-listicle-261008.json",
-            "shilajit-gummies-listicle-261008.json",
             "shilasource-resin-listicle-261008.json",
         )
         for name in names:
@@ -161,6 +158,27 @@ class SpecGate(unittest.TestCase):
                 spec = json.load(fh)
             self.assertEqual(pp.spec_violations(spec), [], name)
             self.assertEqual(br.spec_violations(spec), [], name)
+        # 2026-10-08 drafts still state doses the pack whitelist does not list.
+        # Palette stays valid. The label guards fail closed.
+        for name, prefix in (
+            ("fusiforce-creatine-listicle-261008.json", "FusiForce label:"),
+            ("shilajit-gummies-listicle-261008.json", "Shilajit gummies label:"),
+        ):
+            with open(os.path.join(ROOT, "landing_drafts", name), encoding="utf-8") as fh:
+                spec = json.load(fh)
+            self.assertEqual(pp.spec_violations(spec), [], name)
+            bad = br.spec_violations(spec)
+            self.assertTrue(bad, name)
+            self.assertTrue(all(item.startswith(prefix) for item in bad), bad)
+
+    def test_historical_florafresh_listicle_fails_the_retired_count(self):
+        # 2026-10-09 draft still says 1 billion CFU. Palette stays valid. Formula does not.
+        name = "florafresh-listicle-261009.json"
+        with open(os.path.join(ROOT, "landing_drafts", name), encoding="utf-8") as fh:
+            spec = json.load(fh)
+        self.assertEqual(pp.spec_violations(spec), [])
+        bad = br.spec_violations(spec)
+        self.assertTrue(any("1 billion CFU" in item and "1B CFU" in item for item in bad), bad)
 
     def test_florafresh_opt_out_and_green_hue_fail(self):
         off = _spec(FF, palette="off")
@@ -305,7 +323,7 @@ class TicketAndCallSites(unittest.TestCase):
         ok = ("- [ ] listicle | wellnessnest | product=%s · %s · %s"
               % (FF, ff.LANDING_NOTE, pp.landing_note(FF)))
         self.assertEqual(br.violations(ok), [], ok)
-        self.assertIn("1 billion CFU", ok)
+        self.assertIn("15B CFU", ok)
         self.assertIn("#d17a85", ok)
         bad = "- [ ] listicle | wellnessnest | product=%s · palette: off" % FF
         reasons = br.violations(bad)

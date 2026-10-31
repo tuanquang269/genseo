@@ -13,7 +13,10 @@ Verdicts: PASS (exit 0), REVIEW (exit 2 — allowed but flagged), FAIL (exit 1 �
 
 Rules (a heuristic gate — tune the lists as data grows):
   FAIL  brand_rules: a FloraFresh formula claim its Supplement Facts label does not support
-        [florafresh-formula], a Shilajit Shockwave milligram, serving, or other dose the
+        [florafresh-formula], a FusiForce pack-count or dose claim the label whitelist
+        does not list [fusiforce-label], a Premium Himalayan Shilajit Gummies
+        pack-count or milligram claim the label whitelist does not list
+        [shilajit-gummies-label], a Shilajit Shockwave milligram, serving, or other dose the
         pack label does not list [shockwave-label], a Pure Shilajit Gold Resin milligram,
         serving, volume, weight, day-supply, or other dose its pack label does not list
         [gold-resin-label], a ShilaSource resin milligram, serving, volume, weight,
@@ -38,7 +41,9 @@ Usage:
 import json, re, sys
 import brand_rules as br
 import florafresh_rules as ff
+import fusiforce_rules as fu
 import gold_resin_rules as gr
+import shilajit_gummies_rules as sg
 import shilasource_resin_rules as sr
 import shockwave_rules as sw
 import turkesterone_rules as tk
@@ -151,6 +156,20 @@ def assess(topic, sg_imp=None, articles=None, collections=None, pos=None):
         return ('FAIL', 'florafresh-formula',
                 'FloraFresh follows its Supplement Facts label (' + ff.STRAIN + ', ' + ff.CFU
                 + ' per 2 gummies), not the PDP description: ' + '; '.join(ff_bad))
+
+    fu_bad = fu.violations(topic)
+    if fu_bad:
+        return ('FAIL', 'fusiforce-label',
+                'FusiForce follows its pack label (' + fu.LABEL_LINE + '); '
+                'a pack count, serving count, milligram amount, or ginseng line that file does not list '
+                'fails closed: ' + '; '.join(fu_bad))
+
+    sg_bad = sg.violations(topic)
+    if sg_bad:
+        return ('FAIL', 'shilajit-gummies-label',
+                'Premium Himalayan Shilajit Gummies follow the pack label (' + sg.LABEL_LINE
+                + '); a 30-serving panel and milligram amounts not in that file fail closed: '
+                + '; '.join(sg_bad))
 
     sw_bad = sw.violations(topic)
     if sw_bad:
@@ -299,9 +318,16 @@ def self_check():
         ("MenoMate Menopause Probiotic Review", None, [], 'PASS', 17.1),  # weak rank + stocked brand -> genuine
         ("Urolithin A benefits review", None, [], 'FAIL'),                 # banned AgeAura SKU
         ("AgeAura review", None, [], 'PASS'),                              # brand is allowed; ticket builder locks the SKU
-        ("FloraFresh 15 billion CFU review", None, [], 'FAIL'),            # wrong PDP figure (label: 1 billion CFU)
+        ("FloraFresh 1 billion CFU review", None, [], 'FAIL'),             # retired count (label: 15B CFU)
+        ("FloraFresh 1B CFU review", None, [], 'FAIL'),                    # same retired count
+        ("FloraFresh 15B CFU review", None, [], 'PASS'),                   # Kevin 2026-10-21 label count
         ("FloraFresh sugar free gummies review", None, [], 'FAIL'),        # label: maltitol + isomalt
         ("FloraFresh Bacillus coagulans SNZ-1969 review", None, [], 'PASS'),  # the label strain
+        ("FusiForce 84 gummies review", None, [], 'FAIL'),                     # pack label is 90 gummies
+        ("FusiForce 30 servings review", None, [], 'PASS'),                    # Kevin 2026-10-23 vault
+        ("FusiForce creatine monohydrate gummies review", None, [], 'PASS'),   # whitelist identity
+        ("Premium Himalayan Shilajit Gummies 30 servings review", None, [], 'FAIL'),  # not on the pack label
+        ("Premium Himalayan Shilajit Gummies review", None, [], 'PASS'),       # 60 gummies, no invented panel
         ("Shilajit Shockwave 500 mg review", None, [], 'FAIL'),                # pack label has no milligram
         ("Shilajit Shockwave review", None, [], 'PASS'),                       # identity only, no invented dose
         ("Pure Shilajit Gold Resin 500 mg review", None, [], 'FAIL'),          # pack label has no milligram

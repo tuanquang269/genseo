@@ -20,11 +20,22 @@ that already went live. Zero open = the day stops.
 - After any edit: `python3 scripts/lint_tickets.py daily-tickets.md` must exit 0 (it fails on a banned AgeAura link,
   a Urolithin mention, a FloraFresh claim its Supplement Facts label does not support, a Shilajit Shockwave
   dose its pack-label whitelist does not list, a Pure Shilajit Gold Resin dose its pack-label whitelist
-  does not list, a ShilaSource resin dose its pack-label whitelist does not list, or a Turkesterone
-  Advanced Formula dose its pack-label whitelist does not list, inside an open ticket).
+  does not list, a ShilaSource resin dose its pack-label whitelist does not list, a Turkesterone
+  Advanced Formula dose its pack-label whitelist does not list, a FusiForce pack count or dose the
+  label file does not list, or a Premium Himalayan Shilajit Gummies pack count / milligram the label
+  file does not list, inside an open ticket).
 - FloraFresh tickets take strain, CFU and sugar facts from its Supplement Facts label (Bacillus coagulans SNZ-1969,
-  1 billion CFU per 2 gummies, not sugar-free), never from the PDP description, which is wrong until Kevin's GO;
+  15B CFU per 2 gummies, not sugar-free; Kevin 2026-10-21). 1 billion CFU and 1B CFU are retired. Never take the
+  strain story from the PDP description, which is still wrong until Kevin's GO;
   `refill_tickets.py` adds the label line under the hero product (`docs/FLORAFRESH_FORMULA_GUARD.md`).
+- FusiForce tickets take pack facts from `product_refs/fusiforce-creatine-gummies.label.json` (creatine
+  monohydrate, 90 gummies, 30 servings, 3 gummies per serving; Kevin 2026-10-23). Do not state 84, a milligram
+  amount, another serving count, or ginseng unless that token is in the file. `refill_tickets.py` adds the
+  pack-label line (`docs/FUSIFORCE_LABEL_GUARD.md`).
+- Premium Himalayan Shilajit Gummies tickets take the pack count from
+  `product_refs/premium-himalayan-shilajit-gummies.label.json` (60 gummies, 60-day supply). A 30-serving panel
+  is not on that file. Do not state a milligram amount the file does not list. `refill_tickets.py` adds the
+  pack-label line (`docs/SHILAJIT_GUMMIES_LABEL_GUARD.md`).
 - Shilajit Shockwave tickets take pack-label facts from `product_refs/shilajit-shockwave.label.json` only
   (no milligram, serving count, or volume token). `refill_tickets.py` adds that line
   (`docs/SHOCKWAVE_LABEL_GUARD.md`).
@@ -54,7 +65,7 @@ that already went live. Zero open = the day stops.
   - **Fan-out answers to cover:** <follow-up questions, each a self-contained 40–80-word answer>
   - **Evidence to fetch & confirm (claims log):** <studies/labels to fetch — never cite unfetched>
   - **Link, don't restate:** `/blogs/news/<live handle>`, …
-  - **Author:** roster.json byline — exact name + bio at write time; never invent a person or credential
+  - **Author:** Mike Moretti (/pages/mike-moretti) — Co-founder, Wellness Nest. TODO: no approved headshot and the author page is not confirmed live
   - **Dedup note:** <family + segment checked against N live articles and every ticket in the file>
 ```
 
