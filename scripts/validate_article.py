@@ -251,6 +251,28 @@ def _author_fails(md):
     return fails
 
 
+def _dup_cluster_lines(raw, h1s, h2s, path):
+    """Publish-time query-cluster check. Warn-only unless GENSEO_DUP_CLUSTER_BLOCK=1.
+
+    An exact primary-query match stays a warning by default so the daily lane
+    cannot block on it. A missing catalog or an unexpected error is a skip
+    warning, never a failure.
+    """
+    if not h1s:
+        return [], []
+    try:
+        import dup_cluster_gate as gate
+        title = re.sub(r"<[^>]*>", "", h1s[0]).strip()
+        heads = [re.sub(r"<[^>]*>", "", h).strip() for h in h2s]
+        km = re.search(r"<!--\s*primary_keyword:\s*(.*?)\s*-->", raw or "", re.I)
+        keyword = km.group(1).strip() if km else title
+        slug = os.path.splitext(os.path.basename(path or ""))[0]
+        report = gate.assess(title=title, keyword=keyword, h2s=heads, slug=slug)
+        return gate.gate_lines(report)
+    except Exception as e:
+        return [], ["dup_cluster_gate skipped (%s)" % e]
+
+
 def main():
     if "--self-check-author" in sys.argv:
         test_author_gate(); return 0
@@ -330,6 +352,13 @@ def main():
     if len(h2s)<3: fails.append(f"need ≥3 <h2>, found {len(h2s)}")
     loc_h2=sum(1 for h in h2s if MARKET_RE.search(re.sub(r'<[^>]*>','',h)))
     if loc_h2<1: warns.append("no <h2> contains a US-market anchor")
+    # Near-duplicate / query-cluster gate (warn-only). Isolated from the hard
+    # fails above: GENSEO_DUP_CLUSTER_BLOCK=1 is the only way an exact primary
+    # query becomes a publish block. Local catalog only.
+    if draft_mode and h1s:
+        dup_fails, dup_warns = _dup_cluster_lines(raw, h1s, h2s, path)
+        fails.extend(dup_fails)
+        warns.extend(dup_warns)
     # table
     if '<table' not in html: fails.append("no comparison <table>")
     # USD price presence (donor's $check was dead code; the working check is $-digits)
