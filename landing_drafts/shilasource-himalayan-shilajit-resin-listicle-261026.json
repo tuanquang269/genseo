@@ -1,0 +1,318 @@
+{
+  "engine": "ref",
+  "template": "listicle",
+  "posture": "hybrid",
+  "store": "wellnessnest",
+  "slug": "shilasource-himalayan-shilajit-resin-listicle-261026",
+  "handle": "gsl-preview-shilasource-himalayan-shilajit-resin-listicle-261026",
+  "template_suffix": "gsl-ref-listicle-v2",
+  "style": "premium",
+  "takeover": false,
+  "created": "2026-10-26",
+  "daily": true,
+  "reference": "http://localhost:8790/pages/10-reasons-why-creatine-is-for-skinny-people/",
+  "title": "7 Checks Before Shilajit Sticks",
+  "meta_description": "New to shilajit resin? Check the label, study scope, preparation step, safety questions, and what a missed day can and cannot tell you.",
+  "topbar": {
+    "labels": [
+      "Wellness Nest Guide 📖",
+      "90-Day Money-Back Guarantee on first orders"
+    ],
+    "deadline": null
+  },
+  "hero": {
+    "accent": "7 Checks",
+    "title": "Before Shilajit Sticks",
+    "summary_html": "<strong>Summary:</strong> A plain guide to label scope, human evidence, preparation friction, safety questions, and missed days.",
+    "kicker": "Evidence review · first-time buyer guide",
+    "image": "tmp_images/landing-shilasource-himalayan-shilajit-resin-listicle-261026/pack-whitelist.webp",
+    "alt": "Real ShilaSource Himalayan Shilajit Resin front label crop on a neutral background",
+    "chip": "Himalayan Shilajit · raw resin",
+    "cta": {
+      "label": "SEE THE LABEL",
+      "href": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin"
+    },
+    "source": "Live PDP image and product identity fetched from /products/shilasource-himalayan-shilajit-resin.js on 2026-10-26.",
+    "focal_y": 0.42
+  },
+  "byline": {
+    "name": "Dr. Marcus Hale",
+    "role": "Wellness Nest editorial team",
+    "avatar": "tmp_images/landing-shilasource-himalayan-shilajit-resin-listicle-261026/avatar.webp"
+  },
+  "updated": "October 26, 2026",
+  "trust": [
+    {
+      "icon": "stars",
+      "html": "<b>4.2 TrustScore</b> <small>1,144 Trustpilot reviews</small>"
+    },
+    {
+      "icon": "shield",
+      "html": "<b>90-day</b> <small>money-back guarantee</small>"
+    },
+    {
+      "icon": "truck",
+      "html": "<b>Free shipping</b> <small>on orders $70+</small>"
+    },
+    {
+      "icon": "leaf",
+      "html": "<b>Raw resin</b> <small>Himalayan Shilajit</small>"
+    }
+  ],
+  "trust_source": "TrustScore and review count from state/trustpilot/wellnessnest.json, read 2026-10-26. Guarantee and shipping threshold from live refund policy and site text. Product format from live PDP and label whitelist.",
+  "items": [
+    {
+      "title": "Read the format first",
+      "body": "<p>A resin label should identify the ingredient and format plainly, then show directions for that specific product.</p><p>Do not borrow a capsule study amount for resin. Different preparations are not interchangeable.</p>",
+      "evidence": "Buyer check · product-label scope",
+      "image": "tmp_images/landing-shilasource-himalayan-shilajit-resin-listicle-261026/row1-label.webp",
+      "alt": "Blank notebook, plain ingredient card, stainless spoon and clear glass on linen",
+      "evidence_label": "Buyer check · read the product label"
+    },
+    {
+      "title": "Studies test preparations",
+      "body": "<p>Human studies tested specified shilajit preparations, not every resin sold online.</p><p>A study can inform a category question without proving this exact jar matches its material or outcome.</p>",
+      "evidence": "Human evidence · Andrologia 2016",
+      "source": "https://doi.org/10.1111/and.12482",
+      "chart": {
+        "kind": "bars",
+        "title": "What the study actually tested",
+        "legend": [
+          {
+            "label": "Evidence boundary",
+            "highlight": true
+          }
+        ],
+        "bars": [
+          {
+            "label": "Named preparation",
+            "value": 1,
+            "display": "Specified",
+            "highlight": true,
+            "inbar": "Study design"
+          },
+          {
+            "label": "This exact jar",
+            "value": 0,
+            "display": "Not tested"
+          },
+          {
+            "label": "Broad wellness",
+            "value": 0,
+            "display": "Not tested"
+          }
+        ],
+        "source": "Pandit et al., Andrologia 2016, healthy men, 90 days."
+      },
+      "evidence_label": "Human study · Pandit et al., Andrologia 2016"
+    },
+    {
+      "title": "One trial had one outcome",
+      "body": "<p>A randomized trial in healthy men measured testosterone outcomes after repeated use of a specified purified preparation.</p><p>That result belongs to its preparation and outcome. It did not test this resin, general energy, or every buyer.</p>",
+      "evidence": "Human RCT · Andrologia 2016",
+      "source": "https://doi.org/10.1111/and.12482",
+      "chart": {
+        "kind": "stats",
+        "title": "One study, one defined question",
+        "stats": [
+          {
+            "value": "90 days",
+            "label": "Study duration",
+            "highlight": true
+          },
+          {
+            "value": "45 to 55",
+            "label": "Participant ages"
+          },
+          {
+            "value": "1",
+            "label": "Primary outcome"
+          }
+        ],
+        "source": "Pandit et al., Andrologia 2016, healthy men, 90 days."
+      },
+      "evidence_label": "Human RCT · Pandit et al., Andrologia 2016"
+    },
+    {
+      "title": "Strength evidence is specific",
+      "body": "<p>Another randomized trial studied recreationally active men during an eight-week protocol involving fatigue and muscular-strength outcomes.</p><p>Its preparation, dose, and participants were specific. It did not test this resin or prove a universal performance effect.</p>",
+      "evidence": "Human RCT · JISSN 2019",
+      "source": "https://doi.org/10.1186/s12970-019-0270-2",
+      "chart": {
+        "kind": "bars",
+        "title": "Study scope, not a promise",
+        "legend": [
+          {
+            "label": "Study detail",
+            "highlight": true
+          }
+        ],
+        "bars": [
+          {
+            "label": "Protocol",
+            "value": 8,
+            "display": "8 weeks",
+            "highlight": true,
+            "inbar": "Study"
+          },
+          {
+            "label": "Outcome",
+            "value": 1,
+            "display": "Strength"
+          },
+          {
+            "label": "This exact resin",
+            "value": 0,
+            "display": "Not tested"
+          }
+        ],
+        "source": "Keller et al., JISSN 2019, 63 men, eight weeks."
+      },
+      "evidence_label": "Human RCT · Keller et al., JISSN 2019"
+    },
+    {
+      "title": "Narrow results stay narrow",
+      "body": "<p>A human study explored skin-related biological signals after a defined shilajit preparation, not every outcome shoppers associate with the ingredient.</p><p>Keep each claim tied to the population, preparation, and measurement. A narrow result should stay narrow.</p>",
+      "evidence": "Human study · Journal of Medicinal Food 2019",
+      "source": "https://doi.org/10.1080/07315724.2018.1564088",
+      "image": "tmp_images/landing-shilasource-himalayan-shilajit-resin-listicle-261026/row5-skin.webp",
+      "alt": "Neutral botanical leaves, magnifying glass and blank research card on linen",
+      "evidence_label": "Human study · Das et al., Journal of Medicinal Food 2019"
+    },
+    {
+      "title": "Ask about safety records",
+      "body": "<p>A 2025 laboratory survey reported thallium in some raw shilajit and finished supplements.</p><p>That is a reason to ask about testing, not proof every jar is contaminated. The survey did not establish a safe serving for this resin.</p>",
+      "evidence": "Laboratory survey · BMC Chemistry 2025",
+      "source": "https://doi.org/10.1186/s13065-025-01384-7",
+      "image": "tmp_images/landing-shilasource-himalayan-shilajit-resin-listicle-261026/row6-safety.webp",
+      "alt": "Blank analytical report, magnifying glass, graphite pencil and dark stone on a clean desk",
+      "evidence_label": "Laboratory survey · Kamgar et al., BMC Chemistry 2025",
+      "layout": "callout"
+    },
+    {
+      "title": "A missed day changes routine",
+      "body": "<p>The cited human protocols used repeated use over weeks or months. None tested taking shilajit now and then.</p><p>A missed day tells you about habit friction, not whether the ingredient works. Restart the routine without turning one gap into a verdict.</p>",
+      "evidence": "Study-design pattern across cited trials",
+      "source": "https://doi.org/10.1111/and.12482",
+      "image": "tmp_images/landing-shilasource-himalayan-shilajit-resin-listicle-261026/row7-routine.webp",
+      "alt": "Warm drink, stainless spoon, blank notebook and folded linen towel in a calm morning setup",
+      "evidence_label": "Buyer checklist · match the format to your routine"
+    }
+  ],
+  "bridge": {
+    "title": "Convenience is part of consistency",
+    "body": "<p>A routine only works when preparation fits the habit. Resin adds a portioning and mixing step.</p><p>ShilaSource Himalayan Shilajit Resin is one resin-format option. Its label identifies ShilaSource, Himalayan Shilajit Resin, Dietary Supplement, and the other printed pack lines.</p><p>Taking medication or managing a health condition? Check with a qualified healthcare professional first.</p>",
+    "image": "tmp_images/landing-shilasource-himalayan-shilajit-resin-listicle-261026/pack-whitelist.webp",
+    "alt": "Real ShilaSource Himalayan Shilajit Resin front label crop"
+  },
+  "expert": {
+    "title": "TrustScore 4.2 from 1,144 Trustpilot Reviews",
+    "stars": 5,
+    "quote": "fast and easy and the Shilajit I ordered is high Quality ",
+    "author": "A Ginter · Wellness Nest customer on Trustpilot",
+    "source": "https://www.trustpilot.com/reviews/698a106be72503d576b56410 (5-star review, published 2026-02-09, verbatim; customer opinion, not clinical evidence.)",
+    "image": "tmp_images/landing-shilasource-himalayan-shilajit-resin-listicle-261026/pack-whitelist.webp",
+    "alt": "Real ShilaSource Himalayan Shilajit Resin front label crop",
+    "reviews": [
+      {
+        "stars": 5,
+        "quote": "right on time with subscription  Don't have to worry about ordering it ",
+        "name": "Tonya",
+        "meta": "US · Oct 2026",
+        "verified": true,
+        "url": "https://www.trustpilot.com/reviews/6abe1771497e18bd92cada2f"
+      },
+      {
+        "stars": 5,
+        "quote": "Henry was very responsive and helpful when there was a problem that needed resolving ",
+        "name": "Mel Barrett",
+        "meta": "GB · Aug 2026",
+        "verified": false,
+        "url": "https://www.trustpilot.com/reviews/6a8df7438bab5ca2e585cf7f"
+      },
+      {
+        "stars": 5,
+        "quote": "Henry did an excellent job with my order. Thank you",
+        "name": "Sheila George",
+        "meta": "US · Jul 2026",
+        "verified": false,
+        "url": "https://www.trustpilot.com/reviews/6a6290e86c004fbb3f74b3a9"
+      }
+    ],
+    "reviews_source": "Verbatim 5-star Trustpilot reviews from state/trustpilot/wellnessnest.json, read 2026-10-26. Service and buying-experience comments, not clinical evidence."
+  },
+  "offer": {
+    "pill": "SHILASOURCE HIMALAYAN SHILAJIT",
+    "accent": "Raw Resin",
+    "title": "A Routine You Can Read",
+    "sub": "A resin-format dietary supplement with the label details shown on the pack. $69.99 one-time on the product page.",
+    "cta": "SEE THE LABEL",
+    "href": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin",
+    "meta": [
+      "<b>90-Day</b> Guarantee",
+      "<b>FREE</b> shipping $70+"
+    ],
+    "guarantee": "Your first order is covered by our 90-Day Money-Back Guarantee.",
+    "image": "tmp_images/landing-shilasource-himalayan-shilajit-resin-listicle-261026/pack-whitelist.webp",
+    "alt": "Real ShilaSource Himalayan Shilajit Resin front label crop",
+    "source": "Live PDP /products/shilasource-himalayan-shilajit-resin.js fetched 2026-10-26: $69.99 one-time; Automatic Refill every 30 days at $49.99. Guarantee from live refund policy. Pack lines from product_refs/shilasource-himalayan-shilajit-resin.label.json.",
+    "rating_html": "<b>4.2</b> TrustScore · 1,144 reviews on Trustpilot",
+    "price": {
+      "now": "$49.99",
+      "was": "$69.99",
+      "tag": "AUTOMATIC REFILL",
+      "note": "with the every 30 days plan. Or $69.99 one-time."
+    },
+    "bullets": [
+      "ShilaSource Himalayan Shilajit Resin",
+      "Dietary Supplement",
+      "70% Fulvic Acid* and Lab-Tested for Purity* as printed on the pack",
+      "1.06oz (30g), with the split 75 SERVINGS badge as printed on the pack",
+      "90-day money-back guarantee on first orders"
+    ],
+    "price_source": "Live PDP /products/shilasource-himalayan-shilajit-resin.js fetched 2026-10-26: $69.99 one-time; Automatic Refill every 30 days at $49.99. Pack lines from product_refs/shilasource-himalayan-shilajit-resin.label.json."
+  },
+  "product": {
+    "name": "ShilaSource Himalayan Shilajit Resin",
+    "image": "https://cdn.shopify.com/s/files/1/0810/1563/6283/files/hf_20260310_083540_d6a11011-bb2f-4a3d-9174-836563132b39.webp?v=1773131913",
+    "bullets": [
+      "ShilaSource Himalayan Shilajit Resin",
+      "Dietary Supplement",
+      "70% Fulvic Acid*",
+      "Lab-Tested for Purity*",
+      "1.06oz (30g) and the split 75 SERVINGS badge, as printed on the pack"
+    ],
+    "source": "Live PDP /products/shilasource-himalayan-shilajit-resin.js and product_refs/shilasource-himalayan-shilajit-resin.label.json, read 2026-10-26."
+  },
+  "footer": {
+    "disclaimer": "These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease.",
+    "copyright": "© 2026 Wellness Nest. All rights reserved."
+  },
+  "sources": [
+    {
+      "label": "Pandit S et al. Clinical evaluation of purified Shilajit on testosterone levels in healthy volunteers. Andrologia 2016;48(5):570-575. doi:10.1111/and.12482",
+      "url": "https://doi.org/10.1111/and.12482"
+    },
+    {
+      "label": "Keller JL et al. The effects of Shilajit supplementation on fatigue-induced decreases in muscular strength and serum hydroxyproline levels. J Int Soc Sports Nutr 2019. doi:10.1186/s12970-019-0270-2",
+      "url": "https://doi.org/10.1186/s12970-019-0270-2"
+    },
+    {
+      "label": "Das A et al. Skin Transcriptome of Middle-Aged Women Supplemented With Natural Herbo-mineral Shilajit. J Med Food 2019. doi:10.1080/07315724.2018.1564088",
+      "url": "https://doi.org/10.1080/07315724.2018.1564088"
+    },
+    {
+      "label": "Kamgar E et al. Quantifying of thallium in Shilajit and its supplements to unveil the potential risk of consumption. BMC Chemistry 2025;19:20. doi:10.1186/s13065-025-01384-7",
+      "url": "https://doi.org/10.1186/s13065-025-01384-7"
+    }
+  ],
+  "sticky_cta": {
+    "name": "ShilaSource Shilajit Resin",
+    "note": "From $49.99",
+    "cta": "SEE THE LABEL",
+    "href": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin"
+  },
+  "pack_images": [
+    "tmp_images/landing-shilasource-himalayan-shilajit-resin-listicle-261026/pack-whitelist.webp"
+  ]
+}
