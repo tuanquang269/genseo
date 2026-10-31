@@ -71,8 +71,8 @@ Quyết định trang này cũng chặn việc áp khối FAQ của #87 và refr
 
 | Bước | PR | Việc |
 | --- | --- | --- |
-| 20 | [#90](https://github.com/tuanquang269/genseo/pull/90) | Guard label FusiForce và shilajit gummies, cộng bản 15B cũ hơn của #88. Land **trước** #88. Thứ tự ngược lại conflict `daily-landing-tickets.md`. Head mới `c3de3b81` đã chứa main. |
-| 21 | [#88](https://github.com/tuanquang269/genseo/pull/88) | Guard FloraFresh hiện tại (`15B CFU` / `15e9`) và byline blog Mike Moretti. #88 không phải tổ tiên của #90. Cả hai pull đều cần. Blog byline Hale thì fail. Hale ở lại `roster.json` cho landing. |
+| 20 | [#90](https://github.com/tuanquang269/genseo/pull/90) | Guard label FusiForce và shilajit gummies. `scripts/florafresh_rules.py` trùng blob #88 (`da0a0736`, 15B). Land **trước** #88. Thứ tự ngược lại conflict `daily-landing-tickets.md`. Head mới `c3de3b81` đã chứa main. |
+| 21 | [#88](https://github.com/tuanquang269/genseo/pull/88) | Guard FloraFresh hiện tại (`15B CFU` / `15e9`) và byline blog Mike Moretti. #88 không phải tổ tiên của #90. Blog byline Hale thì fail. Hale ở lại `roster.json` cho landing. Sau refresh này, merge #88 lên #90 không đổi file nào: prompt landing Mike trên #88 không ghi đè Hale của #90. Land #88 một mình, trước #90, thì prompt listicle mới trên #88 chuyển sang Mike. |
 | 22 | [#91](https://github.com/tuanquang269/genseo/pull/91) | Bốn draft FloraFresh trước đó chỉ có trên Mac, cộng 16 file của #89. Đếm 15 tỷ CFU SNZ-1969 mỗi 2 gummies. Byline blog Mike Moretti. Publish các draft đó chờ trang tác giả. |
 
 ## Chờ anh
@@ -100,7 +100,7 @@ Em không đóng PR nào.
 | [#9](https://github.com/tuanquang269/genseo/pull/9), [#10](https://github.com/tuanquang269/genseo/pull/10) | Đang mở, không phải draft, cả hai `CONFLICTING` với main. #90 là bản port lên rule file hiện tại. | Sau khi #90 được nhận làm bản port. Để mở đến đó. |
 | [#99](https://github.com/tuanquang269/genseo/pull/99) | Báo cáo readiness 2026-10-28. Một file. Sạch với cây 22 pull. | Sau khi plan 2026-10-30 là bản anh giữ. File không đụng report này. |
 
-#88 không phải close-candidate. #90 không chứa merge main ngày 2026-10-28 của #88.
+#88 không phải close-candidate khi chưa có #90 trên main. #90 đã chứa `origin/main` qua `c3de3b81`, và không chứa commit merge `b622718` của #88. Nội dung guard 15B thì trùng. Land #88 trước #90 vẫn là thứ tự sai.
 
 #95 không phải close-candidate. Phần sửa test process-list chỉ có trên #95.
 
