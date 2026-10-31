@@ -1403,7 +1403,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** probiotic + storage checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1017-26 — how much turkesterone loading** — `Turkesterone Loading: How Much the Start Changes? (2026)`
+- [DONE 2026-10-26 https://wellnessnest.co/blogs/news/turkesterone-loading-is-it-needed-in-the-us-1] **#CA1017-26 — how much turkesterone loading** — `Turkesterone Loading: How Much the Start Changes? (2026)`
   - **Primary keyword:** `how much turkesterone loading` · **Secondary:** turkesterone loading phase, turkesterone bigger start, do you load turkesterone, turkesterone front load
   - **Search intent:** lifter who saw a loading week claimed and wants the trial schedule
   - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
@@ -1417,7 +1417,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** turkesterone + loading checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1017-27 — how much else with vaginal probiotics together** — `Vaginal Probiotics Together: How Much Else? (2026)`
+- [DONE 2026-10-26 https://wellnessnest.co/blogs/news/vaginal-probiotics-together-what-else-in-the-us] **#CA1017-27 — how much else with vaginal probiotics together** — `Vaginal Probiotics Together: How Much Else? (2026)`
   - **Primary keyword:** `how much else with vaginal probiotics together` · **Secondary:** vaginal probiotics with other supplements, probiotics same day as vitamins, can you combine vaginal probiotics, probiotic gummies with a multivitamin
   - **Search intent:** woman who already takes other supplements and wants the same-day limit
   - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
@@ -1431,7 +1431,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** probiotic + stack checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1017-28 — fake creatine gummies how much** — `Fake Creatine Gummies: How Much Is Missing? (2026)`
+- [DONE 2026-10-26 https://wellnessnest.co/blogs/news/fake-creatine-gummies-how-much-in-the-us] **#CA1017-28 — fake creatine gummies how much** — `Fake Creatine Gummies: How Much Is Missing? (2026)`
   - **Primary keyword:** `fake creatine gummies how much` · **Secondary:** are creatine gummies real, under filled creatine gummies, creatine gummies counterfeit, real or fake creatine gummies
   - **Search intent:** shopper who heard some gummies contain less creatine than the front implies
   - **Template:** STORY · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
@@ -1444,7 +1444,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** creatine + authenticity checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1017-29 — vaginal probiotic ingredients how much** — `Vaginal Probiotic Ingredients: How Much to Read (2026)`
+- [DONE 2026-10-26 https://wellnessnest.co/blogs/news/vaginal-probiotic-ingredients-what-to-read-us] **#CA1017-29 — vaginal probiotic ingredients how much** — `Vaginal Probiotic Ingredients: How Much to Read (2026)`
   - **Primary keyword:** `vaginal probiotic ingredients how much` · **Secondary:** what is in vaginal probiotic gummies, florafresh label panel, vaginal probiotic gummy ingredients, probiotic gummies sweetener
   - **Search intent:** label reader who wants the rest of the panel, not another organism roundup
   - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
@@ -1458,7 +1458,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** probiotic + ingredients checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1017-30 — shilajit storage with food** — `Shilajit Storage at Home, With Food Nearby (2026)`
+- [DONE 2026-10-26 https://wellnessnest.co/blogs/news/shilajit-storage-6-home-rules-for-the-us] **#CA1017-30 — shilajit storage with food** — `Shilajit Storage at Home, With Food Nearby (2026)`
   - **Primary keyword:** `shilajit storage with food` · **Secondary:** how to store shilajit resin, shilajit jar heat, shilajit shelf life, shilajit in the kitchen
   - **Search intent:** jar owner who wants to know where gold resin should sit at home
   - **Template:** LISTICLE · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
@@ -1472,7 +1472,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** shilajit + storage checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1017-31 — vaginal probiotics for athletes** — `Vaginal Probiotics for Athletes (US 2026)`
+- [DONE 2026-10-27 https://wellnessnest.co/blogs/news/vaginal-probiotics-for-athletes-us-routine] **#CA1017-31 — vaginal probiotics for athletes** — `Vaginal Probiotics for Athletes (US 2026)`
   - **Primary keyword:** `vaginal probiotics for athletes` · **Secondary:** probiotics for active women, vaginal probiotics and exercise, athlete probiotic gummies, probiotic gummies on gym days
   - **Search intent:** woman who trains and wants to know whether the gummy routine changes
   - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
@@ -1486,7 +1486,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** probiotic + athletes checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1017-32 — real or fake nmn with food** — `Real or Fake NMN, With Food Checks (US 2026)`
+- [DONE 2026-10-27 https://wellnessnest.co/blogs/news/real-or-fake-nmn-6-label-checks-for-us-buyers] **#CA1017-32 — real or fake nmn with food** — `Real or Fake NMN, With Food Checks (US 2026)`
   - **Primary keyword:** `real or fake nmn with food` · **Secondary:** fake nmn capsules, counterfeit nmn, is my nmn real, nmn bottle check
   - **Search intent:** US shopper trying to tell a real labeled bottle from a listing that does not match its panel
   - **Template:** STORY · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
@@ -1499,7 +1499,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** nmn + authenticity checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1017-33 — shilajit gummies ingredients with food** — `Shilajit Gummy Ingredients, Taken With Food (2026)`
+- [DONE 2026-10-27 https://wellnessnest.co/blogs/news/shilajit-gummies-ingredients-6-label-checks-in-the-us] **#CA1017-33 — shilajit gummies ingredients with food** — `Shilajit Gummy Ingredients, Taken With Food (2026)`
   - **Primary keyword:** `shilajit gummies ingredients with food` · **Secondary:** what is in shilajit gummies, shilajit gummy label, shilajit gummies ingredient list, shilajit gummies panel
   - **Search intent:** buyer who wants the gummy ingredient list before comparing it with resin
   - **Template:** LISTICLE · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
@@ -1512,7 +1512,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** shilajit + ingredients checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1017-34 — shilajit for hair with food** — `Shilajit for Hair, Taken With Food (US 2026)`
+- [DONE 2026-10-27 https://wellnessnest.co/blogs/news/shilajit-for-hair-with-food-us-evidence] **#CA1017-34 — shilajit for hair with food** — `Shilajit for Hair, Taken With Food (US 2026)`
   - **Primary keyword:** `shilajit for hair with food` · **Secondary:** shilajit hair growth, shilajit and hair, does shilajit help hair, shilajit hair claims
   - **Search intent:** reader who has seen hair claims and wants the human evidence separated from the ads
   - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
@@ -1526,7 +1526,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** shilajit + hair checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#CA1017-35 — shilajit loading with food** — `Shilajit Loading, With Food or Not? (2026)`
+- [DONE 2026-10-27 https://wellnessnest.co/blogs/news/shilajit-loading-with-food-us-trial-evidence] **#CA1017-35 — shilajit loading with food** — `Shilajit Loading, With Food or Not? (2026)`
   - **Primary keyword:** `shilajit loading with food` · **Secondary:** shilajit loading phase, shilajit bigger start, do you load shilajit, shilajit opening week
   - **Search intent:** new user who saw a loading week mentioned and wants to know if trials did that
   - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
