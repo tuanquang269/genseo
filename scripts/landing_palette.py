@@ -144,13 +144,55 @@ def parse_color(s):
 
 
 # ---------- pack color extraction ----------
+def _measure_size(width, height, size):
+    """Thumbnail box with Pillow's aspect rounding. (160, 160) is the measure size."""
+    x, y = math.floor(size[0]), math.floor(size[1])
+    if x >= width and y >= height:
+        return width, height
+    aspect = width / height
+
+    def round_aspect(number, key):
+        return max(min(math.floor(number), math.ceil(number), key=key), 1)
+
+    if x / y >= aspect:
+        x = round_aspect(y * aspect, key=lambda n: abs(aspect - n / y))
+    else:
+        y = round_aspect(x / aspect, key=lambda n: 0 if n == 0 else abs(aspect - x / n))
+    return x, y
+
+
+def _thumbnail_for_measure(im, size=(160, 160)):
+    """Downscale the way Pillow 12's BICUBIC thumbnail did.
+
+    product_refs/*.palette.json was measured with that thumbnail. Pillow 13
+    forwards reducing_gap into the RGBA resize and, when height shrinks more
+    than twice the width, runs the vertical resample first. Either change moves
+    the k-means clusters. Horizontal then vertical BICUBIC, with reducing_gap
+    left off, matches those files on Pillow 12 and 13.
+    """
+    from PIL import Image
+
+    tw, th = _measure_size(im.width, im.height, size)
+    if (tw, th) == (im.width, im.height):
+        return im
+    # RGBa keeps the premultiplied pixels across both passes. Pillow's own
+    # resize does that inside one call; splitting the passes on RGBA would
+    # un-premultiply in between and shift the clusters.
+    work = im.convert("RGBa")
+    filt = Image.Resampling.BICUBIC if hasattr(Image, "Resampling") else Image.BICUBIC
+    if tw != work.width:
+        work = work.resize((tw, work.height), filt, reducing_gap=None)
+    if th != work.height:
+        work = work.resize((tw, th), filt, reducing_gap=None)
+    return work.convert(im.mode)
+
+
 def extract(paths, k=6, seed=7):
     import numpy as np
     from PIL import Image
     px = []
     for p in paths:
-        im = Image.open(p).convert("RGBA")
-        im.thumbnail((160, 160))
+        im = _thumbnail_for_measure(Image.open(p).convert("RGBA"))
         a = np.asarray(im).reshape(-1, 4)
         px.append(a[a[:, 3] > 200][:, :3])
     px = np.concatenate(px).astype(float)
