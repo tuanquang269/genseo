@@ -79,6 +79,10 @@ need = [
     "FILE-COUNT MENU is not a looser rule",
     "ima2 OAuth lane at $0",
     "Do not stop for a cost table.",
+    "PACK IMAGES VS CUTOUT",
+    "omit the pack_images key",
+    "Missing a cutout is not a reason to exit without landing_drafts/<slug>.json",
+    "product_refs/<handle>-cutout.png",
 ]
 missing = [s for s in need if s not in text]
 if missing:
@@ -133,7 +137,8 @@ if grep -q 'SCOPE_WAIVER (Kevin, standing approval for unpublished draft listicl
   && grep -q 'Do not show a file-count menu.' "$OUT" \
   && grep -q 'Proceed with the full unpublished draft package?' "$OUT" \
   && ! grep -q 'DAILY LISTICLE LANE' "$OUT" \
-  && ! grep -q 'FILE-COUNT MENU' "$OUT"; then
+  && ! grep -q 'FILE-COUNT MENU' "$OUT" \
+  && ! grep -q 'PACK IMAGES VS CUTOUT' "$OUT"; then
   ok "preview waiver without daily override"
 else
   bad "preview waiver shape"
@@ -169,7 +174,8 @@ if grep -q 'SCOPE_WAIVER (Kevin, standing approval for unpublished draft listicl
   || grep -q 'DRAFT STANDING APPROVAL' "$OUT" \
   || grep -q 'DRAFT ALREADY APPROVED.' "$OUT" \
   || grep -q 'more than 2 output files' "$OUT" \
-  || grep -q 'Proceed with the full unpublished draft package?' "$OUT"; then
+  || grep -q 'Proceed with the full unpublished draft package?' "$OUT" \
+  || grep -q 'PACK IMAGES VS CUTOUT' "$OUT"; then
   bad "live attempt still carries the draft waiver"
 else
   ok "live attempt has no draft waiver"
@@ -182,10 +188,10 @@ if grep -qxF -- "$draft" "$ROOT/daily-landing-tickets.md"; then
 else
   bad "gold-resin draft line missing"
 fi
-if grep -qE '^- \[ \] .*pure-shilajit-gold-resin' "$ROOT/daily-landing-tickets.md"; then
-  bad "gold-resin is open again"
+if grep -qE '^- \[ \] .*pure-shilajit-gold-resin.*Resin vs capsules vs gummies' "$ROOT/daily-landing-tickets.md"; then
+  bad "gold-resin draft angle is open again"
 else
-  ok "gold-resin is not an open ticket"
+  ok "gold-resin draft angle is not an open ticket"
 fi
 if grep -q 'FAILED 2026-10-11' "$ROOT/daily-landing-tickets.md"; then
   bad "queue still has FAILED 2026-10-11"

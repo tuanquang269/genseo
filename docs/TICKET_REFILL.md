@@ -38,8 +38,8 @@ the whole file passes `lint_tickets.py`. The writer still runs STEP 0 and every 
 
 ## Daily wrapper hook (Mac)
 
-`deploy/grokbot-genseo-daily.sh` calls refill right before its empty-queue stop, at most once per run, when
-open tickets < (`GENSEO_DAILY_TARGET` − live today):
+`GENSEO_AUTO_REFILL` stays **off**. When it is on, `deploy/grokbot-genseo-daily.sh` calls refill right
+before its empty-queue stop, at most once per run, when open tickets < (`GENSEO_DAILY_TARGET` − live today):
 
 ```bash
 refill_tickets.py --if-below <still to publish> --count <still to publish − open + GENSEO_REFILL_BUFFER (3)> \
@@ -63,8 +63,11 @@ bash scripts/install_mac_daily_wrapper.sh
 
 That copies the wrapper into `~/bin`, checks the copy is executable, and prints whether
 `scripts/genseo_daily_lock.sh` and `scripts/genseo_group_timeout.sh` are in the checkout. A wrapper
-that sources `scripts/genseo_wait_for_network.sh` is not copied while that file is missing. It does not
-start launchd. After days offline, `bash scripts/mac_return_reconcile.sh` (dry-run, then `--apply`)
+that sources `scripts/genseo_wait_for_network.sh` or `scripts/genseo_power_assert.sh` is not copied while that file is missing. It does not
+start launchd. The next scheduled article or landing run, after it fast-forwards `main`, reinstalls
+`~/bin` when the bytes differ and reloads a changed LaunchAgent only after that job exits
+(`scripts/genseo_self_apply.sh`). The manual installer above is the one-time step when `~/bin`
+predates that re-exec. After days offline, `bash scripts/mac_return_reconcile.sh` (dry-run, then `--apply`)
 does the fast-forward and this reinstall, so `~/bin/grokbot-genseo-daily.sh` is the wrapper that waits
 for DNS before the first live-feed read. It does not publish. See DAILY-RUN.md.
 The lines below only turn refill on (they reload the agent; the installer does not):
@@ -76,6 +79,31 @@ launchctl bootout gui/$(id -u) "$P"; launchctl bootstrap gui/$(id -u) "$P"
 ```
 
 To check what it would add without waiting for 07:30: `python3 scripts/refill_tickets.py --if-below 5 --count 8 --dry-run`.
+
+## Low-water guard (on by default)
+
+The empty-queue stop on 2026-10-17 happened at 4/5 with nothing left for the next morning, because
+`GENSEO_AUTO_REFILL` only fills what is still due today and is off. A separate guard runs once per article
+batch, after the lane lock and a readable live count, including a day that has already hit the target:
+
+```bash
+refill_tickets.py --if-below <GENSEO_QUEUE_LOW_WATER> --count <threshold − open> \
+                  --prefix <$GENSEO_TICKET_PREFIX, else MB when standby, else MM>
+```
+
+`GENSEO_QUEUE_LOW_WATER` defaults to `2 * GENSEO_DAILY_TARGET` (10 when the target is 5). `0` turns the guard
+off. A non-numeric value is ignored and the default is used. The call is the same ticket-only builder: public
+storefront reads, the existing `--if-below` dedupe, no Shopify Admin write, no `--offline`, and no paid Ads or
+LLM call. It is capped at 600s by `scripts/genseo_group_timeout.sh`. Exit 0 clears `state/queue-low-water.marker`
+and commits `daily-tickets.md` plus `board/ideas.csv` when those files changed. Exit 3, a timeout (124), a
+missing script, or any other failure writes that marker (`paid_api=not called`) and the run continues, then
+still hard-stops if the queue is empty. Add topics to the bank or the board; do not point this path at a miner.
+
+The landing lane does the same job for its own queue. `scripts/run_landing_daily.sh` calls
+`build_landing_tickets.py --ensure <GENSEO_LANDING_LOW_WATER>` (default 2). Already-open lines are a no-op
+with no store read. An angle already on an open line is not queued again. A short bank is exit 3. The wrapper
+writes `state/landing-queue-low-water.marker` and still builds when a line is open. `GENSEO_LANDING_LOW_WATER=0`
+keeps the old single-add path.
 
 ## Runway
 

@@ -178,8 +178,15 @@ else
   cmp -s "$ROOT/deploy/grokbot-genseo-daily.sh" "$HOME_DIR/bin/grokbot-genseo-daily.sh" \
     && ok "real dest matches deploy/" || bad "real dest differs"
   has "$WORK/out" "helper scripts/genseo_wait_for_network.sh: present" "real tree network helper present"
+  has "$WORK/out" "helper scripts/genseo_sync_main.sh: present" "real tree sync helper present"
   grep -F -q 'genseo_wait_for_network.sh' "$HOME_DIR/bin/grokbot-genseo-daily.sh" \
     && ok "copied wrapper waits for DNS" || bad "copied wrapper has no DNS wait"
+  grep -F -q 'genseo_sync_main.sh' "$HOME_DIR/bin/grokbot-genseo-daily.sh" \
+    && ok "copied wrapper syncs origin/main" || bad "copied wrapper has no origin/main sync"
+  has "$WORK/out" "helper scripts/genseo_power_assert.sh: present" "real tree power helper present"
+  has "$WORK/out" "helper scripts/genseo_errlog.sh: present" "real tree errlog helper present"
+  grep -F -q 'genseo_power_assert_arm' "$HOME_DIR/bin/grokbot-genseo-daily.sh" \
+    && ok "copied wrapper arms a power assertion" || bad "copied wrapper has no power assertion"
 fi
 for rel in scripts/genseo_daily_lock.sh scripts/genseo_group_timeout.sh; do
   if [ -f "$ROOT/$rel" ]; then
@@ -229,6 +236,77 @@ assert_rc 0 "copy succeeds once the network helper exists"
 has "$WORK/out" "helper scripts/genseo_wait_for_network.sh: present" "network helper present"
 cmp -s "$FIX/deploy/grokbot-genseo-daily.sh" "$HOME_DIR/bin/grokbot-genseo-daily.sh" \
   && ok "DNS wrapper bytes match" || bad "DNS wrapper bytes differ"
+
+echo "12. a wrapper that syncs origin/main is not copied when that helper is absent"
+fixture syncmiss 1 755
+printf '\n%s\n' '. "$HOME/genseo/scripts/genseo_sync_main.sh"' >>"$FIX/deploy/grokbot-genseo-daily.sh"
+new_home syncmiss
+run_install "$HOME_DIR" "$FIX" 1 --
+assert_rc 1 "copy refused without the sync helper"
+has "$WORK/err" "Nothing was copied" "refused sync copy says nothing was copied"
+has "$WORK/out" "helper scripts/genseo_sync_main.sh: MISSING" "reports the sync helper missing"
+[ ! -e "$HOME_DIR/bin/grokbot-genseo-daily.sh" ] && ok "no dest without the sync helper" || bad "dest written without the sync helper"
+printf '%s\n' 'sync' >"$FIX/scripts/genseo_sync_main.sh"
+run_install "$HOME_DIR" "$FIX" 1 --
+assert_rc 0 "copy succeeds once the sync helper exists"
+has "$WORK/out" "helper scripts/genseo_sync_main.sh: present" "sync helper present"
+cmp -s "$FIX/deploy/grokbot-genseo-daily.sh" "$HOME_DIR/bin/grokbot-genseo-daily.sh" \
+  && ok "sync wrapper bytes match" || bad "sync wrapper bytes differ"
+
+echo "13. an open launcher is not replaced"
+fixture busy 1 755
+new_home busy
+run_install "$HOME_DIR" "$FIX" 1 --
+assert_rc 0 "first launcher copy exits 0"
+dest="$HOME_DIR/bin/grokbot-genseo-daily.sh"
+before_ck=$(cksum "$dest")
+printf '\n%s\n' 'echo changed' >>"$FIX/deploy/grokbot-genseo-daily.sh"
+sleep 120 <"$dest" &
+hold=$!
+run_install "$HOME_DIR" "$FIX" 1 --
+held=$RC
+kill "$hold" 2>/dev/null || true
+wait "$hold" 2>/dev/null || true
+RC=$held
+assert_rc 1 "open launcher is not replaced"
+has "$WORK/err" "another process has it open" "open launcher names the holder"
+has "$WORK/err" "Nothing was copied." "open launcher copies nothing"
+[ "$(cksum "$dest")" = "$before_ck" ] && ok "open launcher left the previous bytes" || bad "open launcher replaced the file"
+run_install "$HOME_DIR" "$FIX" 1 --
+assert_rc 0 "launcher copy succeeds once the holder exits"
+cmp -s "$FIX/deploy/grokbot-genseo-daily.sh" "$dest" && ok "later copy matches the new source" || bad "later copy did not update"
+
+echo "14. a wrapper that arms caffeinate is not copied when that helper is absent"
+fixture powmiss 1 755
+printf '\n%s\n' '. "$HOME/genseo/scripts/genseo_power_assert.sh"' >>"$FIX/deploy/grokbot-genseo-daily.sh"
+new_home powmiss
+run_install "$HOME_DIR" "$FIX" 1 --
+assert_rc 1 "copy refused without the power helper"
+has "$WORK/err" "Nothing was copied" "refused power copy says nothing was copied"
+has "$WORK/out" "helper scripts/genseo_power_assert.sh: MISSING" "reports the power helper missing"
+[ ! -e "$HOME_DIR/bin/grokbot-genseo-daily.sh" ] && ok "no dest without the power helper" || bad "dest written without the power helper"
+printf '%s\n' 'arm' >"$FIX/scripts/genseo_power_assert.sh"
+run_install "$HOME_DIR" "$FIX" 1 --
+assert_rc 0 "copy succeeds once the power helper exists"
+has "$WORK/out" "helper scripts/genseo_power_assert.sh: present" "power helper present"
+cmp -s "$FIX/deploy/grokbot-genseo-daily.sh" "$HOME_DIR/bin/grokbot-genseo-daily.sh" \
+  && ok "power wrapper bytes match" || bad "power wrapper bytes differ"
+
+echo "15. a wrapper that rotates launchd stderr is not copied when that helper is absent"
+fixture errmiss 1 755
+printf '\n%s\n' '. "$HOME/genseo/scripts/genseo_errlog.sh"' >>"$FIX/deploy/grokbot-genseo-daily.sh"
+new_home errmiss
+run_install "$HOME_DIR" "$FIX" 1 --
+assert_rc 1 "copy refused without the errlog helper"
+has "$WORK/err" "Nothing was copied" "refused errlog copy says nothing was copied"
+has "$WORK/out" "helper scripts/genseo_errlog.sh: MISSING" "reports the errlog helper missing"
+[ ! -e "$HOME_DIR/bin/grokbot-genseo-daily.sh" ] && ok "no dest without the errlog helper" || bad "dest written without the errlog helper"
+printf '%s\n' 'rotate' >"$FIX/scripts/genseo_errlog.sh"
+run_install "$HOME_DIR" "$FIX" 1 --
+assert_rc 0 "copy succeeds once the errlog helper exists"
+has "$WORK/out" "helper scripts/genseo_errlog.sh: present" "errlog helper present"
+cmp -s "$FIX/deploy/grokbot-genseo-daily.sh" "$HOME_DIR/bin/grokbot-genseo-daily.sh" \
+  && ok "errlog wrapper bytes match" || bad "errlog wrapper bytes differ"
 
 printf '\n%d passed, %d failed\n' "$PASS" "$FAIL"
 [ "$FAIL" = 0 ]

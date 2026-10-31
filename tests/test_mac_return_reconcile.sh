@@ -291,6 +291,48 @@ has "$WORK/out" "apply_block: not-on-main" "not-on-main block"
 [ "$(git -C "$REPO" rev-parse --abbrev-ref HEAD)" = side ] && ok "stayed on side" || bad "left side"
 [ "$(head_of "$REPO")" = "$BEFORE" ] && ok "side HEAD unchanged" || bad "side HEAD moved"
 
+echo "6b. --apply returns an article branch to main and does not push its commits"
+init_repo artapply
+printf '%s\n' '- [ ] **#CA1016-2 — shilajit on an empty stomach** — `Title`' >"$REPO/daily-tickets.md"
+printf '%s\n' '- [ ] **#CA1016-7 — vaginal probiotics over 60** — `Next`' >>"$REPO/daily-tickets.md"
+git -C "$REPO" add daily-tickets.md
+git -C "$REPO" commit -m "queue" >/dev/null 2>&1 || exit 1
+git -C "$REPO" push origin main >/dev/null 2>&1 || exit 1
+git -C "$REPO" checkout -b article/ca1016-2 >/dev/null 2>&1 || exit 1
+printf '%s\n' '- [DONE 2026-10-18 https://wellnessnest.co/blogs/news/shilajit-on-an-empty-stomach-yes-or-no-in-the-us] **#CA1016-2 — shilajit on an empty stomach** — `Title`' >"$REPO/daily-tickets.md"
+printf '%s\n' '- [ ] **#CA1016-7 — vaginal probiotics over 60** — `Next`' >>"$REPO/daily-tickets.md"
+git -C "$REPO" add daily-tickets.md
+git -C "$REPO" commit -m "publish CA1016-2" >/dev/null 2>&1 || exit 1
+printf '%s\n' 'scratch' >"$REPO/scratch.txt"
+ART_SHA="$(head_of "$REPO")"
+BARE_BEFORE="$(bare_main)"
+run_rec
+assert_rc 0 "article dry-run exit 0"
+has "$WORK/out" "day_branch_return: would record queue closures and switch article/ca1016-2 to main on --apply (ref kept)" "dry-run names the article return"
+[ "$(git -C "$REPO" rev-parse --abbrev-ref HEAD)" = "article/ca1016-2" ] && ok "article dry-run stayed" || bad "article dry-run switched"
+[ ! -e "$REPO/state/queue-closures.json" ] && ok "article dry-run wrote no ledger" || bad "article dry-run wrote a ledger"
+run_rec --apply
+assert_rc 0 "article apply exit 0"
+has "$WORK/out" "day_branch_return: switched article/ca1016-2 to main" "apply switched the article branch"
+has "$WORK/out" "day_branch_ref: kept" "apply kept the article ref"
+has "$WORK/out" "recorded: 1 queue closure(s)" "apply recorded the closure"
+has "$WORK/out" "apply: already up to date" "main needed no fast-forward"
+has "$WORK/out" "result: ok" "article apply result ok"
+lacks "$WORK/out" "apply_block: not-on-main" "article apply is not blocked for the branch"
+[ "$(git -C "$REPO" rev-parse --abbrev-ref HEAD)" = main ] && ok "apply left HEAD on main" || bad "apply did not leave HEAD on main"
+[ "$(head_of "$REPO")" = "$(git -C "$REPO" rev-parse origin/main)" ] && ok "apply HEAD matches origin/main" || bad "apply HEAD is not origin/main"
+[ "$(git -C "$REPO" rev-parse article/ca1016-2)" = "$ART_SHA" ] && ok "article ref still points at the publish commit" || bad "article ref moved"
+[ "$(bare_main)" = "$BARE_BEFORE" ] && ok "publish commit was not pushed" || bad "publish commit was pushed"
+git -C "$BARE" log --format='%s' main | grep -F -q "publish CA1016-2" && bad "bare repo received the publish commit" || ok "bare repo has no publish commit"
+grep -F -q -- '- [ ] **#CA1016-2' "$REPO/daily-tickets.md" && ok "work tree ticket line is the open main line" || bad "work tree kept the DONE line"
+grep -F -q 'CA1016-2' "$REPO/state/queue-closures.json" && ok "ledger names CA1016-2" || bad "ledger missing CA1016-2"
+[ "$(cat "$REPO/scratch.txt")" = "scratch" ] && ok "untracked file kept" || bad "untracked file lost"
+first=$(/usr/bin/python3 "$ROOT/scripts/genseo_queue_closures.py" first --queue "$REPO/daily-tickets.md")
+case "$first" in
+  *'#CA1016-7'*) ok "effective queue starts at CA1016-7" ;;
+  *) bad "effective queue is $first" ;;
+esac
+
 echo "7. GENSEO_LOCK_STALE_SEC is honored; GENSEO_LANDING_LOCK_STALE_SEC is not"
 init_repo envthr
 mkdir -p "$REPO/state/daily.lock" "$REPO/state/landing-daily.lock"
@@ -498,6 +540,9 @@ cp "$ROOT/deploy/com.pati.genseo-daily.macbook.plist" "$REPO/deploy/com.pati.gen
 cp "$ROOT/scripts/genseo_daily_lock.sh" "$REPO/scripts/genseo_daily_lock.sh"
 cp "$ROOT/scripts/genseo_group_timeout.sh" "$REPO/scripts/genseo_group_timeout.sh"
 cp "$ROOT/scripts/genseo_wait_for_network.sh" "$REPO/scripts/genseo_wait_for_network.sh"
+cp "$ROOT/scripts/genseo_sync_main.sh" "$REPO/scripts/genseo_sync_main.sh"
+cp "$ROOT/scripts/genseo_power_assert.sh" "$REPO/scripts/genseo_power_assert.sh"
+cp "$ROOT/scripts/genseo_errlog.sh" "$REPO/scripts/genseo_errlog.sh"
 cp "$ROOT/scripts/genseo_model_map.json" "$REPO/scripts/genseo_model_map.json"
 cp "$ROOT/scripts/run_landing_daily.sh" "$REPO/scripts/run_landing_daily.sh"
 cp "$ROOT/scripts/landing_publisher.py" "$REPO/scripts/landing_publisher.py"
@@ -565,6 +610,9 @@ cp "$ROOT/deploy/grokbot-genseo-daily.sh" "$REPO/deploy/grokbot-genseo-daily.sh"
 cp "$ROOT/scripts/genseo_daily_lock.sh" "$REPO/scripts/genseo_daily_lock.sh"
 cp "$ROOT/scripts/genseo_group_timeout.sh" "$REPO/scripts/genseo_group_timeout.sh"
 cp "$ROOT/scripts/genseo_wait_for_network.sh" "$REPO/scripts/genseo_wait_for_network.sh"
+cp "$ROOT/scripts/genseo_sync_main.sh" "$REPO/scripts/genseo_sync_main.sh"
+cp "$ROOT/scripts/genseo_power_assert.sh" "$REPO/scripts/genseo_power_assert.sh"
+cp "$ROOT/scripts/genseo_errlog.sh" "$REPO/scripts/genseo_errlog.sh"
 cp "$ROOT/scripts/genseo_model_map.json" "$REPO/scripts/genseo_model_map.json"
 cp "$ROOT/scripts/run_landing_daily.sh" "$REPO/scripts/run_landing_daily.sh"
 cp "$ROOT/scripts/landing_publisher.py" "$REPO/scripts/landing_publisher.py"
@@ -609,6 +657,9 @@ cp "$ROOT/deploy/grokbot-genseo-daily.sh" "$REPO/deploy/grokbot-genseo-daily.sh"
 cp "$ROOT/scripts/genseo_daily_lock.sh" "$REPO/scripts/genseo_daily_lock.sh"
 cp "$ROOT/scripts/genseo_group_timeout.sh" "$REPO/scripts/genseo_group_timeout.sh"
 cp "$ROOT/scripts/genseo_wait_for_network.sh" "$REPO/scripts/genseo_wait_for_network.sh"
+cp "$ROOT/scripts/genseo_sync_main.sh" "$REPO/scripts/genseo_sync_main.sh"
+cp "$ROOT/scripts/genseo_power_assert.sh" "$REPO/scripts/genseo_power_assert.sh"
+cp "$ROOT/scripts/genseo_errlog.sh" "$REPO/scripts/genseo_errlog.sh"
 cp "$ROOT/scripts/genseo_model_map.json" "$REPO/scripts/genseo_model_map.json"
 cp "$ROOT/scripts/run_landing_daily.sh" "$REPO/scripts/run_landing_daily.sh"
 cp "$ROOT/scripts/landing_publisher.py" "$REPO/scripts/landing_publisher.py"
@@ -639,6 +690,9 @@ cp "$ROOT/deploy/grokbot-genseo-daily.sh" "$REPO/deploy/grokbot-genseo-daily.sh"
 cp "$ROOT/scripts/genseo_daily_lock.sh" "$REPO/scripts/genseo_daily_lock.sh"
 cp "$ROOT/scripts/genseo_group_timeout.sh" "$REPO/scripts/genseo_group_timeout.sh"
 cp "$ROOT/scripts/genseo_wait_for_network.sh" "$REPO/scripts/genseo_wait_for_network.sh"
+cp "$ROOT/scripts/genseo_sync_main.sh" "$REPO/scripts/genseo_sync_main.sh"
+cp "$ROOT/scripts/genseo_power_assert.sh" "$REPO/scripts/genseo_power_assert.sh"
+cp "$ROOT/scripts/genseo_errlog.sh" "$REPO/scripts/genseo_errlog.sh"
 cp "$ROOT/scripts/genseo_model_map.json" "$REPO/scripts/genseo_model_map.json"
 cp "$ROOT/scripts/run_landing_daily.sh" "$REPO/scripts/run_landing_daily.sh"
 cp "$ROOT/scripts/landing_publisher.py" "$REPO/scripts/landing_publisher.py"

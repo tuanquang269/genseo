@@ -4,6 +4,11 @@
   /usr/bin/python3 scripts/build_landing_tickets.py            # add ONE ticket if the queue has no open one
   /usr/bin/python3 scripts/build_landing_tickets.py --dry-run  # show the pick, write nothing
   /usr/bin/python3 scripts/build_landing_tickets.py --force    # add one even if an open ticket exists
+  /usr/bin/python3 scripts/build_landing_tickets.py --ensure 2 # top up until 2 open lines; no-op when already there
+
+--ensure is the daily low-water (default 2 = two days at one draft a day). It reuses this
+file's rotation and will not queue an angle that is already on an open line. It reads
+products.json only. It does not write Shopify and it does not call a paid API.
 
 Queue: daily-landing-tickets.md, one line per ticket:
   - [ ] listicle | <store> | product=<handle> · angle: <brief> (added YYYY-MM-DD)
@@ -12,8 +17,19 @@ Done lines are re-tagged by run_landing_daily.sh: - [DRAFT YYYY-MM-DD page <id>]
 Product pick: live https://wellnessnest.co/products.json, filtered to real single SKUs (product_type set, not
 shipping protection / reserve / multi-pack bundles), ageaura_rules.require_target (AgeAura = NMN + TMG Complex
 only; ageaura-pure-urolithin-a and any other Urolithin A AgeAura handle fail closed), a curated packaging ref in product_refs/<handle>.png and an entry in
-templates/landing/listicle-angles.json. Rotation: least-recently-used product, never one used in the last
-GENSEO_LANDING_NO_REPEAT_DAYS days (default 6) — history = every dated line in the queue + landing_drafts/*.json.
+templates/landing/listicle-angles.json. Rotation, one landing a day:
+  Recency is the last real dated landing. A spec counts only when `created` is YYYY-MM-DD.
+  An undated spec does not count, and a file's modification time is never a landing date.
+  A queue line counts when it is a DRAFT or a published page; the date in that tag is the
+  landing day. FAILED lines are not landings. Open `- [ ]` lines are the upcoming days, in
+  file order, one per day — the `(added ...)` stamp is not a use date.
+  The product on the previous day is not picked again, unless it is the only eligible product.
+  ShilaSource resin and AgeAura Pure NMN + TMG are priority products. In the 7-day window
+  ending on the day being filled, each eligible priority product appears at least as often
+  as the busiest other product. A priority that is behind that pace is the next pick when
+  that is not a back-to-back day.
+  Otherwise the least-recently-used eligible product is next. A tie goes to a priority
+  product, then to catalog order.
 Angle: the least-used angle for that product. The new line must pass brand_rules + lint_tickets.py.
 FloraFresh lines also carry florafresh_rules.LANDING_NOTE (formula from the Supplement Facts label, never the PDP).
 Shilajit Shockwave lines carry shockwave_rules.LANDING_NOTE (identity lines only; no dose the label file omits).
@@ -48,6 +64,18 @@ Format: `- [ ] listicle | <store> | product=<handle> · angle: <brief> (added YY
 """
 UA = {"User-Agent": "Mozilla/5.0 (Macintosh) GenSeo-landing-builder"}
 BUNDLE = re.compile(r"(reserve|pack|single-jar|single-bottle|-p\d+$|duo|bundle|shipping-protection)", re.I)
+# Owner priority for creative and landing work (Kevin 2026-10-17). Order is the tie-break.
+PRIORITY_HANDLES = (
+    "shilasource-himalayan-shilajit-resin",
+    "ageaura-pure-nmn-tmg-nad-complex",
+)
+FAIRNESS_DAYS = 7
+_DATE = re.compile(r"(\d{4}-\d{2}-\d{2})")
+_PRODUCT = re.compile(r"product=([a-z0-9-]+)")
+_REAL_LINE = re.compile(r"^- \[(?:DRAFT|PUBLISHED|LIVE)\b")
+_OPEN_LINE = re.compile(r"^- \[ \] ")
+_HANDLE = re.compile(r"^[a-z0-9-]+$")
+_SPEC_URL = re.compile(r"wellnessnest\.co/products/([a-z0-9-]+)")
 
 
 def today():
@@ -59,40 +87,274 @@ def live_products():
     return {p["handle"]: p for p in d["products"]}
 
 
-def history():
-    """handle -> list of dates it was used for a landing page (queue lines + spec files)."""
-    used = {}
-    if os.path.exists(QUEUE):
-        for line in open(QUEUE):
-            m = re.search(r"product=([a-z0-9-]+)", line)
-            if not m:
-                continue
-            ds = re.findall(r"(\d{4}-\d{2}-\d{2})", line)
-            if ds:
-                used.setdefault(m.group(1), []).append(max(ds))
-    d = os.path.join(ROOT, "landing_drafts")
-    for f in os.listdir(d):
-        if f.endswith(".json"):
-            try:
-                s = json.load(open(os.path.join(d, f)))
-            except Exception:
-                continue
-            hs = re.findall(r"wellnessnest\.co/products/([a-z0-9-]+)", json.dumps(s))
-            day = dt.datetime.fromtimestamp(os.path.getmtime(os.path.join(d, f)), ICT).date().isoformat()
-            for h in set(hs):
-                used.setdefault(h, []).append(s.get("created") or day)
-    return used
+def _iso(raw):
+    try:
+        return dt.date.fromisoformat(raw)
+    except ValueError:
+        return None
 
 
-def angle_counts(handle):
+def created_day(spec):
+    """YYYY-MM-DD from a spec's `created` field, or None when the spec is undated.
+
+    File modification time is not a landing date.
+    """
+    if not isinstance(spec, dict):
+        return None
+    raw = spec.get("created")
+    if not isinstance(raw, str) or not _DATE.fullmatch(raw.strip()):
+        return None
+    return _iso(raw.strip())
+
+
+def spec_landings(spec):
+    """(date, handle) pairs for one spec. Empty when `created` is missing or not a date."""
+    day = created_day(spec)
+    if day is None:
+        return []
+    handles = set(_SPEC_URL.findall(json.dumps(spec)))
+    prod = spec.get("product")
+    if isinstance(prod, dict) and isinstance(prod.get("handle"), str):
+        handle = prod["handle"].strip().lower()
+        if _HANDLE.fullmatch(handle):
+            handles.add(handle)
+    hero = pp.hero_handle(spec)
+    if hero and _HANDLE.fullmatch(hero):
+        handles.add(hero)
+    return [(day, h) for h in sorted(handles)]
+
+
+def parse_queue(text):
+    """(real landings, open handles in file order).
+
+    A real landing is a DRAFT or published line. Its landing day is the first
+    YYYY-MM-DD on the line (the status tag), not a later `(added ...)` stamp.
+    FAILED lines are attempts, not landings. Open lines are upcoming days.
+    """
+    real, open_handles = [], []
+    for line in (text or "").splitlines():
+        found = _PRODUCT.search(line)
+        if not found:
+            continue
+        handle = found.group(1)
+        if _OPEN_LINE.match(line):
+            open_handles.append(handle)
+            continue
+        if not _REAL_LINE.match(line):
+            continue
+        dates = [d for d in (_iso(raw) for raw in _DATE.findall(line)) if d]
+        if dates:
+            real.append((dates[0], handle))
+    return real, open_handles
+
+
+def collect_uses(queue_text, specs):
+    """Dated landings plus open handles. The same (date, handle) counts once."""
+    real = set()
+    for spec in specs or []:
+        for pair in spec_landings(spec):
+            real.add(pair)
+    queued, open_handles = parse_queue(queue_text or "")
+    real.update(queued)
+    return {"real": sorted(real), "open": open_handles}
+
+
+def load_specs(drafts_dir=None):
+    """landing_drafts/*.json. A file that does not parse is skipped. mtime is not read."""
+    folder = drafts_dir or os.path.join(ROOT, "landing_drafts")
+    specs = []
+    if not os.path.isdir(folder):
+        return specs
+    for name in sorted(os.listdir(folder)):
+        if not name.endswith(".json"):
+            continue
+        try:
+            with open(os.path.join(folder, name), encoding="utf-8") as fh:
+                specs.append(json.load(fh))
+        except Exception:
+            continue
+    return specs
+
+
+def history(queue_path=None, drafts_dir=None):
+    """Dated landings from the queue file and landing_drafts/*.json.
+
+    Undated specs contribute nothing. Modification time is not read.
+    """
+    path = queue_path or QUEUE
+    text = ""
+    if os.path.exists(path):
+        with open(path, encoding="utf-8") as fh:
+            text = fh.read()
+    return collect_uses(text, load_specs(drafts_dir))
+
+
+def schedule(uses, today):
+    """Place open tickets on the upcoming days and return (events, next_day).
+
+    Events are (date, handle) in order. `next_day` is the empty day a new
+    ticket would fill. A landing already dated today or later pushes the
+    first open ticket to the following day.
+    """
+    events = sorted(uses.get("real") or [])
+    latest = events[-1][0] if events else None
+    cursor = today if latest is None or latest < today else latest + dt.timedelta(days=1)
+    for handle in uses.get("open") or []:
+        events.append((cursor, handle))
+        cursor += dt.timedelta(days=1)
+    return events, cursor
+
+
+def _counts(events, day):
+    start = day - dt.timedelta(days=FAIRNESS_DAYS - 1)
+    counts = {}
+    for when, handle in events:
+        if start <= when < day:
+            counts[handle] = counts.get(handle, 0) + 1
+    return counts
+
+
+def _others_max(counts, priority):
+    skip = set(priority)
+    best = 0
+    for handle, count in counts.items():
+        if handle not in skip and count > best:
+            best = count
+    return best
+
+
+def _fair(counts, required, priority):
+    busiest = _others_max(counts, priority)
+    return all(counts.get(handle, 0) >= busiest for handle in required)
+
+
+def choose_product(eligible, events, day, order=None, priority=None):
+    """Handle to schedule on `day`.
+
+    `events` are landings and already-queued days. `eligible` is the product
+    catalog that may be chosen. Back-to-back with the previous day is refused
+    while another eligible product exists. Among the rest, a priority product
+    that is behind the busiest other product in the 7-day window wins; otherwise
+    the least recently used product wins, with a priority tie-break.
+    """
+    priority = tuple(priority or PRIORITY_HANDLES)
+    seen, eligible_list = set(), []
+    for handle in eligible:
+        if handle and handle not in seen:
+            seen.add(handle)
+            eligible_list.append(handle)
+    if not eligible_list:
+        raise ValueError("no eligible product")
+    order = list(order or eligible_list)
+    live_priority = [handle for handle in priority if handle in seen]
+    previous = {
+        handle for when, handle in events
+        if when == day - dt.timedelta(days=1) and handle in seen
+    }
+    pool = [handle for handle in eligible_list if handle not in previous] or eligible_list
+    before = _counts(events, day)
+    busiest = _others_max(before, priority)
+    last = {}
+    for when, handle in events:
+        if when < day and (handle not in last or when > last[handle]):
+            last[handle] = when
+
+    def deficit(handle):
+        if handle not in live_priority:
+            return 0
+        return max(0, busiest - before.get(handle, 0))
+
+    def fair_after(handle):
+        counts = dict(before)
+        counts[handle] = counts.get(handle, 0) + 1
+        return _fair(counts, live_priority, priority)
+
+    fair_pool = [handle for handle in pool if fair_after(handle)]
+    use = fair_pool or pool
+
+    def prio_rank(handle):
+        try:
+            return priority.index(handle)
+        except ValueError:
+            return len(priority)
+
+    def cat_rank(handle):
+        try:
+            return order.index(handle)
+        except ValueError:
+            return len(order)
+
+    use.sort(key=lambda handle: (
+        -deficit(handle), last.get(handle, dt.date.min), prio_rank(handle), cat_rank(handle)))
+    return use[0]
+
+
+def next_product(uses, eligible, order=None, on=None, priority=None):
+    """(handle, day) the builder would append for this history."""
+    events, day = schedule(uses, on or today())
+    return choose_product(eligible, events, day, order, priority), day
+
+
+class LandingAngleBlocked(Exception):
+    """The product rotation picked a handle whose angles are already open lines."""
+
+    def __init__(self, handle):
+        self.handle = handle
+        Exception.__init__(self, "angles already open for %s" % handle)
+
+
+def _angle_of(line):
+    m = re.search(r"angle: (.*?)(?: · audience:.*?)?(?: \(added \d{4}-\d{2}-\d{2}\))?$", line.strip())
+    return m.group(1) if m else ""
+
+
+def _queue_text(text):
+    """None reads the live queue file. A string, including empty, is used as-is."""
+    if text is not None:
+        return text
+    if not os.path.exists(QUEUE):
+        return ""
+    with open(QUEUE, encoding="utf-8") as fh:
+        return fh.read()
+
+
+def angle_counts(handle, text=None):
     c = {}
-    if os.path.exists(QUEUE):
-        for line in open(QUEUE):
-            if f"product={handle} " in line or line.rstrip().endswith(f"product={handle}"):
-                m = re.search(r"angle: (.*?)(?: · audience:.*?)?(?: \(added \d{4}-\d{2}-\d{2}\))?$", line.strip())
-                if m:
-                    c[m.group(1)] = c.get(m.group(1), 0) + 1
+    for line in _queue_text(text).splitlines():
+        if f"product={handle} " in line or line.rstrip().endswith(f"product={handle}"):
+            angle = _angle_of(line)
+            if angle:
+                c[angle] = c.get(angle, 0) + 1
     return c
+
+
+def open_angles(handle, text=None):
+    """Angles already sitting on an open line. A second open copy is a duplicate topic."""
+    found = set()
+    for line in _queue_text(text).splitlines():
+        if not line.startswith("- [ ] "):
+            continue
+        if f"product={handle} " not in line and not line.rstrip().endswith(f"product={handle}"):
+            continue
+        angle = _angle_of(line)
+        if angle:
+            found.add(angle)
+    return found
+
+
+def select_angle(handle, meta, queue_text=None):
+    """Least-used angle that is not already an open line for this product.
+
+    queue_text=None counts the live queue file (the one-ticket path). A string
+    counts that text only, so an in-memory top-up sees the line it just added.
+    """
+    counts = angle_counts(handle, queue_text)
+    used_open = open_angles(handle, queue_text)
+    ranked = sorted(meta.get("angles") or [], key=lambda a: (counts.get(a, 0), (meta.get("angles") or []).index(a)))
+    for angle in ranked:
+        if angle not in used_open:
+            return angle
+    return None
 
 
 def refused_angle_keys(angles):
@@ -131,77 +393,176 @@ def ticket_line(handle, store, angle, audience, added):
     return line
 
 
-def pick(products, angles, used, window):
-    t = today()
-    cands, why = [], {}
-    for h, meta in angles.items():
-        if h.startswith("_"):
+def eligible_handles(products, angles):
+    """Catalog handles that can take a landing today, plus the skip reasons."""
+    cands, why, order = [], {}, []
+    for handle in angles:
+        if str(handle).startswith("_"):
             continue
-        p = products.get(h)
-        if not p:
-            why[h] = "not on the live store"; continue
-        if BUNDLE.search(h) or not p.get("product_type"):
-            why[h] = "bundle / non-SKU"; continue
-        if ar.classify_handle(h) == "deny":
-            why[h] = "ageaura product guard"; continue
-        if not any(v.get("available") for v in p.get("variants", [])):
-            why[h] = "sold out"; continue
-        if not os.path.exists(os.path.join(ROOT, "product_refs", f"{h}.png")):
-            why[h] = "no curated product_refs png"; continue
-        last = max(used.get(h, ["1970-01-01"]))
-        age = (t - dt.date.fromisoformat(last)).days
-        cands.append((age, h))
+        order.append(handle)
+        product = products.get(handle)
+        if not product:
+            why[handle] = "not on the live store"
+            continue
+        if BUNDLE.search(handle) or not product.get("product_type"):
+            why[handle] = "bundle / non-SKU"
+            continue
+        if ar.classify_handle(handle) == "deny":
+            why[handle] = "ageaura product guard"
+            continue
+        if not any(v.get("available") for v in product.get("variants", [])):
+            why[handle] = "sold out"
+            continue
+        if not os.path.exists(os.path.join(ROOT, "product_refs", f"{handle}.png")):
+            why[handle] = "no curated product_refs png"
+            continue
+        cands.append(handle)
+    return cands, why, order
+
+
+def pick(products, angles, uses, on=None, queue_text=None):
+    day = on or today()
+    cands, why, order = eligible_handles(products, angles)
     if not cands:
-        sys.exit(f"✗ no eligible product: {why}")
-    fresh = [c for c in cands if c[0] >= window]
-    pool = fresh or cands            # everything used inside the window -> still take the least recent one
-    pool.sort(key=lambda c: (-c[0], list(angles).index(c[1])))
-    age, h = pool[0]
-    meta = angles[h]
-    cnt = angle_counts(h)
-    angle = sorted(meta["angles"], key=lambda a: (cnt.get(a, 0), meta["angles"].index(a)))[0]
-    return h, meta, angle, age, (not fresh), why
+        raise ValueError("no eligible product: %s" % (why,))
+    events, slot = schedule(uses, day)
+    handle = choose_product(cands, events, slot, order)
+    meta = angles[handle]
+    angle = select_angle(handle, meta, queue_text)
+    if angle is None:
+        raise LandingAngleBlocked(handle)
+    last = [when for when, used in events if used == handle and when < slot]
+    age = (slot - max(last)).days if last else 99999
+    return handle, meta, angle, slot, age, why
+
+
+def _open_lines(text):
+    return [line for line in (text or "").splitlines() if line.startswith("- [ ] ")]
+
+
+def ensure_open(queue_text, products, angles, minimum, specs=None, on=None):
+    """Append lines until `minimum` are open. Idempotent. Does not fetch or write.
+
+    An angle already on an open line is not queued again. A product whose
+    angles are all open is skipped and the rotation runs again without it.
+    Returns (text, added_lines).
+    """
+    if minimum < 1:
+        return queue_text or "", []
+    text = queue_text or ""
+    if text and not text.endswith("\n"):
+        text += "\n"
+    added = []
+    blocked = set()
+    stamp = (on or today()).isoformat()
+    limit = max(minimum, 1) + len([k for k in angles if not str(k).startswith("_")]) + 2
+    guard = 0
+    while guard < limit:
+        guard += 1
+        if len(_open_lines(text)) >= minimum:
+            break
+        prod = {h: p for h, p in products.items() if h not in blocked}
+        uses = collect_uses(text, specs or [])
+        try:
+            handle, meta, angle, _slot, _age, _why = pick(
+                prod, angles, uses, on=on, queue_text=text)
+        except LandingAngleBlocked as exc:
+            blocked.add(exc.handle)
+            continue
+        except ValueError:
+            break
+        try:
+            line = br.prepare_ticket(ticket_line(
+                handle, meta["store"], angle, meta.get("audience", ""), stamp))
+        except br.GuardError:
+            blocked.add(handle)
+            continue
+        if br.violations(line) or line in text.splitlines():
+            blocked.add(handle)
+            continue
+        text += line + "\n"
+        added.append(line)
+    return text, added
+
+
+def _argv_int(flag):
+    argv = sys.argv[1:]
+    if flag not in argv:
+        return None
+    i = argv.index(flag)
+    if i + 1 >= len(argv) or not str(argv[i + 1]).isdigit():
+        sys.exit("✗ %s needs a non-negative integer" % flag)
+    return int(argv[i + 1])
+
+
+def _load_angles():
+    raw_angles = json.load(open(ANGLES))
+    angles = {}
+    for key in refused_angle_keys(raw_angles):
+        print("ageaura guard: dropped landing angle key %s" % key)
+    for key, meta in raw_angles.items():
+        if str(key).startswith("_") or ar.classify_handle(key) != "deny":
+            angles[key] = meta
+    return angles
+
+
+def add_until(original, minimum, dry, on=None):
+    """Write tickets until `minimum` open lines exist. Exit 3 when the bank of angles is short."""
+    angles = _load_angles()
+    try:
+        products = live_products()
+    except (OSError, ValueError, KeyError) as exc:
+        sys.exit("✗ live store unreadable (%s: %s)" % (type(exc).__name__, exc))
+    _cands, why, _order = eligible_handles(products, angles)
+    if why:
+        print("skipped:", "; ".join("%s: %s" % (k, v) for k, v in why.items()))
+    text, added = ensure_open(original, products, angles, minimum, load_specs(), on or today())
+    opens = len(_open_lines(text))
+    for line in added:
+        found = _PRODUCT.search(line)
+        print("pick: %s" % (found.group(1) if found else "?"))
+        print(line)
+    short = opens < minimum
+    if not added and short:
+        print("✗ landing queue has %d open ticket(s); wanted %d and no further non-duplicate angle passed"
+              % (len(_open_lines(original)), minimum))
+        return 3
+    if short:
+        print("! landing queue reached %d open of %d requested" % (opens, minimum))
+    if dry:
+        print("dry-run: %d line(s); queue untouched" % len(added))
+        return 3 if short else 0
+    if not added:
+        return 0
+    open(QUEUE, "w").write(text)
+    r = subprocess.run(["/usr/bin/python3", os.path.join(ROOT, "scripts", "lint_tickets.py"), QUEUE],
+                       capture_output=True, text=True)
+    if r.returncode != 0:
+        open(QUEUE, "w").write(original)
+        sys.exit("✗ lint_tickets failed, ticket NOT added:\n%s%s" % (r.stdout, r.stderr))
+    print("added to daily-landing-tickets.md (lint ok)")
+    return 3 if short else 0
 
 
 def main():
     dry, force = "--dry-run" in sys.argv, "--force" in sys.argv
-    q = open(QUEUE).read() if os.path.exists(QUEUE) else HEADER
-    open_lines = [l for l in q.splitlines() if l.startswith("- [ ] ")]
+    ensure = _argv_int("--ensure")
+    if os.path.exists(QUEUE):
+        with open(QUEUE, encoding="utf-8") as fh:
+            original = fh.read()
+    else:
+        original = HEADER
+    open_lines = _open_lines(original)
+    if ensure is not None:
+        if len(open_lines) >= ensure:
+            print("landing queue: %d open ticket(s) >= %d — nothing to do" % (len(open_lines), ensure))
+            return 0
+        return add_until(original, ensure, dry)
     if open_lines and not force:
-        print(f"queue already has an open ticket: {open_lines[0]}")
-        return
-    window = int(os.environ.get("GENSEO_LANDING_NO_REPEAT_DAYS", "6"))
-    raw_angles = json.load(open(ANGLES))
-    angles = {}
-    for key in refused_angle_keys(raw_angles):
-        print(f"ageaura guard: dropped landing angle key {key}")
-    for key, meta in raw_angles.items():
-        if key.startswith("_") or ar.classify_handle(key) != "deny":
-            angles[key] = meta
-    h, meta, angle, age, stale, why = pick(live_products(), angles, history(), window)
-    try:
-        line = ticket_line(h, meta["store"], angle, meta.get("audience", ""), today())
-        line = br.prepare_ticket(line)
-    except br.GuardError as e:
-        sys.exit(f"✗ brand_rules rejected the ticket: {e}")
-    v = br.violations(line)
-    if v:
-        sys.exit(f"✗ brand_rules rejected the ticket: {v}")
-    print(f"pick: {h} (last used {'never' if age > 10000 else f'{age} day(s) ago'}{'; every product used inside the window — LRU fallback' if stale else ''})")
-    if why:
-        print("skipped:", "; ".join(f"{k}: {v}" for k, v in why.items()))
-    print(line)
-    if dry:
-        return
-    if not q.endswith("\n"):
-        q += "\n"
-    open(QUEUE, "w").write(q + line + "\n")
-    r = subprocess.run(["/usr/bin/python3", os.path.join(ROOT, "scripts", "lint_tickets.py"), QUEUE], capture_output=True, text=True)
-    if r.returncode != 0:
-        open(QUEUE, "w").write(q)  # roll back
-        sys.exit(f"✗ lint_tickets failed, ticket NOT added:\n{r.stdout}{r.stderr}")
-    print("added to daily-landing-tickets.md (lint ok)")
+        print("queue already has an open ticket: %s" % open_lines[0])
+        return 0
+    return add_until(original, len(open_lines) + 1, dry)
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main() or 0)

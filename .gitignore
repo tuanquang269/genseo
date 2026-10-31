@@ -38,3 +38,16 @@ landing_drafts/*/cdn_map.json
 # local secrets (Shopify CLI control app etc.)
 .env
 landing_drafts/*/img/
+
+# Local Claude worktrees and session files. Not the pipeline.
+.claude/
+
+# Hand backups left beside tracked files. The originals stay tracked.
+*.bak
+*.bak-*
+
+# Local burn-check notes. board/ideas.csv stays tracked.
+board/burn-pick-*.md
+
+# Scratch dirs from one-off runs.
+.run-*/

@@ -307,16 +307,38 @@ class Gates(unittest.TestCase):
         self.assertEqual(counts, {"N things to know": 1})
 
 
+def open_florafresh_label_errors(block):
+    """Label problems on one open FloraFresh ticket. An empty queue has nothing to check."""
+    head = block.split("\n")[0][:60]
+    errors = [f"{head}: {v}" for v in br.violations(block)]
+    if ff.TICKET_LINE not in block:
+        errors.append(head + ": missing Supplement Facts label line")
+    if "15 billion" in block:
+        errors.append(head + ": 15 billion")
+    return errors
+
+
 class QueueData(unittest.TestCase):
     def test_open_florafresh_tickets_follow_the_label(self):
-        blocks = re.split(r"\n(?=- \[|## \[)", read("daily-tickets.md"))
-        open_ff = [b for b in blocks if OPEN_HEAD.match(b) and FF_RX.search(b)]
-        self.assertTrue(open_ff)
-        for block in open_ff:
-            head = block.split("\n")[0][:60]
-            self.assertEqual(br.violations(block), [], head)
-            self.assertIn(ff.TICKET_LINE, block, head)
-            self.assertNotIn("15 billion", block, head)
+        text = read("daily-tickets.md")
+        blocks = re.split(r"\n(?=- \[|## \[)", text)
+        open_blocks = [b for b in blocks if OPEN_HEAD.match(b)]
+        # The splitter has to see every open checkbox, so a broken parse cannot
+        # hide a bad ticket behind an empty match. Zero open FloraFresh tickets
+        # is a valid queue: the runner publishes them, and DONE tickets are out
+        # of scope. Every ticket that is still open must carry the label line.
+        self.assertEqual(len(open_blocks), len(re.findall(r"(?m)^(?:- \[ \]|## \[ \])", text)))
+        good = (
+            "- [ ] **#T — vaginal probiotics**\n"
+            "  - **Hero product:** `/products/" + ff.HANDLE + "`\n"
+            "  - " + ff.TICKET_LINE + "\n"
+        )
+        self.assertEqual(open_florafresh_label_errors(good), [])
+        self.assertTrue(open_florafresh_label_errors(good + "Each serving delivers 15 billion CFU.\n"))
+        self.assertTrue(open_florafresh_label_errors(good.replace("  - " + ff.TICKET_LINE + "\n", "")))
+        for block in open_blocks:
+            if FF_RX.search(block):
+                self.assertEqual(open_florafresh_label_errors(block), [])
 
     def test_board_and_bank_prefer_the_label(self):
         with open(os.path.join(ROOT, "board", "ideas.csv"), encoding="utf-8", newline="") as fh:

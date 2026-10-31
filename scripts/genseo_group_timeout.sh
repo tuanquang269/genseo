@@ -119,10 +119,12 @@ sub ppid_map {
     closedir $dh;
     return %ppid if %ppid;
   }
+  # A qw() list warns on the comma in pid=,ppid= ("possible attempt to
+  # separate words"). That line was landing in launchd's stderr every ticket.
   for my $cmd (
-    [qw(ps -ax -o pid=,ppid=)],
-    [qw(/bin/ps -ax -o pid=,ppid=)],
-    [qw(/usr/bin/ps -ax -o pid=,ppid=)],
+    ['ps', '-ax', '-o', 'pid=,ppid='],
+    ['/bin/ps', '-ax', '-o', 'pid=,ppid='],
+    ['/usr/bin/ps', '-ax', '-o', 'pid=,ppid='],
   ) {
     %ppid = ();
     open my $ps, "-|", @$cmd or next;
@@ -194,8 +196,9 @@ my $pid = fork();
 die "genseo_group_timeout: fork: $!\n" unless defined $pid;
 if ($pid == 0) {
   setsid() or _exit 125;
-  exec @ARGV;
-  _exit 127;
+  # One statement. A following _exit is "statement unlikely to be reached"
+  # and was the other perl warning on every launchd stderr.
+  exec @ARGV or _exit 127;
 }
 
 $SIG{TERM} = sub { $forward = 15 };

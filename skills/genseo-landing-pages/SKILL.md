@@ -127,7 +127,7 @@ Unpublished headless runs do not ask. A local preview, `GENSEO_LANDING_DRAFT=1`,
 10. Commit `landing_drafts/<slug>.json`, `.claims.md`, `<slug>/body.html`, screenshots. `tmp_images/` is not versioned.
 
 ## Daily listicle lane (Kevin 2026-10-08) — 1 UNPUBLISHED draft per day, Kevin approves
-- launchd `com.pati.genseo-landing` 08:15 + 16:15 catch-up → `scripts/run_landing_daily.sh` (MacBook = standby,
+- launchd `com.pati.genseo-landing` 08:15 + 09:20 check + 16:15 catch-up → `scripts/run_landing_daily.sh` (MacBook = standby,
   waits 75 min; Mini = primary; plists in `deploy/com.pati.genseo-landing.{macbook,mini}.plist`). Kill switch:
   `touch state/landing-daily.disabled`.
 - Article batch on the same Mac (`state/daily.lock`): the lane yields to it at most `GENSEO_LANDING_ARTICLE_YIELD_MIN`
@@ -144,9 +144,10 @@ Unpublished headless runs do not ask. A local preview, `GENSEO_LANDING_DRAFT=1`,
   counts Shopify pages with a `gsl-` handle CREATED today (ICT). ≥1 → stand down;
   Shopify unreadable → fail closed. `landing_publisher.py` (env `GENSEO_LANDING_DAILY=1`) re-checks it right before
   POSTing a new page, refuses `--live`, and requires a `gsl-preview-` handle.
-- Queue `daily-landing-tickets.md` ← `scripts/build_landing_tickets.py` (live products.json → real single SKUs that pass
-  `brand_rules` + have `product_refs/<handle>.png` + an entry in `templates/landing/listicle-angles.json`; LRU product
-  rotation, no repeat inside 6 days; least-used angle) → `lint_tickets.py`.
+- Queue `daily-landing-tickets.md` ← `scripts/build_landing_tickets.py` (the daily wrapper calls `--ensure` with `GENSEO_LANDING_LOW_WATER`, default 2, and does not repeat an angle already on an open line; live products.json → real single SKUs that pass
+  `brand_rules` + have `product_refs/<handle>.png` + an entry in `templates/landing/listicle-angles.json`; priority-weighted
+  rotation — ShilaSource resin and AgeAura NMN+TMG at least as often as any other product in any 7-day window, no
+  back-to-back day unless one product is eligible, undated specs are not a use; least-used angle) → `lint_tickets.py`.
 - Reviews: `scripts/trustpilot_reviews.mjs` → `state/trustpilot/wellnessnest.json` (4–5★ only, verbatim, TrustScore +
   count as displayed). The agent quotes only from that file; missing → placeholder, never invented.
 - Agent: `run_landing_headless.sh --queue daily-landing-tickets.md --next` with the DAILY rules (ref listicle,
@@ -175,7 +176,7 @@ Unpublished headless runs do not ask. A local preview, `GENSEO_LANDING_DRAFT=1`,
 ### Premium visual layer (2026-10-08, Kevin: "UI/UX and product images still too ugly")
 - Spec `"style": "premium"` + `"template_suffix": "gsl-ref-listicle-v2"` appends `templates/landing/ref/premium.css` (forest/bone/sage palette, radius lock 24/16/pill, tinted shadows, 19px body, number badges, gradient charts, review cards, polished offer, mobile sticky CTA after the bridge). v1 pages are untouched. The theme file is installed once; a CSS change means a NEW suffix (v3), never overwriting.
 - Keys: hero.kicker/image/chip/cta/source/focal_y, trust[] + trust_source, items[].evidence_label, items[].layout "callout", expert.reviews[] (real 4-5★ Trustpilot + URL), offer.rating_html/price{now,was,tag,note}/bullets/price_source, sticky_cta, pack_images[]. Model: landing_drafts/ageaura-nmn-listicle-261008.json.
-- Images: one art direction for the whole page. Pack shots are generated with the real cutout as `--ref`, gated by `landing_label_gate.py` and a mark zoom check, with `landing_pack_shots.py` composites as the fallback (scripts/tools/README.md). A whitelist pack shot fails closed when `product_refs/<handle>.label.json` is missing, OCR fails, or the host has no macOS Vision (`swift` + `scripts/tools/label_ocr.swift`). That is not a pass. Skip the gate only for images that are not whitelist pack shots. See `docs/LABEL_OCR_GATE.md`.
+- Images: one art direction for the whole page. Pack shots are generated with the real cutout as `--ref`, gated by `landing_label_gate.py` and a mark zoom check, with `landing_pack_shots.py` composites as the fallback (scripts/tools/README.md). A whitelist pack shot fails closed when `product_refs/<handle>.label.json` is missing, OCR fails, or the host has no macOS Vision (`swift` + `scripts/tools/label_ocr.swift`). That is not a pass. Skip the gate only for images that are not whitelist pack shots. `validate_landing.py` asks for `pack_images` only when `product_refs/<handle>-cutout.png` exists. A label file without that cutout (Turkesterone, Shockwave, Gold Resin, FloraFresh) must omit `pack_images` and use the live PDP photo or `product_refs/<handle>.png`. See `docs/LABEL_OCR_GATE.md`.
 - Visual benchmark: `scripts/landing_bench_vision.py state/bench/live state/bench/<new> --label <x> --calls 6` runs a blind A/B in random order with two vision judges (gem9: gemini-3.1-pro-low + gpt-5.6-luna, $0) on 7 criteria. Reference = the LIVE omnicreatine listicle (state/bench/live-*.png). v3 result: new 7.21 vs live 5.50, ahead on all 7 criteria.
 
 ### Approval = the REAL Shopify render (2026-10-08)

@@ -16,6 +16,34 @@ unset ANTHROPIC_API_KEY
 PRINT_PROMPT=0
 if [ "${1:-}" = "--print-prompt" ]; then PRINT_PROMPT=1; shift; fi
 
+# Same open-queue view as deploy/grokbot-genseo-daily.sh. state/queue-closures.json
+# hides tickets already closed on article/* or publish/* after a return to main.
+# A missing helper keeps the raw grep. An unreadable ledger fails closed.
+queue_open_count() {
+  local n="" script="$HOME/genseo/scripts/genseo_queue_closures.py"
+  if [ ! -f "$script" ]; then
+    n=$(grep -cE '^(- \[ \]|## \[ \])' "$1" 2>/dev/null || true)
+    case "$n" in
+      ''|*[!0-9]*) n=0 ;;
+    esac
+    printf '%s\n' "$n"
+    return 0
+  fi
+  n=$(/usr/bin/python3 "$script" count --queue "$1" 2>/dev/null) || return 1
+  case "$n" in
+    ''|*[!0-9]*) return 1 ;;
+  esac
+  printf '%s\n' "$n"
+}
+queue_first_open() {
+  local script="$HOME/genseo/scripts/genseo_queue_closures.py"
+  if [ ! -f "$script" ]; then
+    grep -m1 -E '^(- \[ \]|## \[ \])' "$1" 2>/dev/null || true
+    return 0
+  fi
+  /usr/bin/python3 "$script" first --queue "$1" 2>/dev/null || return 1
+}
+
 # GENSEO_ARTICLE_PRINT_SETTINGS=1 prints the article-run --settings payload and exits
 # before the model lane, the live-count guard, and claude.
 # tests/test_article_prompt_waiver.sh uses it. No Shopify, no claude.
@@ -72,7 +100,7 @@ if [ -z "$CLAUDE_BIN" ]; then echo "FATAL: claude CLI not found"; exit 1; fi
 cd "$HOME/genseo" || exit 1
 # Empty queue — do not burn the model lane (Kevin/Grok Bot 2026-10-05; synced from Mini).
 # Counts both ticket styles: "- [ ] **#NN" (2026-08-15+) and "## [ ] Ticket #NN" (batch 1-2).
-_OPEN=$(grep -cE '^(- \[ \]|## \[ \])' "$HOME/genseo/daily-tickets.md" 2>/dev/null || true)
+_OPEN=$(queue_open_count "$HOME/genseo/daily-tickets.md") || exit 1
 _OPEN=${_OPEN:-0}
 if [ "$_OPEN" -eq 0 ]; then
   echo "[$(date '+%F %T')] retry skipped: ticket queue empty" >> "$HOME/genseo/logs/articles-retry.log"
@@ -128,7 +156,7 @@ L. ShilaSource Himalayan Shilajit Resin pack label is product_refs/shilasource-h
 T. Turkesterone Advanced Formula pack label is product_refs/turkesterone-advanced-formula.label.json. Repeat only that file'\''s required and optional lines. No milligram amount and no Supplement Facts panel were read into that file. Do not add one. The capsule badge is the separate lines 60 and Capsules. Do not state a milligram amount, a serving count, a different capsule count, or a day-supply. python3 scripts/turkesterone_rules.py --brief prints the line. Bare turkesterone (the ingredient) is not this SKU. Premium Himalayan Shilajit Gummies, Shilajit Shockwave, Pure Shilajit Gold Resin, and ShilaSource resin are separate products and are not covered by this rule.
 F. Never run Bash commands in the background (no run_in_background, no trailing &): this is a one-shot -p run and it ENDS when you stop talking, killing background image jobs (2026-10-06 10:47 a run exited mid-images). Run image generations in the foreground, one or several per command.
 E. NEVER modify an existing live post: no [REFRESH EXISTING], no shopify_publisher.py update on an article you did not create in this run. If STEP 0/0.5 says refresh or duplicate, mark the ticket SKIPPED and move to the next one.
-D. If the ticket batch header says "ALL images NO-FACE" (MacBook failover lane, or the env value GENSEO_NO_FACE is exactly 1; this run: '"${GENSEO_NO_FACE:-0}"'): that OVERRIDES the HERO / PERSONA ROTATION / FACE ANGLE rules above for this run — do NOT run persona_picker.py at all, never pass --persona-ref, make the hero a NO-FACE real-pack-in-a-real-scene image (--product-ref + --qc, no --ugc) and all 3 inline images no-face (--ugc --qc). Log "persona: none (failover no-face)" in the tracker/report.
+D. People are the default article image lane (the env value GENSEO_NO_FACE is exactly 1; this run: '"${GENSEO_NO_FACE:-0}"'). That printed value does not switch this run onto a no-face lane, including when a stale LaunchAgent still exports 1. A ticket batch header that says "ALL images NO-FACE", including the 2026-10-06 MacBook failover batches, does not switch this run either. Run persona_picker.py once and follow the HERO / PERSONA ROTATION / FACE ANGLE rules. The hero shows the picked face and the real pack unless pick prints hero NO-FACE (every 3rd hero, or an empty bank). One inline image uses that same face. The other inline images have no recognizable face but still show a person (a hand, a forearm, or a body cropped below the eyes), not an empty pack-only still life. If ima2 refuses a face prompt or that one image fails QC after the two allowed re-rolls, replace only that image with this human no-face fallback and release the angle if the published article will not use it. Do not turn the rest of the article into empty product shots. Log "persona: none (failover no-face)" only when pick itself printed hero NO-FACE.
 
 SCOPE_WAIVER (Kevin, standing approval for the daily blog article):
 - This run writes and publishes one blog article from daily-tickets.md. Kevin already approved that package on 2026-08-09 (auto publish visible). Do not ask a human to proceed. Do not stop on a scope gate.
@@ -145,23 +173,20 @@ SCOPE_WAIVER (Kevin, standing approval for the daily blog article):
 # Rule D above splices GENSEO_NO_FACE as "this run: N". Do not write
 # GENSEO_NO_FACE=$N = 1 — that quote break rendered as "GENSEO_NO_FACE=1 = 1".
 TICKET_FILE="$HOME/genseo/daily-tickets.md"
-# Same grep as deploy/grokbot-genseo-daily.sh. A CRLF ticket file still matches
-# (the pattern is not anchored at end of line); drop the trailing CR so the
-# pointer is one clean line.
-FIRST_OPEN="$(grep -m1 -E '^(- \[ \]|## \[ \])' "$TICKET_FILE" 2>/dev/null || true)"
+# Same view as deploy/grokbot-genseo-daily.sh, including the closure ledger.
+# A CRLF ticket file still matches; drop the trailing CR so the pointer is one line.
+FIRST_OPEN="$(queue_first_open "$TICKET_FILE")" || exit 1
 FIRST_OPEN="${FIRST_OPEN%$'\r'}"
-OPEN_N="$(grep -cE '^(- \[ \]|## \[ \])' "$TICKET_FILE" 2>/dev/null || true)"
+OPEN_N="$(queue_open_count "$TICKET_FILE")" || exit 1
 case "$OPEN_N" in
   ''|*[!0-9]*) OPEN_N=0 ;;
 esac
-# MacBook plist sets GENSEO_NO_FACE=1. The long persona block below is easy to
-# follow anyway (2026-10-16 #CA1009-8 committed a face and personas/index.json).
-# Put the override first, before those rules.
-if [ "${GENSEO_NO_FACE:-0}" = "1" ]; then
-  PROMPT="NO-FACE LANE (GENSEO_NO_FACE=1). Do not run persona_picker.py. Do not pass --persona-ref. Do not edit or commit personas/index.json. The hero is a no-face pack in a real scene (--product-ref + --qc, no --ugc). All inline images are no-face. This overrides the persona, gaze, and face-angle rules later in this prompt.
-
-$PROMPT"
-fi
+# 2026-10-16 7a33142 put a NO-FACE LANE banner on the first line whenever
+# GENSEO_NO_FACE=1. The MacBook article plist has exported 1 since 2026-10-06
+# (26a706e). After that banner, every article through 2026-10-19 logged
+# "persona: none" and the pictures lost people. The value is still printed in
+# rule D so a stale plist is visible. It does not switch the lane. No-face is
+# the per-image fallback in rule D, after a face refusal or two QC misses.
 if [ -n "$FIRST_OPEN" ]; then
   PROMPT="$PROMPT
 
@@ -169,7 +194,7 @@ QUEUE POINTER (shell grep of daily-tickets.md, same pattern as the daily wrapper
 Open tickets: $OPEN_N
 First open line:
 $FIRST_OPEN
-Process that ticket and no other. Older sections that say the queue is EMPTY or \"## Refill needed\" are history. Do not append a refill note while this line is still open."
+Process that ticket and no other. Older sections that say the queue is EMPTY or \"## Refill needed\" are history. Do not append a refill note while this line is still open. Lines listed in state/queue-closures.json are already closed on this Mac. This pointer already skipped them. Do not process a skipped line."
 else
   PROMPT="$PROMPT
 

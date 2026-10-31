@@ -1,9 +1,14 @@
 #!/bin/bash
 # GenSeo daily batch — runs on WHICHEVER Mac is online (Kevin 2026-10-06: no automation may depend on one Mac).
-# launchd com.pati.genseo-daily: 07:30 batch + 14:47 catch-up (same slots as the Mini).
+# launchd com.pati.genseo-daily: 07:30 batch, 08:05 check, 14:47 catch-up.
 # Loops run_ticket_headless.sh (one ticket per call) until today's ICT live count reaches GENSEO_DAILY_TARGET.
 # GENSEO_AUTO_REFILL=1: when fewer tickets are open than are still to publish today, scripts/refill_tickets.py
 # tops daily-tickets.md up once per run (gated, lint-checked; docs/TICKET_REFILL.md). Default off.
+# Queue low-water is separate and on by default. Once per run, if open tickets are below
+# GENSEO_QUEUE_LOW_WATER (default 2 * GENSEO_DAILY_TARGET), the same refill_tickets.py runs
+# ticket-only: public storefront reads, no Shopify write, no paid API. A short bank
+# (exit 3) writes state/queue-low-water.marker and the run continues. It does not
+# call an Ads or LLM miner. GENSEO_QUEUE_LOW_WATER=0 turns the guard off.
 #
 # Double-publish prevention (the two Macs share NO writable state: vault Syncthing is MacBook->Mini one-way,
 # ticket files are per-Mac, the Mini's repo commits are unpushed) — so the PUBLIC SITE is the shared state:
@@ -31,7 +36,7 @@
 #      no-publish; the EXIT trap releases state/daily.lock when this wrapper returns.
 # launchd runs ~/bin/grokbot-genseo-daily.sh, a copy of this file. After git pull:
 #   bash ~/genseo/scripts/install_mac_daily_wrapper.sh
-# Pulling alone is not enough. That copy is what 07:30 and 14:47 execute. The
+# Pulling alone is not enough. That copy is what 07:30, 08:05, and 14:47 execute. The
 # installer does not start launchd and does not change the loaded plist. The role
 # is LaunchAgent environment: copy deploy/com.pati.genseo-daily.macbook.plist over
 # ~/Library/LaunchAgents/com.pati.genseo-daily.plist and bootstrap the agent again,
@@ -47,9 +52,70 @@
 # (default 3, cap 5) with GENSEO_LIVE_FEED_BACKOFF_SEC between tries (default 5,
 # cap 30), then fail closed. A readable count does not sleep there and still
 # runs the peer-active check. That retry is not the wake wait.
+# Checkout: after that wait succeeds, scripts/genseo_sync_main.sh runs
+# `git fetch origin main` and `git merge --ff-only origin/main` when local
+# main can fast-forward. Untracked files that would not be overwritten stay.
+# A tracked edit that would be overwritten is stashed or backed up and logged.
+# A publish/* or article/* branch returns to main (the branch ref is kept)
+# after queue closures are recorded in state/queue-closures.json. The fetch runs
+# from a copy of this file so git does not rewrite the script bash is reading.
+# It does not fast-forward while another GenSeo job holds a lane lock or has
+# a checkout script open. A fast-forward re-execs
+# ~/genseo/deploy/grokbot-genseo-daily.sh (same PID, so state/daily.lock stays
+# held). After each ticket, HEAD is switched back to main when it is still on
+# publish/* or article/*. launchd runs ~/bin. After a successful sync this file sources
+# scripts/genseo_self_apply.sh, which reinstalls ~/bin when the bytes differ
+# (bash scripts/install_mac_daily_wrapper.sh) and reloads a changed LaunchAgent
+# only after this process exits. It does not start a run. Later edits of this
+# file are read from the repo on the re-exec. Pulling alone does not update
+# ~/bin until that self-apply runs. A ~/bin older than the re-exec still needs
+# one manual bash scripts/install_mac_daily_wrapper.sh.
+# Sleep (2026-10-17): the Mac was in maintenance sleep at 07:27 and dark-woke
+# at 07:38 with DNS down until 07:39. pmset "sleep 1" is an idle timer, so a
+# running batch can be suspended without a power assertion. Before the stable
+# copy, this file arms caffeinate -i -s -w of its own PID
+# (scripts/genseo_power_assert.sh). That covers the DNS wait and every ticket.
+# -i blocks idle sleep. -s blocks system sleep on AC, including a dark wake
+# returning to sleep. On battery -s is not enforced. No sudo and no pmset
+# change. A missing caffeinate is logged and the run continues. The loaded
+# plist should also put /usr/bin/caffeinate -i -s in front of this file so the
+# assertion starts at launchd's exec. Self-apply copies that plist and
+# bootstraps it after this process exits. An agent that was never loaded still
+# needs one manual copy and bootstrap. RunAtLoad stays false.
+# The 08:05 slot is this same job. launchd does not start a second instance
+# while one is still running, and the daily lock exits 0 if a second copy
+# does start. A count that has already reached the daily target does not
+# start a ticket. A 07:30 that never fired, or that exited early, is retried
+# at 08:05 instead of waiting until 14:47. Intervals the Mac slept through
+# coalesce into one fire on wake. The DNS wait below still bounds a resolver
+# that is down for about a minute (the 07:38 dark wake) inside its 600s budget.
 set -uo pipefail
 export PATH="$HOME/.local/bin:$HOME/.npm-global/bin:$HOME/.codex/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 G="$HOME/genseo"; PY=/usr/bin/python3
+mkdir -p "$G/logs" "$G/state"
+if [ -f "$G/scripts/genseo_errlog.sh" ]; then
+  # shellcheck source=../scripts/genseo_errlog.sh
+  . "$G/scripts/genseo_errlog.sh" || printf '%s\n' "WARN: could not load scripts/genseo_errlog.sh" >&2
+  if declare -F genseo_errlog_begin >/dev/null 2>&1; then
+    genseo_errlog_begin "$G/logs/launchd-daily.err.log" || true
+  fi
+fi
+if [ -f "$G/scripts/genseo_power_assert.sh" ]; then
+  # shellcheck source=../scripts/genseo_power_assert.sh
+  . "$G/scripts/genseo_power_assert.sh" || {
+    printf '%s\n' "FATAL: could not load scripts/genseo_power_assert.sh" >&2
+    exit 1
+  }
+  genseo_power_assert_arm || true
+fi
+if [ -f "$G/scripts/genseo_sync_main.sh" ]; then
+  # shellcheck source=../scripts/genseo_sync_main.sh
+  . "$G/scripts/genseo_sync_main.sh" || {
+    printf '%s\n' "FATAL: could not load scripts/genseo_sync_main.sh" >&2
+    exit 1
+  }
+  genseo_exec_stable_copy grokbot-genseo-daily "$@"
+fi
 TARGET="${GENSEO_DAILY_TARGET:-5}"
 ROLE="${GENSEO_HOST_ROLE:-primary}"
 DELAY="${GENSEO_STANDBY_DELAY_MIN:-20}"
@@ -62,6 +128,16 @@ esac
 REFILL="${GENSEO_AUTO_REFILL:-0}"
 REFILL_BUFFER="${GENSEO_REFILL_BUFFER:-3}"
 REFILL_PREFIX="${GENSEO_TICKET_PREFIX:-$([ "$ROLE" = standby ] && echo MB || echo MM)}"
+# Default is two days of the daily target (10 when the target is 5). 0 disables.
+# A non-numeric value is ignored so a bad plist cannot turn the guard off.
+LOW_WATER_RAW="${GENSEO_QUEUE_LOW_WATER-}"
+LOW_WATER_BAD=0
+case "$LOW_WATER_RAW" in
+  '') LOW_WATER=$(( TARGET * 2 )) ;;
+  *[!0-9]*) LOW_WATER=$(( TARGET * 2 )); LOW_WATER_BAD=1 ;;
+  *) LOW_WATER=$LOW_WATER_RAW ;;
+esac
+LOW_WATER_DONE=0
 # Extra reads after the first -1. 0 keeps the old single-check fail-closed.
 # Caps stop a bad LaunchAgent value from spinning or sleeping for hours.
 LIVE_FEED_RETRIES="${GENSEO_LIVE_FEED_RETRIES:-3}"
@@ -83,6 +159,9 @@ LOCK="$G/state/daily.lock"
 ts(){ date '+%F %T'; }
 say(){ echo "[$(ts)] [$HOST/$ROLE] $*" | tee -a "$LOG"; }
 export GENSEO_DAILY_TARGET="$TARGET"
+if declare -F genseo_power_assert_note >/dev/null 2>&1; then
+  genseo_power_assert_note || true
+fi
 
 if [ ! -f "$G/scripts/genseo_daily_lock.sh" ] || [ ! -f "$G/scripts/genseo_group_timeout.sh" ]; then
   say "FATAL: missing scripts/genseo_daily_lock.sh or scripts/genseo_group_timeout.sh — git pull ~/genseo, then bash scripts/install_mac_daily_wrapper.sh"
@@ -96,25 +175,164 @@ fi
 . "$G/scripts/genseo_daily_lock.sh" || { say "FATAL: could not load daily lock helper"; exit 1; }
 # shellcheck source=../scripts/genseo_wait_for_network.sh
 . "$G/scripts/genseo_wait_for_network.sh" || { say "FATAL: could not load network wait helper"; exit 1; }
-genseo_daily_lock_acquire
-lock_rc=$?
-case "$lock_rc" in
-  0) ;;
-  10) exit 0 ;;
-  *) exit "$lock_rc" ;;
-esac
-trap 'genseo_daily_lock_release' EXIT
+# A re-exec after the fast-forward keeps this PID and the lock it already holds.
+lock_owned=0
+if declare -F genseo_daily_lock_is_ours >/dev/null 2>&1 && genseo_daily_lock_is_ours; then
+  lock_owned=1
+fi
+if [ "$lock_owned" != 1 ]; then
+  genseo_daily_lock_acquire
+  lock_rc=$?
+  case "$lock_rc" in
+    0) ;;
+    10) exit 0 ;;
+    *) exit "$lock_rc" ;;
+  esac
+fi
+if declare -F genseo_return_publish_branch_to_main >/dev/null 2>&1 && declare -F genseo_stable_copy_release >/dev/null 2>&1; then
+  trap 'genseo_return_publish_branch_to_main || true; genseo_daily_lock_release; genseo_stable_copy_release now || true' EXIT
+elif declare -F genseo_stable_copy_release >/dev/null 2>&1; then
+  trap 'genseo_daily_lock_release; genseo_stable_copy_release now || true' EXIT
+else
+  trap 'genseo_daily_lock_release' EXIT
+fi
 
 live_urls(){ $PY "$G/scripts/genseo_published_today.py" --json 2>/dev/null | $PY -c 'import json,sys
 d=json.load(sys.stdin); [print(e["url"]) for e in d.get("entries",[])]' 2>/dev/null; }
 live_count(){ local n; n="$($PY "$G/scripts/genseo_published_today.py" 2>/dev/null | tail -1)"; case "$n" in ''|*[!0-9-]*) n=-1;; esac; echo "$n"; }
 
+# Open checkbox lines, minus tickets this Mac already closed on article/* or
+# publish/* (state/queue-closures.json). A checkout that predates the helper
+# keeps the old grep. A helper that cannot read the ledger fails closed:
+# falling back to grep would reopen published tickets.
+queue_open_count() {
+  local n="" script="$G/scripts/genseo_queue_closures.py"
+  if [ ! -f "$script" ]; then
+    n=$(grep -cE '^(- \[ \]|## \[ \])' "$1" 2>/dev/null || true)
+    case "$n" in
+      ''|*[!0-9]*) n=0 ;;
+    esac
+    printf '%s\n' "$n"
+    return 0
+  fi
+  n="$($PY "$script" count --queue "$1" 2>/dev/null)" || return 1
+  case "$n" in
+    ''|*[!0-9]*) return 1 ;;
+  esac
+  printf '%s\n' "$n"
+}
+
+_queue_low_marker() {
+  local marker=$1 open_n=$2 rc=$3 why=$4
+  mkdir -p "$(dirname "$marker")"
+  {
+    printf '%s\n' "QUEUE LOW"
+    printf 'time=%s\n' "$(date '+%F %T')"
+    printf 'open=%s\n' "$open_n"
+    printf 'threshold=%s\n' "$LOW_WATER"
+    printf 'exit=%s\n' "$rc"
+    printf 'reason=%s\n' "$why"
+    printf '%s\n' "action=add topics to templates/article-topic-bank.json or board/ideas.csv"
+    printf '%s\n' "paid_api=not called"
+  } > "$marker"
+}
+
+# Ticket-only. refill_tickets.py reads the public storefront and appends
+# daily-tickets.md. It does not call Shopify Admin and it does not call a
+# paid API. Exit 3 writes the marker and the run continues. Do not fall
+# through to an Ads or LLM miner. The lane lock is already held here.
+genseo_queue_low_water() {
+  local open need_add frc why marker
+  if [ "${LOW_WATER_DONE:-0}" = 1 ]; then
+    return 0
+  fi
+  LOW_WATER_DONE=1
+  if [ "${LOW_WATER:-0}" = 0 ]; then
+    return 0
+  fi
+  marker="$G/state/queue-low-water.marker"
+  open=$(queue_open_count "$G/daily-tickets.md") || { say "queue closures unreadable — fail closed, exit"; exit 1; }
+  case "${open:-}" in
+    ''|*[!0-9]*) open=0 ;;
+  esac
+  if [ "$open" -ge "$LOW_WATER" ]; then
+    say "queue low-water: $open open ticket(s) >= $LOW_WATER — ok"
+    rm -f "$marker"
+    return 0
+  fi
+  need_add=$(( LOW_WATER - open ))
+  say "QUEUE LOW: $open open article ticket(s) < $LOW_WATER (2 days of target $TARGET is $(( TARGET * 2 )); threshold $LOW_WATER) — refill_tickets.py ticket-only, no Shopify write, no paid API (prefix $REFILL_PREFIX)"
+  if [ ! -f "$G/scripts/refill_tickets.py" ]; then
+    why="refill_tickets.py missing"
+    say "QUEUE LOW: $why — fail-soft, no miner"
+    _queue_low_marker "$marker" "$open" 127 "$why"
+    return 0
+  fi
+  /bin/bash "$G/scripts/genseo_group_timeout.sh" 600 \
+    "$PY" "$G/scripts/refill_tickets.py" \
+    --if-below "$LOW_WATER" --count "$need_add" --prefix "$REFILL_PREFIX" \
+    >> "$LOG" 2>&1
+  frc=$?
+  case "$frc" in
+    0)
+      say "queue low-water: refill_tickets.py exit 0"
+      rm -f "$marker"
+      git -C "$G" add -- daily-tickets.md board/ideas.csv 2>/dev/null \
+        && git -C "$G" commit -q -m "queue: refill_tickets.py on $HOST" -- daily-tickets.md board/ideas.csv >/dev/null 2>&1 \
+        || true
+      ;;
+    3)
+      why="fewer topics passed than asked — add topics to the bank or board; no paid miner"
+      say "QUEUE LOW: refill exit 3 — $why"
+      _queue_low_marker "$marker" "$open" 3 "$why"
+      git -C "$G" add -- daily-tickets.md board/ideas.csv 2>/dev/null \
+        && git -C "$G" commit -q -m "queue: refill_tickets.py on $HOST" -- daily-tickets.md board/ideas.csv >/dev/null 2>&1 \
+        || true
+      ;;
+    124)
+      why="refill timed out after 600s"
+      say "QUEUE LOW: $why — fail-soft"
+      _queue_low_marker "$marker" "$open" 124 "$why"
+      ;;
+    *)
+      why="refill failed (exit $frc) — see $LOG"
+      say "QUEUE LOW: $why — fail-soft"
+      _queue_low_marker "$marker" "$open" "$frc" "$why"
+      ;;
+  esac
+  return 0
+}
+
 # The start line below is the first feed read. Wait for DNS before it so a
 # wake does not burn the short live-feed retry on ENOTFOUND / -1.
-if ! genseo_wait_for_network; then
-  exit 1
+# The fast-forward is after that wait and before the feed read. A re-exec
+# already waited, and it already holds the lock.
+if [ "${GENSEO_NET_WAIT_DONE:-}" != 1 ]; then
+  if ! genseo_wait_for_network; then
+    exit 1
+  fi
+  export GENSEO_NET_WAIT_DONE=1
+fi
+if [ "${GENSEO_MAIN_SYNCED:-}" != 1 ]; then
+  if declare -F genseo_sync_origin_main >/dev/null 2>&1; then
+    genseo_sync_origin_main "$G/deploy/grokbot-genseo-daily.sh" "$@"
+  else
+    say "WARN: origin/main not updated — missing scripts/genseo_sync_main.sh — continuing on the current checkout"
+  fi
+fi
+# Only after a successful sync. A fetch failure, a refused fast-forward, or a
+# dry-run leaves GENSEO_MAIN_SYNCED unset and does not touch ~/bin or launchd.
+if [ "${GENSEO_MAIN_SYNCED:-}" = 1 ] && [ -f "$G/scripts/genseo_self_apply.sh" ]; then
+  # shellcheck source=../scripts/genseo_self_apply.sh
+  . "$G/scripts/genseo_self_apply.sh" || say "WARN: self-apply could not be loaded — continuing on the current setup"
+  if declare -F genseo_self_apply >/dev/null 2>&1; then
+    genseo_self_apply com.pati.genseo-daily || say "WARN: self-apply failed — continuing on the current setup"
+  fi
 fi
 say "start (target $TARGET/day, live now $(live_count))"
+if [ "${LOW_WATER_BAD:-0}" = 1 ]; then
+  say "QUEUE LOW: ignoring bad GENSEO_QUEUE_LOW_WATER — using $LOW_WATER"
+fi
 if [ "$ROLE" = "standby" ] && [ "${GENSEO_NO_DELAY:-0}" != "1" ]; then
   say "standby: waiting ${DELAY} min so a healthy peer Mac goes first"; sleep $(( DELAY * 60 ))
 fi
@@ -132,6 +350,7 @@ for i in $(seq 1 $(( MAX_RUNS + ${GENSEO_PEER_MAX_WAITS:-6} ))); do
     n="$(live_count)"
   done
   if [ "$n" -lt 0 ]; then say "live feed unreadable — fail closed, exit"; exit 1; fi
+  genseo_queue_low_water || say "QUEUE LOW: guard error — continuing"
   if [ "$n" -ge "$TARGET" ]; then say "DONE: $n/$TARGET live for $DAY (ICT)"; exit 0; fi
   peer="$($PY "$G/scripts/genseo_published_today.py" --peer-active "$PEER_WIN" --local-log "$MINE" 2>/dev/null)"; rc=$?
   if [ "$rc" = 3 ]; then
@@ -142,7 +361,7 @@ for i in $(seq 1 $(( MAX_RUNS + ${GENSEO_PEER_MAX_WAITS:-6} ))); do
     say "$peer — other Mac is publishing; wait ${PEER_WIN} min ($pw/$PEER_MAX_WAITS) then re-check (take over if it went quiet)"
     sleep $(( PEER_WIN * 60 )); continue
   fi
-  open=$(grep -cE '^(- \[ \]|## \[ \])' "$G/daily-tickets.md" 2>/dev/null || true)
+  open=$(queue_open_count "$G/daily-tickets.md") || { say "queue closures unreadable — fail closed, exit"; exit 1; }
   need=$(( TARGET - n ))
   if [ "$REFILL" = "1" ] && [ "$refilled" = 0 ] && [ "${open:-0}" -lt "$need" ]; then
     refilled=1
@@ -156,7 +375,7 @@ for i in $(seq 1 $(( MAX_RUNS + ${GENSEO_PEER_MAX_WAITS:-6} ))); do
     esac
     git -C "$G" add -- daily-tickets.md board/ideas.csv 2>/dev/null \
       && git -C "$G" commit -q -m "queue: refill_tickets.py on $HOST" -- daily-tickets.md board/ideas.csv >/dev/null 2>&1
-    open=$(grep -cE '^(- \[ \]|## \[ \])' "$G/daily-tickets.md" 2>/dev/null || true)
+    open=$(queue_open_count "$G/daily-tickets.md") || { say "queue closures unreadable — fail closed, exit"; exit 1; }
   fi
   if [ "${open:-0}" -eq 0 ]; then say "ticket queue EMPTY at $n/$TARGET — hard stop (no empty-queue model burn); refill daily-tickets.md"; exit 0; fi
   if ! lint="$($PY "$G/scripts/lint_tickets.py" "$G/daily-tickets.md" 2>&1)"; then
@@ -165,6 +384,9 @@ for i in $(seq 1 $(( MAX_RUNS + ${GENSEO_PEER_MAX_WAITS:-6} ))); do
   before="$(live_urls | sort)"
   say "run $i: live $n/$TARGET, $open open ticket(s) → run_ticket_headless.sh"
   /bin/bash "$G/scripts/genseo_group_timeout.sh" "$TICKET_TIMEOUT" /bin/bash "$G/scripts/run_ticket_headless.sh"; rrc=$?
+  if declare -F genseo_return_publish_branch_to_main >/dev/null 2>&1; then
+    genseo_return_publish_branch_to_main || true
+  fi
   after="$(live_urls | sort)"
   new="$(comm -13 <(echo "$before") <(echo "$after") | sed '/^$/d')"
   if [ -n "$new" ]; then

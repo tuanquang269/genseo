@@ -23,8 +23,11 @@ outside the product/offer card, no product named in the numbered findings for po
 (vault skill claude-design-dtc-listicle-advertorial + PATI-ADAPTATION.md), taste rules from the
 2026-10-08 benchmark (no em/en dashes, paragraphs <= 40 words, H1 <= 55 chars, CTA <= 3 words; errors when
 "daily": true), claims log landing_drafts/<slug>.claims.md exists (versioned next to the spec).
-Premium pack_images (or a spec that claims a label-gate pass) fail closed when the label JSON is
-missing, OCR fails, or the host has no macOS Vision. That is not a skip. See docs/LABEL_OCR_GATE.md.
+Premium pack_images are required only when product_refs/<handle>-cutout.png exists.
+A label file without that cutout must not list pack_images (use the PDP photo or the
+curated png). When the cutout exists, pack_images or a label-gate pass claim fail closed
+when the label JSON is missing, OCR fails, or the host has no macOS Vision. That is not a
+skip. See docs/LABEL_OCR_GATE.md.
 """
 import json, os, re, sys, urllib.request
 

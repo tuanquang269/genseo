@@ -1,6 +1,6 @@
 #!/bin/bash
 # Copy deploy/grokbot-genseo-daily.sh to ~/bin/grokbot-genseo-daily.sh.
-# launchd (07:30 and 14:47) runs that ~/bin copy. git pull does not update it.
+# launchd (07:30, 08:05 check, and 14:47) runs that ~/bin copy. git pull does not update it.
 #
 # On each Mac, after pull:
 #   bash ~/genseo/scripts/install_mac_daily_wrapper.sh
@@ -24,7 +24,10 @@ for arg in "$@"; do
         "GENSEO_HOME defaults to ~/genseo." \
         "Copies deploy/grokbot-genseo-daily.sh to ~/bin/grokbot-genseo-daily.sh." \
         "Does not start launchd." \
-        "Does not copy the LaunchAgent plist. Pulling alone does not update ~/bin."
+        "Does not copy the LaunchAgent plist. Pulling alone does not update ~/bin." \
+        "A wrapper that sources scripts/genseo_sync_main.sh is not copied while that file is missing." \
+        "A wrapper that sources scripts/genseo_power_assert.sh is not copied while that file is missing." \
+        "A wrapper that sources scripts/genseo_errlog.sh is not copied while that file is missing."
       exit 0
       ;;
     *)
@@ -78,6 +81,33 @@ if grep -F -q 'genseo_wait_for_network.sh' "$SRC"; then
     die "wrapper requires $net_rel — git pull in $GENSEO_HOME, then re-run. Nothing was copied."
   fi
 fi
+if grep -F -q 'genseo_sync_main.sh' "$SRC"; then
+  sync_rel="scripts/genseo_sync_main.sh"
+  if [ -f "$GENSEO_HOME/$sync_rel" ]; then
+    printf 'helper %s: present\n' "$sync_rel"
+  else
+    printf 'helper %s: MISSING\n' "$sync_rel"
+    die "wrapper requires $sync_rel — git pull in $GENSEO_HOME, then re-run. Nothing was copied."
+  fi
+fi
+if grep -F -q 'genseo_power_assert.sh' "$SRC"; then
+  pow_rel="scripts/genseo_power_assert.sh"
+  if [ -f "$GENSEO_HOME/$pow_rel" ]; then
+    printf 'helper %s: present\n' "$pow_rel"
+  else
+    printf 'helper %s: MISSING\n' "$pow_rel"
+    die "wrapper requires $pow_rel — git pull in $GENSEO_HOME, then re-run. Nothing was copied."
+  fi
+fi
+if grep -F -q 'genseo_errlog.sh' "$SRC"; then
+  err_rel="scripts/genseo_errlog.sh"
+  if [ -f "$GENSEO_HOME/$err_rel" ]; then
+    printf 'helper %s: present\n' "$err_rel"
+  else
+    printf 'helper %s: MISSING\n' "$err_rel"
+    die "wrapper requires $err_rel — git pull in $GENSEO_HOME, then re-run. Nothing was copied."
+  fi
+fi
 
 on_mac=0
 if [ "$(uname -s)" = "Darwin" ] && [ "${GENSEO_INSTALL_WRAPPER_PRETEND_OS:-}" != "Linux" ]; then
@@ -104,6 +134,21 @@ if [ -L "$DEST" ]; then
 fi
 if [ -e "$DEST" ] && [ ! -f "$DEST" ]; then
   die "dest exists and is not a file: $DEST"
+fi
+
+# Bash reads the launcher as it runs. Replacing that file while a job has
+# it open is the garbled-token failure. A /tmp stable copy is a different path.
+if [ -f "$DEST" ]; then
+  open_pids=""
+  if [ -x /usr/sbin/lsof ]; then
+    open_pids=$(/usr/sbin/lsof -t -- "$DEST" 2>/dev/null || true)
+  elif command -v lsof >/dev/null 2>&1; then
+    open_pids=$(lsof -t -- "$DEST" 2>/dev/null || true)
+  fi
+  for pid in $open_pids; do
+    [ "$pid" = "$$" ] && continue
+    die "refusing to replace $DEST — another process has it open (pid $pid). Nothing was copied."
+  done
 fi
 
 mkdir -p "$DEST_DIR" || die "could not create $DEST_DIR"

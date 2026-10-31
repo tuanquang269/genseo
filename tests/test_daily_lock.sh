@@ -305,6 +305,13 @@ check "calls group timeout" grep -q 'genseo_group_timeout.sh' "$ROOT/deploy/grok
 check "acquires pid lock" grep -q 'genseo_daily_lock_acquire' "$ROOT/deploy/grokbot-genseo-daily.sh"
 check "ticket line is not perl alarm" not grep -q 'alarm .*run_ticket_headless' "$ROOT/deploy/grokbot-genseo-daily.sh"
 check "cap does not arm alarm" not grep -q 'alarm $secs' "$ROOT/scripts/genseo_group_timeout.sh"
+check "low-water is after the lane lock and before a ticket" awk '
+  /^[[:space:]]*#/ { next }
+  /genseo_daily_lock_acquire/ && !lock { lock=NR }
+  /genseo_queue_low_water \|\|/ && !low { low=NR }
+  /run_ticket_headless\.sh/ && !ticket { ticket=NR }
+  END { exit !(lock && low && ticket && lock < low && low < ticket) }
+' "$ROOT/deploy/grokbot-genseo-daily.sh"
 
 echo "14. group timeout returns the command status and kills the process group"
 ign="$TMP/ignore.sh"
@@ -328,6 +335,8 @@ RC=$?
 t1=$(date +%s)
 check "exit 3 propagates" test "$RC" = 3
 check "did not wait out 5s" test $((t1 - t0)) -le 3
+check "success path has no perl comma warning" not grep -q "Possible attempt to separate words with commas" "$TMP/exit3.err"
+check "success path has no unreachable-statement warning" not grep -q "unlikely to be reached" "$TMP/exit3.err"
 
 GENSEO_TIMEOUT_GRACE_SEC=0 /bin/bash "$ROOT/scripts/genseo_group_timeout.sh" 5 /bin/does-not-exist-genseo >"$TMP/miss.out" 2>"$TMP/miss.err"
 RC=$?
@@ -354,6 +363,8 @@ wait "$tp"
 RC=$?
 check "timeout exit 124" test "$RC" = 124
 check "stderr names the group" grep -q "signaling process group" "$TMP/to.err"
+check "timeout stderr has no perl comma warning" not grep -q "Possible attempt to separate words with commas" "$TMP/to.err"
+check "timeout stderr has no unreachable-statement warning" not grep -q "unlikely to be reached" "$TMP/to.err"
 check "TERM-ignoring child is dead" wait_dead "$child"
 check "sibling outside the group survived" kill -0 "$sib"
 kill -KILL "$sib" 2>/dev/null || true
@@ -520,6 +531,7 @@ run_wrapper() {
       GENSEO_HOST_ROLE="${WRAP_ROLE:-primary}" \
       GENSEO_TICKET_PREFIX="${WRAP_PREFIX-}" \
       GENSEO_AUTO_REFILL="${WRAP_REFILL:-0}" \
+      GENSEO_QUEUE_LOW_WATER="${WRAP_LOW_WATER-}" \
       GENSEO_LIVE_FEED_RETRIES="${WRAP_FEED_RETRIES:-3}" \
       GENSEO_LIVE_FEED_BACKOFF_SEC="${WRAP_FEED_BACKOFF:-0}" \
       GENSEO_NET_WAIT_MAX_SEC="${WRAP_NET_WAIT:-0}" \
@@ -543,6 +555,7 @@ run_wrapper 15
 check "exit 0" test "$RC" = 0
 check "logged another batch" grep -q "another batch is running" "$H/out.log"
 check "did not start a batch" not grep -q "start (target" "$H/out.log"
+check "did not log queue low" not grep -q "QUEUE LOW" "$H/out.log"
 check "did not take over" not grep -q "taking over" "$H/out.log"
 check "pid unchanged" test "$(tr -cd '0-9' < "$H/genseo/state/daily.lock/pid")" = "$SLEEPER"
 check "sleeper still alive" kill -0 "$SLEEPER"
@@ -742,6 +755,7 @@ reset_wrap() {
   WRAP_ROLE=primary
   unset WRAP_PREFIX
   WRAP_REFILL=0
+  unset WRAP_LOW_WATER
   WRAP_FEED_RETRIES=3
   WRAP_FEED_BACKOFF=0
   WRAP_NET_WAIT=0
@@ -752,7 +766,8 @@ echo "24. macbook plist is primary with MB prefix; standby remains opt-in"
 plist="$ROOT/deploy/com.pati.genseo-daily.macbook.plist"
 check "macbook role is primary" grep -q '<key>GENSEO_HOST_ROLE</key><string>primary</string>' "$plist"
 check "macbook prefix is MB" grep -q '<key>GENSEO_TICKET_PREFIX</key><string>MB</string>' "$plist"
-check "macbook stays no-face" grep -q '<key>GENSEO_NO_FACE</key><string>1</string>' "$plist"
+check "macbook article images use people" grep -q '<key>GENSEO_NO_FACE</key><string>0</string>' "$plist"
+check "landing macbook stays no-face" grep -q '<key>GENSEO_NO_FACE</key><string>1</string>' "$ROOT/deploy/com.pati.genseo-landing.macbook.plist"
 check "role key is not standby" not grep -q '<key>GENSEO_HOST_ROLE</key><string>standby</string>' "$plist"
 check "standby delay remains in the wrapper" grep -q 'ROLE" = "standby"' "$ROOT/deploy/grokbot-genseo-daily.sh"
 check "default feed retries is 3" grep -q 'GENSEO_LIVE_FEED_RETRIES:-3' "$ROOT/deploy/grokbot-genseo-daily.sh"
@@ -874,6 +889,82 @@ run_wrapper 15
 check "explicit MB exit 0" test "$RC" = 0
 check "explicit prefix MB wins on primary" grep -q "prefix MB" "$H/out.log"
 check "explicit MB is not MM" not grep -q "prefix MM" "$H/out.log"
+
+echo "29. low-water refills a finished day up to two days of target, then is a no-op"
+reset_wrap
+sandbox lowfill
+printf '%s\n' 5 >"$H/genseo/state/live-count"
+cat >"$H/genseo/scripts/refill_tickets.py" <<'PY'
+import os, sys
+root = os.path.join(os.environ["HOME"], "genseo")
+open(os.path.join(root, "state", "refill-args"), "w").write(" ".join(sys.argv[1:]))
+args = sys.argv[1:]
+count = 0
+if "--count" in args:
+    count = int(args[args.index("--count") + 1])
+rc_path = os.path.join(root, "state", "refill-rc")
+if os.path.isfile(rc_path):
+    raise SystemExit(int(open(rc_path).read().strip() or "0"))
+queue = os.path.join(root, "daily-tickets.md")
+with open(queue, "a", encoding="utf-8") as fh:
+    for i in range(1, count + 1):
+        fh.write("- [ ] **#T%d** low water\n" % i)
+raise SystemExit(0)
+PY
+run_wrapper 20
+check "refill exit 0" test "$RC" = 0
+check "logged QUEUE LOW" grep -q "QUEUE LOW:" "$H/out.log"
+check "reached DONE after the refill" grep -q "DONE:" "$H/out.log"
+check "args ask for the threshold" grep -q -- "--if-below 10" "$H/genseo/state/refill-args"
+check "args ask for the shortfall" grep -q -- "--count 10" "$H/genseo/state/refill-args"
+check "args carry a prefix" grep -q -- "--prefix" "$H/genseo/state/refill-args"
+check "args are not offline" not grep -q -- "--offline" "$H/genseo/state/refill-args"
+check "ten open lines were appended" test "$(grep -cE '^(- \[ \]|## \[ \])' "$H/genseo/daily-tickets.md")" = 10
+rm -f "$H/genseo/state/refill-args"
+run_wrapper 20
+check "second run exit 0" test "$RC" = 0
+check "second run sees the runway" grep -q "queue low-water: 10 open ticket(s) >= 10" "$H/out.log"
+check "second run did not call refill" test ! -e "$H/genseo/state/refill-args"
+
+echo "30. a short bank writes the marker and does not start a ticket"
+reset_wrap
+sandbox lowdry
+printf '%s\n' 0 >"$H/genseo/state/live-count"
+printf '%s\n' 3 >"$H/genseo/state/refill-rc"
+cp "$TMP/wrap-lowfill/genseo/scripts/refill_tickets.py" "$H/genseo/scripts/refill_tickets.py"
+run_wrapper 20
+check "short bank exit 0" test "$RC" = 0
+check "logged refill exit 3" grep -q "refill exit 3" "$H/out.log"
+check "marker names exit 3" grep -q "exit=3" "$H/genseo/state/queue-low-water.marker"
+check "marker says no paid api" grep -q "paid_api=not called" "$H/genseo/state/queue-low-water.marker"
+check "short bank did not start a ticket" not grep -q "run 1:" "$H/out.log"
+check "short bank left the queue empty" test ! -s "$H/genseo/daily-tickets.md"
+
+echo "31. low-water 0 keeps the empty-queue hard stop and writes no marker"
+reset_wrap
+sandbox lowoff
+printf '%s\n' 0 >"$H/genseo/state/live-count"
+WRAP_LOW_WATER=0
+run_wrapper 15
+check "disabled guard exit 0" test "$RC" = 0
+check "disabled guard did not log QUEUE LOW" not grep -q "QUEUE LOW" "$H/out.log"
+check "disabled guard wrote no marker" test ! -e "$H/genseo/state/queue-low-water.marker"
+check "disabled guard hard-stopped" grep -q "ticket queue EMPTY" "$H/out.log"
+
+echo "32. a stocked queue does not call refill"
+reset_wrap
+sandbox lowstock
+printf '%s\n' 5 >"$H/genseo/state/live-count"
+i=0
+while [ "$i" -lt 10 ]; do
+  i=$((i + 1))
+  printf '%s\n' "- [ ] **#P$i** seeded" >>"$H/genseo/daily-tickets.md"
+done
+run_wrapper 15
+check "stocked exit 0" test "$RC" = 0
+check "stocked queue is at the threshold" grep -q ">= 10" "$H/out.log"
+check "stocked queue wrote no args" test ! -e "$H/genseo/state/refill-args"
+check "stocked queue cleared no marker by calling refill" test ! -e "$H/genseo/state/queue-low-water.marker"
 
 echo
 printf '%s passed, %s failed\n' "$PASS" "$FAIL"

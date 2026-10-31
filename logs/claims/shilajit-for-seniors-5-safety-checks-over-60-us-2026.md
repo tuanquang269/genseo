@@ -1,0 +1,20 @@
+# Claims review — MB1012-5 — 2026-10-17
+
+Scope: source-based editorial verification, not a medical review or a claim of human clinical sign-off. WebSearch returned no results in three attempted queries; SERP ranking/PAA could not be verified. No ranking assertions made. Europe PMC API retrieved the primary trial abstract. PubMed frontend returned only a cookie page; not counted as confirmation. Two guessed FDA URLs returned 404; neither cited. Interaction searches returned no confirmed human medication-compatibility study; absence is limited to this review, not a claim that no study exists anywhere.
+
+Claim | Source URL | fetched+confirmed Y/N
+2022 randomized double-blind placebo-controlled trial enrolled 60 postmenopausal women aged 45–65 with osteopenia | https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=EXT_ID%3A35933897&format=json&resultType=core&pageSize=4 ; https://doi.org/10.1016/j.phymed.2022.154334 | Y
+Trial lasted 48 weeks and used standardized aqueous shilajit extract | https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=EXT_ID%3A35933897&format=json&resultType=core&pageSize=4 | Y
+Trial assessed bone mineral density and bone-turnover/oxidative-stress/inflammation markers, not medication compatibility | https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=EXT_ID%3A35933897&format=json&resultType=core&pageSize=4 | Y
+Trial population/intervention do not establish safety for all seniors or equivalence to this retail resin; inference explicitly bounded to trial design | https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=EXT_ID%3A35933897&format=json&resultType=core&pageSize=4 | Y
+Supplements can interact with prescription/OTC medicines and risks from medical conditions require clinician discussion; general guidance, not a proven shilajit-specific interaction | https://www.nccih.nih.gov/health/using-dietary-supplements-wisely | Y
+Disclose supplements before surgery; general supplement advice | https://www.nccih.nih.gov/health/using-dietary-supplements-wisely | Y
+If supplement side effects occur, stop use and contact a healthcare provider | https://www.nccih.nih.gov/health/using-dietary-supplements-wisely | Y
+Some Ayurvedic preparations contain lead, mercury or arsenic at potentially toxic levels; not an assertion about every shilajit product | https://www.nccih.nih.gov/health/ayurvedic-medicine-in-depth | Y
+NCCIH describes a 64-year-old woman with elevated blood lead after Ayurvedic product use; not attributed to this SKU | https://www.nccih.nih.gov/health/ayurvedic-medicine-in-depth | Y
+ShilaSource Himalayan Shilajit Resin live one-time price $59.99 and available at retrieval | https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin.js | Y
+Visible package lines ShilaSource / Himalayan / Shilajit / Resin / Dietary Supplement / 70% Fulvic Acid* / Lab-Tested for Purity* / 1.06oz (30g) / 75 SERVINGS; package statements only, not independent laboratory verification | https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin ; local product_refs/shilasource-himalayan-shilajit-resin.label.json and curated .png opened | Y
+Product uses matte black outer canister and amber jar with gold lid | https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin ; local product_refs/shilasource-himalayan-shilajit-resin.png opened | Y
+Both collection destinations and product/author/three related article URLs return HTTP 200 at preflight | https://wellnessnest.co/collections/shilajit-wellness-stack ; https://wellnessnest.co/collections/mens-essential-collection | Y
+
+Confirmed claim rows: 13. No SKU milligram dose or unapproved Supplement Facts stated. No promise of drug compatibility, disease treatment, senior efficacy, shipping speed, independent testing, or certification. Recommendations to bring labels, avoid changing prescriptions, request documentation, and track symptoms are editorial safety advice, not reported trial findings. No unsupported mechanism or effect-size assertion retained.

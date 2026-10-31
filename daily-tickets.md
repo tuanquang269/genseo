@@ -3,6 +3,8 @@
 Agent được lệnh *"continue with the next ticket in daily-tickets.md"* → lấy ticket
 `[ ]` PENDING kế tiếp → chạy skill `genseo-auto-publish` đủ 10 STEP → tick `[DONE <date>] <url>`.
 
+**Queue status (2026-10-16):** this file is not empty. Any "the queue is EMPTY" or "Refill needed" section dated 2026-08 is history from that day. Do not stop on it. Do not append a new refill note while a later heading still starts with an open checkbox (`- [ ]` or `## [ ]`). The run prompt's QUEUE POINTER names that first open heading.
+
 ## Quy tắc chung (đọc trước mỗi ticket)
 
 0. **BLOG_ID cho MỌI ticket = `104008483131`** (blog duy nhất của store, handle `news`).
@@ -281,6 +283,8 @@ its only brand token; it needs a distinct segment angle, not a bare product page
 
 ## Refill needed
 
+**Not the current queue.** The empty-queue note under this heading is history from 2026-08-13. Later open checkboxes in this file are real tickets. Do not stop here, and do not append another refill note, while one of those headings is still open.
+
 **2026-08-13 — the queue is EMPTY.** Ticket #22 was the last open item in batch 2026-08-13
 (#15–#22 all shipped). The google-ads MCP is not connected in this environment, so the
 mining recipe in `skills/genseo-auto-publish/references/ads-article-mining.md` cannot be run
@@ -314,6 +318,8 @@ need a segment angle, not a bare product page).
   - Gates: live `suggest.json` returned no article match; `topic_fitness.py` → `PASS [brand_intent]`.
 
 ## Refill needed
+
+**Not the current queue.** The empty-queue note under this heading is history from 2026-08-14. Later open checkboxes in this file are real tickets. Do not stop here, and do not append another refill note, while one of those headings is still open.
 
 **2026-08-14 — the queue is EMPTY again.** #24 was the only item in this batch and it shipped;
 every heading above is `[DONE]` (#12 included, DONE 2026-08-13 in its HTML comment). No `[ ]`
@@ -364,6 +370,8 @@ distinct segment angle, not a bare product page. `pure-shilajit-gold-resin` is n
     MCP is absent headless, so this came from the live catalog + the live blog inventory at $0.
 
 ## Refill needed
+
+**Not the current queue.** The empty-queue note under this heading is history from 2026-08-15. Later open checkboxes in this file are real tickets. Do not stop here, and do not append another refill note, while one of those headings is still open.
 
 **2026-08-15 — the queue is EMPTY again.** #25 was mined on the day (the queue was empty at 07:30)
 and shipped, so nothing is left open. GSC is still unauthorised on this Mac and no google-ads tool
@@ -619,8 +627,7 @@ A topic is a brief, not copy: source every claim or cut it.
 **Rules for this batch:** from the 2026-10-08 batch rules — fan-out answers, a "Where to buy <product> in the US"
 section (live price, the ticket's product link only), roster.json byline only (never an invented person or
 credential), the logged fact-check pass (`logs/claims/<slug>.md`; delete unconfirmed claims), the brand gate.
-Blog 104008483131, publish `--live`. Images: no batch-wide override — runner rule D decides per host (the MacBook
-plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check the PDP while writing.
+Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py once. The hero is the picked face plus the real pack unless pick prints NO-FACE. One inline image uses that face. The other inline images have no recognizable face but still show a hand, forearm, or body cropped below the eyes. A no-face image is the fallback for one frame after a face refusal or two QC misses, not a batch-wide ban. The MacBook article plist sets `GENSEO_NO_FACE=0`, and that value does not switch the lane. Prices were read live at build time; re-check the PDP while writing.
 
 - [DONE 2026-10-12 https://wellnessnest.co/blogs/news/turkesterone-for-athletes-drug-test-guide-us-2026] **#CA1009-1 — turkesterone for athletes** — `Turkesterone for Athletes: What Drug Tests Check (US 2026)`
   - **Primary keyword:** `turkesterone for athletes` · **Secondary:** is turkesterone banned, turkesterone drug test, turkesterone wada, turkesterone ncaa
@@ -702,7 +709,7 @@ plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check th
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** turkesterone + buy checked 2026-10-09 against 108 live articles (blog listing + sitemap + Atom) and all 47 tickets in this file; STEP 0 re-checks at write time
 
-- [DONE 2026-10-14](https://wellnessnest.co/blogs/news/nmn-for-seniors-what-2-trials-show-in-the-us-2026) **#CA1009-7 — nmn for seniors** — `NMN for Seniors: What Trials in Adults 65+ Show (US 2026)` — LIVE article 634918109499; validator PASS; schema/frontend/widget verified.
+- [DONE 2026-10-14 https://wellnessnest.co/blogs/news/nmn-for-seniors-what-2-trials-show-in-the-us-2026] **#CA1009-7 — nmn for seniors** — `NMN for Seniors: What Trials in Adults 65+ Show (US 2026)` — LIVE article 634918109499; validator PASS; schema/frontend/widget verified.
   - **Primary keyword:** `nmn for seniors` · **Secondary:** nmn for older adults, nmn for elderly, nmn over 65, nmn muscle strength aging
   - **Search intent:** adult 65+ (or a family member) asking whether NMN has been tested at their age
   - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-09 11:08 ICT)
@@ -768,8 +775,7 @@ A topic is a brief, not copy: source every claim or cut it.
 **Rules for this batch:** from the 2026-10-08 batch rules — fan-out answers, a "Where to buy <product> in the US"
 section (live price, the ticket's product link only), roster.json byline only (never an invented person or
 credential), the logged fact-check pass (`logs/claims/<slug>.md`; delete unconfirmed claims), the brand gate.
-Blog 104008483131, publish `--live`. Images: no batch-wide override — runner rule D decides per host (the MacBook
-plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check the PDP while writing.
+Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py once. The hero is the picked face plus the real pack unless pick prints NO-FACE. One inline image uses that face. The other inline images have no recognizable face but still show a hand, forearm, or body cropped below the eyes. A no-face image is the fallback for one frame after a face refusal or two QC misses, not a batch-wide ban. The MacBook article plist sets `GENSEO_NO_FACE=0`, and that value does not switch the lane. Prices were read live at build time; re-check the PDP while writing.
 
 - [DONE 2026-10-16 https://wellnessnest.co/blogs/news/creatine-gummies-for-runners-what-trials-show-us-2026] **#MB1012-1 — creatine gummies for runners** — `Creatine Gummies for Runners: What Trials Show (US 2026)`
   - **Primary keyword:** `creatine gummies for runners` · **Secondary:** creatine for runners, creatine for endurance athletes, does creatine slow you down, creatine water weight runners
@@ -798,7 +804,7 @@ plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check th
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** probiotic + beginners checked 2026-10-11 against 110 live articles (blog listing + sitemap + Atom) and all 57 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#MB1012-3 — creatine gummies over 60** — `Creatine Gummies Over 60: What the Trials Show (US 2026)`
+- [DONE 2026-10-17 https://wellnessnest.co/blogs/news/creatine-gummies-over-60-trial-findings-in-the-us] **#MB1012-3 — creatine gummies over 60** — `Creatine Gummies Over 60: What the Trials Show (US 2026)`
   - **Primary keyword:** `creatine gummies over 60` · **Secondary:** creatine for seniors, creatine for older adults, creatine muscle loss aging, is creatine safe over 60
   - **Search intent:** adult 60+ (or a family member) looking at creatine for strength and muscle with age
   - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-11 18:49 ICT)
@@ -811,7 +817,7 @@ plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check th
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** creatine + seniors checked 2026-10-11 against 110 live articles (blog listing + sitemap + Atom) and all 57 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#MB1012-4 — turkesterone over 60** — `Turkesterone Over 60: 5 Checks for Older Lifters (US 2026)`
+- [DONE 2026-10-17 https://wellnessnest.co/blogs/news/turkesterone-over-60-5-checks-in-the-us] **#MB1012-4 — turkesterone over 60** — `Turkesterone Over 60: 5 Checks for Older Lifters (US 2026)`
   - **Primary keyword:** `turkesterone over 60` · **Secondary:** turkesterone for older men, turkesterone for seniors, turkesterone at 60, is turkesterone safe for older men
   - **Search intent:** lifter 60+ deciding whether turkesterone is worth trying
   - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-11 18:49 ICT)
@@ -825,7 +831,7 @@ plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check th
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** turkesterone + seniors checked 2026-10-11 against 110 live articles (blog listing + sitemap + Atom) and all 57 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#MB1012-5 — shilajit for seniors** — `Shilajit for Seniors: 5 Safety Checks Over 60 (US 2026)`
+- [DONE 2026-10-17 https://wellnessnest.co/blogs/news/shilajit-for-seniors-5-safety-checks-over-60-us-2026] **#MB1012-5 — shilajit for seniors** — `Shilajit for Seniors: 5 Safety Checks Over 60 (US 2026)`
   - **Primary keyword:** `shilajit for seniors` · **Secondary:** shilajit for older adults, shilajit over 60, is shilajit safe for elderly, shilajit and blood pressure medication
   - **Search intent:** adult 60+ (or a family member) checking whether shilajit is safe alongside existing medication
   - **Template:** LISTICLE · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-11 18:49 ICT)
@@ -839,7 +845,7 @@ plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check th
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** shilajit + seniors checked 2026-10-11 against 110 live articles (blog listing + sitemap + Atom) and all 57 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#MB1012-6 — shilajit for fertility** — `Shilajit for Fertility: What One Small Trial Found (US 2026)`
+- [DONE 2026-10-17 https://wellnessnest.co/blogs/news/shilajit-for-fertility-trial-limits-for-the-us] **#MB1012-6 — shilajit for fertility** — `Shilajit for Fertility: Trial Limits for the US`
   - **Primary keyword:** `shilajit for fertility` · **Secondary:** shilajit sperm count, shilajit male fertility, shilajit for men trying to conceive, shilajit and sperm motility
   - **Search intent:** man trying to conceive who is researching shilajit
   - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-11 18:49 ICT)
@@ -852,3 +858,684 @@ plist sets `GENSEO_NO_FACE=1`). Prices were read live at build time; re-check th
   - **Link, don't restate:** `/blogs/news/shilajit-benefits-for-men-4-claims-ranked-us-2026`, `/blogs/news/shilajit-side-effects-7-signs-to-watch-for-us-2026`, `/blogs/news/how-much-shilajit-per-day-dosage-by-form-us-2026`
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** shilajit + fertility checked 2026-10-11 against 110 live articles (blog listing + sitemap + Atom) and all 57 tickets in this file; STEP 0 re-checks at write time
+
+# BATCH 2026-10-16 (refill_tickets.py — ids #CA1016-1…#CA1016-13)
+
+Built by `scripts/refill_tickets.py` at 2026-10-16 18:52 ICT from `templates/article-topic-bank.json` + `board/ideas.csv`
+(search volume: No data — GSC/Ads not used). Every ticket passed, against the live store at build time:
+brand_rules + `lint_tickets.py` · hero product live and in stock · not a covered topic (header rule 6) ·
+not already queued · not live (123 published articles: blog listing + sitemap + Atom + local caches; one article per brand + segment) ·
+`topic_fitness.py` strict on primary and title · STEP 0 suggest.json.
+A `topic_fitness` REVIEW [covered-segment] verdict is allowed under Kevin's standing greenlight for mined queues (2026-08-13).
+A topic is a brief, not copy: source every claim or cut it.
+
+**Rules for this batch:** from the 2026-10-08 batch rules — fan-out answers, a "Where to buy <product> in the US"
+section (live price, the ticket's product link only), roster.json byline only (never an invented person or
+credential), the logged fact-check pass (`logs/claims/<slug>.md`; delete unconfirmed claims), the brand gate.
+Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py once. The hero is the picked face plus the real pack unless pick prints NO-FACE. One inline image uses that face. The other inline images have no recognizable face but still show a hand, forearm, or body cropped below the eyes. A no-face image is the fallback for one frame after a face refusal or two QC misses, not a batch-wide ban. The MacBook article plist sets `GENSEO_NO_FACE=0`, and that value does not switch the lane. Prices were read live at build time; re-check the PDP while writing.
+
+- [DONE 2026-10-17 https://wellnessnest.co/blogs/news/turkesterone-price-5-cost-checks-in-the-us-2026] **#CA1016-1 — turkesterone price** — `Turkesterone Price: What a Bottle Costs (US 2026)`
+  - **Primary keyword:** `turkesterone price` · **Secondary:** how much does turkesterone cost, turkesterone supplement price, is turkesterone expensive, turkesterone cost per bottle
+  - **Search intent:** shopper checking whether a turkesterone bottle is worth the listed price
+  - **Template:** LISTICLE · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-16 18:52 ICT)
+  - **Hero product:** `/products/turkesterone-advanced-formula` (Turkesterone Advanced Formula, $75, in stock 2026-10-16)
+  - **Turkesterone Advanced Formula pack label (source of truth):** wellness, nest, PREMIUM, TURKESTERONE, ADVANCED, FORMULA, AMPLIFY, MUSCLE, ENDURANCE, 60, Dietary Supplement, Capsules. No milligram amount and no Supplement Facts panel were read. Do not add one. The capsule badge is the separate lines in product_refs/turkesterone-advanced-formula.label.json. Do not state a milligram amount, a serving count, a different capsule count, or a day-supply.
+  - **Collection links (≥2, verify live):** `/collections/mens-essential-collection` (contains it), `/collections/shilajit-wellness-stack` (contains it)
+  - **Angle:** Give the live PDP price and what the shopper can verify on the label before paying. Do not state a milligram amount, a serving count, a capsule count, or a day-supply. The pack-label line on the ticket is the only label fact. Link the where-to-buy page instead of restating its checks.
+  - **Fan-out answers to cover:** how much does turkesterone cost; why do prices vary so much; what should you check before you pay; is a cheaper bottle the same product
+  - **Evidence to fetch & confirm (claims log):** Live PDP price, fetched at write time. No milligram, serving count, or day-supply beyond product_refs/turkesterone-advanced-formula.label.json.
+  - **Link, don't restate:** `/blogs/news/where-to-buy-turkesterone-in-the-us-what-to-check-2026`, `/blogs/news/turkesterone-benefits-dosing-whats-real-us-2026`, `/blogs/news/turkesterone-side-effects-4-ingredients-to-check-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** turkesterone + price checked 2026-10-16 against 123 live articles (blog listing + sitemap + Atom + local caches) and all 63 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-10-18 https://wellnessnest.co/blogs/news/shilajit-on-an-empty-stomach-yes-or-no-in-the-us] **#CA1016-2 — shilajit on an empty stomach** — `Shilajit on an Empty Stomach: Yes or No? (2026)`
+  - **Primary keyword:** `shilajit on an empty stomach` · **Secondary:** shilajit empty stomach, shilajit without food, shilajit before breakfast, shilajit resin on an empty stomach
+  - **Search intent:** new user who was told to take shilajit before eating and wants to know if that is required
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-16 18:52 ICT)
+  - **Hero product:** `/products/shilasource-himalayan-shilajit-resin` (ShilaSource Himalayan Shilajit Resin, $59.99, in stock 2026-10-16)
+  - **ShilaSource Himalayan Shilajit Resin pack label (source of truth):** ShilaSource, Himalayan, Shilajit, Resin, 75, Dietary Supplement, Wellness, Nest, 70% Fulvic Acid*, Lab-Tested for Purity*, 1.06oz (30g), SERVINGS, Servings. No milligram amount and no Supplement Facts panel were read into that file. Do not add one. Do not state a serving count, volume, weight, fulvic percentage, mineral count, or day-supply other than the lines in product_refs/shilasource-himalayan-shilajit-resin.label.json.
+  - **Collection links (≥2, verify live):** `/collections/shilajit-wellness-stack` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** Separate tradition from trials. If you cannot fetch a human study that compared shilajit with food and without food, say that plainly. Give the practical resin routine by linking the how-to-take page, and the clock-time page for morning or night. Do not state a milligram amount or a serving count beyond the pack-label line this ticket prints.
+  - **Fan-out answers to cover:** should you take shilajit before eating; can you take shilajit with a meal; does food change how you take resin; what if it upsets your stomach
+  - **Evidence to fetch & confirm (claims log):** Any human fed-versus-fasted shilajit study — fetch it or say you found none. Pack-label facts only from product_refs/shilasource-himalayan-shilajit-resin.label.json.
+  - **Link, don't restate:** `/blogs/news/how-to-take-shilajit-resin-dissolve-it-right-us-2026`, `/blogs/news/how-much-shilajit-per-day-dosage-by-form-us-2026`, `/blogs/news/shilajit-side-effects-7-signs-to-watch-for-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** shilajit + fasting checked 2026-10-16 against 123 live articles (blog listing + sitemap + Atom + local caches) and all 63 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-10-18 https://wellnessnest.co/blogs/news/vaginal-probiotics-price-us-cost-2026] **#CA1016-3 — vaginal probiotics price** — `Vaginal Probiotic Price: What a Month Costs (2026)`
+  - **Primary keyword:** `vaginal probiotics price` · **Secondary:** how much do vaginal probiotics cost, vaginal probiotics cost per month, are vaginal probiotics expensive, florafresh price
+  - **Search intent:** shopper comparing the monthly cost of vaginal probiotic gummies before buying
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-16 18:52 ICT)
+  - **Hero product:** `/products/florafresh-vaginal-probiotics-gummies` (FloraFresh Vaginal Probiotics Gummies, $40.99, in stock 2026-10-16)
+  - **FloraFresh formula (Supplement Facts label, the source of truth):** per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 1 billion CFU, Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain); sweetened with maltitol and isomalt, so not sugar-free; label badges Allergen Free, Vegan, Halal, Gluten Free. Cite the Supplement Facts label, never the live PDP description or an older FloraFresh article (both repeat a wrong formula); a PDP/label mismatch is a gate failure.
+  - **Collection links (≥2, verify live):** `/collections/womens-essentials-collection` (contains it), `/collections/best-seller` (contains it)
+  - **Angle:** Do the monthly cost from the live PDP price only. Do not invent a bottle count or a day-supply the page does not print. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt, so not sugar-free. Link the where-to-buy page instead of restating its checks.
+  - **Fan-out answers to cover:** how much do vaginal probiotics cost per month; are gummies priced like capsules; what makes one brand cost more; what the label should show for the price
+  - **Evidence to fetch & confirm (claims log):** Live PDP price, fetched at write time. Strain and CFU only from the Supplement Facts label (Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies), never the PDP description.
+  - **Link, don't restate:** `/blogs/news/where-to-buy-vaginal-probiotics-in-the-us-5-checks-2026`, `/blogs/news/vaginal-probiotic-dosage-how-many-cfu-a-day-us-2026`, `/blogs/news/florafresh-gummies-vs-capsules-5-format-facts-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** probiotic + price checked 2026-10-16 against 123 live articles (blog listing + sitemap + Atom + local caches) and all 63 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-10-18 https://wellnessnest.co/blogs/news/turkesterone-for-fertility-the-us-evidence-2026] **#CA1016-4 — turkesterone for fertility** — `Turkesterone for Fertility: What Is Known (2026)`
+  - **Primary keyword:** `turkesterone for fertility` · **Secondary:** turkesterone and sperm, turkesterone male fertility, turkesterone while trying to conceive, does turkesterone affect fertility
+  - **Search intent:** man trying to conceive who has seen turkesterone marketed for hormones and wants fertility evidence
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-16 18:52 ICT)
+  - **Hero product:** `/products/turkesterone-advanced-formula` (Turkesterone Advanced Formula, $75, in stock 2026-10-16)
+  - **Turkesterone Advanced Formula pack label (source of truth):** wellness, nest, PREMIUM, TURKESTERONE, ADVANCED, FORMULA, AMPLIFY, MUSCLE, ENDURANCE, 60, Dietary Supplement, Capsules. No milligram amount and no Supplement Facts panel were read. Do not add one. The capsule badge is the separate lines in product_refs/turkesterone-advanced-formula.label.json. Do not state a milligram amount, a serving count, a different capsule count, or a day-supply.
+  - **Collection links (≥2, verify live):** `/collections/mens-essential-collection` (contains it), `/collections/shilajit-wellness-stack` (contains it)
+  - **Angle:** Search for human trials of turkesterone and sperm, conception, or fertility. If you cannot fetch one, say that is the state of the evidence. Do not turn a hormone claim from another page into a fertility result. Do not state a milligram amount, a serving count, a capsule count, or a day-supply. Not a fertility treatment. Link the dosing page instead of restating it.
+  - **Fan-out answers to cover:** does turkesterone affect sperm; is there a fertility trial; can you take it while trying to conceive; when should you ask a clinician
+  - **Evidence to fetch & confirm (claims log):** PubMed or DOI search for turkesterone and fertility or sperm — fetch a paper or state that you found no human trial. No milligram amount.
+  - **Link, don't restate:** `/blogs/news/turkesterone-benefits-dosing-whats-real-us-2026`, `/blogs/news/turkesterone-side-effects-4-ingredients-to-check-us-2026`, `/blogs/news/turkesterone-for-women-3-trials-85-men-0-women-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** turkesterone + fertility checked 2026-10-16 against 123 live articles (blog listing + sitemap + Atom + local caches) and all 63 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-10-18 https://wellnessnest.co/blogs/news/creatine-gummies-price-69-99-in-the-us-2026] **#CA1016-5 — creatine gummies price** — `Creatine Gummies Price: Cost Per Bottle (US 2026)`
+  - **Primary keyword:** `creatine gummies price` · **Secondary:** how much do creatine gummies cost, creatine gummies cost per day, are creatine gummies expensive, creatine gummy price
+  - **Search intent:** shopper comparing what a bottle of creatine gummies costs before choosing a format
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-16 18:52 ICT)
+  - **Hero product:** `/products/fusiforce-creatine-gummies` (FusiForce Creatine Gummies, $69.99, in stock 2026-10-16)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** Build a cost table from the live FusiForce PDP only: price, servings the PDP actually prints, and creatine per serving if the panel prints it. Do not invent a count or a gram amount the page does not show. A powder price goes in the table only from a page fetched the same day. Link the where-to-buy and dosage pages instead of restating them.
+  - **Fan-out answers to cover:** how much does a bottle of creatine gummies cost; are gummies more expensive than powder; what changes the price per day; is a bigger bottle cheaper
+  - **Evidence to fetch & confirm (claims log):** Live FusiForce PDP price and serving facts, re-checked at write time. Any powder price only from a page fetched the same day. No estimated serving count.
+  - **Link, don't restate:** `/blogs/news/where-to-buy-creatine-gummies-5-label-checks-us-2026`, `/blogs/news/creatine-gummies-dosage-how-many-a-day-us-2026`, `/blogs/news/creatine-gummies-vs-powder-which-should-you-actually-take`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** creatine + price checked 2026-10-16 against 123 live articles (blog listing + sitemap + Atom + local caches) and all 63 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-10-18 https://wellnessnest.co/blogs/news/nmn-for-fertility-human-evidence-in-the-us-2026] **#CA1016-6 — nmn for fertility** — `NMN for Fertility: What Human Studies Show (2026)`
+  - **Primary keyword:** `nmn for fertility` · **Secondary:** nmn and fertility, nmn ovarian reserve, nmn and sperm, nmn while trying to conceive
+  - **Search intent:** person trying to conceive who has seen NMN claimed for fertility and wants human evidence, not animal headlines
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-16 18:52 ICT)
+  - **Hero product:** `/products/ageaura-pure-nmn-tmg-nad-complex` (AgeAura Pure NMN + TMG NAD+ Complex, $69.95, in stock 2026-10-16)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` twice (browse link — AgeAura Pure NMN + TMG NAD+ Complex is not in it, never claim it is) · no other AgeAura product and no AgeAura collection link (brand_rules)
+  - **Angle:** Sort fetched papers into human and animal before you cite any number. If you cannot fetch a human fertility trial, say so and do not borrow an animal result as a human one. AgeAura Pure NMN + TMG NAD+ Complex is not a fertility drug. Do not invent a milligram amount. Link the dosage page instead of restating trial doses.
+  - **Fan-out answers to cover:** is there human NMN fertility research; what did animal studies measure; can you take NMN while trying to conceive; what dose did any human study use
+  - **Evidence to fetch & confirm (claims log):** PubMed or DOI papers on NMN and fertility, ovarian reserve, or sperm — fetch each one. State human versus animal. No invented milligram.
+  - **Link, don't restate:** `/blogs/news/how-much-nmn-per-day-what-trials-used-us-2026`, `/blogs/news/nmn-side-effects-6-checks-before-you-start-us-2026`, `/blogs/news/nmn-for-women-what-the-all-female-trial-missed-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** nmn + fertility checked 2026-10-16 against 123 live articles (blog listing + sitemap + Atom + local caches) and all 63 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#CA1016-7 — vaginal probiotics over 60** — `Vaginal Probiotics Over 60: 5 Checks (US 2026)`
+  - **Primary keyword:** `vaginal probiotics over 60` · **Secondary:** vaginal probiotics for older women, probiotics after menopause, vaginal probiotics at 60, probiotics for postmenopausal women
+  - **Search intent:** woman over 60, or someone buying for her, checking whether a vaginal probiotic gummy fits that age
+  - **Template:** LISTICLE · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-16 18:52 ICT)
+  - **Hero product:** `/products/florafresh-vaginal-probiotics-gummies` (FloraFresh Vaginal Probiotics Gummies, $40.99, in stock 2026-10-16)
+  - **FloraFresh formula (Supplement Facts label, the source of truth):** per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 1 billion CFU, Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain); sweetened with maltitol and isomalt, so not sugar-free; label badges Allergen Free, Vegan, Halal, Gluten Free. Cite the Supplement Facts label, never the live PDP description or an older FloraFresh article (both repeat a wrong formula); a PDP/label mismatch is a gate failure.
+  - **Collection links (≥2, verify live):** `/collections/womens-essentials-collection` (contains it), `/collections/best-seller` (contains it)
+  - **Angle:** Five checks for this age: what the vaginal microbiome does after menopause (fetched sources only), whether any oral-probiotic trial enrolled women over 60, medication questions for a clinician, the gummy routine, and when symptoms mean a clinician instead of a supplement. FloraFresh formula from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, which is not a strain those Lactobacillus trials tested (say so). No cure or treatment claims. Link the over-50 page instead of restating it.
+  - **Fan-out answers to cover:** do vaginal probiotics change after menopause; were women over 60 in the trials; can you take them with other medication; when should you see a clinician instead
+  - **Evidence to fetch & confirm (claims log):** Reviews of the vaginal microbiome after menopause, and any oral probiotic trial that enrolled women over 60 — fetch before citing. FloraFresh strain and CFU from the Supplement Facts label, not the PDP description.
+  - **Link, don't restate:** `/blogs/news/vaginal-probiotics-which-strains-actually-work-us-2026`, `/blogs/news/vaginal-probiotics-side-effects-normal-vs-stop-us-2026`, `/blogs/news/florafresh-vs-generic-probiotics-4-strain-facts-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** probiotic + seniors checked 2026-10-16 against 123 live articles (blog listing + sitemap + Atom + local caches) and all 63 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#CA1016-8 — creatine gummies on an empty stomach** — `Creatine Gummies on an Empty Stomach (US 2026)`
+  - **Primary keyword:** `creatine gummies on an empty stomach` · **Secondary:** creatine empty stomach, creatine without food, can you take creatine fasted, creatine gummies before breakfast
+  - **Search intent:** person who trains fasted or skips breakfast and wants to know if creatine still makes sense without a meal
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-16 18:52 ICT)
+  - **Hero product:** `/products/fusiforce-creatine-gummies` (FusiForce Creatine Gummies, $69.99, in stock 2026-10-16)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** Answer the fed-or-fasted question from fetched trials and reviews: what a meal changes, what it does not, and whether a gummy changes that. Do not restate the before-or-after-workout page or the gram dose. Stomach upset stays a link to the side-effects page. No medical claims.
+  - **Fan-out answers to cover:** can you take creatine without food; does a meal change absorption; will gummies bother an empty stomach; what if you train before breakfast
+  - **Evidence to fetch & confirm (claims log):** Trials or reviews of creatine taken with and without carbohydrate or a meal — fetch each before citing. FusiForce directions from the live PDP only.
+  - **Link, don't restate:** `/blogs/news/best-time-to-take-creatine-before-or-after-us-2026`, `/blogs/news/creatine-gummies-dosage-how-many-a-day-us-2026`, `/blogs/news/creatine-gummies-side-effects-4-real-3-myths-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** creatine + fasting checked 2026-10-16 against 123 live articles (blog listing + sitemap + Atom + local caches) and all 63 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#CA1016-9 — how to take nmn** — `How to Take NMN: A Simple Capsule Routine (2026)`
+  - **Primary keyword:** `how to take nmn` · **Secondary:** how to use nmn capsules, nmn capsule directions, swallow or dissolve nmn, nmn with water
+  - **Search intent:** buyer who already has capsules and wants the daily routine, not another clock-time or dose article
+  - **Template:** STORY · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 1 match(es), none targets this primary: How Long Does NMN Take to Work? Week 1 to 12 (US 2026) (2026-10-16 18:52 ICT)
+  - **Hero product:** `/products/ageaura-pure-nmn-tmg-nad-complex` (AgeAura Pure NMN + TMG NAD+ Complex, $69.95, in stock 2026-10-16)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` twice (browse link — AgeAura Pure NMN + TMG NAD+ Complex is not in it, never claim it is) · no other AgeAura product and no AgeAura collection link (brand_rules)
+  - **Angle:** Walk through the capsule routine on the AgeAura Pure NMN + TMG NAD+ Complex label: swallow with water, follow the servings line on the pack label, and what to do if you miss one day. Do not invent a milligram amount. Link the morning-or-night page and the dosage page instead of restating them.
+  - **Fan-out answers to cover:** do you swallow NMN capsules; do you take them with water; what if you miss a day; can you open the capsule
+  - **Evidence to fetch & confirm (claims log):** Pack-label directions in product_refs/ageaura-pure-nmn-tmg-nad-complex.label.json and the live PDP. No invented milligram.
+  - **Link, don't restate:** `/blogs/news/when-to-take-nmn-morning-or-night-us-2026`, `/blogs/news/how-much-nmn-per-day-what-trials-used-us-2026`, `/blogs/news/nmn-side-effects-6-checks-before-you-start-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** nmn + how-to-take checked 2026-10-16 against 123 live articles (blog listing + sitemap + Atom + local caches) and all 63 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#CA1016-10 — vaginal probiotics for fertility** — `Vaginal Probiotics for Fertility: The Limits (2026)`
+  - **Primary keyword:** `vaginal probiotics for fertility` · **Secondary:** probiotics while trying to conceive, vaginal probiotics and conception, probiotics and fertility, probiotics before pregnancy
+  - **Search intent:** woman trying to conceive who has been told a vaginal probiotic might help and wants the limit of that claim
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-16 18:52 ICT)
+  - **Hero product:** `/products/florafresh-vaginal-probiotics-gummies` (FloraFresh Vaginal Probiotics Gummies, $40.99, in stock 2026-10-16)
+  - **FloraFresh formula (Supplement Facts label, the source of truth):** per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 1 billion CFU, Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain); sweetened with maltitol and isomalt, so not sugar-free; label badges Allergen Free, Vegan, Halal, Gluten Free. Cite the Supplement Facts label, never the live PDP description or an older FloraFresh article (both repeat a wrong formula); a PDP/label mismatch is a gate failure.
+  - **Collection links (≥2, verify live):** `/collections/womens-essentials-collection` (contains it), `/collections/best-seller` (contains it)
+  - **Angle:** This is not the BV page and not the yeast page. Answer whether oral probiotics have been studied around conception, from papers you fetch, and say what they did not measure. FloraFresh formula from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, which is not a strain those Lactobacillus trials tested (say so). Not a fertility treatment. No cure or treatment claims. Link the BV page and the strains page instead of restating them.
+  - **Fan-out answers to cover:** can vaginal probiotics help conception; what did the studies measure; can you take them while trying to conceive; when should you see a clinician
+  - **Evidence to fetch & confirm (claims log):** Trials or reviews of probiotics and conception or vaginal flora in women trying to conceive — fetch before citing. FloraFresh strain and CFU from the Supplement Facts label, not the PDP description.
+  - **Link, don't restate:** `/blogs/news/vaginal-probiotics-which-strains-actually-work-us-2026`, `/blogs/news/probiotics-for-bv-do-they-actually-work-us-2026`, `/blogs/news/yeast-infection-vs-bv-how-to-tell-them-apart-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** probiotic + fertility checked 2026-10-16 against 123 live articles (blog listing + sitemap + Atom + local caches) and all 63 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#CA1016-11 — nmn price** — `NMN Price: What a Bottle Costs in the US (2026)`
+  - **Primary keyword:** `nmn price` · **Secondary:** how much does nmn cost, nmn supplement price, is nmn expensive, nmn cost per bottle
+  - **Search intent:** US shopper who wants the real bottle price of an NMN supplement after marketplace listings changed
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-16 18:52 ICT)
+  - **Hero product:** `/products/ageaura-pure-nmn-tmg-nad-complex` (AgeAura Pure NMN + TMG NAD+ Complex, $69.95, in stock 2026-10-16)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` twice (browse link — AgeAura Pure NMN + TMG NAD+ Complex is not in it, never claim it is) · no other AgeAura product and no AgeAura collection link (brand_rules)
+  - **Angle:** Price the AgeAura Pure NMN + TMG NAD+ Complex from the live PDP and the servings line on its pack label. Do not invent a milligram amount the label file does not list. If the PDP prints a milligram, repeat it only after you fetch that page. Link the where-to-buy page for the FDA story instead of restating it.
+  - **Fan-out answers to cover:** how much does a bottle of NMN cost; what does one serving cost; why do NMN prices differ; what should the label show before you pay
+  - **Evidence to fetch & confirm (claims log):** Live PDP price, fetched at write time. Serving facts only from the pack label in product_refs/ageaura-pure-nmn-tmg-nad-complex.label.json. No invented milligram.
+  - **Link, don't restate:** `/blogs/news/where-to-buy-nmn-in-the-us-fda-status-explained-2026`, `/blogs/news/how-much-nmn-per-day-what-trials-used-us-2026`, `/blogs/news/ageaura-nmn-tmg-ingredients-what-each-one-does-us`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** nmn + price checked 2026-10-16 against 123 live articles (blog listing + sitemap + Atom + local caches) and all 63 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-10-19 https://wellnessnest.co/blogs/news/how-to-take-creatine-gummies-in-the-us-2026] **#CA1016-12 — how to take creatine gummies** — `How to Take Creatine Gummies Each Day (US 2026)`
+  - **Primary keyword:** `how to take creatine gummies` · **Secondary:** how to use creatine gummies, creatine gummies directions, chew or swallow creatine gummies, creatine gummies with water
+  - **Search intent:** first buyer who has the bottle and wants the physical daily routine, not another dose debate
+  - **Template:** LISTICLE · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-16 18:52 ICT)
+  - **Hero product:** `/products/fusiforce-creatine-gummies` (FusiForce Creatine Gummies, $69.99, in stock 2026-10-16)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** The gummy routine the dosage page and the before-or-after page do not cover: chew them, water, the same time you will remember, rest days included, travel, and what the live label says to do. Link those two pages for the gram amount and the workout clock. Do not restate either one.
+  - **Fan-out answers to cover:** do you chew creatine gummies; do you need water with them; what if you miss a day; can you take them on rest days
+  - **Evidence to fetch & confirm (claims log):** FusiForce directions from the live PDP. ISSN creatine position stand (Kreider et al. 2017) only for the daily-consistency point — fetch before citing.
+  - **Link, don't restate:** `/blogs/news/creatine-gummies-dosage-how-many-a-day-us-2026`, `/blogs/news/best-time-to-take-creatine-before-or-after-us-2026`, `/blogs/news/creatine-gummies-on-rest-days-keep-taking-them-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** creatine + how-to-take checked 2026-10-16 against 123 live articles (blog listing + sitemap + Atom + local caches) and all 63 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-10-20 https://wellnessnest.co/blogs/news/creatine-gummies-for-fertility-us-evidence] **#CA1016-13 — creatine gummies for fertility** — `Creatine Gummies for Fertility: What We Know (2026)`
+  - **Primary keyword:** `creatine gummies for fertility` · **Secondary:** creatine and sperm, creatine male fertility, creatine and pregnancy, does creatine affect fertility
+  - **Search intent:** person trying to conceive who has seen creatine mentioned for sperm or pregnancy and wants the actual evidence
+  - **Template:** STORY · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-16 18:52 ICT)
+  - **Hero product:** `/products/fusiforce-creatine-gummies` (FusiForce Creatine Gummies, $69.99, in stock 2026-10-16)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** Report only studies you fetch. Separate sperm-quality findings from pregnancy findings, and say when a study is small, short, or not in humans. Creatine is not a fertility treatment. Anyone pregnant or trying to conceive should talk to a clinician before starting. Link the side-effects page instead of restating it.
+  - **Fan-out answers to cover:** does creatine affect sperm; can you take creatine while trying to conceive; is there pregnancy research; when should you ask a clinician
+  - **Evidence to fetch & confirm (claims log):** PubMed or DOI papers on creatine and sperm quality or pregnancy — fetch each paper and cite only what it measured. No unfetched numbers.
+  - **Link, don't restate:** `/blogs/news/creatine-gummies-side-effects-4-real-3-myths-us-2026`, `/blogs/news/creatine-gummies-dosage-how-many-a-day-us-2026`, `/blogs/news/creatine-for-women-over-40-what-changes-in-the-us`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** creatine + fertility checked 2026-10-16 against 123 live articles (blog listing + sitemap + Atom + local caches) and all 63 tickets in this file; STEP 0 re-checks at write time
+
+# BATCH 2026-10-17 (refill_tickets.py — ids #CA1017-1…#CA1017-35)
+
+Built by `scripts/refill_tickets.py` at 2026-10-17 14:56 ICT from `templates/article-topic-bank.json` + `board/ideas.csv`
+(search volume: No data — GSC/Ads not used). Every ticket passed, against the live store at build time:
+brand_rules + `lint_tickets.py` · hero product live and in stock · not a covered topic (header rule 6) ·
+not already queued · not live (128 published articles: blog listing + sitemap + Atom + local caches; one article per brand + segment) ·
+`topic_fitness.py` strict on primary and title · STEP 0 suggest.json.
+A `topic_fitness` REVIEW [covered-segment] verdict is allowed under Kevin's standing greenlight for mined queues (2026-08-13).
+A topic is a brief, not copy: source every claim or cut it.
+
+**Rules for this batch:** from the 2026-10-08 batch rules — fan-out answers, a "Where to buy <product> in the US"
+section (live price, the ticket's product link only), roster.json byline only (never an invented person or
+credential), the logged fact-check pass (`logs/claims/<slug>.md`; delete unconfirmed claims), the brand gate.
+Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py once. The hero is the picked face plus the real pack unless pick prints NO-FACE. One inline image uses that face. The other inline images have no recognizable face but still show a hand, forearm, or body cropped below the eyes. A no-face image is the fallback for one frame after a face refusal or two QC misses, not a batch-wide ban. The MacBook article plist sets `GENSEO_NO_FACE=0`, and that value does not switch the lane. Prices were read live at build time; re-check the PDP while writing.
+
+- [DONE 2026-10-20 https://wellnessnest.co/blogs/news/how-to-take-vaginal-probiotics-in-the-us] **#CA1017-1 — how to take vaginal probiotics** — `How to Take Vaginal Probiotics (US 2026)`
+  - **Primary keyword:** `how to take vaginal probiotics` · **Secondary:** vaginal probiotic gummy routine, chew vaginal probiotics, vaginal probiotics with water, vaginal probiotic directions
+  - **Search intent:** buyer who has the pouch and wants the daily chew, not another clock or CFU page
+  - **Template:** LISTICLE · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
+  - **Hero product:** `/products/florafresh-vaginal-probiotics-gummies` (FloraFresh Vaginal Probiotics Gummies, $40.99, in stock 2026-10-17)
+  - **FloraFresh formula (Supplement Facts label, the source of truth):** per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 1 billion CFU, Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain); sweetened with maltitol and isomalt, so not sugar-free; label badges Allergen Free, Vegan, Halal, Gluten Free. Cite the Supplement Facts label, never the live PDP description or an older FloraFresh article (both repeat a wrong formula); a PDP/label mismatch is a gate failure.
+  - **Collection links (≥2, verify live):** `/collections/womens-essentials-collection` (contains it), `/collections/best-seller` (contains it)
+  - **Angle:** Chew the gummies, water, and the same time you will remember. The best-time page owns the clock; link it. The dosage page owns the count; link it. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.
+  - **Fan-out answers to cover:** do you chew them; do you take them with water; what if you miss a day; where is the clock-time page
+  - **Evidence to fetch & confirm (claims log):** Live PDP directions for the routine. Strain and CFU only from the Supplement Facts label.
+  - **Link, don't restate:** `/blogs/news/best-time-to-take-vaginal-probiotics-6-rules-us-2026`, `/blogs/news/vaginal-probiotic-dosage-how-many-cfu-a-day-us-2026`, `/blogs/news/florafresh-gummies-vs-capsules-5-format-facts-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** probiotic + how-to-take checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-10-20 https://wellnessnest.co/blogs/news/shilajit-on-rest-days-with-food-in-the-us] **#CA1017-2 — shilajit on rest days with food** — `Shilajit on Rest Days, With Food (US 2026)`
+  - **Primary keyword:** `shilajit on rest days with food` · **Secondary:** shilajit on off days, shilajit on a day off, shilajit rest day routine, take shilajit every day
+  - **Search intent:** person who takes shilajit on gym days and wants the day off answered separately
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
+  - **Hero product:** `/products/shilasource-himalayan-shilajit-resin` (ShilaSource Himalayan Shilajit Resin, $59.99, in stock 2026-10-17)
+  - **ShilaSource Himalayan Shilajit Resin pack label (source of truth):** ShilaSource, Himalayan, Shilajit, Resin, 75, Dietary Supplement, Wellness, Nest, 70% Fulvic Acid*, Lab-Tested for Purity*, 1.06oz (30g), SERVINGS, Servings. No milligram amount and no Supplement Facts panel were read into that file. Do not add one. Do not state a serving count, volume, weight, fulvic percentage, mineral count, or day-supply other than the lines in product_refs/shilasource-himalayan-shilajit-resin.label.json.
+  - **Collection links (≥2, verify live):** `/collections/shilajit-wellness-stack` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** The athletes page is the strength trial. This page is the off day: do you still take resin when you are not in the gym, and does a meal change that. If no trial compared rest days, say so. Link the athletes page and the how-to-take page. No milligram and no serving count beyond the pack-label line.
+  - **Fan-out answers to cover:** do you take shilajit on days off; does a meal change the off-day routine; what if you only take it on gym days; where is the dissolve method
+  - **Evidence to fetch & confirm (claims log):** Any human trial that reported rest-day use — fetch it or say you found none. Pack-label facts only from product_refs/shilasource-himalayan-shilajit-resin.label.json.
+  - **Link, don't restate:** `/blogs/news/shilajit-for-athletes-what-a-trial-found-in-the-us`, `/blogs/news/how-to-take-shilajit-resin-dissolve-it-right-us-2026`, `/blogs/news/when-to-take-shilajit-morning-or-night-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** shilajit + rest-days checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-10-20 https://wellnessnest.co/blogs/news/creatine-gummies-while-traveling-how-much-us-2026] **#CA1017-3 — how much creatine gummies while traveling** — `Creatine Gummies While Traveling: How Much? (US 2026)`
+  - **Primary keyword:** `how much creatine gummies while traveling` · **Secondary:** creatine gummies on vacation, creatine gummies on a flight, packing creatine gummies, creatine travel routine
+  - **Search intent:** person packing for a US trip who wants the gummy habit to survive the suitcase
+  - **Template:** LISTICLE · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
+  - **Hero product:** `/products/fusiforce-creatine-gummies` (FusiForce Creatine Gummies, $69.99, in stock 2026-10-17)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** The home storage page covers shelf life. This page is the trip: carry-on, a hot US car, time zones, and the same chew you already use. Do not restate grams or the expire rules. Link those pages. No medical claims.
+  - **Fan-out answers to cover:** do creatine gummies go in a carry-on; does a hot car change them; do you skip days you travel; does the amount change on the road
+  - **Evidence to fetch & confirm (claims log):** FusiForce directions from the live PDP. Any travel or stability note only from a page fetched at write time. No invented gram amount.
+  - **Link, don't restate:** `/blogs/news/do-creatine-gummies-expire-6-storage-facts-us-2026`, `/blogs/news/creatine-gummies-dosage-how-many-a-day-us-2026`, `/blogs/news/best-time-to-take-creatine-before-or-after-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** creatine + travel checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-10-21 https://wellnessnest.co/blogs/news/how-much-turkesterone-on-rest-days-in-the-us] **#CA1017-4 — how much turkesterone on rest days** — `Turkesterone on Rest Days: How Much Changes? (2026)`
+  - **Primary keyword:** `how much turkesterone on rest days` · **Secondary:** turkesterone on off days, turkesterone on a day off, turkesterone rest day capsules, turkesterone every day
+  - **Search intent:** lifter who takes it on gym days and wants the off-day answer
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
+  - **Hero product:** `/products/turkesterone-advanced-formula` (Turkesterone Advanced Formula, $75, in stock 2026-10-17)
+  - **Turkesterone Advanced Formula pack label (source of truth):** wellness, nest, PREMIUM, TURKESTERONE, ADVANCED, FORMULA, AMPLIFY, MUSCLE, ENDURANCE, 60, Dietary Supplement, Capsules. No milligram amount and no Supplement Facts panel were read. Do not add one. The capsule badge is the separate lines in product_refs/turkesterone-advanced-formula.label.json. Do not state a milligram amount, a serving count, a different capsule count, or a day-supply.
+  - **Collection links (≥2, verify live):** `/collections/mens-essential-collection` (contains it), `/collections/shilajit-wellness-stack` (contains it)
+  - **Angle:** The athletes page is the drug-test guide. This page is the off day. If no study compared gym days and off days, say so. Do not state a milligram, a serving count, a capsule count, or a day-supply. Link the athletes page and the timing page.
+  - **Fan-out answers to cover:** do you take it on days off; does the amount change; what if you only take it on gym days; where is the drug-test page
+  - **Evidence to fetch & confirm (claims log):** Any human trial that reported rest days — fetch it or say you found none. No milligram.
+  - **Link, don't restate:** `/blogs/news/turkesterone-for-athletes-drug-test-guide-us-2026`, `/blogs/news/turkesterone-timing-food-protein-or-fasted-us-2026`, `/blogs/news/how-long-does-turkesterone-take-to-work-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** turkesterone + rest-days checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-10-21 https://wellnessnest.co/blogs/news/nmn-while-traveling-with-food-5-us-tips] **#CA1017-5 — nmn while traveling with food** — `NMN While Traveling, With Food (US 2026)`
+  - **Primary keyword:** `nmn while traveling with food` · **Secondary:** nmn capsules on a flight, nmn on vacation, packing nmn capsules, nmn time zone
+  - **Search intent:** traveler with a capsule bottle who wants a simple trip routine
+  - **Template:** LISTICLE · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
+  - **Hero product:** `/products/ageaura-pure-nmn-tmg-nad-complex` (AgeAura Pure NMN + TMG NAD+ Complex, $69.95, in stock 2026-10-17)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` twice (browse link — AgeAura Pure NMN + TMG NAD+ Complex is not in it, never claim it is) · no other AgeAura product and no AgeAura collection link (brand_rules)
+  - **Angle:** Capsules in a bag, a missed day, and a time-zone shift. Follow the pack label for how you swallow them. Link the morning-or-night page. Do not invent a milligram. AgeAura Pure NMN + TMG NAD+ Complex only.
+  - **Fan-out answers to cover:** do capsules go in a carry-on; what if you miss a day; does the clock change in a new time zone; do you take them with a meal
+  - **Evidence to fetch & confirm (claims log):** Pack-label directions and the live PDP. No invented milligram. No invented airport rule. AgeAura Pure NMN + TMG NAD+ Complex only.
+  - **Link, don't restate:** `/blogs/news/when-to-take-nmn-morning-or-night-us-2026`, `/blogs/news/nmn-side-effects-6-checks-before-you-start-us-2026`, `/blogs/news/how-much-nmn-per-day-what-trials-used-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** nmn + travel checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-10-21 https://wellnessnest.co/blogs/news/vaginal-probiotics-on-an-empty-stomach-us-guide-1] **#CA1017-6 — vaginal probiotics on an empty stomach** — `Vaginal Probiotics on an Empty Stomach (US 2026)`
+  - **Primary keyword:** `vaginal probiotics on an empty stomach` · **Secondary:** vaginal probiotics without food, vaginal probiotics before breakfast, probiotic gummies before eating, vaginal probiotics with a meal
+  - **Search intent:** reader who wants the meal question separated from the morning-or-night question
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
+  - **Hero product:** `/products/florafresh-vaginal-probiotics-gummies` (FloraFresh Vaginal Probiotics Gummies, $40.99, in stock 2026-10-17)
+  - **FloraFresh formula (Supplement Facts label, the source of truth):** per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 1 billion CFU, Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain); sweetened with maltitol and isomalt, so not sugar-free; label badges Allergen Free, Vegan, Halal, Gluten Free. Cite the Supplement Facts label, never the live PDP description or an older FloraFresh article (both repeat a wrong formula); a PDP/label mismatch is a gate failure.
+  - **Collection links (≥2, verify live):** `/collections/womens-essentials-collection` (contains it), `/collections/best-seller` (contains it)
+  - **Angle:** The best-time page answers morning or night. This page answers with a meal or without one, from probiotic-survival research you fetch. Do not restate the clock. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.
+  - **Fan-out answers to cover:** does a meal change survival; is an empty stomach required; what if the label is silent; where is the clock-time page
+  - **Evidence to fetch & confirm (claims log):** Tompkins et al. 2011, Beneficial Microbes, or a newer fetched paper on probiotic survival with a meal. Confirm before citing.
+  - **Link, don't restate:** `/blogs/news/best-time-to-take-vaginal-probiotics-6-rules-us-2026`, `/blogs/news/vaginal-probiotics-side-effects-normal-vs-stop-us-2026`, `/blogs/news/vaginal-probiotic-dosage-how-many-cfu-a-day-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** probiotic + fasting checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-10-21 https://wellnessnest.co/blogs/news/shilajit-gummies-while-traveling-5-us-tips] **#CA1017-7 — shilajit gummies while traveling with food** — `Shilajit Gummies While Traveling, With Food (2026)`
+  - **Primary keyword:** `shilajit gummies while traveling with food` · **Secondary:** shilajit gummies on a flight, shilajit gummies on vacation, travel with shilajit gummies, shilajit gummies in a hotel
+  - **Search intent:** traveler who wants shilajit without packing a resin jar
+  - **Template:** LISTICLE · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
+  - **Hero product:** `/products/premium-himalayan-shilajit-gummies` (Premium Himalayan Shilajit Gummies, $59.99, in stock 2026-10-17)
+  - **Collection links (≥2, verify live):** `/collections/shilajit-wellness-stack` (contains it), `/collections/best-seller` (contains it)
+  - **Angle:** Gummies on a trip: what you carry, heat in a US car, and keeping one daily habit. Do not restate the resin-versus-gummies page. Link it. Gummies, resin, gold resin, and drops are different products. No milligram the live gummy PDP does not print.
+  - **Fan-out answers to cover:** are gummies easier to pack than resin; what does heat do on a trip; do you take them with a meal; what if you miss a travel day
+  - **Evidence to fetch & confirm (claims log):** Live gummy PDP for what the label prints. No invented milligram. Resin routine stays a link.
+  - **Link, don't restate:** `/blogs/news/shilajit-resin-vs-gummies-which-works-better-us-2026`, `/blogs/news/how-to-take-shilajit-resin-dissolve-it-right-us-2026`, `/blogs/news/how-much-shilajit-per-day-dosage-by-form-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** shilajit + travel checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-10-22 https://wellnessnest.co/blogs/news/creatine-gummies-cycling-breaks-us-2026] **#CA1017-8 — how much creatine gummies cycling** — `Creatine Gummies Cycling: How Much Changes? (US 2026)`
+  - **Primary keyword:** `how much creatine gummies cycling` · **Secondary:** do you cycle creatine, creatine on and off, creatine gummies weeks off, should you stop creatine
+  - **Search intent:** lifter who has read that some supplements need weeks off and wants the creatine answer
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
+  - **Hero product:** `/products/fusiforce-creatine-gummies` (FusiForce Creatine Gummies, $69.99, in stock 2026-10-17)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** Loading is a different page. This asks whether you stop for weeks. Answer from the ISSN creatine position stand if you fetch it: creatine is usually taken every day, not in on-and-off blocks. If you cannot fetch that line, say what you did fetch. Link the loading page and the how-long page. Do not restate the gram amount.
+  - **Fan-out answers to cover:** do you take weeks off creatine; is cycling different from loading; what happens if you stop; does a gummy change that
+  - **Evidence to fetch & confirm (claims log):** ISSN creatine position stand (Kreider et al. 2017) — fetch before citing. FusiForce directions from the live PDP only.
+  - **Link, don't restate:** `/blogs/news/creatine-gummies-loading-phase-is-it-needed-us-2026`, `/blogs/news/how-long-does-creatine-take-to-work-week-by-week-us-2026`, `/blogs/news/creatine-gummies-on-rest-days-keep-taking-them-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** creatine + cycle checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-10-22 https://wellnessnest.co/blogs/news/turkesterone-while-traveling-us-packing-guide] **#CA1017-9 — how much turkesterone while traveling** — `Turkesterone While Traveling: How Much to Pack? (2026)`
+  - **Primary keyword:** `how much turkesterone while traveling` · **Secondary:** turkesterone on a flight, turkesterone on vacation, packing turkesterone, turkesterone hotel routine
+  - **Search intent:** lifter packing a jar who should not invent a capsule count for the trip
+  - **Template:** LISTICLE · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
+  - **Hero product:** `/products/turkesterone-advanced-formula` (Turkesterone Advanced Formula, $75, in stock 2026-10-17)
+  - **Turkesterone Advanced Formula pack label (source of truth):** wellness, nest, PREMIUM, TURKESTERONE, ADVANCED, FORMULA, AMPLIFY, MUSCLE, ENDURANCE, 60, Dietary Supplement, Capsules. No milligram amount and no Supplement Facts panel were read. Do not add one. The capsule badge is the separate lines in product_refs/turkesterone-advanced-formula.label.json. Do not state a milligram amount, a serving count, a different capsule count, or a day-supply.
+  - **Collection links (≥2, verify live):** `/collections/mens-essential-collection` (contains it), `/collections/shilajit-wellness-stack` (contains it)
+  - **Angle:** The jar goes in the bag. You do not split capsules into a count this ticket does not have. Missed days and hotel heat. Do not state a milligram, a serving count, a capsule count, or a day-supply. Link the timing page and the side-effects page.
+  - **Fan-out answers to cover:** does the whole jar travel; what if you miss a day; what does hotel heat change; where is the daily routine
+  - **Evidence to fetch & confirm (claims log):** Live PDP and the pack-label file. No invented capsule count or temperature.
+  - **Link, don't restate:** `/blogs/news/turkesterone-timing-food-protein-or-fasted-us-2026`, `/blogs/news/turkesterone-side-effects-4-ingredients-to-check-us-2026`, `/blogs/news/where-to-buy-turkesterone-in-the-us-what-to-check-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** turkesterone + travel checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-10-22 https://wellnessnest.co/blogs/news/are-vaginal-probiotics-worth-it-40-99-us-check-2026] **#CA1017-10 — are vaginal probiotics worth it how much** — `Are Vaginal Probiotics Worth It? How Much You Check (2026)`
+  - **Primary keyword:** `are vaginal probiotics worth it how much` · **Secondary:** vaginal probiotics review, are vaginal probiotics legit, florafresh honest check, vaginal probiotic gummies review
+  - **Search intent:** shopper who wants a straight worth-it check without a fake star rating
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
+  - **Hero product:** `/products/florafresh-vaginal-probiotics-gummies` (FloraFresh Vaginal Probiotics Gummies, $40.99, in stock 2026-10-17)
+  - **FloraFresh formula (Supplement Facts label, the source of truth):** per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 1 billion CFU, Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain); sweetened with maltitol and isomalt, so not sugar-free; label badges Allergen Free, Vegan, Halal, Gluten Free. Cite the Supplement Facts label, never the live PDP description or an older FloraFresh article (both repeat a wrong formula); a PDP/label mismatch is a gate failure.
+  - **Collection links (≥2, verify live):** `/collections/womens-essentials-collection` (contains it), `/collections/best-seller` (contains it)
+  - **Angle:** Not the where-to-buy checklist and not a star-rating roundup. No invented reviews. What the Supplement Facts label lets you verify, and what the live PDP still has to show for the current offer. Link the where-to-buy page. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.
+  - **Fan-out answers to cover:** what can you verify without a review; what a star rating cannot prove; what do you still read on the product page; where is the buy checklist
+  - **Evidence to fetch & confirm (claims log):** Supplement Facts label plus the live PDP offer, fetched at write time. No invented review or rating.
+  - **Link, don't restate:** `/blogs/news/where-to-buy-vaginal-probiotics-in-the-us-5-checks-2026`, `/blogs/news/florafresh-gummies-vs-capsules-5-format-facts-us-2026`, `/blogs/news/vaginal-probiotics-which-strains-actually-work-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** probiotic + reviews checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-10-22 https://wellnessnest.co/blogs/news/turkesterone-and-coffee-with-food-us-2026] **#CA1017-11 — turkesterone and coffee with food** — `Turkesterone and Coffee, With Food (US 2026)`
+  - **Primary keyword:** `turkesterone and coffee with food` · **Secondary:** turkesterone with coffee, turkesterone and caffeine, turkesterone morning coffee, turkesterone beside coffee
+  - **Search intent:** lifter who takes capsules with morning coffee and wants the evidence
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
+  - **Hero product:** `/products/turkesterone-advanced-formula` (Turkesterone Advanced Formula, $75, in stock 2026-10-17)
+  - **Turkesterone Advanced Formula pack label (source of truth):** wellness, nest, PREMIUM, TURKESTERONE, ADVANCED, FORMULA, AMPLIFY, MUSCLE, ENDURANCE, 60, Dietary Supplement, Capsules. No milligram amount and no Supplement Facts panel were read. Do not add one. The capsule badge is the separate lines in product_refs/turkesterone-advanced-formula.label.json. Do not state a milligram amount, a serving count, a different capsule count, or a day-supply.
+  - **Collection links (≥2, verify live):** `/collections/mens-essential-collection` (contains it), `/collections/shilajit-wellness-stack` (contains it)
+  - **Angle:** Lifters often take capsules with morning coffee. Fetch any human evidence before you claim an interaction. If you find none, say so. Do not state a milligram, a serving count, a capsule count, or a day-supply. Link the timing page. No stimulant claim.
+  - **Fan-out answers to cover:** can capsules go with coffee; is there an interaction study; does a meal change it; where is the timing page
+  - **Evidence to fetch & confirm (claims log):** PubMed or DOI search for turkesterone and caffeine — fetch a paper or state that you found none. No milligram.
+  - **Link, don't restate:** `/blogs/news/turkesterone-timing-food-protein-or-fasted-us-2026`, `/blogs/news/turkesterone-side-effects-4-ingredients-to-check-us-2026`, `/blogs/news/turkesterone-benefits-dosing-whats-real-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** turkesterone + caffeine checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-10-22 https://wellnessnest.co/blogs/news/nmn-on-rest-days-take-it-with-food-us] **#CA1017-12 — nmn on rest days with food** — `NMN Capsules on a Day Off, With Food (US 2026)`
+  - **Primary keyword:** `nmn on rest days with food` · **Secondary:** nmn on off days, nmn when you skip the gym, nmn rest day capsules, take nmn every day
+  - **Search intent:** person who times NMN around workouts and wants the day off
+  - **Template:** STORY · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
+  - **Hero product:** `/products/ageaura-pure-nmn-tmg-nad-complex` (AgeAura Pure NMN + TMG NAD+ Complex, $69.95, in stock 2026-10-17)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` twice (browse link — AgeAura Pure NMN + TMG NAD+ Complex is not in it, never claim it is) · no other AgeAura product and no AgeAura collection link (brand_rules)
+  - **Angle:** The exercise page covers workout timing. This page is the day you do not train. Link that page and the morning-or-night page. AgeAura Pure NMN + TMG NAD+ Complex only. Do not invent a milligram. Do not restate the dose page.
+  - **Fan-out answers to cover:** do you take NMN on days off; does a meal matter more on a rest day; what if you only take it on gym days; where is the clock-time page
+  - **Evidence to fetch & confirm (claims log):** Any trial that reported non-training days — fetch it or say you found none. No invented milligram. AgeAura Pure NMN + TMG NAD+ Complex only.
+  - **Link, don't restate:** `/blogs/news/nmn-and-exercise-before-or-after-a-workout-us-2026`, `/blogs/news/when-to-take-nmn-morning-or-night-us-2026`, `/blogs/news/how-much-nmn-per-day-what-trials-used-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** nmn + rest-days checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-10-23 https://wellnessnest.co/blogs/news/creatine-gummies-worth-it-us-2026-check] **#CA1017-13 — are creatine gummies worth it how much** — `Are Creatine Gummies Worth It? How Much You Get (2026)`
+  - **Primary keyword:** `are creatine gummies worth it how much` · **Secondary:** creatine gummies review, are creatine gummies legit, creatine gummies honest check, fusiforce creatine gummies review
+  - **Search intent:** shopper who wants a straight answer before paying for gummies instead of powder
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
+  - **Hero product:** `/products/fusiforce-creatine-gummies` (FusiForce Creatine Gummies, $69.99, in stock 2026-10-17)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** Not a price page and not the powder comparison. Compare what a shopper can verify on the live FusiForce PDP (creatine monohydrate named, and only the amounts the panel prints) with what a review page often skips. No invented star rating or buyer quotes. Link the powder page and the where-to-buy page.
+  - **Fan-out answers to cover:** what can you verify on the label; what a review cannot prove; how do gummies differ from powder; what should you ignore in ads
+  - **Evidence to fetch & confirm (claims log):** Live FusiForce PDP, fetched at write time. Any third-party gummy test only from a fetched report, and only if that report names the product.
+  - **Link, don't restate:** `/blogs/news/creatine-gummies-vs-powder-which-should-you-actually-take`, `/blogs/news/where-to-buy-creatine-gummies-5-label-checks-us-2026`, `/blogs/news/creatine-gummies-dosage-how-many-a-day-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** creatine + reviews checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-10-23 https://wellnessnest.co/blogs/news/nmn-storage-with-food-5-us-rules] **#CA1017-14 — nmn storage with food** — `Where Should NMN Capsules Sit, With Food Nearby? (2026)`
+  - **Primary keyword:** `nmn storage with food` · **Secondary:** how to store nmn, nmn bottle heat, nmn shelf life, nmn in the kitchen
+  - **Search intent:** bottle owner deciding where capsules should sit at home
+  - **Template:** LISTICLE · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
+  - **Hero product:** `/products/ageaura-pure-nmn-tmg-nad-complex` (AgeAura Pure NMN + TMG NAD+ Complex, $69.95, in stock 2026-10-17)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` twice (browse link — AgeAura Pure NMN + TMG NAD+ Complex is not in it, never claim it is) · no other AgeAura product and no AgeAura collection link (brand_rules)
+  - **Angle:** Bottle closed, heat, and the date printed on the pack if there is one. Do not invent an expiry. Link the morning-or-night page for the routine. Do not invent a milligram. AgeAura Pure NMN + TMG NAD+ Complex only.
+  - **Fan-out answers to cover:** does the bottle need a fridge; what does heat do; can it sit near food; what if the pack prints a date
+  - **Evidence to fetch & confirm (claims log):** Live PDP and the pack-label file only. No invented expiry or temperature. AgeAura Pure NMN + TMG NAD+ Complex only.
+  - **Link, don't restate:** `/blogs/news/when-to-take-nmn-morning-or-night-us-2026`, `/blogs/news/nmn-side-effects-6-checks-before-you-start-us-2026`, `/blogs/news/how-much-nmn-per-day-what-trials-used-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** nmn + storage checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-10-23 https://wellnessnest.co/blogs/news/shilajit-and-coffee-with-food-us-guide] **#CA1017-15 — shilajit and coffee with food** — `Shilajit and Coffee, With Food (US 2026)`
+  - **Primary keyword:** `shilajit and coffee with food` · **Secondary:** shilajit with coffee, shilajit and caffeine, shilajit in the morning with coffee, shilajit beside coffee
+  - **Search intent:** morning coffee drinker deciding whether resin belongs in the same cup routine
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
+  - **Hero product:** `/products/shilasource-himalayan-shilajit-resin` (ShilaSource Himalayan Shilajit Resin, $59.99, in stock 2026-10-17)
+  - **ShilaSource Himalayan Shilajit Resin pack label (source of truth):** ShilaSource, Himalayan, Shilajit, Resin, 75, Dietary Supplement, Wellness, Nest, 70% Fulvic Acid*, Lab-Tested for Purity*, 1.06oz (30g), SERVINGS, Servings. No milligram amount and no Supplement Facts panel were read into that file. Do not add one. Do not state a serving count, volume, weight, fulvic percentage, mineral count, or day-supply other than the lines in product_refs/shilasource-himalayan-shilajit-resin.label.json.
+  - **Collection links (≥2, verify live):** `/collections/shilajit-wellness-stack` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** Morning coffee plus resin is a common habit, not a studied pairing. Say what you could and could not fetch. Link the morning-or-night page for the clock, and do not restate it. Drops are a different product; do not borrow that label. No milligram beyond the resin pack-label line. Do not claim a caffeine amount.
+  - **Fan-out answers to cover:** can resin go with morning coffee; does coffee change the routine; is there any caffeine in the resin; what if your stomach objects
+  - **Evidence to fetch & confirm (claims log):** Any fetched paper on shilajit and caffeine. If none, say so. Pack-label line only. No invented caffeine amount.
+  - **Link, don't restate:** `/blogs/news/when-to-take-shilajit-morning-or-night-us-2026`, `/blogs/news/how-to-take-shilajit-resin-dissolve-it-right-us-2026`, `/blogs/news/shilajit-side-effects-7-signs-to-watch-for-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** shilajit + caffeine checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-10-23 https://wellnessnest.co/blogs/news/how-to-take-turkesterone-in-the-us-2026] **#CA1017-16 — how to take turkesterone** — `How to Take Turkesterone Capsules (US 2026)`
+  - **Primary keyword:** `how to take turkesterone` · **Secondary:** turkesterone capsule routine, swallow turkesterone, turkesterone with water, turkesterone directions
+  - **Search intent:** buyer who has the jar and wants the physical routine, not another clock or cost page
+  - **Template:** STORY · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 1 match(es), none targets this primary: How Long Does Turkesterone Take to Work? (US 2026) (2026-10-17 14:56 ICT)
+  - **Hero product:** `/products/turkesterone-advanced-formula` (Turkesterone Advanced Formula, $75, in stock 2026-10-17)
+  - **Turkesterone Advanced Formula pack label (source of truth):** wellness, nest, PREMIUM, TURKESTERONE, ADVANCED, FORMULA, AMPLIFY, MUSCLE, ENDURANCE, 60, Dietary Supplement, Capsules. No milligram amount and no Supplement Facts panel were read. Do not add one. The capsule badge is the separate lines in product_refs/turkesterone-advanced-formula.label.json. Do not state a milligram amount, a serving count, a different capsule count, or a day-supply.
+  - **Collection links (≥2, verify live):** `/collections/mens-essential-collection` (contains it), `/collections/shilajit-wellness-stack` (contains it)
+  - **Angle:** Swallow with water, the same time you will remember, and what the jar front actually is. Do not state a milligram, a serving count, a capsule count, or a day-supply. The pack-label line is the only label fact. Link the timing page and the dosing page instead of restating them.
+  - **Fan-out answers to cover:** do you swallow the capsules; do you take them with water; what if you miss one; where is the clock-time page
+  - **Evidence to fetch & confirm (claims log):** Live PDP directions and product_refs/turkesterone-advanced-formula.label.json. No milligram and no extra capsule count beyond the split badge the ticket line prints.
+  - **Link, don't restate:** `/blogs/news/turkesterone-timing-food-protein-or-fasted-us-2026`, `/blogs/news/turkesterone-benefits-dosing-whats-real-us-2026`, `/blogs/news/turkesterone-side-effects-4-ingredients-to-check-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** turkesterone + how-to-take checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-10-24 https://wellnessnest.co/blogs/news/is-nmn-worth-it-with-food-us-check] **#CA1017-17 — is nmn worth it with food** — `Is NMN Worth It, With Food? (US 2026)`
+  - **Primary keyword:** `is nmn worth it with food` · **Secondary:** nmn review, is nmn legit, nmn honest check, is the nmn tmg complex worth it
+  - **Search intent:** US shopper who wants a straight worth-it check after marketplace listings changed
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
+  - **Hero product:** `/products/ageaura-pure-nmn-tmg-nad-complex` (AgeAura Pure NMN + TMG NAD+ Complex, $69.95, in stock 2026-10-17)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` twice (browse link — AgeAura Pure NMN + TMG NAD+ Complex is not in it, never claim it is) · no other AgeAura product and no AgeAura collection link (brand_rules)
+  - **Angle:** Not the ingredients page and not the where-to-buy regulatory story. What a US shopper can check on the live AgeAura Pure NMN + TMG NAD+ Complex only PDP, and what human trials have not shown. No invented reviews or star ratings. Link those two pages. Do not invent a milligram.
+  - **Fan-out answers to cover:** what can you verify on the bottle; what trials have not shown; is a meal part of the decision; where is the regulatory story
+  - **Evidence to fetch & confirm (claims log):** Live PDP for AgeAura Pure NMN + TMG NAD+ Complex only. Human trials only from papers you fetch. No invented review.
+  - **Link, don't restate:** `/blogs/news/where-to-buy-nmn-in-the-us-fda-status-explained-2026`, `/blogs/news/ageaura-nmn-tmg-ingredients-what-each-one-does-us`, `/blogs/news/nmn-side-effects-6-checks-before-you-start-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** nmn + reviews checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-10-24 https://wellnessnest.co/blogs/news/creatine-gummies-ingredients-us-label-guide] **#CA1017-18 — creatine gummies ingredients how much** — `Creatine Gummies Ingredients: How Much Is Named (2026)`
+  - **Primary keyword:** `creatine gummies ingredients how much` · **Secondary:** what is in creatine gummies, creatine monohydrate gummies ingredients, fusiforce ingredients, creatine gummies label
+  - **Search intent:** label reader who wants the ingredient list, not another shopping checklist
+  - **Template:** LISTICLE · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
+  - **Hero product:** `/products/fusiforce-creatine-gummies` (FusiForce Creatine Gummies, $69.99, in stock 2026-10-17)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** Read the live panel: creatine monohydrate and whatever else the PDP actually prints. Do not invent a gram amount. Link the dosage page for the daily amount and the where-to-buy page for the five label checks. This page is the ingredient list, not the shopping checklist.
+  - **Fan-out answers to cover:** is the creatine monohydrate; what else is on the panel; what if the front and the panel disagree; where is the daily amount explained
+  - **Evidence to fetch & confirm (claims log):** FusiForce ingredient list from the live PDP only. No invented gram, count, or sweetener the page does not print.
+  - **Link, don't restate:** `/blogs/news/creatine-gummies-dosage-how-many-a-day-us-2026`, `/blogs/news/where-to-buy-creatine-gummies-5-label-checks-us-2026`, `/blogs/news/creatine-gummies-side-effects-4-real-3-myths-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** creatine + ingredients checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-10-24 https://wellnessnest.co/blogs/news/nmn-loading-phase-is-it-needed-in-the-us] **#CA1017-19 — nmn loading with food** — `NMN Loading Phase, With Food or Not? (2026)`
+  - **Primary keyword:** `nmn loading with food` · **Secondary:** nmn loading week, nmn bigger start, do you load nmn, nmn front load
+  - **Search intent:** reader who saw a loading week claimed and wants the trial schedule
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
+  - **Hero product:** `/products/ageaura-pure-nmn-tmg-nad-complex` (AgeAura Pure NMN + TMG NAD+ Complex, $69.95, in stock 2026-10-17)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` twice (browse link — AgeAura Pure NMN + TMG NAD+ Complex is not in it, never claim it is) · no other AgeAura product and no AgeAura collection link (brand_rules)
+  - **Angle:** If the human trials you fetch used a steady amount rather than a front-load, say that and link the dosage page. Do not invent a loading protocol or a milligram. AgeAura Pure NMN + TMG NAD+ Complex only. It is not a drug.
+  - **Fan-out answers to cover:** did human trials use a bigger start; is a loading week required; where is the steady amount; does a meal change the start
+  - **Evidence to fetch & confirm (claims log):** Human NMN trials you fetch — describe the schedule. If none used a load, say so. No invented milligram. AgeAura Pure NMN + TMG NAD+ Complex only.
+  - **Link, don't restate:** `/blogs/news/how-much-nmn-per-day-what-trials-used-us-2026`, `/blogs/news/how-long-does-nmn-take-to-work-week-1-to-12-us-2026`, `/blogs/news/nmn-side-effects-6-checks-before-you-start-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** nmn + loading checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-10-24 https://wellnessnest.co/blogs/news/shilajit-cycling-with-food-us-rules] **#CA1017-20 — shilajit cycling with food** — `Do You Cycle Shilajit? With Food Rules (2026)`
+  - **Primary keyword:** `shilajit cycling with food` · **Secondary:** shilajit on and off, shilajit weeks off, should you cycle shilajit, shilajit breaks
+  - **Search intent:** user who has been taking resin for months and wonders whether to pause
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
+  - **Hero product:** `/products/shilasource-himalayan-shilajit-resin` (ShilaSource Himalayan Shilajit Resin, $59.99, in stock 2026-10-17)
+  - **ShilaSource Himalayan Shilajit Resin pack label (source of truth):** ShilaSource, Himalayan, Shilajit, Resin, 75, Dietary Supplement, Wellness, Nest, 70% Fulvic Acid*, Lab-Tested for Purity*, 1.06oz (30g), SERVINGS, Servings. No milligram amount and no Supplement Facts panel were read into that file. Do not add one. Do not state a serving count, volume, weight, fulvic percentage, mineral count, or day-supply other than the lines in product_refs/shilasource-himalayan-shilajit-resin.label.json.
+  - **Collection links (≥2, verify live):** `/collections/shilajit-wellness-stack` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** The how-long page asks how many weeks people take it. This page asks whether you plan weeks off. If you cannot fetch a trial that used an on-and-off schedule, say that is the evidence. Link the how-long page. No milligram beyond the pack-label line.
+  - **Fan-out answers to cover:** do you need weeks off; is a pause different from stopping; what did trials actually do; does a meal change a pause
+  - **Evidence to fetch & confirm (claims log):** Any human shilajit trial schedule you fetch. If none used a planned pause, say so. Pack-label line only for the resin.
+  - **Link, don't restate:** `/blogs/news/for-how-long-can-we-take-shilajit`, `/blogs/news/how-much-shilajit-per-day-dosage-by-form-us-2026`, `/blogs/news/shilajit-side-effects-7-signs-to-watch-for-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** shilajit + cycle checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-10-24 https://wellnessnest.co/blogs/news/vaginal-probiotics-and-alcohol-in-the-us-2026] **#CA1017-21 — how much vaginal probiotics and alcohol** — `Vaginal Probiotics and Alcohol: How Much Matters? (2026)`
+  - **Primary keyword:** `how much vaginal probiotics and alcohol` · **Secondary:** probiotics and drinking, vaginal probiotics after alcohol, probiotics and wine, alcohol and vaginal flora
+  - **Search intent:** woman who drinks and wants the limit of any probiotic claim around alcohol
+  - **Template:** STORY · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
+  - **Hero product:** `/products/florafresh-vaginal-probiotics-gummies` (FloraFresh Vaginal Probiotics Gummies, $40.99, in stock 2026-10-17)
+  - **FloraFresh formula (Supplement Facts label, the source of truth):** per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 1 billion CFU, Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain); sweetened with maltitol and isomalt, so not sugar-free; label badges Allergen Free, Vegan, Halal, Gluten Free. Cite the Supplement Facts label, never the live PDP description or an older FloraFresh article (both repeat a wrong formula); a PDP/label mismatch is a gate failure.
+  - **Collection links (≥2, verify live):** `/collections/womens-essentials-collection` (contains it), `/collections/best-seller` (contains it)
+  - **Angle:** Not a treatment for anything alcohol does. Fetch papers on alcohol and the vaginal microbiome before citing a number. The gummy organism may not be the one those papers used; say so if it is not. Link the side-effects page. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.
+  - **Fan-out answers to cover:** is there a human study; does the gummy match the papers; is it a next-morning fix; when should you see a clinician
+  - **Evidence to fetch & confirm (claims log):** Fetched papers on alcohol and the vaginal microbiome only. No treatment claim.
+  - **Link, don't restate:** `/blogs/news/vaginal-probiotics-side-effects-normal-vs-stop-us-2026`, `/blogs/news/vaginal-probiotics-which-strains-actually-work-us-2026`, `/blogs/news/probiotics-for-bv-do-they-actually-work-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** probiotic + alcohol checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-10-25 https://wellnessnest.co/blogs/news/turkesterone-storage-heat-rules-for-the-us] **#CA1017-22 — how much heat turkesterone storage** — `Turkesterone Storage: How Much Heat Matters? (2026)`
+  - **Primary keyword:** `how much heat turkesterone storage` · **Secondary:** how to store turkesterone, turkesterone jar heat, turkesterone shelf life, turkesterone in a hot car
+  - **Search intent:** jar owner deciding where capsules should sit in a hot US kitchen or car
+  - **Template:** LISTICLE · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
+  - **Hero product:** `/products/turkesterone-advanced-formula` (Turkesterone Advanced Formula, $75, in stock 2026-10-17)
+  - **Turkesterone Advanced Formula pack label (source of truth):** wellness, nest, PREMIUM, TURKESTERONE, ADVANCED, FORMULA, AMPLIFY, MUSCLE, ENDURANCE, 60, Dietary Supplement, Capsules. No milligram amount and no Supplement Facts panel were read. Do not add one. The capsule badge is the separate lines in product_refs/turkesterone-advanced-formula.label.json. Do not state a milligram amount, a serving count, a different capsule count, or a day-supply.
+  - **Collection links (≥2, verify live):** `/collections/mens-essential-collection` (contains it), `/collections/shilajit-wellness-stack` (contains it)
+  - **Angle:** Closed jar, a hot US car, and a bathroom cabinet. Do not invent a temperature or a shelf-life the label file does not list. Do not state a milligram, a serving count, a capsule count, or a day-supply. Link the side-effects page for stop signs only.
+  - **Fan-out answers to cover:** does the jar need a fridge; what does a hot car change; what does the label say about storage; what if the capsules soften
+  - **Evidence to fetch & confirm (claims log):** Live PDP and product_refs/turkesterone-advanced-formula.label.json. No invented temperature.
+  - **Link, don't restate:** `/blogs/news/turkesterone-side-effects-4-ingredients-to-check-us-2026`, `/blogs/news/where-to-buy-turkesterone-in-the-us-what-to-check-2026`, `/blogs/news/turkesterone-benefits-dosing-whats-real-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** turkesterone + storage checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-10-25 https://wellnessnest.co/blogs/news/nmn-for-hair-with-food-us-evidence] **#CA1017-23 — nmn for hair with food** — `NMN and Hair Claims, Taken With Food (US 2026)`
+  - **Primary keyword:** `nmn for hair with food` · **Secondary:** nmn hair growth, nmn and hair, does nmn help hair, nmn hair claims
+  - **Search intent:** reader who has seen hair claims and wants human papers kept apart from animal headlines
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
+  - **Hero product:** `/products/ageaura-pure-nmn-tmg-nad-complex` (AgeAura Pure NMN + TMG NAD+ Complex, $69.95, in stock 2026-10-17)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` twice (browse link — AgeAura Pure NMN + TMG NAD+ Complex is not in it, never claim it is) · no other AgeAura product and no AgeAura collection link (brand_rules)
+  - **Angle:** Separate human papers from animal papers before any number. If you cannot fetch a human hair trial, say so. Not a hair treatment. Link the side-effects page. Do not invent a milligram. AgeAura Pure NMN + TMG NAD+ Complex only.
+  - **Fan-out answers to cover:** is there a human hair trial; what did animal papers measure; does a meal change the claim; when should you ignore the ad
+  - **Evidence to fetch & confirm (claims log):** PubMed or DOI papers on NMN and hair — fetch each one and label human or animal. No borrowed result. AgeAura Pure NMN + TMG NAD+ Complex only.
+  - **Link, don't restate:** `/blogs/news/nmn-side-effects-6-checks-before-you-start-us-2026`, `/blogs/news/nmn-for-women-what-the-all-female-trial-missed-us-2026`, `/blogs/news/how-much-nmn-per-day-what-trials-used-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** nmn + hair checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-10-25 https://wellnessnest.co/blogs/news/shilajit-and-alcohol-with-food-us-guide] **#CA1017-24 — shilajit and alcohol with food** — `Shilajit and Alcohol, With Food (US 2026)`
+  - **Primary keyword:** `shilajit and alcohol with food` · **Secondary:** shilajit and drinking, shilajit hangover, shilajit after alcohol, can you take shilajit with alcohol
+  - **Search intent:** adult who drinks and wants to know if resin the same day is a studied idea
+  - **Template:** STORY · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
+  - **Hero product:** `/products/shilasource-himalayan-shilajit-resin` (ShilaSource Himalayan Shilajit Resin, $59.99, in stock 2026-10-17)
+  - **ShilaSource Himalayan Shilajit Resin pack label (source of truth):** ShilaSource, Himalayan, Shilajit, Resin, 75, Dietary Supplement, Wellness, Nest, 70% Fulvic Acid*, Lab-Tested for Purity*, 1.06oz (30g), SERVINGS, Servings. No milligram amount and no Supplement Facts panel were read into that file. Do not add one. Do not state a serving count, volume, weight, fulvic percentage, mineral count, or day-supply other than the lines in product_refs/shilasource-himalayan-shilajit-resin.label.json.
+  - **Collection links (≥2, verify live):** `/collections/shilajit-wellness-stack` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** What fetched research says about shilajit and alcohol, and what it does not say. A meal is not a hangover fix. Not a treatment. Link the side-effects page. No milligram beyond the pack-label line.
+  - **Fan-out answers to cover:** is there a human study; does a meal change anything; is it a hangover aid; when should you skip it
+  - **Evidence to fetch & confirm (claims log):** PubMed or DOI search on shilajit and alcohol — fetch a paper or state that you found none. No treatment claim.
+  - **Link, don't restate:** `/blogs/news/shilajit-side-effects-7-signs-to-watch-for-us-2026`, `/blogs/news/how-to-take-shilajit-resin-dissolve-it-right-us-2026`, `/blogs/news/when-to-take-shilajit-morning-or-night-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** shilajit + alcohol checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-10-25 https://wellnessnest.co/blogs/news/vaginal-probiotic-storage-7-heat-checks-us] **#CA1017-25 — how much vaginal probiotic storage** — `Vaginal Probiotic Gummies at Home: How Much Heat? (2026)`
+  - **Primary keyword:** `how much vaginal probiotic storage` · **Secondary:** do probiotic gummies need a fridge, vaginal probiotic shelf life, probiotic gummies in a cupboard, probiotic gummies heat
+  - **Search intent:** pouch owner deciding between a cupboard and a fridge at home
+  - **Template:** LISTICLE · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
+  - **Hero product:** `/products/florafresh-vaginal-probiotics-gummies` (FloraFresh Vaginal Probiotics Gummies, $40.99, in stock 2026-10-17)
+  - **FloraFresh formula (Supplement Facts label, the source of truth):** per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 1 billion CFU, Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain); sweetened with maltitol and isomalt, so not sugar-free; label badges Allergen Free, Vegan, Halal, Gluten Free. Cite the Supplement Facts label, never the live PDP description or an older FloraFresh article (both repeat a wrong formula); a PDP/label mismatch is a gate failure.
+  - **Collection links (≥2, verify live):** `/collections/womens-essentials-collection` (contains it), `/collections/best-seller` (contains it)
+  - **Angle:** Home shelf, not the suitcase. The travel page owns planes and hotels; link it. Do not invent a fridge rule the PDP does not print. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.
+  - **Fan-out answers to cover:** does the pouch need a fridge; what does heat do at home; how is that different from a trip; what if the gummies soften
+  - **Evidence to fetch & confirm (claims log):** Live PDP storage line, if it prints one. If it does not, say so. No invented temperature.
+  - **Link, don't restate:** `/blogs/news/vaginal-probiotics-while-traveling-7-us-rules`, `/blogs/news/florafresh-gummies-vs-capsules-5-format-facts-us-2026`, `/blogs/news/vaginal-probiotics-side-effects-normal-vs-stop-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** probiotic + storage checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-10-26 https://wellnessnest.co/blogs/news/turkesterone-loading-is-it-needed-in-the-us-1] **#CA1017-26 — how much turkesterone loading** — `Turkesterone Loading: How Much the Start Changes? (2026)`
+  - **Primary keyword:** `how much turkesterone loading` · **Secondary:** turkesterone loading phase, turkesterone bigger start, do you load turkesterone, turkesterone front load
+  - **Search intent:** lifter who saw a loading week claimed and wants the trial schedule
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
+  - **Hero product:** `/products/turkesterone-advanced-formula` (Turkesterone Advanced Formula, $75, in stock 2026-10-17)
+  - **Turkesterone Advanced Formula pack label (source of truth):** wellness, nest, PREMIUM, TURKESTERONE, ADVANCED, FORMULA, AMPLIFY, MUSCLE, ENDURANCE, 60, Dietary Supplement, Capsules. No milligram amount and no Supplement Facts panel were read. Do not add one. The capsule badge is the separate lines in product_refs/turkesterone-advanced-formula.label.json. Do not state a milligram amount, a serving count, a different capsule count, or a day-supply.
+  - **Collection links (≥2, verify live):** `/collections/mens-essential-collection` (contains it), `/collections/shilajit-wellness-stack` (contains it)
+  - **Angle:** The cycle page covers planned pauses. This page asks whether a bigger start exists. If you cannot fetch a trial that used a load, say so. Do not invent one. Do not state a milligram, a serving count, a capsule count, or a day-supply. Link the cycle page.
+  - **Fan-out answers to cover:** did any trial use a bigger start; is a loading week required; how is that different from a pause; what should you not invent
+  - **Evidence to fetch & confirm (claims log):** Human turkesterone trials you fetch — describe the schedule or say you found no loading protocol. No milligram.
+  - **Link, don't restate:** `/blogs/news/turkesterone-cycle-do-you-need-breaks-us-2026`, `/blogs/news/how-long-does-turkesterone-take-to-work-us-2026`, `/blogs/news/turkesterone-benefits-dosing-whats-real-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** turkesterone + loading checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-10-26 https://wellnessnest.co/blogs/news/vaginal-probiotics-together-what-else-in-the-us] **#CA1017-27 — how much else with vaginal probiotics together** — `Vaginal Probiotics Together: How Much Else? (2026)`
+  - **Primary keyword:** `how much else with vaginal probiotics together` · **Secondary:** vaginal probiotics with other supplements, probiotics same day as vitamins, can you combine vaginal probiotics, probiotic gummies with a multivitamin
+  - **Search intent:** woman who already takes other supplements and wants the same-day limit
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
+  - **Hero product:** `/products/florafresh-vaginal-probiotics-gummies` (FloraFresh Vaginal Probiotics Gummies, $40.99, in stock 2026-10-17)
+  - **FloraFresh formula (Supplement Facts label, the source of truth):** per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 1 billion CFU, Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain); sweetened with maltitol and isomalt, so not sugar-free; label badges Allergen Free, Vegan, Halal, Gluten Free. Cite the Supplement Facts label, never the live PDP description or an older FloraFresh article (both repeat a wrong formula); a PDP/label mismatch is a gate failure.
+  - **Collection links (≥2, verify live):** `/collections/womens-essentials-collection` (contains it), `/collections/best-seller` (contains it)
+  - **Angle:** Other supplements the same day: what to ask a clinician about, and what was not studied as a combination. Link the antibiotics page for that case. Do not name an amount for a product this ticket does not sell. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.
+  - **Fan-out answers to cover:** can you take them with a multivitamin; what was not studied together; where is the antibiotics page; when should you ask a clinician
+  - **Evidence to fetch & confirm (claims log):** Fetched papers on combining oral probiotics with other supplements, or say you found none. No invented combination result.
+  - **Link, don't restate:** `/blogs/news/probiotics-after-antibiotics-for-women-when-to-start-us`, `/blogs/news/vaginal-probiotics-side-effects-normal-vs-stop-us-2026`, `/blogs/news/best-time-to-take-vaginal-probiotics-6-rules-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** probiotic + stack checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-10-26 https://wellnessnest.co/blogs/news/fake-creatine-gummies-how-much-in-the-us] **#CA1017-28 — fake creatine gummies how much** — `Fake Creatine Gummies: How Much Is Missing? (2026)`
+  - **Primary keyword:** `fake creatine gummies how much` · **Secondary:** are creatine gummies real, under filled creatine gummies, creatine gummies counterfeit, real or fake creatine gummies
+  - **Search intent:** shopper who heard some gummies contain less creatine than the front implies
+  - **Template:** STORY · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
+  - **Hero product:** `/products/fusiforce-creatine-gummies` (FusiForce Creatine Gummies, $69.99, in stock 2026-10-17)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** Some gummies have been reported under-filled. Cite that only from a report you fetch, and never say FusiForce was in that report unless the report says so. Give the checks a US shopper can do on a label. Link the where-to-buy page instead of restating it. Do not lead on a certificate.
+  - **Fan-out answers to cover:** how can a gummy be under-filled; what does the panel have to name; was FusiForce in any public test; what should you do if the label is vague
+  - **Evidence to fetch & confirm (claims log):** A fetched primary report of creatine gummy content, only if you can open it. Live FusiForce PDP for what this product prints. No invented test result.
+  - **Link, don't restate:** `/blogs/news/where-to-buy-creatine-gummies-5-label-checks-us-2026`, `/blogs/news/creatine-gummies-vs-powder-which-should-you-actually-take`, `/blogs/news/creatine-gummies-dosage-how-many-a-day-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** creatine + authenticity checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-10-26 https://wellnessnest.co/blogs/news/vaginal-probiotic-ingredients-what-to-read-us] **#CA1017-29 — vaginal probiotic ingredients how much** — `Vaginal Probiotic Ingredients: How Much to Read (2026)`
+  - **Primary keyword:** `vaginal probiotic ingredients how much` · **Secondary:** what is in vaginal probiotic gummies, florafresh label panel, vaginal probiotic gummy ingredients, probiotic gummies sweetener
+  - **Search intent:** label reader who wants the rest of the panel, not another organism roundup
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
+  - **Hero product:** `/products/florafresh-vaginal-probiotics-gummies` (FloraFresh Vaginal Probiotics Gummies, $40.99, in stock 2026-10-17)
+  - **FloraFresh formula (Supplement Facts label, the source of truth):** per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 1 billion CFU, Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain); sweetened with maltitol and isomalt, so not sugar-free; label badges Allergen Free, Vegan, Halal, Gluten Free. Cite the Supplement Facts label, never the live PDP description or an older FloraFresh article (both repeat a wrong formula); a PDP/label mismatch is a gate failure.
+  - **Collection links (≥2, verify live):** `/collections/womens-essentials-collection` (contains it), `/collections/best-seller` (contains it)
+  - **Angle:** The organism page owns which organisms were studied. Link it. This page is the rest of the Supplement Facts label: the named organism, the CFU line, vitamin C, pineapple fruit powder, and the sweeteners. Never the PDP description. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.
+  - **Fan-out answers to cover:** what else is on the panel; where is the organism page; what sweetener is named; what should you not copy from the product description
+  - **Evidence to fetch & confirm (claims log):** Supplement Facts label only for formula facts. Live PDP for the offer, not the formula.
+  - **Link, don't restate:** `/blogs/news/vaginal-probiotics-which-strains-actually-work-us-2026`, `/blogs/news/florafresh-gummies-vs-capsules-5-format-facts-us-2026`, `/blogs/news/vaginal-probiotic-dosage-how-many-cfu-a-day-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** probiotic + ingredients checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-10-26 https://wellnessnest.co/blogs/news/shilajit-storage-6-home-rules-for-the-us] **#CA1017-30 — shilajit storage with food** — `Shilajit Storage at Home, With Food Nearby (2026)`
+  - **Primary keyword:** `shilajit storage with food` · **Secondary:** how to store shilajit resin, shilajit jar heat, shilajit shelf life, shilajit in the kitchen
+  - **Search intent:** jar owner who wants to know where gold resin should sit at home
+  - **Template:** LISTICLE · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
+  - **Hero product:** `/products/pure-shilajit-gold-resin` (Pure Shilajit Gold Resin, $75, in stock 2026-10-17)
+  - **Pure Shilajit Gold Resin pack label (source of truth):** wellness, nest, Himalayan, Shilajit, 75% Fulvic, Lab-Tested, Acid, Pure Shilajit Gold Resin, 1.06 oz (30g) - 75 servings, Dietary Supplements. No milligram amount was read. Do not add one. Do not state a serving count, volume, weight, or day-supply other than the serving line in product_refs/pure-shilajit-gold-resin.label.json.
+  - **Collection links (≥2, verify live):** `/collections/shilajit-wellness-stack` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** Gold resin in a jar: lid on, heat, and keeping it out of strong kitchen smells. Do not invent a shelf-life, a temperature, or a milligram. The pack-label line is the only serving fact. Link the how-to-take page for dissolving. Gummies and drops are different products.
+  - **Fan-out answers to cover:** does the jar need a fridge; what does heat do to resin; can it sit near food; what does the label actually say about servings
+  - **Evidence to fetch & confirm (claims log):** Live gold-resin PDP and product_refs/pure-shilajit-gold-resin.label.json only. No invented temperature or shelf-life.
+  - **Link, don't restate:** `/blogs/news/how-to-take-shilajit-resin-dissolve-it-right-us-2026`, `/blogs/news/shilajit-gold-resin-review-is-75-worth-it-us-2026`, `/blogs/news/how-much-shilajit-per-day-dosage-by-form-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** shilajit + storage checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-10-27 https://wellnessnest.co/blogs/news/vaginal-probiotics-for-athletes-us-routine] **#CA1017-31 — vaginal probiotics for athletes** — `Vaginal Probiotics for Athletes (US 2026)`
+  - **Primary keyword:** `vaginal probiotics for athletes` · **Secondary:** probiotics for active women, vaginal probiotics and exercise, athlete probiotic gummies, probiotic gummies on gym days
+  - **Search intent:** woman who trains and wants to know whether the gummy routine changes
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
+  - **Hero product:** `/products/florafresh-vaginal-probiotics-gummies` (FloraFresh Vaginal Probiotics Gummies, $40.99, in stock 2026-10-17)
+  - **FloraFresh formula (Supplement Facts label, the source of truth):** per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 1 billion CFU, Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain); sweetened with maltitol and isomalt, so not sugar-free; label badges Allergen Free, Vegan, Halal, Gluten Free. Cite the Supplement Facts label, never the live PDP description or an older FloraFresh article (both repeat a wrong formula); a PDP/label mismatch is a gate failure.
+  - **Collection links (≥2, verify live):** `/collections/womens-essentials-collection` (contains it), `/collections/best-seller` (contains it)
+  - **Angle:** A gym habit does not change the gummy routine. Say what research did not test in athletes. No performance claim and no cure claim. Link the beginners page and the side-effects page. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.
+  - **Fan-out answers to cover:** does a gym habit change the routine; were athletes in the trials; is there a performance claim; where is the beginners page
+  - **Evidence to fetch & confirm (claims log):** Any oral-probiotic trial that enrolled women athletes — fetch it or say you found none. No performance claim.
+  - **Link, don't restate:** `/blogs/news/vaginal-probiotics-for-beginners-what-to-expect-in-the-us`, `/blogs/news/vaginal-probiotics-side-effects-normal-vs-stop-us-2026`, `/blogs/news/vaginal-probiotics-which-strains-actually-work-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** probiotic + athletes checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-10-27 https://wellnessnest.co/blogs/news/real-or-fake-nmn-6-label-checks-for-us-buyers] **#CA1017-32 — real or fake nmn with food** — `Real or Fake NMN, With Food Checks (US 2026)`
+  - **Primary keyword:** `real or fake nmn with food` · **Secondary:** fake nmn capsules, counterfeit nmn, is my nmn real, nmn bottle check
+  - **Search intent:** US shopper trying to tell a real labeled bottle from a listing that does not match its panel
+  - **Template:** STORY · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
+  - **Hero product:** `/products/ageaura-pure-nmn-tmg-nad-complex` (AgeAura Pure NMN + TMG NAD+ Complex, $69.95, in stock 2026-10-17)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` twice (browse link — AgeAura Pure NMN + TMG NAD+ Complex is not in it, never claim it is) · no other AgeAura product and no AgeAura collection link (brand_rules)
+  - **Angle:** This is not the regulatory history; link the where-to-buy page for that. This page is how a US shopper spots a bottle that does not match its own label. Use only the live AgeAura Pure NMN + TMG NAD+ Complex only panel as the example. Do not invent a milligram the page does not print. Do not lead on a certificate.
+  - **Fan-out answers to cover:** what should the panel name; how do listings go wrong; what is the regulatory page for; what can you check without a lab
+  - **Evidence to fetch & confirm (claims log):** Live PDP for AgeAura Pure NMN + TMG NAD+ Complex only. No invented test. The where-to-buy article holds the regulatory dates.
+  - **Link, don't restate:** `/blogs/news/where-to-buy-nmn-in-the-us-fda-status-explained-2026`, `/blogs/news/ageaura-nmn-tmg-ingredients-what-each-one-does-us`, `/blogs/news/nmn-capsules-vs-powder-vs-sublingual-best-form-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** nmn + authenticity checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-10-27 https://wellnessnest.co/blogs/news/shilajit-gummies-ingredients-6-label-checks-in-the-us] **#CA1017-33 — shilajit gummies ingredients with food** — `Shilajit Gummy Ingredients, Taken With Food (2026)`
+  - **Primary keyword:** `shilajit gummies ingredients with food` · **Secondary:** what is in shilajit gummies, shilajit gummy label, shilajit gummies ingredient list, shilajit gummies panel
+  - **Search intent:** buyer who wants the gummy ingredient list before comparing it with resin
+  - **Template:** LISTICLE · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
+  - **Hero product:** `/products/premium-himalayan-shilajit-gummies` (Premium Himalayan Shilajit Gummies, $59.99, in stock 2026-10-17)
+  - **Collection links (≥2, verify live):** `/collections/shilajit-wellness-stack` (contains it), `/collections/best-seller` (contains it)
+  - **Angle:** What the gummy PDP actually lists, fetched the day you write. Resin, gold resin, and drops are different products with different labels; link the resin-versus-gummies page instead of rebuilding it. No milligram you did not read on that page. Do not lead with lab testing.
+  - **Fan-out answers to cover:** what does the gummy label name; how is that different from resin; what if a word is missing; do you take them with a meal
+  - **Evidence to fetch & confirm (claims log):** Live gummy PDP ingredient list, fetched at write time. No borrowed resin percentage.
+  - **Link, don't restate:** `/blogs/news/shilajit-resin-vs-gummies-which-works-better-us-2026`, `/blogs/news/how-to-choose-shilajit-gummies-7-checks-us-2026`, `/blogs/news/best-shilajit-gummies-6-us-labels-compared-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** shilajit + ingredients checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-10-27 https://wellnessnest.co/blogs/news/shilajit-for-hair-with-food-us-evidence] **#CA1017-34 — shilajit for hair with food** — `Shilajit for Hair, Taken With Food (US 2026)`
+  - **Primary keyword:** `shilajit for hair with food` · **Secondary:** shilajit hair growth, shilajit and hair, does shilajit help hair, shilajit hair claims
+  - **Search intent:** reader who has seen hair claims and wants the human evidence separated from the ads
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
+  - **Hero product:** `/products/shilasource-himalayan-shilajit-resin` (ShilaSource Himalayan Shilajit Resin, $59.99, in stock 2026-10-17)
+  - **ShilaSource Himalayan Shilajit Resin pack label (source of truth):** ShilaSource, Himalayan, Shilajit, Resin, 75, Dietary Supplement, Wellness, Nest, 70% Fulvic Acid*, Lab-Tested for Purity*, 1.06oz (30g), SERVINGS, Servings. No milligram amount and no Supplement Facts panel were read into that file. Do not add one. Do not state a serving count, volume, weight, fulvic percentage, mineral count, or day-supply other than the lines in product_refs/shilasource-himalayan-shilajit-resin.label.json.
+  - **Collection links (≥2, verify live):** `/collections/shilajit-wellness-stack` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** Search for human trials of shilajit and hair. If you cannot fetch one, say so, and do not promote a hair result from a different outcome. Not a hair treatment. Link the side-effects page. No milligram beyond the pack-label line.
+  - **Fan-out answers to cover:** is there a human hair trial; what did the studies actually measure; does a meal change anything; when should you skip the claim
+  - **Evidence to fetch & confirm (claims log):** PubMed or DOI search for shilajit and hair — fetch each paper and label it human or not. No unfetched result.
+  - **Link, don't restate:** `/blogs/news/shilajit-side-effects-7-signs-to-watch-for-us-2026`, `/blogs/news/shilajit-benefits-for-men-4-claims-ranked-us-2026`, `/blogs/news/how-much-shilajit-per-day-dosage-by-form-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** shilajit + hair checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-10-27 https://wellnessnest.co/blogs/news/shilajit-loading-with-food-us-trial-evidence] **#CA1017-35 — shilajit loading with food** — `Shilajit Loading, With Food or Not? (2026)`
+  - **Primary keyword:** `shilajit loading with food` · **Secondary:** shilajit loading phase, shilajit bigger start, do you load shilajit, shilajit opening week
+  - **Search intent:** new user who saw a loading week mentioned and wants to know if trials did that
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
+  - **Hero product:** `/products/shilasource-himalayan-shilajit-resin` (ShilaSource Himalayan Shilajit Resin, $59.99, in stock 2026-10-17)
+  - **ShilaSource Himalayan Shilajit Resin pack label (source of truth):** ShilaSource, Himalayan, Shilajit, Resin, 75, Dietary Supplement, Wellness, Nest, 70% Fulvic Acid*, Lab-Tested for Purity*, 1.06oz (30g), SERVINGS, Servings. No milligram amount and no Supplement Facts panel were read into that file. Do not add one. Do not state a serving count, volume, weight, fulvic percentage, mineral count, or day-supply other than the lines in product_refs/shilasource-himalayan-shilajit-resin.label.json.
+  - **Collection links (≥2, verify live):** `/collections/shilajit-wellness-stack` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** Some pages imply a bigger start. If you cannot fetch a human trial that used a loading week, say so and point at the dosage page for the steady amount. Do not invent a load. No milligram beyond the pack-label line.
+  - **Fan-out answers to cover:** did any trial use a bigger start; is a loading week required; what does the steady page cover; does a meal change the start
+  - **Evidence to fetch & confirm (claims log):** Human shilajit trials you fetch — describe the schedule they used. If none loaded, say so.
+  - **Link, don't restate:** `/blogs/news/how-much-shilajit-per-day-dosage-by-form-us-2026`, `/blogs/news/how-to-take-shilajit-resin-dissolve-it-right-us-2026`, `/blogs/news/shilajit-for-beginners-5-checks-before-your-first-pouch`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** shilajit + loading checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time

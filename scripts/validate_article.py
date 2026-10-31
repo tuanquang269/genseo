@@ -13,6 +13,7 @@ import sys, os, re, glob, json, subprocess, tempfile, urllib.request, urllib.err
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import genseo_roster
 import brand_rules as _br
+import geo_citability
 
 # Single source of truth: roster.json (see scripts/genseo_roster.py). Empty roster
 # blocks publishing by design — fill roster.json with real, consenting people.
@@ -58,16 +59,21 @@ def _strip_approved(text):
 # Combined FAIL rule flags 53/534 = 9.9% of historical drafts.
 #
 # Escape hatch: GENSEO_QRG_ADVISORY=1 downgrades these to warnings.
+# A missing scorer is NOT that hatch. It prints "QRG scoring unavailable: …"
+# and stays a warning. Thresholds apply only to measured scores. The
+# auto-publish skill (STEP 6) hard-fails low scores; it does not hold a
+# draft whose scorer never ran. Do not invent a score and do not call a
+# paid API to replace the launcher.
 QRG_MIN_OVERALL=80
 QRG_MAX_FILLER=25
 QRG_MAX_AI=25
 QRG_WARN_REPETITION=20
 QRG_WARN_DENSITY=0.55
+QRG_LAUNCHER_GLOB="~/.claude/plugins/marketplaces/*claude-seo*/bin/claude-seo"
 
 def _claude_seo_bin():
     """Locate the claude-seo launcher. Glob so a marketplace rename can't break us."""
-    for p in glob.glob(os.path.expanduser(
-            "~/.claude/plugins/marketplaces/*claude-seo*/bin/claude-seo")):
+    for p in glob.glob(os.path.expanduser(QRG_LAUNCHER_GLOB)):
         if os.access(p, os.X_OK):
             return p
     return None
@@ -88,12 +94,76 @@ def _claude_seo_env():
     env.pop("CLAUDE_PLUGIN_DATA", None)   # leaks in from whichever plugin ran last
     return env
 
+def _qrg_flat(note):
+    """One log field: no tabs or newlines."""
+    return " ".join(str(note).split())
+
+
+def qrg_log_column(qrg, note):
+    """validate_runs.log column. A skip names the reason; it is not a bare qrg=skip."""
+    if note:
+        return "qrg=skip:" + _qrg_flat(note)[:160]
+    q=qrg["quality"]
+    return "qrg=%s/%s/%s" % (q["overall_quality"], q["filler_score"], q["ai_pattern_score"])
+
+
+def qrg_report(qrg, note):
+    """Return (hard_fails, warnings, line).
+
+    A non-empty note means the claude-seo scorer did not return usable scores.
+    That is a warning. The draft is not held. Measured scores still hard-fail
+    the thresholds above unless GENSEO_QRG_ADVISORY=1.
+    """
+    if note:
+        flat=_qrg_flat(note)
+        return [], ["QRG quality scoring skipped (%s)" % note], "QRG scoring unavailable: %s" % flat
+    try:
+        q,v=qrg["quality"],qrg["verify"]
+        overall=q["overall_quality"]
+        filler=q["filler_score"]
+        ai=q["ai_pattern_score"]
+        rep=q["repetition_score"]
+        density=q["information_density"]
+        matches=q["matches"]
+        claims=v["claim_count"]
+        uncited=v["uncited_count"]
+        ratio=v["uncited_ratio"]
+    except (AttributeError, KeyError, TypeError, ValueError) as exc:
+        flat="scorer JSON unusable (%s)" % _qrg_flat(exc)
+        return [], ["QRG quality scoring skipped (%s)" % flat], "QRG scoring unavailable: %s" % flat
+    advisory=os.environ.get("GENSEO_QRG_ADVISORY")=="1"
+    hard=[]
+    warns=[]
+    hits=lambda lst: ", ".join(lst[:6]) if lst else "none"
+    line=(f"QRG: overall {overall}/100 "
+          f"filler {filler} ai {ai} "
+          f"repetition {rep} density {density} "
+          f"| claims {claims} uncited {uncited}")
+    sink=warns if advisory else hard
+    if overall < QRG_MIN_OVERALL:
+        sink.append(f"QRG overall quality {overall}/100 below {QRG_MIN_OVERALL} "
+                    f"(scaled-content-abuse risk; p10 of our own corpus is 83)")
+    if filler >= QRG_MAX_FILLER:
+        sink.append(f"filler score {filler} >= {QRG_MAX_FILLER} — remove: "
+                    f"{hits(matches.get('filler') or [])}")
+    if ai >= QRG_MAX_AI:
+        sink.append(f"AI-pattern score {ai} >= {QRG_MAX_AI} — rewrite: "
+                    f"{hits(matches.get('ai_patterns') or [])}")
+    if rep >= QRG_WARN_REPETITION:
+        warns.append(f"repetition {rep} (p90 of corpus is 13) — likely restating the same point")
+    if density < QRG_WARN_DENSITY:
+        warns.append(f"information density {density} < {QRG_WARN_DENSITY} — padded prose")
+    if claims >= 3 and ratio >= 1.0:
+        warns.append(f"{claims} factual claims, none cited — add a source or drop the numbers")
+    return hard, warns, line
+
+
 def qrg_scores(plain_text):
     """Score prose quality + citation gaps. Returns (scores_dict, note) where a
     non-empty note means scoring was skipped and nothing should be enforced."""
     binary=_claude_seo_bin()
     if not binary:
-        return None, "claude-seo runtime not installed"
+        return None, "claude-seo runtime not installed (%s)" % QRG_LAUNCHER_GLOB
     env=_claude_seo_env()
     tmp=None
     try:
@@ -223,7 +293,11 @@ def main():
     # TITLE CTR check (draft mode only — the `# ` line IS the title that earns the SERP click)
     if draft_mode and h1s:
         t=re.sub(r'<[^>]*>','',h1s[0]).strip()
-        if len(t)>65: warns.append(f"title {len(t)} chars (>65 truncates in Google → lower CTR): {t[:60]}…")
+        # The theme appends " – Wellness Nest" (~16). An H1 over 50 makes a title
+        # tag over ~66, which is the band that truncated on the 2026-10-17 audit.
+        if len(t)>50: warns.append(
+            f"title {len(t)} chars (>50). The theme appends ' – Wellness Nest' (~16), "
+            f"so the title tag truncates past ~70: {t[:60]}…")
         if re.match(r'(?i)^(the ultimate guide to|complete guide to|the complete guide to)\b', t) \
            or re.search(r'(?i)(complete|ultimate).{0,20}(review|guide).{0,15}(&|and).{0,15}(guide|sourcing)', t):
             warns.append(f"title uses generic boilerplate (low CTR) — add a number/benefit/hook: {t[:60]}")
@@ -246,21 +320,8 @@ def main():
     # answer block: the first REAL paragraph (skip publisher-injected spacer/comment/hidden
     # paragraphs, e.g. <p><img style="display:none" alt="spacer"><!-- meta_description --></p>).
     # A "real" paragraph has >=20 words of visible text after stripping tags+comments.
-    def visible_text(frag):
-        f=re.sub(r'<!--.*?-->','',frag,flags=re.S)   # drop HTML comments
-        f=re.sub(r'<[^>]*>','',f)                     # drop tags
-        return f.strip()
-    answer=None
-    for pm in re.finditer(r'<p[^>]*>(.*?)</p>', html, re.S|re.I):
-        # skip hidden/spacer paragraphs
-        if 'display:none' in pm.group(0).lower() or 'spacer' in pm.group(0).lower():
-            continue
-        txt=visible_text(pm.group(1))
-        if len(txt.split())>=20:
-            answer=txt; break
-    if answer is not None:
-        aw=len(answer.split())
-        if not (30<=aw<=90): warns.append(f"answer block {aw} words (target 40–60)")
+    answer=geo_citability.opening_paragraph(html)
+    if answer:
         if not MARKET_RE.search(answer): fails.append("answer block missing US-market anchor (US / United States / American)")
     else:
         fails.append("no opening <p> answer block (>=20 words)")
@@ -279,10 +340,8 @@ def main():
     # FAQ + FAQPage schema (in draft mode, schema is added post-conversion -> warn only)
     if 'FAQPage' not in html:
         (warns if draft_mode else fails).append("no FAQPage schema (publisher must append it after md->html)")
-    # FAQ questions can be <p><strong>Q?</strong> OR <h3>Q?</h3> (publisher uses h3)
-    faq_qs=re.findall(r'<p[^>]*>\s*<strong>([^<]*\?)\s*</strong>', html)
-    faq_qs+=re.findall(r'<h3[^>]*>([^<]*\?)\s*</h3>', html)
-    if len(faq_qs)<3: warns.append(f"only {len(faq_qs)} visible FAQ questions")
+    # FAQ count, question-style H2s, product/related/primary links, alt text,
+    # meta length, hand-written dates, and disease claims: geo_citability.assess.
     # author: named staff member + live page
     author_pages=set(re.findall(r'(/pages/[a-z-]+)', html))
     if not ROSTER_PAGES:
@@ -309,15 +368,12 @@ def main():
             fails.append("author bio is not the approved sentence for that staff member")
     # brand mentions
     if html.count('Wellness Nest')<2: warns.append("brand 'Wellness Nest' used <2 times")
-    # images alt
-    imgs=re.findall(r'<img[^>]*>', html)
-    noalt=[i for i in imgs if 'alt=' not in i or re.search(r'alt=["\']\s*["\']',i)]
-    if imgs and noalt: warns.append(f"{len(noalt)} image(s) missing alt text")
     # inline image COUNT — HARD gate (added 2026-07-26). The cheap model silently stopped generating
     # in-body images ~Jul22 and 18 articles published with ZERO inline images because the rule (SKILL
     # STEP 5: "1 lifestyle image per product, hero is never enough") was instruction-only — nothing
     # mechanical enforced it. This is that enforcement. Hero/cover is set as article.image (NOT body),
     # and publisher spacer imgs are display:none, so real in-body <img> = actual inline product images.
+    imgs=re.findall(r'<img[^>]*>', html)
     real_imgs=[i for i in imgs if 'display:none' not in i.lower() and 'spacer' not in i.lower()]
     # In a .md draft the FIRST image tag is the hero: shopify_publisher.do_publish promotes it to
     # article.image and STRIPS it from the body. So a draft needs hero + MIN_INLINE_IMAGES tags to
@@ -371,8 +427,18 @@ def main():
     _v=_br.violations(html)
     if _v: fails.append("brand rule — banned link(s)/mentions/claims: "+"; ".join(_v[:6]))
 
-    # link liveness (products, collections, author pages)
-    urls=set(re.findall(r'https://wellnessnest\.co/(?:products|collections|blogs)/[a-z0-9-]+', html))
+    # Citability (answer shape, FAQ, question H2s, product + related article,
+    # primary source, alt text, draft meta length, no hand-written Published date).
+    cite_fails, cite_warns = geo_citability.assess(html, require_meta=draft_mode)
+    fails.extend(cite_fails)
+    warns.extend(cite_warns)
+    dead_cites, soft_cites = geo_citability.citation_issues(
+        [(u, *geo_citability.fetch_status(u)) for u in geo_citability.external_urls(html)])
+    fails.extend(dead_cites)
+    warns.extend(soft_cites)
+
+    # link liveness (products, collections, article URLs, pages, policies, author pages)
+    urls=set(geo_citability.internal_urls(html))
     dead=[u for u in urls if not http_ok(u)]
     # author pages
     for ap in (author_pages & ROSTER_PAGES):
@@ -388,33 +454,9 @@ def main():
     plain=re.sub(r'<[^>]*>',' ',re.sub(r'<!--.*?-->','',text,flags=re.S))
     plain=re.sub(r'[ \t]+',' ',plain).strip()
     qrg,qrg_note=qrg_scores(plain)
-    qrg_line=""
-    if qrg_note:
-        warns.append(f"QRG quality scoring skipped ({qrg_note})")
-    else:
-        q,v=qrg["quality"],qrg["verify"]
-        advisory=os.environ.get("GENSEO_QRG_ADVISORY")=="1"
-        sink=warns if advisory else fails
-        hits=lambda lst: ", ".join(lst[:6]) if lst else "none"
-        qrg_line=(f"QRG: overall {q['overall_quality']}/100 "
-                  f"filler {q['filler_score']} ai {q['ai_pattern_score']} "
-                  f"repetition {q['repetition_score']} density {q['information_density']} "
-                  f"| claims {v['claim_count']} uncited {v['uncited_count']}")
-        if q["overall_quality"] < QRG_MIN_OVERALL:
-            sink.append(f"QRG overall quality {q['overall_quality']}/100 below {QRG_MIN_OVERALL} "
-                        f"(scaled-content-abuse risk; p10 of our own corpus is 83)")
-        if q["filler_score"] >= QRG_MAX_FILLER:
-            sink.append(f"filler score {q['filler_score']} >= {QRG_MAX_FILLER} — remove: "
-                        f"{hits(q['matches']['filler'])}")
-        if q["ai_pattern_score"] >= QRG_MAX_AI:
-            sink.append(f"AI-pattern score {q['ai_pattern_score']} >= {QRG_MAX_AI} — rewrite: "
-                        f"{hits(q['matches']['ai_patterns'])}")
-        if q["repetition_score"] >= QRG_WARN_REPETITION:
-            warns.append(f"repetition {q['repetition_score']} (p90 of corpus is 13) — likely restating the same point")
-        if q["information_density"] < QRG_WARN_DENSITY:
-            warns.append(f"information density {q['information_density']} < {QRG_WARN_DENSITY} — padded prose")
-        if v["claim_count"] >= 3 and v["uncited_ratio"] >= 1.0:
-            warns.append(f"{v['claim_count']} factual claims, none cited — add a source or drop the numbers")
+    qrg_fails,qrg_warns,qrg_line=qrg_report(qrg, qrg_note)
+    fails.extend(qrg_fails)
+    warns.extend(qrg_warns)
 
     print(f"=== VALIDATE {path} ===")
     print(f"words(content only): {words}  | h1:{len(h1s)} h2:{len(h2s)} table:{'<table' in html} faqschema:{'FAQPage' in html} collections:{len(colls)}")
@@ -426,7 +468,7 @@ def main():
         import datetime
         with open("/Users/kevinkreative/genseo/validate_runs.log","a") as lg:
             verdict="FAIL" if fails else "PASS"
-            qcol=f"qrg={qrg['quality']['overall_quality']}/{qrg['quality']['filler_score']}/{qrg['quality']['ai_pattern_score']}" if qrg else "qrg=skip"
+            qcol=qrg_log_column(qrg, qrg_note)
             lg.write(f"{datetime.datetime.now().isoformat(timespec='seconds')}\t{verdict}\twords={words}\t{qcol}\t{path}\t{';'.join(fails)[:200]}\n")
     except Exception:
         pass

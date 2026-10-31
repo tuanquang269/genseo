@@ -73,6 +73,14 @@ PROMPT_SUFFIX = (" NO watermark. NO blog name text. NO caption. NO attribution t
 # prompt and split the difference into a generic averaged face. That contradiction, not
 # the size of the persona bank, is the main reason the /blogs/news grid read as AI.
 NO_FACE_CLAUSE = " No recognizable human faces."
+# Printed when a face generation is refused or fails QC. The daily writer used to
+# stop, or swap in an empty pack still life. The fallback keeps a person in frame.
+FACE_FALLBACK_HINT = (
+    "Face image refused or failed QC. After the two allowed re-rolls, replace only "
+    "this image with a human no-face shot (a hand, a forearm, or a body cropped below "
+    "the eyes; no recognizable face; no --persona-ref). Do not substitute an empty "
+    "pack-only still life, and do not drop the other face images in the article."
+)
 PACK_FIDELITY = (" The product package must EXACTLY match the reference image: same package "
                  "format, same shape, same colors, same label layout and text. Do not invent, "
                  "restyle, or substitute the packaging.")
@@ -523,6 +531,11 @@ def _ensure_serve(env):
 # deploy/grokbot-genseo-daily.sh then counts a ticket that puts nothing new
 # live, and stops the day after three of those. A dropped stream, a 429/5xx,
 # a timeout, or a reset is the upstream blipping — retry a few times, briefly.
+# 2026-10-19 #CA1016-7: ima2 3.23.1 printed a different line for the same
+# blip, "Responses request failed before receiving a response" with
+# "Hint: Network/proxy failed" (code NETWORK_FAILED, HTTP 502). That
+# wording did not match the 2026-10-12 pattern, so gen_png exited on the
+# first try and the wrapper stopped after three no-publish runs.
 # Auth, content policy, and a bad request are the same call again: do not
 # retry them, and do not retry an error we cannot classify. ad_assets.py's
 # 3-try loop is a different gate (wrong aspect ratio after a file landed).
@@ -550,6 +563,10 @@ _IMA2_KILL_GRACE_SEC = 0.2
 # ("500 mg") or our own "--timeout 360" flag must not look transient.
 _IMA2_TRANSIENT_RE = (
     re.compile(r"responses stream returned an error", re.I),
+    re.compile(r"responses request failed before receiving a response", re.I),
+    re.compile(r"oauth image request failed before receiving a response", re.I),
+    re.compile(r"\bNETWORK_FAILED\b"),
+    re.compile(r"network/proxy failed", re.I),
     re.compile(r"\b(?:response|responses|event) stream\b[^.\n]{0,80}\b(?:error|interrupted|closed|failed)\b", re.I),
     re.compile(r"\bstream (?:error|interrupted|closed|failed|disconnected)\b", re.I),
     re.compile(r"\b(?:econnreset|econnrefused|etimedout|econnaborted|epipe|enotconn|enetunreach|ehostunreach)\b", re.I),
@@ -604,9 +621,12 @@ def _ima2_tail(text, returncode):
     return "exit %s, no output" % returncode
 
 
-def _ima2_give_up(attempt, last_tail, why):
+def _ima2_give_up(attempt, last_tail, why, hint=None):
     print(f"   ✗ ima2 attempt {attempt}/{IMA2_ATTEMPTS}: {last_tail} — {why}", flush=True)
-    sys.exit("✗ ima2 generation failed: " + last_tail)
+    msg = "✗ ima2 generation failed: " + last_tail
+    if hint:
+        msg = msg + "\n" + hint
+    sys.exit(msg)
 
 
 def _ppid_map():
@@ -770,7 +790,8 @@ def _attempt_limit(timeout, remaining):
     return min(timeout + IMA2_TIMEOUT_PAD_SEC, int(remaining))
 
 
-def gen_png(prompt, size, out_png, refs, timeout=360, sleeper=None, clock=None):
+def gen_png(prompt, size, out_png, refs, timeout=360, sleeper=None, clock=None,
+             face_hint=None):
     """Render one PNG via the local ima2 binary.
 
     sleeper defaults to time.sleep. clock defaults to time.monotonic.
@@ -804,6 +825,7 @@ def gen_png(prompt, size, out_png, refs, timeout=360, sleeper=None, clock=None):
                 attempt,
                 "%s (stopped at %ss call budget)" % (last_tail, IMA2_CALL_BUDGET_SEC),
                 "call budget, not retrying",
+                face_hint,
             )
         if os.path.isfile(out_png):
             os.unlink(out_png)
@@ -815,6 +837,7 @@ def gen_png(prompt, size, out_png, refs, timeout=360, sleeper=None, clock=None):
                 attempt,
                 "%s (stopped at %ss call budget)" % (last_tail, IMA2_CALL_BUDGET_SEC),
                 "call budget, not retrying",
+                face_hint,
             )
         try:
             res = _run_ima2(cmd, env, limit)
@@ -848,6 +871,7 @@ def gen_png(prompt, size, out_png, refs, timeout=360, sleeper=None, clock=None):
                     attempt,
                     "%s (stopped at %ss call budget)" % (last_tail, IMA2_CALL_BUDGET_SEC),
                     "call budget, not retrying",
+                    face_hint,
                 )
             print(f"   ✗ ima2 attempt {attempt}/{IMA2_ATTEMPTS}: {last_tail} "
                   f"— transient, retrying in {wait}s", flush=True)
@@ -859,7 +883,7 @@ def gen_png(prompt, size, out_png, refs, timeout=360, sleeper=None, clock=None):
             why = "not retrying"
         else:
             why = "transient, giving up"
-        _ima2_give_up(attempt, last_tail, why)
+        _ima2_give_up(attempt, last_tail, why, face_hint)
 
 
 def compress_webp(src_png, out_webp):
@@ -952,7 +976,8 @@ def main():
 
     size = "1024x1024" if a.square else "1536x1024"
     print(f"⏳ ima2 gen {name} ({size}, {len(a.ref)} ref{', UGC' if a.ugc else ''})...", flush=True)
-    gen_png(a.prompt, size, png, a.ref)
+    gen_png(a.prompt, size, png, a.ref,
+            face_hint=FACE_FALLBACK_HINT if a.persona_ref else None)
     # Unconditional. Raw ima2 output is too HD-clean for anything we publish, and every
     # narrower rule tried here has leaked: gating on --ugc left all heroes glossy, then gating
     # on `ugc or persona_ref` still left the no-face hero glossy — and the no-face hero is what
@@ -965,6 +990,8 @@ def main():
         passed, verdict = qc_gem9(webp, a.ref, a.ugc, bool(a.persona_ref), angle_phrase)
         print(f"QC → {verdict}")
         if not passed:
+            if a.persona_ref:
+                print(FACE_FALLBACK_HINT, flush=True)
             sys.exit(2)  # caller re-rolls with the FAIL reason folded into the prompt (max 2)
     if a.persona_ref:
         # After QC, not before: a render that failed and was thrown away owes nobody a credit,
