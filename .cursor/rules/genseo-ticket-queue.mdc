@@ -23,7 +23,8 @@ that already went live. Zero open = the day stops.
   does not list, a ShilaSource resin dose its pack-label whitelist does not list, or a Turkesterone
   Advanced Formula dose its pack-label whitelist does not list, inside an open ticket).
 - FloraFresh tickets take strain, CFU and sugar facts from its Supplement Facts label (Bacillus coagulans SNZ-1969,
-  1 billion CFU per 2 gummies, not sugar-free), never from the PDP description, which is wrong until Kevin's GO;
+  15B CFU per 2 gummies, not sugar-free; Kevin 2026-10-21). 1 billion CFU and 1B CFU are retired. Never take the
+  strain story from the PDP description, which is still wrong until Kevin's GO;
   `refill_tickets.py` adds the label line under the hero product (`docs/FLORAFRESH_FORMULA_GUARD.md`).
 - Shilajit Shockwave tickets take pack-label facts from `product_refs/shilajit-shockwave.label.json` only
   (no milligram, serving count, or volume token). `refill_tickets.py` adds that line
@@ -54,7 +55,7 @@ that already went live. Zero open = the day stops.
   - **Fan-out answers to cover:** <follow-up questions, each a self-contained 40–80-word answer>
   - **Evidence to fetch & confirm (claims log):** <studies/labels to fetch — never cite unfetched>
   - **Link, don't restate:** `/blogs/news/<live handle>`, …
-  - **Author:** roster.json byline — exact name + bio at write time; never invent a person or credential
+  - **Author:** Mike Moretti (/pages/mike-moretti) — Co-founder, Wellness Nest. TODO: no approved headshot and the author page is not confirmed live
   - **Dedup note:** <family + segment checked against N live articles and every ticket in the file>
 ```
 

@@ -1,7 +1,16 @@
 {
+  "mike-moretti": {
+    "name": "Mike Moretti",
+    "bio": "Mike Moretti is a co-founder of Wellness Nest and the brand's public face.",
+    "role": "Co-founder, Wellness Nest",
+    "page": "/pages/mike-moretti",
+    "headshot": null,
+    "headshot_note": "PLACEHOLDER — no verified photo in the repo or vault. Do not invent one.",
+    "default_for": ["blog"]
+  },
   "dr-marcus-hale": {
     "name": "Dr. Marcus Hale",
     "bio": "Dr. Marcus Hale is the resident health researcher behind Wellness Nest's editorial team, translating peer-reviewed sports-nutrition and longevity research into practical daily guidance for US readers."
   },
-  "_note": "Default author per Kevin's order 2026-08-07 ('mặc định author là Dr. Marcus Hale'). Bio drafted by agent, shown to Kevin in the same session; he can amend the sentence — if he does, update it HERE and on /pages/dr-marcus-hale, never only in an article. Additional real team members may be added later in the same format."
+  "_note": "Blog default is Mike Moretti (Kevin, 2026-10-21). His bio is only the vault fact Kevin confirmed 2026-10-11 (20-brands/1-wellnessnest.md): co-founder of Wellness Nest and the brand's public face. It does not add a degree, a year-count, BJJ history, family medical history, or a medical-reviewer claim. headshot is null (placeholder): the 2026-10-23 PDP review found no real photo on file, and the two PDP portraits are different AI renders. /pages/mike-moretti was 404 when this entry was added; a human has to create that page. The publish gate still requires HTTP 200 and will fail a Mike draft until the page exists. Do not invent a headshot. Dr. Marcus Hale stays on the roster as the landing-page default. A blog byline that names him fails validate_article.py. He is not a second blog default."
 }

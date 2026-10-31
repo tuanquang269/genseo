@@ -67,9 +67,9 @@ Unpublished headless runs do not ask. A local preview, `GENSEO_LANDING_DRAFT=1`,
    AgeAura handle, bundle (`-p2`) or collection link; never Urolithin A or peptides. `scripts/ageaura_rules.py`
    fails closed if a ticket or spec targets `ageaura-pure-urolithin-a` or any other Urolithin A AgeAura handle.
    `brand/ageaura.json` (`allowed_products`, `forbidden_terms`) + `validate_landing.py` block them in any store's page.
-   **FloraFresh = its Supplement Facts label** (Kevin 2026-10-09): Bacillus coagulans SNZ-1969, 1 billion CFU per
+   **FloraFresh = its Supplement Facts label** (Kevin 2026-10-09, count updated 2026-10-21): Bacillus coagulans SNZ-1969, 15B CFU per
    2 gummies, Vitamin C 30 mg, pineapple fruit powder 100 mg (with bromelain), maltitol + isomalt (not sugar-free).
-   The live PDP description (15 billion CFU, four Lactobacillus strains, XOS, D-mannose, sugar-free) is wrong until
+   1 billion CFU and 1B CFU are the retired count. The live PDP description still tells a wrong strain story (four Lactobacillus strains, XOS, D-mannose, sugar-free) until
    Kevin's GO rewrites it, so for FloraFresh the PDP gives price, offer and directions, never the formula.
    `validate_landing.py` fails any FloraFresh claim the label does not support (`scripts/florafresh_rules.py`).
    **Shilajit Shockwave** pack-label doses come only from `product_refs/shilajit-shockwave.label.json` (identity lines; no milligram, serving count, or volume token). `validate_landing.py` fails a dose that file does not list (`scripts/shockwave_rules.py`).
@@ -92,7 +92,7 @@ Unpublished headless runs do not ask. A local preview, `GENSEO_LANDING_DRAFT=1`,
    uncropped, `object-fit:contain`. Lifestyle shots that show no package must also show no OTHER package (the QC
    fails any tub/jar without a reference; describe a shaker/scoop/scene instead).
 11. House voice from `brand/<store>.json` → `voice` (plain, evidence-led, honest about what a study did NOT test,
-   e.g. "purified extract, not our resin"). Byline must be on `roster.json` (default Dr. Marcus Hale).
+   e.g. "purified extract, not our resin"). Byline must be on `roster.json`. This landing lane stays Dr. Marcus Hale. Blog articles use Mike Moretti (`roster.json` `default_for` includes `blog`) and must not use Dr. Marcus Hale.
 12. Never publish live. Never edit an existing live page/article.
 
 ## Workflow
@@ -151,7 +151,7 @@ Unpublished headless runs do not ask. A local preview, `GENSEO_LANDING_DRAFT=1`,
 - Reviews: `scripts/trustpilot_reviews.mjs` → `state/trustpilot/wellnessnest.json` (4–5★ only, verbatim, TrustScore +
   count as displayed). The agent quotes only from that file; missing → placeholder, never invented.
 - Agent: `run_landing_headless.sh --queue daily-landing-tickets.md --next` with the DAILY rules (ref listicle,
-  `gsl-ref-listicle-v1`, slug `<short>-listicle-<yymmdd>`, handle `gsl-preview-<slug>`, Dr. Marcus Hale, fresh
+  `gsl-ref-listicle-v1`, slug `<short>-listicle-<yymmdd>`, handle `gsl-preview-<slug>`, Mike Moretti, fresh
   no-face `--square --qc` images uploaded by the publisher with the CLI app token).
 - Unpublished drafts are standing-approved. Do not ask Kevin to proceed and do not exit before `landing_drafts/<slug>.json` exists. On 2026-10-11 the gold-resin run followed the always-on file-count scope gate (more than 2 output files → show a menu and wait), asked "Proceed with the full unpublished draft package?", wrote no spec, and the wrapper tagged the ticket FAILED (no spec). The product file was present. `SCOPE_WAIVER` names that gate, and the DAILY LISTICLE LANE bullets keep the approval and the file-count prohibition in force.
 - Wrapper post-checks on its own: validate_landing.py, landing_qa.mjs (desktop.png 1440 + mobile.png 375, overflow),

@@ -1,17 +1,21 @@
 #!/usr/bin/env python3
-"""FloraFresh formula guard (Kevin 2026-10-09).
+"""FloraFresh formula guard (Kevin 2026-10-09; count updated 2026-10-21).
 
 The Supplement Facts label is the source of truth for FloraFresh:
 
-    per 2 gummies   SNZ-1969 Probiotic Blend (Bacillus coagulans, spore-based)   1 billion CFU
+    per 2 gummies   SNZ-1969 Probiotic Blend (Bacillus coagulans, spore-based)   15B CFU
                     Vitamin C                                                     30 mg
                     Pineapple Fruit Powder (with bromelain)                       100 mg
     sweetened with maltitol + isomalt, so not sugar-free
     badges: Allergen Free, Vegan, Halal, Gluten Free
 
-The live PDP description is wrong (15 billion CFU, four Lactobacillus strains, XOS,
-D-mannose, sugar-free) and stays wrong until Kevin gives a GO for a store rewrite.
-Copy that names FloraFresh must not carry that formula or cite the PDP for strains or CFU.
+Kevin 2026-10-21: the probiotic count is 15B CFU of Bacillus coagulans SNZ-1969.
+1 billion CFU and 1B CFU are the retired count. "15 billion CFU" is the same count.
+
+The live PDP description still bundles a wrong strain story (four Lactobacillus strains,
+XOS, D-mannose, sugar-free) and stays wrong until Kevin gives a GO for a store rewrite.
+Copy that names FloraFresh must not carry the retired count or that strain story, and
+must not cite the PDP for strains or CFU.
 
 brand_rules.assess() merges these violations, so every brand_rules caller (ticket lint,
 ticket and landing builders, topic_fitness, validate_article, image prompts,
@@ -32,10 +36,10 @@ HANDLE = "florafresh-vaginal-probiotics-gummies"
 PRODUCT_URL = "https://wellnessnest.co/products/" + HANDLE
 PRODUCT_NAME = "FloraFresh Vaginal Probiotics Gummies"
 STRAIN = "Bacillus coagulans SNZ-1969"
-CFU = "1 billion CFU"
+CFU = "15B CFU"
 SERVING = "2 gummies"
 LABEL_FACTS = (
-    ("SNZ-1969 Probiotic Blend (Bacillus coagulans, spore-based)", "1 billion CFU"),
+    ("SNZ-1969 Probiotic Blend (Bacillus coagulans, spore-based)", "15B CFU"),
     ("Vitamin C", "30 mg"),
     ("Pineapple Fruit Powder (with bromelain)", "100 mg"),
 )
@@ -47,8 +51,10 @@ FORMULA_LINE = (
     + ", ".join(BADGES)
 )
 SOURCE_LINE = (
-    "Cite the Supplement Facts label, never the live PDP description or an older FloraFresh article "
-    "(both repeat a wrong formula); a PDP/label mismatch is a gate failure."
+    "Cite the Supplement Facts label, never the live PDP description or an older FloraFresh article. "
+    "Kevin 2026-10-21: the label count is 15B CFU of " + STRAIN + ". "
+    "A 1-billion figure is retired. The PDP story is still wrong: not four Lactobacillus strains, "
+    "not XOS, not D-mannose, and not sugar-free. A PDP/label mismatch is a gate failure."
 )
 TICKET_LINE = "**FloraFresh formula (Supplement Facts label, the source of truth):** " + FORMULA_LINE + ". " + SOURCE_LINE
 LANDING_NOTE = (
@@ -57,8 +63,8 @@ LANDING_NOTE = (
 )
 
 _PREFIX = "FloraFresh formula: "
-_LABEL_CFU = 1e9
-_GUMMY_CFU = 5e8
+_LABEL_CFU = 15e9
+_GUMMY_CFU = 7.5e9
 
 _FLORAFRESH = re.compile(r"flora[\s_-]?fresh", re.I)
 
@@ -118,13 +124,26 @@ _CARRY = re.compile(
     re.I,
 )
 
-# Wrong-PDP fingerprints: blocked anywhere in FloraFresh copy unless negated.
-_FP_15B = re.compile(
-    r"\b(?:15|fifteen)[\s-]*(?:billion|bn)\b"
-    r"|\b15[\s-]*b\b(?=[\s-]*(?:cfus?|colony|live|active|viable|probiotics?|cultures)\b)"
-    r"|\b15,000,000,000\b"
-    r"|\b(?:cfus?|colony[\s-]+forming[\s-]+units?)\b[^.\n\d]{0,20}?\b15[\s-]*b\b",
+# Retired count (Kevin 2026-10-21). The lookbehind keeps the 1 inside 15 / 15B from matching.
+# A leading "Compare" does not excuse FloraFresh's own retired count; see _retired_excused.
+_FP_RETIRED_CFU = re.compile(
+    r"(?<![\d.])\b1[\s-]*(?:billion|bn)\b[\s-]*(?:(?:live|active|viable)[\s-]*)?(?:cfus?|colony[\s-]+forming)"
+    r"|(?<![\d.])\b1[\s-]*b\b(?=[\s-]*(?:cfus?|colony|live|active|viable|probiotics?|cultures)\b)"
+    r"|\b1,000,000,000\b(?=[\s-]*(?:live|active|viable)?[\s-]*(?:cfus?|colony|probiotics?|cultures)\b)"
+    r"|\bone[\s-]+billion\b[\s-]*(?:(?:live|active|viable)[\s-]*)?(?:cfus?|colony[\s-]+forming)"
+    r"|\b(?:cfus?|colony[\s-]+forming[\s-]+units?)\b[^.\n\d]{0,25}?(?<![\d.])\b1[\s-]*(?:billion|bn|b)\b",
     re.I,
+)
+_RETIRED_LOCAL = re.compile(
+    r"\b(?:not|no|never|without|wrong|incorrect|retired|outdated|instead|rather)\b",
+    re.I,
+)
+_RETIRED_AFTER = re.compile(
+    r"^[^\n]{0,40}?\b(?:retired|outdated|wrong|incorrect|former|previous|replaced)\b",
+    re.I,
+)
+_RETIRED_REASON = (
+    "1 billion CFU / 1B CFU is the retired count (Kevin 2026-10-21; label: " + CFU + " per 2 gummies)"
 )
 _FP_FOUR = re.compile(
     r"\b(?:four|4)[\s-]+(?:clinically|scientifically)[\s-]+(?:studied|proven|tested|researched|backed)[\s-]+"
@@ -335,7 +354,7 @@ def _scan(text, attributed=False):
         if not clause.strip():
             continue
         ff_spans = [(m.start(), m.end()) for m in _FLORAFRESH.finditer(clause)]
-        # "FloraFresh: 15 billion CFU" and "FloraFresh ... It has" both claim the next clause for the brand.
+        # "FloraFresh: 15B CFU" and "FloraFresh ... It has" both claim the next clause for the brand.
         carried = attributed or (prev_ff and (prev_delim == ":" or bool(_CARRY.match(clause))))
         question = delim.startswith("?") and bool(_YES_NO.match(clause))
         _check_fingerprints(clause, question, reasons)
@@ -346,9 +365,28 @@ def _scan(text, attributed=False):
     return _dedupe(reasons)
 
 
+def _retired_excused(clause, start, end):
+    """True when the retired count is not being stated as FloraFresh's own figure.
+
+    FloraFresh within 70 characters before the number is excused only by a local
+    not/never/wrong/retired cue between the brand and the number. A leading
+    "Compare" does not excuse it. With no brand that close, a negation cue or a
+    research cue in the preceding text does.
+    """
+    if _RETIRED_AFTER.search(clause[end:end + 50]):
+        return True
+    window = clause[max(0, start - 70):start]
+    brand = list(_FLORAFRESH.finditer(window))
+    if brand:
+        between = clause[brand[-1].end():start]
+        return bool(_RETIRED_LOCAL.search(between))
+    if _negated(clause, start, end):
+        return True
+    return bool(_RESEARCH.search(clause[max(0, start - 90):start]))
+
+
 def _check_fingerprints(clause, question, reasons):
     rules = (
-        (_FP_15B, "15 billion CFU is the wrong PDP figure (label: " + CFU + " per 2 gummies)", False),
         (_FP_FOUR, "four Lactobacillus strains is the wrong PDP formula (label: one strain, " + STRAIN + ")", False),
         (_FP_XOS, "XOS is not on the label", False),
         (_FP_SUGAR_FREE, "FloraFresh is not sugar-free (sweetened with maltitol and isomalt)", True),
@@ -359,6 +397,11 @@ def _check_fingerprints(clause, question, reasons):
                 continue
             reasons.append(_PREFIX + reason)
             break
+    for m in _FP_RETIRED_CFU.finditer(clause):
+        if _retired_excused(clause, m.start(), m.end()):
+            continue
+        reasons.append(_PREFIX + _RETIRED_REASON)
+        break
 
 
 def _check_claims(clause, ff_spans, carried, reasons):
@@ -384,7 +427,7 @@ def _check_claims(clause, ff_spans, carried, reasons):
             what = "multi-strain" if not word else str(n) + " strains"
             reasons.append(_PREFIX + what + " (label: one strain, " + STRAIN + ")")
     for start, end, value in _cfu_amounts(clause):
-        problem = None if abs(value - 15e9) < 1 else _cfu_problem(clause, end, value)
+        problem = _cfu_problem(clause, end, value)
         if problem is not None and tied(start, end):
             reasons.append(_PREFIX + _fmt_cfu(value) + problem + " (label: " + CFU + " per 2 gummies)")
     pdp = _PDP_WORD.search(clause)
@@ -433,7 +476,7 @@ def _cfu_amounts(clause):
 
 
 def _cfu_problem(clause, end, value):
-    """None when the amount matches the label (1 billion per 2 gummies, 500 million per gummy)."""
+    """None when the amount matches the label (15B CFU per 2 gummies, 7.5 billion per gummy)."""
     tail = clause[end:end + 40]
     if abs(value - _LABEL_CFU) < 1:
         return " per gummy" if _PER_GUMMY.match(tail) else None
