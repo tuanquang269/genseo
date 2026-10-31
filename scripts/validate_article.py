@@ -428,7 +428,9 @@ def main():
     if _v: fails.append("brand rule — banned link(s)/mentions/claims: "+"; ".join(_v[:6]))
 
     # Citability (answer shape, FAQ, question H2s, product + related article,
-    # primary source, alt text, draft meta length, no hand-written Published date).
+    # primary source, alt text, draft meta length, no hand-written Published date,
+    # canonical URL consistency). Autofix notes do not fail; a bad Article
+    # identity URL does. The publisher rewrites autofix links before upload.
     cite_fails, cite_warns = geo_citability.assess(html, require_meta=draft_mode)
     fails.extend(cite_fails)
     warns.extend(cite_warns)
