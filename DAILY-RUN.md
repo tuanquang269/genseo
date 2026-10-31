@@ -304,7 +304,7 @@ based and every house brand already has a page. Do not wait on it.
 | ⛔ | **Never mention or link MuscleMax** (competitor). Never link a product or collection that does not exist — 404 links fail the gate. |
 | 🧾 | **No COA / "clinically tested" claims where none exists** (house rule `no-coa-competitive-advantage`). Proxy proof only. |
 | 🗑 | Never `rm`. Move to `_superseded/` instead. Never touch `frozen_articles.txt` articles. |
-| ✍️ | Blog byline: **Mike Moretti**, Co-founder (`/pages/mike-moretti`), bio copied verbatim from `roster.json`. He is not a doctor: no degree, year-count, medical-reviewer line, or headshot (`headshot` is null). **Dr. Marcus Hale** remains valid; landing pages stay on Hale. The validator matches the first 60 chars of that person's bio after the link. Putting the link inside the sentence breaks it. `/pages/mike-moretti` has to return HTTP 200 before a Mike draft can publish. Do not create that page from a run. |
+| ✍️ | Blog byline: **Mike Moretti**, Co-founder (`/pages/mike-moretti`), bio copied verbatim from `roster.json`. He is not a doctor: no degree, year-count, medical-reviewer line, or headshot (`headshot` is null). A Dr. Marcus Hale blog byline fails the gate. Landing pages stay on Hale. The validator matches the first 60 chars of that person's bio after the link. Putting the link inside the sentence breaks it. `/pages/mike-moretti` has to return HTTP 200 before a Mike draft can publish. Do not create that page from a run. |
 | 🔒 | `status="pending"` default, the `{active, flagged}` allow-list, and `approve` as the sole pending→active transition in the persona system must stay untouched. |
 | 🖼 | Faces come **only** from `~/genseo/personas/`. Never invent a face. New personas need Kevin's one-time real-face gate. |
 
@@ -357,9 +357,9 @@ what is on Shopify. The live article itself is fine.
 - GSC: path A (Kevin creates the OAuth desktop client) vs path B (manual Queries CSV export).
 
 **Open product/compliance flags (report, don't fix in an article):**
-FloraFresh — the PDP description contradicts its Supplement Facts label (15 billion CFU, four
-Lactobacillus strains, XOS, D-mannose, "sugar-free" vs Bacillus coagulans SNZ-1969, 1 billion
-CFU, maltitol + isomalt). Kevin confirmed the label on 2026-10-09: our copy follows the label
+FloraFresh — the PDP description still tells a wrong strain story (four
+Lactobacillus strains, XOS, D-mannose, "sugar-free"). Kevin 2026-10-21: the label count is
+15B CFU of Bacillus coagulans SNZ-1969. 1 billion CFU and 1B CFU are retired. Our copy follows the label
 and the PDP rewrite waits for his GO (`docs/FLORAFRESH_FORMULA_GUARD.md`). Also "Treats the
 root cause" / "Stays & colonizes" disease claims, "Top OB/GYN recommended formula", "100%
 natural ingredients", three inconsistent social-proof counts (71,180+ / 79,239+ / 7,159+).

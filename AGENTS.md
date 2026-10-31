@@ -14,6 +14,11 @@ Bạn đang ở trong một pipeline SEO tự động ghi **trực tiếp lên s
 3. **Không bịa tác giả.** Chỉ dùng tên trong roster (`/Users/kevinkreative/genseo/roster.json` — nguồn duy nhất).
    Không gắn `Dr./MD/PhD/RD/CISSN` cho ai không có. Bịa tác giả có bằng y khoa trên
    nội dung sức khoẻ là lỗi nặng nhất pipeline này có thể tạo ra.
+   Blog byline mặc định (Kevin 2026-10-21): **Mike Moretti**, Co-founder, Wellness Nest,
+   `[Mike Moretti](/pages/mike-moretti) — Co-founder, Wellness Nest`. Không thêm credential,
+   bio dài hơn, hay headshot. Headshot và `/pages/mike-moretti` là TODO — không tạo trang
+   Shopify từ repo này. Dr. Marcus Hale còn trong roster cho landing spec cũ; bài blog mới
+   không dùng byline đó (`validate_article.py` từ chối).
 4. **Không link tới sản phẩm/collection không tồn tại.** Verify URL live trước khi
    chèn. Link 404 sẽ bị gate chặn — và nếu lọt thì làm hỏng trang.
 5. **Refresh là APPEND-ONLY.** Bài đang có thứ hạng: giữ nguyên body và title đang

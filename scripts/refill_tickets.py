@@ -788,7 +788,7 @@ def _blog_byline_phrase():
     who = entry["name"] + ((", " + role) if role else "")
     return ("blog byline %s (/pages/%s), roster.json bio copied verbatim "
             "(no invented person, credential, degree, or headshot; "
-            "Dr. Marcus Hale remains a valid byline)" % (who, handle))
+            "Dr. Marcus Hale is not the blog byline)" % (who, handle))
 
 
 def _author_line():
@@ -1067,8 +1067,10 @@ def self_test():
          dict(product="ageaura-pure-nmn-tmg-p2", primary="nmn morning or night",
               title="NMN: Morning or Night? (US 2026)"), "brand_rules"),
         ("Urolithin in the angle", ctx, dict(angle="Compare it with Urolithin A."), "banned"),
-        ("FloraFresh 15 billion CFU in the secondary (label: 1 billion)", ctx,
-         dict(secondary=["15 billion cfu probiotic"]), "banned"),
+        ("FloraFresh 1 billion CFU in the secondary (label: 15B CFU)", ctx,
+         dict(secondary=["1 billion cfu probiotic"]), "banned"),
+        ("FloraFresh 1B CFU in the secondary (label: 15B CFU)", ctx,
+         dict(secondary=["1B CFU probiotic"]), "banned"),
         ("FloraFresh formula cited from the PDP", ctx,
          dict(evidence="FloraFresh CFU and strains from the live PDP."), "banned"),
         ("sold-out hero product", ctx, dict(product="shilajit-shockwave", primary="shilajit shockwave for athletes",

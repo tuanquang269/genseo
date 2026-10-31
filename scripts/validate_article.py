@@ -21,8 +21,10 @@ import geo_citability
 # (worktree roster.json) is what this process actually loaded.
 FAKE_AUTHORS=("Author One","Author Two","Author Three","Author Four",
               "Author Five","Author Six","Author Seven")
-# What a model adds around a vetted byline. The approved sentence is stripped
-# first, so "Dr. Marcus Hale" stays legal and "Dr. Mike Moretti" does not.
+# What a model adds around a vetted byline. The blog gate rejects Dr. Marcus
+# Hale on the raw draft. The approved sentence is stripped before the
+# credential scan, so a title stored inside that sentence is not a second
+# failure. "Dr. Mike Moretti" is not an approved sentence.
 # "medical reviewer" is the claim Mike must not grow: he is not a doctor.
 CREDENTIAL_RE=re.compile(
     r'(?i)\b(Dr\.|\bMD\b|PhD|\bRD\b|Registered Dietitian|CISSN|Certified [A-Z]|'
@@ -39,13 +41,39 @@ BIO_RE=re.compile(r'(?is)(?:#{2,3}\s*|<h[23][^>]*>\s*)About the Author\s*(?:</h[
 MIN_INLINE_IMAGES=3   # every review/product article must have >=3 in-body images (1 per product; hero excluded)
 
 
+_RETIRED_BYLINE = re.compile(r"(?i)\bdr\.?\s*marcus\s+hale\b|/pages/dr-marcus-hale\b")
+
+
+def blog_byline_fails(text):
+    """Wellness Nest blog drafts use Mike Moretti. Landing specs are not checked here.
+
+    The role is exactly genseo_roster.DEFAULT_BLOG_ROLE. A missing author page or
+    headshot is a TODO for Kevin; this check does not invent either one and does
+    not skip the live-URL check in main().
+    """
+    fails = []
+    text = text or ""
+    if _RETIRED_BYLINE.search(text):
+        fails.append(
+            "blog byline must be " + genseo_roster.DEFAULT_BLOG_NAME + ", "
+            + genseo_roster.DEFAULT_BLOG_ROLE + " (/pages/" + genseo_roster.DEFAULT_BLOG_HANDLE
+            + ") — Dr. Marcus Hale is not the blog byline"
+        )
+    if re.search(r"(?i)about the author", text) and "/pages/" + genseo_roster.DEFAULT_BLOG_HANDLE not in text:
+        fails.append(
+            "blog byline must link /pages/" + genseo_roster.DEFAULT_BLOG_HANDLE + " ("
+            + genseo_roster.DEFAULT_BLOG_NAME + ", " + genseo_roster.DEFAULT_BLOG_ROLE + ")"
+        )
+    return fails
+
+
 def _strip_approved(text):
     """Drop roster-approved bios and names before the invented-credential scan.
-    Kevin's call 2026-08-07: the approved byline itself may carry a title
-    ("Dr. Marcus Hale"), so the gate polices only what a model ADDS beyond the
-    vetted roster entry — strip bios first, then names (bios contain the name).
-    Mike Moretti's sentence has no title. Adding Dr. or "medical reviewer"
-    around his name fails."""
+
+    The blog-byline check runs on the raw draft and rejects Dr. Marcus Hale.
+    This strip only keeps a title stored inside an approved bio from also
+    tripping the invented-credential regex. Mike Moretti's sentence has no
+    title. Adding Dr. or "medical reviewer" around his name fails."""
     for b in genseo_roster.BIOS: text = text.replace(b, "")
     for n in genseo_roster.NAMES.values(): text = text.replace(n, "")
     return text
@@ -275,21 +303,28 @@ def test_author_gate():
         print("✗ roster.json is EMPTY — fill %s with real people" % genseo_roster.roster_path())
         print("  (see scripts/genseo_roster.py for the format). Publishing is blocked until then.")
         sys.exit(1)
-    for handle, entry in genseo_roster.ROSTER.items():
-        name, bio = entry["name"], entry["bio"]
-        good=(f"## Frequently Asked Questions\n### Q?\nA.\n\n### About the Author\n"
-              f"[{name}](/pages/{handle}) — {bio} "
-              f"{name} contributes product comparisons and supplement buying guidance for US readers.")
-        assert not _author_fails(good), (handle, _author_fails(good))
-        assert _author_fails(good.replace(bio, f"{name} is a Strength Coach with over 8 years of experience."))
-        assert _author_fails(good.replace(bio, f"{name} is a medical reviewer for this article."))
-        assert _author_fails(good.replace(f"{name}](/pages/{handle}", "Author Four](/pages/author-four"))
-        # the real --draft path sees HTML headings, not markdown ones
-        as_html=good.replace("### About the Author", "<h3>About the Author</h3>")
-        assert not _author_fails(as_html), (handle, _author_fails(as_html))
-        assert _author_fails(as_html.replace(bio, f"{name} is a Strength Coach & Fitness Specialist."))
-    mike = genseo_roster.ROSTER.get("mike-moretti")
+    picked = genseo_roster.blog_default()
+    if not picked:
+        print("✗ roster.json has no blog default")
+        sys.exit(1)
+    handle, entry = picked
+    name, bio = entry["name"], entry["bio"]
+    good=(f"## Frequently Asked Questions\n### Q?\nA.\n\n### About the Author\n"
+          f"[{name}](/pages/{handle}) — {bio} "
+          f"{name} contributes product comparisons and supplement buying guidance for US readers.")
+    assert not _author_fails(good), (handle, _author_fails(good))
+    assert _author_fails(good.replace(bio, f"{name} is a Strength Coach with over 8 years of experience."))
+    assert _author_fails(good.replace(bio, f"{name} is a medical reviewer for this article."))
+    assert _author_fails(good.replace(f"{name}](/pages/{handle}", "Author Four](/pages/author-four"))
+    # the real --draft path sees HTML headings, not markdown ones
+    as_html=good.replace("### About the Author", "<h3>About the Author</h3>")
+    assert not _author_fails(as_html), (handle, _author_fails(as_html))
+    assert _author_fails(as_html.replace(bio, f"{name} is a Strength Coach & Fitness Specialist."))
     hale = genseo_roster.ROSTER.get("dr-marcus-hale")
+    if hale:
+        hale_blog=(f"### About the Author\n[{hale['name']}](/pages/dr-marcus-hale) — {hale['bio']}")
+        assert _author_fails(hale_blog), "Dr. Marcus Hale must not pass the blog byline gate"
+    mike = genseo_roster.ROSTER.get("mike-moretti")
     if mike and hale:
         swapped = f"### About the Author\n[Mike Moretti](/pages/mike-moretti) — {hale['bio']}"
         assert _author_fails(swapped), _author_fails(swapped)
@@ -299,7 +334,7 @@ def test_author_gate():
 
 def _author_fails(md):
     """The author-gate rules only, so the self-check does not need a whole valid article."""
-    fails=[]
+    fails=list(blog_byline_fails(md))
     for name in FAKE_AUTHORS:
         if re.search(rf"\b{re.escape(name)}\b", md): fails.append(f"fabricated byline: {name}")
     bio=BIO_RE.search(md)
@@ -419,6 +454,7 @@ def main():
     bio_m=BIO_RE.search(html)
     if bio_m:
         fails.extend(_bio_credential_fails(bio_m.group(1), "invented credential in author bio"))
+    fails.extend(blog_byline_fails(html))
     # brand mentions
     if html.count('Wellness Nest')<2: warns.append("brand 'Wellness Nest' used <2 times")
     # inline image COUNT — HARD gate (added 2026-07-26). The cheap model silently stopped generating

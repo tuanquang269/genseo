@@ -1,4 +1,4 @@
-"""Mike Moretti is an accepted blog byline. Dr. Marcus Hale stays valid.
+"""Mike Moretti is the blog byline. A Dr. Marcus Hale blog byline fails.
 
 No Shopify, no network. The author page is not created here.
 """
@@ -88,9 +88,10 @@ class AuthorGate(unittest.TestCase):
         years = about("Mike Moretti", "mike-moretti", "Mike Moretti is a Strength Coach with over 8 years of experience.")
         self.assertTrue(va._author_fails(years))
 
-    def test_hale_verbatim_bio_still_passes(self):
+    def test_hale_blog_byline_fails(self):
         hale = about("Dr. Marcus Hale", "dr-marcus-hale", HALE_BIO)
-        self.assertEqual(va._author_fails(hale), [])
+        fails = va._author_fails(hale)
+        self.assertTrue(any("not the blog byline" in f for f in fails), fails)
 
     def test_swapped_bio_fails(self):
         swapped = about("Mike Moretti", "mike-moretti", HALE_BIO)

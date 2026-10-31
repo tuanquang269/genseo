@@ -29,12 +29,18 @@ Rules (enforced by validate_article.py):
     does not create that page.
   * empty roster = publishing is blocked, by design
   * blog drafts use blog_default() (Kevin 2026-10-21: Mike Moretti).
+    A Dr. Marcus Hale blog byline fails validate_article.py.
     Landing pages use landing_default() (Dr. Marcus Hale).
 """
 import os
 
 _MAC_ROSTER = "/Users/kevinkreative/genseo/roster.json"
 _REPO_ROSTER = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "roster.json")
+
+# Blog default (Kevin 2026-10-21). These do not depend on the Mac roster file.
+DEFAULT_BLOG_HANDLE = "mike-moretti"
+DEFAULT_BLOG_NAME = "Mike Moretti"
+DEFAULT_BLOG_ROLE = "Co-founder, Wellness Nest"
 
 
 def roster_path():
