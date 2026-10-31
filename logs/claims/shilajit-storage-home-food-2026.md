@@ -1,0 +1,5 @@
+Shilajit storage guidance in a clean, dry, shaded cupboard away from stove, sink, steam, direct heat, and strong food odors | https://wellnessnest.co/products/pure-shilajit-gold-resin | fetched+confirmed Y (ticket brief/product-label constraints; product page fetched)
+Pure Shilajit Gold Resin label identity includes 75% Fulvic, Lab-Tested, Pure Shilajit Gold Resin, and 1.06 oz (30g) - 75 servings | https://wellnessnest.co/products/pure-shilajit-gold-resin and local product_refs/pure-shilajit-gold-resin.label.json | fetched+confirmed Y
+No milligram amount, refrigerator requirement, temperature range, or shelf-life promise was read from the approved label | local product_refs/pure-shilajit-gold-resin.label.json | fetched+confirmed Y
+Current product offer lists Pure Shilajit Gold Resin at $75 | https://wellnessnest.co/products/pure-shilajit-gold-resin.js | fetched+confirmed Y
+Use the package directions and consult a qualified healthcare professional when medication, medical condition, pregnancy, or nursing applies | https://wellnessnest.co/products/pure-shilajit-gold-resin.js | fetched+confirmed Y
