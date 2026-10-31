@@ -75,6 +75,11 @@ class Ima2ErrorClassTests(unittest.TestCase):
         samples = (
             STREAM,
             "ima2: Responses stream returned an error",
+            "Responses request failed before receiving a response",
+            "OAuth image request failed before receiving a response",
+            "✗ Responses request failed before receiving a response\n"
+            "Hint: Network/proxy failed. This is not a moderation refusal.",
+            "NETWORK_FAILED",
             "HTTP 502 bad gateway",
             "status 503",
             "error: 504",
@@ -110,6 +115,9 @@ class Ima2ErrorClassTests(unittest.TestCase):
             "HTTP 400 bad request",
             # A stream wrapper around an auth failure is still auth.
             "Responses stream returned an error: HTTP 401 Unauthorized",
+            "Responses request failed before receiving a response\n"
+            "Hint: Network/proxy failed. This is not a moderation refusal.\n"
+            "HTTP 401 Unauthorized",
             "rate limit reached; quota exceeded",
         )
         for sample in samples:
@@ -162,7 +170,8 @@ class GenPngRetryTests(unittest.TestCase):
     def _pause(self, seconds):
         self.sleeps.append(seconds)
 
-    def _go(self, outcomes, refs=None, clock=None, on_call=None, sleeper=None):
+    def _go(self, outcomes, refs=None, clock=None, on_call=None, sleeper=None,
+            face_hint=None):
         runner = ScriptedRun(outcomes, on_call=on_call)
         ai._run_ima2 = runner
         buf = StringIO()
@@ -172,7 +181,7 @@ class GenPngRetryTests(unittest.TestCase):
                 ai.gen_png("a kitchen counter", "1536x1024", self.out,
                            [] if refs is None else refs, timeout=360,
                            sleeper=self._pause if sleeper is None else sleeper,
-                           clock=clock)
+                           clock=clock, face_hint=face_hint)
             except SystemExit as exc:
                 caught = exc
         return caught, buf.getvalue(), runner
@@ -194,6 +203,21 @@ class GenPngRetryTests(unittest.TestCase):
         self.assertIn("attempt 2/3", log)
         self.assertIn("retrying in 15s", log)
         self.assertNotIn("giving up", log)
+
+    def test_network_failed_before_response_then_success(self):
+        # 2026-10-19 ima2 3.23.1 CLI text. Exit 6 is NETWORK_FAILED.
+        # One fast 502 must not end the ticket.
+        caught, log, runner = self._go([
+            (6, "Responses request failed before receiving a response\n"
+             "Hint: Network/proxy failed. This is not a moderation refusal.", "", 0),
+            (0, "", "", MIN_BYTES),
+        ])
+        self.assertIsNone(caught)
+        self.assertEqual(len(runner.calls), 2)
+        self.assertEqual(self.sleeps, [5])
+        self.assertIn("transient, retrying in 5s", log)
+        self.assertIn("Network/proxy failed", log)
+        self.assertGreaterEqual(os.path.getsize(self.out), MIN_BYTES)
         cmd = runner.calls[0][0]
         self.assertEqual(cmd[0], ai.IMA2)
         self.assertIn("--provider", cmd)
@@ -227,6 +251,20 @@ class GenPngRetryTests(unittest.TestCase):
         self.assertEqual(self.sleeps, [])
         self.assertIn("permanent, not retrying", log)
         self.assertNotIn("retrying in", log)
+        self.assertNotIn("human no-face", str(caught.code))
+
+    def test_face_refusal_names_the_human_fallback(self):
+        caught, log, runner = self._go([
+            (1, "content policy violation", "", 0),
+        ], face_hint=ai.FACE_FALLBACK_HINT)
+        self.assertIn("ima2 generation failed:", str(caught.code))
+        self.assertIn("content policy", str(caught.code))
+        self.assertIn("human no-face", str(caught.code))
+        self.assertIn("empty pack-only", str(caught.code))
+        self.assertIn("hand", str(caught.code))
+        self.assertEqual(len(runner.calls), 1)
+        self.assertEqual(self.sleeps, [])
+        self.assertIn("permanent, not retrying", log)
 
     def test_unknown_error_is_not_retried(self):
         caught, log, runner = self._go([

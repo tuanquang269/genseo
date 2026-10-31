@@ -5,7 +5,14 @@
 # REAL render QA (Kevin 2026-10-08): landing_real_qa.py checks theme/template/body parity read-only, then screenshots the
 # REAL storefront in a ~40 s gsl-preview window (on -> screenshot -> off in a finally) so approval never rests on a local
 # render. GENSEO_LANDING_REAL_QA_WINDOW=0 keeps the parity checks but skips the window.
-# launchd com.pati.genseo-landing: 08:15 + 16:15 catch-up, on WHICHEVER Mac is online (deploy/com.pati.genseo-landing.*.plist).
+# launchd com.pati.genseo-landing: 08:15, 09:20 check, 16:15 catch-up, on WHICHEVER Mac is online (deploy/com.pati.genseo-landing.*.plist).
+# Queue low-water is on by default. Once per run, after the lane lock, scripts/build_landing_tickets.py --ensure
+# GENSEO_LANDING_LOW_WATER (default 2, one draft a day for two days) tops daily-landing-tickets.md up.
+# That builder reads the public storefront only. It does not write Shopify and it does not call a paid API.
+# An angle already on an open line is not queued again. A short angle bank (exit 3), a timeout, or any other
+# builder failure writes state/landing-queue-low-water.marker and the run continues when a line is already open.
+# An empty queue still stops. GENSEO_LANDING_LOW_WATER=0 keeps the old "add one if the queue is empty, exit 1
+# if the builder fails" path.
 #
 # One-page-per-day guarantee across the two Macs (they share no writable state -> Shopify is the shared state):
 #   1. DNS first: scripts/genseo_wait_for_network.sh, after the lock and before the first
@@ -19,7 +26,7 @@
 #      first guard, so a healthy Mini (primary) finishes its draft and the guard makes this Mac stand down;
 #      then re-checks the guard
 #   4. landing_publisher.py (GENSEO_LANDING_DAILY=1) re-runs landing_guard.py right before it POSTs a NEW page
-#   5. local mkdir lock: the 16:15 catch-up never overlaps a still-running 08:15 run on the same Mac
+#   5. local mkdir lock: the 09:20 check and the 16:15 catch-up never overlap a still-running run on the same Mac
 #   6. this Mac's article batch (state/daily.lock) only gets a short courtesy yield, never the whole day: wait while it
 #      runs, at most GENSEO_LANDING_ARTICLE_YIELD_MIN (default 30) wall-clock minutes, re-checking every
 #      GENSEO_LANDING_POLL_SEC (default 60) s, then re-check the guard and build ALONGSIDE it. Overlap is safe: this lane
@@ -31,18 +38,50 @@
 #      and workers that called setsid) and that process group. The deadline is monotonic elapsed time.
 # Kill switch: touch state/landing-daily.disabled (or GENSEO_LANDING_DAILY_ENABLED=0).
 # Checkout: after the network wait succeeds, scripts/genseo_sync_main.sh runs
-# `git fetch origin main` and `git merge --ff-only origin/main` when HEAD is
-# main and the work tree is clean. A dirty checkout, or local commits that are
-# not on origin, is logged and this run continues. launchd executes this file,
-# so the fetch runs from a copy outside the repo: git must not rewrite the
-# script bash is reading. A fast-forward re-execs this file (same PID, so
-# state/landing-daily.lock stays held). The first time this ships, the Mac
-# needs `cd ~/genseo && git pull`. The plist already points at this path, so
-# that pull does not need a launchd reload.
+# `git fetch origin main` and `git merge --ff-only origin/main` when local
+# main can fast-forward. Untracked files that would not be overwritten stay.
+# A tracked edit that would be overwritten is stashed or backed up and logged.
+# A publish/* or article/* branch returns to main (the branch ref is kept)
+# after queue closures are recorded in state/queue-closures.json. launchd executes
+# this file, so the fetch runs from a copy outside the repo: git must not
+# rewrite the script bash is reading. It does not fast-forward while another
+# GenSeo job holds a lane lock or has a checkout script open. A fast-forward
+# re-execs this file (same PID, so state/landing-daily.lock stays held).
+# Before this run commits, and again on exit, HEAD is switched back to main
+# when it is still on publish/* or article/*. The plist already points at this path.
+# After a successful sync, scripts/genseo_self_apply.sh reinstalls ~/bin when
+# the article wrapper bytes differ and reloads a changed LaunchAgent only
+# after this process exits. It does not start a run and it does not publish.
+# The 09:20 interval and the /usr/bin/caffeinate prefix arrive that way.
+# An agent that was never loaded still needs one manual copy and bootstrap.
+# Sleep: before the stable copy, this file arms caffeinate -i -s -w of its own
+# PID (scripts/genseo_power_assert.sh). Idle sleep (pmset sleep 1) and an AC
+# dark wake cannot suspend the DNS wait or the draft build. No sudo, no pmset
+# change, and this lane still never publishes. A missing caffeinate is logged
+# and the run continues. The 09:20 slot is this same job. launchd does not
+# start a second instance while one is running, and the landing lock exits 0
+# if a second copy does start. A gsl- draft that already exists today stands
+# down without building another page.
 set -uo pipefail
 export PATH="$HOME/.local/bin:$HOME/.npm-global/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 for d in "$HOME"/.nvm/versions/node/*/bin; do [ -d "$d" ] && PATH="$d:$PATH"; done; export PATH
 G="$HOME/genseo"; PY=/usr/bin/python3; cd "$G" || exit 1
+mkdir -p "$G/logs" "$G/state"
+if [ -f "$G/scripts/genseo_errlog.sh" ]; then
+  # shellcheck source=genseo_errlog.sh
+  . "$G/scripts/genseo_errlog.sh" || printf '%s\n' "WARN: could not load scripts/genseo_errlog.sh" >&2
+  if declare -F genseo_errlog_begin >/dev/null 2>&1; then
+    genseo_errlog_begin "$G/logs/launchd-landing.err.log" || true
+  fi
+fi
+if [ -f "$G/scripts/genseo_power_assert.sh" ]; then
+  # shellcheck source=genseo_power_assert.sh
+  . "$G/scripts/genseo_power_assert.sh" || {
+    printf '%s\n' "FATAL: could not load scripts/genseo_power_assert.sh" >&2
+    exit 1
+  }
+  genseo_power_assert_arm || true
+fi
 if [ -f "$G/scripts/genseo_sync_main.sh" ]; then
   # shellcheck source=genseo_sync_main.sh
   . "$G/scripts/genseo_sync_main.sh" || {
@@ -57,12 +96,36 @@ LANDING_TIMEOUT="${GENSEO_LANDING_TIMEOUT_SEC:-5400}"
 case "$LANDING_TIMEOUT" in
   ''|*[!0-9]*|0) LANDING_TIMEOUT=5400 ;;
 esac
+# Default 2 is two days at one unpublished draft a day. 0 is the old single-add path.
+# A non-numeric value is ignored so a bad plist cannot turn the guard off.
+LANDING_LOW_RAW="${GENSEO_LANDING_LOW_WATER-}"
+LANDING_LOW_BAD=0
+case "$LANDING_LOW_RAW" in
+  '') LANDING_LOW=2 ;;
+  *[!0-9]*) LANDING_LOW=2; LANDING_LOW_BAD=1 ;;
+  *) LANDING_LOW=$LANDING_LOW_RAW ;;
+esac
 HOST="$(hostname -s)"; DAY="$(TZ=Asia/Saigon date +%F)"
 LOGDIR="$G/logs/landing-daily"; mkdir -p "$LOGDIR" "$G/state"; LOG="$LOGDIR/$DAY.log"
 LOCK="$G/state/landing-daily.lock"; MINE="$G/state/landing-by-$HOST.log"; ART_LOCK="$G/state/daily.lock"
 QUEUE="daily-landing-tickets.md"
 ts(){ date '+%F %T'; }
 say(){ echo "[$(ts)] [$HOST/$ROLE] $*" | tee -a "$LOG"; }
+_landing_queue_low_marker() {
+  local rc=$1 marker="$G/state/landing-queue-low-water.marker"
+  mkdir -p "$(dirname "$marker")"
+  {
+    printf '%s\n' "LANDING QUEUE LOW"
+    printf 'time=%s\n' "$(date '+%F %T')"
+    printf 'threshold=%s\n' "$LANDING_LOW"
+    printf 'exit=%s\n' "$rc"
+    printf '%s\n' "action=add an angle in templates/landing/listicle-angles.json or free a product"
+    printf '%s\n' "paid_api=not called"
+  } > "$marker"
+}
+if declare -F genseo_power_assert_note >/dev/null 2>&1; then
+  genseo_power_assert_note || true
+fi
 # sleep until the wall clock reaches epoch $1 in <= POLL s steps, ending early once the optional condition command
 # (args 2..) fails; a deadline instead of a count of sleeps, so a Mac that dozes off mid-wait cannot stretch the wait
 wait_until(){ local end=$1 now; shift; while now=$(date +%s); [ "$now" -lt "$end" ] && { [ $# = 0 ] || "$@"; }; do sleep $(( end - now < POLL ? end - now : POLL )); done; }
@@ -127,7 +190,9 @@ if [ "$lock_owned" != 1 ]; then
   fi
   printf '%s\n' "$$" > "${LOCK}.owner"
 fi
-if declare -F genseo_stable_copy_release >/dev/null 2>&1; then
+if declare -F genseo_return_publish_branch_to_main >/dev/null 2>&1 && declare -F genseo_stable_copy_release >/dev/null 2>&1; then
+  trap 'genseo_return_publish_branch_to_main || true; rm -f "${LOCK}.owner"; rmdir "$LOCK" 2>/dev/null || true; genseo_stable_copy_release now || true' EXIT
+elif declare -F genseo_stable_copy_release >/dev/null 2>&1; then
   trap 'rm -f "${LOCK}.owner"; rmdir "$LOCK" 2>/dev/null || true; genseo_stable_copy_release now || true' EXIT
 else
   trap 'rm -f "${LOCK}.owner"; rmdir "$LOCK" 2>/dev/null || true' EXIT
@@ -148,6 +213,14 @@ if [ "${GENSEO_MAIN_SYNCED:-}" != 1 ]; then
     genseo_sync_origin_main "$G/scripts/run_landing_daily.sh" "$@"
   else
     say "WARN: origin/main not updated — missing scripts/genseo_sync_main.sh — continuing on the current checkout"
+  fi
+fi
+# Only after a successful sync. A refused fast-forward does not touch launchd.
+if [ "${GENSEO_MAIN_SYNCED:-}" = 1 ] && [ -f "$G/scripts/genseo_self_apply.sh" ]; then
+  # shellcheck source=genseo_self_apply.sh
+  . "$G/scripts/genseo_self_apply.sh" || say "WARN: self-apply could not be loaded — continuing on the current setup"
+  if declare -F genseo_self_apply >/dev/null 2>&1; then
+    genseo_self_apply com.pati.genseo-landing || say "WARN: self-apply failed — continuing on the current setup"
   fi
 fi
 guard; g=$?
@@ -172,9 +245,35 @@ fi
 
 # reviews (real 4-5★ only); a failure is not fatal — the agent then leaves the review slot as a placeholder
 NODE_PATH="$(npm root -g)" node scripts/trustpilot_reviews.mjs >> "$LOG" 2>&1 || say "WARN: Trustpilot refresh failed — page will carry a review placeholder"
-$PY scripts/build_landing_tickets.py >> "$LOG" 2>&1 || { say "ticket builder failed — see log"; exit 1; }
+if [ "${LANDING_LOW_BAD:-0}" = 1 ]; then
+  say "LANDING QUEUE LOW: ignoring bad GENSEO_LANDING_LOW_WATER — using $LANDING_LOW"
+fi
+if [ "$LANDING_LOW" = 0 ]; then
+  $PY scripts/build_landing_tickets.py >> "$LOG" 2>&1 || { say "ticket builder failed — see log"; exit 1; }
+else
+  BUILD_TIMEOUT="${GENSEO_LANDING_BUILD_TIMEOUT_SEC:-300}"
+  case "$BUILD_TIMEOUT" in
+    ''|*[!0-9]*|0) BUILD_TIMEOUT=300 ;;
+  esac
+  # Ticket-only. --ensure reuses the builder's rotation and open-angle dedupe.
+  # Public products.json only. No Shopify write and no paid API. A non-zero
+  # exit writes the marker and continues; the empty-line check below still stops.
+  /bin/bash "$G/scripts/genseo_group_timeout.sh" "$BUILD_TIMEOUT" \
+    "$PY" scripts/build_landing_tickets.py --ensure "$LANDING_LOW" >> "$LOG" 2>&1
+  brc=$?
+  if [ "$brc" != 0 ]; then
+    say "landing queue low-water failed (exit $brc) — fail-soft if an open line remains; no paid API"
+    _landing_queue_low_marker "$brc"
+  else
+    rm -f "$G/state/landing-queue-low-water.marker"
+  fi
+fi
 if ! $PY scripts/lint_tickets.py "$QUEUE" >> "$LOG" 2>&1; then say "lint_tickets FAILED on $QUEUE — stopping"; exit 1; fi
-LINE="$(grep -m1 -E '^- \[ \] ' "$QUEUE")"
+if [ -f "$G/scripts/genseo_queue_closures.py" ]; then
+  LINE="$($PY "$G/scripts/genseo_queue_closures.py" first --queue "$QUEUE")" || { say "landing queue closures unreadable — fail closed"; exit 1; }
+else
+  LINE="$(grep -m1 -E '^- \[ \] ' "$QUEUE")"
+fi
 [ -z "$LINE" ] && { say "no open landing ticket — stopping"; exit 1; }
 say "ticket: $LINE"
 STAMP="$(date +%Y%m%d-%H%M)"; RUNLOG="logs/landing-daily-$STAMP.log"; START=$(date +%s)
@@ -264,6 +363,9 @@ esac
 FILES=("$QUEUE" "$SPEC")
 for f in "${SPEC%.json}.claims.md" "$OUT/body.html" "$OUT/palette.json" "$OUT/page.css" "$OUT/preview.html" "$OUT/shopify.json" "$OUT/qa.json" "$OUT/desktop.jpg" "$OUT/mobile.jpg" "$OUT/real_qa.json" "$OUT/real-desktop.jpg" "$OUT/real-mobile.jpg" "$OUT/real-offer.jpg"; do [ -f "$f" ] && FILES+=("$f"); done
 for i in 1 2 3 4 5 6; do [ -e .git/index.lock ] && sleep 10 || break; done
+if declare -F genseo_return_publish_branch_to_main >/dev/null 2>&1; then
+  genseo_return_publish_branch_to_main || true
+fi
 git add -- "${FILES[@]}" >> "$LOG" 2>&1 && git commit -q -m "landing daily $DAY: $SLUG (UNPUBLISHED draft ${PID:-none}, validate=$V qa=$QOK palette=$PQ real=$RQ)" -- "${FILES[@]}" >> "$LOG" 2>&1 \
   && say "committed $(git rev-parse --short HEAD)" || say "WARN: commit failed (see log)"
 exit $R

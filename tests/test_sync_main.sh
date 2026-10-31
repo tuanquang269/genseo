@@ -17,7 +17,13 @@ RC=0
 START_STATUS="$(git -C "$ROOT" status --porcelain)"
 START_HEAD="$(git -C "$ROOT" rev-parse HEAD)"
 
+HOLD_PIDS=""
 cleanup() {
+  local p
+  for p in $HOLD_PIDS; do
+    kill "$p" 2>/dev/null || true
+    wait "$p" 2>/dev/null || true
+  done
   rm -rf "$WORK"
 }
 trap cleanup EXIT
@@ -99,11 +105,12 @@ run_sync() {
 }
 
 order_between() {
-  # order_between <file> <earlier-ere> <later-ere> <label>
+  # order_between <file> <earlier-literal> <later-literal> <label>
+  # index(), not a regex: macOS awk -v turns \$ into $ and $ is end-of-line.
   local file=$1 early=$2 late=$3 label=$4
   if awk -v early="$early" -v late="$late" '
-    $0 ~ early && !e { e=NR }
-    $0 ~ late && !l { l=NR }
+    index($0, early) && !e { e=NR }
+    index($0, late) && !l { l=NR }
     END { exit !(e && l && e < l) }
   ' "$file"; then
     ok "$label"
@@ -143,12 +150,14 @@ grep -F -q 'merge --ff-only origin/main' "$HELPER" && ok "helper merges ff-only"
 order_between "$ARTICLE" 'genseo_exec_stable_copy grokbot-genseo-daily' 'genseo_wait_for_network;' "article copies itself aside before the network wait"
 order_between "$ARTICLE" 'genseo_daily_lock_acquire' 'genseo_wait_for_network;' "article still takes the lock before the network wait"
 order_between "$ARTICLE" 'genseo_wait_for_network;' 'genseo_sync_origin_main ' "article syncs after the network wait"
-order_between "$ARTICLE" 'genseo_sync_origin_main ' '\$\(live_count\)' "article syncs before the first live count"
+order_between "$ARTICLE" 'genseo_sync_origin_main ' '$(live_count)' "article syncs before the first live count"
 order_between "$LANDING" 'genseo_exec_stable_copy run_landing_daily' 'genseo_wait_for_network;' "landing copies itself aside before the network wait"
-order_between "$LANDING" 'mkdir "\$LOCK"' 'genseo_wait_for_network;' "landing still takes the lock before the network wait"
+order_between "$LANDING" 'mkdir "$LOCK"' 'genseo_wait_for_network;' "landing still takes the lock before the network wait"
 order_between "$LANDING" 'genseo_wait_for_network;' 'genseo_sync_origin_main ' "landing syncs after the network wait"
-order_between "$LANDING" 'genseo_sync_origin_main ' '^guard; g=' "landing syncs before the first guard"
+order_between "$LANDING" 'genseo_sync_origin_main ' 'guard; g=' "landing syncs before the first guard"
 grep -F -q 'GENSEO_LANDING_DAILY=1 GENSEO_LANDING_DRAFT=1' "$LANDING" && ok "landing stays draft-only" || bad "landing draft env changed"
+grep -F -q 'genseo_return_publish_branch_to_main' "$ARTICLE" && ok "article wrapper returns publish branches to main" || bad "article wrapper does not return to main"
+grep -F -q 'genseo_return_publish_branch_to_main' "$LANDING" && ok "landing wrapper returns publish branches to main" || bad "landing wrapper does not return to main"
 if awk '
   /^[[:space:]]*#/ { next }
   /--live/ { print NR": "$0; bad=1 }
@@ -189,7 +198,7 @@ EOF
   [ "$(bare_main)" = "$bare_before" ] && ok "fast-forward did not push" || bad "fast-forward pushed"
 fi
 
-echo "3. uncommitted changes, local commits, and the wrong branch stay put"
+echo "3. untracked files that do not overlap fast-forward; overlapping edits are preserved"
 if ! init_repo dirty || ! advance_origin dirty; then
   bad "dirty fixture"
 else
@@ -198,12 +207,35 @@ else
   before=$(head_of "$REPO")
   run_sync
   assert_rc 0 "dirty exits 0"
-  has "$WORK/out" "uncommitted changes" "dirty warns"
-  has "$WORK/out" "continuing on the current checkout" "dirty continues"
-  [ "$(head_of "$REPO")" = "$before" ] && ok "dirty HEAD unchanged" || bad "dirty HEAD moved"
-  [ "$(cat "$REPO/README")" = "local-edit" ] && ok "dirty edit kept" || bad "dirty edit lost"
-  [ ! -e "$REPO/FROM_ORIGIN" ] && ok "dirty checkout did not take the origin file" || bad "dirty checkout took the origin file"
-  lacks "$WORK/out" "fast-forwarded" "dirty did not fast-forward"
+  has "$WORK/out" "tracked local edits kept" "dirty edit is kept when origin does not touch it"
+  has "$WORK/out" "fast-forwarded" "dirty non-overlap still fast-forwards"
+  [ "$(head_of "$REPO")" = "$(git -C "$REPO" rev-parse origin/main)" ] && ok "dirty non-overlap HEAD matches origin/main" || bad "dirty non-overlap HEAD is not origin/main"
+  [ "$(head_of "$REPO")" != "$before" ] && ok "dirty non-overlap HEAD moved" || bad "dirty non-overlap HEAD stayed"
+  [ "$(cat "$REPO/README")" = "local-edit" ] && ok "dirty edit kept in the work tree" || bad "dirty edit lost"
+  [ -f "$REPO/FROM_ORIGIN" ] && ok "dirty non-overlap took the origin file" || bad "dirty non-overlap missed the origin file"
+fi
+
+if ! init_repo overlap || ! advance_origin overlap; then
+  bad "overlap fixture"
+else
+  ok "overlap fixture"
+  printf '%s\n' 'from-origin-readme' >"$WORK/other-overlap/README"
+  git_cfg "$WORK/other-overlap"
+  git -C "$WORK/other-overlap" add README
+  git -C "$WORK/other-overlap" commit -m "readme from origin" >/dev/null 2>&1 || { bad "overlap origin commit"; }
+  git -C "$WORK/other-overlap" push origin main >/dev/null 2>&1 || { bad "overlap origin push"; }
+  printf '%s\n' 'local-edit' >"$REPO/README"
+  before=$(head_of "$REPO")
+  run_sync
+  assert_rc 0 "overlap exits 0"
+  has "$WORK/out" "preserved tracked edits in stash:" "overlap stashes the tracked edit"
+  has "$WORK/out" "fast-forwarded" "overlap still fast-forwards"
+  [ "$(head_of "$REPO")" = "$(git -C "$REPO" rev-parse origin/main)" ] && ok "overlap HEAD matches origin/main" || bad "overlap HEAD is not origin/main"
+  [ "$(head_of "$REPO")" != "$before" ] && ok "overlap HEAD moved" || bad "overlap HEAD stayed"
+  [ "$(cat "$REPO/README")" = "from-origin-readme" ] && ok "overlap work tree has origin README" || bad "overlap work tree kept the local README"
+  git -C "$REPO" --no-pager stash show -p >"$WORK/stash.patch" 2>"$WORK/stash.err" || true
+  grep -F -q 'local-edit' "$WORK/stash.patch" && ok "overlap edit is in the stash" || bad "overlap edit missing from the stash"
+  [ -f "$REPO/FROM_ORIGIN" ] && ok "overlap took the origin file" || bad "overlap missed the origin file"
 fi
 
 if ! init_repo untracked || ! advance_origin untracked; then
@@ -214,10 +246,27 @@ else
   before=$(head_of "$REPO")
   run_sync
   assert_rc 0 "untracked exits 0"
-  has "$WORK/out" "uncommitted changes" "untracked warns"
-  [ "$(head_of "$REPO")" = "$before" ] && ok "untracked HEAD unchanged" || bad "untracked HEAD moved"
+  has "$WORK/out" "untracked files kept" "untracked non-overlap is kept"
+  has "$WORK/out" "fast-forwarded" "untracked non-overlap still fast-forwards"
+  [ "$(head_of "$REPO")" = "$(git -C "$REPO" rev-parse origin/main)" ] && ok "untracked HEAD matches origin/main" || bad "untracked HEAD is not origin/main"
+  [ "$(head_of "$REPO")" != "$before" ] && ok "untracked HEAD moved" || bad "untracked HEAD stayed"
   [ "$(cat "$REPO/scratch.txt")" = "scratch" ] && ok "untracked file kept" || bad "untracked file lost"
-  [ ! -e "$REPO/FROM_ORIGIN" ] && ok "untracked checkout did not take the origin file" || bad "untracked checkout took the origin file"
+  [ -f "$REPO/FROM_ORIGIN" ] && ok "untracked checkout took the origin file" || bad "untracked checkout missed the origin file"
+fi
+
+if ! init_repo clash || ! advance_origin clash; then
+  bad "clash fixture"
+else
+  ok "clash fixture"
+  printf '%s\n' 'local scratch' >"$REPO/FROM_ORIGIN"
+  before=$(head_of "$REPO")
+  run_sync
+  assert_rc 0 "clash exits 0"
+  has "$WORK/out" "untracked file would be overwritten (FROM_ORIGIN)" "clash names the untracked file"
+  has "$WORK/out" "continuing on the current checkout" "clash continues"
+  [ "$(head_of "$REPO")" = "$before" ] && ok "clash HEAD unchanged" || bad "clash HEAD moved"
+  [ "$(cat "$REPO/FROM_ORIGIN")" = "local scratch" ] && ok "clash file kept" || bad "clash file overwritten"
+  lacks "$WORK/out" "fast-forwarded" "clash did not fast-forward"
 fi
 
 if ! init_repo ahead; then
@@ -280,6 +329,273 @@ else
   assert_rc 0 "detached exits 0"
   has "$WORK/out" "not main" "detached warns"
   [ "$(head_of "$REPO")" = "$before" ] && ok "detached HEAD unchanged" || bad "detached HEAD moved"
+fi
+
+echo "3b. a publish branch returns to main; another job blocks the fast-forward"
+if ! init_repo pubin || ! advance_origin pubin; then
+  bad "pubin fixture"
+else
+  ok "pubin fixture"
+  old=$(head_of "$REPO")
+  git -C "$REPO" checkout -b publish/mb1012-3 >/dev/null 2>&1 || { bad "pubin branch"; }
+  run_sync
+  assert_rc 0 "contained publish branch exits 0"
+  has "$WORK/out" "publish branch publish/mb1012-3 is contained in origin/main" "contained publish branch is recognized"
+  has "$WORK/out" "switched publish/mb1012-3 to main" "contained publish branch switches to main"
+  has "$WORK/out" "fast-forwarded" "contained publish branch fast-forwards main"
+  [ "$(git -C "$REPO" symbolic-ref --short HEAD)" = "main" ] && ok "contained publish branch left HEAD on main" || bad "contained publish branch did not leave HEAD on main"
+  [ "$(head_of "$REPO")" = "$(git -C "$REPO" rev-parse origin/main)" ] && ok "contained publish branch HEAD matches origin/main" || bad "contained publish branch HEAD is not origin/main"
+  [ "$(git -C "$REPO" rev-parse publish/mb1012-3)" = "$old" ] && ok "contained publish ref still points at its tip" || bad "contained publish ref moved"
+  [ -f "$REPO/FROM_ORIGIN" ] && ok "contained publish branch took the origin file" || bad "contained publish branch missed the origin file"
+fi
+
+if ! init_repo pubkeep || ! advance_origin pubkeep; then
+  bad "pubkeep fixture"
+else
+  ok "pubkeep fixture"
+  git -C "$REPO" checkout -b publish/keep >/dev/null 2>&1 || { bad "pubkeep branch"; }
+  printf '%s\n' 'only-local' >"$REPO/LOCAL_ONLY"
+  git_cfg "$REPO"
+  git -C "$REPO" add LOCAL_ONLY
+  git -C "$REPO" commit -m "keep me" >/dev/null 2>&1 || { bad "pubkeep commit"; }
+  kept=$(head_of "$REPO")
+  run_sync
+  assert_rc 0 "unique publish branch exits 0"
+  has "$WORK/out" "preserving branch publish/keep" "unique publish commits are preserved"
+  [ "$(git -C "$REPO" symbolic-ref --short HEAD)" = "main" ] && ok "unique publish branch left HEAD on main" || bad "unique publish branch did not leave HEAD on main"
+  [ "$(head_of "$REPO")" = "$(git -C "$REPO" rev-parse origin/main)" ] && ok "unique publish branch fast-forwarded main" || bad "unique publish branch did not fast-forward main"
+  [ "$(git -C "$REPO" rev-parse publish/keep)" = "$kept" ] && ok "unique publish ref still points at its commit" || bad "unique publish ref moved"
+  git -C "$REPO" cat-file -e publish/keep:LOCAL_ONLY && ok "unique file still exists on the publish ref" || bad "unique file missing from the publish ref"
+  [ ! -e "$REPO/LOCAL_ONLY" ] && ok "unique file is not in the main work tree" || bad "unique file leaked into the main work tree"
+  [ -f "$REPO/FROM_ORIGIN" ] && ok "unique publish branch took the origin file on main" || bad "unique publish branch missed the origin file"
+fi
+
+if ! init_repo retmain; then
+  bad "retmain fixture"
+else
+  ok "retmain fixture"
+  git -C "$REPO" checkout -b publish/after >/dev/null 2>&1 || { bad "retmain branch"; }
+  before=$(head_of "$REPO")
+  : >"$WORK/out"
+  : >"$WORK/err"
+  env -i PATH="/usr/bin:/bin" GIT_TERMINAL_PROMPT=0 \
+    bash -c '
+      set -uo pipefail
+      G=$1
+      . "$2"
+      genseo_return_publish_branch_to_main
+      printf "sync_rc:%s\n" "$?"
+    ' _ "$REPO" "$HELPER" >"$WORK/out" 2>"$WORK/err"
+  RC=$?
+  assert_rc 0 "return-to-main exits 0"
+  has "$WORK/out" "sync_rc:0" "return-to-main returns 0"
+  [ "$(git -C "$REPO" symbolic-ref --short HEAD)" = "main" ] && ok "return-to-main left HEAD on main" || bad "return-to-main did not leave HEAD on main"
+  [ "$(head_of "$REPO")" = "$before" ] && ok "return-to-main did not fast-forward" || bad "return-to-main moved HEAD"
+  [ "$(git -C "$REPO" rev-parse publish/after)" = "$before" ] && ok "return-to-main kept the publish ref" || bad "return-to-main moved the publish ref"
+  lacks "$WORK/out" "fast-forwarded" "return-to-main did not log a fast-forward"
+fi
+
+if ! init_repo sidekeep || ! advance_origin sidekeep; then
+  bad "sidekeep fixture"
+else
+  ok "sidekeep fixture"
+  git -C "$REPO" checkout -b side >/dev/null 2>&1 || { bad "sidekeep branch"; }
+  : >"$WORK/out"
+  : >"$WORK/err"
+  env -i PATH="/usr/bin:/bin" GIT_TERMINAL_PROMPT=0 \
+    bash -c '
+      set -uo pipefail
+      G=$1
+      . "$2"
+      genseo_return_publish_branch_to_main
+    ' _ "$REPO" "$HELPER" >"$WORK/out" 2>"$WORK/err"
+  RC=$?
+  assert_rc 0 "return-to-main ignores a non-publish branch"
+  [ "$(git -C "$REPO" symbolic-ref --short HEAD)" = "side" ] && ok "non-publish branch stayed" || bad "non-publish branch was switched"
+fi
+
+echo "3c. an article branch returns to main and the open queue skips published tickets"
+if ! init_repo artret; then
+  bad "artret fixture"
+else
+  ok "artret fixture"
+  cat >"$REPO/daily-tickets.md" <<'EOF'
+- [ ] **#CA1016-2 — shilajit on an empty stomach** — `Shilajit on an Empty Stomach`
+- [ ] **#CA1016-7 — vaginal probiotics over 60** — `Vaginal Probiotics Over 60`
+EOF
+  cat >"$REPO/daily-landing-tickets.md" <<'EOF'
+- [ ] listicle | wellnessnest | product=premium-himalayan-shilajit-gummies · angle: gummies (added 2026-10-16)
+- [ ] listicle | wellnessnest | product=florafresh-vaginal-probiotics-gummies · angle: flora (added 2026-10-16)
+EOF
+  git_cfg "$REPO"
+  git -C "$REPO" add daily-tickets.md daily-landing-tickets.md
+  git -C "$REPO" commit -m "queue" >/dev/null 2>&1 || { bad "artret queue commit"; }
+  git -C "$REPO" push origin main >/dev/null 2>&1 || { bad "artret push"; }
+  if ! advance_origin artret; then
+    bad "artret origin"
+  fi
+  git -C "$REPO" checkout -b article/ca1016-2 >/dev/null 2>&1 || { bad "artret branch"; }
+  python3 - "$REPO/daily-tickets.md" "$REPO/daily-landing-tickets.md" <<'PY'
+import pathlib, sys
+tickets, landing = sys.argv[1:]
+path = pathlib.Path(tickets)
+path.write_text(path.read_text().replace(
+    "- [ ] **#CA1016-2",
+    "- [DONE 2026-10-18 https://wellnessnest.co/blogs/news/shilajit-on-an-empty-stomach-yes-or-no-in-the-us] **#CA1016-2",
+    1,
+))
+path = pathlib.Path(landing)
+path.write_text(path.read_text().replace(
+    "- [ ] listicle | wellnessnest | product=premium-himalayan-shilajit-gummies",
+    "- [DRAFT 2026-10-18 page 166299173179] listicle | wellnessnest | product=premium-himalayan-shilajit-gummies",
+    1,
+))
+PY
+  git -C "$REPO" add daily-tickets.md daily-landing-tickets.md
+  git -C "$REPO" commit -m "publish" >/dev/null 2>&1 || { bad "artret publish commit"; }
+  kept=$(head_of "$REPO")
+  printf '%s\n' 'scratch' >"$REPO/scratch.txt"
+  SYNC_ENV="GENSEO_SYNC_DRY_RUN=1"
+  run_sync
+  unset SYNC_ENV
+  assert_rc 0 "article dry-run exits 0"
+  has "$WORK/out" "would record: 2 queue closure(s)" "article dry-run names both closures"
+  has "$WORK/out" "would switch article/ca1016-2 to main" "article dry-run would switch"
+  [ "$(git -C "$REPO" symbolic-ref --short HEAD)" = "article/ca1016-2" ] && ok "article dry-run stayed on the branch" || bad "article dry-run left the branch"
+  [ ! -e "$REPO/state/queue-closures.json" ] && ok "article dry-run wrote no ledger" || bad "article dry-run wrote a ledger"
+  run_sync
+  assert_rc 0 "article branch exits 0"
+  has "$WORK/out" "preserving branch article/ca1016-2" "article commits are preserved"
+  has "$WORK/out" "recorded: 2 queue closure(s)" "article branch records both closures"
+  has "$WORK/out" "switched article/ca1016-2 to main" "article branch switches to main"
+  [ "$(git -C "$REPO" symbolic-ref --short HEAD)" = "main" ] && ok "article branch left HEAD on main" || bad "article branch did not leave HEAD on main"
+  [ "$(head_of "$REPO")" = "$(git -C "$REPO" rev-parse origin/main)" ] && ok "article branch HEAD matches origin/main" || bad "article branch HEAD is not origin/main"
+  [ "$(git -C "$REPO" rev-parse article/ca1016-2)" = "$kept" ] && ok "article ref still points at its commit" || bad "article ref moved"
+  git -C "$REPO" cat-file -e "article/ca1016-2:daily-tickets.md" && ok "closed queue still exists on the article ref" || bad "closed queue missing from the article ref"
+  grep -F -q -- '- [ ] **#CA1016-2' "$REPO/daily-tickets.md" && ok "main work tree has the open article line" || bad "main work tree lost the open article line"
+  grep -F -q 'CA1016-2' "$REPO/state/queue-closures.json" && ok "ledger names CA1016-2" || bad "ledger missing CA1016-2"
+  grep -F -q 'premium-himalayan-shilajit-gummies' "$REPO/state/queue-closures.json" && ok "ledger names the landing line" || bad "ledger missing the landing line"
+  first=$(/usr/bin/python3 "$ROOT/scripts/genseo_queue_closures.py" first --queue "$REPO/daily-tickets.md")
+  case "$first" in
+    *'#CA1016-7'*) ok "effective article queue starts at CA1016-7" ;;
+    *) bad "effective article queue is $first" ;;
+  esac
+  land=$(/usr/bin/python3 "$ROOT/scripts/genseo_queue_closures.py" first --queue "$REPO/daily-landing-tickets.md")
+  case "$land" in
+    *florafresh*) ok "effective landing queue skips the drafted gummies line" ;;
+    *) bad "effective landing queue is $land" ;;
+  esac
+  [ "$(cat "$REPO/scratch.txt")" = "scratch" ] && ok "article return kept the untracked file" || bad "article return lost the untracked file"
+  [ -f "$REPO/FROM_ORIGIN" ] && ok "article return took the origin file" || bad "article return missed the origin file"
+fi
+
+echo "3d. end of run returns an article branch without a fast-forward"
+if ! init_repo artend; then
+  bad "artend fixture"
+else
+  ok "artend fixture"
+  printf '%s\n' '- [ ] **#CA1016-2 — shilajit on an empty stomach** — `Title`' >"$REPO/daily-tickets.md"
+  git_cfg "$REPO"
+  git -C "$REPO" add daily-tickets.md
+  git -C "$REPO" commit -m "queue" >/dev/null 2>&1 || { bad "artend queue commit"; }
+  git -C "$REPO" push origin main >/dev/null 2>&1 || { bad "artend push"; }
+  git -C "$REPO" checkout -b article/ca1016-2 >/dev/null 2>&1 || { bad "artend branch"; }
+  printf '%s\n' '- [DONE 2026-10-18 https://wellnessnest.co/blogs/news/shilajit-on-an-empty-stomach-yes-or-no-in-the-us] **#CA1016-2 — shilajit on an empty stomach** — `Title`' >"$REPO/daily-tickets.md"
+  git -C "$REPO" add daily-tickets.md
+  git -C "$REPO" commit -m "publish" >/dev/null 2>&1 || { bad "artend publish commit"; }
+  before=$(head_of "$REPO")
+  : >"$WORK/out"
+  : >"$WORK/err"
+  env -i PATH="/usr/bin:/bin" GIT_TERMINAL_PROMPT=0 \
+    bash -c '
+      set -uo pipefail
+      G=$1
+      . "$2"
+      genseo_return_publish_branch_to_main
+      printf "sync_rc:%s\n" "$?"
+    ' _ "$REPO" "$HELPER" >"$WORK/out" 2>"$WORK/err"
+  RC=$?
+  assert_rc 0 "article return-to-main exits 0"
+  has "$WORK/out" "sync_rc:0" "article return-to-main returns 0"
+  has "$WORK/out" "recorded: 1 queue closure(s)" "article return records the closure"
+  [ "$(git -C "$REPO" symbolic-ref --short HEAD)" = "main" ] && ok "article return left HEAD on main" || bad "article return did not leave HEAD on main"
+  [ "$(git -C "$REPO" rev-parse article/ca1016-2)" = "$before" ] && ok "article return kept the ref" || bad "article return moved the ref"
+  grep -F -q -- '- [ ] **#CA1016-2' "$REPO/daily-tickets.md" && ok "article return restored the open line on main" || bad "article return left the DONE line on main"
+  grep -F -q 'CA1016-2' "$REPO/state/queue-closures.json" && ok "article return ledger names CA1016-2" || bad "article return ledger missing CA1016-2"
+  lacks "$WORK/out" "fast-forwarded" "article return did not fast-forward"
+fi
+
+if ! init_repo dryff || ! advance_origin dryff; then
+  bad "dryff fixture"
+else
+  ok "dryff fixture"
+  printf '%s\n' 'scratch' >"$REPO/scratch.txt"
+  before=$(head_of "$REPO")
+  SYNC_ENV="GENSEO_SYNC_DRY_RUN=1"
+  run_sync
+  unset SYNC_ENV
+  assert_rc 0 "dry-run exits 0"
+  has "$WORK/out" "untracked files kept" "dry-run keeps untracked files"
+  has "$WORK/out" "origin/main: would ff " "dry-run reports would ff"
+  lacks "$WORK/out" "fast-forwarded" "dry-run does not fast-forward"
+  [ "$(head_of "$REPO")" = "$before" ] && ok "dry-run left HEAD" || bad "dry-run moved HEAD"
+  [ ! -e "$REPO/FROM_ORIGIN" ] && ok "dry-run did not take the origin file" || bad "dry-run took the origin file"
+  [ "$(cat "$REPO/scratch.txt")" = "scratch" ] && ok "dry-run kept the untracked file" || bad "dry-run lost the untracked file"
+fi
+
+if ! init_repo dryutd; then
+  bad "dryutd fixture"
+else
+  ok "dryutd fixture"
+  printf '%s\n' 'scratch' >"$REPO/scratch.txt"
+  before=$(head_of "$REPO")
+  SYNC_ENV="GENSEO_SYNC_DRY_RUN=1"
+  run_sync
+  unset SYNC_ENV
+  assert_rc 0 "dry-run up to date exits 0"
+  has "$WORK/out" "untracked files kept" "dry-run up to date keeps untracked files"
+  has "$WORK/out" "origin/main: already up to date" "dry-run reports up to date"
+  lacks "$WORK/out" "would ff" "dry-run up to date does not say would ff"
+  [ "$(head_of "$REPO")" = "$before" ] && ok "dry-run up to date left HEAD" || bad "dry-run up to date moved HEAD"
+fi
+
+if ! init_repo locked || ! advance_origin locked; then
+  bad "locked fixture"
+else
+  ok "locked fixture"
+  mkdir -p "$REPO/state/daily.lock"
+  sleep 120 &
+  HOLD_PIDS="$HOLD_PIDS $!"
+  printf '%s\n' "$!" >"$REPO/state/daily.lock/pid"
+  before=$(head_of "$REPO")
+  run_sync
+  assert_rc 0 "lock block exits 0"
+  has "$WORK/out" "another GenSeo job holds the lock" "lock block warns"
+  [ "$(head_of "$REPO")" = "$before" ] && ok "lock block left HEAD" || bad "lock block moved HEAD"
+  [ ! -e "$REPO/FROM_ORIGIN" ] && ok "lock block did not take the origin file" || bad "lock block took the origin file"
+  kill "$!" 2>/dev/null || true
+fi
+
+if ! init_repo openjob || ! advance_origin openjob; then
+  bad "openjob fixture"
+else
+  ok "openjob fixture"
+  mkdir -p "$REPO/scripts"
+  cat >"$REPO/scripts/run_ticket_headless.sh" <<'EOF'
+#!/bin/bash
+sleep 120
+EOF
+  chmod 755 "$REPO/scripts/run_ticket_headless.sh"
+  "$REPO/scripts/run_ticket_headless.sh" >/dev/null 2>&1 &
+  HOLD_PIDS="$HOLD_PIDS $!"
+  open_pid=$!
+  before=$(head_of "$REPO")
+  run_sync
+  assert_rc 0 "open script exits 0"
+  has "$WORK/out" "another GenSeo job has a script open" "open script warns"
+  [ "$(head_of "$REPO")" = "$before" ] && ok "open script left HEAD" || bad "open script moved HEAD"
+  [ ! -e "$REPO/FROM_ORIGIN" ] && ok "open script did not take the origin file" || bad "open script took the origin file"
+  kill "$open_pid" 2>/dev/null || true
 fi
 
 echo "4. a failed fetch and a non-checkout continue; GIT_DIR cannot retarget the repo"

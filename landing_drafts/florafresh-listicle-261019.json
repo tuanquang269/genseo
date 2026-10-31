@@ -1,0 +1,75 @@
+{
+  "engine": "ref", "template": "listicle", "posture": "hybrid", "store": "wellnessnest",
+  "slug": "florafresh-listicle-261019", "handle": "gsl-preview-florafresh-listicle-261019",
+  "template_suffix": "gsl-ref-listicle-v2", "style": "premium", "takeover": false,
+  "created": "2026-10-19", "daily": true,
+  "reference": "http://localhost:8790/pages/10-reasons-why-creatine-is-for-skinny-people/",
+  "title": "7 Ways to Make a Probiotic Habit Easier",
+  "meta_description": "Considering vaginal probiotic gummies? Start with a routine you can keep, a clear strain label, and realistic expectations. A practical FloraFresh guide.",
+  "topbar": {"labels": ["Wellness Nest Editorial Guide", "Routine first. Read the label."], "deadline": null},
+  "hero": {
+    "accent": "7 Ways", "title": "to Make a Probiotic Habit Easier",
+    "summary_html": "A gummy may suit your routine if you dislike pills. For vaginal probiotics, convenience is only the start: check the label, sweeteners, and what the evidence actually tested.",
+    "kicker": "A practical guide to daily consistency",
+    "image": "tmp_images/landing-florafresh-listicle-261019/real-pack.webp",
+    "alt": "Real dusty-pink FloraFresh pouch with the white Wellness Nest wordmark",
+    "chip": "Gummy format. Label-first choices.",
+    "cta": {"label": "SEE INGREDIENTS", "href": "https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies"},
+    "source": "Format verified from the real product photo and live product page fetched 2026-10-19. Formula source is the approved Supplement Facts label record in scripts/florafresh_rules.py, not the description.",
+    "image_note": "Real curated product_refs photo converted to padded WebP. No generated packaging. No cutout exists for this product.",
+    "focal_y": 0.5
+  },
+  "byline": {"name": "Dr. Marcus Hale", "role": "Wellness Nest editorial team", "avatar": "tmp_images/landing-florafresh-listicle-261019/avatar.webp"},
+  "updated": "Oct 19, 2026",
+  "trust": [
+    {"icon": "check", "html": "<b>4.2 TrustScore</b> <small>1,144 Trustpilot reviews</small>"},
+    {"icon": "shield", "html": "<b>90-day refund policy</b> <small>eligibility applies</small>"},
+    {"icon": "truck", "html": "<b>Free shipping</b> <small>on orders over $69</small>"},
+    {"icon": "leaf", "html": "<b>Vegan</b> <small>Supplement Facts label badge</small>"}
+  ],
+  "trust_source": "Trustpilot state/trustpilot/wellnessnest.json fetched 2026-10-19: TrustScore 4.2, 1,144 reviews. Shipping threshold from live product banner; refund eligibility from https://wellnessnest.co/policies/refund-policy fetched 2026-10-19. Vegan badge from approved Supplement Facts label record.",
+  "items": [
+    {"title": "Give it a familiar cue", "body": "<p>Put your routine next to something you already do, like breakfast. A familiar cue gives you a concrete moment to remember.</p><p>A <a href=\"https://doi.org/10.1002/ejsp.674\" target=\"_blank\" rel=\"noopener\">habit study</a> tracked daily actions in the same setting. It studied eating, drinking, and activity, not probiotic gummies.</p>", "evidence": "Human habit study, not a supplement trial", "evidence_label": "Habit research, not vaginal-health evidence", "source": "https://doi.org/10.1002/ejsp.674", "image": "tmp_images/landing-florafresh-listicle-261019/row1.webp", "alt": "Oatmeal, a spoon and a blank habit card beside a linen napkin"},
+    {"title": "Expect practice, not perfection", "body": "<p>In a <a href=\"https://doi.org/10.1002/ejsp.674\" target=\"_blank\" rel=\"noopener\">12-week study</a>, 96 volunteers practiced a daily action. Missing an opportunity did not materially affect the habit-building process.</p><p>That is permission to resume your routine, not to double a serving. The research did not compare gummies with capsules.</p>", "evidence": "Lally et al., human observational study", "evidence_label": "Daily repetition, not a guaranteed deadline", "source": "https://doi.org/10.1002/ejsp.674", "image": "tmp_images/landing-florafresh-listicle-261019/row2.webp", "alt": "An open weekly planner and pen beside a breakfast plate", "chart": {"kind": "stats", "title": "What the habit study tracked", "stats": [{"value": "96", "label": "Volunteers enrolled", "highlight": true}, {"value": "12 weeks", "label": "Observation period"}, {"value": "Daily", "label": "Chosen action"}], "source": "Lally et al., Eur J Soc Psychol 2010; n=96; 12 weeks."}},
+    {"title": "Choose the steps you prefer", "body": "<p>If swallowing pills feels like a chore, a chewable format may be more appealing. Choose around your preferences, not somebody else's ideal routine.</p><p>This is a practical format choice, not proof of better adherence. The cited habit research did not test which supplement format people preferred.</p>", "evidence": "Editorial format consideration", "evidence_label": "Preference is personal, not a trial result", "source": "https://doi.org/10.1002/ejsp.674", "image": "tmp_images/landing-florafresh-listicle-261019/row3.webp", "alt": "An empty ceramic dish and spoon on a counter with folded linen"},
+    {"title": "Check the name, not the hype", "body": "<p>Read the full probiotic name, including its strain identifier. <a href=\"https://www.nccih.nih.gov/health/probiotics-usefulness-and-safety\" target=\"_blank\" rel=\"noopener\">NCCIH explains</a> that different types can have different effects.</p><p>Then ask what the research actually tested. A benefit reported for another probiotic is not automatic evidence for the gummy you choose.</p>", "evidence": "NCCIH probiotic evidence guidance", "evidence_label": "Different probiotics can have different effects", "source": "https://www.nccih.nih.gov/health/probiotics-usefulness-and-safety", "image": "tmp_images/landing-florafresh-listicle-261019/row4.webp", "alt": "A magnifying glass over ruled sheets and an unmarked checklist", "chart": {"kind": "stats", "title": "Read beyond the word probiotic", "stats": [{"value": "Name", "label": "Identify the probiotic", "highlight": true}, {"value": "Study", "label": "Match the evidence"}, {"value": "Goal", "label": "Check what was tested"}], "source": "NCCIH, Probiotics: Usefulness and Safety; read Oct 19, 2026."}},
+    {"title": "Make room for sweetener checks", "body": "<p>A gummy's format tells you little about its sweeteners. Read the ingredient list before deciding whether it fits your preferences.</p><p>Do not assume a gummy is sugar-free from its appearance. Make checking the actual label part of choosing your routine.</p>", "evidence": "Editorial label-reading checklist", "evidence_label": "Format does not tell you the ingredients", "image": "tmp_images/landing-florafresh-listicle-261019/row5.webp", "alt": "A small dish of sugar beside a magnifying glass and blank notebook"},
+    {"title": "Keep convenience in its lane", "body": "<p>Easy to take does not mean proven to help vaginal symptoms. The habit study here did not measure vaginal health.</p><p>Unusual odor, discharge, itching, or burning deserves clinical advice. <a href=\"https://www.cdc.gov/bacterial-vaginosis/about/index.html\" target=\"_blank\" rel=\"noopener\">CDC guidance</a> describes medical evaluation and antibiotic treatment for bacterial vaginosis.</p>", "evidence": "Evidence boundary and CDC clinical guidance", "evidence_label": "Evidence gap: routine is not treatment", "source": "https://www.cdc.gov/bacterial-vaginosis/about/index.html", "layout": "callout", "image": "tmp_images/landing-florafresh-listicle-261019/row6.webp", "alt": "Research papers and reading glasses beside an open notebook"},
+    {"title": "Plan for your ordinary day", "body": "<p>Picture a busy morning, not a perfect one. Decide when you would take the labeled serving before adding another product to your shelf.</p><p>A reminder can be a practical starting point. Keep expectations grounded: this is a routine suggestion, not evidence that gummies outperform other formats.</p>", "evidence": "Editorial routine planning informed by habit research", "evidence_label": "Choose a cue that fits your day", "source": "https://doi.org/10.1002/ejsp.674", "image": "tmp_images/landing-florafresh-listicle-261019/row7.webp", "alt": "A small travel pouch and house keys beside an open daily planner"}
+  ],
+  "bridge": {"title": "Convenience is part of consistency", "body": "<p>A daily routine needs a place in your day. If pills feel like friction, a gummy is another format to consider.</p><p>FloraFresh is one option. Check its Supplement Facts label and your own preferences before deciding whether it belongs in your routine.</p><p>Taking medication, pregnant, or managing a health condition? Ask your clinician first. A supplement is not a substitute for symptom evaluation.</p>", "image": "tmp_images/landing-florafresh-listicle-261019/real-pack.webp", "alt": "The real FloraFresh pouch on a pale background"},
+  "expert": {
+    "title": "Store service, in customers' words",
+    "stars": 5, "quote": "Henry did an excellent job with my order. Thank you", "author": "Sheila George · Trustpilot · July 24, 2026",
+    "source": "https://www.trustpilot.com/reviews/6a6290e86c004fbb3f74b3a9 published 2026-07-24, 5 stars; verbatim from state/trustpilot/wellnessnest.json fetched 2026-10-19. Store-service review, not FloraFresh efficacy evidence.",
+    "image": "tmp_images/landing-florafresh-listicle-261019/real-pack.webp", "alt": "Real FloraFresh pouch with the vertical white Wellness Nest logo",
+    "reviews": [
+      {"stars": 5, "quote": "right on time with subscription  Don't have to worry about ordering it ", "name": "Tonya", "meta": "US · Oct 1, 2026", "verified": true, "url": "https://www.trustpilot.com/reviews/6abe1771497e18bd92cada2f"},
+      {"stars": 5, "quote": "Henry was very responsive and helpful when there was a problem that needed resolving ", "name": "Mel Barrett", "meta": "GB · Aug 25, 2026", "verified": false, "url": "https://www.trustpilot.com/reviews/6a8df7438bab5ca2e585cf7f"},
+      {"stars": 5, "quote": "Henry did an excellent job with my order. Thank you", "name": "Sheila George", "meta": "US · July 24, 2026", "verified": false, "url": "https://www.trustpilot.com/reviews/6a6290e86c004fbb3f74b3a9"}
+    ],
+    "reviews_source": "Verbatim 5-star store-service reviews from state/trustpilot/wellnessnest.json fetched 2026-10-19. Dates and individual URLs shown per review. Not product-effect testimonials."
+  },
+  "offer": {
+    "pill": "FLORAFRESH GUMMIES", "accent": "A gummy option", "title": "for your daily routine",
+    "sub": "Read the Supplement Facts label before choosing. Convenience is a format benefit, not a promise about vaginal symptoms.",
+    "cta": "SEE INGREDIENTS", "href": "https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies",
+    "meta": ["<b>Gummy</b> format", "<b>Label-first</b> choice"],
+    "guarantee": "90-day refund policy for eligible first orders. Conditions and exclusions apply; see the refund policy.",
+    "image": "tmp_images/landing-florafresh-listicle-261019/real-pack.webp", "alt": "Uncropped real FloraFresh gummy pouch on a pale background",
+    "source": "Price and subscription from https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies.js fetched 2026-10-19. Formula exclusively from approved Supplement Facts label record, scripts/florafresh_rules.py --brief. Refund policy fetched 2026-10-19.",
+    "rating_html": "<b>4.2</b> TrustScore · 1,144 store reviews on Trustpilot",
+    "price": {"now": "$35.25", "was": "$40.99", "tag": "Monthly subscription", "note": "One product every month with Subscribe & Save. $40.99 one-time. Recurring deliveries; review terms before ordering."},
+    "bullets": ["<b>Pineapple fruit powder 100 mg</b> with bromelain per 2 gummies", "Vitamin C 30 mg per 2 gummies", "Bacillus coagulans SNZ-1969: 1 billion CFU per 2 gummies", "Contains maltitol and isomalt. Not sugar-free."],
+    "price_source": "Live product JSON fetched 2026-10-19: variant 51093850390843, price 4099 cents. Selling plan 9909109051: 1 product every 1 month at 14% discount, allocation 3525 cents. The anchor is the current one-time price, not compare-at retail. Formula bullets use only the approved Supplement Facts label."
+  },
+  "product": {"name": "FloraFresh Vaginal Probiotics Gummies", "image": "tmp_images/landing-florafresh-listicle-261019/real-pack.webp", "bullets": ["Pineapple fruit powder 100 mg with bromelain per 2 gummies", "Vitamin C 30 mg per 2 gummies", "Bacillus coagulans SNZ-1969: 1 billion CFU per 2 gummies", "Sweeteners: maltitol and isomalt. Not sugar-free."], "source": "Approved Supplement Facts label transcription: scripts/florafresh_rules.py --brief, read 2026-10-19. Product identity and real pack from live product listing fetched 2026-10-19. No formula claim comes from the product description."},
+  "footer": {"disclaimer": "These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease.", "copyright": "© 2026 Wellness Nest. All rights reserved."},
+  "sources": [
+    {"label": "Lally P et al. How are habits formed: Modelling habit formation in the real world. European Journal of Social Psychology 2010;40:998-1009. Original paper fetched from its PDF mirror.", "url": "https://doi.org/10.1002/ejsp.674"},
+    {"label": "NCCIH. Probiotics: Usefulness and Safety. Different types can have different effects. Read Oct 19, 2026.", "url": "https://www.nccih.nih.gov/health/probiotics-usefulness-and-safety"},
+    {"label": "CDC. About Bacterial Vaginosis. Symptoms, evaluation and treatment. Read Oct 19, 2026.", "url": "https://www.cdc.gov/bacterial-vaginosis/about/index.html"},
+    {"label": "Wellness Nest refund policy. First-order eligibility, conditions and exclusions. Read Oct 19, 2026.", "url": "https://wellnessnest.co/policies/refund-policy"}
+  ],
+  "sticky_cta": {"name": "FloraFresh Gummies", "note": "$35.25 monthly subscription", "cta": "SEE INGREDIENTS", "href": "https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies"}
+}

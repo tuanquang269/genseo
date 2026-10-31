@@ -1,0 +1,39 @@
+{
+  "pubmed": [
+    {
+      "pmid": "1001",
+      "title": "Shilajit supplementation and exercise performance in adults",
+      "journal": "Journal of Ethnopharmacology",
+      "date": "2026 Sep",
+      "authors": "Rao A"
+    },
+    {
+      "pmid": "1002",
+      "title": "Nicotinamide mononucleotide and NAD in healthy aging",
+      "journal": "Cell Metabolism",
+      "date": "2026 Aug",
+      "authors": "Lee B"
+    },
+    {
+      "pmid": "1003",
+      "title": "Bacillus coagulans SNZ-1969 in healthy women",
+      "journal": "Beneficial Microbes",
+      "date": "2026 Jul",
+      "authors": "Nguyen C"
+    }
+  ],
+  "ods": [
+    {
+      "url": "https://ods.od.nih.gov/factsheets/Probiotics-Consumer/",
+      "text": "<title>Probiotics</title><p>Bacillus coagulans is discussed as a probiotic species. This page does not set a Wellness Nest dose.</p>"
+    }
+  ],
+  "rss": [
+    {
+      "title": "NIH notes NAD research in aging",
+      "url": "https://www.nih.gov/news-events/example-nad",
+      "summary": "A release points at NAD research. No dose is stated here.",
+      "date": "Mon, 19 Oct 2026 12:00:00 GMT"
+    }
+  ]
+}

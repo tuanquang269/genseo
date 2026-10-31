@@ -92,7 +92,8 @@ _MONTHS["sept"] = 9
 
 AUTH_DOMAINS = ("pubmed.ncbi.nlm.nih.gov", "ncbi.nlm.nih.gov", "nih.gov", "ods.od.nih.gov", "fda.gov",
                 "cdc.gov", "who.int", "cochrane", "nejm.org", "jamanetwork.com", "bmj.com", "thelancet.com",
-                "efsa.europa.eu", "nhs.uk", "doi.org")
+                "efsa.europa.eu", "nhs.uk", "doi.org", "regulations.gov", "examine.com",
+                "usada.org", "wada-ama.org", "ncaa.org")
 
 def _negated(hay, start, end):
     """Skip a hit that the draft itself is warning against."""
@@ -250,7 +251,7 @@ def lint(raw, title=""):
     _date_conflict(out, raw, text, "dateModified", ("Last updated", "Date modified"))
     links = re.findall(r'(?i)(?:href\s*=\s*"|\]\()(https?://[^")\s]+)', raw)
     if not any(any(d in link.lower() for d in AUTH_DOMAINS) for link in links):
-        out.append({"rule": "no-primary-source", "msg": "No link to a primary study or regulator (PubMed/NIH/FDA/CDC/WHO...). Inference rule for AI-search citability.",
+        out.append({"rule": "no-primary-source", "msg": "No link to a primary study or regulator (PubMed/NIH/FDA/CDC/WHO, DOI, regulations.gov, Examine, USADA, or WADA). Inference rule for AI-search citability.",
                     "match": "", "source": O_DEEP})
     return out
 

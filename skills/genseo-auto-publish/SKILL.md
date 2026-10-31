@@ -95,6 +95,7 @@ wasted image-generation + writing cost of a doomed article.)
   - **US-context variants**: "in the US", "delivery", "online" (nationwide DTC — no city/neighbourhood/near-me angles, see STEP 5)
 - **Product Handle Sourcing:** Run in the shell (Bash): `curl -s "https://wellnessnest.co/search/suggest.json?q=YOUR_KEYWORD&resources[type]=product"` to find the exact product handlers for internal links. Do not guess handles!
 - **Internal Linking Strategy (Power & Target Pages):** Run in the shell (Bash): `python3 ~/genseo/scripts/get_internal_links.py` to retrieve the current Top Power Pages (high traffic) and Target Pages (striking distance). Record these URLs and their target keywords to be naturally embedded into the article body in Step 5.
+- **Optional cluster follow-ups:** if `state/cluster_map.json` exists, run `python3 scripts/cluster_related_questions.py --query "<primary keyword>" --package` (use `--handle <slug>` when that slug is already in the map). Paste the in-body sentences in the relevant sections and place "What to ask next" before `## Frequently Asked Questions`. Those lines link the pillar and sibling articles. They are not an FAQ. Do not turn them into `###` questions and do not add FAQPage JSON-LD for them. If the map file is missing, skip this and keep the usual outline. Publish still goes through `validate_article.py` and `shopify_publisher.py`. The daily job does not set `GENSEO_CLUSTER_PICKER`.
 - Record the expanded keyword list and internal links mentally — you will weave ALL of them naturally into the article body and FAQ section.
 
 ### STEP 3: SERP Analysis & Outline Mapping
@@ -155,7 +156,7 @@ and in AI Overviews. Treat this step as writing an ad, not a label.
       [--ref /abs/path/extra_ref.png] [--square]
   ```
   It prints the LOCAL absolute path to use in the draft. One call per image.
-  - **🔒 i5.2 UGC FRAMEWORK (Kevin, 2026-08-07; hero lane replaced 2026-08-08) — READ `references/ugc-image-framework.md` BEFORE writing any image prompt.** Posture: **HERO = MODEL + PRODUCT lane** (approved persona holding the real pack label-forward, bright ad-style, DIFFERENT persona per post, `--persona-ref` + `--product-ref` + `--qc`, no `--ugc` — full spec in the framework's § Hero lane); **ALL 3 INLINE images = UGC lane** — write the FULL 10-section labeled prompt from the framework (Spec · Fidelity Lock · Reference · Scene/Moment · Device & Camera · Subject & Body · Lighting · Environment Detail · Style/Imperfection · Negative) and pass `--ugc --qc`. A run-on blob prompt or a thinned section is a violation — that is exactly what produces glossy stock output. Typical inline mix: 1 persona-in-scene (`--persona-ref`, approved bank only) + 2 no-face (hands/POV/flat-lay). QC FAIL (exit 2) → fold the printed reason into the prompt and re-roll, max 2, then STOP and report.
+  - **🔒 i5.2 UGC FRAMEWORK (Kevin, 2026-08-07; hero lane replaced 2026-08-08) — READ `references/ugc-image-framework.md` BEFORE writing any image prompt.** Posture: **HERO = MODEL + PRODUCT lane** (approved persona holding the real pack label-forward, bright ad-style, DIFFERENT persona per post, `--persona-ref` + `--product-ref` + `--qc`, no `--ugc` — full spec in the framework's § Hero lane); **ALL 3 INLINE images = UGC lane** — write the FULL 10-section labeled prompt from the framework (Spec · Fidelity Lock · Reference · Scene/Moment · Device & Camera · Subject & Body · Lighting · Environment Detail · Style/Imperfection · Negative) and pass `--ugc --qc`. A run-on blob prompt or a thinned section is a violation — that is exactly what produces glossy stock output. Typical inline mix: 1 persona-in-scene (`--persona-ref`, approved bank only) + 2 no-face (hands/POV/flat-lay). QC FAIL (exit 2) → fold the printed reason into the prompt and re-roll, max 2. A face image that is still refused or still failing QC falls back to one human no-face shot for that image only (a hand, a forearm, or a body cropped below the eyes; no --persona-ref), then the article continues. An empty pack-only still life is not that fallback.
   - **Persona bank:** faces come ONLY from `~/genseo/personas/<handle>/` (each approved ONCE by Kevin through the Pinterest real-face gate). Always feed the ORIGINAL ref.jpg, never a previous gen. No approved persona for the demo you need → no-face composition for this article and tell Kevin a new persona needs the one-time gate.
   - **Scene-variety guard:** check the `scene` column of the last ~10 rows in `PUBLISHED_ARTICLES_TRACKER.csv`; never repeat the same scene type twice in a row. Log each image's scene type on publish.
   - **🔒 HARD RULE (Kevin, 2026-08-07) — GENERATED PRODUCT IMAGERY IS ANCHORED ON THE REAL /products/ PACKAGING. NEVER INVENT PACKAGING.** Every image that shows a product is still *generated* (the ima2 lane stays), but it MUST be generated from the real pack shot on the live PDP: pass `--product-ref <handle>[:index]` (the wrapper auto-downloads `https://wellnessnest.co/products/<handle>.js` image [index], attaches it as ref, and appends a packaging-fidelity clause to the prompt). Package FORMAT (pouch vs jar vs bottle vs tub), colors, and label must match the live PDP exactly. Founding violation: FusiForce gens showed a JAR — the real product is a green stand-up POUCH. Two corollaries: (1) the PROMPT must also describe the real package format ("green stand-up pouch", never "jar") — prompt text overrides the ref when they disagree; (2) after generating, OPEN the output next to the ref and verify the package matches BEFORE putting it in the draft. Concept images with no product in frame need no ref. **🔒 CURATED REF LIBRARY (Kevin 2026-08-09, after two wrong images shipped): pass `--product-ref <handle>` with NO `:index`.** `~/genseo/product_refs/<handle>.png` (+ `.json` describing format/colour/wordmark) is the packaging truth and the wrapper injects its description into the prompt automatically. PDP indexes are marketing composites — FloraFresh index 1 contains NO pouch, and generating against it produced an invented white pouch with the graphic's stat badges pasted on. If the wrapper warns that a SKU has no curated ref, OPEN the fallback ref and confirm the package is in it, or stop and report that the SKU needs curating. Also match product details beyond the label (gummy colour = real flavour).
@@ -169,7 +170,10 @@ and in AI Overviews. Treat this step as writing an ad, not a label.
 - **Drafting — Answer-First Structure:** Write the article in Markdown following these critical rules:
   - **CRITICAL FORMATTING RULE:** DO NOT include any YAML frontmatter (e.g., no `---`). The very first line of the markdown file MUST be the H1 Title (e.g., `# Your Title Here`). The second line MUST be the meta description comment (e.g., `<!-- meta_description: ... -->`). The publisher reads the H1 to set the Shopify article `title` field, then **automatically strips it from the rendered body HTML** — so it will NOT appear twice. Do NOT remove it from the draft.
   - **⚠️ HERO PLACEMENT (corrected 2026-08-07 — the code is the authority):** the Hero Banner MUST be the FIRST `![...]()` image tag in the body markdown. `shopify_publisher.py do_publish` takes the FIRST local image found in the body, sets it as `article.image` (the Shopify featured image the theme renders on top), and STRIPS that one tag from the body — so the hero never appears twice. The old instruction ("do not embed the hero in the body") was wrong: with no hero in the body the publisher silently promoted-and-stripped the first lifestyle image instead, and the live article came out one inline image short. Never reference the hero a second time in the body.
-  - **ANSWER-FIRST INTRODUCTION (AEO CRITICAL):** The first paragraph (40–60 words) MUST directly and completely answer the primary question with zero fluff. No throat-clearing, no "In this article we will..." — answer first, then expand. This "answer block" is the #1 signal for featured snippets and AI Overview selection.
+  - **ANSWER-FIRST INTRODUCTION (AEO CRITICAL):** The first paragraph (40–60 words) MUST directly and completely answer the primary question with zero fluff. No throat-clearing, no "In this article we will..." — answer first, then expand. This "answer block" is the #1 signal for featured snippets and AI Overview selection. The gate fails an opener under 30 words or one that starts with throat-clearing, and warns outside 40–70.
+  - **QUESTION-STYLE H2s:** At least two `##` headings must be questions (`What` / `How` / `Does` / `Is` / `Can` / `Should` / `When` / `Where` / `Why`, or a heading that ends in `?`). Numbered steps ("1. Check the label") do not count. The gate fails a draft with fewer than two.
+  - **H1 LENGTH:** Keep the H1 at 50 characters or under. The theme appends ` – Wellness Nest` (~16), and title tags over ~70 truncate. The gate warns above 50.
+  - **DO NOT WRITE A DATE LINE:** Do not add `Published: Month D, YYYY` or `Last updated:`. The theme already prints the date. A hand-written date has disagreed with that header by one day (US Pacific vs UTC). The gate fails a `Published:` line.
   - **Self-Contained Sections:** Each H2 section must be independently comprehensible without reading previous sections. AI systems may extract and quote a single section out of context. NEVER use "As mentioned above..." or "Building on the previous point..."
   - **Body Structure for AEO:** Under each heading, start with a direct 1–2 sentence answer, then expand with details (examples, data, pros/cons). Use scannable formatting: short paragraphs, bullet/numbered lists, and comparison tables.
   - **MANDATORY LENGTH:** Determine the Search Intent and write to these exact target lengths:
@@ -188,6 +192,11 @@ and in AI Overviews. Treat this step as writing an ad, not a label.
     - `ultimately,` (4), `in summary,`, `delve into`, `by leveraging` (2)
     Write the sentence directly instead of reaching for a connector. If a paragraph only exists to introduce the next paragraph, delete the paragraph.
   - **CITE OR DROP NUMBERS:** if you write a statistic, a percentage, a study reference, or a "X times more effective" comparison, put a real source link next to it. If there is no source, do not write the number. The validator flags articles that make 3+ factual claims with zero citations.
+  - **PRIMARY SOURCE (HARD):** at least one link to PubMed, NIH, FDA, CDC, WHO, a DOI, regulations.gov, Examine, USADA, or WADA. A Flickr credit or a retailer blog does not count. The gate also resolves outbound links and fails a 404, a 410, or a redirect loop. A publisher 403 (bot wall) is a warning, not a pass to invent a different URL — confirm the link opens.
+  - **INTERNAL LINKS (HARD):** at least one `https://wellnessnest.co/products/<handle>` for the product the article is about, and at least one related `https://wellnessnest.co/blogs/news/<handle>` article. Both must be live.
+  - **META DESCRIPTION:** the line-2 `<!-- meta_description: ... -->` must be 120–165 characters.
+  - **ALT TEXT:** every image alt is a real phrase (not empty, not "image" / "photo"). The gate fails a short or missing alt.
+  - **NO DISEASE OR APPROVAL CLAIMS:** do not write that a product cures, treats, or prevents a disease, and do not call it FDA-approved or clinically proven. Saying a supplement does not treat an infection is correct and stays.
   - MUST follow all EEAT and AEO/GEO guidelines from the knowledge base.
   - MUST embed the `curl`-fetched Internal Links absolutely (e.g. `https://wellnessnest.co/products/handle`).
   - MUST format the FAQ precisely using `## Frequently Asked Questions` > `### Question`.
@@ -236,10 +245,14 @@ python3 ~/genseo/scripts/validate_article.py ~/genseo/published_drafts/<article_
 
 The validator checks, as code: word count ≥900, exactly the right heading structure, an
 answer block containing "the US", a comparison `<table>`, a $ price range, ≥2
-`/collections/` links, a named roster author with a LIVE `/pages/` link, 4 FAQs, brand
-mentions, image alt text, **topic fitness** (hard-fails dead flavour/recipe titles + collection-
-owned head-terms — see STEP 0.5) — AND that every product/collection/author URL returns HTTP 200
-(no guessed 404 links).
+`/collections/` links, a named roster author with a LIVE `/pages/` link, an FAQ heading
+plus ≥3 FAQ questions, ≥2 question-style H2s, a product URL, a related article URL, a
+primary-source link, a 120–165 character meta description, descriptive image alt text,
+no hand-written `Published:` date, no affirmative cure / FDA-approval / clinically-proven
+claim, **topic fitness** (hard-fails dead flavour/recipe titles + collection-
+owned head-terms — see STEP 0.5) — AND that every product/collection/article/page/author
+URL returns HTTP 200 and that outbound citations are not 404, 410, or stuck in a redirect
+loop (a 403 bot-wall is a warning). H1 titles over 50 characters warn.
 
 **It also scores the PROSE (added 2026-07-30), and this part hard-fails too.** The structural
 checks above only prove an article has a table and a price; they never measured whether the
@@ -252,6 +265,12 @@ validator now prints a `QRG:` line and fails on:
 
 Warnings only (fix if easy): repetition >= 20, information density < 0.55, and 3+ factual
 claims with no citation.
+
+A missing scorer prints `QRG scoring unavailable: <reason>` and does not fail the draft.
+The scorer is the external claude-seo launcher
+(`~/.claude/plugins/marketplaces/*claude-seo*/bin/claude-seo`), not a paid API call.
+Do not invent a score. `GENSEO_QRG_ADVISORY=1` downgrades a measured failure to a warning;
+it does not change a skip.
 
 When it fails on filler or AI-pattern, the validator prints a `content_humanize.py` command
 that does deterministic 1:1 phrase swaps. Review its diff; it does not add content. Better:
@@ -364,6 +383,11 @@ EOF
 - **Refresh Flag:** Note the publish date. Flag this article for content refresh review in 90 days via the `genseo-refresh-planner` skill.
 
 ### TICKET REFILL: when the queue runs low (< 3 pending `[ ]` tickets)
+
+The daily wrapper stocks the queue itself when open tickets are under `GENSEO_QUEUE_LOW_WATER`
+(default two days of `GENSEO_DAILY_TARGET`, 10 when the target is 5). That unattended call is
+`refill_tickets.py --if-below` only. Exit 3 writes `state/queue-low-water.marker` and does not
+call Ads or an LLM. The mining recipe below is for an interactive session, not the unattended path.
 
 First: `python3 scripts/refill_tickets.py --count 8 --dry-run`, then without `--dry-run` — gated,
 product-mapped tickets from `templates/article-topic-bank.json` + `board/ideas.csv`

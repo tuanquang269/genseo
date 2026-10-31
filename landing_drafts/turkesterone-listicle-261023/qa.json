@@ -1,0 +1,52 @@
+{
+ "file": "/Users/kevinkreative/genseo/landing_drafts/turkesterone-listicle-261023/preview.html",
+ "widths": {
+  "375": {
+   "overflow": false,
+   "smallTargets": 0,
+   "brokenImages": [],
+   "headings": "",
+   "clipped": [],
+   "palette": {
+    "cta_bg": "rgb(2, 57, 2)",
+    "accent": "rgb(50, 116, 47)",
+    "kicker": "rgb(50, 116, 47)",
+    "topbar_bg": "rgb(2, 57, 2)",
+    "pill_bg": "rgb(2, 57, 2)",
+    "offer_cta_bg": "rgb(2, 57, 2)"
+   }
+  },
+  "768": {
+   "overflow": false,
+   "smallTargets": 0,
+   "brokenImages": [],
+   "headings": "",
+   "clipped": [],
+   "palette": {
+    "cta_bg": "rgb(2, 57, 2)",
+    "accent": "rgb(50, 116, 47)",
+    "kicker": "rgb(50, 116, 47)",
+    "topbar_bg": "rgb(2, 57, 2)",
+    "pill_bg": "rgb(2, 57, 2)",
+    "offer_cta_bg": "rgb(2, 57, 2)"
+   }
+  },
+  "1440": {
+   "overflow": false,
+   "smallTargets": 0,
+   "brokenImages": [],
+   "headings": "",
+   "clipped": [],
+   "palette": {
+    "cta_bg": "rgb(2, 57, 2)",
+    "accent": "rgb(50, 116, 47)",
+    "kicker": "rgb(50, 116, 47)",
+    "topbar_bg": "rgb(2, 57, 2)",
+    "pill_bg": "rgb(2, 57, 2)",
+    "offer_cta_bg": "rgb(2, 57, 2)"
+   }
+  }
+ },
+ "stickyAtTop": null,
+ "stickyInZone": null
+}

@@ -1,0 +1,52 @@
+{
+ "file": "/Users/kevinkreative/genseo/landing_drafts/pure-shilajit-gold-resin-listicle-261020/preview.html",
+ "widths": {
+  "375": {
+   "overflow": false,
+   "smallTargets": 0,
+   "brokenImages": [],
+   "headings": "",
+   "clipped": [],
+   "palette": {
+    "cta_bg": "rgb(37, 52, 19)",
+    "accent": "rgb(76, 113, 23)",
+    "kicker": "rgb(76, 113, 23)",
+    "topbar_bg": "rgb(37, 52, 19)",
+    "pill_bg": "rgb(37, 52, 19)",
+    "offer_cta_bg": "rgb(37, 52, 19)"
+   }
+  },
+  "768": {
+   "overflow": false,
+   "smallTargets": 0,
+   "brokenImages": [],
+   "headings": "",
+   "clipped": [],
+   "palette": {
+    "cta_bg": "rgb(37, 52, 19)",
+    "accent": "rgb(76, 113, 23)",
+    "kicker": "rgb(76, 113, 23)",
+    "topbar_bg": "rgb(37, 52, 19)",
+    "pill_bg": "rgb(37, 52, 19)",
+    "offer_cta_bg": "rgb(37, 52, 19)"
+   }
+  },
+  "1440": {
+   "overflow": false,
+   "smallTargets": 0,
+   "brokenImages": [],
+   "headings": "",
+   "clipped": [],
+   "palette": {
+    "cta_bg": "rgb(37, 52, 19)",
+    "accent": "rgb(76, 113, 23)",
+    "kicker": "rgb(76, 113, 23)",
+    "topbar_bg": "rgb(37, 52, 19)",
+    "pill_bg": "rgb(37, 52, 19)",
+    "offer_cta_bg": "rgb(37, 52, 19)"
+   }
+  }
+ },
+ "stickyAtTop": null,
+ "stickyInZone": null
+}

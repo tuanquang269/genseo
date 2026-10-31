@@ -285,10 +285,10 @@ fi
 grep -q 'one re-exec' "$ROOT/DAILY-RUN.md" && ok "DAILY-RUN documents the one re-exec" || bad "DAILY-RUN missing the re-exec"
 draft='- [DRAFT 2026-10-12 page 166173573435] listicle | wellnessnest | product=pure-shilajit-gold-resin'
 grep -qF -- "$draft" "$ROOT/daily-landing-tickets.md" && ok "gold-resin draft untouched" || bad "gold-resin draft line"
-if grep -qE '^- \[ \] .*pure-shilajit-gold-resin' "$ROOT/daily-landing-tickets.md"; then
-  bad "gold-resin was reopened"
+if grep -qE '^- \[ \] .*pure-shilajit-gold-resin.*Resin vs capsules vs gummies' "$ROOT/daily-landing-tickets.md"; then
+  bad "gold-resin draft angle was reopened"
 else
-  ok "gold-resin was not reopened"
+  ok "gold-resin draft angle was not reopened"
 fi
 
 echo "11. writer network deadlines do not change the model"

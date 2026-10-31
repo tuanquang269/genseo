@@ -24,7 +24,7 @@ is a separate plist and is unchanged.
 
 | | Mac Mini (unloaded until an explicit failover release) | MacBook Pro (primary until that handover) |
 |---|---|---|
-| launchd | not installed. A later Mini article plist is `primary` with prefix `MM`, and only after the release marker and the MacBook agents are unloaded | `com.pati.genseo-daily` 07:30 + 14:47 (`~/Library/LaunchAgents/com.pati.genseo-daily.plist`) |
+| launchd | not installed. A later Mini article plist is `primary` with prefix `MM`, and only after the release marker and the MacBook agents are unloaded | `com.pati.genseo-daily` 07:30 + 08:05 check + 14:47 (`~/Library/LaunchAgents/com.pati.genseo-daily.plist`) |
 | wrapper | `~/bin/grokbot-genseo-daily.sh` once that Mini job is installed | `~/bin/grokbot-genseo-daily.sh` (role `primary`, ticket prefix `MB`, no standby wait) |
 | writer | `PATI-Alpha-Plan-Review` → `PATI-Fable-5` via local 9router :20128 **only when `/v1/models` lists that alias**. Claude Code is started on `claude-opus-5-5` / `claude-fable-5`; `modelOverrides` still sends the PATI aliases to the router. A `PATI-*` writer never uses the native Claude login lane | same picker. Hosted `ai.patigroup.com` when local is down **or the local list has no PATI writer alias** (key from vault `.env`, never printed) |
 | images | `GENSEO_IMAGE_BACKEND=gpt` (cx/gpt-image-2.5 via 9router), Grok Imagine fallback | ima2 ChatGPT OAuth lane (`GENSEO_IMA2_PROVIDER=oauth`, `GENSEO_IMA2_MODEL=gpt-6-sol`, $0 subscription) |
@@ -39,16 +39,46 @@ cd ~/genseo && git pull
 bash scripts/install_mac_daily_wrapper.sh
 ```
 
-Pulling alone is not enough. That script is what updates the copy 07:30 and 14:47 execute.
+Pulling alone is not enough. That script is what updates the copy 07:30, 08:05, and 14:47 execute.
 The script creates `~/bin` if needed, copies the wrapper, checks it is executable, and prints whether
 `scripts/genseo_daily_lock.sh` and `scripts/genseo_group_timeout.sh` are in the checkout. It does not
-start launchd, and it does not change LaunchAgent environment. Offline: `bash tests/test_install_mac_daily_wrapper.sh`.
+start launchd, and it does not change LaunchAgent environment. It refuses to replace
+`~/bin/grokbot-genseo-daily.sh` while another process has that file open. A scheduled article or
+landing run that has fast-forwarded `main` reinstalls this copy when the bytes differ
+(`scripts/genseo_self_apply.sh`). The commands above are the one-time step when `~/bin` is older
+than the re-exec, so the next launchd start is the first one that can self-apply.
+Offline: `bash tests/test_install_mac_daily_wrapper.sh` and `bash tests/test_self_apply.sh`.
 
-**Mac return.** After the Mac has been offline, `bash scripts/mac_return_reconcile.sh` is the catch-up. Dry-run fetches `origin` and reports. It does not publish. Local commits that are not on `origin` stay local: the script does not rebase them, does not push, and does not force-push. `--apply` runs `git merge --ff-only origin/main` when `main` is clean and those commits are already on `origin`, then `bash scripts/install_mac_daily_wrapper.sh` so `~/bin/grokbot-genseo-daily.sh` matches this checkout (primary default and live-feed retry). The same run checks, read-only, that `scripts/genseo_model_map.json` maps the PATI writer aliases and that the landing daily lane stays draft-only. It never passes `--live` and it does not start `run_landing_daily.sh` or the article wrapper. Offline: `bash tests/test_mac_return_reconcile.sh`.
+**Launchd stderr.** `logs/launchd-daily.err.log` and `logs/launchd-landing.err.log` are append-only, so an old
+`run_ticket_headless.sh` parse error stayed at the top after the script itself was fixed. Each wrapper copies
+the previous bytes to that path plus `.prev` (the middle is trimmed past 1 MB) and writes a timestamp header,
+once per process, and only when stderr is that file. A fast-forward re-exec keeps `GENSEO_ERRLOG_ROTATED`, so
+this run's header is not wiped. `scripts/genseo_group_timeout.sh` no longer prints the perl `qw` comma warning
+or the unreachable-statement warning on every ticket.
+
+**Idle sleep and dark wake (2026-10-17).** `pmset sleep 1` is an idle timer. A running batch does not keep the Mac awake, and a dark wake can start the job before DNS is up and then go back to sleep. The wrappers arm `caffeinate -i -s -w` of their own PID (`scripts/genseo_power_assert.sh`) before the DNS wait, and the plists start with `/usr/bin/caffeinate -i -s`. That is a user-level assertion. It does not change `pmset` and it does not need sudo. `-i` blocks idle sleep. `-s` blocks system sleep on AC (a dark wake returning to sleep); on battery `-s` is not enforced. The article DNS wait still allows about ten minutes (`GENSEO_NET_WAIT_MAX_SEC`, default 600) for `wellnessnest.co` and `wellnessnest1.myshopify.com` to resolve before any feed read. A one-minute DNS gap, as on the 07:38 dark wake, is inside that budget. The 08:05 article slot and the 09:20 landing slot are the same jobs as 07:30 and 08:15. launchd does not start a second instance while one is running. `state/daily.lock` and `state/landing-daily.lock` exit 0 if a second copy does start. A live count that has already reached 5 does not start another ticket. A `gsl-` draft that already exists today does not build another page. Intervals the Mac slept through coalesce into one fire on wake, so a missed 07:30 is retried at 08:05 instead of waiting until 14:47. After a successful fast-forward, or when `main` was already current, `scripts/genseo_self_apply.sh` runs before the first feed read. It compares `~/bin/grokbot-genseo-daily.sh` and each installed LaunchAgent to this checkout. Matching wrapper bytes are left alone. Matching plist bytes that this script has already loaded are left alone. A different wrapper is reinstalled with `bash scripts/install_mac_daily_wrapper.sh`. A different plist is copied. The label of the job that is running is not reloaded in that process: a detached helper waits until that PID has exited, then bootout and bootstrap. `RunAtLoad` stays false. The helper does not kickstart and does not start either wrapper. The other label is reloaded in that run only when `state/daily.lock` or `state/landing-daily.lock` is free and no job for that lane is running. A MacBook uses `deploy/com.pati.genseo-daily.macbook.plist` and `deploy/com.pati.genseo-landing.macbook.plist`. A Mini uses `deploy/com.pati.genseo-landing.mini.plist` and does not install an article agent from here. A plist that is not already in `~/Library/LaunchAgents` is not created. If the reinstall or the reload fails, the run continues on the previous setup and `logs/self-apply.log` records the failure. Pulling alone is not enough to update `~/bin` before that scheduled run. When `~/bin` predates the re-exec, or an agent was never loaded, the one-time step on the MacBook is still:
+
+```bash
+cd ~/genseo && git pull
+bash scripts/install_mac_daily_wrapper.sh
+cp deploy/com.pati.genseo-daily.macbook.plist ~/Library/LaunchAgents/com.pati.genseo-daily.plist
+launchctl bootout gui/$(id -u) ~/Library/LaunchAgents/com.pati.genseo-daily.plist
+launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.pati.genseo-daily.plist
+cp deploy/com.pati.genseo-landing.macbook.plist ~/Library/LaunchAgents/com.pati.genseo-landing.plist
+launchctl bootout gui/$(id -u) ~/Library/LaunchAgents/com.pati.genseo-landing.plist
+launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.pati.genseo-landing.plist
+```
+
+`bootout` fails if that label is not loaded; `bootstrap` loads the new program and the new intervals. Do not start either wrapper by hand. The landing script itself is read from this checkout, so its in-script assertion arrives with the pull. The 09:20 interval arrives from self-apply once that agent is loaded, and from the manual bootstrap above when it is not. Offline: `bash tests/test_power_assert.sh` and `bash tests/test_self_apply.sh`.
+
+**Pre-run checkout.** After DNS, and only while this run holds its own lane lock, `scripts/genseo_sync_main.sh` fetches `origin main` and fast-forwards when local `main` can. Untracked files that the incoming tree does not overwrite stay. A tracked edit that would be overwritten is stashed, or copied to `/tmp/genseo-preserve-<stamp>-<pid>/`, and the log names that stash or path. A `publish/*` or `article/*` branch is not deleted. If its commits are already on `origin/main`, HEAD switches to `main` and the fast-forward runs. If they are not, the branch ref keeps them and HEAD still returns to `main` when that switch does not overwrite an untracked file. Before the switch, lines that are closed on that branch and still open on the tree HEAD will land on are appended to gitignored `state/queue-closures.json`. The daily open-count and the QUEUE POINTER skip those lines, so the return does not put an already published ticket back at the front of the batch. Any other branch stays put. The fast-forward does not run while another GenSeo job holds `state/daily.lock` or `state/landing-daily.lock`, or while another job is executing a checkout script, or while this process is still reading a script inside the checkout. It does not push, rebase, or reset. `GENSEO_SYNC_DRY_RUN=1` fetches and logs `already up to date` or `would ff` and does not merge. When the fast-forward succeeds, or `main` was already current, the wrapper sources `scripts/genseo_self_apply.sh` before the first feed read or landing guard. A dry-run does not. After each article ticket, and before the landing run commits, HEAD is switched back to `main` when it is still on `publish/*` or `article/*`, after the same queue-closure record. Offline: `bash tests/test_sync_main.sh`.
+
+**Mac return.** After the Mac has been offline, `bash scripts/mac_return_reconcile.sh` is the catch-up. Dry-run fetches `origin` and reports. It does not publish. Local commits that are not on `origin` stay local: the script does not rebase them, does not push, and does not force-push. On `article/*` or `publish/*`, `--apply` first records those queue closures and switches HEAD to `main`, keeping the branch ref. Untracked files do not block that switch. Tracked local edits still do. `--apply` then runs `git merge --ff-only origin/main` when `main` has no tracked local edits and the commits on HEAD are already on `origin`, then `bash scripts/install_mac_daily_wrapper.sh` so `~/bin/grokbot-genseo-daily.sh` matches this checkout (primary default and live-feed retry). The same run checks, read-only, that `scripts/genseo_model_map.json` maps the PATI writer aliases and that the landing daily lane stays draft-only. It never passes `--live` and it does not start `run_landing_daily.sh` or the article wrapper. It does not call launchctl. Plist reload after a merged tooling change is the next scheduled run's self-apply, after that job exits. Offline: `bash tests/test_mac_return_reconcile.sh`.
 
 **MacBook role after this fix.** `GENSEO_HOST_ROLE` lives in the loaded plist, not in the wrapper
-file. `install_mac_daily_wrapper.sh` does not copy it. Until the LaunchAgent is replaced and
-bootstrapped, the loaded job keeps `standby` and still waits 20 minutes:
+file. `install_mac_daily_wrapper.sh` does not copy it. A scheduled run's self-apply copies this
+plist when the bytes differ and bootstraps it after that job exits. Until the LaunchAgent is
+installed once, the loaded job is whatever was bootstrapped by hand:
 
 ```bash
 cp deploy/com.pati.genseo-daily.macbook.plist ~/Library/LaunchAgents/com.pati.genseo-daily.plist
@@ -58,7 +88,7 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.pati.genseo-daily.pl
 
 `bootout` fails if that label is not loaded; `bootstrap` loads the new environment. Do not start
 `grokbot-genseo-daily.sh` by hand. The repo plist is `primary` with `GENSEO_TICKET_PREFIX=MB`
-and `GENSEO_NO_FACE=1`. `GENSEO_STANDBY_DELAY_MIN=20` stays in the plist and applies only if
+and `GENSEO_NO_FACE=0`. `GENSEO_STANDBY_DELAY_MIN=20` stays in the plist and applies only if
 the role is later set back to `standby`.
 
 **Headless model lane (2026-10-10).** `run_ticket_headless.sh` and `run_landing_headless.sh` share `scripts/genseo_model_lane.sh`. A `PATI-*` writer or fallback (defaults `PATI-Alpha-Plan-Review` and `PATI-Fable-5`) never uses the native Claude login lane: Claude Code does not know those ids (`unrecognized_model`, landing 2026-10-10 09:30). Native login (`~/.claude-genseo`, `loggedIn: true`) is only for a writer and fallback that are not `PATI-*`. For a PATI writer, and whenever native does not apply, local 9router `:20128` is used only when `GET /v1/models` includes `GENSEO_WRITER_MODEL`. MacBook local 9router can be up and still list only `ag/gemini-*` ids. That is not a writer lane: headless falls through to hosted `GENSEO_ROUTER_BASE` (default `https://ai.patigroup.com`) with `NINE_ROUTER_KEY`. The run log records `native`, `local-9router`, or `hosted-9router` and does not print the key.
@@ -95,8 +125,8 @@ one-way; the Mini's repo commits are unpushed), so the PUBLIC SITE is the lock:
    healthy peer goes first. The MacBook article plist is `primary`, so the loaded MacBook
    does not wait. Standby remains in the wrapper for an explicit standby role. Do not load
    the MacBook and a Mini that is also `primary`.
-5. A local mkdir lock (`state/daily.lock`, wrapper PID in `daily.lock/pid`) stops the 14:47
-   catch-up overlapping a running batch. A live `grokbot-genseo-daily` is never evicted for
+5. A local mkdir lock (`state/daily.lock`, wrapper PID in `daily.lock/pid`) stops the 08:05
+   check and the 14:47 catch-up overlapping a running batch. A live `grokbot-genseo-daily` is never evicted for
    age, even with no PID file (a batch started before PID stamping). A dead PID is stale and
    may be taken immediately. A missing PID is stale only after 6 hours, so a lock that has not
    finished writing its PID is left alone. Each ticket runs in its own session for 90 minutes
@@ -110,9 +140,7 @@ one-way; the Mini's repo commits are unpushed), so the PUBLIC SITE is the lock:
    (`docs/TICKET_REFILL.md`) so the next slot picks this up. It does not start launchd.
    Helpers load from `~/genseo/scripts/`. Offline: `bash tests/test_daily_lock.sh`.
 
-**MacBook lane = all images NO-FACE** until `personas/index.json` is re-synced from the Mini
-(angles spent there since 2026-08-15 are unknown here — re-spending one breaks Kevin's
-one-angle-per-model rule). QC fails any image with a recognizable face on the no-face lane.
+**Article images include people.** The hero is the persona the picker prints, plus the real pack, unless that pick is the every-3rd no-face hero or the bank is empty. One inline image uses the same face. The other inline images have no recognizable face and still show a hand, a forearm, or a body cropped below the eyes. A no-face frame is the fallback for that one image after ima2 refuses the face or QC fails twice. It is not a batch-wide lane. `GENSEO_NO_FACE` on the article plist is `0`. A stale LaunchAgent that still exports `1` does not switch the article runner. Landing pages stay no-face. Angles the Mini spent after the last shared `personas/index.json` are still unknown here; the picker enforces one angle per model against the index it can read.
 
 **Fact-check log:** every run writes `logs/claims/<slug>.md` (claim | source | confirmed) and drops
 unconfirmed claims before publish (SEL 2026-10-06: Google calls manual fact-checking critical).
@@ -130,7 +158,7 @@ and they cannot appear in `/blogs/news.atom`, so they never count toward or bloc
 Run: `scripts/run_landing_headless.sh <listicle|advertorial> <store> "<brief>"` or `--next` (queue `landing-tickets.md`).
 Default output is a local preview; `GENSEO_LANDING_DRAFT=1` adds an UNPUBLISHED page; live needs Kevin's GO
 (`GENSEO_LANDING_LIVE_OK=1 … --live`, refused while placeholders remain). Details: `skills/genseo-landing-pages/SKILL.md`.
-Daily lane (`scripts/run_landing_daily.sh`, launchd 08:15 + 16:15, 1 UNPUBLISHED listicle draft/day): before the first
+Daily lane (`scripts/run_landing_daily.sh`, launchd 08:15 + 09:20 check + 16:15, 1 UNPUBLISHED listicle draft/day): before the first
 `landing_guard.py` read it waits for the same DNS names as the article wrapper (`GENSEO_NET_WAIT_MAX_SEC`, default 600).
 A DNS timeout logs `network not ready — timeout` and fail-closes without calling Shopify. It gives this
 Mac's article batch (`state/daily.lock`) at most a 30-min courtesy yield, then builds alongside it — it never waits out
@@ -138,7 +166,7 @@ the whole batch, and it never touches the article publisher.
 The listicle writer runs in its own session for 90 minutes (`scripts/genseo_group_timeout.sh`,
 `GENSEO_LANDING_TIMEOUT_SEC`, default 5400). On timeout the descendant tree is killed (landing bash,
 Claude, and workers that called `setsid`), then the process group. launchd runs `scripts/run_landing_daily.sh` from this checkout, so a pull is the update for the next
-08:15 / 16:15 slot. Offline: `bash tests/test_landing_daily_lock.sh`.
+08:15 / 09:20 / 16:15 slot. The 09:20 check needs the landing plist copied and bootstrapped (see Idle sleep and dark wake above). Offline: `bash tests/test_landing_daily_lock.sh`.
 Unpublished listicle prompts carry a standing `SCOPE_WAIVER` (`scripts/run_landing_headless.sh`, 2026-10-11). The writer must not ask a human to proceed. That day's `pure-shilajit-gold-resin` run followed the always-on file-count scope gate (more than 2 output files → show a menu and wait), asked "Proceed with the full unpublished draft package?", exited with an empty SPEC, and the wrapper logged FAILED (no spec). The product file was not missing. The waiver names that gate and forbids the menu and the wait. The DAILY LISTICLE LANE block says it overrides looser rules above; its first bullets keep the draft standing approval and the file-count prohibition in force. The headless runner also passes `--settings` `claudeMdExcludes` for unpublished runs so that session does not load `~/.claude/CLAUDE.md` (the file that injected the always-on gate on 2026-10-11; `CLAUDE_CONFIG_DIR` does not stop that load). A non-daily live attempt does not get the exclude.
 **Pack palette (Kevin 2026-10-09):** every landing page wears its hero product's packaging colors. The source of truth is
 `product_refs/<handle>.palette.json` (`scripts/packaging_palette.py`, `docs/PACKAGING_PALETTE_GUARD.md`); `scripts/landing_palette.py`
@@ -174,7 +202,11 @@ Follow the `genseo-auto-publish` skill end to end. The two steps that actually k
 
 ### 1.3 Gate, publish, record
 1. `python3 scripts/validate_article.py <draft>.md --draft` → must print `✓ PASS`.
-   Publishing without a PASS is hard rule 1.
+   Publishing without a PASS is hard rule 1. A measured QRG failure (overall below 80, filler
+   or AI-pattern at 25 or above) fails that gate. A missing claude-seo launcher does not: the
+   validator prints `QRG scoring unavailable: <reason>` and the draft still passes. The scorer
+   is `~/.claude/plugins/marketplaces/*claude-seo*/bin/claude-seo` on the Mac. It is not a paid
+   call, and this repo does not invent a score when the launcher is absent.
 2. `python3 scripts/shopify_publisher.py …` — the **only** publish path. Shopify MCP /
    GraphQL / REST drop the JSON-LD. Publish **live/visible**, never draft (Kevin, standing:
    *"just auto publish visible. I will do QA step even after you publish"*).
@@ -194,8 +226,16 @@ back to Kevin through Eugene.
 
 **First run the gated refill:** `python3 scripts/refill_tickets.py --count 8 --dry-run`, read it, then drop
 `--dry-run`. It appends product-mapped tickets from `templates/article-topic-bank.json` + `board/ideas.csv`
-after the same dedup and fitness gates as below; the daily wrapper can call it on its own
-(`GENSEO_AUTO_REFILL=1`). See `docs/TICKET_REFILL.md`. Mine by hand only when it exits 3 (sources ran dry).
+after the same dedup and fitness gates as below. See `docs/TICKET_REFILL.md`. Mine by hand only when it exits 3 (sources ran dry).
+
+**Low-water (on by default).** Before the empty-queue stop, and also on a day that already hit the target,
+the article wrapper refills when open tickets are under `GENSEO_QUEUE_LOW_WATER` (default `2 * GENSEO_DAILY_TARGET`,
+so 10). The call is `refill_tickets.py --if-below <threshold> --count <threshold − open> --prefix <MB|MM>`,
+ticket-only, under a 600s group timeout. Exit 3, a timeout, or a missing script writes `state/queue-low-water.marker`
+and the run continues. It does not call Ads or an LLM. `GENSEO_QUEUE_LOW_WATER=0` turns that guard off.
+`GENSEO_AUTO_REFILL` stays off; that older hook only fills what is still due today. The landing wrapper keeps
+`GENSEO_LANDING_LOW_WATER` open lines (default 2) with `build_landing_tickets.py --ensure`. A builder failure
+leaves `state/landing-queue-low-water.marker` and still builds when a line is already open.
 
 **GSC is unauthorised on this Mac and the google-ads MCP is not connected**, so the two
 normal demand sources are unavailable. Mine at $0 from what is on the machine:

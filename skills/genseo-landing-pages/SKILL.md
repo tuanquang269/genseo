@@ -127,7 +127,7 @@ Unpublished headless runs do not ask. A local preview, `GENSEO_LANDING_DRAFT=1`,
 10. Commit `landing_drafts/<slug>.json`, `.claims.md`, `<slug>/body.html`, screenshots. `tmp_images/` is not versioned.
 
 ## Daily listicle lane (Kevin 2026-10-08) — 1 UNPUBLISHED draft per day, Kevin approves
-- launchd `com.pati.genseo-landing` 08:15 + 16:15 catch-up → `scripts/run_landing_daily.sh` (MacBook = standby,
+- launchd `com.pati.genseo-landing` 08:15 + 09:20 check + 16:15 catch-up → `scripts/run_landing_daily.sh` (MacBook = standby,
   waits 75 min; Mini = primary; plists in `deploy/com.pati.genseo-landing.{macbook,mini}.plist`). Kill switch:
   `touch state/landing-daily.disabled`.
 - Article batch on the same Mac (`state/daily.lock`): the lane yields to it at most `GENSEO_LANDING_ARTICLE_YIELD_MIN`
@@ -144,9 +144,10 @@ Unpublished headless runs do not ask. A local preview, `GENSEO_LANDING_DRAFT=1`,
   counts Shopify pages with a `gsl-` handle CREATED today (ICT). ≥1 → stand down;
   Shopify unreadable → fail closed. `landing_publisher.py` (env `GENSEO_LANDING_DAILY=1`) re-checks it right before
   POSTing a new page, refuses `--live`, and requires a `gsl-preview-` handle.
-- Queue `daily-landing-tickets.md` ← `scripts/build_landing_tickets.py` (live products.json → real single SKUs that pass
-  `brand_rules` + have `product_refs/<handle>.png` + an entry in `templates/landing/listicle-angles.json`; LRU product
-  rotation, no repeat inside 6 days; least-used angle) → `lint_tickets.py`.
+- Queue `daily-landing-tickets.md` ← `scripts/build_landing_tickets.py` (the daily wrapper calls `--ensure` with `GENSEO_LANDING_LOW_WATER`, default 2, and does not repeat an angle already on an open line; live products.json → real single SKUs that pass
+  `brand_rules` + have `product_refs/<handle>.png` + an entry in `templates/landing/listicle-angles.json`; priority-weighted
+  rotation — ShilaSource resin and AgeAura NMN+TMG at least as often as any other product in any 7-day window, no
+  back-to-back day unless one product is eligible, undated specs are not a use; least-used angle) → `lint_tickets.py`.
 - Reviews: `scripts/trustpilot_reviews.mjs` → `state/trustpilot/wellnessnest.json` (4–5★ only, verbatim, TrustScore +
   count as displayed). The agent quotes only from that file; missing → placeholder, never invented.
 - Agent: `run_landing_headless.sh --queue daily-landing-tickets.md --next` with the DAILY rules (ref listicle,
