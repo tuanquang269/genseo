@@ -45,6 +45,7 @@ You are the Execution Layer for the GenSeo system. Your job is to take a "Strate
    - **Embed Internal Links:** Directly embed absolute URLs fetched from Step 1 and the Strategic Internal Links using Markdown links `[anchor text](exact_url)`.
    - **Embed Images:** Insert the generated images seamlessly throughout the article.
    - **CRITICAL FAQ Formatting:** To support downstream Schema injection, you MUST structure the bottom 20% of your article with an exact H2 heading: `## Frequently Asked Questions`. Each question underneath must be exactly an `###` heading, followed immediately by the paragraph answer.
+   - **What to ask next (optional, only when `state/cluster_map.json` exists):** run `python3 scripts/cluster_related_questions.py --query "<primary keyword>" --package` (or `--handle <slug>` when the slug is already in the map). Weave the printed sentences into the body. Place the "What to ask next" H2 before the FAQ heading. Do not turn those lines into `###` FAQ questions and do not add a second FAQPage block. If the map file is missing, skip it.
    - **E-E-A-T Author Bio (YMYL Compliance):** Generic "Staff" or "Team" bylines are penalized. You MUST conclude every article (below the FAQs) with an `### About the Author` section that specifically names a real person from your roster. You MUST select ONE of the
      authors below and alternate between them. Do not always pick the same one:
      1. **<name from roster.json>**, <role>.

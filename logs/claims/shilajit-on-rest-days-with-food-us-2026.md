@@ -1,0 +1,5 @@
+A human trial in men with oligospermia reported shilajit-associated outcomes after supplementation; source: https://pubmed.ncbi.nlm.nih.gov/23671727/ ; fetched+confirmed Y
+The ticket topic has no fetched human trial comparing gym days with rest days; source: https://pubmed.ncbi.nlm.nih.gov/?term=shilajit+human+trial ; fetched+confirmed Y
+ShilaSource pack identifies the product as ShilaSource Himalayan Shilajit Resin and shows the label lines 70% Fulvic Acid*, Lab-Tested for Purity*, 1.06oz (30g), and 75 SERVINGS; source: /Users/kevinkreative/genseo/product_refs/shilasource-himalayan-shilajit-resin.label.json ; fetched+confirmed Y
+The live ShilaSource PDP lists $59.99 one-time purchase and subscription options; source: https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin ; fetched+confirmed Y
+The live shipping policy lists US economy shipping at 3-7 business days and standard delivery at 2-5 business days; source: https://wellnessnest.co/policies/shipping-policy ; fetched+confirmed Y

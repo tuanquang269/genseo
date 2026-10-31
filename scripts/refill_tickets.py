@@ -14,7 +14,9 @@ Do not add a paid Ads or LLM miner behind those flags. A short bank is exit 3; t
 wrapper writes state/queue-low-water.marker and does not spend money.
 
 Candidates: board/ideas.csv rows with status=idea first, then templates/article-topic-bank.json topics
-(priority, then the family with the fewest live articles). Each must pass, in order, against the store
+(priority, then the family with the fewest live articles). GENSEO_CLUSTER_PICKER=1 (default unset)
+also prepends topics from state/cluster_map.json. The daily wrapper does not set that variable,
+so the 5 article job is unchanged. Each must pass, in order, against the store
 read live at run time:
   1 complete brief: product, primary, secondary, intent, angle, title <= 60 chars, known segment + template
   2 brand_rules / ageaura_rules (AgeAura handle = NMN + TMG Complex only; ageaura-pure-urolithin-a and any
@@ -506,6 +508,19 @@ def norm_cand(d, bank, source, priority, order):
     return c
 
 
+def cluster_picker_topics(bank):
+    """Optional GEO cluster topics. Off unless GENSEO_CLUSTER_PICKER is 1, true, yes, or on."""
+    flag = os.environ.get("GENSEO_CLUSTER_PICKER", "").strip().lower()
+    if flag not in ("1", "true", "yes", "on"):
+        return []
+    try:
+        import cluster_topic_picker
+        return cluster_topic_picker.candidates_for_refill(bank, root=ROOT)
+    except Exception as exc:
+        print("  ! GENSEO_CLUSTER_PICKER is set, picker skipped (%s: %s)" % (type(exc).__name__, exc))
+        return []
+
+
 def candidates(bank, rows, ctx):
     """Board ideas (status=idea; a matching bank topic fills their blanks) first, then bank topics that are
     not on the board yet — best first. Returns (candidates, bank ids the board holds as queued/done/skipped)."""
@@ -529,6 +544,8 @@ def candidates(bank, rows, ctx):
     for i, (tid, t) in enumerate(topics.items()):
         if tid not in on_board:
             out.append(norm_cand(t, bank, "topic-bank", t.get("priority", 9), 1000 + i))
+    for i, extra in enumerate(cluster_picker_topics(bank)):
+        out.append(norm_cand(extra, bank, "cluster-picker", -1, i))
     out.sort(key=lambda c: (c["priority"], ctx["fam_count"].get(c["family"], 0), c["order"]))
     return out, [tid for tid in topics if on_board.get(tid) not in (None, "idea")]
 
