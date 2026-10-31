@@ -1,0 +1,150 @@
+{
+ "page_id": 166415401275,
+ "checks": {
+  "template_in_main_theme": {
+   "ok": true,
+   "info": "templates/page.gsl-ref-listicle-v2.liquid in theme 188284731707 (WN v13.7 + 3 PDP + clones — LIVE 2026-10-23)"
+  },
+  "template_matches_local": {
+   "ok": true,
+   "info": "live eb61b67a3c31 vs local eb61b67a3c31 (a CSS change needs a NEW suffix; never overwrite)"
+  },
+  "template_suffix": {
+   "ok": true,
+   "info": "page 'gsl-ref-listicle-v2' vs spec 'gsl-ref-listicle-v2'"
+  },
+  "body_text_matches_local": {
+   "ok": true,
+   "info": "Shopify body_html visible text vs local body.html (old body pushed?)"
+  },
+  "images_on_cdn": {
+   "ok": true,
+   "info": "18 srcs"
+  },
+  "hidden_again": {
+   "ok": true,
+   "info": "published_at=None"
+  },
+  "desktop_http": {
+   "ok": true,
+   "info": "200"
+  },
+  "desktop_premium_css": {
+   "ok": true,
+   "info": "hero 24px kicker 999px"
+  },
+  "desktop_offer_is_current": {
+   "ok": true,
+   "info": "offer box shows: SHILASOURCE HIMALAYAN SHILAJIT Raw Resin A Routine You Can Read 4.2 TrustScore · 1,144 rev"
+  },
+  "desktop_no_overflow": {
+   "ok": true,
+   "info": ""
+  },
+  "desktop_images_ok": {
+   "ok": true,
+   "info": "[]"
+  },
+  "desktop_no_clipped_text": {
+   "ok": true,
+   "info": ""
+  },
+  "mobile_http": {
+   "ok": true,
+   "info": "200"
+  },
+  "mobile_premium_css": {
+   "ok": true,
+   "info": "hero 20px kicker 999px"
+  },
+  "mobile_offer_is_current": {
+   "ok": true,
+   "info": "offer box shows: SHILASOURCE HIMALAYAN SHILAJIT Raw Resin A Routine You Can Read 4.2 TrustScore · 1,144 rev"
+  },
+  "mobile_no_overflow": {
+   "ok": true,
+   "info": ""
+  },
+  "mobile_images_ok": {
+   "ok": false,
+   "info": "['https://bat.bing.com/action/0?ti=187088123&tm=gtm002&Ver=2&mid=405b90a0-0add-4ec0-af49-ebac85a2c81c&bo=2&sid=1cfbb0d0cf5811f18527dd05ef0d1e1f&vid=1cfbbe70cf5811f19d722935460a1265&vids=1&msclkid=N&gtm_tag_source=1&pi=0&lg=en-US&sw=375&sh=812&sc=24&nwd=1&tl=7%20Questions%20First-Time%20Buyers%20Ask%20About%20Shilajit%20%E2%80%93%20Wellness%20Nest&p=https%3A%2F%2Fwellnessnest.co%2Fpages%2Fgsl-preview-shilasource-himalayan-shilajit-resin-listicle-261024%3Fv%3D1792811235561&r=&lt=14003&mtp=1&evt=pageLoad&sv=2&asc=G&cdb=AQAS&rn=326945']"
+  },
+  "mobile_no_clipped_text": {
+   "ok": true,
+   "info": ""
+  },
+  "sticky_cta": {
+   "ok": true,
+   "info": "{\"top\": \"off(scrollY=0 vh=812 offerTop=9075 bridgeTop=7218 rows=8 cls=gslp-sticky)\", \"after_bridge\": true, \"on_offer\": \"off(scrollY=9225 vh=812 offerTop=-150 bridgeTop=-2007 rows=8 cls=gslp-sticky)\"}"
+  }
+ },
+ "fails": [
+  "mobile_images_ok: ['https://bat.bing.com/action/0?ti=187088123&tm=gtm002&Ver=2&mid=405b90a0-0add-4ec0-af49-ebac85a2c81c&bo=2&sid=1cfbb0d0cf5811f18527dd05ef0d1e1f&vid=1cfbbe70cf5811f19d722935460a1265&vids=1&msclkid=N&gtm_tag_source=1&pi=0&lg=en-US&sw=375&sh=812&sc=24&nwd=1&tl=7%20Questions%20First-Time%20Buyers%20Ask%20About%20Shilajit%20%E2%80%93%20Wellness%20Nest&p=https%3A%2F%2Fwellnessnest.co%2Fpages%2Fgsl-preview-shilasource-himalayan-shilajit-resin-listicle-261024%3Fv%3D1792811235561&r=&lt=14003&mtp=1&evt=pageLoad&sv=2&asc=G&cdb=AQAS&rn=326945']"
+ ],
+ "was_hidden": true,
+ "storefront": {
+  "url": "https://wellnessnest.co/pages/gsl-preview-shilasource-himalayan-shilajit-resin-listicle-261024?v=1792811235561",
+  "desktop": {
+   "http": 200,
+   "title": "7 Questions First-Time Buyers Ask About Shilajit – Wellness Nest",
+   "status_text": "Skip to content\n\n↩️ 90-Day Refund Policy — Eligibility Applies\n\n🚚 Free Shipping",
+   "body_class": "gradient link-btns--glow action-btns--glow",
+   "gsl_ref": true,
+   "premium_markup": true,
+   "premium_css_applied": "24px",
+   "premium_kicker_radius": "999px",
+   "premium_css_in_dom": true,
+   "offer_text": "SHILASOURCE HIMALAYAN SHILAJIT Raw Resin A Routine You Can Read 4.2 TrustScore · 1,144 reviews on Trustpilot $49.99 $69.99 AUTOMATIC REFILL with the every 30 days plan. Or $69.99 one-time. ShilaSource Himalayan Shilajit ",
+   "old_v2_offer_copy": false,
+   "sticky": true,
+   "imgs": 14,
+   "broken": [],
+   "overflow": false,
+   "height": 9079,
+   "clipped": [],
+   "palette": {
+    "cta_bg": "rgb(23, 53, 42)",
+    "accent": "rgb(47, 138, 59)",
+    "kicker": "rgb(47, 138, 59)",
+    "topbar_bg": "rgb(23, 53, 42)",
+    "pill_bg": "rgb(23, 53, 42)",
+    "offer_cta_bg": "rgb(23, 53, 42)"
+   }
+  },
+  "mobile": {
+   "http": 200,
+   "title": "7 Questions First-Time Buyers Ask About Shilajit – Wellness Nest",
+   "status_text": "Skip to content\n\n↩️ 90-Day Refund Policy — Eligibility Applies\n\n🚚 Free Shipping",
+   "body_class": "gradient link-btns--glow action-btns--glow",
+   "gsl_ref": true,
+   "premium_markup": true,
+   "premium_css_applied": "20px",
+   "premium_kicker_radius": "999px",
+   "premium_css_in_dom": true,
+   "offer_text": "SHILASOURCE HIMALAYAN SHILAJIT Raw Resin A Routine You Can Read 4.2 TrustScore · 1,144 reviews on Trustpilot $49.99 $69.99 AUTOMATIC REFILL with the every 30 days plan. Or $69.99 one-time. ShilaSource Himalayan Shilajit ",
+   "old_v2_offer_copy": false,
+   "sticky": true,
+   "imgs": 15,
+   "broken": [
+    "https://bat.bing.com/action/0?ti=187088123&tm=gtm002&Ver=2&mid=405b90a0-0add-4ec0-af49-ebac85a2c81c&bo=2&sid=1cfbb0d0cf5811f18527dd05ef0d1e1f&vid=1cfbbe70cf5811f19d722935460a1265&vids=1&msclkid=N&gtm_tag_source=1&pi=0&lg=en-US&sw=375&sh=812&sc=24&nwd=1&tl=7%20Questions%20First-Time%20Buyers%20Ask%20About%20Shilajit%20%E2%80%93%20Wellness%20Nest&p=https%3A%2F%2Fwellnessnest.co%2Fpages%2Fgsl-preview-shilasource-himalayan-shilajit-resin-listicle-261024%3Fv%3D1792811235561&r=&lt=14003&mtp=1&evt=pageLoad&sv=2&asc=G&cdb=AQAS&rn=326945"
+   ],
+   "overflow": false,
+   "height": 12475,
+   "clipped": [],
+   "palette": {
+    "cta_bg": "rgb(23, 53, 42)",
+    "accent": "rgb(47, 138, 59)",
+    "kicker": "rgb(47, 138, 59)",
+    "topbar_bg": "rgb(23, 53, 42)",
+    "pill_bg": "rgb(23, 53, 42)",
+    "offer_cta_bg": "rgb(23, 53, 42)"
+   },
+   "sticky_check": {
+    "top": "off(scrollY=0 vh=812 offerTop=9075 bridgeTop=7218 rows=8 cls=gslp-sticky)",
+    "after_bridge": true,
+    "on_offer": "off(scrollY=9225 vh=812 offerTop=-150 bridgeTop=-2007 rows=8 cls=gslp-sticky)"
+   }
+  }
+ },
+ "verdict": "FAIL"
+}
