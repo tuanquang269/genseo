@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Fail (exit 2) if any OPEN ticket names a banned AgeAura SKU or a bare AgeAura with no NMN + TMG product,
-makes a FloraFresh formula claim its Supplement Facts label does not support (15 billion CFU, Lactobacillus
-strains, XOS, D-mannose, sugar-free, or strains/CFU taken from the PDP description), states a Shilajit
+makes a FloraFresh formula claim its Supplement Facts label does not support (1 billion CFU, 1B CFU,
+Lactobacillus strains, XOS, D-mannose, sugar-free, or strains/CFU taken from the PDP description), states a Shilajit
 Shockwave milligram, serving count, or other dose its pack-label whitelist does not list, states a
 Pure Shilajit Gold Resin milligram, serving count, volume, weight, day-supply, or other dose its
 pack-label whitelist does not list, states a ShilaSource Himalayan Shilajit Resin milligram,

@@ -14,8 +14,8 @@ product is not a second SKU: callers either reject it or lock it to the
 allowed product via prepare_ticket / prepare_image_request.
 
 FloraFresh copy follows its Supplement Facts label (Bacillus coagulans SNZ-1969,
-1 billion CFU per 2 gummies), not the wrong PDP description. florafresh_rules.py
-holds those facts.
+15B CFU per 2 gummies; Kevin 2026-10-21). 1 billion CFU and 1B CFU are the retired
+count. florafresh_rules.py holds those facts.
 
 Shilajit Shockwave copy follows product_refs/shilajit-shockwave.label.json.
 shockwave_rules.py rejects a milligram amount, a serving count, or any other
