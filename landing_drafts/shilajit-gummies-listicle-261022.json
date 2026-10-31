@@ -1,0 +1,271 @@
+{
+  "engine": "ref",
+  "template": "listicle",
+  "posture": "hybrid",
+  "store": "wellnessnest",
+  "slug": "shilajit-gummies-listicle-261022",
+  "handle": "gsl-preview-shilajit-gummies-listicle-261022",
+  "template_suffix": "gsl-ref-listicle-v2",
+  "style": "premium",
+  "takeover": false,
+  "created": "2026-10-22",
+  "daily": true,
+  "reference": "http://localhost:8790/pages/10-reasons-why-creatine-is-for-skinny-people/",
+  "title": "7 Checks Before You Trust a Shilajit Gummy",
+  "meta_description": "Seven checks for a shilajit gummy habit: read the extract line, separate gummy convenience from resin research, and understand what a missed day means.",
+  "topbar": {
+    "labels": [
+      "Wellness Nest Guide 📖",
+      "90-Day Money-Back Guarantee on first orders"
+    ],
+    "deadline": null
+  },
+  "hero": {
+    "accent": "7 Checks",
+    "title": "That Keep a Gummy Habit Honest",
+    "summary_html": "<strong>7 checks:</strong> What the pouch label states, what the cited trials used, and where a gummy habit still leans on the extract line, not the format.",
+    "kicker": "Evidence review · 5 studies cited",
+    "image": "tmp_images/landing-shilajit-gummies-listicle-261022/cutout-pack.webp",
+    "alt": "Black and deep-green Wellness Nest shilajit gummies pouch on travertine beside natural linen",
+    "chip": "Chewable shilajit format",
+    "cta": {
+      "label": "SEE THE LABEL",
+      "href": "https://wellnessnest.co/products/premium-himalayan-shilajit-gummies"
+    },
+    "source": "Product identity and gummy format: live PDP and product JSON fetched 2026-10-22. Sensory preference is individual, not a clinical comparison.",
+    "focal_y": 0.5
+  },
+  "byline": {
+    "name": "Dr. Marcus Hale",
+    "role": "Wellness Nest editorial team",
+    "avatar": "tmp_images/landing-shilajit-gummies-listicle-261022/avatar.webp"
+  },
+  "updated": "Oct 22, 2026",
+  "trust": [
+    {
+      "icon": "stars",
+      "html": "<b>4.2 TrustScore</b> <small>1,144 Trustpilot reviews</small>"
+    },
+    {
+      "icon": "shield",
+      "html": "<b>90-day</b> <small>money-back guarantee</small>"
+    },
+    {
+      "icon": "truck",
+      "html": "<b>Free shipping</b> <small>on orders $70+</small>"
+    },
+    {
+      "icon": "leaf",
+      "html": "<b>60 gummies</b> <small>60-day supply, per pack</small>"
+    }
+  ],
+  "trust_source": "TrustScore/count: state/trustpilot/wellnessnest.json fetched 2026-10-22. Guarantee and shipping threshold: live PDP and site policy/ticker. Pack count and supply: product_refs/premium-himalayan-shilajit-gummies.label.json.",
+  "items": [
+    {
+      "title": "Check the pouch extract line",
+      "body": "<p>The pouch lists a 10:1 shilajit extract per 2-gummy serving, stated as an equivalent amount of raw material. That extract ratio is the number worth checking on any shilajit label.</p><p>A gummy, a capsule and a resin jar can carry the same ratio. Format changes taste and routine, not what the label owes you.</p>",
+      "evidence": "Product label and live PDP facts, fetched 2026-10-22",
+      "source": "Live PDP and pack facts fetched 2026-10-22; product URL appears in the offer only.",
+      "image": "tmp_images/landing-shilajit-gummies-listicle-261022/row1.webp",
+      "alt": "Magnifying glass and blank ingredient card beside dark amber gummies in a plain dish",
+      "evidence_label": "Label check · live PDP and pack image"
+    },
+    {
+      "title": "Trials used resin, not gummies",
+      "body": "<p>The human trials behind shilajit used a purified extract taken as a capsule, twice daily for weeks or months. None tested a chewable gummy.</p><p>So a gummy inherits the extract's evidence only if its own extract line matches what those trials actually dosed.</p>",
+      "evidence": "Study design across the cited human trials",
+      "source": "https://doi.org/10.1186/s12970-019-0270-2",
+      "image": "tmp_images/landing-shilajit-gummies-listicle-261022/row2.webp",
+      "alt": "Dark natural resin sample beside amber gummies in separate plain dishes",
+      "evidence_label": "Study-design check · Keller 2019"
+    },
+    {
+      "title": "Testosterone rose in 90 days",
+      "body": "<p>In a <a href=\"https://doi.org/10.1111/and.12482\" target=\"_blank\" rel=\"noopener\">90-day placebo-controlled trial</a>, men aged 45 to 55 took purified shilajit twice daily.</p><p>Total and free testosterone rose significantly versus placebo. LH and FSH, the signaling hormones upstream of it, stayed steady.</p>",
+      "evidence": "Human RCT, Andrologia 2016",
+      "source": "https://doi.org/10.1111/and.12482",
+      "chart": {
+        "kind": "stats",
+        "title": "Purified shilajit versus placebo",
+        "stats": [
+          {
+            "value": "90",
+            "label": "Days, twice daily",
+            "highlight": true
+          },
+          {
+            "value": "45 to 55",
+            "label": "Age of the men"
+          },
+          {
+            "value": "T ↑",
+            "label": "Testosterone rose"
+          }
+        ],
+        "source": "Pandit et al., Andrologia 2016. Randomized, double-blind, placebo-controlled; healthy men aged 45 to 55."
+      },
+      "image": "tmp_images/landing-shilajit-gummies-listicle-261022/row3.webp",
+      "alt": "A timed study scene with blurred research sheets, a glass vial and an hourglass on travertine",
+      "evidence_label": "Human RCT · Pandit et al., Andrologia 2016"
+    },
+    {
+      "title": "Strength held at the higher dose",
+      "body": "<p>In an <a href=\"https://doi.org/10.1186/s12970-019-0270-2\" target=\"_blank\" rel=\"noopener\">8-week trial</a> of 63 men, a higher daily dose held strength better after a fatigue test than a lower dose or placebo.</p><p>The lower dose did not beat placebo. The amount on the extract line, not the word shilajit alone, moved the result.</p>",
+      "evidence": "Human RCT, Journal of the International Society of Sports Nutrition 2019",
+      "source": "https://doi.org/10.1186/s12970-019-0270-2",
+      "chart": {
+        "kind": "bars",
+        "title": "Strength lost after fatigue",
+        "legend": [
+          {
+            "label": "Higher dose",
+            "highlight": true
+          },
+          {
+            "label": "Lower dose / placebo"
+          }
+        ],
+        "bars": [
+          {
+            "label": "Higher dose",
+            "value": 8.9,
+            "display": "8.9%",
+            "highlight": true,
+            "inbar": "Best"
+          },
+          {
+            "label": "Lower dose",
+            "value": 17,
+            "display": "17.0%"
+          },
+          {
+            "label": "Placebo",
+            "value": 16,
+            "display": "16.0%"
+          }
+        ],
+        "source": "Keller et al., JISSN 2019. 63 men, 8 weeks; adjusted mean decline in MVIC for the stronger half."
+      },
+      "image": "tmp_images/landing-shilajit-gummies-listicle-261022/row4.webp",
+      "alt": "A stopwatch, blank research notes and a plain water glass beside a travertine bench",
+      "evidence_label": "Human RCT · Keller et al., JISSN 2019"
+    },
+    {
+      "title": "Check each herb's own amount",
+      "body": "<p>This pack also lists ashwagandha, gokshura and black musli. Each herb needs its own trial, at its own dose, to count as evidence.</p><p>A <a href=\"https://doi.org/10.4103/0253-7176.106022\" target=\"_blank\" rel=\"noopener\">60-day RCT</a> of ashwagandha alone, taken twice daily, lowered stress scores. That trial says nothing about shilajit, or about this blend.</p>",
+      "evidence": "Human RCT, Indian Journal of Psychological Medicine 2012",
+      "source": "https://doi.org/10.4103/0253-7176.106022",
+      "image": "tmp_images/landing-shilajit-gummies-listicle-261022/row5.webp",
+      "alt": "Dried botanical roots and a blank ingredient card beside a pencil on linen",
+      "evidence_label": "Human RCT, ashwagandha only · Chandrasekhar et al., 2012"
+    },
+    {
+      "title": "No trial tested a shilajit gummy",
+      "body": "<p>We searched the literature for a published human trial of a shilajit gummy, or of this exact seven-ingredient blend. We found none.</p><p>That is a gap, not proof the format fails. It means the blend's case rests on each separate ingredient's own research.</p>",
+      "evidence": "Evidence gap, Europe PMC search fetched 2026-10-22",
+      "image": "tmp_images/landing-shilajit-gummies-listicle-261022/row6.webp",
+      "alt": "Separate stacks of blurred research papers divided by a closed notebook on linen",
+      "evidence_label": "Literature check · no gummy or exact-blend trial found",
+      "layout": "callout"
+    },
+    {
+      "title": "A missed day changes the evidence",
+      "body": "<p>Every trial above dosed people daily for 8 to 13 weeks. A missed day is not in that evidence; consistency is the variable the researchers controlled for.</p><p>A <a href=\"https://doi.org/10.1001/jama.300.8.915\" target=\"_blank\" rel=\"noopener\">2008 lab survey</a> of Ayurvedic products found metal contamination in 20.7 percent of samples bought online, a reminder to ask any seller for batch testing.</p>",
+      "evidence": "Study-design pattern plus product-testing study, JAMA 2008",
+      "source": "https://doi.org/10.1001/jama.300.8.915",
+      "image": "tmp_images/landing-shilajit-gummies-listicle-261022/row7.webp",
+      "alt": "A blank notebook, stopwatch and clear water glass on a calm morning counter",
+      "evidence_label": "Consistency and testing · Saper et al., JAMA 2008"
+    }
+  ],
+  "bridge": {
+    "title": "Convenience is part of consistency",
+    "body": "<p>Format decides whether the routine survives a busy week. A pouch of gummies travels and chews in seconds; a jar of resin needs a spoon, warm water and a few extra minutes.</p><p>Neither format has its own human trial. Choosing one is a convenience call, not an evidence call, so read the extract line before you decide.</p>",
+    "image": "tmp_images/landing-shilajit-gummies-listicle-261022/bridge.webp",
+    "alt": "Black and green shilajit gummies pouch beside a glass of water on a travertine shelf"
+  },
+  "expert": {
+    "title": "TrustScore 4.2 from 1,144 Trustpilot Reviews",
+    "stars": 5,
+    "quote": "I highly recommend Wellness Nest.  Its shilajit gummies are excellent sources of energy and stamina, and they taste great too!",
+    "author": "Stephen A McCloskey · Wellness Nest customer on Trustpilot",
+    "source": "https://www.trustpilot.com/reviews/6a0baa79fcc6ea99cdee38f4 (5-star verified review, published 2026-05-19, verbatim; TrustScore 4.2 and 1,144 reviews as displayed in state/trustpilot/wellnessnest.json fetched 2026-10-22). Store-level review with a product reference, not independent clinical evidence.",
+    "image": "tmp_images/landing-shilajit-gummies-listicle-261022/expert.webp",
+    "alt": "Black and green shilajit gummies pouch on a dark travertine podium against deep green"
+  },
+  "offer": {
+    "pill": "⚡️ HIMALAYAN SHILAJIT GUMMIES",
+    "accent": "Shilajit + 7 Botanicals",
+    "title": "in Two Gummies a Day",
+    "sub": "A chewable shilajit and botanical blend. $59.99 one-time on the product page.",
+    "cta": "SEE INGREDIENTS",
+    "href": "https://wellnessnest.co/products/premium-himalayan-shilajit-gummies",
+    "meta": [
+      "<b>90-Day</b> Guarantee",
+      "<b>FREE</b> shipping $70+"
+    ],
+    "guarantee": "Your first order is covered by our 90-Day Money-Back Guarantee.",
+    "image": "tmp_images/landing-shilajit-gummies-listicle-261022/offer.webp",
+    "alt": "Black and green shilajit gummies pouch on stacked travertine discs",
+    "source": "https://wellnessnest.co/products/premium-himalayan-shilajit-gummies (live PDP fetched 2026-10-22); refund and shipping terms from the live PDP and site policy/ticker.",
+    "rating_html": "<b>4.2</b> TrustScore · 1,144 reviews on Trustpilot",
+    "price": {
+      "now": "$44.99",
+      "was": "$59.99",
+      "tag": "SUBSCRIBE & SAVE",
+      "note": "with the Every 4 weeks plan. Or $59.99 one-time."
+    },
+    "bullets": [
+      "<b>150 mg shilajit extract (10:1)</b> per 2-gummy serving",
+      "75% Fulvic Acid · 85+ Trace Minerals, as printed on the pack",
+      "With ashwagandha, gokshura, black musli and other listed botanicals",
+      "60 gummies · 30 servings per pouch",
+      "90-day money-back guarantee on your first order"
+    ],
+    "price_source": "Live PDP /products/premium-himalayan-shilajit-gummies.js fetched 2026-10-22: one-time $59.99; Every 4 weeks selling plan 9807954235 at $44.99. Pack and formula lines from the live PDP and product_refs label file."
+  },
+  "product": {
+    "name": "Premium Himalayan Shilajit Gummies",
+    "image": "tmp_images/landing-shilajit-gummies-listicle-261022/offer.webp",
+    "bullets": [
+      "Shilajit resin from 150 mg of 10:1 extract per 2-gummy serving",
+      "Ashwagandha, gokshura, black musli and other listed botanicals on the label",
+      "60 gummies, 30 servings per pouch"
+    ],
+    "source": "https://wellnessnest.co/products/premium-himalayan-shilajit-gummies (PDP fetched 2026-10-22)"
+  },
+  "footer": {
+    "disclaimer": "These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease.",
+    "copyright": "© 2026 Wellness Nest. All rights reserved."
+  },
+  "sources": [
+    {
+      "label": "Pandit S et al. Clinical evaluation of purified Shilajit on testosterone levels in healthy volunteers. Andrologia 2016. doi:10.1111/and.12482",
+      "url": "https://doi.org/10.1111/and.12482"
+    },
+    {
+      "label": "Keller JL et al. The effects of Shilajit supplementation on fatigue-induced decreases in muscular strength and serum hydroxyproline levels. J Int Soc Sports Nutr 2019. doi:10.1186/s12970-019-0270-2",
+      "url": "https://doi.org/10.1186/s12970-019-0270-2"
+    },
+    {
+      "label": "Chandrasekhar K et al. Ashwagandha root extract trial. Indian J Psychol Med 2012. doi:10.4103/0253-7176.106022",
+      "url": "https://doi.org/10.4103/0253-7176.106022"
+    },
+    {
+      "label": "Saper RB et al. Lead, mercury, and arsenic in Ayurvedic medicines sold via the Internet. JAMA 2008. doi:10.1001/jama.300.8.915",
+      "url": "https://doi.org/10.1001/jama.300.8.915"
+    }
+  ],
+  "sticky_cta": {
+    "name": "Shilajit Gummies",
+    "note": "From $44.99",
+    "cta": "SEE INGREDIENTS",
+    "href": "https://wellnessnest.co/products/premium-himalayan-shilajit-gummies"
+  },
+  "pack_images": [
+    "tmp_images/landing-shilajit-gummies-listicle-261022/cutout-pack.webp",
+    "tmp_images/landing-shilajit-gummies-listicle-261022/offer.webp",
+    "tmp_images/landing-shilajit-gummies-listicle-261022/expert.webp",
+    "tmp_images/landing-shilajit-gummies-listicle-261022/bridge.webp"
+  ]
+}
