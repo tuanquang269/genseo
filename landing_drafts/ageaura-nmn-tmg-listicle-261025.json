@@ -1,0 +1,188 @@
+{
+  "engine": "ref",
+  "template": "listicle",
+  "posture": "hybrid",
+  "store": "ageaura",
+  "slug": "ageaura-nmn-tmg-listicle-261025",
+  "handle": "gsl-preview-ageaura-nmn-tmg-listicle-261025",
+  "template_suffix": "gsl-ref-listicle-v2",
+  "style": "premium",
+  "takeover": false,
+  "created": "2026-10-25",
+  "daily": true,
+  "reference": "http://localhost:8790/pages/10-reasons-why-creatine-is-for-skinny-people/",
+  "title": "7 Questions Before Buying NMN",
+  "meta_description": "A plain English guide to NMN supplement form, label details, human trials, TMG evidence, and the questions research still cannot answer.",
+  "topbar": {
+    "labels": ["Wellness Nest Guide", "Money-back guarantee on first orders"],
+    "deadline": null
+  },
+  "hero": {
+    "accent": "7 Questions",
+    "title": "to Ask Before Buying NMN",
+    "summary_html": "<strong>Summary:</strong> Use seven research-led questions to check an NMN supplement's form, label, human evidence, and limits before you buy.",
+    "kicker": "Evidence review · primary literature",
+    "image": "tmp_images/landing-ageaura-nmn-tmg-listicle-261025/hero.webp",
+    "alt": "AgeAura Pure NMN + TMG NAD+ Complex bottle on a travertine ledge in soft morning light",
+    "chip": "Vegan capsules · NMN + TMG",
+    "cta": {"label": "SEE INGREDIENTS", "href": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex"},
+    "source": "Bottle identity and vegan capsule wording from the live AgeAura PDP and product label, fetched 2026-10-25.",
+    "focal_y": 0.12
+  },
+  "byline": {
+    "name": "Dr. Marcus Hale",
+    "role": "Wellness Nest editorial team",
+    "avatar": "tmp_images/landing-ageaura-nmn-tmg-listicle-261025/avatar.webp"
+  },
+  "updated": "Oct 25, 2026",
+  "items": [
+    {
+      "title": "What form will you take?",
+      "body": "<p>Start with the practical form. Capsules, powders, and liquids create different routines, so the useful choice is the one you can follow.</p><p>A convenient format does not prove an effect. It only removes one reason a daily routine may be abandoned.</p>",
+      "evidence": "Practical checklist, no efficacy claim",
+      "image": "tmp_images/landing-ageaura-nmn-tmg-listicle-261025/row01-form-r2.webp",
+      "alt": "Water glass and folded linen on a travertine table, illustrating a simple supplement routine",
+      "evidence_label": "Buyer checklist · format and routine"
+    },
+    {
+      "title": "What is on the panel?",
+      "body": "<p>Read the Supplement Facts panel before trusting a front label. Check the named ingredients, serving information, and whether the formula is clearly identified.</p><p>Ingredient names do not tell you what a human trial tested. Match the study ingredient to the product claim.</p>",
+      "evidence": "Buyer checklist, product label and study records",
+      "source": "https://doi.org/10.3389/fragi.2022.851698",
+      "image": "tmp_images/landing-ageaura-nmn-tmg-listicle-261025/row02-panel-r2.webp",
+      "alt": "Magnifying glass and blank card on linen, illustrating careful label reading",
+      "chart": {
+        "kind": "bars",
+        "title": "Questions for the label",
+        "legend": [{"label": "Check first", "highlight": true}, {"label": "Do not assume"}],
+        "bars": [
+          {"label": "Named ingredients", "value": 3, "display": "YES", "highlight": true, "inbar": "Check first"},
+          {"label": "Human outcome", "value": 1, "display": "SEPARATE", "inbar": "Do not assume"}
+        ],
+        "source": "Huang et al., Front Aging 2022. Human trial outcome compared with product label review."
+      },
+      "evidence_label": "Label check · trial claims require separate verification"
+    },
+    {
+      "title": "What did humans receive?",
+      "body": "<p>Human evidence is more useful when the study population and protocol are visible. Ask who participated, what they took, and how long the intervention lasted.</p><p>Those details define the result. A study in one group does not automatically answer every buyer's question.</p>",
+      "evidence": "Human RCT, Frontiers in Aging 2022",
+      "source": "https://doi.org/10.3389/fragi.2022.851698",
+      "image": "tmp_images/landing-ageaura-nmn-tmg-listicle-261025/row03-human-r2.webp",
+      "alt": "Blank research papers, stopwatch, and reading glasses on linen, illustrating a human clinical trial",
+      "evidence_label": "Human RCT · Huang et al., Front Aging 2022"
+    },
+    {
+      "title": "Which outcome changed?",
+      "body": "<p>In a <a href=\"https://doi.org/10.3389/fragi.2022.851698\" target=\"_blank\" rel=\"noopener\">sixty-day trial</a> of adults aged forty to sixty-five, the NMN group had a larger blood NAD+/NADH increase than placebo.</p><p>The study measured blood markers and selected health measures. It did not establish a universal feeling of energy or longer life.</p>",
+      "evidence": "Human RCT, Frontiers in Aging 2022",
+      "source": "https://doi.org/10.3389/fragi.2022.851698",
+      "image": "tmp_images/landing-ageaura-nmn-tmg-listicle-261025/row04-outcomes.webp",
+      "alt": "Neutral walking path viewed at ankle level in morning light, illustrating a measured physical outcome",
+      "chart": {
+        "kind": "stats",
+        "title": "Blood marker result",
+        "stats": [
+          {"value": "+38%", "label": "NMN at day 60", "highlight": true},
+          {"value": "+14.3%", "label": "Placebo at day 60"},
+          {"value": "66", "label": "Adults enrolled"}
+        ],
+        "source": "Huang et al., Front Aging 2022. 66 adults aged 40 to 65, 60 days, NMN versus placebo."
+      },
+      "evidence_label": "Human RCT · Huang et al., Front Aging 2022"
+    },
+    {
+      "title": "What did TMG test?",
+      "body": "<p>TMG is another name for betaine. Its human evidence includes a trial measuring fasting homocysteine, a marker related to methylation.</p><p>That is a different question from whether TMG improves an NMN response. Separate ingredient evidence stays separate.</p>",
+      "evidence": "Human RCT, Journal of Nutrition 2003",
+      "source": "https://doi.org/10.1093/jn/133.12.4135",
+      "image": "tmp_images/landing-ageaura-nmn-tmg-listicle-261025/row05-combination-r3.webp",
+      "alt": "Separate blank study cards and smooth stones on linen, illustrating distinct ingredient evidence",
+      "evidence_label": "Human RCT, TMG only · Olthof et al., J Nutr 2003"
+    },
+    {
+      "title": "Was the combination tested?",
+      "body": "<p>The cited human studies tested NMN alone or betaine alone. A targeted <a href=\"https://europepmc.org/search?query=nicotinamide%20mononucleotide%20trimethylglycine\" target=\"_blank\" rel=\"noopener\">Europe PMC search</a> found no human trial testing both together.</p><p>That is an evidence gap. It does not prove the ingredients cannot be combined, or that a combination works.</p>",
+      "evidence": "Evidence gap, targeted Europe PMC search",
+      "source": "https://europepmc.org/search?query=nicotinamide%20mononucleotide%20trimethylglycine",
+      "image": "tmp_images/landing-ageaura-nmn-tmg-listicle-261025/row06-gap.webp",
+      "alt": "Two empty stone trays separated by a clear gap on linen, illustrating an untested combination",
+      "evidence_label": "Literature check · no combined human trial found",
+      "layout": "callout"
+    },
+    {
+      "title": "Can you repeat the routine?",
+      "body": "<p>The cited interventions used daily routines over weeks, rather than occasional use. That design tells us what researchers actually tested.</p><p>For a supplement routine, the practical format is the one you can follow consistently without adding unnecessary friction.</p>",
+      "evidence": "Study-design pattern across cited human trials",
+      "source": "https://doi.org/10.1007/s11357-024-01204-1",
+      "image": "tmp_images/landing-ageaura-nmn-tmg-listicle-261025/row07-routine.webp",
+      "alt": "Water glass beside an unmarked weekly organizer and clock on linen, illustrating a repeatable routine",
+      "evidence_label": "Study-design pattern · daily interventions"
+    }
+  ],
+  "bridge": {
+    "title": "Convenience is part of consistency",
+    "body": "<p>The studies tested repeatable routines, not occasional use. The useful question is which format you can follow without adding friction.</p><p>AgeAura Pure NMN + TMG NAD+ Complex is one option that puts both ingredients on one label, with product details available for inspection.</p><p>Taking medication or managing a health condition? Ask your doctor before starting a supplement.</p>",
+    "image": "tmp_images/landing-ageaura-nmn-tmg-listicle-261025/bridge.webp",
+    "alt": "AgeAura Pure NMN + TMG NAD+ Complex bottle beside a glass of water on travertine"
+  },
+  "expert": {
+    "title": "Real service feedback from Trustpilot",
+    "stars": 5,
+    "quote": "right on time with subscription  Don't have to worry about ordering it ",
+    "author": "Tonya, Trustpilot reviewer",
+    "source": "https://www.trustpilot.com/reviews/6abe1771497e18bd92cada2f (5-star review, published 2026-10-01, verbatim; service and subscription feedback, not a product-effect claim). TrustScore and review count from state/trustpilot/wellnessnest.json fetched 2026-10-25.",
+    "image": "tmp_images/landing-ageaura-nmn-tmg-listicle-261025/hero.webp",
+    "alt": "AgeAura NMN + TMG bottle on a travertine ledge in soft light",
+    "reviews": [
+      {"stars": 5, "quote": "right on time with subscription  Don't have to worry about ordering it ", "name": "Tonya", "meta": "US · Oct 2026", "verified": true, "url": "https://www.trustpilot.com/reviews/6abe1771497e18bd92cada2f"},
+      {"stars": 5, "quote": "Quality products and great support approach. Very fast response, qualified answers, advice and effort to help from Adela. Thank you, I appreciate it.", "name": "Jindřich Pavlíček", "meta": "DE · Mar 2026", "verified": false, "url": "https://www.trustpilot.com/reviews/69ba82ccef80c9656036da3d"},
+      {"stars": 5, "quote": "Very easy to deal with. Great range of products and staff (Adela) had my issue resolved in minutes.", "name": "Martin Mc Cartney JNR", "meta": "GB · Feb 2026", "verified": false, "url": "https://www.trustpilot.com/reviews/6998a7170947f820a15b0cb1"}
+    ],
+    "reviews_source": "Verbatim 4 to 5-star Trustpilot reviews from state/trustpilot/wellnessnest.json, fetched 2026-10-25. Service feedback only, no efficacy claims."
+  },
+  "offer": {
+    "pill": "AGEAURA NMN + TMG COMPLEX",
+    "accent": "NMN + TMG",
+    "title": "on One Label",
+    "sub": "A daily NMN + TMG formula. The product page lists $79.99 one-time or $59.99 with Automatic Refill every 30 days.",
+    "cta": "SEE INGREDIENTS",
+    "href": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex",
+    "meta": ["<b>90-Day</b> Guarantee", "<b>FREE</b> shipping over $69"],
+    "guarantee": "Your first order is covered by the store's 90-day money-back guarantee, subject to the published policy.",
+    "image": "tmp_images/landing-ageaura-nmn-tmg-listicle-261025/offer-r2.webp",
+    "alt": "AgeAura Pure NMN + TMG NAD+ Complex bottle on a neutral travertine plinth",
+    "source": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex (price, selling plans, guarantee and product details fetched 2026-10-25); https://wellnessnest.co/policies/refund-policy (published refund policy).",
+    "rating_html": "<b>4.2</b> TrustScore · 1,144 reviews on Trustpilot",
+    "price": {"now": "$59.99", "was": "$79.99", "tag": "Automatic Refill", "note": "ships every 30 days. Pause or cancel anytime. Or $79.99 one-time."},
+    "bullets": ["<b>500 mg NMN</b> per daily serving, as printed on the PDP", "<b>250 mg TMG</b> per daily serving, as printed on the PDP", "60 vegan capsules · 30 servings per bottle", "90-day money-back guarantee, subject to the published policy"],
+    "price_source": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex.js (PDP JSON, one-time price and 30-day selling plan fetched 2026-10-25); label and PDP product details fetched 2026-10-25. TrustScore/count from https://www.trustpilot.com/review/wellnessnest.co and state/trustpilot/wellnessnest.json."
+  },
+  "product": {
+    "name": "AgeAura Pure NMN + TMG NAD+ Complex",
+    "image": "tmp_images/landing-ageaura-nmn-tmg-listicle-261025/offer-r2.webp",
+    "bullets": ["500 mg NMN (β-Nicotinamide Mononucleotide) per daily serving of 2 capsules", "250 mg TMG (Betaine Anhydrous / Trimethylglycine) per daily serving", "Also lists Quercetin, Trans-Resveratrol, Apigenin, Folate, and Spermidine"],
+    "source": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex (live PDP and /products/ageaura-pure-nmn-tmg-nad-complex.js fetched 2026-10-25)"
+  },
+  "footer": {"disclaimer": "These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease.", "copyright": "© 2026 Wellness Nest. All rights reserved."},
+  "sources": [
+    {"label": "Huang H et al. Frontiers in Aging 2022. doi:10.3389/fragi.2022.851698", "url": "https://doi.org/10.3389/fragi.2022.851698"},
+    {"label": "Morifuji M et al. GeroScience 2024. doi:10.1007/s11357-024-01204-1", "url": "https://doi.org/10.1007/s11357-024-01204-1"},
+    {"label": "Olthof MR et al. Journal of Nutrition 2003. doi:10.1093/jn/133.12.4135", "url": "https://doi.org/10.1093/jn/133.12.4135"},
+    {"label": "Europe PMC targeted search for combined NMN and trimethylglycine evidence", "url": "https://europepmc.org/search?query=nicotinamide%20mononucleotide%20trimethylglycine"}
+  ],
+  "trust": [
+    {"icon": "stars", "html": "<b>4.2 TrustScore</b> <small>1,144 Trustpilot reviews</small>"},
+    {"icon": "shield", "html": "<b>90-day</b> <small>money-back guarantee</small>"},
+    {"icon": "truck", "html": "<b>Free shipping</b> <small>over $69</small>"},
+    {"icon": "leaf", "html": "<b>Vegan capsules</b> <small>NMN + TMG formula</small>"}
+  ],
+  "trust_source": "TrustScore/count and reviews: state/trustpilot/wellnessnest.json fetched 2026-10-25. Guarantee, shipping and vegan capsule wording: live PDP, label and refund policy fetched 2026-10-25.",
+  "sticky_cta": {"name": "AgeAura NMN + TMG", "note": "From $59.99", "cta": "SEE INGREDIENTS", "href": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex"},
+  "pack_images": [
+    "tmp_images/landing-ageaura-nmn-tmg-listicle-261025/hero.webp",
+    "tmp_images/landing-ageaura-nmn-tmg-listicle-261025/offer-r2.webp",
+    "tmp_images/landing-ageaura-nmn-tmg-listicle-261025/bridge.webp"
+  ],
+  "live": false
+}
