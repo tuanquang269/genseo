@@ -30,6 +30,9 @@ Cursor Cloud VM). Several scripts hard-code the Mac path (`genseo_roster.py`, `t
    script to make something pass.
 2. Publish/update only through `scripts/shopify_publisher.py` (it attaches the JSON-LD). Never hand-write JSON-LD.
 3. Bylines only from `roster.json`; never invent a person, reviewer or credential (Dr./MD/PhD/RD/CISSN).
+   The Wellness Nest blog byline is Mike Moretti, Co-founder, Wellness Nest (`/pages/mike-moretti`).
+   Copy that role verbatim. TODO: no approved headshot, and that author page is not confirmed live.
+   Do not invent either one. Dr. Marcus Hale stays on the roster for older landing specs; new blog drafts must not use him.
 4. Link only products/collections that are live (`https://wellnessnest.co/products/<handle>.js`).
 5. Refresh is append-only and never retitles a ranking page. Unattended runs never modify a live post.
 6. Bulk writes: `backup_before_changes.py` → `--dry-run` → read → `--apply`. Never 301 a URL that still returns 200.
@@ -40,10 +43,11 @@ Also: never `rm` repo files (move them to `_superseded/`); never put CDN URLs in
   Handle allow/deny: `scripts/ageaura_rules.py` (fail-closed in ticket builders and `validate_landing.py`).
   Never Urolithin A (not as AgeAura, not at all), never `ageaura-pure-nmn-tmg-p2`, the Essential Longevity Duo,
   "rejuvenation duo", peptides, or `/collections/ageaura` (use `/collections/best-seller` as a browse link).
-- **FloraFresh = its Supplement Facts label formula** (Kevin 2026-10-09; `scripts/florafresh_rules.py`, run by
-  `brand_rules.py`): Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, Vitamin C 30 mg, pineapple fruit
-  powder 100 mg (with bromelain), sweetened with maltitol + isomalt, so never "sugar-free". The live PDP description
-  (15 billion CFU, four Lactobacillus strains, XOS, D-mannose, sugar-free) is wrong until Kevin's GO rewrites it:
+- **FloraFresh = its Supplement Facts label formula** (Kevin 2026-10-09, count updated 2026-10-21; `scripts/florafresh_rules.py`, run by
+  `brand_rules.py`): Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies, Vitamin C 30 mg, pineapple fruit
+  powder 100 mg (with bromelain), sweetened with maltitol + isomalt, so never "sugar-free". 1 billion CFU and 1B CFU
+  are the retired count and the linter rejects them. The live PDP description still tells a wrong strain story
+  (four Lactobacillus strains, XOS, D-mannose, sugar-free) until Kevin's GO rewrites it:
   never take formula facts from it or from older FloraFresh articles. See `docs/FLORAFRESH_FORMULA_GUARD.md`.
 - **Shilajit Shockwave = its OCR-accepted pack label only** (`scripts/shockwave_rules.py`, run by
   `brand_rules.py`): wellness, nest, SHILAJIT, SHOCKWAVE, EXPERIENCE FOCUSED ENERGY, PEAK PERFORMANCE.
