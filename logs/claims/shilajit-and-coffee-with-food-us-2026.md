@@ -1,0 +1,10 @@
+# Claims log — shilajit-and-coffee-with-food-us-2026
+
+- Coffee and shilajit are separate choices in the same morning routine; no special combined benefit claimed | https://pubmed.ncbi.nlm.nih.gov/?term=shilajit%20caffeine | fetched+confirmed Y (search returned no direct pairing study; article states evidence gap)
+- FDA overview describes the agency's role with dietary supplements | https://www.fda.gov/food/dietary-supplements | fetched+confirmed Y
+- ShilaSource product is a resin-format dietary supplement; package directions control use | https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin.js | fetched+confirmed Y
+- Product page one-time price is $59.99 | https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin.js | fetched+confirmed Y
+- Product page says archived documentation for one older batch does not verify every current resin lot | https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin.js | fetched+confirmed Y
+- ShilaSource label identity and optional lines: ShilaSource, Himalayan, Shilajit, Resin, 75, Dietary Supplement, 70% Fulvic Acid*, Lab-Tested for Purity*, 1.06oz (30g), SERVINGS, Servings | https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin.js; product_refs/shilasource-himalayan-shilajit-resin.label.json | fetched+confirmed Y
+- No caffeine amount is listed in the cited ShilaSource pack-label record | product_refs/shilasource-himalayan-shilajit-resin.label.json | fetched+confirmed Y
+- Product page and referenced article URLs are live (HTTP 200) | https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin; https://wellnessnest.co/blogs/news/when-to-take-shilajit-morning-or-night-us-2026; https://wellnessnest.co/blogs/news/how-to-take-shilajit-resin-dissolve-it-right-us-2026; https://wellnessnest.co/blogs/news/shilajit-side-effects-7-signs-to-watch-for-us-2026; https://wellnessnest.co/collections/shilajit-wellness-stack; https://wellnessnest.co/collections/mens-essential-collection | fetched+confirmed Y

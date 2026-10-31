@@ -1,0 +1,245 @@
+{
+ "engine": "ref",
+ "template": "listicle",
+ "posture": "hybrid",
+ "store": "wellnessnest",
+ "slug": "turkesterone-listicle-261023",
+ "handle": "gsl-preview-turkesterone-listicle-261023",
+ "template_suffix": "gsl-ref-listicle-v2",
+ "takeover": false,
+ "created": "2026-10-23",
+ "daily": true,
+ "reference": "http://localhost:8790/pages/10-reasons-why-creatine-is-for-skinny-people/",
+ "title": "6 Things to Check Before You Buy Turkesterone",
+ "meta_description": "What the human turkesterone research actually tested, how to read the pack label, and realistic expectations before you order a bottle.",
+ "topbar": {
+  "labels": [
+   "Wellness Nest Guide",
+   "90-Day Money-Back Guarantee on first orders"
+  ],
+  "deadline": null
+ },
+ "hero": {
+  "accent": "6 Things to Check",
+  "title": "Before You Buy Turkesterone",
+  "summary_html": "<strong>Summary:</strong> What the extract on the label means, what human research did and did not measure, and what a realistic expectation looks like.",
+  "kicker": "Evidence review, 3 primary sources",
+  "image": "tmp_images/landing-turkesterone-listicle-261023/pdp-pack.webp",
+  "alt": "Wellness Nest Premium Turkesterone Advanced Formula jar, green with a black lid, on a travertine surface",
+  "chip": "60 Capsules, Dietary Supplement",
+  "cta": {
+   "label": "SEE INGREDIENTS",
+   "href": "https://wellnessnest.co/products/turkesterone-advanced-formula"
+  },
+  "image_note": "Real PDP CDN pack photo (no cutout file exists for this product, so no label-gate pack generation was attempted).",
+  "source": "Chip reads the two front-of-pack lines in product_refs/turkesterone-advanced-formula.label.json: 60, Capsules, Dietary Supplement.",
+  "focal_y": 0.12
+ },
+ "byline": {
+  "name": "Dr. Marcus Hale",
+  "role": "Wellness Nest editorial team",
+  "avatar": "tmp_images/landing-turkesterone-listicle-261023/avatar.webp"
+ },
+ "updated": "Oct 23, 2026",
+ "items": [
+  {
+   "title": "Know the extract",
+   "body": "<p>This is a plant compound from the ecdysteroid family, most often sourced from Ajuga turkestanica. It is marketed as a natural alternative to anabolic steroids for muscle support.</p><p>A 2024 review in <a href=\"https://doi.org/10.3390/nu16091382\" target=\"_blank\" rel=\"noopener\">Nutrients</a> covers this compound alongside the related compound ecdysterone, both from plant sources. The two are related but not identical, so check which one a label actually names.</p>",
+   "evidence": "Narrative review, Nutrients 2024",
+   "source": "https://doi.org/10.3390/nu16091382",
+   "image": "tmp_images/landing-turkesterone-listicle-261023/row1-extract.webp",
+   "alt": "Dried botanical root and leaf samples on a small ceramic dish, travertine surface",
+   "evidence_label": "Review, Todorova et al., Nutrients 2024"
+  },
+  {
+   "title": "Check the label, not the ad",
+   "body": "<p>Labels vary by brand. A pack can name an extract and a capsule count without printing a milligram amount or a Supplement Facts panel at all.</p><p>Read the front of the pack yourself before you buy. If a milligram number, a serving size, or a day-supply is not printed on it, that number does not exist for that product.</p>",
+   "evidence": "Pack-label reading practice",
+   "image": "tmp_images/landing-turkesterone-listicle-261023/row2-label.webp",
+   "alt": "A blank unmarked parchment label and a brass magnifying glass on natural linen",
+   "evidence_label": "How to read any supplement pack"
+  },
+  {
+   "title": "One small study found no effect",
+   "body": "<p>In a <a href=\"https://doi.org/10.3390/muscles3040031\" target=\"_blank\" rel=\"noopener\">preliminary study</a> of 11 healthy men, researchers measured IGF-1 and resting metabolic rate before, 3 hours after, and 24 hours after a single dose.</p><p>The result: no statistically significant change in IGF-1, metabolic rate, or lipid and carbohydrate metabolism compared with placebo. IGF-1 trended up but did not reach significance.</p>",
+   "evidence": "Human preliminary study, Muscles 2024",
+   "source": "https://doi.org/10.3390/muscles3040031",
+   "chart": {
+    "kind": "stats",
+    "title": "What the acute study measured",
+    "stats": [
+     {
+      "value": "11",
+      "label": "Healthy men",
+      "highlight": true
+     },
+     {
+      "value": "3h / 24h",
+      "label": "Follow-up points"
+     },
+     {
+      "value": "n.s.",
+      "label": "IGF-1 change vs placebo"
+     }
+    ],
+    "source": "Harris et al., Muscles 2024. 11 men, single acute dose, no significant effects."
+   },
+   "image": "tmp_images/landing-turkesterone-listicle-261023/row3-human.webp",
+   "alt": "An open lab notebook, pen, and reading glasses on a travertine bench",
+   "evidence_label": "Human study, Harris et al., Muscles 2024"
+  },
+  {
+   "title": "A single dose is not weeks of use",
+   "body": "<p>The Muscles 2024 study tested a single dose with a 24-hour follow-up. It did not test daily use over weeks, and it did not measure strength or muscle size.</p><p>So an acute hormone or metabolic marker result does not tell you what months of daily use would do. That question has not been answered in humans yet.</p>",
+   "evidence": "Study-design limitation, Muscles 2024",
+   "source": "https://doi.org/10.3390/muscles3040031",
+   "image": "tmp_images/landing-turkesterone-listicle-261023/row4-measured.webp",
+   "alt": "A stopwatch, a weight plate, and a plain research clipboard on natural linen",
+   "evidence_label": "Study limitation, no long-term training outcome",
+   "layout": "callout"
+  },
+  {
+   "title": "Two names are not one compound",
+   "body": "<p>The 2024 Nutrients review discusses both compounds together because they share a plant family, but they are chemically distinct molecules with separate evidence bases.</p><p>Most of the published animal and lab research on this compound class used ecdysterone, not this specific compound. Read which one a cited study actually used before assuming it applies to the extract on the shelf.</p>",
+   "evidence": "Review distinguishing ecdysteroid compounds, Nutrients 2024",
+   "source": "https://doi.org/10.3390/nu16091382",
+   "image": "tmp_images/landing-turkesterone-listicle-261023/row5-confusion.webp",
+   "alt": "Two similar dried botanical leaf sprigs placed side by side on stone for comparison",
+   "evidence_label": "Evidence distinction, Todorova et al., Nutrients 2024"
+  },
+  {
+   "title": "No combined-formula trial exists",
+   "body": "<p>A 2025 lab study in <a href=\"https://doi.org/10.3390/ijms26083739\" target=\"_blank\" rel=\"noopener\">IJMS</a> tested maral root extract, which contains this compound among other phytoecdysteroids, in the roundworm C. elegans, not in people.</p><p>We found no published human trial of a multi-ingredient capsule combining this extract with ashwagandha, tongkat ali, colostrum, and black pepper extract. A combined formula rests on each ingredient's own separate evidence, not a tested combination.</p>",
+   "evidence": "Evidence gap, literature search, no combined-formula trial found",
+   "source": "https://doi.org/10.3390/ijms26083739",
+   "image": "tmp_images/landing-turkesterone-listicle-261023/row6-gap.webp",
+   "alt": "Blank index cards and reading glasses arranged in an empty grid on natural linen",
+   "evidence_label": "Literature check, no combined-formula human trial found",
+   "layout": "callout"
+  }
+ ],
+ "bridge": {
+  "title": "Convenience is part of consistency",
+  "body": "<p>Whatever the research eventually shows about this ingredient class, a supplement only matters if you actually take it on the schedule a study would test.</p><p>One option: Turkesterone Advanced Formula ships as capsules, so the format itself does not add friction to a daily routine.</p><p>Taking medication or managing a health condition? Check with your doctor first.</p>",
+  "image": "tmp_images/landing-turkesterone-listicle-261023/bridge-shelf.webp",
+  "alt": "A plain stone shelf with a glass of water and a folded linen cloth"
+ },
+ "expert": {
+  "title": "TrustScore 4.2 from 1,144 Trustpilot Reviews",
+  "stars": 5,
+  "quote": "right on time with subscription  Don't have to worry about ordering it ",
+  "author": "Tonya · Wellness Nest customer on Trustpilot",
+  "source": "https://www.trustpilot.com/reviews/6abe1771497e18bd92cada2f (5-star review, published 2026-10-01, verbatim; TrustScore 4.2 and 1,144 reviews as displayed on trustpilot.com/review/wellnessnest.co, read 2026-10-23). A service/subscription review about Wellness Nest, not a product-effect claim.",
+  "image": "tmp_images/landing-turkesterone-listicle-261023/row7-daily.webp",
+  "alt": "A calm morning kitchen counter with a glass of water and a folded linen towel",
+  "reviews": [
+   {
+    "stars": 5,
+    "quote": "right on time with subscription  Don't have to worry about ordering it ",
+    "name": "Tonya",
+    "meta": "US · Oct 2026",
+    "verified": true,
+    "url": "https://www.trustpilot.com/reviews/6abe1771497e18bd92cada2f"
+   },
+   {
+    "stars": 5,
+    "quote": "Quality products and great support approach. Very fast response, qualified answers, advice and effort to help from Adela. Thank you, I appreciate it.",
+    "name": "Jindřich Pavlíček",
+    "meta": "DE · Mar 2026",
+    "url": "https://www.trustpilot.com/reviews/69ba82ccef80c9656036da3d"
+   },
+   {
+    "stars": 5,
+    "quote": "Very easy to deal with. Great range of products and staff (Adela) had my issue resolved in minutes.",
+    "name": "Martin Mc Cartney JNR",
+    "meta": "GB · Feb 2026",
+    "url": "https://www.trustpilot.com/reviews/6998a7170947f820a15b0cb1"
+   }
+  ],
+  "reviews_source": "Verbatim 5-star Trustpilot reviews from state/trustpilot/wellnessnest.json (fetched 2026-10-23T02:54:28.202Z), ids above with URLs per review. Service/delivery reviews, no product-effect claims."
+ },
+ "offer": {
+  "pill": "TURKESTERONE ADVANCED FORMULA",
+  "accent": "TURKESTERONE",
+  "title": "Advanced Formula, 60 Capsules",
+  "sub": "A Wellness Nest dietary supplement. $75.00 one-time on the product page.",
+  "cta": "SEE INGREDIENTS",
+  "href": "https://wellnessnest.co/products/turkesterone-advanced-formula",
+  "meta": [
+   "<b>90-Day</b> Guarantee",
+   "<b>FREE</b> shipping $69+"
+  ],
+  "guarantee": "Your first order is covered by the 90-Day Money-Back Guarantee, refund requests must be submitted within 90 days of delivery.",
+  "image": "tmp_images/landing-turkesterone-listicle-261023/pdp-pack.webp",
+  "alt": "Wellness Nest Premium Turkesterone Advanced Formula jar on stacked travertine discs",
+  "source": "https://wellnessnest.co/products/turkesterone-advanced-formula.js (price $75.00, compare_at $119.98, no selling plan, fetched 2026-10-23); guarantee and free-shipping threshold from https://wellnessnest.co/policies/refund-policy (90-Day Money-Back Guarantee, refund must be submitted within 90 days of delivery; free shipping on orders over $69), fetched 2026-10-23.",
+  "rating_html": "<b>4.2</b> TrustScore · 1,144 reviews on Trustpilot",
+  "price": {
+   "now": "$75.00",
+   "was": "$119.98",
+   "tag": "COMPARE AT PRICE",
+   "note": "one-time price shown on the product page; no Subscribe and Save selling plan was listed in the fetched product JSON."
+  },
+  "bullets": [
+   "<b>Premium Turkesterone Advanced Formula</b> on the pack front",
+   "Pack badge reads <b>60</b> and <b>Capsules</b> as separate lines",
+   "Pack identifies the item as a <b>Dietary Supplement</b>",
+   "90-day money-back guarantee stated on the store refund policy"
+  ],
+  "price_source": "Live PDP /products/turkesterone-advanced-formula.js fetched 2026-10-23: price 7500 cents, compare_at_price 11998 cents, selling_plan_groups empty. Pack facts from product_refs/turkesterone-advanced-formula.label.json."
+ },
+ "product": {
+  "name": "Turkesterone Advanced Formula",
+  "image": "tmp_images/landing-turkesterone-listicle-261023/pdp-pack.webp",
+  "bullets": [
+   "Premium Turkesterone Advanced Formula",
+   "60 Capsules",
+   "Dietary Supplement"
+  ],
+  "source": "https://wellnessnest.co/products/turkesterone-advanced-formula.js and product_refs/turkesterone-advanced-formula.label.json, fetched/read 2026-10-23."
+ },
+ "footer": {
+  "disclaimer": "These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease.",
+  "copyright": "© 2026 Wellness Nest. All rights reserved."
+ },
+ "sources": [
+  {
+   "label": "Todorova V, Ivanova S, Chakarov D, Kraev K, Ivanov K. Ecdysterone and Turkesterone, Compounds with Prominent Potential in Sport and Healthy Nutrition. Nutrients 2024. doi:10.3390/nu16091382",
+   "url": "https://doi.org/10.3390/nu16091382"
+  },
+  {
+   "label": "Harris DR, Chapman-Lopez T, Machek SB, Forsse JS, Sulak T, Funderburk LK. The Effects of Multiple Acute Turkesterone Doses on Indirect Measures of Hypertrophy and Metabolic Measures: A Preliminary Investigation. Muscles 2024. doi:10.3390/muscles3040031",
+   "url": "https://doi.org/10.3390/muscles3040031"
+  },
+  {
+   "label": "Todorova V, Todorova MN, Savova MS, Ivanov K, Georgiev MI, Ivanova S. Maral Root Extract and Its Main Constituent 20-Hydroxyecdysone Enhance Stress Resilience in Caenorhabditis elegans. IJMS 2025. doi:10.3390/ijms26083739",
+   "url": "https://doi.org/10.3390/ijms26083739"
+  }
+ ],
+ "style": "premium",
+ "trust": [
+  {
+   "icon": "stars",
+   "html": "<b>4.2 TrustScore</b> <small>1,144 Trustpilot reviews</small>"
+  },
+  {
+   "icon": "shield",
+   "html": "<b>90-day</b> <small>money-back guarantee</small>"
+  },
+  {
+   "icon": "truck",
+   "html": "<b>Free shipping</b> <small>on orders $69+</small>"
+  },
+  {
+   "icon": "leaf",
+   "html": "<b>60 capsules</b> <small>dietary supplement</small>"
+  }
+ ],
+ "trust_source": "TrustScore/count and reviews: state/trustpilot/wellnessnest.json fetched 2026-10-23T02:54:28.202Z. Guarantee and shipping threshold: https://wellnessnest.co/policies/refund-policy fetched 2026-10-23. Pack wording: product_refs/turkesterone-advanced-formula.label.json.",
+ "sticky_cta": {
+  "name": "Turkesterone Advanced Formula",
+  "note": "$75.00 one-time",
+  "cta": "SEE INGREDIENTS",
+  "href": "https://wellnessnest.co/products/turkesterone-advanced-formula"
+ }
+}
