@@ -105,6 +105,10 @@ verdict box tóm "which one for whom" → product card. Số item 5–8; item 1 
 contender → markdown comparison table (validator cần) → verdict box → CTA button. Đối thủ
 non-PATI: spec đọc từ PDP live của họ, không bịa ([[ads-article-mining]] rule).
 
+### 7. First-hand experience (optional, all four templates)
+
+Not a fifth template. One block, before `## Frequently Asked Questions`. Run `python3 scripts/first_hand_experience.py --product <handle>` and paste stdout only. Empty stdout means the registry lines for that product are still rights-gated: do not invent a quote and do not copy one from `templates/first-hand-quotes.json`. The helper prints a `<blockquote>` plus attribution, a paid-partnership disclosure, and `Results vary.` Shape and tokens: `templates/first-hand-experience-block.md`. Approval: `docs/FIRST_HAND_EXPERIENCE.md`.
+
 ## Guardrails
 
 - Validator gates không đổi: word count theo intent, H2 markdown, ≥1 markdown table (COMPARISON/
@@ -112,5 +116,6 @@ non-PATI: spec đọc từ PDP live của họ, không bịa ([[ads-article-mini
 - Images: hero rule + i5.2 inline UGC không đổi theo template.
 - Mọi block phải render đứng một mình — không lồng block trong block, không markdown trong block.
 - KHÔNG copy gp-* classes/GemPages markup — theme không có CSS cho chúng ngoài trang gốc.
+- First-hand creator or customer lines come only from `python3 scripts/first_hand_experience.py`. This block is not a landing-page review card.
 - Compliance/claims: organic educational lane — cơ chế thật, trích nguồn, no dosage-with-units
   trong body ([[ad-script-no-ingredient-dosage]] tinh thần áp cho blog claims về SP).
