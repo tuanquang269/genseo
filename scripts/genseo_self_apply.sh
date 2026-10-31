@@ -38,6 +38,9 @@
 #   GENSEO_LAUNCHCTL              executable used instead of launchctl
 #   GENSEO_SELF_APPLY_HOSTNAME    machine name, instead of hostname/scutil
 #   GENSEO_HOST_MODEL             hw.model, instead of sysctl
+#   GENSEO_SELF_APPLY_PS          process list, instead of ps. Unset: an empty
+#                                 list, so a live article or landing job on
+#                                 this machine is not treated as this run.
 #   GENSEO_SELF_APPLY_POLL_SEC    helper wait interval (default 2)
 #   GENSEO_SELF_APPLY_SETTLE_SEC  pause after the job exits (default 1)
 # GENSEO_SELF_APPLY_DISABLE=1 logs and returns without copying.
@@ -336,11 +339,19 @@ genseo_self_apply_cmd_is_lane() {
 }
 
 # 0 when a live process for this lane is visible. 2 when ps cannot be read.
+# Test mode does not read the machine process list. A live landing or article
+# job would otherwise look like this lane and skip the reload. Set
+# GENSEO_SELF_APPLY_PS to a fixture (or a failing command) to simulate one.
 genseo_self_apply_job_running() {
   local lane=$1 tmp="" pid="" cmd="" saw=1
   tmp=$(mktemp "${TMPDIR:-/tmp}/genseo-self-apply-ps.XXXXXX") || return 2
-  if [ "${GENSEO_SELF_APPLY_TEST:-0}" = 1 ] && [ -n "${GENSEO_SELF_APPLY_PS:-}" ]; then
-    if [ -x "$GENSEO_SELF_APPLY_PS" ] && "$GENSEO_SELF_APPLY_PS" >"$tmp" 2>/dev/null; then
+  if [ "${GENSEO_SELF_APPLY_TEST:-0}" = 1 ]; then
+    if [ -n "${GENSEO_SELF_APPLY_PS:-}" ]; then
+      if [ -x "$GENSEO_SELF_APPLY_PS" ] && "$GENSEO_SELF_APPLY_PS" >"$tmp" 2>/dev/null; then
+        saw=0
+      fi
+    else
+      : >"$tmp"
       saw=0
     fi
   elif ps -axww -o pid=,args= >"$tmp" 2>/dev/null; then
