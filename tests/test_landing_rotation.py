@@ -364,54 +364,24 @@ class EnsureOpenTests(unittest.TestCase):
         self.assertIn("--ensure", str(caught.exception))
 
 
-# The 2026-10-17 rebalance (4a3a189) replaced three open FusiForce tickets with
-# this order. 729ced5 last pinned the open head after the FloraFresh draft.
-# The landing job then closed from the front: 1d67c19 gold draft, shock and
-# flora failures, ce4216d gummies failure, 838521d turk draft, 366d6da shila
-# draft-qa-fail. Those lines stay in the file. The open head moves.
-REBALANCE = (
-    (GOLD, "N things to know about taking shilajit resin daily"),
-    (SHOCK, "Shilajit as drops: N reasons the format can make a daily routine easier"),
-    (FLORA, "N questions to ask before you rely on a vaginal probiotic gummy"),
-    (GUM, "N checks that keep a shilajit gummy habit honest"),
-    (TURK, "N things to check before you buy a turkesterone supplement"),
-    (SHILA, "Shilajit resin, honestly: N questions first-time buyers ask"),
-    (AGE, "N questions to ask before you buy an NMN supplement"),
-    (SHILA, "N checks before a shilajit resin habit sticks"),
-)
-DRAFT_PAGES = (
-    "166104760635",
-    "166106267963",
-    "166106399035",
-    "166106431803",
-    "166124093755",
-    "166173573435",
-    "166279512379",
-    "166299173179",
-    "166314115387",
-)
-FAILED_LOGS = (
-    "logs/landing-daily-20261014-1800.log",
-    "logs/landing-daily-20261015-1007.log",
-    "logs/landing-daily-20261015-1737.log",
-    "logs/landing-daily-20261016-1119.log",
-)
-
-
 class OpenQueueTests(unittest.TestCase):
     def test_rebalanced_open_tickets_include_both_priorities(self):
+        """The open line is the builder's next pick, and the 7-day window keeps both priorities.
+
+        The 2026-10-19 stock (gold resin, then Shockwave, FloraFresh, gummies,
+        Turkesterone, ShilaSource, AgeAura, ShilaSource) was closed by the daily
+        lane. Those two ShilaSource days and the AgeAura day are dated landings.
+        What remains open is the Shockwave line ensure_open appends for that history.
+        """
         path = os.path.join(ROOT, "daily-landing-tickets.md")
         with open(path, encoding="utf-8") as fh:
             text = fh.read()
         lines = text.splitlines()
-        self.assertIn("2026-10-17 rotation rebalance", text)
+        open_lines = [line for line in lines if line.startswith("- [ ] ")]
         draft_lines = [line for line in lines if line.startswith("- [DRAFT")]
         failed_lines = [line for line in lines if line.startswith("- [FAILED")]
-        open_lines = [line for line in lines if line.startswith("- [ ] ")]
-        for page in DRAFT_PAGES:
-            self.assertTrue(any(page in line for line in draft_lines), page)
-        for log_name in FAILED_LOGS:
-            self.assertTrue(any(log_name in line for line in failed_lines), log_name)
+        self.assertEqual(len(draft_lines), 14)
+        self.assertEqual(len(failed_lines), 7)
         self.assertTrue(any(
             "page 166314115387" in line and FLORA in line and "easier to stick with" in line
             for line in draft_lines
@@ -421,49 +391,71 @@ class OpenQueueTests(unittest.TestCase):
             "page 166299173179" in line and GUM in line and "choose shilajit gummies over resin" in line
             for line in draft_lines
         ))
+        self.assertTrue(any("page 166333972795" in line and GOLD in line for line in draft_lines))
+        self.assertTrue(any("page 166415401275" in line and SHILA in line for line in draft_lines))
+        self.assertTrue(any("page 166430736699" in line and AGE in line for line in draft_lines))
+        self.assertTrue(any("page 166447874363" in line and SHILA in line for line in draft_lines))
+        self.assertTrue(any(GUM in line and "missed day" in line for line in failed_lines))
         handles = []
-        positions = []
-        open_flags = []
-        for handle, angle in REBALANCE:
-            hits = [
-                (i, line) for i, line in enumerate(lines)
-                if angle in line
-            ]
-            self.assertEqual(len(hits), 1, angle)
-            index, line = hits[0]
-            found = landing._PRODUCT.search(line)
-            self.assertIsNotNone(found, line)
-            self.assertEqual(found.group(1), handle, angle)
-            positions.append(index)
-            is_open = line.startswith("- [ ] ")
-            open_flags.append(is_open)
-            handles.append(handle)
-            if is_open and handle in landing.PRIORITY_HANDLES:
-                self.assertIn(handle + ".palette.json", line)
-                self.assertEqual(br.violations(line), [])
-        self.assertEqual(positions, sorted(positions))
-        seen_open = False
-        for is_open, (_handle, angle) in zip(open_flags, REBALANCE):
-            if is_open:
-                seen_open = True
-            elif seen_open:
-                self.fail("closed after an earlier rebalance ticket was still open: " + angle)
-        self.assertEqual(handles, [
-            GOLD, SHOCK, FLORA, GUM, TURK, SHILA, AGE, SHILA,
-        ])
-        self.assertGreaterEqual(handles.count(SHILA), 2)
-        self.assertGreaterEqual(handles.count(AGE), 1)
-        self.assertEqual(handles.count(FUSI), 0)
-        self.assertTrue(all(a != b for a, b in zip(handles, handles[1:])))
-        open_handles = []
         for line in open_lines:
             found = landing._PRODUCT.search(line)
             self.assertIsNotNone(found, line)
-            open_handles.append(found.group(1))
-            if found.group(1) in landing.PRIORITY_HANDLES:
-                self.assertIn(found.group(1) + ".palette.json", line)
-                self.assertEqual(br.violations(line), [])
-        self.assertTrue(all(a != b for a, b in zip(open_handles, open_handles[1:])))
+            handle = found.group(1)
+            handles.append(handle)
+            palette = os.path.join(ROOT, "product_refs", handle + ".palette.json")
+            if os.path.exists(palette) or handle in landing.PRIORITY_HANDLES:
+                self.assertIn(handle + ".palette.json", line)
+            self.assertEqual(br.violations(line), [])
+        self.assertEqual(handles, [SHOCK])
+        self.assertEqual(handles.count(FUSI), 0)
+        self.assertTrue(all(a != b for a, b in zip(handles, handles[1:])))
+
+        specs = landing.load_specs()
+        closed = "\n".join(line for line in lines if not line.startswith("- [ ] "))
+        if text.endswith("\n"):
+            closed += "\n"
+        with open(landing.ANGLES, encoding="utf-8") as fh:
+            raw_angles = json.load(fh)
+        angles = {
+            key: meta for key, meta in raw_angles.items()
+            if str(key).startswith("_") or landing.ar.classify_handle(key) != "deny"
+        }
+        catalog = [key for key in angles if not str(key).startswith("_")]
+        products = {
+            handle: {"product_type": "Supplement", "variants": [{"available": True}]}
+            for handle in catalog
+        }
+        built = closed
+        for index, line in enumerate(open_lines, start=1):
+            stamp = line.rsplit("(added ", 1)[-1].rstrip(")").strip()
+            day = dt.date.fromisoformat(stamp)
+            built, added = landing.ensure_open(
+                built, products, angles, index, specs=specs, on=day)
+            self.assertEqual(added, [line])
+
+        added_on = dt.date.fromisoformat(
+            open_lines[0].rsplit("(added ", 1)[-1].rstrip(")").strip())
+        uses = landing.collect_uses(text, specs)
+        self.assertIn((dt.date(2026, 10, 24), SHILA), uses["real"])
+        self.assertIn((dt.date(2026, 10, 25), AGE), uses["real"])
+        self.assertIn((dt.date(2026, 10, 26), SHILA), uses["real"])
+        events, _next = landing.schedule(uses, added_on)
+        latest = uses["real"][-1][0]
+        cursor = added_on if latest < added_on else latest + dt.timedelta(days=1)
+        self.assertEqual(events[-1], (cursor, SHOCK))
+        window_start = cursor - dt.timedelta(days=landing.FAIRNESS_DAYS - 1)
+        counts = {}
+        for day, handle in events:
+            if window_start <= day <= cursor:
+                counts[handle] = counts.get(handle, 0) + 1
+        busiest = max(
+            (n for handle, n in counts.items() if handle not in landing.PRIORITY_HANDLES),
+            default=0)
+        self.assertGreaterEqual(busiest, 1)
+        for handle in landing.PRIORITY_HANDLES:
+            self.assertGreaterEqual(counts.get(handle, 0), busiest, handle)
+        self.assertGreaterEqual(counts.get(SHILA, 0), 2)
+        self.assertGreaterEqual(counts.get(AGE, 0), 1)
 
 
 if __name__ == "__main__":
