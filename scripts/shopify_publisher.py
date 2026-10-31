@@ -749,7 +749,8 @@ def do_publish(file_path, blog_id, live=False):
 
     html_content = markdown.markdown(md_text, extensions=['extra'])
     html_content += credits_html          # below the article, above the invisible ld+json
-    html_content += _ldjson_block(article_schema)
+    # The article theme template already renders an Article node; a body Article
+    # made two Article JSON-LD blocks (2026-10-20). Keep article_schema for reference only.
     if faq_schema:
         html_content += _ldjson_block(faq_schema)
 
@@ -985,7 +986,8 @@ def do_update(file_path, blog_id, article_id, replace_cover=False, no_carry_cred
 
     html_content = markdown.markdown(md_text, extensions=['extra'])
     html_content += credits_html          # below the article, above the invisible ld+json
-    html_content += _ldjson_block(article_schema)
+    # The article theme template already renders an Article node; a body Article
+    # made two Article JSON-LD blocks (2026-10-20). Keep article_schema for reference only.
     if faq_schema:
         html_content += _ldjson_block(faq_schema)
 
