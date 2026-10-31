@@ -13,6 +13,7 @@ import sys, os, re, glob, json, subprocess, tempfile, urllib.request, urllib.err
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import genseo_roster
 import brand_rules as _br
+import first_hand_experience as _fh
 import geo_citability
 
 # Single source of truth: roster.json (see scripts/genseo_roster.py). Empty roster
@@ -32,11 +33,38 @@ BIO_RE=re.compile(r'(?is)(?:#{2,3}\s*|<h[23][^>]*>\s*)About the Author\s*(?:</h[
 MIN_INLINE_IMAGES=3   # every review/product article must have >=3 in-body images (1 per product; hero excluded)
 
 
+_RETIRED_BYLINE = re.compile(r"(?i)\bdr\.?\s*marcus\s+hale\b|/pages/dr-marcus-hale\b")
+
+
+def blog_byline_fails(text):
+    """Wellness Nest blog drafts use Mike Moretti. Landing specs are not checked here.
+
+    The role is exactly genseo_roster.DEFAULT_BLOG_ROLE. A missing author page or
+    headshot is a TODO for Kevin; this check does not invent either one and does
+    not skip the live-URL check in main().
+    """
+    fails = []
+    text = text or ""
+    if _RETIRED_BYLINE.search(text):
+        fails.append(
+            "blog byline must be " + genseo_roster.DEFAULT_BLOG_NAME + ", "
+            + genseo_roster.DEFAULT_BLOG_ROLE + " (/pages/" + genseo_roster.DEFAULT_BLOG_HANDLE
+            + ") — Dr. Marcus Hale is not the blog byline"
+        )
+    if re.search(r"(?i)about the author", text) and "/pages/" + genseo_roster.DEFAULT_BLOG_HANDLE not in text:
+        fails.append(
+            "blog byline must link /pages/" + genseo_roster.DEFAULT_BLOG_HANDLE + " ("
+            + genseo_roster.DEFAULT_BLOG_NAME + ", " + genseo_roster.DEFAULT_BLOG_ROLE + ")"
+        )
+    return fails
+
+
 def _strip_approved(text):
     """Drop roster-approved bios and names before the invented-credential scan.
-    Kevin's call 2026-08-07: the approved byline itself may carry a title
-    ("Dr. Marcus Hale"), so the gate polices only what a model ADDS beyond the
-    vetted roster entry — strip bios first, then names (bios contain the name)."""
+
+    An approved roster bio may still contain a title. The blog-byline check runs
+    on the raw draft and rejects Dr. Marcus Hale. This strip only keeps that
+    stored bio from also tripping the invented-credential regex."""
     for b in APPROVED_BIOS: text = text.replace(b, "")
     for n in genseo_roster.NAMES.values(): text = text.replace(n, "")
     return text
@@ -237,7 +265,7 @@ def test_author_gate():
 
 def _author_fails(md):
     """The author-gate rules only, so the self-check does not need a whole valid article."""
-    fails=[]
+    fails=list(blog_byline_fails(md))
     for name in FAKE_AUTHORS:
         if re.search(rf"\b{re.escape(name)}\b", md): fails.append(f"fabricated byline: {name}")
     bio=BIO_RE.search(md)
@@ -366,6 +394,7 @@ def main():
         if cred: fails.append(f"invented credential in author bio: {cred.group(1)}")
         if not any(s[:60].lower() in bio.lower() for s in APPROVED_BIOS):
             fails.append("author bio is not the approved sentence for that staff member")
+    fails.extend(blog_byline_fails(html))
     # brand mentions
     if html.count('Wellness Nest')<2: warns.append("brand 'Wellness Nest' used <2 times")
     # inline image COUNT — HARD gate (added 2026-07-26). The cheap model silently stopped generating
@@ -426,6 +455,15 @@ def main():
     # scripts/turkesterone_rules.py).
     _v=_br.violations(html)
     if _v: fails.append("brand rule — banned link(s)/mentions/claims: "+"; ".join(_v[:6]))
+
+    # First-hand experience quotes (blog articles only). The helper omits any
+    # registry line that is not rights_confirmed with approved_by set. A draft
+    # that pastes one of those lines, or a block that fails the claim lint, fails
+    # here. No block and no registry sentence is silent, so live output is unchanged
+    # until Kevin clears a line.
+    fh_fails, fh_warns = _fh.article_findings(html)
+    fails.extend(fh_fails)
+    warns.extend(fh_warns)
 
     # Citability (answer shape, FAQ, question H2s, product + related article,
     # primary source, alt text, draft meta length, no hand-written Published date).

@@ -4,7 +4,7 @@
 A sentence is included only when it matches that product's label source of truth.
 Anything else is omitted. This module does not upload and does not call Shopify.
 
-  FloraFresh — scripts/florafresh_rules.py (Supplement Facts: SNZ-1969, 1 billion CFU).
+  FloraFresh — scripts/florafresh_rules.py (Supplement Facts: SNZ-1969, 15B CFU).
   FusiForce — product_refs/fusiforce-creatine-gummies.label.json ("90" + "Gummies").
     The front-of-pouch OCR does not state a serving count or a ginseng milligram,
     so the sentence does not state one.
