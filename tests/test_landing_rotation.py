@@ -8,6 +8,7 @@ every 7-day window the builder fills.
 import datetime as dt
 import json
 import os
+import shutil
 import sys
 import tempfile
 import unittest
@@ -29,6 +30,8 @@ TURK = "turkesterone-advanced-formula"
 SHOCK = "shilajit-shockwave"
 ORDER = [FUSI, AGE, FLORA, SHILA, GOLD, GUM, TURK, SHOCK]
 ON = dt.date(2026, 10, 17)
+# 2026-10-19 queues (729ced5). Later landing runs close lines in the live files.
+FIX_QUEUE = os.path.join(ROOT, "tests", "fixtures", "landing_queue")
 
 
 def url(handle):
@@ -366,9 +369,15 @@ class EnsureOpenTests(unittest.TestCase):
 
 class OpenQueueTests(unittest.TestCase):
     def test_rebalanced_open_tickets_include_both_priorities(self):
-        path = os.path.join(ROOT, "daily-landing-tickets.md")
-        with open(path, encoding="utf-8") as fh:
-            lines = fh.read().splitlines()
+        src = os.path.join(FIX_QUEUE, "daily-landing-tickets.md")
+        live = os.path.join(ROOT, "daily-landing-tickets.md")
+        self.assertNotEqual(os.path.realpath(src), os.path.realpath(live))
+        with tempfile.TemporaryDirectory() as tmp:
+            path = os.path.join(tmp, "daily-landing-tickets.md")
+            shutil.copy(src, path)
+            with open(path, encoding="utf-8") as fh:
+                lines = fh.read().splitlines()
+            self.assertNotEqual(os.path.realpath(path), os.path.realpath(live))
         open_lines = [line for line in lines if line.startswith("- [ ] ")]
         draft_lines = [line for line in lines if line.startswith("- [DRAFT")]
         failed_lines = [line for line in lines if line.startswith("- [FAILED")]
