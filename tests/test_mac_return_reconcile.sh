@@ -1,6 +1,8 @@
 #!/bin/bash
 # Offline checks for scripts/mac_return_reconcile.sh.
 # Temp git repos only. No Shopify, no network, no launchd, no push.
+# A run_landing_daily.sh outside every fixture stays open for the whole file.
+# The writer guard must ignore that process.
 #   bash tests/test_mac_return_reconcile.sh
 # Syntax target is bash 3.2 (macOS /bin/bash). This host parses with bash -n
 # and runs the fixture with whatever bash is installed.
@@ -10,6 +12,7 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SCRIPT="$ROOT/scripts/mac_return_reconcile.sh"
 WORK="$(mktemp -d "${TMPDIR:-/tmp}/mac-return-reconcile.XXXXXX")" || exit 1
 PIDS=""
+FOREIGN_PID=""
 PASS=0
 FAIL=0
 START_STATUS="$(git -C "$ROOT" status --porcelain)"
@@ -17,6 +20,10 @@ START_HEAD="$(git -C "$ROOT" rev-parse HEAD)"
 
 cleanup() {
   local p
+  if [ -n "${FOREIGN_PID:-}" ]; then
+    kill "$FOREIGN_PID" 2>/dev/null || true
+    wait "$FOREIGN_PID" 2>/dev/null || true
+  fi
   for p in $PIDS; do
     kill "$p" 2>/dev/null || true
     wait "$p" 2>/dev/null || true
@@ -104,6 +111,23 @@ head_of() { git -C "$1" rev-parse HEAD; }
 bare_main() { git -C "$BARE" rev-parse main; }
 
 mkdir -p "$WORK/no-hooks" "$WORK/home"
+
+# Live job in another directory. bash holds the script open on fd 3.
+FOREIGN="$WORK/foreign-landing"
+mkdir -p "$FOREIGN"
+cat >"$FOREIGN/run_landing_daily.sh" <<'EOF'
+#!/bin/bash
+exec 3<"$0"
+sleep 600
+EOF
+chmod 755 "$FOREIGN/run_landing_daily.sh"
+/bin/bash "$FOREIGN/run_landing_daily.sh" >/dev/null 2>&1 &
+FOREIGN_PID=$!
+sleep 0.2
+if ! ps -p "$FOREIGN_PID" -ww -o args= | grep -F -q "$FOREIGN/run_landing_daily.sh"; then
+  printf '  FAIL foreign run_landing_daily.sh did not stay open\n' >&2
+  exit 1
+fi
 
 echo "0. bash -n and the script does not execute push, reset, or launchctl"
 bash -n "$SCRIPT" && ok "bash -n" || bad "bash -n"
@@ -373,13 +397,13 @@ has "$WORK/out" "lock_apply daily.lock: kept symlink" "symlink kept"
 
 echo "9. a live daily writer blocks unlock; an unrelated live PID does not"
 init_repo live
-mkdir -p "$WORK/writers" "$REPO/state/daily.lock"
-cat >"$WORK/writers/grokbot-genseo-daily" <<'EOF'
+mkdir -p "$REPO/state/daily.lock"
+cat >"$REPO/grokbot-genseo-daily" <<'EOF'
 #!/bin/bash
 sleep 180
 EOF
-chmod +x "$WORK/writers/grokbot-genseo-daily"
-"$WORK/writers/grokbot-genseo-daily" &
+chmod +x "$REPO/grokbot-genseo-daily"
+"$REPO/grokbot-genseo-daily" &
 WRITER_PID=$!
 PIDS="$PIDS $WRITER_PID"
 sleep 1
@@ -419,13 +443,13 @@ PIDS=""
 
 echo "9b. a live landing writer blocks the landing lock"
 init_repo landlive
-mkdir -p "$WORK/writers" "$REPO/state/landing-daily.lock"
-cat >"$WORK/writers/run_landing_daily.sh" <<'EOF'
+mkdir -p "$REPO/state/landing-daily.lock"
+cat >"$REPO/run_landing_daily.sh" <<'EOF'
 #!/bin/bash
 sleep 180
 EOF
-chmod +x "$WORK/writers/run_landing_daily.sh"
-"$WORK/writers/run_landing_daily.sh" &
+chmod +x "$REPO/run_landing_daily.sh"
+"$REPO/run_landing_daily.sh" &
 LAND_PID=$!
 PIDS="$PIDS $LAND_PID"
 sleep 1
@@ -437,6 +461,137 @@ has "$WORK/out" "lock_apply landing-daily.lock: kept live-writer" "landing live-
 kill -0 "$LAND_PID" 2>/dev/null && ok "landing writer was not killed" || bad "landing writer was killed"
 kill "$LAND_PID" 2>/dev/null || true
 wait "$LAND_PID" 2>/dev/null || true
+PIDS=""
+
+echo "9c. another directory does not block; this checkout still does"
+init_repo foreignok
+advance_origin foreignok
+BEFORE="$(head_of "$REPO")"
+run_rec --apply
+assert_rc 0 "foreign landing job still fast-forwards"
+has "$WORK/out" "apply: fast-forward" "foreign run_landing_daily.sh does not block apply"
+lacks "$WORK/out" "apply_block: live-writer" "foreign run_landing_daily.sh is not a live writer"
+[ "$(head_of "$REPO")" != "$BEFORE" ] && ok "foreign job left HEAD moved" || bad "foreign job left HEAD in place"
+
+start_sleeper() {
+  cat >"$1" <<'EOF'
+#!/bin/bash
+exec 3<"$0"
+sleep 120
+EOF
+  chmod 700 "$1"
+  /bin/bash "$1" >/dev/null 2>&1 &
+  SCOPE_PID=$!
+  PIDS="$PIDS $SCOPE_PID"
+  sleep 0.2
+}
+
+init_repo stableme
+advance_origin stableme
+copy=$(mktemp "${TMPDIR:-/tmp}/run_landing_daily.XXXXXX")
+start_sleeper "$copy"
+repo_phys=$(cd "$REPO" && pwd -P)
+printf '%s\n' "$repo_phys" >"$copy.repo"
+BEFORE="$(head_of "$REPO")"
+run_rec --apply
+assert_rc 3 "same-checkout stable copy blocks apply"
+has "$WORK/out" "apply_block: live-writer" "same-checkout stable copy is a live writer"
+[ "$(head_of "$REPO")" = "$BEFORE" ] && ok "same-checkout stable copy left HEAD" || bad "same-checkout stable copy moved HEAD"
+kill "$SCOPE_PID" 2>/dev/null || true
+wait "$SCOPE_PID" 2>/dev/null || true
+PIDS=""
+rm -f "$copy" "$copy.repo"
+
+init_repo stablenone
+advance_origin stablenone
+copy=$(mktemp "${TMPDIR:-/tmp}/run_landing_daily.XXXXXX")
+start_sleeper "$copy"
+rm -f "$copy.repo"
+BEFORE="$(head_of "$REPO")"
+run_rec --apply
+assert_rc 0 "unscoped stable copy still fast-forwards"
+has "$WORK/out" "apply: fast-forward" "stable copy without a checkout marker does not block"
+lacks "$WORK/out" "apply_block: live-writer" "unscoped stable copy is not this checkout"
+[ "$(head_of "$REPO")" != "$BEFORE" ] && ok "unscoped stable copy left HEAD moved" || bad "unscoped stable copy left HEAD in place"
+kill "$SCOPE_PID" 2>/dev/null || true
+wait "$SCOPE_PID" 2>/dev/null || true
+PIDS=""
+rm -f "$copy" "$copy.repo"
+
+init_repo stableother
+advance_origin stableother
+copy=$(mktemp "${TMPDIR:-/tmp}/run_landing_daily.XXXXXX")
+start_sleeper "$copy"
+other_co=$(mktemp -d "$WORK/other-checkout.XXXXXX")
+printf '%s\n' "$(cd "$other_co" && pwd -P)" >"$copy.repo"
+BEFORE="$(head_of "$REPO")"
+run_rec --apply
+assert_rc 0 "other-checkout stable copy still fast-forwards"
+has "$WORK/out" "apply: fast-forward" "other-checkout stable copy does not block"
+lacks "$WORK/out" "apply_block: live-writer" "other-checkout stable copy is not this checkout"
+[ "$(head_of "$REPO")" != "$BEFORE" ] && ok "other-checkout stable copy left HEAD moved" || bad "other-checkout stable copy left HEAD in place"
+kill "$SCOPE_PID" 2>/dev/null || true
+wait "$SCOPE_PID" 2>/dev/null || true
+PIDS=""
+rm -f "$copy" "$copy.repo"
+
+init_repo binmine
+advance_origin binmine
+homebin="$WORK/home-binmine"
+rm -rf "$homebin"
+mkdir -p "$homebin/bin"
+ln -s "$REPO" "$homebin/genseo"
+start_sleeper "$homebin/bin/grokbot-genseo-daily.sh"
+BEFORE="$(head_of "$REPO")"
+run_rec --apply
+assert_rc 3 "this home's launcher blocks apply"
+has "$WORK/out" "apply_block: live-writer" "bin launcher for this checkout is a live writer"
+[ "$(head_of "$REPO")" = "$BEFORE" ] && ok "bin launcher left HEAD" || bad "bin launcher moved HEAD"
+kill "$SCOPE_PID" 2>/dev/null || true
+wait "$SCOPE_PID" 2>/dev/null || true
+PIDS=""
+
+init_repo binother
+advance_origin binother
+homeother="$WORK/home-binother"
+rm -rf "$homeother"
+mkdir -p "$homeother/bin" "$homeother/genseo"
+start_sleeper "$homeother/bin/grokbot-genseo-daily.sh"
+BEFORE="$(head_of "$REPO")"
+run_rec --apply
+assert_rc 0 "another home's launcher still fast-forwards"
+has "$WORK/out" "apply: fast-forward" "bin launcher for another home does not block"
+lacks "$WORK/out" "apply_block: live-writer" "another home's launcher is not this checkout"
+[ "$(head_of "$REPO")" != "$BEFORE" ] && ok "other launcher left HEAD moved" || bad "other launcher left HEAD in place"
+kill "$SCOPE_PID" 2>/dev/null || true
+wait "$SCOPE_PID" 2>/dev/null || true
+PIDS=""
+
+init_repo relname
+advance_origin relname
+sleep 120 &
+SCOPE_PID=$!
+PIDS="$PIDS $SCOPE_PID"
+sleep 0.2
+mkdir -p "$WORK/rel-bin"
+cat >"$WORK/rel-bin/ps" <<EOF
+#!/bin/bash
+printf '%s %s\n' "$SCOPE_PID" "bash run_landing_daily.sh"
+exit 0
+EOF
+chmod 755 "$WORK/rel-bin/ps"
+BEFORE="$(head_of "$REPO")"
+OLD_PATH=$PATH
+PATH="$WORK/rel-bin:$PATH"
+export PATH
+run_rec --apply
+PATH="$OLD_PATH"
+export PATH
+assert_rc 3 "relative job name blocks apply"
+has "$WORK/out" "apply_block: live-writer" "a job name with no absolute path fails closed"
+[ "$(head_of "$REPO")" = "$BEFORE" ] && ok "relative job name left HEAD" || bad "relative job name moved HEAD"
+kill "$SCOPE_PID" 2>/dev/null || true
+wait "$SCOPE_PID" 2>/dev/null || true
 PIDS=""
 
 echo "10. a failed fetch refuses --apply and still exits 0 on dry-run"

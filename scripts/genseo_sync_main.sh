@@ -371,6 +371,53 @@ genseo_sync_job_targets_repo() {
   return 1
 }
 
+# 0 when an absolute token is a writer path: a lane script, a publisher,
+# a stable copy, or the ~/bin article launcher. /bin/bash alone is not.
+genseo_sync_cmd_has_absolute_job_path() {
+  local cmd=$1 token="" base=""
+  [ -n "$cmd" ] || return 1
+  while IFS= read -r token; do
+    [ -n "$token" ] || continue
+    case "$token" in
+      /*) ;;
+      *) continue ;;
+    esac
+    base=$(basename "$token")
+    case "$base" in
+      grokbot-genseo-daily|grokbot-genseo-daily.sh|\
+      run_landing_daily|run_landing_daily.sh|\
+      run_ticket_headless.sh|run_landing_headless.sh|\
+      shopify_publisher.py|landing_publisher.py)
+        return 0
+        ;;
+    esac
+    if genseo_sync_is_stable_copy_name "$base"; then
+      return 0
+    fi
+  done < <(printf '%s\n' "$cmd" | tr ' ' '\n')
+  return 1
+}
+
+# 0 when cmd should block this checkout.
+# 1 when an absolute writer path belongs somewhere else (another directory,
+# a stable copy with no sidecar or another checkout's sidecar, or another
+# home's ~/bin launcher).
+# 2 when the command names a job but has no absolute writer path. Callers
+# fail closed: a relative name is not proof that the job is elsewhere.
+genseo_sync_cmd_repo_scope() {
+  local repo_phys=$1 cmd=$2
+  if [ -z "$repo_phys" ] || [ -z "$cmd" ]; then
+    return 2
+  fi
+  if genseo_sync_job_targets_repo "$repo_phys" "$cmd"; then
+    return 0
+  fi
+  if genseo_sync_cmd_has_absolute_job_path "$cmd"; then
+    return 1
+  fi
+  return 2
+}
+
 # Fill tmp with "pid args" lines. 0 on success. GENSEO_SYNC_PS is consulted
 # only when GENSEO_SYNC_TEST=1, so a stray variable cannot hide a live job.
 genseo_sync_read_ps() {
