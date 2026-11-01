@@ -10,8 +10,8 @@
 # checklist: 2. If local commits are not on origin, read them with git show and keep them. Do not run git push --force. Do not run git reset --hard. e1b8519 and 289803e were unpushed publish commits on this Mac. If either is still local, leave it.
 # checklist: 3. If personas/index.json is dirty, leave it. Do not hand-edit it. The article image lane uses persona_picker.py. A no-face frame is only the per-image fallback after a face refusal or a QC miss.
 # checklist: 4. A lock is cleared only when you pass --apply-stale-lock, the lock is older than its documented threshold, and no live writer PID is running. The report prints the rmdir command on a dry-run and does not run it. If that directory changes before removal, it is left in place.
-# checklist:    daily.lock threshold is 21600 seconds (6h), GENSEO_LOCK_STALE_SEC in scripts/genseo_daily_lock.sh. A live grokbot-genseo-daily or run_ticket_headless.sh blocks removal at any age.
-# checklist:    landing-daily.lock threshold is 14400 seconds (4h), hardcoded in scripts/run_landing_daily.sh. A live run_landing_daily.sh or run_landing_headless.sh blocks removal at any age.
+# checklist:    daily.lock threshold is 21600 seconds (6h), GENSEO_LOCK_STALE_SEC in scripts/genseo_daily_lock.sh. A live grokbot-genseo-daily or run_ticket_headless.sh for this checkout blocks removal at any age. A script in another directory does not. An unreadable process list blocks removal.
+# checklist:    landing-daily.lock threshold is 14400 seconds (4h), hardcoded in scripts/run_landing_daily.sh. A live run_landing_daily.sh, a run_landing_daily.XXXX stable copy, or run_landing_headless.sh for this checkout blocks removal at any age. A script in another directory does not. An unreadable process list blocks removal.
 # checklist: 5. --apply on article/* or publish/* records queue closures (state/queue-closures.json) and switches HEAD to main, keeping that branch ref and its unpushed commits. It does not delete the ref. Untracked files stay. Tracked local edits block the switch. Then it fast-forwards main: git merge --ff-only origin/main, only when HEAD is main, there is no tracked local edit, fetch succeeded, and every commit on HEAD is already on origin. Other branches are not switched. Local commits that are not on origin stay on their branch. This script does not rebase them and does not push. Do not run git push --force.
 # checklist: 6. When that fast-forward is allowed, or main is already up to date, --apply reinstalls the daily wrapper: bash scripts/install_mac_daily_wrapper.sh. Dry-run prints the plan and does not copy. The installer does not start launchd.
 # checklist:    Docs: DAILY-RUN.md and docs/TICKET_REFILL.md. launchd label com.pati.genseo-daily runs ~/bin/grokbot-genseo-daily.sh. Pulling alone does not update ~/bin.
@@ -219,7 +219,9 @@ reconcile_cmd_is_daily_writer() {
 
 reconcile_cmd_is_landing_writer() {
   local cmd=$1
-  reconcile_cmd_has_token "$cmd" "run_landing_daily.sh" && return 0
+  # The short needle also matches a stable copy (run_landing_daily.XXXX).
+  # Checkout scoping decides whether that copy belongs here.
+  reconcile_cmd_has_token "$cmd" "run_landing_daily" && return 0
   reconcile_cmd_has_token "$cmd" "run_landing_headless.sh" && return 0
   return 1
 }
@@ -251,12 +253,56 @@ reconcile_cmd_matches_lane() {
   return 1
 }
 
+# The checkout filter lives in scripts/genseo_sync_main.sh. A stable copy
+# counts only when its "<copy>.repo" sidecar names this checkout. That file
+# is written by genseo_exec_stable_copy. ps failure, a missing helper, or an
+# unresolvable checkout leaves RECONCILE_PS_OK=0 (do not clear, do not apply).
+reconcile_load_sync() {
+  local sync=""
+  if declare -F genseo_sync_cmd_repo_scope >/dev/null 2>&1 \
+    && declare -F genseo_sync_physical_path >/dev/null 2>&1; then
+    return 0
+  fi
+  sync="$SCRIPT_DIR/genseo_sync_main.sh"
+  [ -f "$sync" ] || return 1
+  # shellcheck source=genseo_sync_main.sh
+  . "$sync"
+}
+
+# 0 when cmd should block this checkout. 1 when it is absolutely somewhere
+# else. Empty cmd is the caller's fail-closed case and is not passed here.
+reconcile_cmd_blocks_checkout() {
+  local cmd=$1 repo_phys="" rc=0
+  if ! reconcile_load_sync; then
+    return 0
+  fi
+  repo_phys=$(genseo_sync_physical_path "${REPO:-}" || true)
+  if [ -z "$repo_phys" ]; then
+    return 0
+  fi
+  genseo_sync_cmd_repo_scope "$repo_phys" "$cmd"
+  rc=$?
+  case "$rc" in
+    1) return 1 ;;
+  esac
+  return 0
+}
+
 # Space-separated PIDs in RECONCILE_LIVE_WRITERS. Does not print the process list.
-# RECONCILE_PS_OK=0 when the listing has no numeric pid: absence of a writer is then unknown.
+# RECONCILE_PS_OK=0 when the listing has no numeric pid, the helper cannot be
+# loaded, or this checkout cannot be resolved: absence of a writer is then unknown.
+# A writer whose script is in another directory is not listed.
 reconcile_collect_writers() {
-  local lane=$1 psout="" pid="" cmd="" seen=0
+  local lane=$1 psout="" pid="" cmd="" seen=0 repo_phys="" scope_rc=1
   RECONCILE_LIVE_WRITERS=""
   RECONCILE_PS_OK=0
+  if ! reconcile_load_sync; then
+    return 1
+  fi
+  repo_phys=$(genseo_sync_physical_path "${REPO:-}" || true)
+  if [ -z "$repo_phys" ]; then
+    return 1
+  fi
   psout=$(ps -axww -o pid=,args= 2>/dev/null || ps -eo pid=,args= 2>/dev/null || true)
   while read -r pid cmd; do
     case "$pid" in
@@ -265,6 +311,11 @@ reconcile_collect_writers() {
     seen=1
     reconcile_pid_alive "$pid" || continue
     reconcile_cmd_matches_lane "$lane" "$cmd" || continue
+    genseo_sync_cmd_repo_scope "$repo_phys" "$cmd"
+    scope_rc=$?
+    case "$scope_rc" in
+      1) continue ;;
+    esac
     case " $RECONCILE_LIVE_WRITERS " in
       *" $pid "*) ;;
       *) RECONCILE_LIVE_WRITERS="${RECONCILE_LIVE_WRITERS}${pid} " ;;
@@ -307,7 +358,7 @@ reconcile_recorded_writer() {
     reconcile_note_writer "$pid"
     return 0
   fi
-  if reconcile_cmd_matches_lane "$lane" "$cmd"; then
+  if reconcile_cmd_matches_lane "$lane" "$cmd" && reconcile_cmd_blocks_checkout "$cmd"; then
     reconcile_note_writer "$pid"
     return 0
   fi
@@ -355,7 +406,7 @@ reconcile_inspect_lock() {
     LOCK_RECORDED=$pid
     if reconcile_pid_alive "$pid"; then
       cmd=$(reconcile_pid_command "$pid")
-      if [ -z "$cmd" ] || reconcile_cmd_matches_lane "$lane" "$cmd"; then
+      if [ -z "$cmd" ] || { reconcile_cmd_matches_lane "$lane" "$cmd" && reconcile_cmd_blocks_checkout "$cmd"; }; then
         LOCK_RECORDED_STATE=alive-writer
       else
         LOCK_RECORDED_STATE=alive-other

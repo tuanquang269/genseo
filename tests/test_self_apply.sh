@@ -1,6 +1,8 @@
 #!/bin/bash
 # Offline drift check for ~/bin and the installed LaunchAgents.
 # No real launchd, no network, no Shopify, no publish.
+# A run_landing_daily.sh outside every fixture stays open for the whole file.
+# The lane scan must ignore that process.
 #   bash tests/test_self_apply.sh
 # Syntax target is bash 3.2 (macOS /bin/bash).
 set -uo pipefail
@@ -14,6 +16,7 @@ PASS=0
 FAIL=0
 RC=0
 HOLD_PIDS=""
+FOREIGN_PID=""
 LOGF="$WORK/none.log"
 LAUNCH_LOG="$WORK/none-launch.log"
 FIX=""
@@ -25,6 +28,10 @@ START_STATUS="$(git -C "$ROOT" status --porcelain)"
 
 cleanup() {
   local p
+  if [ -n "${FOREIGN_PID:-}" ]; then
+    kill "$FOREIGN_PID" 2>/dev/null || true
+    wait "$FOREIGN_PID" 2>/dev/null || true
+  fi
   for p in $HOLD_PIDS; do
     kill "$p" 2>/dev/null || true
     wait "$p" 2>/dev/null || true
@@ -227,6 +234,23 @@ assert_continued() {
 
 daily_plist() { printf '%s\n' "$HOME_DIR/Library/LaunchAgents/com.pati.genseo-daily.plist"; }
 landing_plist() { printf '%s\n' "$HOME_DIR/Library/LaunchAgents/com.pati.genseo-landing.plist"; }
+
+# Live job in another directory. bash holds the script open on fd 3.
+FOREIGN="$WORK/foreign-landing"
+mkdir -p "$FOREIGN"
+cat >"$FOREIGN/run_landing_daily.sh" <<'EOF'
+#!/bin/bash
+exec 3<"$0"
+sleep 600
+EOF
+chmod 755 "$FOREIGN/run_landing_daily.sh"
+/bin/bash "$FOREIGN/run_landing_daily.sh" >/dev/null 2>&1 &
+FOREIGN_PID=$!
+sleep 0.2
+if ! ps -p "$FOREIGN_PID" -ww -o args= | grep -F -q "$FOREIGN/run_landing_daily.sh"; then
+  printf '  FAIL foreign run_landing_daily.sh did not stay open\n' >&2
+  exit 1
+fi
 
 echo "1. syntax, direct exec, call order, and no forbidden commands"
 bash -n "$SELF" && ok "bash -n self-apply" || bad "bash -n self-apply"
@@ -700,9 +724,10 @@ seed_plist "com.pati.genseo-landing.plist" "OLD-LANDING"
 sleep 60 &
 SLEEPER=$!
 HOLD_PIDS="$HOLD_PIDS $SLEEPER"
+repo_phys=$(cd "$FIX" && pwd -P)
 cat >"$WORK/ps-landing" <<EOF
 #!/bin/bash
-printf '%s %s\n' "$SLEEPER" "bash /tmp/run_landing_daily.sh"
+printf '%s %s\n' "$SLEEPER" "bash $repo_phys/scripts/run_landing_daily.sh"
 exit 0
 EOF
 chmod 755 "$WORK/ps-landing"
@@ -712,6 +737,159 @@ run_apply
 assert_continued "landing job visible"
 has "$LOGF" "self-apply: com.pati.genseo-landing left in place — a job is running" "visible landing job is left in place"
 [ "$(cat "$(landing_plist)")" = "OLD-LANDING" ] && ok "visible job does not copy" || bad "visible job copied"
+kill "$SLEEPER" 2>/dev/null || true
+wait "$SLEEPER" 2>/dev/null || true
+HOLD_PIDS=""
+
+# A command in the fake process list. The sleeper only has to stay alive.
+scope_ps() {
+  local line=$1
+  sleep 60 &
+  SLEEPER=$!
+  HOLD_PIDS="$HOLD_PIDS $SLEEPER"
+  cat >"$WORK/ps-scope" <<EOF
+#!/bin/bash
+printf '%s %s\n' "$SLEEPER" "$line"
+exit 0
+EOF
+  chmod 755 "$WORK/ps-scope"
+}
+
+new_fix scope-other
+seed_wrapper_match
+mkdir -p "$HOME_DIR/Library/LaunchAgents"
+cp "$FIX/deploy/com.pati.genseo-daily.macbook.plist" "$(daily_plist)"
+stamp_loaded "com.pati.genseo-daily.plist"
+seed_plist "com.pati.genseo-landing.plist" "OLD-LANDING"
+scope_ps "bash /tmp/run_landing_daily.sh"
+write_launchctl ok "$WORK/lc-scope-other"
+APPLY_ENV="GENSEO_SELF_APPLY_TEST=1 GENSEO_INSTALL_WRAPPER_TEST=1 GENSEO_HOST_KIND=macbook GENSEO_LAUNCHCTL=$WORK/lc-scope-other GENSEO_SELF_APPLY_PS=$WORK/ps-scope"
+run_apply
+assert_continued "other-directory landing job"
+has "$LOGF" "self-apply: com.pati.genseo-landing reloaded" "a landing script in another directory does not block"
+cmp -s "$FIX/deploy/com.pati.genseo-landing.macbook.plist" "$(landing_plist)" \
+  && ok "other-directory job still copies" || bad "other-directory job did not copy"
+kill "$SLEEPER" 2>/dev/null || true
+wait "$SLEEPER" 2>/dev/null || true
+HOLD_PIDS=""
+
+new_fix scope-stable
+seed_wrapper_match
+mkdir -p "$HOME_DIR/Library/LaunchAgents"
+cp "$FIX/deploy/com.pati.genseo-daily.macbook.plist" "$(daily_plist)"
+stamp_loaded "com.pati.genseo-daily.plist"
+seed_plist "com.pati.genseo-landing.plist" "OLD-LANDING"
+copy=$(mktemp "${TMPDIR:-/tmp}/run_landing_daily.XXXXXX")
+repo_phys=$(cd "$FIX" && pwd -P)
+printf '%s\n' "$repo_phys" >"$copy.repo"
+scope_ps "bash $copy"
+write_launchctl ok "$WORK/lc-scope-stable"
+APPLY_ENV="GENSEO_SELF_APPLY_TEST=1 GENSEO_INSTALL_WRAPPER_TEST=1 GENSEO_HOST_KIND=macbook GENSEO_LAUNCHCTL=$WORK/lc-scope-stable GENSEO_SELF_APPLY_PS=$WORK/ps-scope"
+run_apply
+assert_continued "same-checkout stable copy"
+has "$LOGF" "self-apply: com.pati.genseo-landing left in place — a job is running" "same-checkout stable copy is a job"
+[ "$(cat "$(landing_plist)")" = "OLD-LANDING" ] && ok "same-checkout stable copy does not copy" || bad "same-checkout stable copy copied"
+kill "$SLEEPER" 2>/dev/null || true
+wait "$SLEEPER" 2>/dev/null || true
+HOLD_PIDS=""
+rm -f "$copy" "$copy.repo"
+
+new_fix scope-noside
+seed_wrapper_match
+mkdir -p "$HOME_DIR/Library/LaunchAgents"
+cp "$FIX/deploy/com.pati.genseo-daily.macbook.plist" "$(daily_plist)"
+stamp_loaded "com.pati.genseo-daily.plist"
+seed_plist "com.pati.genseo-landing.plist" "OLD-LANDING"
+copy=$(mktemp "${TMPDIR:-/tmp}/run_landing_daily.XXXXXX")
+rm -f "$copy.repo"
+scope_ps "bash $copy"
+write_launchctl ok "$WORK/lc-scope-noside"
+APPLY_ENV="GENSEO_SELF_APPLY_TEST=1 GENSEO_INSTALL_WRAPPER_TEST=1 GENSEO_HOST_KIND=macbook GENSEO_LAUNCHCTL=$WORK/lc-scope-noside GENSEO_SELF_APPLY_PS=$WORK/ps-scope"
+run_apply
+assert_continued "stable copy without a sidecar"
+has "$LOGF" "self-apply: com.pati.genseo-landing reloaded" "a stable copy with no checkout marker does not block"
+cmp -s "$FIX/deploy/com.pati.genseo-landing.macbook.plist" "$(landing_plist)" \
+  && ok "unscoped stable copy still copies" || bad "unscoped stable copy did not copy"
+kill "$SLEEPER" 2>/dev/null || true
+wait "$SLEEPER" 2>/dev/null || true
+HOLD_PIDS=""
+rm -f "$copy" "$copy.repo"
+
+new_fix scope-otherside
+seed_wrapper_match
+mkdir -p "$HOME_DIR/Library/LaunchAgents"
+cp "$FIX/deploy/com.pati.genseo-daily.macbook.plist" "$(daily_plist)"
+stamp_loaded "com.pati.genseo-daily.plist"
+seed_plist "com.pati.genseo-landing.plist" "OLD-LANDING"
+copy=$(mktemp "${TMPDIR:-/tmp}/run_landing_daily.XXXXXX")
+other_co=$(mktemp -d "$WORK/other-checkout.XXXXXX")
+printf '%s\n' "$(cd "$other_co" && pwd -P)" >"$copy.repo"
+scope_ps "bash $copy"
+write_launchctl ok "$WORK/lc-scope-otherside"
+APPLY_ENV="GENSEO_SELF_APPLY_TEST=1 GENSEO_INSTALL_WRAPPER_TEST=1 GENSEO_HOST_KIND=macbook GENSEO_LAUNCHCTL=$WORK/lc-scope-otherside GENSEO_SELF_APPLY_PS=$WORK/ps-scope"
+run_apply
+assert_continued "other-checkout stable copy"
+has "$LOGF" "self-apply: com.pati.genseo-landing reloaded" "another checkout's stable copy does not block"
+cmp -s "$FIX/deploy/com.pati.genseo-landing.macbook.plist" "$(landing_plist)" \
+  && ok "other-checkout stable copy still copies" || bad "other-checkout stable copy did not copy"
+kill "$SLEEPER" 2>/dev/null || true
+wait "$SLEEPER" 2>/dev/null || true
+HOLD_PIDS=""
+rm -f "$copy" "$copy.repo"
+
+new_fix scope-rel
+seed_wrapper_match
+mkdir -p "$HOME_DIR/Library/LaunchAgents"
+cp "$FIX/deploy/com.pati.genseo-daily.macbook.plist" "$(daily_plist)"
+stamp_loaded "com.pati.genseo-daily.plist"
+seed_plist "com.pati.genseo-landing.plist" "OLD-LANDING"
+scope_ps "bash run_landing_daily.sh"
+write_launchctl ok "$WORK/lc-scope-rel"
+APPLY_ENV="GENSEO_SELF_APPLY_TEST=1 GENSEO_INSTALL_WRAPPER_TEST=1 GENSEO_HOST_KIND=macbook GENSEO_LAUNCHCTL=$WORK/lc-scope-rel GENSEO_SELF_APPLY_PS=$WORK/ps-scope"
+run_apply
+assert_continued "relative landing name"
+has "$LOGF" "self-apply: com.pati.genseo-landing left in place — a job is running" "a job name with no absolute path fails closed"
+[ "$(cat "$(landing_plist)")" = "OLD-LANDING" ] && ok "relative job name does not copy" || bad "relative job name copied"
+kill "$SLEEPER" 2>/dev/null || true
+wait "$SLEEPER" 2>/dev/null || true
+HOLD_PIDS=""
+
+new_fix scope-bin
+seed_wrapper_match
+LABEL="com.pati.genseo-landing"
+mkdir -p "$HOME_DIR/Library/LaunchAgents"
+cp "$FIX/deploy/com.pati.genseo-landing.macbook.plist" "$(landing_plist)"
+stamp_loaded "com.pati.genseo-landing.plist"
+seed_plist "com.pati.genseo-daily.plist" "OLD-DAILY"
+ln -sfn "$FIX" "$HOME_DIR/genseo"
+scope_ps "bash $HOME_DIR/bin/grokbot-genseo-daily.sh"
+write_launchctl ok "$WORK/lc-scope-bin"
+APPLY_ENV="GENSEO_SELF_APPLY_TEST=1 GENSEO_INSTALL_WRAPPER_TEST=1 GENSEO_HOST_KIND=macbook GENSEO_LAUNCHCTL=$WORK/lc-scope-bin GENSEO_SELF_APPLY_PS=$WORK/ps-scope"
+run_apply
+assert_continued "this home's article launcher"
+has "$LOGF" "self-apply: com.pati.genseo-daily left in place — a job is running" "this home's launcher is a job"
+[ "$(cat "$(daily_plist)")" = "OLD-DAILY" ] && ok "this home's launcher does not copy" || bad "this home's launcher copied"
+kill "$SLEEPER" 2>/dev/null || true
+wait "$SLEEPER" 2>/dev/null || true
+HOLD_PIDS=""
+
+new_fix scope-binother
+seed_wrapper_match
+LABEL="com.pati.genseo-landing"
+mkdir -p "$HOME_DIR/Library/LaunchAgents"
+cp "$FIX/deploy/com.pati.genseo-landing.macbook.plist" "$(landing_plist)"
+stamp_loaded "com.pati.genseo-landing.plist"
+seed_plist "com.pati.genseo-daily.plist" "OLD-DAILY"
+other_home="$WORK/home-binother"
+mkdir -p "$other_home/bin" "$other_home/genseo"
+scope_ps "bash $other_home/bin/grokbot-genseo-daily.sh"
+write_launchctl ok "$WORK/lc-scope-binother"
+APPLY_ENV="GENSEO_SELF_APPLY_TEST=1 GENSEO_INSTALL_WRAPPER_TEST=1 GENSEO_HOST_KIND=macbook GENSEO_LAUNCHCTL=$WORK/lc-scope-binother GENSEO_SELF_APPLY_PS=$WORK/ps-scope"
+run_apply
+assert_continued "another home's article launcher"
+has "$LOGF" "self-apply: com.pati.genseo-daily reloaded" "another home's launcher does not block"
+cmp -s "$FIX/deploy/com.pati.genseo-daily.macbook.plist" "$(daily_plist)" \
+  && ok "another home's launcher still copies" || bad "another home's launcher did not copy"
 kill "$SLEEPER" 2>/dev/null || true
 wait "$SLEEPER" 2>/dev/null || true
 HOLD_PIDS=""
