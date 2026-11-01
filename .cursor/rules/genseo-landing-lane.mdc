@@ -19,8 +19,8 @@ Read `skills/genseo-landing-pages/SKILL.md` and `templates/landing/README.md` in
 - **Brand files** `brand/<store>.json` carry tokens, voice and `forbidden_terms`; AgeAura allows only
   `ageaura-pure-nmn-tmg-nad-complex` (`scripts/ageaura_rules.py` fails closed on `ageaura-pure-urolithin-a`
   and any other Urolithin A AgeAura handle). `validate_landing.py` blocks banned handles and terms, any FloraFresh
-  formula claim its Supplement Facts label does not support (`scripts/florafresh_rules.py`; the PDP description is
-  wrong until Kevin's GO), any Shilajit Shockwave dose its pack-label whitelist does not list
+  formula claim its Supplement Facts label does not support (`scripts/florafresh_rules.py`; the label count is
+  15B CFU, and 1 billion CFU / 1B CFU is retired; the PDP strain story is still wrong until Kevin's GO), any Shilajit Shockwave dose its pack-label whitelist does not list
   (`scripts/shockwave_rules.py`), any Pure Shilajit Gold Resin dose its pack-label whitelist does not list
   (`scripts/gold_resin_rules.py`), any ShilaSource Himalayan Shilajit Resin dose its pack-label
   whitelist does not list (`scripts/shilasource_resin_rules.py`), and any Turkesterone Advanced

@@ -28,15 +28,16 @@ PRIORITY_BRANDS=[
 BRANDS_NOT_LIVE=["Bronson","Transparent Labs"]
 
 # ---- theme -> primary collection + author (by expertise) ----
-# author roster (live /pages/) assigned by editorial coverage
-# Derived from roster.json (small team: every expertise key maps to the first
-# roster author until Kevin assigns per-topic owners). Empty roster -> empty dict,
-# and ticket generation fails loudly instead of inventing a byline.
+# Blog byline is genseo_roster.blog_default() (Mike Moretti; Kevin 2026-10-21).
+# Every expertise key maps to that one person until Kevin assigns per-topic
+# owners. The string is a byline, not a medical credential. Empty roster ->
+# empty dict, and ticket generation fails loudly instead of inventing a person.
 import genseo_roster
 AUTHORS={}
-if genseo_roster.NAMES:
-    _h, _n = next(iter(genseo_roster.NAMES.items()))
-    AUTHORS={k: f"{_n} (/pages/{_h})" for k in
+_picked = genseo_roster.blog_default()
+if _picked:
+    _h, _entry = _picked
+    AUTHORS={k: f"{_entry['name']} (/pages/{_h})" for k in
              ("clinical","sports","dietetics","training","fitness","medical","founder")}
 
 # theme rules: (match keywords) -> (collections[], author-key, table-subject)

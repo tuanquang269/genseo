@@ -98,8 +98,7 @@ A `topic_fitness` REVIEW [covered-segment] verdict is {greenlit}.
 A topic is a brief, not copy: source every claim or cut it.
 
 **Rules for this batch:** from the 2026-10-08 batch rules — fan-out answers, a "Where to buy <product> in the US"
-section (live price, the ticket's product link only), roster.json byline only (never an invented person or
-credential), the logged fact-check pass (`logs/claims/<slug>.md`; delete unconfirmed claims), the brand gate.
+section (live price, the ticket's product link only), {byline}, the logged fact-check pass (`logs/claims/<slug>.md`; delete unconfirmed claims), the brand gate.
 Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py once. The hero is the picked face plus the real pack unless pick prints NO-FACE. One inline image uses that face. The other inline images have no recognizable face but still show a hand, forearm, or body cropped below the eyes. A no-face image is the fallback for one frame after a face refusal or two QC misses, not a batch-wide ban. The MacBook article plist sets `GENSEO_NO_FACE=0`, and that value does not switch the lane. Prices were read live at build time; re-check the PDP while writing.
 """
 
@@ -772,17 +771,43 @@ def render(c, tid, ctx, info):
     if info["links"]:
         out.append("  - **Link, don't restate:** " + ", ".join(f"`/blogs/{BLOG}/{h}`" for h in info["links"]))
     src = "blog listing + sitemap + Atom" + (" + local caches" if ctx["local"] else "")
-    out += ["  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, "
-            "reviewer or credential",
+    out += ["  - **Author:** " + _author_line(),
             f"  - **Dedup note:** {c['family']} + {c['segment']} checked {ctx['day']} against "
             f"{len(ctx['live_handles'])} live articles ({src}) and all {len(ctx['queue'])} tickets in this file; "
             "STEP 0 re-checks at write time"]
     return "\n".join(out)
 
 
+def _blog_byline_phrase():
+    import genseo_roster
+    picked = genseo_roster.blog_default()
+    if not picked:
+        return "roster.json byline only (never an invented person or credential)"
+    handle, entry = picked
+    role = entry.get("role")
+    who = entry["name"] + ((", " + role) if role else "")
+    return ("blog byline %s (/pages/%s), roster.json bio copied verbatim "
+            "(no invented person, credential, degree, or headshot; "
+            "Dr. Marcus Hale is not the blog byline)" % (who, handle))
+
+
+def _author_line():
+    import genseo_roster
+    picked = genseo_roster.blog_default()
+    if not picked:
+        return ("roster.json byline — exact name + bio resolved at write time; "
+                "never invent a person, reviewer or credential")
+    handle, entry = picked
+    role = entry.get("role")
+    who = entry["name"] + ((", " + role) if role else "")
+    return ("%s (`/pages/%s`) — copy the roster.json bio verbatim; "
+            "never invent a person, reviewer, credential, degree, or headshot" % (who, handle))
+
+
 def batch_header(ctx, ids):
     return HEADER.format(day=ctx["day"], first=ids[0], last=ids[-1], stamp=ctx["stamp"],
                          n_live=len(ctx["live_handles"]), greenlit=GREENLIT,
+                         byline=_blog_byline_phrase(),
                          src="blog listing + sitemap + Atom" + (" + local caches" if ctx["local"] else ""))
 
 
@@ -1042,8 +1067,10 @@ def self_test():
          dict(product="ageaura-pure-nmn-tmg-p2", primary="nmn morning or night",
               title="NMN: Morning or Night? (US 2026)"), "brand_rules"),
         ("Urolithin in the angle", ctx, dict(angle="Compare it with Urolithin A."), "banned"),
-        ("FloraFresh 15 billion CFU in the secondary (label: 1 billion)", ctx,
-         dict(secondary=["15 billion cfu probiotic"]), "banned"),
+        ("FloraFresh 1 billion CFU in the secondary (label: 15B CFU)", ctx,
+         dict(secondary=["1 billion cfu probiotic"]), "banned"),
+        ("FloraFresh 1B CFU in the secondary (label: 15B CFU)", ctx,
+         dict(secondary=["1B CFU probiotic"]), "banned"),
         ("FloraFresh formula cited from the PDP", ctx,
          dict(evidence="FloraFresh CFU and strains from the live PDP."), "banned"),
         ("sold-out hero product", ctx, dict(product="shilajit-shockwave", primary="shilajit shockwave for athletes",
