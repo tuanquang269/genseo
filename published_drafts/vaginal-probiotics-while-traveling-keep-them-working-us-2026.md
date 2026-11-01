@@ -5,7 +5,7 @@
 
 Vaginal probiotics while traveling are easiest to manage when you protect the package from heat and moisture, keep the labeled daily serving beside a meal, and carry it in your cabin bag rather than a hot car or checked suitcase. For US trips, pack the original pouch, plan for time zones, and ask a pharmacist about travel medicines.
 
-## The short answer for US travelers
+## What is the short answer for US travelers?
 
 Travel does not automatically ruin a probiotic routine. The practical priorities are simple: follow the product's storage directions, avoid leaving gummies in a hot vehicle or direct sun, keep them accessible during transit, and use a meal as the daily reminder. Evidence from other spore-based strains suggests temperature effects can be product- and matrix-specific, so it does not justify promising that every gummy is stable in every travel condition.
 

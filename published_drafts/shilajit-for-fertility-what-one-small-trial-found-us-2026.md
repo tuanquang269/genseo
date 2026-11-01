@@ -1,3 +1,5 @@
+<!-- meta_description: One small trial found semen-measure changes after 90 days of processed shilajit. For US readers, that is not proof of pregnancy or a reason to skip care. -->
+
 For people in the US asking whether shilajit increases sperm count, one small clinical trial found improved semen measures after 90 days of processed shilajit in men with low sperm counts. That result does not prove higher pregnancy or live-birth rates, does not establish that every shilajit resin has the same composition, and does not replace a fertility evaluation.
 
 ## What did the shilajit fertility trial find?

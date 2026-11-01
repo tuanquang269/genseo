@@ -1,3 +1,5 @@
+<!-- meta_description: One strength trial in active men found a smaller force drop after fatigue with a purified shilajit extract. In the US, that does not prove every resin. -->
+
 Shilajit may help some athletes retain more strength after a fatiguing effort, but one 8-week trial does not prove that every resin increases strength, recovery, or performance. In the US, the study used a specific purified extract in recreationally active men; retail products, including ShilaSource, must be judged by their own label and documentation.
 
 ## What did the strength trial actually find?

@@ -1,9 +1,9 @@
 # Vaginal Probiotics on an Empty Stomach: US Guide
 <!-- meta_description: Vaginal probiotics on an empty stomach: learn what meal-timing research suggests, when food may help, and how US shoppers can check the label. -->
 
-![Dusty-pink FloraFresh vaginal probiotic gummies pouch standing on a breakfast table beside a cropped human torso](https://cdn.shopify.com/s/files/1/0810/1563/6283/files/hero_868b5278-83ef-4511-ae0d-b3e6a2ed4776.webp?v=1792552600)
-
 Vaginal probiotics do not universally require an empty stomach. For US readers, the safer general approach is to follow the product label and take a bacterial probiotic with a meal or shortly before one when the label allows it. A laboratory gut model found better survival with food than after a meal, but it did not test FloraFresh or prove a clinical outcome.
+
+![Dusty-pink FloraFresh vaginal probiotic gummies pouch standing on a breakfast table beside a cropped human torso](https://cdn.shopify.com/s/files/1/0810/1563/6283/files/hero_868b5278-83ef-4511-ae0d-b3e6a2ed4776.webp?v=1792552600)
 
 This answers the food question, not the morning-versus-night question. For clock timing, see [the guide to the best time to take vaginal probiotics](https://wellnessnest.co/blogs/news/best-time-to-take-vaginal-probiotics-6-rules-us-2026). For common reactions and warning signs, read [vaginal probiotics side effects: normal versus stop](https://wellnessnest.co/blogs/news/vaginal-probiotics-side-effects-normal-vs-stop-us-2026).
 

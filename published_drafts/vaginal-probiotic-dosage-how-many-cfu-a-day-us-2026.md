@@ -1,9 +1,9 @@
 # Vaginal Probiotic Dosage: How Many CFU a Day? (US 2026)
 <!-- meta_description: Vaginal probiotic dosage depends on strain, study design, and label quality—not the biggest CFU number. Compare 1 billion CFU and more. -->
 
-![FloraFresh pouch beside a woman in a morning routine](https://cdn.shopify.com/s/files/1/0810/1563/6283/files/hero_9f17c634-99a9-4375-af5c-b4d37fae91b9.webp?v=1791803907)
-
 For vaginal probiotic dosage, there is no universal CFU target that guarantees a result. Human studies have tested different strains, products, and schedules; one registered pregnancy trial used 2 billion CFU per day of two named Lactobacillus strains, while FloraFresh provides 15 billion CFU per 2 gummies from Bacillus coagulans SNZ-1969. In the US, compare strain identity, potency basis, directions, and safety—not CFU alone.
+
+![FloraFresh pouch beside a woman in a morning routine](https://cdn.shopify.com/s/files/1/0810/1563/6283/files/hero_9f17c634-99a9-4375-af5c-b4d37fae91b9.webp?v=1791803907)
 
 ## What CFU means on a vaginal probiotic label
 
@@ -25,11 +25,11 @@ The most useful label questions are:
 
 A trial dose of one billion CFU can be a meaningful label amount, but “enough” cannot be answered from the number alone. The relevant clinical question is whether the exact strain, dose, route, population, and outcome were studied together. A larger count from an unstudied strain is not automatically a better choice than a smaller count from a studied strain.
 
-The public registry for NCT03688321 describes a randomized, triple-masked pregnancy study using two capsules before sleep. The study dosed each capsule at 1 billion CFU of *Lactobacillus rhamnosus* GR-1 and *Lactobacillus reuteri* RC-14, for a stated total of 2 billion CFU per day. The record lists 204 actual participants and a 12-week intervention after confirmation of Group B Streptococcus positivity. That is evidence about a particular research setup, not a universal dosage recommendation for nonpregnant adults.
+The public registry for [NCT03688321](https://clinicaltrials.gov/study/NCT03688321) describes a randomized, triple-masked pregnancy study using two capsules before sleep. The study dosed each capsule at 1 billion CFU of *Lactobacillus rhamnosus* GR-1 and *Lactobacillus reuteri* RC-14, for a stated total of 2 billion CFU per day. The record lists 204 actual participants and a 12-week intervention after confirmation of Group B Streptococcus positivity. That is evidence about a particular research setup, not a universal dosage recommendation for nonpregnant adults.
 
-Another registered randomized pregnancy study, NCT02795845, describes a multi-strain probiotic capsule taken twice daily but does not state a CFU amount in its public intervention description. That missing number matters: it prevents a clean comparison with the 1-billion-CFU-per-capsule example.
+Another registered randomized pregnancy study, [NCT02795845](https://clinicaltrials.gov/study/NCT02795845), describes a multi-strain probiotic capsule taken twice daily but does not state a CFU amount in its public intervention description. That missing number matters: it prevents a clean comparison with the 1-billion-CFU-per-capsule example.
 
-Neither registry entry proves that a product with the same number will prevent, treat, or cure an infection. Vaginal odor, itching, pain, unusual discharge, or recurrent symptoms need clinical assessment. A supplement should not replace diagnosis or prescribed treatment.
+No registry entry proves that a product with the same number will prevent, treat, or cure an infection. The FDA's questions-and-answers page explains that the required supplement disclaimer says a product is not intended to diagnose, treat, cure, or prevent any disease ([FDA questions and answers on dietary supplements](https://www.fda.gov/food/information-consumers-using-dietary-supplements/questions-and-answers-dietary-supplements)). Vaginal odor, itching, pain, unusual discharge, or recurrent symptoms need clinical assessment. A supplement should not replace diagnosis or prescribed treatment.
 
 ## Strain matters more than a bigger number
 

@@ -1,3 +1,5 @@
+<!-- meta_description: How to take vaginal probiotics in the US: chew the gummy as the label directs. FloraFresh lists 15 billion CFU of Bacillus coagulans SNZ-1969 per 2 gummies. -->
+
 Oral vaginal probiotics are taken by chewing the product exactly as its label directs, then making the routine easy to repeat. For FloraFresh, treat the gummy as an oral supplement—not an inserted product—pair it with a familiar daily habit, and use water if you prefer. In the US, follow the current pouch label and ask a clinician about symptoms rather than trying to treat them with a supplement.
 
 ## How should you take a vaginal probiotic gummy?

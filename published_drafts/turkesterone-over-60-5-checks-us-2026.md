@@ -1,6 +1,8 @@
+<!-- meta_description: Turkesterone has no clinical trial designed for adults over 60. In the US, check the formula, medicines, training, and the product label first. -->
+
 **Short answer:** Turkesterone has not been tested in a clinical trial designed for adults over 60, so its value for older lifters is unproven. In the US, check the full formula, medication risks, training and protein basics, and the product label before considering it. A formula that includes ashwagandha and tongkat ali cannot be treated as though the evidence for either ingredient proves that the finished product improves muscle or testosterone.
 
-Published: October 17, 2026. Educational information, not an individual treatment plan. Images are AI-generated illustrations anchored to the real product packaging; they do not document a clinical trial or customer results.
+Educational information, not an individual treatment plan. Images are AI-generated illustrations anchored to the real product packaging; they do not document a clinical trial or customer results.
 
 ## 1. Has turkesterone been tested in adults over 60?
 
@@ -90,6 +92,8 @@ The table separates what is known from what is merely plausible. That is more us
 <p style="text-align:center;margin:26px 0;">
 <a href="https://wellnessnest.co/products/turkesterone-advanced-formula" style="display:inline-block;background:#54b94a;color:#ffffff;font-weight:700;padding:14px 34px;border-radius:999px;text-decoration:none;">Review the Turkesterone label →</a>
 </p>
+
+For the ingredient-safety checks beside this age question, read [turkesterone side effects: 4 ingredients to check](https://wellnessnest.co/blogs/news/turkesterone-side-effects-4-ingredients-to-check-us-2026). That page does not supply a trial in adults over 60.
 
 ## Frequently Asked Questions
 

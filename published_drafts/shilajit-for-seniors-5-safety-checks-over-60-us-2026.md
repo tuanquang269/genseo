@@ -12,7 +12,7 @@ This is a safety checklist, not a diagnosis or a substitute for medical care. Hu
 <div style="height:2px;background:#dbeedb;flex:1;"></div>
 </div>
 
-## 1. Ask a clinician to review every medication first
+## 1. Should a clinician review every medication first?
 
 ![Shilajit resin canister and jar beside a closed pill organizer on a breakfast table](/Users/kevinkreative/genseo/run-assets/shilajit-for-seniors/medication-check.webp)
 

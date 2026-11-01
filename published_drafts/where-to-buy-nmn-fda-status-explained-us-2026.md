@@ -1,3 +1,5 @@
+<!-- meta_description: In the US, NMN can be sold as a dietary supplement after the FDA's 2025 update. Wellness Nest lists AgeAura Pure NMN + TMG NAD+ Complex at $69.95. -->
+
 In the US, NMN can currently be marketed in a dietary supplement when the product meets applicable FDA requirements. The key change was the FDA's September 29, 2025 conclusion that NMN is not excluded from the dietary-supplement definition. For a current option, Wellness Nest lists AgeAura Pure NMN + TMG NAD+ Complex at $69.95.
 
 That answer needs context. “Legal to buy” does not mean “proven to work,” FDA approval of a supplement, or permission to make disease claims. It describes the ingredient's status under the dietary-supplement definition. A buyer still needs to check the product label, seller identity, serving information and claims made on the page.

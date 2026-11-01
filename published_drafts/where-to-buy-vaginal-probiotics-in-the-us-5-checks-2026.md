@@ -1,3 +1,5 @@
+<!-- meta_description: Where to buy vaginal probiotics in the US: choose a seller with a readable label, storage rules, and a live price. FloraFresh lists 15 billion CFU per 2 gummies. -->
+
 If you are deciding where to buy vaginal probiotics in the US, choose the seller that gives you a traceable product, a readable label, clear storage guidance, and a current checkout price—not simply the cheapest listing. A pharmacy, marketplace, and brand-direct store can all be reasonable; the label and seller checks below help you compare them.
 
 ## 1. Check the label before you check the seller
@@ -57,9 +59,9 @@ For a simple budget screen, a 30-day supply priced at $50 would equal about $1.6
 
 Buying direct does not automatically make a product better. It gives you a place to verify the seller’s own current information. A pharmacy does not automatically make a product fresher. It gives you a chance to inspect the package. The same five checks apply in every channel.
 
-## 5. Check the seller and the claims
+## 5. How do you check the seller and the claims?
 
-Look for a business name, contact method, return policy, intact packaging, and a product page that matches the item in the parcel. Be cautious with claims that promise to cure an infection, replace clinical care, or guarantee a change in odor, discharge, pain, or pH. A supplement label is not a diagnosis, and symptoms that concern you belong with a qualified clinician.
+Look for a business name, contact method, return policy, intact packaging, and a product page that matches the item in the parcel. Do not rely on claims that promise to cure an infection, replace clinical care, or guarantee a change in odor, discharge, pain, or pH. The FDA's questions-and-answers page explains that the required supplement disclaimer says a product is not intended to diagnose, treat, cure, or prevent any disease ([FDA questions and answers on dietary supplements](https://www.fda.gov/food/information-consumers-using-dietary-supplements/questions-and-answers-dietary-supplements)). A supplement label is not a diagnosis, and symptoms that concern you belong with a qualified clinician.
 
 For FloraFresh, the safer comparison is specific and limited: the Supplement Facts label names Bacillus coagulans SNZ-1969 and 15 billion CFU per 2 gummies; the pouch identifies a pineapple-flavored gummy format; and the product page says to store it in a cool, dry place. Those facts help you compare listings without turning a supplement into a treatment.
 
