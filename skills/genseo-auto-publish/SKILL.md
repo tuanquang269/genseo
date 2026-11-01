@@ -74,7 +74,7 @@ wasted image-generation + writing cost of a doomed article.)
    **Pure Shilajit Gold Resin** (`pure-shilajit-gold-resin`) pack-label claims come only from `product_refs/pure-shilajit-gold-resin.label.json` (`required` + `optional`, including `75% Fulvic` and `1.06 oz (30g) - 75 servings`; no milligram token). `scripts/gold_resin_rules.py`, run by `scripts/brand_rules.py`, hard-fails a dose that file does not list.
    **ShilaSource Himalayan Shilajit Resin** (`shilasource-himalayan-shilajit-resin`) pack-label claims come only from `product_refs/shilasource-himalayan-shilajit-resin.label.json` (`required` + `optional` from the 2026-10-08 OCR read, including `70% Fulvic Acid*`, `1.06oz (30g)`, and the split `75` / `SERVINGS` badge; no milligram token). `scripts/shilasource_resin_rules.py`, run by `scripts/brand_rules.py`, hard-fails a dose that file does not list.
   2. **FusiForce** — creatine monohydrate gummies 5,000mg
-  3. **FloraFresh** — vaginal/feminine probiotic gummies. Formula ONLY from its Supplement Facts label: Bacillus coagulans SNZ-1969 (spore-based), 1 billion CFU per 2 gummies, Vitamin C 30 mg, pineapple fruit powder 100 mg (with bromelain), sweetened with maltitol + isomalt (not sugar-free). The live PDP description (15 billion CFU, four Lactobacillus strains, XOS, D-mannose, sugar-free) is wrong until Kevin's GO rewrites it: never copy it or the older FloraFresh articles that repeat it (`scripts/florafresh_rules.py`, run by `scripts/brand_rules.py`, hard-fails those claims in `validate_article.py` and `lint_tickets.py`; Kevin 2026-10-09).
+  3. **FloraFresh** — vaginal/feminine probiotic gummies. Formula ONLY from its Supplement Facts label: Bacillus coagulans SNZ-1969 (spore-based), 15B CFU per 2 gummies, Vitamin C 30 mg, pineapple fruit powder 100 mg (with bromelain), sweetened with maltitol + isomalt (not sugar-free). Kevin 2026-10-21: 15B CFU is the count. 1 billion CFU and 1B CFU are retired and `florafresh_rules.py` rejects them. The live PDP description still tells a wrong strain story (four Lactobacillus strains, XOS, D-mannose, sugar-free) until Kevin's GO rewrites it: never copy that story or the older FloraFresh articles that repeat it (`scripts/florafresh_rules.py`, run by `scripts/brand_rules.py`, hard-fails those claims in `validate_article.py` and `lint_tickets.py`).
   4. **MenoMate** — menopause probiotics & herbal blend
   5. **Turkesterone** Advanced Formula (`turkesterone-advanced-formula`). Pack-label claims come only from `product_refs/turkesterone-advanced-formula.label.json` (front-of-pack lines, including the split `60` / `Capsules` badge; no milligram token and no Supplement Facts panel). `scripts/turkesterone_rules.py`, run by `scripts/brand_rules.py`, hard-fails a dose that file does not list. Bare "turkesterone" in a trial sentence is the ingredient, not this SKU.
   6. **AgeAura** — longevity line on the same store. Promote ONLY AgeAura Pure NMN + TMG NAD Complex (`/products/ageaura-pure-nmn-tmg-nad-complex`). Never Urolithin A, peptides, bundles, `ageaura-pure-nmn-tmg-p2`, `/collections/ageaura`, or any other AgeAura SKU (`scripts/ageaura_rules.py` is the handle allowlist; `scripts/brand_rules.py` hard-fails them in `validate_article.py` and `lint_tickets.py`; Kevin 2026-10-07, re-audited 2026-10-09).
@@ -167,6 +167,7 @@ and in AI Overviews. Treat this step as writing an ad, not a label.
   - **⛔ NEVER USE PRE-BAKED CDN URLS FOR IMAGES IN THE MARKDOWN DRAFT.** Use the exact LOCAL absolute path the wrapper prints in your `![alt](LOCAL_PATH)` tags. The publisher uploads local paths to Shopify Files CDN and rewrites them. If the publisher prints `📸 Uploading 0 image(s)` on an article that should have images, STOP and fix the image paths in the draft.
 
 - **🎨 TEMPLATE ROTATION (Kevin "Full pack" 2026-08-09) — READ `references/article-templates.md` BEFORE drafting.** 4 dạng bài: `EDITORIAL` · `STORY` (bài GemPages joint-pain làm chuẩn) · `LISTICLE` · `COMPARISON`. Chọn theo ticket `type:` nếu có, không thì match intent theo bảng trong reference; hai dạng cùng khớp → tránh lặp dạng của bài liền trước (đọc note `template:` ở tracker row cuối). Dùng đúng block kit trong reference (inline CSS, blank line quanh block, markdown NGOÀI block — publisher dùng python-markdown `extra`, block HTML pass through nguyên vẹn). Log `template:<KEY>` vào tracker row + report.
+- **Optional first-hand experience block (blog articles only):** run `python3 scripts/first_hand_experience.py --product <handle>`. If it prints HTML, paste that block once, with a blank line before and after, before `## Frequently Asked Questions`. If stdout is empty, leave the block out. A stderr warning means the quote is still rights-gated. Do not type a creator quote, a customer quote, or a result by hand, and do not copy lines out of `templates/first-hand-quotes.json`. A line renders only when `rights_confirmed` is true and `approved_by` is set. See `docs/FIRST_HAND_EXPERIENCE.md`. This block does not change the byline and is not a landing-page review card.
 - **Drafting — Answer-First Structure:** Write the article in Markdown following these critical rules:
   - **CRITICAL FORMATTING RULE:** DO NOT include any YAML frontmatter (e.g., no `---`). The very first line of the markdown file MUST be the H1 Title (e.g., `# Your Title Here`). The second line MUST be the meta description comment (e.g., `<!-- meta_description: ... -->`). The publisher reads the H1 to set the Shopify article `title` field, then **automatically strips it from the rendered body HTML** — so it will NOT appear twice. Do NOT remove it from the draft.
   - **⚠️ HERO PLACEMENT (corrected 2026-08-07 — the code is the authority):** the Hero Banner MUST be the FIRST `![...]()` image tag in the body markdown. `shopify_publisher.py do_publish` takes the FIRST local image found in the body, sets it as `article.image` (the Shopify featured image the theme renders on top), and STRIPS that one tag from the body — so the hero never appears twice. The old instruction ("do not embed the hero in the body") was wrong: with no hero in the body the publisher silently promoted-and-stripped the first lifestyle image instead, and the live article came out one inline image short. Never reference the hero a second time in the body.
@@ -213,23 +214,25 @@ and in AI Overviews. Treat this step as writing an ad, not a label.
     NEVER invent shipping speeds or authenticity claims).
   - Do NOT fake a local angle (no invented cities, stores, or pickup points — we ship nationwide).
 
-- **E-E-A-T Named Author Bio (CRITICAL/YMYL):** You MUST conclude every article (after the FAQs) with an `### About the Author` section attributing the article to ONE of the **real, named people in `/Users/kevinkreative/genseo/roster.json`**. DO NOT use generic bylines like "Wellness Nest Team".
+- **E-E-A-T Named Author Bio (CRITICAL/YMYL):** You MUST conclude every article (after the FAQs) with an `### About the Author` section. The Wellness Nest blog byline is **Mike Moretti** only (Kevin 2026-10-21). DO NOT use generic bylines like "Wellness Nest Team" and do not use Dr. Marcus Hale. `validate_article.py` rejects that name and `/pages/dr-marcus-hale`.
 
-  **⛔ THE BIO SENTENCE IS FIXED TEXT — read it from roster.json and copy it VERBATIM. Do not paraphrase, extend, or add credentials, job titles, years of experience, certifications, or specialisms of any kind.** These are real people; anything you add about them is a fabricated claim about a real person's professional qualifications on health content, and it is the single most damaging thing this pipeline can do. If a topic seems to call for a credential nobody on the roster has, that is not a licence to invent one — write the article without the claim.
+  Format: `[Mike Moretti](/pages/mike-moretti)` and copy his `bio` from `roster.json` verbatim. He is not a doctor. Do not add a degree, a year-count, a medical-reviewer line, or a headshot. `headshot` is null until a real photo is on the roster.
 
   **The roster lives in ONE place: `roster.json`.** The validator, the publisher and the
   repair scripts all read it (`scripts/genseo_roster.py`), so there is nothing to keep in
   sync by hand. If `roster.json` is empty, the gate blocks publishing — that means Kevin
   has not approved the roster yet; STOP and tell him, never fill it yourself.
 
-  **Pick the byline whose scope genuinely fits the topic.**
+  **Dr. Marcus Hale** stays on the roster for landing pages (`skills/genseo-landing-pages`). He does not pass the blog gate. On a refresh, leave the live article's byline as it is.
+
+  **The author page has to already be live.** `/pages/mike-moretti` was 404 when Mike was added. If `validate_article.py` reports that URL as dead, stop and tell Kevin. Do not create the Shopify page from this skill.
 
   **⛔ NEVER invent a byline.** A name that is not in `roster.json` is a
   fabricated identity on YMYL health content — the single most damaging thing
   this pipeline can do. The banned-name list (donor placeholders + anything
   ever removed) is `FAKE_AUTHORS` in `scripts/validate_article.py`.
 
-  **⛔ Never write "Dr.", "MD", "PhD", "RD", "Registered Dietitian", "CISSN", or any certification next to any byline.** Never attach a credential to a byline unless that person actually holds it.
+  **⛔ Never write "Dr.", "MD", "PhD", "RD", "Registered Dietitian", "CISSN", or any certification next to any byline.** Never attach a credential to a byline unless that person actually holds it. Mike Moretti does not. Do not call him a medical reviewer. The only vetted "Dr." is the one already inside Dr. Marcus Hale's roster name and bio.
 
   Format the bio as `[Name](/pages/handle)` followed by the exact sentence. DO NOT write "Connect with them on LinkedIn" and DO NOT put their LinkedIn URL in the visible markdown text. Store the LinkedIn URL only in the JSON-LD schema.
 
@@ -252,7 +255,7 @@ no hand-written `Published:` date, no affirmative cure / FDA-approval / clinical
 claim, **topic fitness** (hard-fails dead flavour/recipe titles + collection-
 owned head-terms — see STEP 0.5) — AND that every product/collection/article/page/author
 URL returns HTTP 200 and that outbound citations are not 404, 410, or stuck in a redirect
-loop (a 403 bot-wall is a warning). H1 titles over 50 characters warn.
+loop (a 403 bot-wall is a warning). H1 titles over 50 characters warn. A first-hand quote from `templates/first-hand-quotes.json` fails the draft unless `scripts/first_hand_experience.py` would have printed that block (rights confirmed, approver set, disclosure, results-vary note, claim lint). A draft with no first-hand block still passes that check.
 
 **It also scores the PROSE (added 2026-07-30), and this part hard-fails too.** The structural
 checks above only prove an article has a table and a price; they never measured whether the

@@ -214,7 +214,7 @@ class GuidelinesAndCli(unittest.TestCase):
         self.assertIn("https://developers.google.com/crawling/docs/robots-txt/robots-txt-spec", text)
         self.assertIn("https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex", text)
         self.assertIn("Bacillus coagulans SNZ-1969", text)
-        self.assertIn("1 billion CFU", text)
+        self.assertIn("15B CFU", text)
         self.assertIn(
             "`ageaura-pure-urolithin-a` and any other Urolithin A AgeAura handle are refused",
             text,

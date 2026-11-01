@@ -1,0 +1,122 @@
+{
+  "version": 1,
+  "products": {
+    "ageaura-pure-nmn-tmg-nad-complex": {
+      "label": "AgeAura Pure NMN + TMG NAD+ Complex",
+      "label_dose": {
+        "count": 2,
+        "form": "capsules",
+        "schedule": "once daily"
+      }
+    }
+  },
+  "quotes": [
+    {
+      "id": "kenzie-086ac23e-fewer-bottles",
+      "product_handle": "ageaura-pure-nmn-tmg-nad-complex",
+      "creator_display_name": "Kenzie R.",
+      "source": "086ac23e",
+      "quote": "Turns out I didn't need another bottle. I needed fewer",
+      "timestamp_range": "0:00-0:02",
+      "timestamp_precision": "scored-cut",
+      "claim_check": "personal-feel",
+      "disclosure": "Paid partnership (#ad)",
+      "rights_confirmed": false,
+      "approved_by": ""
+    },
+    {
+      "id": "kenzie-086ac23e-kids-routine",
+      "product_handle": "ageaura-pure-nmn-tmg-nad-complex",
+      "creator_display_name": "Kenzie R.",
+      "source": "086ac23e",
+      "quote": "support my active athletic goals and keeping up with my kids.",
+      "timestamp_range": "0:04-0:10",
+      "timestamp_precision": "transcript-window",
+      "claim_check": "personal-feel",
+      "disclosure": "Paid partnership (#ad)",
+      "rights_confirmed": false,
+      "approved_by": ""
+    },
+    {
+      "id": "kenzie-086ac23e-3pm",
+      "product_handle": "ageaura-pure-nmn-tmg-nad-complex",
+      "creator_display_name": "Kenzie R.",
+      "source": "086ac23e",
+      "quote": "it has helped me with no more afternoon crashes at 3 p.m.",
+      "timestamp_range": "0:12-0:15",
+      "timestamp_precision": "scored-cut",
+      "claim_check": "personal-feel",
+      "disclosure": "Paid partnership (#ad)",
+      "rights_confirmed": false,
+      "approved_by": ""
+    },
+    {
+      "id": "kenzie-086ac23e-two-capsules",
+      "product_handle": "ageaura-pure-nmn-tmg-nad-complex",
+      "creator_display_name": "Kenzie R.",
+      "source": "086ac23e",
+      "quote": "Keep your wellness routine simple and take two capsules at breakfast or in the morning time.",
+      "timestamp_range": "0:15-0:24",
+      "timestamp_precision": "transcript-window",
+      "claim_check": "personal-feel",
+      "disclosure": "Paid partnership (#ad)",
+      "rights_confirmed": false,
+      "approved_by": ""
+    },
+    {
+      "id": "hillary-e16b6841-twelve-bottles",
+      "product_handle": "ageaura-pure-nmn-tmg-nad-complex",
+      "creator_display_name": "Hillary H.",
+      "source": "e16b6841",
+      "quote": "I'm done having to use 12 different bottles just to feel like a functioning adult.",
+      "timestamp_range": "0:00-0:28.9",
+      "timestamp_precision": "full-vo",
+      "timestamp_note": "Whisper transcript is one block starting at 0:00. The card times the file at 28.9s and does not give a separate cut for this line.",
+      "claim_check": "personal-feel",
+      "disclosure": "Paid partnership (#ad)",
+      "rights_confirmed": false,
+      "approved_by": ""
+    },
+    {
+      "id": "hillary-e16b6841-handful",
+      "product_handle": "ageaura-pure-nmn-tmg-nad-complex",
+      "creator_display_name": "Hillary H.",
+      "source": "e16b6841",
+      "quote": "I used to take a handful of pills every morning.",
+      "timestamp_range": "0:00-0:28.9",
+      "timestamp_precision": "full-vo",
+      "timestamp_note": "Whisper transcript is one block starting at 0:00. The card times the file at 28.9s and does not give a separate cut for this line.",
+      "claim_check": "personal-feel",
+      "disclosure": "Paid partnership (#ad)",
+      "rights_confirmed": false,
+      "approved_by": ""
+    },
+    {
+      "id": "hillary-e16b6841-two-capsules",
+      "product_handle": "ageaura-pure-nmn-tmg-nad-complex",
+      "creator_display_name": "Hillary H.",
+      "source": "e16b6841",
+      "quote": "Now just two capsules with breakfast.",
+      "timestamp_range": "0:12-0:15",
+      "timestamp_precision": "scored-cut",
+      "claim_check": "personal-feel",
+      "disclosure": "Paid partnership (#ad)",
+      "rights_confirmed": false,
+      "approved_by": ""
+    },
+    {
+      "id": "hillary-e16b6841-3pm",
+      "product_handle": "ageaura-pure-nmn-tmg-nad-complex",
+      "creator_display_name": "Hillary H.",
+      "source": "e16b6841",
+      "quote": "I also used to dread the 3 p.m. because of the energy drop. Now it's just another hour of my day.",
+      "timestamp_range": "0:00-0:28.9",
+      "timestamp_precision": "full-vo",
+      "timestamp_note": "Whisper transcript is one block starting at 0:00. The card times the file at 28.9s and does not give a separate cut for this line.",
+      "claim_check": "personal-feel",
+      "disclosure": "Paid partnership (#ad)",
+      "rights_confirmed": false,
+      "approved_by": ""
+    }
+  ]
+}
