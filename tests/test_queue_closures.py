@@ -1,6 +1,8 @@
 """Queue closures survive a return to the open ticket file on main.
 
 No Shopify, no network. A temp git repo stands in for the day-run branch.
+FreshCheckoutTests copies tests/fixtures/landing_queue/ (the 2026-10-19
+tracked queues) into a temp directory. It does not read the live ticket files.
 
     python3 -m unittest tests/test_queue_closures.py
 """
@@ -9,6 +11,7 @@ import io
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -18,6 +21,9 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "scripts"))
 
 import genseo_queue_closures as qc  # noqa: E402
+
+# 2026-10-19 queues (729ced5). The live files move when a ticket closes.
+FIX_QUEUE = os.path.join(ROOT, "tests", "fixtures", "landing_queue")
 
 
 ARTICLE = """- [ ] **#CA1016-2 — shilajit on an empty stomach** — `Title`
@@ -103,13 +109,25 @@ def first_line(queue, repo):
 
 class FreshCheckoutTests(unittest.TestCase):
     def test_tracked_files_close_todays_tickets_without_a_ledger(self):
-        article_path = os.path.join(ROOT, "daily-tickets.md")
-        landing_path = os.path.join(ROOT, "daily-landing-tickets.md")
-        with open(article_path, encoding="utf-8") as fh:
-            article = fh.read()
-        with open(landing_path, encoding="utf-8") as fh:
-            landing = fh.read()
+        sources = (
+            ("daily-tickets.md", "daily-tickets.md"),
+            ("daily-landing-tickets.md", "daily-landing-tickets.md"),
+            ("PUBLISHED_ARTICLES_TRACKER.csv", "tracker.csv"),
+        )
+        for live_name, fix_name in sources:
+            src = os.path.join(FIX_QUEUE, fix_name)
+            self.assertTrue(os.path.isfile(src), src)
+            self.assertNotEqual(
+                os.path.realpath(src),
+                os.path.realpath(os.path.join(ROOT, live_name)),
+            )
         with tempfile.TemporaryDirectory() as tmp:
+            article_path = os.path.join(tmp, "daily-tickets.md")
+            landing_path = os.path.join(tmp, "daily-landing-tickets.md")
+            tracker_path = os.path.join(tmp, "PUBLISHED_ARTICLES_TRACKER.csv")
+            shutil.copy(os.path.join(FIX_QUEUE, "daily-tickets.md"), article_path)
+            shutil.copy(os.path.join(FIX_QUEUE, "daily-landing-tickets.md"), landing_path)
+            shutil.copy(os.path.join(FIX_QUEUE, "tracker.csv"), tracker_path)
             self.assertFalse(os.path.exists(os.path.join(tmp, "state", "queue-closures.json")))
             rc, article_first = first_line(article_path, tmp)
             self.assertEqual(rc, 0)
@@ -120,6 +138,12 @@ class FreshCheckoutTests(unittest.TestCase):
             self.assertIn("pure-shilajit-gold-resin", landing_first)
             self.assertNotIn(FLORA_ANGLE, landing_first)
             self.assertNotIn(GUMMIES_ANGLE, landing_first)
+            with open(article_path, encoding="utf-8") as fh:
+                article = fh.read()
+            with open(landing_path, encoding="utf-8") as fh:
+                landing = fh.read()
+            with open(tracker_path, encoding="utf-8") as fh:
+                tracker = fh.read()
         for ticket_id in CLOSED_IDS:
             self.assertNotIn("#" + ticket_id, article_first)
         article_open = [line for line in article.splitlines() if OPEN_HEAD.match(line)]
@@ -145,8 +169,6 @@ class FreshCheckoutTests(unittest.TestCase):
             "premium-himalayan-shilajit-gummies" in line and "missed day" in line
             for line in landing_open
         ))
-        with open(os.path.join(ROOT, "PUBLISHED_ARTICLES_TRACKER.csv"), encoding="utf-8") as fh:
-            tracker = fh.read()
         for ticket_id, url in zip(CLOSED_IDS, LIVE_URLS):
             self.assertIn(ticket_id + ",", tracker)
             self.assertIn(url, tracker)
