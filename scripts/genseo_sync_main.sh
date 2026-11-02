@@ -21,9 +21,13 @@
 #
 # The fast-forward does not run while another GenSeo job holds
 # state/daily.lock or state/landing-daily.lock, while another job is
-# executing a checkout script, or while this process is still reading a
-# script inside the checkout. GENSEO_SYNC_DRY_RUN=1 fetches and logs
-# "already up to date" or "would ff" and does not switch, stash, or merge.
+# executing a script of this checkout, or while this process is still
+# reading a script inside the checkout. A script in another directory
+# does not count. The process list is ps, not lsof. A stable copy records
+# its checkout in a sibling "<copy>.repo" file so a /tmp name still blocks
+# the checkout it was copied from, and no other checkout. GENSEO_SYNC_DRY_RUN=1
+# fetches and logs "already up to date" or "would ff" and does not switch,
+# stash, or merge.
 #
 # Bash reads a script as it runs. A fast-forward that rewrites that file
 # mid-run has produced a garbled token (the 2026-10 ontAsk failure). The
@@ -42,6 +46,8 @@
 # GENSEO_MAIN_SYNCED=1     fetch already decided for this run
 # GENSEO_LOCK_HELD=1       re-exec still owns the lane lock (same PID)
 # GENSEO_NET_WAIT_DONE=1   the network wait already succeeded
+# GENSEO_SYNC_TEST=1       tests may set GENSEO_SYNC_PS; ignored otherwise
+# GENSEO_SYNC_PS           executable that prints "pid args" lines (tests)
 
 if [ "${BASH_SOURCE[0]}" = "$0" ]; then
   printf '%s\n' "source scripts/genseo_sync_main.sh from a daily wrapper; it does not fetch or publish." >&2
@@ -66,7 +72,6 @@ genseo_stable_copy_release() {
   if [ "$p" = "$0" ] && [ "${1:-}" != "now" ]; then
     return 0
   fi
-  [ -f "$p" ] || return 0
   root=${TMPDIR:-/tmp}
   root=${root%/}
   repo=${G:-}
@@ -81,7 +86,7 @@ genseo_stable_copy_release() {
       "$repo"|"$repo"/*) return 0 ;;
     esac
   fi
-  rm -f "$p"
+  rm -f "$p" "$p.repo"
   return 0
 }
 
@@ -90,7 +95,7 @@ genseo_stable_copy_release() {
 # prefix is grokbot-genseo-daily or run_landing_daily so the daily lock
 # scanner still sees the article wrapper in the process list.
 genseo_exec_stable_copy() {
-  local prefix=$1 src="" dest="" root="" repo=""
+  local prefix=$1 src="" dest="" root="" repo="" repo_phys=""
   shift
   if [ "${GENSEO_STABLE_COPY:-}" = 1 ]; then
     if [ -n "${GENSEO_STABLE_SCRIPT:-}" ] && [ "$GENSEO_STABLE_SCRIPT" != "$0" ]; then
@@ -131,6 +136,18 @@ genseo_exec_stable_copy() {
     return 0
   fi
   chmod 700 "$dest" || true
+  # Sidecar is the checkout this copy belongs to. The process list only
+  # shows the temp name, which is shared by every worktree on the machine.
+  if [ -n "$repo" ] && [ "$repo" != "/" ] && [ -d "$repo" ]; then
+    repo_phys=$(genseo_sync_physical_path "$repo" || true)
+  fi
+  if [ -n "$repo_phys" ]; then
+    if ! printf '%s\n' "$repo_phys" >"$dest.repo"; then
+      rm -f "$dest" "$dest.repo"
+      export GENSEO_SYNC_UNSAFE=1
+      return 0
+    fi
+  fi
   export GENSEO_STABLE_COPY=1
   export GENSEO_STABLE_SCRIPT=$dest
   export GENSEO_LAUNCH_SOURCE=$src
@@ -269,16 +286,121 @@ genseo_sync_cmd_is_job() {
   return 1
 }
 
-# 0 when another live GenSeo job is executing. ps failure fails closed.
-genseo_sync_other_job_script() {
-  local tmp="" pid="" cmd="" saw=1
-  tmp=$(mktemp "${TMPDIR:-/tmp}/genseo-sync-ps.XXXXXX") || return 0
-  if ps -axww -o pid=,args= >"$tmp" 2>/dev/null; then
-    saw=0
-  elif ps -eo pid=,args= >"$tmp" 2>/dev/null; then
-    saw=0
+# 0 when base is a mktemp stable copy (prefix.XXXXXX), not the .sh launcher.
+genseo_sync_is_stable_copy_name() {
+  local base=$1
+  case "$base" in
+    grokbot-genseo-daily.sh|run_landing_daily.sh) return 1 ;;
+    grokbot-genseo-daily.*|run_landing_daily.*) return 0 ;;
+  esac
+  return 1
+}
+
+# Print the checkout recorded beside a stable copy. Fail when it is missing
+# or not a directory. An unreadable or absent sidecar is not this checkout:
+# a name match alone must not block every repo on the machine.
+genseo_sync_stable_copy_checkout() {
+  local path=$1 line="" phys=""
+  [ -n "$path" ] || return 1
+  [ -f "${path}.repo" ] || return 1
+  IFS= read -r line <"${path}.repo" || return 1
+  line=$(genseo_sync_trim "$line")
+  case "$line" in
+    /*) ;;
+    *) return 1 ;;
+  esac
+  phys=$(genseo_sync_physical_path "$line" || true)
+  [ -n "$phys" ] || return 1
+  printf '%s\n' "$phys"
+}
+
+# 0 when path is inside repo_phys. Symlinks are resolved. A sibling directory
+# that merely shares the prefix (repo vs repo-other) does not count.
+genseo_sync_path_in_repo() {
+  local repo_phys=$1 path=$2 phys=""
+  [ -n "$repo_phys" ] || return 1
+  [ -n "$path" ] || return 1
+  case "$path" in
+    "$repo_phys"|"$repo_phys"/*) return 0 ;;
+  esac
+  phys=$(genseo_sync_physical_path "$path" || true)
+  [ -n "$phys" ] || return 1
+  [ "$phys" = "$repo_phys" ] && return 0
+  case "$phys" in
+    "$repo_phys"/*) return 0 ;;
+  esac
+  return 1
+}
+
+# 0 when cmd is a GenSeo job for this checkout. Absolute script paths must
+# sit in the checkout. A stable copy counts only when its sidecar names this
+# checkout. ~/bin/grokbot-genseo-daily.sh counts when that home's genseo
+# directory is this checkout. A script in another directory returns 1.
+genseo_sync_job_targets_repo() {
+  local repo_phys=$1 cmd=$2 token="" path="" base="" phys="" home_guess="" side=""
+  [ -n "$repo_phys" ] || return 1
+  [ -n "$cmd" ] || return 1
+  while IFS= read -r token; do
+    [ -n "$token" ] || continue
+    case "$token" in
+      -*) continue ;;
+      */*) ;;
+      *) continue ;;
+    esac
+    path=$token
+    base=$(basename "$path")
+    if genseo_sync_is_stable_copy_name "$base"; then
+      side=$(genseo_sync_stable_copy_checkout "$path" || true)
+      if [ -n "$side" ] && [ "$side" = "$repo_phys" ]; then
+        return 0
+      fi
+      continue
+    fi
+    case "$path" in
+      */bin/grokbot-genseo-daily|*/bin/grokbot-genseo-daily.sh)
+        home_guess=$(dirname "$path")
+        home_guess=$(dirname "$home_guess")
+        phys=$(genseo_sync_physical_path "$home_guess/genseo" || true)
+        if [ -n "$phys" ] && [ "$phys" = "$repo_phys" ]; then
+          return 0
+        fi
+        ;;
+    esac
+    genseo_sync_path_in_repo "$repo_phys" "$path" && return 0
+  done < <(printf '%s\n' "$cmd" | tr ' ' '\n')
+  return 1
+}
+
+# Fill tmp with "pid args" lines. 0 on success. GENSEO_SYNC_PS is consulted
+# only when GENSEO_SYNC_TEST=1, so a stray variable cannot hide a live job.
+genseo_sync_read_ps() {
+  local tmp=$1
+  if [ "${GENSEO_SYNC_TEST:-}" = 1 ] && [ -n "${GENSEO_SYNC_PS:-}" ]; then
+    if [ -x "$GENSEO_SYNC_PS" ] && "$GENSEO_SYNC_PS" >"$tmp" 2>/dev/null; then
+      return 0
+    fi
+    return 1
   fi
-  if [ "$saw" != 0 ]; then
+  if ps -axww -o pid=,args= >"$tmp" 2>/dev/null; then
+    return 0
+  fi
+  ps -eo pid=,args= >"$tmp" 2>/dev/null
+}
+
+# 0 when another live GenSeo job is executing a script for this checkout.
+# ps failure fails closed. A job in another directory does not count.
+genseo_sync_other_job_script() {
+  local repo=$1 tmp="" pid="" cmd="" repo_phys=""
+  repo=${repo%/}
+  if [ -z "$repo" ] || [ "$repo" = "/" ] || [ ! -d "$repo" ]; then
+    return 0
+  fi
+  repo_phys=$(genseo_sync_physical_path "$repo" || true)
+  if [ -z "$repo_phys" ]; then
+    return 0
+  fi
+  tmp=$(mktemp "${TMPDIR:-/tmp}/genseo-sync-ps.XXXXXX") || return 0
+  if ! genseo_sync_read_ps "$tmp"; then
     rm -f "$tmp"
     return 0
   fi
@@ -289,6 +411,7 @@ genseo_sync_other_job_script() {
     genseo_sync_cmd_is_job "$cmd" || continue
     genseo_sync_pid_is_us "$pid" && continue
     genseo_sync_pid_alive "$pid" || continue
+    genseo_sync_job_targets_repo "$repo_phys" "$cmd" || continue
     rm -f "$tmp"
     return 0
   done <"$tmp"
