@@ -1,0 +1,386 @@
+{
+  "generated": "2026-10-19",
+  "source_audit": "docs/GEO_CITABILITY_AUDIT_2026-10-17.md",
+  "delta_audit": "docs/GEO_DELTA_AUDIT_2026-10-19.md",
+  "title_suffix": " – Wellness Nest",
+  "title_tag_max": 70,
+  "policy": "Dry run by default. --apply writes docs/geo-live-fixes-out/ only. No Shopify write API.",
+  "posts": [
+    {
+      "ticket": "CA1009-1",
+      "url": "https://wellnessnest.co/blogs/news/turkesterone-for-athletes-drug-test-guide-us-2026",
+      "expect_clean": true,
+      "replacements": [
+        {
+          "kind": "replace_dead_citation",
+          "find": "https://www.usada.org/spirit-of-sport/nutrition/natural-products-derived-from-plants-and-animals/",
+          "replace": "https://www.usada.org/spirit-of-sport/natural-products-derived-plants-animals/",
+          "count": 1,
+          "source_url": "https://www.usada.org/spirit-of-sport/natural-products-derived-plants-animals/",
+          "source_status": 200,
+          "source_checked": "2026-10-19"
+        }
+      ]
+    },
+    {
+      "ticket": "CA1009-2",
+      "url": "https://wellnessnest.co/blogs/news/vaginal-probiotic-dosage-how-many-cfu-a-day-us-2026",
+      "expect_clean": true,
+      "replacements": [
+        {
+          "kind": "add_primary_source",
+          "find": "A larger count from an unstudied strain is not automatically a better choice than a smaller count from a studied strain.",
+          "replace": "A larger count from an unstudied strain is not automatically a better choice than a smaller count from a studied strain (<a href=\"https://www.nccih.nih.gov/health/probiotics-usefulness-and-safety\">NCCIH: different probiotics can have different effects</a>).",
+          "count": 1,
+          "source_url": "https://www.nccih.nih.gov/health/probiotics-usefulness-and-safety",
+          "source_status": 200,
+          "source_checked": "2026-10-19"
+        }
+      ],
+      "title": {
+        "from": "Vaginal Probiotic Dosage: How Many CFU a Day? (US 2026)",
+        "to": "Vaginal Probiotic Dosage: How Many CFU a Day? (US)"
+      }
+    },
+    {
+      "ticket": "CA1009-4",
+      "url": "https://wellnessnest.co/blogs/news/where-to-buy-nmn-in-the-us-fda-status-explained-2026",
+      "expect_clean": true,
+      "replacements": [],
+      "title": {
+        "from": "Where to Buy NMN in the US: FDA Status Explained (2026)",
+        "to": "Where to Buy NMN in the US: FDA Status Explained"
+      }
+    },
+    {
+      "ticket": "CA1009-5",
+      "url": "https://wellnessnest.co/blogs/news/shilajit-price-cost-per-serving-by-form-us-2026",
+      "expect_clean": true,
+      "replacements": [
+        {
+          "kind": "add_primary_source",
+          "find": "taken straight from the label",
+          "replace": "taken straight from the label (<a href=\"https://www.fda.gov/food/information-consumers-using-dietary-supplements/questions-and-answers-dietary-supplements\">FDA: the Supplement Facts panel must list servings per container</a>)",
+          "count": 1,
+          "source_url": "https://www.fda.gov/food/information-consumers-using-dietary-supplements/questions-and-answers-dietary-supplements",
+          "source_status": 200,
+          "source_checked": "2026-10-19"
+        }
+      ]
+    },
+    {
+      "ticket": "CA1009-6",
+      "url": "https://wellnessnest.co/blogs/news/where-to-buy-turkesterone-in-the-us-what-to-check-2026",
+      "expect_clean": true,
+      "replacements": [
+        {
+          "kind": "rephrase_h2",
+          "find": "<h2>1. Check the standardization percentage before you pay</h2>",
+          "replace": "<h2>What standardization percentage should you check before you pay?</h2>",
+          "count": 1
+        }
+      ],
+      "title": {
+        "from": "Where to Buy Turkesterone in the US: What to Check (2026)",
+        "to": "Where to Buy Turkesterone in the US: What to Check"
+      }
+    },
+    {
+      "ticket": "CA1009-8",
+      "url": "https://wellnessnest.co/blogs/news/where-to-buy-vaginal-probiotics-in-the-us-5-checks-2026",
+      "expect_clean": true,
+      "replacements": [
+        {
+          "kind": "rephrase_h2",
+          "find": "<h2>1. Check the label before you check the seller</h2>",
+          "replace": "<h2>What should you check on the label before the seller?</h2>",
+          "count": 1
+        },
+        {
+          "kind": "add_primary_source",
+          "find": "Be cautious with claims that promise to cure an infection",
+          "replace": "Be cautious with claims that promise to cure an infection (<a href=\"https://www.fda.gov/food/information-consumers-using-dietary-supplements/questions-and-answers-dietary-supplements\">FDA: a supplement marketed to cure a disease is regulated as a drug</a>)",
+          "count": 1,
+          "source_url": "https://www.fda.gov/food/information-consumers-using-dietary-supplements/questions-and-answers-dietary-supplements",
+          "source_status": 200,
+          "source_checked": "2026-10-19"
+        }
+      ],
+      "title": {
+        "from": "Where to Buy Vaginal Probiotics in the US: 5 Checks (2026)",
+        "to": "Where to Buy Vaginal Probiotics in the US: 5 Checks"
+      }
+    },
+    {
+      "ticket": "CA1009-10",
+      "url": "https://wellnessnest.co/blogs/news/creatine-gummies-for-beginners-30-days-in-the-us",
+      "expect_clean": true,
+      "replacements": [
+        {
+          "kind": "rephrase_h2",
+          "find": "<h2>1. Set up your first week</h2>",
+          "replace": "<h2>How do you set up your first week?</h2>",
+          "count": 1
+        },
+        {
+          "kind": "add_primary_source",
+          "find": "Loading is an optional research protocol, not a prerequisite for beginning a consistent routine.",
+          "replace": "Loading is an optional research protocol, not a prerequisite for beginning a consistent routine. The International Society of Sports Nutrition position stand describes ingesting 3 g/day for 28 days as a gradual alternative to rapid loading (<a href='https://pmc.ncbi.nlm.nih.gov/articles/PMC5469049/'>ISSN creatine position stand</a>).",
+          "count": 2,
+          "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5469049/",
+          "source_status": 200,
+          "source_checked": "2026-10-19"
+        }
+      ]
+    },
+    {
+      "ticket": "CA1016-1",
+      "url": "https://wellnessnest.co/blogs/news/turkesterone-price-5-cost-checks-in-the-us-2026",
+      "expect_clean": true,
+      "replacements": [
+        {
+          "kind": "remove_published_line",
+          "find": "Published: October 17, 2026. ",
+          "replace": "",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "ticket": "MB1006-6",
+      "url": "https://wellnessnest.co/blogs/news/probiotics-during-your-period-keep-taking-them-us-2026",
+      "expect_clean": true,
+      "replacements": [
+        {
+          "kind": "florafresh_label",
+          "find": "They contain 15 billion CFU from four Lactobacillus strains: L. rhamnosus, L. reuteri, L. salivarius, and L. gasseri. They also include an XOS prebiotic, D-Mannose, and vitamin C. They are vegan, gluten-free, and sugar-free, with a pineapple flavor.",
+          "replace": "The Supplement Facts label lists Bacillus coagulans SNZ-1969 at 15B CFU per 2 gummies, plus vitamin C 30 mg and pineapple fruit powder 100 mg. The gummies are sweetened with maltitol and isomalt, so they are not sugar-free. Label badges include Vegan and Gluten Free, and the flavor is pineapple.",
+          "count": 1
+        },
+        {
+          "kind": "florafresh_label",
+          "find": "Four Lactobacillus strains in a daily pineapple gummy, easy to keep taking through every day of your cycle.",
+          "replace": "Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies, in a pineapple gummy you can keep taking through your cycle.",
+          "count": 2
+        }
+      ],
+      "title": {
+        "from": "Probiotics During Your Period: Keep Taking Them? (US 2026)",
+        "to": "Probiotics During Your Period: Keep Taking Them? (US)"
+      }
+    },
+    {
+      "ticket": "MB1007-1",
+      "url": "https://wellnessnest.co/blogs/news/creatine-gummies-and-hair-loss-what-the-dht-data-shows-us",
+      "expect_clean": true,
+      "replacements": [],
+      "title": {
+        "from": "Creatine Gummies and Hair Loss: What the DHT Data Shows (US)",
+        "to": "Creatine Gummies and Hair Loss: DHT Data Shows (US)"
+      }
+    },
+    {
+      "ticket": "MB1007-3",
+      "url": "https://wellnessnest.co/blogs/news/does-nmn-break-a-fast-6-rules-for-fasting-days-us-2026",
+      "expect_clean": true,
+      "replacements": [
+        {
+          "kind": "rephrase_h2",
+          "find": "<h2>Know That No Trial Has Tested NMN During a Fast</h2>",
+          "replace": "<h2>Has a trial tested NMN during a fast?</h2>",
+          "count": 1
+        }
+      ],
+      "title": {
+        "from": "Does NMN Break a Fast? 6 Rules for Fasting Days (US 2026)",
+        "to": "Does NMN Break a Fast? Fasting-Day Rules (US)"
+      }
+    },
+    {
+      "ticket": "MB1008-2",
+      "url": "https://wellnessnest.co/blogs/news/probiotics-and-birth-control-can-you-take-both-us-2026",
+      "expect_clean": true,
+      "replacements": [
+        {
+          "kind": "florafresh_label",
+          "find": "Each serving lists 15 billion CFU from 4 strains (L. rhamnosus, L. reuteri, L. salivarius and L. gasseri), plus XOS prebiotic, D-Mannose and vitamin C. The gummies are vegan, gluten-free and sugar-free.",
+          "replace": "The Supplement Facts label lists Bacillus coagulans SNZ-1969 at 15B CFU per 2 gummies, plus vitamin C 30 mg and pineapple fruit powder 100 mg. The gummies are sweetened with maltitol and isomalt, so they are not sugar-free. Label badges include Vegan and Gluten Free.",
+          "count": 1
+        },
+        {
+          "kind": "florafresh_label",
+          "find": "Each serving lists 15 billion CFU from 4 Lactobacillus strains, plus XOS prebiotic, D-Mannose and vitamin C. The gummies are vegan, gluten-free and sugar-free, with a pineapple flavor.",
+          "replace": "The Supplement Facts label lists Bacillus coagulans SNZ-1969 at 15B CFU per 2 gummies, plus vitamin C 30 mg and pineapple fruit powder 100 mg. The gummies are sweetened with maltitol and isomalt, so they are not sugar-free. Label badges include Vegan and Gluten Free, and the flavor is pineapple.",
+          "count": 2
+        }
+      ],
+      "title": {
+        "from": "Probiotics and Birth Control: Can You Take Both? (US 2026)",
+        "to": "Probiotics and Birth Control: Can You Take Both? (US)"
+      }
+    },
+    {
+      "ticket": "MB1008-3",
+      "url": "https://wellnessnest.co/blogs/news/turkesterone-and-alcohol-6-things-to-know-us-2026",
+      "expect_clean": true,
+      "replacements": [
+        {
+          "kind": "rephrase_h2",
+          "find": "<h2>No Study Has Tested Turkesterone With Alcohol</h2>",
+          "replace": "<h2>Has a study tested turkesterone with alcohol?</h2>",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "ticket": "MB1009-1",
+      "url": "https://wellnessnest.co/blogs/news/creatine-gummies-on-rest-days-keep-taking-them-us-2026",
+      "expect_clean": true,
+      "replacements": [],
+      "title": {
+        "from": "Creatine Gummies on Rest Days: Keep Taking Them? (US 2026)",
+        "to": "Creatine Gummies on Rest Days: Keep Taking Them? (US)"
+      }
+    },
+    {
+      "ticket": "MB1009-3",
+      "url": "https://wellnessnest.co/blogs/news/best-time-to-take-vaginal-probiotics-6-rules-us-2026",
+      "expect_clean": true,
+      "replacements": [
+        {
+          "kind": "rephrase_h2",
+          "find": "<h2>Read the Label Before Any Timing Advice</h2>",
+          "replace": "<h2>What should you read on the label before timing advice?</h2>",
+          "count": 1
+        },
+        {
+          "kind": "florafresh_label",
+          "find": "The product page lists 15 billion CFU per serving from 4 Lactobacillus strains: L. rhamnosus, L. reuteri, L. salivarius and L. gasseri. It also lists XOS prebiotics, D-Mannose and vitamin C in a vegan, gluten-free, sugar-free gummy.",
+          "replace": "The Supplement Facts label lists Bacillus coagulans SNZ-1969 at 15B CFU per 2 gummies, plus vitamin C 30 mg and pineapple fruit powder 100 mg. The gummies are sweetened with maltitol and isomalt, so they are not sugar-free. Label badges include Vegan and Gluten Free.",
+          "count": 1
+        },
+        {
+          "kind": "florafresh_label",
+          "find": "15 billion CFU from 4 Lactobacillus strains, 2 gummies a day with a meal.",
+          "replace": "Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies, taken with a meal.",
+          "count": 1
+        },
+        {
+          "kind": "florafresh_label",
+          "find": "Yeast probiotics are not affected by antibiotics, but FloraFresh uses Lactobacillus bacteria, so the gap applies.",
+          "replace": "Yeast probiotics are not affected by antibiotics. FloraFresh is Bacillus coagulans SNZ-1969, a spore-based strain, not a yeast. Ask a clinician whether a gap from the antibiotic fits this product before you change the labeled serving.",
+          "count": 1
+        }
+      ],
+      "title": {
+        "from": "Best Time to Take Vaginal Probiotics: 6 Rules (US 2026)",
+        "to": "Best Time to Take Vaginal Probiotics: 6 Rules (US)"
+      }
+    },
+    {
+      "ticket": "MB1009-5",
+      "url": "https://wellnessnest.co/blogs/news/creatine-and-alcohol-what-happens-if-you-drink-us-2026",
+      "expect_clean": true,
+      "replacements": [],
+      "title": {
+        "from": "Creatine and Alcohol: What Happens If You Drink? (US 2026)",
+        "to": "Creatine and Alcohol: What Happens If You Drink? (US)"
+      }
+    },
+    {
+      "ticket": "MB1009-7",
+      "url": "https://wellnessnest.co/blogs/news/vaginal-probiotics-while-traveling-7-us-rules",
+      "expect_clean": true,
+      "replacements": [
+        {
+          "kind": "rephrase_h2",
+          "find": "<h2>The short answer for US travelers</h2>",
+          "replace": "<h2>What is the short answer for US travelers?</h2>",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "ticket": "MB1012-1",
+      "url": "https://wellnessnest.co/blogs/news/creatine-gummies-for-runners-what-trials-show-us-2026",
+      "expect_clean": true,
+      "replacements": [],
+      "title": {
+        "from": "Creatine Gummies for Runners: What Trials Show (US 2026)",
+        "to": "Creatine Gummies for Runners: What Trials Show (US)"
+      }
+    },
+    {
+      "ticket": "MB1012-2",
+      "url": "https://wellnessnest.co/blogs/news/vaginal-probiotics-for-beginners-what-to-expect-in-the-us",
+      "expect_clean": true,
+      "replacements": [
+        {
+          "kind": "add_primary_source",
+          "find": "Evidence varies by product, strain, dose, and study design",
+          "replace": "Evidence varies by product, strain, dose, and study design (<a href=\"https://www.nccih.nih.gov/health/probiotics-usefulness-and-safety\">NCCIH: different probiotics can have different effects</a>)",
+          "count": 1,
+          "source_url": "https://www.nccih.nih.gov/health/probiotics-usefulness-and-safety",
+          "source_status": 200,
+          "source_checked": "2026-10-19"
+        }
+      ],
+      "title": {
+        "from": "Vaginal Probiotics for Beginners: What to Expect in the US",
+        "to": "Vaginal Probiotics for Beginners: What to Expect (US)"
+      }
+    },
+    {
+      "ticket": "MB1012-3",
+      "url": "https://wellnessnest.co/blogs/news/creatine-gummies-over-60-trial-findings-in-the-us",
+      "expect_clean": true,
+      "replacements": [
+        {
+          "kind": "remove_published_line",
+          "find": "Published: October 17, 2026. ",
+          "replace": "",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "ticket": "MB1012-4",
+      "url": "https://wellnessnest.co/blogs/news/turkesterone-over-60-5-checks-in-the-us",
+      "expect_clean": true,
+      "replacements": [
+        {
+          "kind": "remove_published_line",
+          "find": "Published: October 17, 2026. ",
+          "replace": "",
+          "count": 1
+        },
+        {
+          "kind": "add_related_article",
+          "find": "do not treat this article as a local medical recommendation.",
+          "replace": "do not treat this article as a local medical recommendation. For a separate look at timing, see <a href='https://wellnessnest.co/blogs/news/how-long-does-turkesterone-take-to-work-us-2026'>how long turkesterone takes to work</a>.",
+          "count": 2,
+          "source_url": "https://wellnessnest.co/blogs/news/how-long-does-turkesterone-take-to-work-us-2026",
+          "source_status": 200,
+          "source_checked": "2026-10-19"
+        }
+      ]
+    },
+    {
+      "ticket": "MB1012-5",
+      "url": "https://wellnessnest.co/blogs/news/shilajit-for-seniors-5-safety-checks-over-60-us-2026",
+      "expect_clean": true,
+      "replacements": [
+        {
+          "kind": "rephrase_h2",
+          "find": "<h2>1. Ask a clinician to review every medication first</h2>",
+          "replace": "<h2>Should a clinician review every medication first?</h2>",
+          "count": 1
+        }
+      ],
+      "title": {
+        "from": "Shilajit for Seniors: 5 Safety Checks Over 60 (US 2026)",
+        "to": "Shilajit for Seniors: 5 Safety Checks Over 60 (US)"
+      }
+    }
+  ]
+}

@@ -146,9 +146,15 @@ class Compliance(unittest.TestCase):
             "NMN is not FDA-approved. "
             "Does paying more make a supplement FDA-approved? "
             "If a retailer says FDA approved NMN, ask what that phrase means. "
-            "These trials do not supply a guaranteed result."
+            "These trials do not supply a guaranteed result. "
+            "Neither registry entry proves that a product with the same number will prevent, treat, or cure an infection. "
+            "Be cautious with claims that promise to cure an infection, replace clinical care, or guarantee a change in odor, discharge, pain, or pH."
         )
         self.assertEqual(geo.compliance_issues(text), [])
+
+    def test_an_affirmative_promise_to_cure_still_fails(self):
+        fails = geo.compliance_issues("We promise to cure an infection with this gummy.")
+        self.assertTrue(any("disease-cure" in f for f in fails), fails)
 
 
 class Links(unittest.TestCase):
