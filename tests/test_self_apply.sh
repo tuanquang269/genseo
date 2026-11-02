@@ -14,6 +14,7 @@ PASS=0
 FAIL=0
 RC=0
 HOLD_PIDS=""
+EXTRA_DIRS=""
 LOGF="$WORK/none.log"
 LAUNCH_LOG="$WORK/none-launch.log"
 FIX=""
@@ -24,7 +25,7 @@ APPLY_PATH=""
 START_STATUS="$(git -C "$ROOT" status --porcelain)"
 
 cleanup() {
-  local p
+  local p d
   for p in $HOLD_PIDS; do
     kill "$p" 2>/dev/null || true
     wait "$p" 2>/dev/null || true
@@ -34,6 +35,9 @@ cleanup() {
       kill "$p" 2>/dev/null || true
     done
   fi
+  for d in $EXTRA_DIRS; do
+    rm -rf "$d"
+  done
   rm -rf "$WORK"
 }
 trap cleanup EXIT
@@ -223,6 +227,18 @@ assert_continued() {
   else bad "$1 exits 0 (rc $RC)"; fi
   has "$WORK/out" "APPLY_RC:0" "$1 returns 0"
   has "$WORK/out" "CONTINUED" "$1 continues"
+}
+
+# Prints the job_running status. $1 is GENSEO_SELF_APPLY_TEST (1 or 0),
+# $2 is the lane, $3 is the checkout the test-mode scan is scoped to.
+job_rc() {
+  env -i PATH="/usr/bin:/bin" GENSEO_SELF_APPLY_SH="$SELF" /bin/bash -c '
+    . "$GENSEO_SELF_APPLY_SH"
+    GENSEO_SELF_APPLY_TEST=$1
+    unset GENSEO_SELF_APPLY_PS
+    genseo_self_apply_job_running "$2" "$3"
+    printf "%s\n" "$?"
+  ' _ "$1" "$2" "$3"
 }
 
 daily_plist() { printf '%s\n' "$HOME_DIR/Library/LaunchAgents/com.pati.genseo-daily.plist"; }
@@ -730,6 +746,51 @@ run_apply
 assert_continued "ps unreadable"
 has "$LOGF" "self-apply: com.pati.genseo-landing left in place — process list unreadable" "unreadable ps is fail-closed"
 [ "$(cat "$(landing_plist)")" = "OLD-LANDING" ] && ok "unreadable ps does not copy" || bad "unreadable ps copied"
+
+echo "9c. test mode ignores writers outside the checkout; the host scan does not"
+OUTSIDE=$(mktemp -d "${TMPDIR:-/tmp}/self-apply-outside.XXXXXX") || exit 1
+EXTRA_DIRS="$EXTRA_DIRS $OUTSIDE"
+mkdir -p "$WORK/in-checkout" "$WORK/nops"
+cat >"$OUTSIDE/run_landing_daily.sh" <<'EOF'
+#!/bin/bash
+sleep 180
+EOF
+cat >"$WORK/in-checkout/run_landing_daily.sh" <<'EOF'
+#!/bin/bash
+sleep 180
+EOF
+printf '%s\n' '#!/bin/bash' 'exit 1' >"$WORK/nops/ps"
+chmod 755 "$OUTSIDE/run_landing_daily.sh" "$WORK/in-checkout/run_landing_daily.sh" "$WORK/nops/ps"
+"$OUTSIDE/run_landing_daily.sh" &
+OUT_PID=$!
+HOLD_PIDS="$HOLD_PIDS $OUT_PID"
+sleep 0.3
+if kill -0 "$OUT_PID" 2>/dev/null; then ok "outside landing writer is alive"
+else bad "outside landing writer did not start"; fi
+rc=$(job_rc 1 landing "$WORK/in-checkout")
+[ "$rc" = 1 ] && ok "outside writer is invisible in test mode" || bad "outside writer was visible in test mode (rc $rc)"
+rc=$(job_rc 0 landing "$WORK/in-checkout")
+[ "$rc" = 0 ] && ok "host scan still sees a writer outside the checkout" || bad "host scan missed the outside writer (rc $rc)"
+"$WORK/in-checkout/run_landing_daily.sh" &
+IN_PID=$!
+HOLD_PIDS="$HOLD_PIDS $IN_PID"
+sleep 0.3
+if kill -0 "$IN_PID" 2>/dev/null; then ok "in-checkout landing writer is alive"
+else bad "in-checkout landing writer did not start"; fi
+rc=$(job_rc 1 landing "$WORK/in-checkout")
+[ "$rc" = 0 ] && ok "in-checkout writer still blocks test mode" || bad "in-checkout writer rc was $rc"
+rc=$(env -i PATH="$WORK/nops:/usr/bin:/bin" GENSEO_SELF_APPLY_SH="$SELF" /bin/bash -c '
+  . "$GENSEO_SELF_APPLY_SH"
+  GENSEO_SELF_APPLY_TEST=1
+  unset GENSEO_SELF_APPLY_PS
+  genseo_self_apply_job_running landing "$1"
+  printf "%s\n" "$?"
+' _ "$WORK/in-checkout")
+[ "$rc" = 2 ] && ok "unreadable ps in test mode is fail-closed" || bad "unreadable scoped ps rc was $rc"
+kill "$OUT_PID" "$IN_PID" 2>/dev/null || true
+wait "$OUT_PID" 2>/dev/null || true
+wait "$IN_PID" 2>/dev/null || true
+HOLD_PIDS=""
 
 echo "10. reload failure restores the previous plist"
 new_fix fail-once
