@@ -252,6 +252,38 @@ def _author_fails(md):
     return fails
 
 
+def draft_struct_html(raw):
+    """HTML the draft structural checks see.
+
+    Images before links. ![alt](https://...) matches the link pattern.
+    The old order turned a Shopify CDN image into an <a>, so the <img>
+    counter saw 0. A remote src is still a fail. See remote_image_fail.
+    """
+    html=raw
+    html=re.sub(r'^###\s+(.*)$', r'<h3>\1</h3>', html, flags=re.M)
+    html=re.sub(r'^##\s+(.*)$',  r'<h2>\1</h2>', html, flags=re.M)
+    html=re.sub(r'^#\s+(.*)$',   r'<h1>\1</h1>', html, flags=re.M)
+    html=re.sub(r'!\[([^\]]*)\]\(([^)]+)\)', r'<img alt="\1" src="\2">', html)
+    html=re.sub(r'\[([^\]]+)\]\((https?://[^)]+)\)', r'<a href="\2">\1</a>', html)
+    # markdown tables -> mark presence
+    if re.search(r'^\|.*\|\s*$', html, flags=re.M) and re.search(r'^\|[-: |]+\|\s*$', html, flags=re.M):
+        html+="\n<table><th>markdown-table</th></table>"
+    # first PLAIN-TEXT paragraph as answer block — skip any line already starting
+    # with a tag or comment (the skill's mandatory line-2 `<!-- meta_description -->`
+    # otherwise becomes the "first paragraph" and every correct draft fails)
+    html=re.sub(r'^(?!<|\s*$)(.+)$', r'<p>\1</p>', html, count=1, flags=re.M)
+    return html
+
+
+def remote_image_fail(src):
+    """Draft markdown must not keep an https image. The publisher uploads only local files."""
+    if re.match(r'(?i)https?://', src):
+        return (src+" → remote URL image: download it to a local file. "
+                "Save the bytes on an absolute /Users or /private path. "
+                "shopify_publisher uploads only those paths and sets article.image from the first local file.")
+    return ""
+
+
 def main():
     if "--self-check-author" in sys.argv:
         test_author_gate(); return 0
@@ -263,19 +295,7 @@ def main():
     # If validating a markdown draft, convert headings/links to HTML-equivalent so the
     # structural checks work the same way they will after the publisher's md->html step.
     if draft_mode and path.endswith(".md"):
-        html=raw
-        html=re.sub(r'^###\s+(.*)$', r'<h3>\1</h3>', html, flags=re.M)
-        html=re.sub(r'^##\s+(.*)$',  r'<h2>\1</h2>', html, flags=re.M)
-        html=re.sub(r'^#\s+(.*)$',   r'<h1>\1</h1>', html, flags=re.M)
-        html=re.sub(r'\[([^\]]+)\]\((https?://[^)]+)\)', r'<a href="\2">\1</a>', html)
-        html=re.sub(r'!\[([^\]]*)\]\(([^)]+)\)', r'<img alt="\1" src="\2">', html)
-        # markdown tables -> mark presence
-        if re.search(r'^\|.*\|\s*$', html, flags=re.M) and re.search(r'^\|[-: |]+\|\s*$', html, flags=re.M):
-            html+="\n<table><th>markdown-table</th></table>"
-        # first PLAIN-TEXT paragraph as answer block — skip any line already starting
-        # with a tag or comment (the skill's mandatory line-2 `<!-- meta_description -->`
-        # otherwise becomes the "first paragraph" and every correct draft fails)
-        html=re.sub(r'^(?!<|\s*$)(.+)$', r'<p>\1</p>', html, count=1, flags=re.M)
+        html=draft_struct_html(raw)
     else:
         html=raw
     text=re.sub(r'<script[^>]*>.*?</script>','',html,flags=re.S)  # exclude schema from word count
@@ -398,6 +418,9 @@ def main():
         base=os.path.dirname(os.path.abspath(path))
         bad=[]
         for src in re.findall(r'<img[^>]*\bsrc=["\']([^"\']+)["\']', html):
+            if md_draft and remote_image_fail(src):
+                bad.append(remote_image_fail(src))
+                continue
             if re.match(r'(?i)https?://|data:', src):
                 continue
             p=src if os.path.isabs(src) else os.path.join(base, src)
