@@ -7,6 +7,7 @@ ima2 binary: no network, no OAuth, no Shopify.
     python3 -m unittest tests/test_ima2_retry.py
 """
 import os
+import signal
 import stat
 import subprocess
 import sys
@@ -425,6 +426,14 @@ class GenPngRetryTests(unittest.TestCase):
         self.assertIn("retrying in 5s", log)
 
     def test_timeout_kills_sigterm_ignoring_sleeper_tree(self):
+        """Timeout kill reaches a setsid grandchild that ignores SIGTERM.
+
+        The old 1s budget started at process spawn. A just-written shebang in
+        tmp can spend that whole budget inside exec, before perl forks, so the
+        pidfile never appears. Readiness is a deadline wait, and perl is exec'd
+        directly. The timeout under test starts only after the pidfile is
+        durable. A missing /proc (macOS) is unknown, not proof the sleeper died.
+        """
         pidfile = os.path.join(self.tmp, "grand.pid")
         script = os.path.join(self.tmp, "ima2-hang")
         with open(script, "w", encoding="utf-8") as fh:
@@ -432,39 +441,66 @@ class GenPngRetryTests(unittest.TestCase):
                 "#!/usr/bin/perl\n"
                 "use POSIX qw(setsid);\n"
                 "my $grandf = $ARGV[0];\n"
+                "$SIG{TERM} = \"IGNORE\";\n"
+                "$SIG{HUP} = \"IGNORE\";\n"
+                "$SIG{INT} = \"IGNORE\";\n"
                 "my $pid = fork();\n"
                 "die \"fork\\n\" unless defined $pid;\n"
                 "if ($pid == 0) {\n"
                 "  setsid() or die \"setsid\\n\";\n"
-                "  $SIG{TERM} = \"IGNORE\";\n"
-                "  $SIG{HUP} = \"IGNORE\";\n"
-                "  $SIG{INT} = \"IGNORE\";\n"
-                "  open my $f, \">\", $grandf or die $!;\n"
+                "  my $tmp = $grandf . \".tmp\";\n"
+                "  open my $f, \">\", $tmp or die $!;\n"
                 "  print $f \"$$\\n\";\n"
-                "  close $f;\n"
+                "  close $f or die $!;\n"
+                "  rename $tmp, $grandf or die $!;\n"
                 "  while (1) { sleep 30; }\n"
                 "  exit 0;\n"
                 "}\n"
-                "$SIG{TERM} = \"IGNORE\";\n"
-                "$SIG{HUP} = \"IGNORE\";\n"
-                "$SIG{INT} = \"IGNORE\";\n"
                 "while (1) { sleep 30; }\n"
             )
         os.chmod(script, stat.S_IRWXU)
         sibling = subprocess.Popen(["/bin/sleep", "60"])
+        parent = {}
+        real_popen = subprocess.Popen
+        # Exec perl directly. Spawning a just-written shebang in tmp can sit
+        # in exec for longer than the old 1s budget, before perl reaches fork.
+        cmd = ["/usr/bin/perl", script, pidfile]
+
+        def popen(argv, *args, **kwargs):
+            proc = real_popen(argv, *args, **kwargs)
+            if _is_hang_cmd(argv, script):
+                parent["proc"] = proc
+                return _PidfileThenTimeout(proc, pidfile)
+            return proc
+
+        subprocess.Popen = popen
         grand = None
         try:
             with self.assertRaises(subprocess.TimeoutExpired):
-                ai._run_ima2([script, pidfile], os.environ.copy(), 1)
-            self.assertTrue(os.path.isfile(pidfile))
-            with open(pidfile, encoding="utf-8") as fh:
-                grand = int(fh.read().strip())
+                ai._run_ima2(cmd, os.environ.copy(), 1)
+            grand = _read_ready_pid(pidfile)
+            self.assertIsNotNone(grand, "grandchild pidfile missing after readiness deadline")
             self.assertTrue(self._stopped(grand), "sleeper grandchild still running")
             self.assertIsNone(sibling.poll())
         finally:
+            subprocess.Popen = real_popen
             if sibling.poll() is None:
                 sibling.kill()
                 sibling.wait()
+            proc = parent.get("proc")
+            if proc is not None and proc.poll() is None:
+                try:
+                    ai._kill_pid_tree(proc.pid)
+                except Exception:
+                    pass
+                try:
+                    proc.kill()
+                except OSError:
+                    pass
+                try:
+                    proc.wait(timeout=2)
+                except Exception:
+                    pass
             if grand and ai._pid_alive(grand):
                 try:
                     os.kill(grand, 9)
@@ -472,27 +508,114 @@ class GenPngRetryTests(unittest.TestCase):
                     pass
 
     def _stopped(self, pid):
-        deadline = time.time() + 2
-        while time.time() < deadline:
+        deadline = time.monotonic() + 3
+        while time.monotonic() < deadline:
             if not ai._pid_alive(pid):
                 return True
-            state = _proc_state(pid)
-            if state in ("Z", None):
+            if _proc_state(pid) == "Z":
                 return True
             time.sleep(0.05)
-        return False
+        return (not ai._pid_alive(pid)) or _proc_state(pid) == "Z"
+
+
+class _PidfileThenTimeout(object):
+    """Popen proxy: wait until the grandchild pidfile exists, then time out.
+
+    `_run_ima2` would otherwise start its timeout at spawn. Other Popen
+    callers during the kill (ps) stay on the real process object.
+    """
+
+    def __init__(self, proc, pidfile):
+        self._proc = proc
+        self._pidfile = pidfile
+        self.pid = proc.pid
+        self.stdout = proc.stdout
+        self.stderr = proc.stderr
+        self.stdin = proc.stdin
+        self.returncode = proc.returncode
+
+    def communicate(self, timeout=None):
+        pid = self._wait_ready()
+        if not pid:
+            return self._proc.communicate(timeout=0)
+        self._require_ignores_sigterm(pid)
+        return self._proc.communicate(timeout=0.05)
+
+    def wait(self, timeout=None):
+        rc = self._proc.wait(timeout=timeout)
+        self.returncode = self._proc.returncode
+        return rc
+
+    def poll(self):
+        self.returncode = self._proc.poll()
+        return self.returncode
+
+    def _wait_ready(self):
+        deadline = time.monotonic() + 10
+        while time.monotonic() < deadline:
+            pid = _read_ready_pid(self._pidfile)
+            if pid:
+                return pid
+            if self._proc.poll() is not None:
+                return None
+            time.sleep(0.02)
+        return _read_ready_pid(self._pidfile)
+
+    def _require_ignores_sigterm(self, pid):
+        try:
+            os.kill(pid, signal.SIGTERM)
+        except OSError as exc:
+            raise AssertionError("grandchild %s was gone before SIGTERM (%s)" % (pid, exc))
+        deadline = time.monotonic() + 0.1
+        while time.monotonic() < deadline:
+            if not ai._pid_alive(pid):
+                raise AssertionError(
+                    "grandchild %s died on SIGTERM; the sleeper must ignore it" % pid)
+            time.sleep(0.02)
+
+
+def _is_hang_cmd(cmd, script):
+    if isinstance(cmd, (list, tuple)) and cmd:
+        if cmd[0] == script:
+            return True
+        return os.path.basename(str(cmd[0])) == "perl" and script in cmd[1:]
+    return cmd == script
+
+
+def _read_ready_pid(path):
+    try:
+        with open(path, encoding="utf-8") as fh:
+            raw = fh.read().strip()
+    except OSError:
+        return None
+    if raw.isdigit() and int(raw) > 1:
+        return int(raw)
+    return None
 
 
 def _proc_state(pid):
+    """One-letter process state. None means unknown, including macOS without /proc."""
     path = "/proc/%s/stat" % pid
     try:
-        raw = open(path, encoding="utf-8", errors="replace").read()
+        with open(path, encoding="utf-8", errors="replace") as fh:
+            raw = fh.read()
     except OSError:
-        return None
+        raw = ""
     mark = raw.rfind(")")
-    if mark < 0 or mark + 2 >= len(raw):
+    if mark >= 0 and mark + 2 < len(raw) and raw[mark + 2].isalpha():
+        return raw[mark + 2]
+    try:
+        out = subprocess.check_output(
+            ["ps", "-o", "state=", "-p", str(int(pid))],
+            stderr=subprocess.DEVNULL,
+            text=True,
+        )
+    except (OSError, subprocess.CalledProcessError, ValueError):
         return None
-    return raw[mark + 2]
+    token = out.strip()
+    if not token:
+        return None
+    return token[0]
 
 
 if __name__ == "__main__":
