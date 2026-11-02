@@ -299,7 +299,9 @@ def self_check():
         ("MenoMate Menopause Probiotic Review", None, [], 'PASS', 17.1),  # weak rank + stocked brand -> genuine
         ("Urolithin A benefits review", None, [], 'FAIL'),                 # banned AgeAura SKU
         ("AgeAura review", None, [], 'PASS'),                              # brand is allowed; ticket builder locks the SKU
-        ("FloraFresh 15 billion CFU review", None, [], 'FAIL'),            # wrong PDP figure (label: 1 billion CFU)
+        ("FloraFresh 1 billion CFU review", None, [], 'FAIL'),             # retired count (label: 15B CFU)
+        ("FloraFresh 1B CFU review", None, [], 'FAIL'),                    # same retired count
+        ("FloraFresh 15B CFU review", None, [], 'PASS'),                   # Kevin 2026-10-21 label count
         ("FloraFresh sugar free gummies review", None, [], 'FAIL'),        # label: maltitol + isomalt
         ("FloraFresh Bacillus coagulans SNZ-1969 review", None, [], 'PASS'),  # the label strain
         ("Shilajit Shockwave 500 mg review", None, [], 'FAIL'),                # pack label has no milligram

@@ -188,13 +188,13 @@
    "product": "florafresh-vaginal-probiotics-gummies",
    "primary": "vaginal probiotic dosage",
    "title": "Vaginal Probiotic Dosage: How Many CFU a Day? (US {year})",
-   "secondary": ["how many cfu for vaginal health", "vaginal probiotic cfu", "1 billion cfu probiotic", "how many vaginal probiotics a day"],
+   "secondary": ["how many cfu for vaginal health", "vaginal probiotic cfu", "15B cfu probiotic", "how many vaginal probiotics a day"],
    "segment": "dosage",
    "intent": "buyer comparing CFU numbers on labels and unsure how much is enough",
    "template": "COMPARISON",
    "priority": 1,
-   "angle": "Explain what CFU means (live organisms at manufacture vs at expiry), what daily doses the oral vaginal-health trials used and with which strains, and why strain identity matters more than a bigger number. Compare common label ranges in a table, then place FloraFresh from its Supplement Facts label only: one spore-based strain (Bacillus coagulans SNZ-1969), 1 billion CFU per 2 gummies, which is not a strain the Lactobacillus trials tested (say so). The live PDP description does not match the label: if they disagree, the label wins, and a draft that cites the PDP formula fails the gate. No cure or treatment claims.",
-   "fanout": ["is 1 billion CFU enough", "can you take too many probiotics", "should CFU be guaranteed through expiry", "do more strains mean better results"],
+   "angle": "Explain what CFU means (live organisms at manufacture vs at expiry), what daily doses the oral vaginal-health trials used and with which strains, and why strain identity matters more than a bigger number. Compare common label ranges in a table, then place FloraFresh from its Supplement Facts label only: one spore-based strain (Bacillus coagulans SNZ-1969), 15B CFU per 2 gummies, which is not a strain the Lactobacillus trials tested (say so). The live PDP description does not match the label: if they disagree, the label wins, and a draft that cites the PDP formula fails the gate. No cure or treatment claims.",
+   "fanout": ["is 15B CFU enough", "can you take too many probiotics", "should CFU be guaranteed through expiry", "do more strains mean better results"],
    "evidence": "Oral Lactobacillus vaginal-health trials that state CFU per day — fetch each before citing; FloraFresh strain and CFU from its Supplement Facts label, not the PDP description.",
    "link": ["vaginal-probiotics-which-strains-actually-work-us-2026", "florafresh-vs-generic-probiotics-4-strain-facts-us-2026", "vaginal-probiotics-side-effects-normal-vs-stop-us-2026"]
   },
@@ -283,7 +283,7 @@
    "intent": "buyer deciding between pharmacy, marketplace and brand-direct vaginal probiotics",
    "template": "LISTICLE",
    "priority": 2,
-   "angle": "Five checks before buying anywhere: strains named to strain level, CFU guaranteed through expiry, storage needs, format (gummies vs capsules — link, don't restate) and price per day. Apply them to FloraFresh honestly: strain and CFU from its Supplement Facts label (Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies), price from the live PDP, never the formula in the PDP description; Wellness Nest as the official source at the live price. No cure or treatment claims.",
+   "angle": "Five checks before buying anywhere: strains named to strain level, CFU guaranteed through expiry, storage needs, format (gummies vs capsules — link, don't restate) and price per day. Apply them to FloraFresh honestly: strain and CFU from its Supplement Facts label (Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies), price from the live PDP, never the formula in the PDP description; Wellness Nest as the official source at the live price. No cure or treatment claims.",
    "fanout": ["can you buy vaginal probiotics at a pharmacy", "do vaginal probiotics need refrigeration", "how much do vaginal probiotics cost per month", "what should a vaginal probiotic label show"],
    "evidence": "FloraFresh strain and CFU from its Supplement Facts label, storage from the label or the PDP storage note (never formula facts from the PDP description); any retailer price only from a page fetched at write time.",
    "link": ["florafresh-gummies-vs-capsules-5-format-facts-us-2026", "vaginal-probiotics-which-strains-actually-work-us-2026", "florafresh-vs-generic-probiotics-4-strain-facts-us-2026"]
@@ -421,14 +421,14 @@
    "intent": "shopper comparing the monthly cost of vaginal probiotic gummies before buying",
    "template": "COMPARISON",
    "priority": 1,
-   "angle": "Do the monthly cost from the live PDP price only. Do not invent a bottle count or a day-supply the page does not print. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt, so not sugar-free. Link the where-to-buy page instead of restating its checks.",
+   "angle": "Do the monthly cost from the live PDP price only. Do not invent a bottle count or a day-supply the page does not print. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies, sweetened with maltitol and isomalt, so not sugar-free. Link the where-to-buy page instead of restating its checks.",
    "fanout": [
     "how much do vaginal probiotics cost per month",
     "are gummies priced like capsules",
     "what makes one brand cost more",
     "what the label should show for the price"
    ],
-   "evidence": "Live PDP price, fetched at write time. Strain and CFU only from the Supplement Facts label (Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies), never the PDP description.",
+   "evidence": "Live PDP price, fetched at write time. Strain and CFU only from the Supplement Facts label (Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies), never the PDP description.",
    "link": [
     "where-to-buy-vaginal-probiotics-in-the-us-5-checks-2026",
     "vaginal-probiotic-dosage-how-many-cfu-a-day-us-2026",
@@ -537,7 +537,7 @@
    "intent": "woman over 60, or someone buying for her, checking whether a vaginal probiotic gummy fits that age",
    "template": "LISTICLE",
    "priority": 1,
-   "angle": "Five checks for this age: what the vaginal microbiome does after menopause (fetched sources only), whether any oral-probiotic trial enrolled women over 60, medication questions for a clinician, the gummy routine, and when symptoms mean a clinician instead of a supplement. FloraFresh formula from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, which is not a strain those Lactobacillus trials tested (say so). No cure or treatment claims. Link the over-50 page instead of restating it.",
+   "angle": "Five checks for this age: what the vaginal microbiome does after menopause (fetched sources only), whether any oral-probiotic trial enrolled women over 60, medication questions for a clinician, the gummy routine, and when symptoms mean a clinician instead of a supplement. FloraFresh formula from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies, which is not a strain those Lactobacillus trials tested (say so). No cure or treatment claims. Link the over-50 page instead of restating it.",
    "fanout": [
     "do vaginal probiotics change after menopause",
     "were women over 60 in the trials",
@@ -682,7 +682,7 @@
    "intent": "woman trying to conceive who has been told a vaginal probiotic might help and wants the limit of that claim",
    "template": "EDITORIAL",
    "priority": 2,
-   "angle": "This is not the BV page and not the yeast page. Answer whether oral probiotics have been studied around conception, from papers you fetch, and say what they did not measure. FloraFresh formula from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, which is not a strain those Lactobacillus trials tested (say so). Not a fertility treatment. No cure or treatment claims. Link the BV page and the strains page instead of restating them.",
+   "angle": "This is not the BV page and not the yeast page. Answer whether oral probiotics have been studied around conception, from papers you fetch, and say what they did not measure. FloraFresh formula from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies, which is not a strain those Lactobacillus trials tested (say so). Not a fertility treatment. No cure or treatment claims. Link the BV page and the strains page instead of restating them.",
    "fanout": [
     "can vaginal probiotics help conception",
     "what did the studies measure",
@@ -1549,7 +1549,7 @@
    "segment": "how-to-take",
    "intent": "buyer who has the pouch and wants the daily chew, not another clock or CFU page",
    "template": "LISTICLE",
-   "angle": "Chew the gummies, water, and the same time you will remember. The best-time page owns the clock; link it. The dosage page owns the count; link it. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.",
+   "angle": "Chew the gummies, water, and the same time you will remember. The best-time page owns the clock; link it. The dosage page owns the count; link it. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.",
    "fanout": [
     "do you chew them",
     "do you take them with water",
@@ -1579,7 +1579,7 @@
    "segment": "fasting",
    "intent": "reader who wants the meal question separated from the morning-or-night question",
    "template": "EDITORIAL",
-   "angle": "The best-time page answers morning or night. This page answers with a meal or without one, from probiotic-survival research you fetch. Do not restate the clock. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.",
+   "angle": "The best-time page answers morning or night. This page answers with a meal or without one, from probiotic-survival research you fetch. Do not restate the clock. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.",
    "fanout": [
     "does a meal change survival",
     "is an empty stomach required",
@@ -1609,7 +1609,7 @@
    "segment": "reviews",
    "intent": "shopper who wants a straight worth-it check without a fake star rating",
    "template": "COMPARISON",
-   "angle": "Not the where-to-buy checklist and not a star-rating roundup. No invented reviews. What the Supplement Facts label lets you verify, and what the live PDP still has to show for the current offer. Link the where-to-buy page. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.",
+   "angle": "Not the where-to-buy checklist and not a star-rating roundup. No invented reviews. What the Supplement Facts label lets you verify, and what the live PDP still has to show for the current offer. Link the where-to-buy page. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.",
    "fanout": [
     "what can you verify without a review",
     "what a star rating cannot prove",
@@ -1639,7 +1639,7 @@
    "segment": "alcohol",
    "intent": "woman who drinks and wants the limit of any probiotic claim around alcohol",
    "template": "STORY",
-   "angle": "Not a treatment for anything alcohol does. Fetch papers on alcohol and the vaginal microbiome before citing a number. The gummy organism may not be the one those papers used; say so if it is not. Link the side-effects page. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.",
+   "angle": "Not a treatment for anything alcohol does. Fetch papers on alcohol and the vaginal microbiome before citing a number. The gummy organism may not be the one those papers used; say so if it is not. Link the side-effects page. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.",
    "fanout": [
     "is there a human study",
     "does the gummy match the papers",
@@ -1669,7 +1669,7 @@
    "segment": "storage",
    "intent": "pouch owner deciding between a cupboard and a fridge at home",
    "template": "LISTICLE",
-   "angle": "Home shelf, not the suitcase. The travel page owns planes and hotels; link it. Do not invent a fridge rule the PDP does not print. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.",
+   "angle": "Home shelf, not the suitcase. The travel page owns planes and hotels; link it. Do not invent a fridge rule the PDP does not print. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.",
    "fanout": [
     "does the pouch need a fridge",
     "what does heat do at home",
@@ -1699,7 +1699,7 @@
    "segment": "ingredients",
    "intent": "label reader who wants the rest of the panel, not another organism roundup",
    "template": "COMPARISON",
-   "angle": "The organism page owns which organisms were studied. Link it. This page is the rest of the Supplement Facts label: the named organism, the CFU line, vitamin C, pineapple fruit powder, and the sweeteners. Never the PDP description. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.",
+   "angle": "The organism page owns which organisms were studied. Link it. This page is the rest of the Supplement Facts label: the named organism, the CFU line, vitamin C, pineapple fruit powder, and the sweeteners. Never the PDP description. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.",
    "fanout": [
     "what else is on the panel",
     "where is the organism page",
@@ -1729,7 +1729,7 @@
    "segment": "stack",
    "intent": "woman who already takes other supplements and wants the same-day limit",
    "template": "EDITORIAL",
-   "angle": "Other supplements the same day: what to ask a clinician about, and what was not studied as a combination. Link the antibiotics page for that case. Do not name an amount for a product this ticket does not sell. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.",
+   "angle": "Other supplements the same day: what to ask a clinician about, and what was not studied as a combination. Link the antibiotics page for that case. Do not name an amount for a product this ticket does not sell. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.",
    "fanout": [
     "can you take them with a multivitamin",
     "what was not studied together",
@@ -1759,7 +1759,7 @@
    "segment": "athletes",
    "intent": "woman who trains and wants to know whether the gummy routine changes",
    "template": "EDITORIAL",
-   "angle": "A gym habit does not change the gummy routine. Say what research did not test in athletes. No performance claim and no cure claim. Link the beginners page and the side-effects page. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.",
+   "angle": "A gym habit does not change the gummy routine. Say what research did not test in athletes. No performance claim and no cure claim. Link the beginners page and the side-effects page. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.",
    "fanout": [
     "does a gym habit change the routine",
     "were athletes in the trials",

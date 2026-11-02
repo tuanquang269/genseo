@@ -157,7 +157,7 @@ class Links(unittest.TestCase):
             '<a href="https://www.facebook.com/sharer.php?u=1">share</a>'
             '<a href="https://doi.org/10.3390/nu14040755">doi</a>'
             '<a href="https://wellnessnest.co/blogs/news">index</a>'
-            '<a href="https://wellnessnest.co/pages/dr-marcus-hale">author</a>'
+            '<a href="https://wellnessnest.co/pages/mike-moretti">author</a>'
         ))
         external = geo.external_urls(html)
         self.assertIn("https://doi.org/10.3390/nu14040755", external)
@@ -170,7 +170,7 @@ class Links(unittest.TestCase):
             internal,
         )
         self.assertIn("https://wellnessnest.co/blogs/news", internal)
-        self.assertIn("https://wellnessnest.co/pages/dr-marcus-hale", internal)
+        self.assertIn("https://wellnessnest.co/pages/mike-moretti", internal)
         self.assertIn("https://wellnessnest.co/products/fusiforce-creatine-gummies", internal)
 
     def test_regulations_examine_and_usada_count_as_primary(self):

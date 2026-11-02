@@ -1,3 +1,5 @@
+<!-- meta_description: How to take vaginal probiotics in the US: chew the gummy as the label directs. FloraFresh lists 15 billion CFU of Bacillus coagulans SNZ-1969 per 2 gummies. -->
+
 Oral vaginal probiotics are taken by chewing the product exactly as its label directs, then making the routine easy to repeat. For FloraFresh, treat the gummy as an oral supplement—not an inserted product—pair it with a familiar daily habit, and use water if you prefer. In the US, follow the current pouch label and ask a clinician about symptoms rather than trying to treat them with a supplement.
 
 ## How should you take a vaginal probiotic gummy?
@@ -11,7 +13,7 @@ A simple routine has four parts:
 3. Chew the gummy rather than swallowing it whole.
 4. Record the routine in a calendar only if reminders help you stay consistent.
 
-FloraFresh is sold as an oral gummy product. Its curated Supplement Facts reference identifies **Bacillus coagulans SNZ-1969**, a spore-based strain, at **1 billion CFU per 2 gummies**, plus Vitamin C and pineapple fruit powder with bromelain. The same label identifies maltitol and isomalt as sweeteners, so it should not be described as sugar-free. Those facts come from the product label, not the older product-page copy.
+FloraFresh is sold as an oral gummy product. Its curated Supplement Facts reference identifies **Bacillus coagulans SNZ-1969**, a spore-based strain, at **15 billion CFU per 2 gummies**, plus Vitamin C and pineapple fruit powder with bromelain. The same label identifies maltitol and isomalt as sweeteners, so it should not be described as sugar-free. Those facts come from the product label, not the older product-page copy.
 
 <div style="display:flex;align-items:center;gap:14px;margin:34px 0 2px;">
 <div style="background:#54b94a;color:#ffffff;font-weight:800;font-size:1.3em;border-radius:50%;width:46px;height:46px;line-height:46px;text-align:center;flex:none;">1</div>
@@ -20,7 +22,7 @@ FloraFresh is sold as an oral gummy product. Its curated Supplement Facts refere
 
 ## 1. Check the label before the first chew
 
-The label answers the product-specific questions that generic probiotic advice cannot: serving size, storage, allergen statements, and directions. FloraFresh’s label describes a 2-gummy serving and identifies Allergen Free, Vegan, Halal, and Gluten Free badges. Do not substitute the inaccurate CFU or strain list still shown in some live page copy.
+The label answers the product-specific questions that generic probiotic advice cannot: serving size, storage, allergen statements, and directions. FloraFresh’s label describes a 2-gummy serving and identifies Allergen Free, Vegan, Halal, and Gluten Free badges. Do not substitute the strain list still shown in some live page copy.
 
 A label check also prevents a common category mistake. “Vaginal probiotic” describes the intended wellness context; it does not mean an oral gummy belongs inside the vagina. Use the product through the route stated on its packaging.
 
@@ -115,4 +117,4 @@ No supplement should be used as a substitute for diagnosis or treatment. Contact
 
 ### About the Author
 
-[Dr. Marcus Hale](/pages/dr-marcus-hale) Dr. Marcus Hale is the resident health researcher behind Wellness Nest's editorial team, translating peer-reviewed sports-nutrition and longevity research into practical daily guidance for US readers.
+[Mike Moretti](/pages/mike-moretti) — Mike Moretti is a co-founder of Wellness Nest and the brand's public face.

@@ -1,6 +1,8 @@
+<!-- meta_description: Creatine gummies for adults over 60 in the US are a format choice. Trials pair creatine with resistance training, not an anti-aging promise. -->
+
 Creatine gummies over 60 may be a convenient way to take creatine, but the strongest older-adult evidence concerns creatine monohydrate combined with resistance training—not gummies specifically. For readers in the US, the decision should start with kidney health, medication review, the complete product label, and a realistic training plan rather than an anti-aging promise.
 
-Published: October 17, 2026. Educational information, not an individual treatment plan. Images are AI-generated illustrations anchored to the real product packaging; they do not document a clinical trial or customer results.
+Educational information, not an individual treatment plan. Images are AI-generated illustrations anchored to the real product packaging; they do not document a clinical trial or customer results.
 
 ## What did creatine trials in older adults actually find?
 
@@ -110,6 +112,4 @@ Wellness Nest lists [FusiForce Creatine Gummies](https://wellnessnest.co/product
 
 ### About the Author
 
-[Dr. Marcus Hale](https://wellnessnest.co/pages/dr-marcus-hale)
-
-Dr. Marcus Hale is the resident health researcher behind Wellness Nest's editorial team, translating peer-reviewed sports-nutrition and longevity research into practical daily guidance for US readers.
+[Mike Moretti](/pages/mike-moretti) — Mike Moretti is a co-founder of Wellness Nest and the brand's public face.

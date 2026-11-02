@@ -12,7 +12,7 @@ This is a safety checklist, not a diagnosis or a substitute for medical care. Hu
 <div style="height:2px;background:#dbeedb;flex:1;"></div>
 </div>
 
-## 1. Ask a clinician to review every medication first
+## 1. Should a clinician review every medication first?
 
 ![Shilajit resin canister and jar beside a closed pill organizer on a breakfast table](/Users/kevinkreative/genseo/run-assets/shilajit-for-seniors/medication-check.webp)
 
@@ -135,6 +135,4 @@ Neither is automatically safer. Resin may have fewer added ingredients, while gu
 
 ### About the Author
 
-[Dr. Marcus Hale](/pages/dr-marcus-hale)
-
-Dr. Marcus Hale is the resident health researcher behind Wellness Nest's editorial team, translating peer-reviewed sports-nutrition and longevity research into practical daily guidance for US readers.
+[Mike Moretti](/pages/mike-moretti) — Mike Moretti is a co-founder of Wellness Nest and the brand's public face.

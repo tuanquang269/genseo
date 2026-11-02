@@ -1,3 +1,5 @@
+<!-- meta_description: Vaginal probiotics for US beginners are supplements, not infection treatments. Read the FloraFresh label, follow the serving, and ask a clinician about symptoms. -->
+
 Vaginal probiotics for beginners are oral supplements intended to add selected live microorganisms to a daily routine; they are not medicines for diagnosing or treating an infection. In the US, a first-time user should read the Supplement Facts panel, follow the label, watch for tolerance changes during the first week, and contact a clinician for pain, fever, unusual bleeding, strong odor, sores, or persistent discharge rather than waiting for a supplement to work.
 
 <div style="background:linear-gradient(90deg,#54b94a,#3a9e40);border-radius:10px;padding:14px 20px;margin:28px 0 4px;">
@@ -7,6 +9,8 @@ Vaginal probiotics for beginners are oral supplements intended to add selected l
 ## What do vaginal probiotics do for beginners?
 
 Oral vaginal probiotics are designed to supplement a routine that supports a healthy vaginal microbiome. They do not replace evaluation or treatment for bacterial vaginosis, a yeast infection, a sexually transmitted infection, or another cause of symptoms. Evidence varies by product, strain, dose, and study design, so a label should not promise a guaranteed result.
+
+The FDA's questions-and-answers page explains that the required supplement disclaimer says a product is not intended to diagnose, treat, cure, or prevent any disease ([FDA questions and answers on dietary supplements](https://www.fda.gov/food/information-consumers-using-dietary-supplements/questions-and-answers-dietary-supplements)).
 
 The practical beginner goal is consistency and observation, not an instant change. Keep a short note of the product, serving directions, other supplements, and any new symptoms. Do not use a probiotic to delay care when symptoms are concerning.
 
@@ -32,7 +36,7 @@ Expectations should stay modest. A supplement cannot confirm whether symptoms co
 
 Start with the serving and timing printed on the package. Do not double the serving because you want faster results, combine several products with overlapping ingredients without checking, or insert an oral gummy vaginally. Store the product as its label directs and check the package condition before use.
 
-For FloraFresh, the Supplement Facts label lists, per 2 gummies, Bacillus coagulans SNZ-1969 (a spore-based probiotic) at 1 billion CFU, Vitamin C at 30 mg, and pineapple fruit powder with bromelain at 100 mg. The label also lists maltitol and isomalt as sweeteners, so it should not be described as sugar-free. Those are label facts, not a promise to prevent or treat disease.
+For FloraFresh, the Supplement Facts label lists, per 2 gummies, Bacillus coagulans SNZ-1969 (a spore-based probiotic) at 15 billion CFU, Vitamin C at 30 mg, and pineapple fruit powder with bromelain at 100 mg. The label also lists maltitol and isomalt as sweeteners, so it should not be described as sugar-free. Those are label facts, not a promise to prevent or treat disease.
 
 ![Hands reviewing a generic probiotic wellness note at a home desk](https://cdn.shopify.com/s/files/1/0810/1563/6283/files/mechanism-microbiome.webp?v=1792133529)
 
@@ -102,4 +106,4 @@ Seek care for pelvic pain, fever, sores, unusual bleeding, painful urination, st
 
 ### About the Author
 
-[Dr. Marcus Hale](/pages/dr-marcus-hale) — Dr. Marcus Hale is the resident health researcher behind Wellness Nest's editorial team, translating peer-reviewed sports-nutrition and longevity research into practical daily guidance for US readers.
+[Mike Moretti](/pages/mike-moretti) — Mike Moretti is a co-founder of Wellness Nest and the brand's public face.
