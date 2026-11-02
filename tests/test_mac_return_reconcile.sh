@@ -10,16 +10,20 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SCRIPT="$ROOT/scripts/mac_return_reconcile.sh"
 WORK="$(mktemp -d "${TMPDIR:-/tmp}/mac-return-reconcile.XXXXXX")" || exit 1
 PIDS=""
+EXTRA_DIRS=""
 PASS=0
 FAIL=0
 START_STATUS="$(git -C "$ROOT" status --porcelain)"
 START_HEAD="$(git -C "$ROOT" rev-parse HEAD)"
 
 cleanup() {
-  local p
+  local p d
   for p in $PIDS; do
     kill "$p" 2>/dev/null || true
     wait "$p" 2>/dev/null || true
+  done
+  for d in $EXTRA_DIRS; do
+    rm -rf "$d"
   done
   rm -rf "$WORK"
 }
@@ -92,10 +96,18 @@ os.utime(p,(t,t))' "$1" "$2"
 }
 
 run_rec() {
+  local test_flag ps_hook
   [ -n "${REPO:-}" ] || { printf '%s\n' "REPO unset" >&2; exit 1; }
   : >"$WORK/out"
   : >"$WORK/err"
+  # Default is an injected process table scoped to $WORK. GENSEO_RECONCILE_TEST=0
+  # is the production scan (real ps). A prefix assignment on this function
+  # overrides one call without sticking.
+  test_flag=${GENSEO_RECONCILE_TEST-1}
+  ps_hook=${GENSEO_RECONCILE_PS-$WORK/ps-scope}
   env GENSEO_HOME="$REPO" GIT_TERMINAL_PROMPT=0 \
+    GENSEO_RECONCILE_TEST="$test_flag" \
+    GENSEO_RECONCILE_PS="$ps_hook" \
     bash "$SCRIPT" "$@" >"$WORK/out" 2>"$WORK/err"
   RC=$?
 }
@@ -104,6 +116,28 @@ head_of() { git -C "$1" rev-parse HEAD; }
 bare_main() { git -C "$BARE" rev-parse main; }
 
 mkdir -p "$WORK/no-hooks" "$WORK/home"
+# One live non-writer anchor, plus any real process whose command contains
+# this temp directory. Writers elsewhere on the machine stay out of the table.
+# ps failure exits non-zero so the hook fail-closes instead of dropping them.
+cat >"$WORK/ps-scope" <<EOF
+#!/bin/bash
+printf '%s %s\n' "$$" "bash reconcile-test-anchor"
+raw=\$(mktemp "${TMPDIR:-/tmp}/reconcile-psraw.XXXXXX") || exit 1
+if ! /bin/ps -axww -o pid=,args= >"\$raw" 2>/dev/null; then
+  if ! /bin/ps -eo pid=,args= >"\$raw" 2>/dev/null; then
+    rm -f "\$raw"
+    exit 1
+  fi
+fi
+while IFS= read -r line || [ -n "\$line" ]; do
+  case "\$line" in
+    *"$WORK"*) printf '%s\n' "\$line" ;;
+  esac
+done <"\$raw"
+rm -f "\$raw"
+exit 0
+EOF
+chmod 755 "$WORK/ps-scope"
 
 echo "0. bash -n and the script does not execute push, reset, or launchctl"
 bash -n "$SCRIPT" && ok "bash -n" || bad "bash -n"
@@ -388,6 +422,11 @@ set_age "$REPO/state/daily.lock" 30000
 run_rec --apply-stale-lock
 assert_rc 4 "live writer blocks unlock"
 has "$WORK/out" "lock_apply daily.lock: kept live-writer" "live-writer reason"
+if grep -F -x -q "lock daily.lock live_writer: ${WRITER_PID} " "$WORK/out"; then
+  ok "only the fixture daily writer is visible"
+else
+  bad "fixture daily writer was not the only live writer"
+fi
 [ -d "$REPO/state/daily.lock" ] && ok "lock kept while writer lives" || bad "lock removed under a live writer"
 kill -0 "$WRITER_PID" 2>/dev/null && ok "writer was not killed" || bad "writer was killed"
 kill "$WRITER_PID" 2>/dev/null || true
@@ -433,10 +472,58 @@ set_age "$REPO/state/landing-daily.lock" 30000
 run_rec --apply-stale-lock
 assert_rc 4 "live landing writer blocks unlock"
 has "$WORK/out" "lock_apply landing-daily.lock: kept live-writer" "landing live-writer reason"
+if grep -F -x -q "lock landing-daily.lock live_writer: ${LAND_PID} " "$WORK/out"; then
+  ok "only the fixture landing writer is visible"
+else
+  bad "fixture landing writer was not the only live writer"
+fi
 [ -d "$REPO/state/landing-daily.lock" ] && ok "landing lock kept" || bad "landing lock removed under a live writer"
 kill -0 "$LAND_PID" 2>/dev/null && ok "landing writer was not killed" || bad "landing writer was killed"
 kill "$LAND_PID" 2>/dev/null || true
 wait "$LAND_PID" 2>/dev/null || true
+PIDS=""
+
+echo "9c. a writer outside this temp checkout stays off the injected table"
+init_repo outside
+mkdir -p "$REPO/state/daily.lock"
+printf '%s\n' 99999999 >"$REPO/state/daily.lock/pid"
+set_age "$REPO/state/daily.lock" 30000
+OUTSIDE=$(mktemp -d "${TMPDIR:-/tmp}/reconcile-outside.XXXXXX") || exit 1
+EXTRA_DIRS="$EXTRA_DIRS $OUTSIDE"
+cat >"$OUTSIDE/grokbot-genseo-daily" <<'EOF'
+#!/bin/bash
+sleep 180
+EOF
+chmod 755 "$OUTSIDE/grokbot-genseo-daily"
+"$OUTSIDE/grokbot-genseo-daily" &
+OUT_PID=$!
+PIDS="$PIDS $OUT_PID"
+sleep 0.3
+if kill -0 "$OUT_PID" 2>/dev/null; then ok "outside writer is alive"
+else bad "outside writer did not start"; fi
+GENSEO_RECONCILE_TEST=0 run_rec --apply-stale-lock
+assert_rc 4 "host scan blocks on a writer outside the temp checkout"
+has "$WORK/out" "lock_apply daily.lock: kept live-writer" "host scan still fail-closes"
+if grep -F -q -- "$OUT_PID" "$WORK/out"; then ok "host scan names the outside writer"
+else bad "host scan did not name the outside writer"; fi
+run_rec --apply-stale-lock
+assert_rc 0 "injected table ignores the outside writer"
+has "$WORK/out" "lock_apply daily.lock: removed" "outside writer did not keep the lock"
+[ ! -e "$REPO/state/daily.lock" ] && ok "lock removed while the outside writer lives" || bad "lock remained under an outside writer"
+kill -0 "$OUT_PID" 2>/dev/null && ok "outside writer was not killed" || bad "outside writer was killed"
+mkdir -p "$REPO/state/daily.lock"
+printf '%s\n' 99999999 >"$REPO/state/daily.lock/pid"
+set_age "$REPO/state/daily.lock" 30000
+printf '%s\n' '#!/bin/bash' 'exit 1' >"$WORK/ps-fail"
+chmod 755 "$WORK/ps-fail"
+GENSEO_RECONCILE_TEST=1 GENSEO_RECONCILE_PS="$WORK/ps-fail" run_rec --apply-stale-lock
+assert_rc 4 "failing process hook blocks unlock"
+has "$WORK/out" "lock_apply daily.lock: kept process-list-unknown" "failed hook is process-list-unknown"
+lacks "$WORK/out" "kept live-writer" "failed hook does not report a live writer"
+lacks "$WORK/out" "apply_block: live-writer" "failed hook does not fall through to host ps"
+[ -d "$REPO/state/daily.lock" ] && ok "failed hook kept the lock" || bad "failed hook removed the lock"
+kill "$OUT_PID" 2>/dev/null || true
+wait "$OUT_PID" 2>/dev/null || true
 PIDS=""
 
 echo "10. a failed fetch refuses --apply and still exits 0 on dry-run"
@@ -493,7 +580,7 @@ BEFORE="$(head_of "$REPO")"
 OLD_PATH=$PATH
 PATH="$WORK/nops-bin:$PATH"
 export PATH
-run_rec --apply-stale-lock
+GENSEO_RECONCILE_TEST=0 run_rec --apply-stale-lock
 PATH="$OLD_PATH"
 export PATH
 assert_rc 4 "empty ps blocks unlock"
@@ -502,7 +589,7 @@ has "$WORK/out" "lock daily.lock suggested_unlock: no" "empty ps does not sugges
 [ -d "$REPO/state/daily.lock" ] && ok "lock kept when ps is empty" || bad "lock removed when ps is empty"
 PATH="$WORK/nops-bin:$PATH"
 export PATH
-run_rec --apply
+GENSEO_RECONCILE_TEST=0 run_rec --apply
 PATH="$OLD_PATH"
 export PATH
 assert_rc 3 "empty ps blocks apply"
