@@ -32,6 +32,8 @@ templates/landing/listicle-angles.json. Rotation, one landing a day:
   product, then to catalog order.
 Angle: the least-used angle for that product. The new line must pass brand_rules + lint_tickets.py.
 FloraFresh lines also carry florafresh_rules.LANDING_NOTE (formula from the Supplement Facts label, never the PDP).
+FusiForce lines carry fusiforce_rules.LANDING_NOTE (90 gummies, creatine monohydrate; no dose the label file omits).
+Shilajit gummies lines carry shilajit_gummies_rules.LANDING_NOTE (60 gummies, 60-day supply; no 30-serving panel).
 Shilajit Shockwave lines carry shockwave_rules.LANDING_NOTE (identity lines only; no dose the label file omits).
 Pure Shilajit Gold Resin lines carry gold_resin_rules.LANDING_NOTE (the OCR serving line and 75% Fulvic; no milligram and no other dose).
 ShilaSource resin lines carry shilasource_resin_rules.LANDING_NOTE (front-of-pack lines only; no milligram and no other dose).
@@ -46,8 +48,10 @@ sys.path.insert(0, os.path.join(ROOT, "scripts"))
 import ageaura_rules as ar  # noqa: E402
 import brand_rules as br  # noqa: E402
 import florafresh_rules as ff  # noqa: E402
+import fusiforce_rules as fu  # noqa: E402
 import gold_resin_rules as gr  # noqa: E402
 import packaging_palette as pp  # noqa: E402
+import shilajit_gummies_rules as sg  # noqa: E402
 import shilasource_resin_rules as sr  # noqa: E402
 import shockwave_rules as sw  # noqa: E402
 import turkesterone_rules as tk  # noqa: E402
@@ -378,6 +382,10 @@ def ticket_line(handle, store, angle, audience, added):
         store, handle, angle, audience)
     if handle == ff.HANDLE:
         line += " · " + ff.LANDING_NOTE
+    if handle == fu.HANDLE:
+        line += " · " + fu.LANDING_NOTE
+    if handle == sg.HANDLE:
+        line += " · " + sg.LANDING_NOTE
     if handle == sw.HANDLE:
         line += " · " + sw.LANDING_NOTE
     if handle == gr.HANDLE:

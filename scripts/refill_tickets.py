@@ -24,9 +24,15 @@ read live at run time:
     label, never the PDP description; Shilajit Shockwave doses = its pack-label whitelist, which has no
     milligram token; Pure Shilajit Gold Resin doses = its pack-label whitelist, which has the OCR
     serving line and 75% Fulvic and no milligram token; ShilaSource Himalayan Shilajit Resin doses =
-    its pack-label whitelist, front-of-pack lines only, no milligram token) + the bank's banned terms,
+    its pack-label whitelist, front-of-pack lines only, no milligram token; FusiForce pack count =
+    90 gummies from its label whitelist, plus vault servings of 30 servings and 3 gummies per serving,
+    no milligram amount or ginseng unless that token is in the whitelist; Premium Himalayan Shilajit
+    Gummies pack count = 60 gummies and a 60-day supply from its label whitelist, no 30-serving panel
+    and no milligram amount unless that token is in the whitelist) + the bank's banned terms,
     on the brief and on the rendered ticket.
     A FloraFresh ticket also carries florafresh_rules.TICKET_LINE (the label formula).
+    A FusiForce ticket also carries fusiforce_rules.TICKET_LINE (the pack label).
+    A Shilajit gummies ticket also carries shilajit_gummies_rules.TICKET_LINE (the pack label).
     A Shilajit Shockwave ticket also carries shockwave_rules.TICKET_LINE (the pack label).
     A Pure Shilajit Gold Resin ticket also carries gold_resin_rules.TICKET_LINE (the pack label).
     A ShilaSource resin ticket also carries shilasource_resin_rules.TICKET_LINE (the pack label).
@@ -58,7 +64,9 @@ sys.path.insert(0, os.path.join(ROOT, "scripts"))
 import ageaura_rules as ar  # noqa: E402
 import brand_rules as br  # noqa: E402
 import florafresh_rules as ff  # noqa: E402
+import fusiforce_rules as fu  # noqa: E402
 import gold_resin_rules as gr  # noqa: E402
+import shilajit_gummies_rules as sg  # noqa: E402
 import shilasource_resin_rules as sr  # noqa: E402
 import shockwave_rules as sw  # noqa: E402
 import turkesterone_rules as tk  # noqa: E402
@@ -755,6 +763,10 @@ def render(c, tid, ctx, info):
             f"`/products/{h}` ({bank['products'][h]['name']}, {money(prods[h]['price'])})" for h in c["inline"]))
     if ff.HANDLE in [c["product"]] + c["inline"]:
         out.append("  - " + ff.TICKET_LINE)
+    if fu.HANDLE in [c["product"]] + c["inline"]:
+        out.append("  - " + fu.TICKET_LINE)
+    if sg.HANDLE in [c["product"]] + c["inline"]:
+        out.append("  - " + sg.TICKET_LINE)
     if sw.HANDLE in [c["product"]] + c["inline"]:
         out.append("  - " + sw.TICKET_LINE)
     if gr.HANDLE in [c["product"]] + c["inline"]:
@@ -1052,6 +1064,8 @@ def self_test():
         t("rendered ticket counts as open for the wrapper", OPEN_RX.match(text) is not None)
         t("rendered ticket is brand-clean", not banned(text, bank), banned(text, bank))
         t("FloraFresh ticket carries the Supplement Facts label formula", ff.TICKET_LINE in text)
+        t("FloraFresh ticket: no FusiForce pack-label line", fu.TICKET_LINE not in text)
+        t("FloraFresh ticket: no Shilajit gummies pack-label line", sg.TICKET_LINE not in text)
         t("FloraFresh ticket: no Shockwave pack-label line", sw.TICKET_LINE not in text)
         t("FloraFresh ticket: no Gold Resin pack-label line", gr.TICKET_LINE not in text)
         t("FloraFresh ticket: no ShilaSource resin pack-label line", sr.TICKET_LINE not in text)
@@ -1109,6 +1123,8 @@ def self_test():
         t("AgeAura ticket: best-seller twice as a browse link, no AgeAura collection",
           "`/collections/best-seller` twice (browse link" in text and "/collections/ageaura" not in text)
         t("AgeAura ticket: no FloraFresh formula line", ff.TICKET_LINE not in text)
+        t("AgeAura ticket: no FusiForce pack-label line", fu.TICKET_LINE not in text)
+        t("AgeAura ticket: no Shilajit gummies pack-label line", sg.TICKET_LINE not in text)
         t("AgeAura ticket: no Shockwave pack-label line", sw.TICKET_LINE not in text)
         t("AgeAura ticket: no Gold Resin pack-label line", gr.TICKET_LINE not in text)
         t("AgeAura ticket: no ShilaSource resin pack-label line", sr.TICKET_LINE not in text)
@@ -1185,6 +1201,38 @@ def self_test():
     t("Turkesterone ticket: no Gold Resin pack-label line", gr.TICKET_LINE not in tk_text)
     t("Turkesterone ticket: no ShilaSource resin pack-label line", sr.TICKET_LINE not in tk_text)
     t("Turkesterone ticket is brand-clean", not br.violations(tk_text), br.violations(tk_text))
+
+    fu_cand = norm_cand(dict(FIX_GOOD, id="fu", product="fusiforce-creatine-gummies",
+                             primary="creatine gummies for athletes",
+                             title="Creatine Gummies for Athletes (US 2026)",
+                             secondary=["creatine gummies pouch"], segment="athletes",
+                             intent="athlete checking the pouch", template="EDITORIAL",
+                             angle="What the pouch front actually lists.",
+                             fanout=["how many gummies are in the pouch"],
+                             evidence="Pack label lines only.",
+                             link=[]), ctx["bank"], "topic-bank", 1, 0)
+    fu_info = {"verdict": ("PASS", "brand"), "suggest": "offline",
+               "colls": ["best-seller", "mens-essential-collection"], "links": []}
+    fu_text = render(fu_cand, "CA1009-6", ctx, fu_info)
+    t("FusiForce ticket carries the pack-label line", fu.TICKET_LINE in fu_text)
+    t("FusiForce ticket: no Shilajit gummies pack-label line", sg.TICKET_LINE not in fu_text)
+    t("FusiForce ticket is brand-clean", not br.violations(fu_text), br.violations(fu_text))
+
+    sg_cand = norm_cand(dict(FIX_GOOD, id="sg", product="premium-himalayan-shilajit-gummies",
+                             primary="shilajit gummies for men",
+                             title="Shilajit Gummies for Men (US 2026)",
+                             secondary=["shilajit gummies pouch"], segment="for-men",
+                             intent="buyer checking the pouch", template="EDITORIAL",
+                             angle="What the pouch front actually lists.",
+                             fanout=["how many gummies are in the pouch"],
+                             evidence="Pack label lines only.",
+                             link=[]), ctx["bank"], "topic-bank", 1, 0)
+    sg_info = {"verdict": ("PASS", "brand"), "suggest": "offline",
+               "colls": ["best-seller", "mens-essential-collection"], "links": []}
+    sg_text = render(sg_cand, "CA1010-3", ctx, sg_info)
+    t("Shilajit gummies ticket carries the pack-label line", sg.TICKET_LINE in sg_text)
+    t("Shilajit gummies ticket: no FusiForce pack-label line", fu.TICKET_LINE not in sg_text)
+    t("Shilajit gummies ticket is brand-clean", not br.violations(sg_text), br.violations(sg_text))
 
     mk = [("1", "probiotic", "LISTICLE"), ("2", "probiotic", "COMPARISON"), ("3", "turkesterone", "EDITORIAL"),
           ("4", "creatine", "LISTICLE"), ("5", "creatine", "LISTICLE"), ("6", "nmn", "EDITORIAL")]
