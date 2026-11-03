@@ -34,9 +34,12 @@ reset_flags() {
 run() {
   : >"$WORK/out"
   : >"$WORK/err"
+  # Apple's python3 writes ~/Library/Caches when HOME is this fixture.
+  # That cache is not an installer write.
   cmd=(env -i
     "HOME=$HOME_DIR"
     "PATH=/usr/bin:/bin"
+    "PYTHONDONTWRITEBYTECODE=1"
     "GENSEO_HOME=$GENSEO_HOME"
     "GENSEO_FAILOVER_TEST=$TEST_MODE"
     "GENSEO_FAILOVER_HEARTBEAT_REF=$HB_REF"
@@ -446,6 +449,17 @@ has "$WORK/err" "refusing to follow symlink" "stderr names the symlink"
 
 new_ready linux good
 TEST_MODE=0
+# The script prepends ~/.local/bin ahead of /usr/bin. A uname there reports
+# Linux so this Mac still exercises the non-Mac exit.
+cat >"$HOME_DIR/.local/bin/uname" <<'EOF'
+#!/bin/bash
+if [ "${1:-}" = "-s" ]; then
+  printf '%s\n' Linux
+  exit 0
+fi
+exec /usr/bin/uname "$@"
+EOF
+chmod 755 "$HOME_DIR/.local/bin/uname"
 run --install-worker
 assert_rc 2 "non-Mac apply exit 2"
 has "$WORK/err" "refusing:" "stderr says refusing"
