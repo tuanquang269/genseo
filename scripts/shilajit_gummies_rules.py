@@ -7,13 +7,19 @@ The pack-label whitelist is the source of truth for this one product:
 
 That file's optional lines include "60 GUMMIES", "60-DAY SUPPLY", and
 "1500mg Shilajit". They do not include a 30-serving panel, a 2-gummy serving,
-or a 150 mg extract line. Copy that names this product may say 60 gummies and
-a 60-day supply, and a milligram amount only when that exact token is in the
-file. The product is in scope under the full name, "Himalayan Shilajit
-Gummies", "Shilajit Gummies" (including "Shilajit Gummies for Men"), or the
-handle. A milligram in the sentence right after that name is still this
-product's dose when the previous sentence says trial or studied. Shockwave,
-Gold Resin, and ShilaSource resin are different products and are out of scope.
+a 150 mg extract line, or a gram amount. Copy that names this product may say
+60 gummies and a 60-day supply, and a milligram or gram amount only when that
+exact token is in the file. Serving counts written as words are read, so
+twenty servings, forty servings, and fifteen servings fail. The product is in
+scope under the full name, "Himalayan Shilajit Gummies", "Shilajit Gummies"
+(including "Shilajit Gummies for Men"), or the handle. A milligram or gram in
+the sentence right after that name is still this product's dose, including
+when the previous sentence says trial or studied, and including a follow-up
+that does not start with It or pouch. A denial ends at "and" or a new delivery
+verb, and bare "no" also ends at a comma. The Pandit pattern stays allowed:
+"The Pandit trial used 250 mg ... Premium Himalayan Shilajit Gummies are 60
+gummies" and the same dose after one buffer sentence. Shockwave, Gold Resin,
+and ShilaSource resin are different products and are out of scope.
 
 brand_rules.assess() merges these violations. Landing specs go through
 brand_rules.spec_violations(). Keep the whitelist in the label file; do not
@@ -84,7 +90,9 @@ _NEG_CUE = re.compile(
     re.I,
 )
 _NEG_BREAK = re.compile(r"\b(?:but|however|yet|although|though|while|whereas)\b", re.I)
-# "no fillers and delivers 250 mg" is a dose. "no 250 mg" and "do not claim" are denials.
+# "and" or a new delivery verb ends any denial ("is not a stimulant and delivers
+# 250 mg", "without fillers delivers 150 mg"). A comma ends bare "no"
+# ("no fillers, 250 mg"). "no 250 mg" and "do not claim 150 mg" stay denials.
 _NO_GAP = re.compile(
     r"\band\b"
     r"|(?:\w+\s+){1,8}(?:delivers?|provides?|contains?|includes?|lists?|has|have|gives?|adds?|offers?)\b",
@@ -106,7 +114,24 @@ _STUDY = re.compile(
     r"volunteers?|participants?|cohort|meta-analys\w*|et\s+al)\b",
     re.I,
 )
-_WORD_NUM = {"two": 2, "three": 3, "four": 4, "thirty": 30, "sixty": 60, "ninety": 90}
+_WORD_NUM = {
+    "zero": 0, "one": 1, "two": 2, "three": 3, "four": 4, "five": 5,
+    "six": 6, "seven": 7, "eight": 8, "nine": 9, "ten": 10,
+    "eleven": 11, "twelve": 12, "thirteen": 13, "fourteen": 14, "fifteen": 15,
+    "sixteen": 16, "seventeen": 17, "eighteen": 18, "nineteen": 19,
+    "twenty": 20, "thirty": 30, "forty": 40, "fifty": 50,
+    "sixty": 60, "seventy": 70, "eighty": 80, "ninety": 90, "hundred": 100,
+}
+_TENS_RE = "ninety|eighty|seventy|sixty|fifty|forty|thirty|twenty"
+_ONES_RE = (
+    "nineteen|eighteen|seventeen|sixteen|fifteen|fourteen|thirteen|twelve|eleven|"
+    "ten|nine|eight|seven|six|five|four|three|two|one|zero|hundred"
+)
+_UNIT_RE = "nine|eight|seven|six|five|four|three|two|one"
+_SPELLED = (
+    r"(?<![\w-])(?P<w>" + _TENS_RE + r"|" + _ONES_RE + r")"
+    r"(?:[\s-]+(?P<u>" + _UNIT_RE + r"))?(?!\w)"
+)
 _PACK = re.compile(
     r"(?<![\d.,])(?P<n>\d{1,4})\s*-?\s*(?P<unit>gummies|gummy\s+count|counts?|ct)\b",
     re.I,
@@ -116,7 +141,12 @@ _WORD_PACK = re.compile(
     re.I,
 )
 _SERVINGS = re.compile(r"(?<![\d.,])(?P<n>\d{1,4})\s*-?\s*servings?\b", re.I)
-_WORD_SERVINGS = re.compile(r"\b(?P<w>thirty|sixty|ninety)\s*-?\s*servings?\b", re.I)
+_WORD_SERVINGS = re.compile(_SPELLED + r"\s*-?\s*servings?\b", re.I)
+_GRAM = re.compile(
+    r"(?<![\d.,])(?P<n>\d{1,3}(?:,\d{3})+|\d+(?:\.\d+)?)\s*-?\s*(?:grams?|g)\b",
+    re.I,
+)
+_WORD_GRAM = re.compile(_SPELLED + r"\s*-?\s*(?:grams?|g)\b", re.I)
 _SERVINGS_REV = re.compile(
     r"\bservings?\s+per\s+(?:container|pouch|pack|bottle|jar)\s*[:#]?\s*(?P<n>\d{1,4})\b",
     re.I,
@@ -297,11 +327,23 @@ def _clauses(visible):
     return out
 
 
+def _spelled_number(match):
+    """Integer for a spelled amount. twenty-five is 25. thirty alone is 30."""
+    n = _WORD_NUM[match.group("w").lower()]
+    unit = match.group("u")
+    if unit and 20 <= n < 100 and n % 10 == 0:
+        n += _WORD_NUM[unit.lower()]
+    return n
+
+
 def _negated(clause, start):
     """True when a denial cue governs this match.
 
-    Bare "no" only covers the claim it sits on. "no fillers and deliver 250 mg"
-    is still a dose. "Do not claim 150 mg" stays a denial.
+    Any denial ends at "and" or a new delivery verb, so "is not a stimulant
+    and delivers 250 mg" and "without fillers delivers 150 mg" still count.
+    Bare "no" and "without" also end at a comma ("no fillers, 250 mg").
+    "Do not claim 30 servings or 150 mg" stays a denial. "no 250 mg" stays a
+    denial because nothing sits between the cue and the dose.
     """
     pre = clause[max(0, start - 100):start]
     cues = list(_NEG_CUE.finditer(pre))
@@ -310,7 +352,10 @@ def _negated(clause, start):
     last = cues[-1]
     if _NEG_BREAK.search(pre, last.end()):
         return False
-    if last.group(0).lower() == "no" and _NO_GAP.search(pre, last.end()):
+    gap = pre[last.end():]
+    if _NO_GAP.search(gap):
+        return False
+    if last.group(0).lower() in ("no", "without") and "," in gap:
         return False
     return True
 
@@ -338,6 +383,13 @@ def _mg_listed(raw, tokens):
         if listed(phrase, tokens):
             return True
     return False
+
+
+def _gram_listed(plain, tokens):
+    phrases = []
+    for n in plain:
+        phrases.extend((n + " g", n + "g", n + " gram", n + " grams"))
+    return any(listed(phrase, tokens) for phrase in phrases)
 
 
 def _serving_listed(n, tokens):
@@ -409,7 +461,7 @@ def _check_clause(clause, tokens, counts, days, owned, prev_window, prev_named, 
     for match in list(_SERVINGS.finditer(clause)) + list(_WORD_SERVINGS.finditer(clause)):
         if not pack_hit(match.start()):
             continue
-        n = str(_WORD_NUM[match.group("w").lower()]) if match.re is _WORD_SERVINGS else match.group("n")
+        n = str(_spelled_number(match)) if match.re is _WORD_SERVINGS else match.group("n")
         if _serving_listed(n, tokens):
             continue
         reasons.append(_PREFIX + n + " servings is not on the pack label whitelist")
@@ -429,6 +481,25 @@ def _check_clause(clause, tokens, counts, days, owned, prev_window, prev_named, 
         label_day = ("%d-day supply" % days[0]) if len(days) == 1 else "no day-supply line in the whitelist"
         reasons.append(_PREFIX + ("%d-day supply" % n) + " is not the pack supply (label: " + label_day + ")")
     studyish = bool(_STUDY.search(prev_window[-180:] + " " + clause))
+    for match in list(_GRAM.finditer(clause)) + list(_WORD_GRAM.finditer(clause)):
+        if _negated(clause, match.start()) or _other_only(clause):
+            continue
+        if match.re is _WORD_GRAM:
+            plain = str(_spelled_number(match))
+            forms = (plain,)
+        else:
+            raw = match.group("n")
+            plain = raw.replace(",", "")
+            forms = (raw, plain)
+        if _gram_listed(forms, tokens):
+            continue
+        # Same window as a milligram: a foreign study dose stays allowed.
+        # "were studied. Participants took 0.25 g" does not. "0.25 g" in the
+        # sentence before the product name does not either, unless that
+        # sentence is the study dose (the Pandit shape).
+        if not owned and studyish and not prev_named:
+            continue
+        reasons.append(_PREFIX + plain + " g is not on the pack label whitelist")
     for match in _MG.finditer(clause):
         if _negated(clause, match.start()) or _other_only(clause):
             continue

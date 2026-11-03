@@ -155,6 +155,48 @@ class WrongCountsRejected(unittest.TestCase):
         self.assertRejected("FusiForce has sixty servings.", "60 servings")
         self.assertRejected("FusiForce has twenty servings.", "20 servings")
 
+    def test_followup_sentence_without_carry_subject_fails(self):
+        self.assertRejected(
+            "FusiForce is sold as gummies. Adults often use 5 g of creatine.",
+            "5 g is not")
+        self.assertRejected(
+            "FusiForce is sold as gummies. Adults often use five grams of creatine.",
+            "5 g is not")
+        self.assertEqual(br.violations("price per 5 g dose. Apply them to FusiForce honestly."), [])
+        self.assertEqual(
+            br.violations("how many gummies equal 5 g of creatine. FusiForce Creatine Monohydrate Gummies."),
+            [])
+        self.assertEqual(
+            br.violations("Adults often use 5 g of creatine. FusiForce is sold as gummies."), [])
+        self.assertEqual(br.violations("FusiForce is sold as gummies. It provides 90 gummies."), [])
+
+    def test_spelled_numbers_outside_the_small_list_fail(self):
+        self.assertEqual(br.violations("FusiForce has thirty servings."), [])
+        self.assertEqual(fu.violations("FusiForce has thirty servings."), [])
+        bad = self.assertRejected("FusiForce has forty servings.")
+        self.assertIn(fu._PREFIX + "40 servings is not on the pack label whitelist", bad)
+        bad = self.assertRejected("FusiForce has fifteen servings.")
+        self.assertIn(fu._PREFIX + "15 servings is not on the pack label whitelist", bad)
+        bad = self.assertRejected("FusiForce provides five grams of creatine.")
+        self.assertIn(fu._PREFIX + "5 g is not on the pack label whitelist", bad)
+        bad = self.assertRejected("FusiForce provides twenty-five grams.")
+        self.assertIn(fu._PREFIX + "25 g is not on the pack label whitelist", bad)
+        self.assertEqual(
+            fu.violations("FusiForce provides five grams.", tokens=["5 g", "90", "Creatine"]), [])
+
+    def test_negations_other_than_no_and_do_not_hide_a_dose(self):
+        self.assertRejected("FusiForce is not a stimulant and delivers 5000 mg.", "5000 mg")
+        self.assertRejected("FusiForce without fillers delivers 5000 mg.", "5000 mg")
+        self.assertRejected("FusiForce has no fillers, 5000 mg.", "5000 mg")
+        self.assertRejected("FusiForce without fillers, 5000 mg.", "5000 mg")
+        self.assertRejected("FusiForce is not a stimulant and delivers 5 g.", "5 g is not")
+        self.assertEqual(br.violations("FusiForce is not a stimulant and not 5000 mg."), [])
+        self.assertEqual(br.violations("FusiForce works without 5000 mg."), [])
+        self.assertEqual(br.violations("FusiForce has no 5000 mg."), [])
+        self.assertEqual(br.violations("Do not claim 25 mg or 50 mg or 28 servings for FusiForce."), [])
+        self.assertEqual(
+            br.violations("Do not state 84 gummies, 25 mg, 50 mg, 5,000 mg, or ginseng for FusiForce."), [])
+
     def test_no_fillers_does_not_hide_a_milligram(self):
         self.assertRejected("FusiForce has no fillers and delivers 5000 mg.", "5000 mg")
         self.assertRejected("FusiForce has no fillers and 5000 mg.", "5000 mg")

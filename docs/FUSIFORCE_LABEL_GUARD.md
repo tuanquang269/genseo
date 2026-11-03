@@ -12,13 +12,13 @@ Copy that names FusiForce may say creatine monohydrate, **90 gummies**, **30 ser
 
 - a pack count other than 90 (including **84** gummies, an 84-count, or 28 × 3 = 84)
 - **25 mg**, **50 mg**, **5,000 mg**, or any other milligram amount
-- a gram amount the file does not list, including **5 g** and **5 grams** of creatine (the pouch whitelist has no gram line)
-- a serving count other than 30 servings / 3 gummies per serving (`28 servings`, `60 servings`, `4 gummies per serving`, `2 gummies per serving`), including those counts written as words (`sixty servings`; `thirty servings` is 30 and stays allowed)
+- a gram amount the file does not list, including **5 g**, **5 grams**, and **five grams** of creatine (the pouch whitelist has no gram line)
+- a serving count other than 30 servings / 3 gummies per serving (`28 servings`, `60 servings`, `4 gummies per serving`, `2 gummies per serving`), including those counts written as words (`sixty servings`, `forty servings`, `fifteen servings`; `thirty servings` is 30 and stays allowed)
 - ginseng, Panax, or ginsenosides
 
-A gram amount is a FusiForce claim when that clause names FusiForce or carries the name (`It provides 5 g`). `price per 5 g dose. Apply them to FusiForce honestly.` stays allowed: the gram is a separate sentence and does not name the pouch.
+A gram amount is a FusiForce claim when that clause names FusiForce, when the next clause carries the name (`It provides 5 g`, `The serving is 5 g`, `The pouch holds 5 g`), or when the previous clause named FusiForce even if this one does not (`FusiForce is sold as gummies. Adults often use 5 g of creatine.`). `price per 5 g dose. Apply them to FusiForce honestly.` stays allowed: the gram is an earlier sentence. A gram two sentences later, with a sentence in between, stays a separate dose.
 
-Bare `no` only covers the claim it directly modifies. `Do not claim 25 mg` and `no 5,000 mg` stay denials. `no fillers and delivers 5000 mg` does not.
+A denial ends at `and` or a new delivery verb. Bare `no` and `without` also end at a comma. `Do not claim 25 mg`, `Do not state 84 gummies, 25 mg`, and `no 5,000 mg` stay denials. `no fillers and delivers 5000 mg`, `is not a stimulant and delivers 5000 mg`, `without fillers delivers 5000 mg`, and `no fillers, 5000 mg` do not.
 
 A partial sachet in the cutout photo is not a whitelist line. Creatine and monohydrate are allowed because those words are whitelist lines. Ginseng is not a whitelist line. `scripts/fusiforce_rules.py` reads the file on each check: if a token is added to the file later, that token is allowed; if the file is missing or no longer has exactly one integer line, pack-count claims fail closed.
 

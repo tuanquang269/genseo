@@ -11,10 +11,16 @@ vault_servings: 30 servings and 3 gummies per serving. Those lines are not a
 second pack count. The file does not include 84, a milligram amount, or ginseng.
 Copy that names FusiForce may say creatine monohydrate, 90 gummies, 30 servings,
 and 3 gummies per serving. It may not state 84 gummies, 25 mg, 50 mg, 5,000 mg,
-any other serving count, any milligram amount, any gram amount (5 g, 5 grams),
-or ginseng unless that exact token is in the whitelist file. A bare "no" only
-covers the claim it directly modifies, so "no fillers and 5000 mg" still fails
-and "Do not claim 25 mg" still passes.
+any other serving count, any milligram amount, any gram amount (5 g, 5 grams,
+five grams), or ginseng unless that exact token is in the whitelist file.
+A gram in the next sentence counts even when that sentence does not start with
+It, The serving, or pouch ("FusiForce is sold as gummies. Adults often use 5 g").
+A gram in an earlier sentence ("5 g ... FusiForce") does not. Serving counts
+written as words are read (thirty servings is 30 and stays allowed; forty
+servings, fifteen servings, and five grams do not). A denial ends at "and" or a
+new delivery verb, and bare "no" also ends at a comma, so "is not a stimulant
+and delivers 5000 mg", "without fillers delivers 5000 mg", and "no fillers,
+5000 mg" still fail. "Do not claim 25 mg" and "no 5000 mg" still pass.
 
 brand_rules.assess() merges these violations. Landing specs go through
 brand_rules.spec_violations(). Keep the whitelist in the label file; do not
@@ -80,7 +86,9 @@ _NEG_CUE = re.compile(
     re.I,
 )
 _NEG_BREAK = re.compile(r"\b(?:but|however|yet|although|though|while|whereas)\b", re.I)
-# "no fillers and delivers 5000 mg" is a dose. "no 5,000 mg" and "do not claim" are denials.
+# "and" or a new delivery verb ends any denial ("is not a stimulant and delivers
+# 5000 mg", "without fillers delivers 5000 mg"). A comma ends bare "no"
+# ("no fillers, 5000 mg"). "no 5,000 mg" and "do not claim 25 mg, 50 mg" stay denials.
 _NO_GAP = re.compile(
     r"\band\b"
     r"|(?:\w+\s+){1,8}(?:delivers?|provides?|contains?|includes?|lists?|has|have|gives?|adds?|offers?)\b",
@@ -103,11 +111,26 @@ _PACK = re.compile(
 _EIGHTY_FOUR = re.compile(r"\beighty[\s-]*four\b", re.I)
 _EQ84 = re.compile(r"28\s*[x×*]\s*3\s*=\s*84\b", re.I)
 _SERVINGS = re.compile(r"(?<![\d.,])(?P<n>\d{1,4})\s*-?\s*servings?\b", re.I)
-_WORD_SERVING_NUM = {"twenty": 20, "thirty": 30, "sixty": 60, "ninety": 90}
-_WORD_SERVINGS = re.compile(
-    r"\b(?P<w>twenty|thirty|sixty|ninety)\s*-?\s*servings?\b",
-    re.I,
+_WORD_NUM = {
+    "zero": 0, "one": 1, "two": 2, "three": 3, "four": 4, "five": 5,
+    "six": 6, "seven": 7, "eight": 8, "nine": 9, "ten": 10,
+    "eleven": 11, "twelve": 12, "thirteen": 13, "fourteen": 14, "fifteen": 15,
+    "sixteen": 16, "seventeen": 17, "eighteen": 18, "nineteen": 19,
+    "twenty": 20, "thirty": 30, "forty": 40, "fifty": 50,
+    "sixty": 60, "seventy": 70, "eighty": 80, "ninety": 90, "hundred": 100,
+}
+_TENS_RE = "ninety|eighty|seventy|sixty|fifty|forty|thirty|twenty"
+_ONES_RE = (
+    "nineteen|eighteen|seventeen|sixteen|fifteen|fourteen|thirteen|twelve|eleven|"
+    "ten|nine|eight|seven|six|five|four|three|two|one|zero|hundred"
 )
+_UNIT_RE = "nine|eight|seven|six|five|four|three|two|one"
+_SPELLED = (
+    r"(?<![\w-])(?P<w>" + _TENS_RE + r"|" + _ONES_RE + r")"
+    r"(?:[\s-]+(?P<u>" + _UNIT_RE + r"))?(?!\w)"
+)
+_WORD_SERVINGS = re.compile(_SPELLED + r"\s*-?\s*servings?\b", re.I)
+_WORD_GRAM = re.compile(_SPELLED + r"\s*-?\s*(?:grams?|g)\b", re.I)
 _GRAM = re.compile(
     r"(?<![\d.,])(?P<n>\d{1,3}(?:,\d{3})+|\d+(?:\.\d+)?)\s*-?\s*(?:grams?|g)\b",
     re.I,
@@ -276,12 +299,24 @@ def _clauses(visible):
     return out
 
 
+def _spelled_number(match):
+    """Integer for a spelled amount. twenty-five is 25. thirty alone is 30."""
+    n = _WORD_NUM[match.group("w").lower()]
+    unit = match.group("u")
+    if unit and 20 <= n < 100 and n % 10 == 0:
+        n += _WORD_NUM[unit.lower()]
+    return n
+
+
 def _negated(clause, start):
     """True when a denial cue governs this match.
 
-    Bare "no" only covers the claim it sits on. The closest "no" does not hide
-    a later dose after "and" or a new verb ("no fillers and delivers 5000 mg").
-    "Do not claim 25 mg" stays a denial because that cue is "not", not "no".
+    Any denial ends at "and" or a new delivery verb, so "is not a stimulant
+    and delivers 5000 mg" and "without fillers delivers 5000 mg" still count.
+    Bare "no" and "without" also end at a comma ("no fillers, 5000 mg").
+    "Do not claim 25 mg, 50 mg" stays a denial: that cue is "not", and the
+    comma does not end it. "no 5000 mg" stays a denial because nothing sits
+    between the cue and the dose.
     """
     pre = clause[max(0, start - 100):start]
     cues = list(_NEG_CUE.finditer(pre))
@@ -290,7 +325,10 @@ def _negated(clause, start):
     last = cues[-1]
     if _NEG_BREAK.search(pre, last.end()):
         return False
-    if last.group(0).lower() == "no" and _NO_GAP.search(pre, last.end()):
+    gap = pre[last.end():]
+    if _NO_GAP.search(gap):
+        return False
+    if last.group(0).lower() in ("no", "without") and "," in gap:
         return False
     return True
 
@@ -319,13 +357,13 @@ def _scan(visible, tokens, attributed):
         fusi = bool(_FUSI.search(clause))
         carried = attributed or (prev_fusi and (prev_delim == ":" or bool(_CARRY.match(clause))))
         owned = fusi or carried
-        _check_clause(clause, tokens, count, owned, reasons)
+        _check_clause(clause, tokens, count, owned, prev_fusi, reasons)
         prev_fusi = fusi or carried
         prev_delim = delim
     return _dedupe(reasons)
 
 
-def _check_clause(clause, tokens, count, owned, reasons):
+def _check_clause(clause, tokens, count, owned, prev_named, reasons):
     for m in _PACK.finditer(clause):
         if not _hit(clause, m.start(), owned):
             continue
@@ -351,7 +389,7 @@ def _check_clause(clause, tokens, count, owned, reasons):
     for m in list(_SERVINGS.finditer(clause)) + list(_WORD_SERVINGS.finditer(clause)):
         if not _hit(clause, m.start(), owned):
             continue
-        n = str(_WORD_SERVING_NUM[m.group("w").lower()]) if m.re is _WORD_SERVINGS else m.group("n")
+        n = str(_spelled_number(m)) if m.re is _WORD_SERVINGS else m.group("n")
         if listed(n + " servings", tokens) or listed(n + " serving", tokens):
             continue
         reasons.append(_PREFIX + n + " servings is not on the pack label whitelist")
@@ -369,15 +407,22 @@ def _check_clause(clause, tokens, count, owned, reasons):
         if listed(raw + " mg", tokens) or listed(raw.replace(",", "") + " mg", tokens):
             continue
         reasons.append(_PREFIX + raw + " mg is not on the pack label whitelist")
-    for m in _GRAM.finditer(clause):
-        # A gram amount counts only when this clause names FusiForce (or carries
-        # it). "price per 5 g dose. Apply them to FusiForce" stays a separate dose.
-        if not owned or _negated(clause, m.start()) or _other_only(clause):
+    for m in list(_GRAM.finditer(clause)) + list(_WORD_GRAM.finditer(clause)):
+        # A gram counts when this clause names FusiForce, when It / The serving /
+        # pouch carries the name, or when the previous clause named it. The next
+        # sentence counts even without that subject. "price per 5 g dose. Apply
+        # them to FusiForce" stays a separate, earlier dose.
+        if not (owned or prev_named) or _negated(clause, m.start()) or _other_only(clause):
             continue
-        raw = m.group("n")
-        plain = raw.replace(",", "")
+        if m.re is _WORD_GRAM:
+            plain = str(_spelled_number(m))
+            forms = (plain,)
+        else:
+            raw = m.group("n")
+            plain = raw.replace(",", "")
+            forms = (raw, plain)
         phrases = []
-        for n in (raw, plain):
+        for n in forms:
             phrases.extend((n + " g", n + "g", n + " gram", n + " grams"))
         if any(listed(phrase, tokens) for phrase in phrases):
             continue

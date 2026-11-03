@@ -191,6 +191,62 @@ class WrongCountsRejected(unittest.TestCase):
         self.assertEqual(br.violations(sg.TICKET_LINE), [])
         self.assertEqual(br.violations(sg.LANDING_NOTE), [])
 
+    def test_gram_amounts_fail(self):
+        bad = self.assertRejected("Premium Himalayan Shilajit Gummies provide 0.25 g.")
+        self.assertIn(sg._PREFIX + "0.25 g is not on the pack label whitelist", bad)
+        bad = self.assertRejected("Shilajit Gummies provide 1.5 grams.")
+        self.assertIn(sg._PREFIX + "1.5 g is not on the pack label whitelist", bad)
+        self.assertRejected(
+            "Shilajit Gummies are sold as gummies. Adults often use 0.25 g.", "0.25 g")
+        self.assertRejected(
+            "Adults often use 0.25 g. Premium Himalayan Shilajit Gummies are 60 gummies.", "0.25 g")
+        self.assertRejected(
+            "Premium Himalayan Shilajit Gummies were studied. Participants took 0.25 g.", "0.25 g")
+        self.assertEqual(
+            sg.violations("Premium Himalayan Shilajit Gummies provide 0.25 g.",
+                          tokens=["0.25 g", "60 GUMMIES"]), [])
+        self.assertEqual(
+            sg.violations("Shilajit Gummies provide 1.5 grams.",
+                          tokens=["1.5 grams", "60 GUMMIES"]), [])
+        pandit_g = (
+            "The Pandit trial used 0.25 g of purified shilajit. "
+            "Premium Himalayan Shilajit Gummies are 60 gummies and a 60-day supply.")
+        self.assertEqual(sg.violations(pandit_g), [])
+        self.assertEqual(br.violations(pandit_g), [])
+
+    def test_spelled_numbers_outside_the_small_list_fail(self):
+        bad = self.assertRejected("Shilajit Gummies have twenty servings.")
+        self.assertIn(sg._PREFIX + "20 servings is not on the pack label whitelist", bad)
+        bad = self.assertRejected("Shilajit Gummies have forty servings.")
+        self.assertIn(sg._PREFIX + "40 servings is not on the pack label whitelist", bad)
+        bad = self.assertRejected("Shilajit Gummies have fifteen servings.")
+        self.assertIn(sg._PREFIX + "15 servings is not on the pack label whitelist", bad)
+        bad = self.assertRejected("Shilajit Gummies provide five grams.")
+        self.assertIn(sg._PREFIX + "5 g is not on the pack label whitelist", bad)
+        self.assertRejected("Shilajit Gummies have thirty servings.", "30 servings")
+        self.assertEqual(
+            sg.violations("Shilajit Gummies have twenty servings.",
+                          tokens=["20 servings", "60 GUMMIES"]), [])
+
+    def test_negations_other_than_no_and_do_not_hide_a_dose(self):
+        self.assertRejected("Shilajit Gummies are not a stimulant and delivers 250 mg.", "250 mg")
+        self.assertRejected("Shilajit Gummies without fillers delivers 150 mg.", "150 mg")
+        self.assertRejected("Shilajit Gummies have no fillers, 250 mg.", "250 mg")
+        self.assertRejected("Shilajit Gummies without fillers, 150 mg.", "150 mg")
+        self.assertEqual(br.violations("Shilajit Gummies are not a stimulant and not 250 mg."), [])
+        self.assertEqual(br.violations("Shilajit Gummies work without 250 mg."), [])
+        self.assertEqual(
+            br.violations("Do not claim 30 servings or 150 mg for Premium Himalayan Shilajit Gummies."), [])
+        pandit = (
+            "The Pandit trial used 250 mg of purified shilajit. "
+            "Premium Himalayan Shilajit Gummies are 60 gummies and a 60-day supply.")
+        self.assertEqual(br.violations(pandit), [])
+        separate = (
+            "Premium Himalayan Shilajit Gummies are 60 gummies and a 60-day supply. "
+            "Labels differ across brands. "
+            "The Pandit trial used 250 mg of purified shilajit.")
+        self.assertEqual(br.violations(separate), [])
+
     def test_invented_milligrams_fail_and_label_milligrams_pass(self):
         self.assertRejected("Premium Himalayan Shilajit Gummies provide 150 mg of extract.", "150 mg")
         self.assertRejected("Premium Himalayan Shilajit Gummies provide 250 mg.", "250 mg")
