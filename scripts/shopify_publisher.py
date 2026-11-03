@@ -63,13 +63,18 @@ def _refuse_guarded_draft(title, body):
         sys.exit(2)
 
 
-def _canonical_prepare(md_text):
+def _canonical_prepare(md_text, canonical=None):
     """Normalise internal links, then refuse a bad Article identity URL.
 
     Called before image upload so a failing draft never touches Shopify.
     Locale prefixes and unknown query parameters are warnings, not a block.
+    selling_plan is kept. `canonical` is the public article URL when both
+    handles are already known. do_update passes the live URL. do_publish
+    passes one only from canonical_urls.article_public_url, which returns
+    None until the article handle exists. A missing canonical leaves the
+    pre-publish checks in place and does not invent a URL from the title.
     """
-    fails, warns = canonical_urls.gate_messages(md_text)
+    fails, warns = canonical_urls.gate_messages(md_text, canonical)
     for line in warns:
         if line.startswith("canonical autofix"):
             continue
@@ -80,12 +85,36 @@ def _canonical_prepare(md_text):
         for line in fails[:8]:
             print("  " + line)
         sys.exit(2)
-    md_text, changes = canonical_urls.normalise_document(md_text)
+    md_text, changes = canonical_urls.normalise_document(md_text, canonical)
     if changes:
         print("  canonical: normalised %d internal URL(s) before publish" % len(changes))
         for line in changes[:6]:
             print("    " + line)
     return md_text
+
+
+def _read_live_article(shop, token, blog_id, article_id):
+    """Return (title, public_url) for an article that already exists.
+
+    public_url is None when the blog handle and the article handle cannot
+    both be read. The numeric blog id is not a handle. do_update aborts
+    before image upload when public_url is None, so Article JSON-LD is not
+    uploaded against an unknown URL.
+    """
+    headers = {"X-Shopify-Access-Token": token}
+    try:
+        article_req = urllib.request.Request(
+            f"https://{shop}/admin/api/{API}/blogs/{blog_id}/articles/{article_id}.json?fields=title,handle",
+            headers=headers)
+        article = json.loads(urllib.request.urlopen(article_req).read()).get("article") or {}
+        blog_req = urllib.request.Request(
+            f"https://{shop}/admin/api/{API}/blogs/{blog_id}.json?fields=handle",
+            headers=headers)
+        blog = json.loads(urllib.request.urlopen(blog_req).read()).get("blog") or {}
+    except Exception:
+        return None, None
+    url = canonical_urls.article_public_url(blog.get("handle"), article.get("handle"))
+    return article.get("title"), url
 
 
 def ping_indexnow(shop, token, blog_id, article_handle):
@@ -704,7 +733,17 @@ def do_publish(file_path, blog_id, live=False):
             continue
         stripped_lines.append(line)
     md_text = '\n'.join(stripped_lines).lstrip('\n')
-    md_text = _canonical_prepare(md_text)
+    # Shopify assigns the article handle when the article is created. A slug of
+    # the title is not that handle: a collision appends a suffix, and the slug
+    # rules are Shopify's. blog_id is not the blog handle either. Pass the
+    # expected URL only when both handles are already known. They are not known
+    # on create, so this stays empty and the gate runs without a canonical.
+    # Homepage and non-article identity URLs still fail. JSON-LD that names a
+    # different article is checked on update, which reads the live URL.
+    blog_handle = ""
+    article_handle = ""
+    expected_url = canonical_urls.article_public_url(blog_handle, article_handle)
+    md_text = _canonical_prepare(md_text, expected_url)
 
     # ── Image credits — read BEFORE the upload step, which is destructive to this ──
     # information: _process_images_for_publish rewrites every local path in md_text to a CDN
@@ -894,13 +933,11 @@ def do_update(file_path, blog_id, article_id, replace_cover=False, no_carry_cred
     # a different title is applied ONLY when it's a pure year-bump of the live title,
     # or the draft carries <!-- title-change-approved --> (CTR-diagnosed refreshes only).
     # Otherwise the LIVE title is kept and the body update still goes through.
-    try:
-        _gr = urllib.request.Request(
-            f"https://{shop}/admin/api/{API}/blogs/{blog_id}/articles/{article_id}.json?fields=title",
-            headers={"X-Shopify-Access-Token": token})
-        live_title = json.loads(urllib.request.urlopen(_gr).read())['article']['title']
-    except Exception:
-        live_title = None
+    live_title, live_url = _read_live_article(shop, token, blog_id, article_id)
+    if not live_url:
+        print("✗ ABORT (update): could not read the live article URL.")
+        print("  Article JSON-LD is checked against that URL. Refusing to update before image upload.")
+        sys.exit(2)
     if live_title and live_title.strip() != title.strip():
         _norm = lambda t: re.sub(r'20\d\d', '', t).lower().strip()
         year_bump_only = _norm(live_title) == _norm(title)
@@ -933,7 +970,8 @@ def do_update(file_path, blog_id, article_id, replace_cover=False, no_carry_cred
             continue
         stripped_lines.append(line)
     md_text = '\n'.join(stripped_lines).lstrip('\n')
-    md_text = _canonical_prepare(md_text)
+    print(f"  canonical: Article JSON-LD must match {live_url}")
+    md_text = _canonical_prepare(md_text, live_url)
 
     # ── Credits before upload, for the reason given in do_publish ──
     # A refresh re-sends the WHOLE body, so a credits block omitted here is not merely absent

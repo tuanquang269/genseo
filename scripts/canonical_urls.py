@@ -11,16 +11,31 @@ Policy
 AUTOFIX, applied by the publisher before the Shopify request (not a hard fail):
   http→https, strip www, lower-case the host and path, collapse repeated
   slashes, drop a trailing slash on a non-home path, drop tracking and variant
-  parameters, rewrite /collections/<c>/products/<handle> to /products/<handle>.
+  parameters, keep selling_plan, rewrite /collections/<c>/products/<handle>
+  to /products/<handle>.
+
+  selling_plan selects Subscribe & Save. Stripping it turns a subscription
+  link into a one-time product URL, so it is not a tracking parameter.
 
 WARN, left unchanged (ambiguous):
-  a locale prefix (/fr/products/..., /es-es/blogs/...), any other query parameter.
+  a locale prefix (/fr/products/..., /es-es/blogs/...), any other query
+  parameter. Locale stays a warning when the article URL is already known.
+  That includes a locale copy of the same article. Promoting locale to a
+  failure is a separate decision and this module does not make it.
 
 FAIL (validate_article via geo_citability.assess; the publisher aborts too):
   a GenSeo Article / BlogPosting / NewsArticle mainEntityOfPage, url, or @id
   whose cleaned form is not the article URL. Homepage, product, collection,
   and other-article targets fail. A cosmetic mismatch with a known canonical
   is an autofix, not a fail. Theme JSON-LD is never a fail (draft PR #65).
+
+  do_update passes the live article URL, so JSON-LD for a different article
+  fails before image upload. do_publish passes that URL only when both the
+  blog handle and the article handle already exist (article_public_url).
+  Shopify assigns the article handle on create. A title slug is not that
+  handle, so a create does not invent one. Without it, homepage and
+  non-article identity URLs still fail, and a different-article identity is
+  checked on the next update.
 
 The homepage is already canonical both with and without a trailing slash
 (live tag is https://wellnessnest.co/). Mentioning the bare origin is not a finding.
@@ -46,15 +61,18 @@ AUDIT_UA = "GenSeoCanonicalAudit/1.0 (+https://wellnessnest.co; read-only)"
 SECTIONS = ("products", "collections", "blogs", "pages", "policies")
 ARTICLE_TYPES = {"Article", "BlogPosting", "NewsArticle"}
 # Parameters that are not the page. variant is a Shopify duplicate URL.
+# selling_plan is not listed: it chooses a subscription selling plan.
 STRIP_PARAMS = {
     "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content",
     "utm_id", "utm_name", "utm_cid", "utm_reader", "utm_viz_id", "utm_pubreferrer",
     "gclid", "gbraid", "wbraid", "dclid", "gclsrc", "fbclid", "msclkid",
     "ttclid", "twclid", "li_fat_id", "igshid", "mc_cid", "mc_eid", "srsltid",
     "yclid", "_ga", "_gl", "_kx", "gad_source", "gad_campaignid",
-    "variant", "variants", "selling_plan",
+    "variant", "variants",
     "pr_prod_strat", "pr_rec_id", "pr_ref_pid", "pr_seq", "pr_rec_pid", "pb",
 }
+KEEP_PARAMS = {"selling_plan"}
+_HANDLE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 _ASSET_EXT = (
     ".png", ".jpg", ".jpeg", ".webp", ".gif", ".svg", ".avif", ".css", ".js",
     ".json", ".xml", ".atom", ".map", ".ico", ".pdf", ".mp4", ".webm",
@@ -77,9 +95,36 @@ _TRAIL = ".,;:"
 _URL_CONT = re.compile(r"[A-Za-z0-9\-._~%:/?#\[\]@!$&'()*+,;=]")
 
 
+def _kept_param(name):
+    return (name or "").lower() in KEEP_PARAMS
+
+
 def _strip_dropped(name):
     low = (name or "").lower()
+    if _kept_param(low):
+        return False
     return low in STRIP_PARAMS or low.startswith("utm_")
+
+
+def article_public_url(blog_handle, article_handle):
+    """Public article URL, or None when either value is not already a handle.
+
+    Both arguments have to be the live handles, not a title, a filename, or a
+    Shopify numeric id. do_publish has neither handle: the blog id is not the
+    blog handle, and Shopify assigns the article handle when the article is
+    created (a collision appends a suffix). Returning None tells the caller
+    to leave the gate without a canonical. do_update reads both handles and
+    passes the URL this returns.
+    """
+    blog = (blog_handle or "").strip().lower()
+    article = (article_handle or "").strip().lower()
+    if not _HANDLE.fullmatch(blog) or not _HANDLE.fullmatch(article):
+        return None
+    # A resource id is all digits. Passing blog_id here would build
+    # /blogs/<id>/<handle> and reject the real article URL.
+    if blog.isdigit() or article.isdigit():
+        return None
+    return ORIGIN + "/blogs/" + blog + "/" + article
 
 
 def _logical(raw):
@@ -175,7 +220,7 @@ def classify_link(raw):
             dropped.append(key.lower())
         else:
             kept.append((key, val))
-    unknown = [key for key, _val in kept]
+    unknown = [key for key, _val in kept if not _kept_param(key)]
 
     rules = []
     scheme_host = (not relative) and (
@@ -431,6 +476,24 @@ def cleaned_url(url):
 identity_refs = _identity_refs
 
 
+def _locale_article_alias(key, canon_key):
+    """True when key is /<locale>/blogs/<blog>/<handle> for this same article.
+
+    Locale stays a warning. A locale prefix of a different article is not an alias.
+    """
+    if not key or not canon_key:
+        return False
+    parts = urlsplit(key)
+    if parts.query:
+        return False
+    segs = [part for part in (parts.path or "").split("/") if part]
+    if len(segs) != 4 or segs[1] != "blogs" or not _LOCALE.match(segs[0]):
+        return False
+    plain = ORIGIN + "/blogs/%s/%s" % (segs[2], segs[3])
+    target = canon_key.split("#", 1)[0].split("?", 1)[0]
+    return plain == target
+
+
 def _is_home_key(key):
     if not key:
         return False
@@ -499,6 +562,14 @@ def _article_identity(node, canonical):
                 target = _logical(canonical).split("#", 1)[0]
                 if not _spell_ok(logical, target):
                     findings.append(_autofix_identity(field, logical.split("#", 1)[0], target))
+                continue
+            if _locale_article_alias(key, canon_key):
+                findings.append({
+                    "severity": "warn",
+                    "rule": "canonical-ambiguous",
+                    "message": "locale-prefix: Article %s %s left unchanged (locale is a warning, not a block)" % (field, key),
+                    "original": logical, "normalised": None,
+                })
                 continue
             findings.append({
                 "severity": "fail",

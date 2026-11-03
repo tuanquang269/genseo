@@ -37,6 +37,33 @@ class LinkPolicy(unittest.TestCase):
         self.assertNotIn("variant", new)
         self.assertNotIn("/collections/", new)
 
+    def test_selling_plan_is_preserved_while_tracking_is_stripped(self):
+        # Subscription CTA must stay a subscription. variant and utm still drop.
+        raw = "https://wellnessnest.co/products/fusiforce-creatine-gummies?selling_plan=123&utm_source=x&variant=9"
+        fails, warns = canon.gate_messages("Buy [it](%s)." % raw)
+        self.assertEqual(fails, [])
+        self.assertNotIn("selling_plan", canon.STRIP_PARAMS)
+        self.assertIn("selling_plan", canon.KEEP_PARAMS)
+        self.assertIn("variant", canon.STRIP_PARAMS)
+        self.assertTrue(any("utm_source" in item and "canonical autofix" in item for item in warns), warns)
+        self.assertFalse(any("drop-param (selling_plan" in item or "unknown-query (selling_plan" in item for item in warns), warns)
+        new, changes = canon.normalise_document("Buy [it](%s)." % raw)
+        self.assertIn("selling_plan=123", new)
+        self.assertIn("/products/fusiforce-creatine-gummies?selling_plan=123", new)
+        self.assertNotIn("utm_", new)
+        self.assertNotIn("variant", new)
+        self.assertTrue(changes)
+        self.assertEqual(canon.normalise_document(new)[1], [])
+        alone = PRODUCT + "?selling_plan=123"
+        alone_fails, alone_warns = canon.gate_messages(alone)
+        self.assertEqual(alone_fails, [])
+        self.assertEqual(alone_warns, [])
+        self.assertEqual(canon.normalise_document(alone)[0], alone)
+        coll = "/collections/best-seller/products/foo?selling_plan=123&variant=9"
+        coll_new, _coll_changes = canon.normalise_document("[it](%s)" % coll)
+        self.assertIn("(/products/foo?selling_plan=123)", coll_new)
+        self.assertNotIn("variant", coll_new)
+
     def test_scheme_host_case_and_slash(self):
         raw = "http://www.wellnessnest.co/products/Foo/"
         new, _changes = canon.normalise_document(raw)
@@ -127,6 +154,48 @@ class ArticleIdentity(unittest.TestCase):
         fails, _warns = canon.gate_messages(html, CANON)
         self.assertTrue(any("does not equal canonical" in item for item in fails), fails)
 
+    def test_article_public_url_needs_both_handles(self):
+        self.assertEqual(
+            canon.article_public_url("news", "foo"),
+            "https://wellnessnest.co/blogs/news/foo",
+        )
+        self.assertEqual(canon.article_public_url(" News ", "Foo"), CANON)
+        self.assertIsNone(canon.article_public_url("", "foo"))
+        self.assertIsNone(canon.article_public_url("news", ""))
+        self.assertIsNone(canon.article_public_url("news", "NMN for seniors"))
+        self.assertIsNone(canon.article_public_url("104008483131", "foo"))
+        self.assertIsNone(canon.article_public_url("news", "104008483131"))
+
+    def test_live_article_url_rejects_jsonld_for_a_different_article(self):
+        live = canon.article_public_url("news", "foo")
+        html = article_json(
+            '{"@type":"Article","@id":"https://wellnessnest.co/blogs/news/other-article",'
+            '"url":"https://wellnessnest.co/blogs/news/other-article",'
+            '"mainEntityOfPage":"https://wellnessnest.co/blogs/news/other-article"}'
+        )
+        fails, warns = canon.gate_messages(html)
+        self.assertEqual(fails, [])
+        self.assertEqual(warns, [])
+        fails, warns = canon.gate_messages(html, live)
+        self.assertGreaterEqual(len(fails), 3, fails)
+        self.assertTrue(all("does not equal canonical" in item for item in fails), fails)
+        self.assertEqual(warns, [])
+
+    def test_locale_identity_stays_a_warning_when_the_article_url_is_known(self):
+        html = article_json(
+            '{"@type":"Article","url":"https://wellnessnest.co/fr/blogs/news/foo"}'
+        )
+        fails, warns = canon.gate_messages(html, CANON)
+        self.assertEqual(fails, [])
+        self.assertTrue(any("locale-prefix" in item for item in warns), warns)
+        new, _changes = canon.normalise_document(html, CANON)
+        self.assertIn("/fr/blogs/news/foo", new)
+        other = article_json(
+            '{"@type":"Article","url":"https://wellnessnest.co/fr/blogs/news/bar"}'
+        )
+        fails, _warns = canon.gate_messages(other, CANON)
+        self.assertTrue(any("does not equal canonical" in item for item in fails), fails)
+
     def test_faq_and_organization_urls_are_not_article_identity(self):
         html = article_json(
             '{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Q?"}]}'
@@ -193,12 +262,27 @@ class GateWiring(unittest.TestCase):
         with open(path, encoding="utf-8") as handle:
             source = handle.read()
         self.assertIn("def _canonical_prepare", source)
-        self.assertEqual(source.count("md_text = _canonical_prepare(md_text)"), 2)
+        self.assertIn("gate_messages(md_text, canonical)", source)
+        self.assertIn("normalise_document(md_text, canonical)", source)
+        self.assertEqual(source.count("md_text = _canonical_prepare(md_text, "), 2)
         self.assertLess(source.index("def _canonical_prepare"), source.index("def do_publish"))
         publish = source.split("def do_publish", 1)[1].split("def do_update", 1)[0]
         update = source.split("def do_update", 1)[1]
         for block in (publish, update):
-            self.assertLess(block.index("_canonical_prepare(md_text)"), block.index("_process_images_for_publish"))
+            self.assertLess(block.index("_canonical_prepare("), block.index("_process_images_for_publish"))
+        self.assertIn('blog_handle = ""', publish)
+        self.assertIn('article_handle = ""', publish)
+        self.assertIn("article_public_url(blog_handle, article_handle)", publish)
+        self.assertIn("_canonical_prepare(md_text, expected_url)", publish)
+        self.assertNotIn("_read_live_article", publish)
+        self.assertNotIn("article_public_url(title", publish)
+        update_before_images = update.split("_process_images_for_publish", 1)[0]
+        self.assertIn("fields=title,handle", source)
+        self.assertIn("blogs/{blog_id}.json?fields=handle", source)
+        self.assertIn("if not live_url:", update_before_images)
+        self.assertLess(update_before_images.index("if not live_url:"), update_before_images.index("_canonical_prepare"))
+        self.assertIn("sys.exit(2)", update_before_images[update_before_images.index("if not live_url:"):])
+        self.assertIn("_canonical_prepare(md_text, live_url)", update_before_images)
 
     def test_guidelines_do_not_gain_canonical_warnings(self):
         path = os.path.join(ROOT, "knowledge_base", "AEO_GEO_GUIDELINES.md")
