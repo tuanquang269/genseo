@@ -3,7 +3,7 @@
 
 Taking vaginal probiotics on an empty stomach is not a universal requirement. For a US routine, follow the product label first; if it gives no meal instruction, taking the probiotic with a meal or shortly before one is a reasonable evidence-informed choice. Consistency matters more than forcing a fasting window, and meal timing does not turn a supplement into a treatment for an infection.
 
-![Woman checking FloraFresh vaginal probiotic gummies beside breakfast on a kitchen table](https://cdn.shopify.com/s/files/1/0810/1563/6283/files/hero_78df19a1-7fea-48ee-8a91-27444b545421.webp?v=1792554361)
+![An empty stomach is not required for this vaginal probiotic: check the FloraFresh label, pouch beside breakfast.](/Users/kevinkreative/genseo/run-assets/vaginal-probiotics-empty-stomach-us-2026/hero.webp)
 
 ## Does a meal change probiotic survival?
 
@@ -11,7 +11,7 @@ A meal can change the conditions a probiotic encounters while moving through the
 
 That finding supports a practical distinction: an empty stomach is not automatically better. The study examined a model and a probiotic preparation, not FloraFresh in women, so it cannot establish the best schedule for every vaginal probiotic. It does support avoiding confident claims that fasting is mandatory or that one meal schedule guarantees a specific result.
 
-![Hand reaching for an amber gummy beside a breakfast plate and FloraFresh pouch](https://cdn.shopify.com/s/files/1/0810/1563/6283/files/inline-pouch-breakfast_d6582e7c-deab-416d-91d8-48560b121f31.webp?v=1792554367)
+![A meal can change comfort, and it does not rewrite the FloraFresh serving: hand, breakfast plate, and pouch.](/Users/kevinkreative/genseo/run-assets/vaginal-probiotics-empty-stomach-us-2026/inline-pouch-breakfast.webp)
 
 ## Is an empty stomach required for vaginal probiotics?
 
@@ -41,13 +41,13 @@ Use this simple routine:
 4. **Keep the routine consistent.** A repeatable schedule is easier to maintain than an idealized fasting plan.
 5. **Ask about special circumstances.** If you are pregnant, immunocompromised, managing a health condition, or taking medicines, ask a clinician or pharmacist whether the product fits your situation.
 
-![Hand checking a morning wellness routine beside breakfast and water](https://cdn.shopify.com/s/files/1/0810/1563/6283/files/inline-routine-notebook_d71abc28-fd22-4c98-b7bb-e225cba8ccdd.webp?v=1792554373)
-
-![Woman preparing breakfast while FloraFresh pouch stands beside a bowl and spoon](https://cdn.shopify.com/s/files/1/0810/1563/6283/files/inline-meal_cd0296ee-f766-44c1-86de-b9191ff048c9.webp?v=1792554379)
+![Take FloraFresh with a meal when that is the cue you will repeat: pouch beside the bowl and spoon.](/Users/kevinkreative/genseo/run-assets/vaginal-probiotics-empty-stomach-us-2026/inline-meal.webp)
 
 ## What if the label is silent about food?
 
 If a probiotic label does not mention food, there is no need to invent a fasting rule. Take it with a meal or shortly before one, drink water normally, and use the same meal each day if that helps adherence. If taking it with food causes discomfort, stop and ask a clinician or pharmacist whether a different routine or product is appropriate.
+
+![When the label is silent about food, pick the repeatable cue and write it down: morning note, breakfast, and water.](/Users/kevinkreative/genseo/run-assets/vaginal-probiotics-empty-stomach-us-2026/inline-routine-notebook.webp)
 
 Do not infer that a silent label means the product is clinically proven for a particular vaginal condition. A supplement label can describe ingredients and directions without proving that it prevents, treats, or cures disease. The product’s label and the available human evidence answer different questions: one tells you what is in the pouch; the other tells you how strong the evidence is for a use.
 

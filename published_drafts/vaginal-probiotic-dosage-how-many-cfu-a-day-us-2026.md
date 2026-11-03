@@ -3,7 +3,7 @@
 
 For vaginal probiotic dosage, there is no universal CFU target that guarantees a result. Human studies have tested different strains, products, and schedules; one registered pregnancy trial used 2 billion CFU per day of two named Lactobacillus strains, while FloraFresh provides 15 billion CFU per 2 gummies from Bacillus coagulans SNZ-1969. In the US, compare strain identity, potency basis, directions, and safety—not CFU alone.
 
-![FloraFresh pouch beside a woman in a morning routine](https://cdn.shopify.com/s/files/1/0810/1563/6283/files/hero_9f17c634-99a9-4375-af5c-b4d37fae91b9.webp?v=1791803907)
+![Vaginal probiotic dosage is the labeled serving, and a bigger CFU number is not the answer: FloraFresh pouch in the morning routine.](/Users/kevinkreative/genseo/run-assets/vaginal-probiotic-dosage-how-many-cfu-a-day-us-2026/hero.webp)
 
 ## What CFU means on a vaginal probiotic label
 
@@ -19,7 +19,7 @@ The most useful label questions are:
 - Are storage instructions clear?
 - Does the formula disclose the full Supplement Facts panel?
 
-![FloraFresh pouch beside a water glass and weekly organizer](https://cdn.shopify.com/s/files/1/0810/1563/6283/files/inline-label_e27fb6e9-e26a-4c91-bf7d-e105386332b5.webp?v=1791803913)
+![CFU on a vaginal probiotic label is the count per serving: FloraFresh lists 15 billion CFU per 2 gummies, pouch beside the weekly organizer.](/Users/kevinkreative/genseo/run-assets/vaginal-probiotic-dosage-how-many-cfu-a-day-us-2026/inline-label.webp)
 
 ## Is the trial's 1 billion CFU enough for vaginal health?
 
@@ -43,9 +43,7 @@ This is why a comparison should separate three questions:
 
 A multi-strain formula is not automatically superior. More strains can make a label look impressive, but the buyer still needs the identity and amount of each strain—or a clear reason the manufacturer uses a named blend. “More CFU” and “more strains” are incomplete quality tests.
 
-![FloraFresh pouch on a desk during a label comparison](https://cdn.shopify.com/s/files/1/0810/1563/6283/files/inline-scene-reroll2_43834659-2974-43d9-b146-7f4561360fb9.webp?v=1791803922)
-
-![FloraFresh pouch on a comparison table](https://cdn.shopify.com/s/files/1/0810/1563/6283/files/inline-table_24adfff3-72fd-49f2-ab38-7d7eb6c39d18.webp?v=1791803931)
+![Strain matters more than a bigger CFU number: FloraFresh is Bacillus coagulans SNZ-1969, pouch on the desk during the comparison.](/Users/kevinkreative/genseo/run-assets/vaginal-probiotic-dosage-how-many-cfu-a-day-us-2026/inline-scene-reroll2.webp)
 
 ## FloraFresh dosage: what the label actually says
 
@@ -58,6 +56,8 @@ The pouch identifies FloraFresh Vaginal Probiotic Gummies and 60 dietary supplem
 ## How to compare common CFU ranges
 
 The table below is a label-reading framework, not a dosing prescription. “1 billion” and “10 billion” describe quantity; they do not rank products without strain, potency basis, and study context.
+
+![Compare CFU ranges on the serving line, and keep FloraFresh at 15 billion CFU per 2 gummies: pouch on the comparison table.](/Users/kevinkreative/genseo/run-assets/vaginal-probiotic-dosage-how-many-cfu-a-day-us-2026/inline-table.webp)
 
 | Label amount or format | What it tells you | What it does not tell you | Buyer check |
 |---|---|---|---|

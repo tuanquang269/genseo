@@ -15,7 +15,7 @@ On a rest day, use the day to make the habit easy to repeat:
 - Do not take extra resin to compensate for a missed gym session.
 - Stop and ask a healthcare professional about unexpected symptoms, medication interactions, pregnancy, nursing, or a medical condition.
 
-![Person's forearm and hands stirring ShilaSource resin into a warm mug on a kitchen counter](https://cdn.shopify.com/s/files/1/0810/1563/6283/files/inline-dissolve-kitchen.webp?v=1792484905)
+![Yes, keep the labeled shilajit serving on a rest day when the label allows daily use: forearm stirring resin into a warm mug.](/Users/kevinkreative/genseo/run-assets/shilajit-on-rest-days-with-food-us-2026/inline-dissolve-kitchen.webp)
 
 ## Does food change the rest-day routine?
 
@@ -38,9 +38,7 @@ A sensible routine has four checks:
 
 The real product is a matte black cylindrical canister paired with an amber-brown glass jar and brushed gold lid. The pack source records the 75-serving badge, but it does not establish a different day-supply calculation for this article.
 
-![Back and forearm of a person placing a day bag beside ShilaSource resin on a hallway bench](https://cdn.shopify.com/s/files/1/0810/1563/6283/files/inline-human-back-rest-day-final.webp?v=1792484911)
-
-![ShilaSource Himalayan Shilajit Resin canister beside a day bag and keys on a hallway bench](https://cdn.shopify.com/s/files/1/0810/1563/6283/files/inline-rest-day-bag.webp?v=1792484917)
+![Use resin on a day off as the same preparation step: the pack beside the day bag, and the gym is not required.](/Users/kevinkreative/genseo/run-assets/shilajit-on-rest-days-with-food-us-2026/inline-human-back-rest-day-final.webp)
 
 ## What if you only take shilajit on gym days?
 
@@ -53,6 +51,8 @@ For a training-focused evidence discussion, read [what a shilajit athlete trial 
 ## Where can you buy ShilaSource in the US?
 
 You can [buy ShilaSource Himalayan Shilajit Resin from Wellness Nest](https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin) online in the US. The live product page lists a $59.99 one-time purchase and separate subscription options; confirm the current price and terms at checkout because store pricing can change.
+
+![Buy ShilaSource in the US on the Wellness Nest page, then match the listing to this canister and amber jar, 1.06 oz, 75 servings.](/Users/kevinkreative/genseo/run-assets/shilajit-on-rest-days-with-food-us-2026/pack.webp)
 
 For category browsing, compare the [Shilajit wellness collection](https://wellnessnest.co/collections/shilajit-wellness-stack) or the [men’s essentials collection](https://wellnessnest.co/collections/mens-essential-collection). The product page, not an older article, should answer current availability, package directions, and documentation questions.
 

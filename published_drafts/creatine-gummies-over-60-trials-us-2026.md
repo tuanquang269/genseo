@@ -8,6 +8,8 @@ Educational information, not an individual treatment plan. Images are AI-generat
 
 **Creatine plus resistance training can improve lean tissue mass and some strength measures compared with training alone. Results vary, and an average research benefit is not a guaranteed personal outcome.**
 
+![What older-adult creatine trials found is a result alongside resistance training: a home band session between sets.](/Users/kevinkreative/genseo/run-assets/creatine-gummies-over-60-trials-us-2026/training-routine.webp)
+
 A [2017 meta-analysis by Chilibeck and colleagues](https://pubmed.ncbi.nlm.nih.gov/29138605/) pooled 22 studies involving 721 participants. Mean ages across studies ranged from 57 to 70 years. Participants performed resistance training while receiving creatine or a placebo. The pooled difference favored creatine for lean tissue mass, chest-press strength, and leg-press strength.
 
 That is relevant to creatine for seniors, but it needs boundaries. The review did not exclusively enroll people over 60. It did not establish that a particular gummy brand works. Some included interventions also used other nutritional supplements, which complicates a simple product-level conclusion.
@@ -27,8 +29,6 @@ For an individual decision, ask which outcome matters: following a training prog
 The [2021 evidence review on common creatine questions](https://pmc.ncbi.nlm.nih.gov/articles/PMC7871530/) concluded that creatine without resistance training is unlikely to produce substantial improvements in muscle strength and functional performance. Most longer-term studies of creatine alone also failed to demonstrate a lean-mass benefit.
 
 That distinction matters if you are buying gummies for a parent who does not exercise. Easier administration does not remove the training requirement from the evidence. If illness, pain, balance problems, or recent surgery limits movement, ask a qualified clinician or physical therapist what activity is appropriate instead of replacing rehabilitation with a supplement.
-
-![Older adult shown below the shoulders resting between resistance-band exercises at home](https://cdn.shopify.com/s/files/1/0810/1563/6283/files/training-routine.webp?v=1792198706)
 
 A practical discussion can start with current activity, movements that feel difficult, and the support needed to train safely. This article does not prescribe an exercise progression. The important comparison is an achievable, supervised plan where needed—not a demanding routine chosen to justify a purchase.
 
@@ -56,7 +56,7 @@ The live [FusiForce Creatine Gummies product page](https://wellnessnest.co/produ
 
 The ingredient list is important for older adults taking several medicines. Bring the complete label—not just the word “creatine”—to a pharmacist or clinician. A review of plain creatine cannot clear a blend containing Panax ginseng for your individual medication list.
 
-![FusiForce green stand-up pouch beside reading glasses and a closed notebook](https://cdn.shopify.com/s/files/1/0810/1563/6283/files/label-check_35cfe69f-f5d9-4ea4-91d3-d1513388aad8.webp?v=1792198711)
+![US buyers over 60 should read this FusiForce label: bright-green stand-up pouch, creatine monohydrate gummies, green apple, 90 gummies.](/Users/kevinkreative/genseo/run-assets/creatine-gummies-over-60-trials-us-2026/pack.webp)
 
 ### What about sugar per serving?
 
@@ -84,7 +84,7 @@ These findings do not prove that every person with chronic kidney disease can ta
 
 Bring a list of prescription medicines, over-the-counter medicines, and supplements. Ask whether baseline testing or follow-up is appropriate for you. Do not stop prescribed medication, change a fluid restriction, or assume that an increase in creatinine is harmless because you read a general review.
 
-![Older adult hand placing reading glasses on a notebook while preparing for an appointment](https://cdn.shopify.com/s/files/1/0810/1563/6283/files/clinician-prep.webp?v=1792198717)
+![Over 60, ask a clinician about kidney history before creatine: glasses and a notebook ready for that visit.](/Users/kevinkreative/genseo/run-assets/creatine-gummies-over-60-trials-us-2026/clinician-prep.webp)
 
 For broader context, use the existing [creatine gummies side-effects guide](https://wellnessnest.co/blogs/news/creatine-gummies-side-effects-4-real-3-myths-us-2026). New or persistent symptoms deserve individualized advice rather than reassurance from an online comparison.
 

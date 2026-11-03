@@ -24,11 +24,11 @@ A simple check can prevent avoidable mistakes:
 
 The FDA explains that dietary supplements can affect the body and may interact with medicines. Its [consumer guidance on using dietary supplements](https://www.fda.gov/food/dietary-supplements/information-consumers-using-dietary-supplements) is a better safety reference than a social post claiming that every lifter needs a loading phase or a special off-day amount.
 
-![Turkesterone jar on a gym bench beside an open duffel during a rest-day discussion](https://cdn.shopify.com/s/files/1/0810/1563/6283/files/gym-bag-routine.webp?v=1792545234)
-
 ## What can the Turkesterone Advanced Formula label confirm?
 
 The **Turkesterone Advanced Formula** pack identifies a Wellness Nest product with the words “Premium Turkesterone,” “Advanced Formula,” “Amplify,” “Muscle,” “Endurance,” “Dietary Supplement,” and a split “60 Capsules” badge. Those are package-identity details, not proof that a particular rest-day amount is effective.
+
+![The label confirms Premium Turkesterone, Advanced Formula, and the 60 capsules badge on this green jar. It does not confirm a rest-day dose.](/Users/kevinkreative/genseo/run-assets/turkesterone-rest-days-us-2026/pack.webp)
 
 The label reference available for this article does not provide a readable Supplement Facts panel or a milligram amount. This article therefore does not assign a milligram target, convert the product into a serving schedule, or claim a day supply. The live [Turkesterone Advanced Formula product page](https://wellnessnest.co/products/turkesterone-advanced-formula) is the place to check the current product information before ordering; recheck the physical package when it arrives.
 
@@ -53,7 +53,7 @@ Taking a supplement only on gym days is a personal schedule, not evidence that t
 
 A rest day also gives you a chance to evaluate whether a routine is sustainable. If the schedule requires complicated calculations, repeated “loading” claims, or several overlapping products, simplify the record before adding anything. The [turkesterone timing guide](https://wellnessnest.co/blogs/news/turkesterone-timing-food-protein-or-fasted-us-2026) covers timing questions separately; it does not establish a rest-day dose.
 
-![Open training calendar and Turkesterone jar on a home-office desk during a recovery morning](https://cdn.shopify.com/s/files/1/0810/1563/6283/files/rest-day-calendar.webp?v=1792545240)
+![Gym-day-only turkesterone is a personal schedule, and it is not evidence the ingredient works only when you train: jar beside the training calendar.](/Users/kevinkreative/genseo/run-assets/turkesterone-rest-days-us-2026/rest-day-calendar.webp)
 
 ## Is turkesterone safe for every US lifter on a rest day?
 
@@ -61,7 +61,7 @@ No supplement is automatically appropriate for every person. A rest day does not
 
 Keep claims modest. The product label's marketing language does not establish that turkesterone builds muscle, improves endurance, or speeds recovery for a particular reader. The FDA's supplement guidance explains why label reading and professional advice matter; it does not endorse this product.
 
-![Cropped torso beside a dinner plate and Turkesterone Advanced Formula jar in a garage gym](https://cdn.shopify.com/s/files/1/0810/1563/6283/files/recovery-meal-reroll.webp?v=1792545247)
+![A rest day does not make turkesterone safe for every US lifter: meal and jar in the garage gym, then ask a clinician about your own list.](/Users/kevinkreative/genseo/run-assets/turkesterone-rest-days-us-2026/recovery-meal-reroll.webp)
 
 ## Where can you buy Turkesterone Advanced Formula in the US?
 

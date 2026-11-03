@@ -1,7 +1,7 @@
 # Shilajit for Seniors: 5 Safety Checks Over 60 (US 2026)
 <!-- meta_description: Shilajit for seniors: 5 safety checks for medication review, purity, form and stop signs. See what the limited over-60 evidence can and cannot show. -->
 
-![ShilaSource Himalayan Shilajit Resin matte black canister and amber glass jar on a US home-office table](/Users/kevinkreative/genseo/run-assets/shilajit-for-seniors/hero.webp)
+![Shilajit for seniors starts with five safety checks, and it does not start by copying a study dose: ShilaSource canister and amber jar on a US home table.](/Users/kevinkreative/genseo/run-assets/shilajit-for-seniors/hero.webp)
 
 Shilajit is not proven safe for every senior, and the sources reviewed here do not establish compatibility with common blood-pressure, diabetes, thyroid, or blood-thinning medicines. For adults over 60 in the US, the sensible approach is a clinician-led medication review, a verified product, conservative label-following, and a clear plan for stopping if symptoms appear.
 
@@ -14,7 +14,7 @@ This is a safety checklist, not a diagnosis or a substitute for medical care. Hu
 
 ## 1. Should a clinician review every medication first?
 
-![Shilajit resin canister and jar beside a closed pill organizer on a breakfast table](/Users/kevinkreative/genseo/run-assets/shilajit-for-seniors/medication-check.webp)
+![A clinician should review every medicine first: ShilaSource canister and jar beside a closed pill organizer.](/Users/kevinkreative/genseo/run-assets/shilajit-for-seniors/medication-check.webp)
 
 A senior taking prescription or over-the-counter medicines should not assume that “natural” means compatible. The sources reviewed here do not establish that shilajit is safe with blood-pressure medicine, diabetes medicine, thyroid treatment, anticoagulants, or antiplatelet drugs.
 
@@ -56,7 +56,7 @@ ShilaSource Himalayan Shilajit Resin is listed by Wellness Nest at $59.99. Its v
 
 ## 3. Do not copy a dose from a study or another product
 
-![Older adult placing a blank sheet into a canvas tote before an appointment](/Users/kevinkreative/genseo/run-assets/shilajit-for-seniors/clinician-questions.webp)
+![Do not copy a shilajit dose from a study: take a blank question sheet to the appointment and use only the label you hold.](/Users/kevinkreative/genseo/run-assets/shilajit-for-seniors/clinician-questions.webp)
 
 There is no universal senior dose established by high-quality evidence. The 2022 bone study used a standardized shilajit extract in a specific research protocol. Its results cannot establish that an older adult should copy the study amount, that a raw resin is equivalent to the extract, or that a 60-plus adult will receive the same outcome.
 
@@ -71,7 +71,7 @@ Keep a short record of the date started, product name, label instructions, other
 
 ## 4. Choose the form that makes the label and routine clear in the US
 
-![Older adult hands reviewing a blank sheet beside a closed notebook in a US home](/Users/kevinkreative/genseo/run-assets/shilajit-for-seniors/label-review.webp)
+![Choose the shilajit form whose US label you can read: hands on a blank sheet beside the notebook before the first use.](/Users/kevinkreative/genseo/run-assets/shilajit-for-seniors/label-review.webp)
 
 For an older adult, the best form is not the one with the boldest promise. It is the one whose identity, instructions, ingredients, storage, and quality information can be checked and followed consistently.
 
