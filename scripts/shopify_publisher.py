@@ -315,14 +315,24 @@ def upload_image_to_shopify_files(shop, token, local_path):
     return None
 
 
+def _refuse_escaped_image(exc):
+    """Stop publish/update before any image outside the draft folder is opened."""
+    print(f"✗ ABORT: {exc}")
+    print("  Refusing to open or upload an image outside the draft folder.")
+    sys.exit(2)
+
+
 # ---------------------------------------------------------------------------
 # Discover all image references in a markdown string.
 # Returns: (local_paths, cdn_paths)
 #   local_paths: markdown tokens the publisher can open. /Users and /private
-#                stay absolute. A draft-relative token such as
-#                assets/<slug>/<file>.webp is included when draft_path is set;
-#                draft_image_paths.disk_path joins it to the draft's directory,
-#                the same join validate_article.py --draft already uses.
+#                stay absolute only when no draft file is known. A
+#                draft-relative token such as assets/<slug>/<file>.webp is
+#                included when draft_path is set. draft_image_paths.disk_path
+#                joins it to the draft's directory (the same join
+#                validate_article.py --draft already uses) and raises
+#                DraftImagePathError when the realpath leaves that directory
+#                (`../`, a symlink, or an absolute path).
 #   cdn_paths:   relative /cdn/... or /blogs/... paths (phantom refs)
 # ---------------------------------------------------------------------------
 IMG_RE = re.compile(r"!\[.*?\]\(([^)]+)\)")
@@ -356,7 +366,11 @@ def persona_credits_html(md_text, draft_path=None):
     local, _ = discover_images(md_text, draft_path)
     creds = {}
     for path in local:
-        disk = draft_image_paths.disk_path(path, draft_path) or path
+        # Do not fall back to the raw token. A relative `../` or an absolute
+        # path outside the draft folder must raise, not be opened.
+        disk = draft_image_paths.disk_path(path, draft_path)
+        if not disk:
+            continue
         try:
             with open(os.path.join(os.path.dirname(disk), "CREDITS.json")) as fh:
                 creds.update(json.load(fh))
@@ -686,10 +700,12 @@ def do_publish(file_path, blog_id, live=False):
     # information: _process_images_for_publish rewrites every local path in md_text to a CDN
     # URL, and the local path is the only thing that points at the directory where
     # article_images.py left CREDITS.json. One line later there is nothing left to read.
-    credits_html = persona_credits_html(md_text, file_path)
-
-    # ── Image Upload ────────────────────────────────────────────────────────
-    md_text, thumbnail_b64, hero_cdn_url, upload_count, fail_count = _process_images_for_publish(shop, token, md_text, draft_path=file_path)
+    try:
+        credits_html = persona_credits_html(md_text, file_path)
+        # ── Image Upload ────────────────────────────────────────────────────
+        md_text, thumbnail_b64, hero_cdn_url, upload_count, fail_count = _process_images_for_publish(shop, token, md_text, draft_path=file_path)
+    except draft_image_paths.DraftImagePathError as exc:
+        _refuse_escaped_image(exc)
 
     if fail_count > 0:
         print(f"\n  ⚠  {fail_count} image(s) failed to upload. The article will be published but images will be broken.")
@@ -915,7 +931,10 @@ def do_update(file_path, blog_id, article_id, replace_cover=False, no_carry_cred
     # breach reintroduced by a routine refresh is the kind nobody ever notices. A refresh draft
     # usually carries CDN URLs, not local paths, so the usual read finds nothing; in that case
     # the live page is the record of what it owes, so carry its block forward verbatim.
-    credits_html = persona_credits_html(md_text, file_path)
+    try:
+        credits_html = persona_credits_html(md_text, file_path)
+    except draft_image_paths.DraftImagePathError as exc:
+        _refuse_escaped_image(exc)
     # --replace-cover means every image is new, so the live block credits images that are gone;
     # --no-carry-credits drops it explicitly (e.g. a follow-up refresh of such an article).
     if not credits_html and (replace_cover or no_carry_credits):
@@ -936,7 +955,10 @@ def do_update(file_path, blog_id, article_id, replace_cover=False, no_carry_cred
             print('✗ ABORT (update --replace-cover): the draft has no local hero image to use as the new cover.')
             sys.exit(2)
         _hero_alt = _hm.group(1).strip() or None
-    md_text, thumbnail_b64, hero_cdn_url, upload_count, fail_count = _process_images_for_publish(shop, token, md_text, strip_hero=replace_cover, draft_path=file_path)
+    try:
+        md_text, thumbnail_b64, hero_cdn_url, upload_count, fail_count = _process_images_for_publish(shop, token, md_text, strip_hero=replace_cover, draft_path=file_path)
+    except draft_image_paths.DraftImagePathError as exc:
+        _refuse_escaped_image(exc)
 
     if fail_count > 0:
         print(f"\n  ⚠  {fail_count} image(s) failed to upload.")
