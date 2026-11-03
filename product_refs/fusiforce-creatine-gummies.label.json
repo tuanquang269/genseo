@@ -1,6 +1,6 @@
 {
  "handle": "fusiforce-creatine-gummies",
- "source": "read off the live PDP pack shot (image 0, /products/fusiforce-creatine-gummies.js) 2026-10-08 via label_ocr.swift",
+ "source": "Front pouch read off the live PDP pack shot (image 0, /products/fusiforce-creatine-gummies.js) 2026-10-08 via label_ocr.swift. Servings override, newer than that OCR: Kevin 2026-10-23 in the vault note 20-brands/21-wellnessnest-products/4-fusiforce.md — write 90 gummies / 30 servings (3 gummies per serving) everywhere. vault_servings holds those two phrases. That note does not state a milligram amount or ginseng. It is not a second pack count and it is not an OCR line.",
  "required": [
   "FusiForce",
   "Creatine",
@@ -19,5 +19,12 @@
   "Supports Cognitive Function*",
   "GUMMIES"
  ],
+ "vault_servings": {
+  "date": "2026-10-23",
+  "lines": [
+   "30 servings",
+   "3 gummies per serving"
+  ]
+ },
  "mark": "Wellness Nest pouch mark: white vertical 'Wellness Nest' wordmark running up the left side of the lime-green pouch, with the white two-stroke S-curved W mark below it at the lower left (compare at >= 2x with product_refs/fusiforce-creatine-gummies-cutout.png)"
 }
