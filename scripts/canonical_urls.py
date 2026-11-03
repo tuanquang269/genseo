@@ -30,12 +30,12 @@ FAIL (validate_article via geo_citability.assess; the publisher aborts too):
   is an autofix, not a fail. Theme JSON-LD is never a fail (draft PR #65).
 
   do_update passes the live article URL, so JSON-LD for a different article
-  fails before image upload. do_publish passes that URL only when both the
-  blog handle and the article handle already exist (article_public_url).
-  Shopify assigns the article handle on create. A title slug is not that
-  handle, so a create does not invent one. Without it, homepage and
-  non-article identity URLs still fail, and a different-article identity is
-  checked on the next update.
+  fails before image upload. do_publish creates an unpublished shell, then
+  passes article_public_url(blog handle, the article handle Shopify returned).
+  A title is not that handle. The shell is deleted if those handles do not
+  form a URL or the gate fails, and published stays false until the gate has
+  passed. Homepage and non-article identity URLs still fail before that
+  create. Locale of the same article stays a warning.
 
 The homepage is already canonical both with and without a trailing slash
 (live tag is https://wellnessnest.co/). Mentioning the bare origin is not a finding.
@@ -106,23 +106,29 @@ def _strip_dropped(name):
     return low in STRIP_PARAMS or low.startswith("utm_")
 
 
+def public_handle(value):
+    """Lowercased public handle, or '' when value is not one.
+
+    A title, a filename, and an all-digit Shopify id are not handles.
+    """
+    text = (value or "").strip().lower()
+    if not _HANDLE.fullmatch(text) or text.isdigit():
+        return ""
+    return text
+
+
 def article_public_url(blog_handle, article_handle):
     """Public article URL, or None when either value is not already a handle.
 
     Both arguments have to be the live handles, not a title, a filename, or a
-    Shopify numeric id. do_publish has neither handle: the blog id is not the
-    blog handle, and Shopify assigns the article handle when the article is
-    created (a collision appends a suffix). Returning None tells the caller
-    to leave the gate without a canonical. do_update reads both handles and
-    passes the URL this returns.
+    Shopify numeric id. do_publish passes the blog handle read from the blog
+    id and the article handle from the create response. do_update reads both
+    from the live article. A collision suffix is part of the handle Shopify
+    returns. This function does not derive one from a title.
     """
-    blog = (blog_handle or "").strip().lower()
-    article = (article_handle or "").strip().lower()
-    if not _HANDLE.fullmatch(blog) or not _HANDLE.fullmatch(article):
-        return None
-    # A resource id is all digits. Passing blog_id here would build
-    # /blogs/<id>/<handle> and reject the real article URL.
-    if blog.isdigit() or article.isdigit():
+    blog = public_handle(blog_handle)
+    article = public_handle(article_handle)
+    if not blog or not article:
         return None
     return ORIGIN + "/blogs/" + blog + "/" + article
 

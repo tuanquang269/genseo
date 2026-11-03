@@ -165,6 +165,10 @@ class ArticleIdentity(unittest.TestCase):
         self.assertIsNone(canon.article_public_url("news", "NMN for seniors"))
         self.assertIsNone(canon.article_public_url("104008483131", "foo"))
         self.assertIsNone(canon.article_public_url("news", "104008483131"))
+        self.assertEqual(canon.public_handle(" News "), "news")
+        self.assertEqual(canon.public_handle("morning-walk-notes-2"), "morning-walk-notes-2")
+        self.assertEqual(canon.public_handle("NMN for seniors"), "")
+        self.assertEqual(canon.public_handle("104008483131"), "")
 
     def test_live_article_url_rejects_jsonld_for_a_different_article(self):
         live = canon.article_public_url("news", "foo")
@@ -264,18 +268,38 @@ class GateWiring(unittest.TestCase):
         self.assertIn("def _canonical_prepare", source)
         self.assertIn("gate_messages(md_text, canonical)", source)
         self.assertIn("normalise_document(md_text, canonical)", source)
-        self.assertEqual(source.count("md_text = _canonical_prepare(md_text, "), 2)
+        self.assertEqual(source.count("md_text = _canonical_prepare(md_text, "), 3)
         self.assertLess(source.index("def _canonical_prepare"), source.index("def do_publish"))
+        self.assertLess(source.index("def reserve_first_publish_url"), source.index("def do_publish"))
         publish = source.split("def do_publish", 1)[1].split("def do_update", 1)[0]
         update = source.split("def do_update", 1)[1]
+        reserve = source.split("def reserve_first_publish_url", 1)[1].split("\ndef ", 1)[0]
         for block in (publish, update):
             self.assertLess(block.index("_canonical_prepare("), block.index("_process_images_for_publish"))
-        self.assertIn('blog_handle = ""', publish)
-        self.assertIn('article_handle = ""', publish)
-        self.assertIn("article_public_url(blog_handle, article_handle)", publish)
-        self.assertIn("_canonical_prepare(md_text, expected_url)", publish)
+        self.assertLess(publish.index("gate_messages(md_text, None)"), publish.index("reserve_first_publish_url("))
+        self.assertLess(
+            publish.index("reserve_first_publish_url("),
+            publish.index("_canonical_prepare(md_text, public_url)"),
+        )
+        self.assertLess(
+            publish.index("_canonical_prepare(md_text, public_url)"),
+            publish.index("_process_images_for_publish"),
+        )
+        self.assertLess(
+            publish.index("_process_images_for_publish"),
+            publish.index('"published": bool(live)'),
+        )
+        self.assertIn("_delete_article(", publish)
+        self.assertIn('"handle": article_handle', publish)
+        self.assertNotIn('blog_handle = ""', publish)
+        self.assertNotIn('article_handle = ""', publish)
+        self.assertNotIn("/articles.json", publish)
         self.assertNotIn("_read_live_article", publish)
-        self.assertNotIn("article_public_url(title", publish)
+        self.assertNotIn("article_public_url(title", source)
+        self.assertIn("article_public_url(blog_handle, article_handle)", reserve)
+        self.assertIn('"published": False', reserve)
+        self.assertIn('.get("handle")', reserve)
+        self.assertNotIn("body_html", reserve)
         update_before_images = update.split("_process_images_for_publish", 1)[0]
         self.assertIn("fields=title,handle", source)
         self.assertIn("blogs/{blog_id}.json?fields=handle", source)
