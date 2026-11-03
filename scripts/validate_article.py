@@ -275,13 +275,112 @@ def draft_struct_html(raw):
     return html
 
 
+# discover_images() uploads a markdown path only when the src string itself
+# starts with /Users or /private. A relative file, a data: URI, or a remote
+# URL never becomes article.image. Match that prefix here; do not import the
+# publisher.
+_IMG_TAG_RE=re.compile(r'(?is)<img\b[^>]*>')
+# (?<=\s) would miss a src at the start of a fragment. (?:^|\s) skips src=
+# buried inside another quoted attribute (alt="src=https://...").
+_IMG_SRC_RE=re.compile(
+    r'''(?is)(?:^|\s)src\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'<>`]+))''')
+
+
+def img_tag_src(tag):
+    """src of one <img>, including an unquoted src=https://... value."""
+    m=_IMG_SRC_RE.search(tag)
+    if not m:
+        return None
+    for g in m.groups():
+        if g is not None:
+            return g
+    return None
+
+
+def _remote_url_image_message(src):
+    return (src+" → remote URL image: download it to a local file. "
+            "Save the bytes on an absolute /Users or /private path. "
+            "shopify_publisher uploads only those paths and sets article.image from the first local file.")
+
+
+def _data_uri_image_message(src):
+    return (src+" → data URI image: write the bytes to a local file. "
+            "Save them on an absolute /Users or /private path. "
+            "shopify_publisher uploads only those paths and sets article.image from the first local file.")
+
+
+def _not_local_image_message(src):
+    return (src+" → not a publisher-local image: shopify_publisher uploads only "
+            "an absolute /Users or /private file. A relative path stays on disk.")
+
+
 def remote_image_fail(src):
-    """Draft markdown must not keep an https image. The publisher uploads only local files."""
-    if re.match(r'(?i)https?://', src):
-        return (src+" → remote URL image: download it to a local file. "
-                "Save the bytes on an absolute /Users or /private path. "
-                "shopify_publisher uploads only those paths and sets article.image from the first local file.")
-    return ""
+    """Fail a draft image shopify_publisher will not upload.
+
+    http(s), a protocol-relative // host, and the same URLs with leading
+    whitespace are remote. data: is inline, not a file. Anything else that
+    does not start with /Users or /private is not uploaded, even when a
+    relative path exists beside the draft.
+    """
+    if src.startswith("/Users") or src.startswith("/private"):
+        return ""
+    stripped=src.strip()
+    if re.match(r'(?i)https?://', stripped) or stripped.startswith("//"):
+        return _remote_url_image_message(src)
+    if re.match(r'(?i)data:', stripped):
+        return _data_uri_image_message(src)
+    return _not_local_image_message(src)
+
+
+def visible_body_images(html, md_draft):
+    """In-body <img> tags that count toward the floor.
+
+    A .md draft must not let a data: URI, a remote URL, or a relative path
+    satisfy the floor. The publisher strips the first local file into
+    article.image and never uploads those other srcs.
+    """
+    real=[]
+    for tag in _IMG_TAG_RE.findall(html):
+        low=tag.lower()
+        if 'display:none' in low or 'spacer' in low:
+            continue
+        if md_draft:
+            src=img_tag_src(tag)
+            if src is not None and remote_image_fail(src):
+                continue
+        real.append(tag)
+    return real
+
+
+def draft_image_file_fails(html, base):
+    """Non-deliverable <img> srcs. The same rule for every --draft suffix."""
+    bad=[]
+    for tag in _IMG_TAG_RE.findall(html):
+        src=img_tag_src(tag)
+        if src is None:
+            continue
+        msg=remote_image_fail(src)
+        if msg:
+            bad.append(msg)
+            continue
+        p=src if os.path.isabs(src) else os.path.join(base, src)
+        if not os.path.exists(p):
+            bad.append(f"{src} → no such file")
+        elif os.path.getsize(p)==0:
+            bad.append(f"{src} → 0 bytes")
+        elif "QC-FAILED" in os.path.basename(p).upper():
+            bad.append(f"{src} → quarantined by vision QC, must never be published")
+    return bad
+
+
+def draft_image_gate(path, html):
+    """--draft image gate. .html is held to the same rule as .md.
+
+    The old gate called remote_image_fail only when the path ended in .md,
+    so a published HTML body full of CDN srcs was skipped.
+    """
+    base=os.path.dirname(os.path.abspath(path))
+    return draft_image_file_fails(html, base)
 
 
 def main():
@@ -394,13 +493,14 @@ def main():
     # STEP 5: "1 lifestyle image per product, hero is never enough") was instruction-only — nothing
     # mechanical enforced it. This is that enforcement. Hero/cover is set as article.image (NOT body),
     # and publisher spacer imgs are display:none, so real in-body <img> = actual inline product images.
-    imgs=re.findall(r'<img[^>]*>', html)
-    real_imgs=[i for i in imgs if 'display:none' not in i.lower() and 'spacer' not in i.lower()]
     # In a .md draft the FIRST image tag is the hero: shopify_publisher.do_publish promotes it to
     # article.image and STRIPS it from the body. So a draft needs hero + MIN_INLINE_IMAGES tags to
     # land MIN_INLINE_IMAGES inline. Counting a draft's tags against the post-publish floor was off
     # by one and passed drafts that published one image short of the rule this gate exists for.
+    # Non-local srcs (data:, http(s), //host, relative paths) do not count toward that floor:
+    # four data URIs used to pass the count and the file check together.
     md_draft=draft_mode and path.endswith(".md")
+    real_imgs=visible_body_images(html, md_draft)
     need=MIN_INLINE_IMAGES+1 if md_draft else MIN_INLINE_IMAGES
     if len(real_imgs)<need:
         fails.append(f"only {len(real_imgs)} body image tag(s) — need ≥{need} "
@@ -414,22 +514,10 @@ def main():
     # never been written. A tag is a promise; the file is the delivery. Only the instruction-level
     # "abort if image generation fails" stood between that draft and a live page full of broken
     # images — which is exactly the instruction-only pattern this whole file exists to replace.
+    # Any --draft file, not only .md. A CDN src in published HTML used to be
+    # skipped because remote_image_fail ran only for the .md suffix.
     if draft_mode:
-        base=os.path.dirname(os.path.abspath(path))
-        bad=[]
-        for src in re.findall(r'<img[^>]*\bsrc=["\']([^"\']+)["\']', html):
-            if md_draft and remote_image_fail(src):
-                bad.append(remote_image_fail(src))
-                continue
-            if re.match(r'(?i)https?://|data:', src):
-                continue
-            p=src if os.path.isabs(src) else os.path.join(base, src)
-            if not os.path.exists(p):
-                bad.append(f"{src} → no such file")
-            elif os.path.getsize(p)==0:
-                bad.append(f"{src} → 0 bytes")
-            elif "QC-FAILED" in os.path.basename(p).upper():
-                bad.append(f"{src} → quarantined by vision QC, must never be published")
+        bad=draft_image_gate(path, html)
         if bad:
             fails.append("image file(s) the draft references are not deliverable: "+"; ".join(bad))
 
