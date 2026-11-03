@@ -1,7 +1,7 @@
 # Vaginal Probiotics While Traveling: 7 US Rules
 <!-- meta_description: Vaginal probiotics while traveling: learn seven US storage, heat, flight, time-zone, and missed-dose rules before packing FloraFresh at $40.99. Shop wisely. -->
 
-![Vaginal probiotics while traveling stay on the labeled FloraFresh serving if the pouch stays cool, dry, and in the carry-on.](/Users/kevinkreative/genseo/run-assets/vaginal-probiotics-while-traveling-keep-them-working-us-2026/hero.webp)
+![Vaginal probiotics while traveling stay on the labeled FloraFresh serving if the pouch stays cool, dry, and in the carry-on.](assets/vaginal-probiotics-while-traveling-keep-them-working-us-2026/hero.webp)
 
 Vaginal probiotics while traveling are easiest to manage when you protect the package from heat and moisture, keep the labeled daily serving beside a meal, and carry it in your cabin bag rather than a hot car or checked suitcase. For US trips, pack the original pouch, plan for time zones, and ask a pharmacist about travel medicines.
 
@@ -37,7 +37,7 @@ A hot car is a poor supplement cupboard. A parked vehicle can become much warmer
 
 A checked suitcase adds two problems: you cannot reach the product during delays, and the bag may spend time in conditions you cannot inspect. A carry-on does not create a laboratory-controlled temperature, but it gives you control over shade, access, and the decision to move the pouch into a cooler indoor location.
 
-![Keep FloraFresh gummies out of a hot US car and out of the checked bag: hand on the trunk, insulated bag inside.](/Users/kevinkreative/genseo/run-assets/vaginal-probiotics-while-traveling-keep-them-working-us-2026/inline-heat-smart-storage.webp)
+![Keep FloraFresh gummies out of a hot US car and out of the checked bag: hand on the trunk, insulated bag inside.](assets/vaginal-probiotics-while-traveling-keep-them-working-us-2026/inline-heat-smart-storage.webp)
 
 Do not treat an insulated bag as proof that the gummies stayed within a tested range. It can slow temperature change; it cannot certify the temperature inside. Avoid placing ice directly against the pouch, because condensation creates a moisture problem and freezing a product without label instructions is another uncontrolled experiment.
 
@@ -54,7 +54,7 @@ For a flight, keep the gummies in their original labeled pouch inside your carry
 
 Do not transfer gummies into an unlabeled pill organizer for a multi-leg trip. A small organizer may look convenient, but it removes the label and makes it harder to identify the product, serving directions, and ingredients. Keep the pouch sealed between servings and place it in a clean, dry inner pocket.
 
-![Carry the original FloraFresh pouch on the plane: pouch, suitcase, and passport in the carry-on pile.](/Users/kevinkreative/genseo/run-assets/vaginal-probiotics-while-traveling-keep-them-working-us-2026/inline-carry-on-packing.webp)
+![Carry the original FloraFresh pouch on the plane: pouch, suitcase, and passport in the carry-on pile.](assets/vaginal-probiotics-while-traveling-keep-them-working-us-2026/inline-carry-on-packing.webp)
 
 At the airport, the goal is not to make a medical claim about screening. The goal is access and basic package protection. If an officer asks about a supplement, show the labeled pouch and follow the current instructions from the airport authority.
 
@@ -69,7 +69,7 @@ A meal is a stronger travel cue than a clock reading. The package directions say
 
 Before leaving, choose one repeatable cue: breakfast at the hotel, the first meal after boarding, or dinner when you return to your room. Set one quiet phone reminder as a backup, but do not make the schedule so elaborate that a delayed flight defeats it. Keep the pouch where the meal happens, not buried under a checked suitcase.
 
-![Across time zones, attach the FloraFresh serving to a meal: pouch, water, and a watch on the hotel nightstand.](/Users/kevinkreative/genseo/run-assets/vaginal-probiotics-while-traveling-keep-them-working-us-2026/inline-time-zone-routine.webp)
+![Across time zones, attach the FloraFresh serving to a meal: pouch, water, and a watch on the hotel nightstand.](assets/vaginal-probiotics-while-traveling-keep-them-working-us-2026/inline-time-zone-routine.webp)
 
 If a flight crosses midnight, choose one local meal and keep the routine moving. The product directions do not require a specific named time of day. The travel objective is a consistent daily habit that still respects the label, not a perfect match to your home time zone.
 

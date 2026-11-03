@@ -8,7 +8,7 @@ Educational information, not an individual treatment plan. Images are AI-generat
 
 **Creatine plus resistance training can improve lean tissue mass and some strength measures compared with training alone. Results vary, and an average research benefit is not a guaranteed personal outcome.**
 
-![What older-adult creatine trials found is a result alongside resistance training: a home band session between sets.](/Users/kevinkreative/genseo/run-assets/creatine-gummies-over-60-trials-us-2026/training-routine.webp)
+![What older-adult creatine trials found is a result alongside resistance training: a home band session between sets.](assets/creatine-gummies-over-60-trials-us-2026/training-routine.webp)
 
 A [2017 meta-analysis by Chilibeck and colleagues](https://pubmed.ncbi.nlm.nih.gov/29138605/) pooled 22 studies involving 721 participants. Mean ages across studies ranged from 57 to 70 years. Participants performed resistance training while receiving creatine or a placebo. The pooled difference favored creatine for lean tissue mass, chest-press strength, and leg-press strength.
 
@@ -56,7 +56,7 @@ The live [FusiForce Creatine Gummies product page](https://wellnessnest.co/produ
 
 The ingredient list is important for older adults taking several medicines. Bring the complete label—not just the word “creatine”—to a pharmacist or clinician. A review of plain creatine cannot clear a blend containing Panax ginseng for your individual medication list.
 
-![US buyers over 60 should read this FusiForce label: bright-green stand-up pouch, creatine monohydrate gummies, green apple, 90 gummies.](/Users/kevinkreative/genseo/run-assets/creatine-gummies-over-60-trials-us-2026/pack.webp)
+![US buyers over 60 should read this FusiForce label: bright-green stand-up pouch, creatine monohydrate gummies, green apple, 90 gummies.](assets/creatine-gummies-over-60-trials-us-2026/pack.webp)
 
 ### What about sugar per serving?
 
@@ -84,7 +84,7 @@ These findings do not prove that every person with chronic kidney disease can ta
 
 Bring a list of prescription medicines, over-the-counter medicines, and supplements. Ask whether baseline testing or follow-up is appropriate for you. Do not stop prescribed medication, change a fluid restriction, or assume that an increase in creatinine is harmless because you read a general review.
 
-![Over 60, ask a clinician about kidney history before creatine: glasses and a notebook ready for that visit.](/Users/kevinkreative/genseo/run-assets/creatine-gummies-over-60-trials-us-2026/clinician-prep.webp)
+![Over 60, ask a clinician about kidney history before creatine: glasses and a notebook ready for that visit.](assets/creatine-gummies-over-60-trials-us-2026/clinician-prep.webp)
 
 For broader context, use the existing [creatine gummies side-effects guide](https://wellnessnest.co/blogs/news/creatine-gummies-side-effects-4-real-3-myths-us-2026). New or persistent symptoms deserve individualized advice rather than reassurance from an online comparison.
 

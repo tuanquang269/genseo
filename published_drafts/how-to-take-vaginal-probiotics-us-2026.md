@@ -35,7 +35,7 @@ A label check also prevents a common category mistake. “Vaginal probiotic” d
 
 The best time to take a vaginal probiotic is the time you can remember while still following the label. A breakfast routine works for some people; an evening hygiene routine works for others. The clock itself is less useful than a cue that survives weekends, travel, and schedule changes.
 
-![The repeatable cue is an ordinary breakfast: FloraFresh pouch beside water, then chew the labeled serving.](/Users/kevinkreative/genseo/run-assets/how-to-take-vaginal-probiotics-us-2026/chew-water.webp)
+![The repeatable cue is an ordinary breakfast: FloraFresh pouch beside water, then chew the labeled serving.](assets/how-to-take-vaginal-probiotics-us-2026/chew-water.webp)
 
 Try one of these cues:
 
@@ -55,7 +55,7 @@ For a deeper clock-time discussion, see [the guide to the best time to take vagi
 
 Chew the gummy fully. Water is optional unless the label or a clinician tells you otherwise, but drinking water can make the routine more comfortable and easier to remember. Do not assume that taking more water, more gummies, or a second product improves the result.
 
-![Chew the FloraFresh gummy as the label directs, with water if you want it: amber gummy, open pouch, glass of water.](/Users/kevinkreative/genseo/run-assets/how-to-take-vaginal-probiotics-us-2026/routine-scene.webp)
+![Chew the FloraFresh gummy as the label directs, with water if you want it: amber gummy, open pouch, glass of water.](assets/how-to-take-vaginal-probiotics-us-2026/routine-scene.webp)
 
 FloraFresh’s pineapple-flavor pack shows the product as gummies, not capsules. The gummy format can suit someone who dislikes swallowing pills, while capsules may suit someone who prefers a smaller, less sweet format. The format comparison is covered in [FloraFresh gummies vs. capsules](https://wellnessnest.co/blogs/news/florafresh-gummies-vs-capsules-5-format-facts-us-2026).
 
@@ -75,7 +75,7 @@ FloraFresh’s pineapple-flavor pack shows the product as gummies, not capsules.
 
 If you miss a day, return to the label-directed serving at the next practical opportunity. Do not automatically double the next serving to “catch up.” If you are unsure after missing several days, ask a pharmacist or clinician rather than improvising a schedule.
 
-![A missed FloraFresh day means restart the next serving, and skip the double: pouch and water on the bedside table.](/Users/kevinkreative/genseo/run-assets/how-to-take-vaginal-probiotics-us-2026/missed-day.webp)
+![A missed FloraFresh day means restart the next serving, and skip the double: pouch and water on the bedside table.](assets/how-to-take-vaginal-probiotics-us-2026/missed-day.webp)
 
 Travel makes missed days more likely. Pack the product according to its storage instructions, keep the pouch closed, and set a reminder tied to an existing meal or hygiene habit. A missed day is a routine problem, not a reason to make a new dose plan.
 

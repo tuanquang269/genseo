@@ -8,7 +8,7 @@ Most "is it worth it" roundups online lean on a star rating or a quote pulled fr
 
 Skip the stars and read the Supplement Facts panel first. FloraFresh's label lists **Bacillus coagulans SNZ-1969** (a spore-forming probiotic strain) at **15 billion CFU per 2-gummy serving**, plus **30 mg Vitamin C** and **100 mg pineapple fruit powder with bromelain** in that same serving. The gummies are sweetened with **maltitol and isomalt** — not sugar-free, despite what some older marketing around this category implies — and the pack carries Allergen Free, Vegan, Halal, and Gluten Free badges.
 
-![What you can verify without a review is the FloraFresh pouch: 15 billion CFU of Bacillus coagulans SNZ-1969 per 2 gummies, pineapple flavor, 60 gummies.](/Users/kevinkreative/genseo/run-assets/are-vaginal-probiotics-worth-it-how-much-2026/inline-1-label-check.webp)
+![What you can verify without a review is the FloraFresh pouch: 15 billion CFU of Bacillus coagulans SNZ-1969 per 2 gummies, pineapple flavor, 60 gummies.](assets/are-vaginal-probiotics-worth-it-how-much-2026/inline-1-label-check.webp)
 
 That's a label-level fact set, not a marketing claim. Here's why it matters: Wellness Nest's own live product page description for this SKU currently lists different ingredient and dosing figures than the Supplement Facts panel does. That page has not been updated to match the label yet. When a product description and its own Supplement Facts panel disagree, the Supplement Facts panel is the one that is legally required to be accurate — treat it as the source, not the marketing copy above it.
 
@@ -25,7 +25,7 @@ A star average tells you how many people clicked a rating button, not what dose 
 
 None of this means FloraFresh doesn't work. It means a star rating is the wrong tool to answer "is it worth it," and the label plus the live offer are the right ones.
 
-![A star rating cannot prove the FloraFresh formula, so the US check is the pouch in the shipment, not the stars.](/Users/kevinkreative/genseo/run-assets/are-vaginal-probiotics-worth-it-how-much-2026/inline-2-offer-check.webp)
+![A star rating cannot prove the FloraFresh formula, so the US check is the pouch in the shipment, not the stars.](assets/are-vaginal-probiotics-worth-it-how-much-2026/inline-2-offer-check.webp)
 
 ## What Do You Still Read on the US Product Page?
 
@@ -50,7 +50,7 @@ Use the label numbers, not the price alone, to judge that. At 15 billion CFU per
 
 You can browse more verified options in the [women's essentials collection](https://wellnessnest.co/collections/womens-essentials-collection) or the [best sellers collection](https://wellnessnest.co/collections/best-seller) if you want to compare formats before deciding. For a direct capsule-vs-gummy breakdown, see [FloraFresh Gummies vs. Capsules: 5 Format Facts](https://wellnessnest.co/blogs/news/florafresh-gummies-vs-capsules-5-format-facts-us-2026). For a strain-by-strain look at what the research supports, see [Vaginal Probiotics: Which Strains Actually Work](https://wellnessnest.co/blogs/news/vaginal-probiotics-which-strains-actually-work-us-2026).
 
-![At $40.99, FloraFresh stays a fair US buy only while the live offer still matches this 15 billion CFU pouch.](/Users/kevinkreative/genseo/run-assets/are-vaginal-probiotics-worth-it-how-much-2026/inline-3-reorder-v3.webp)
+![At $40.99, FloraFresh stays a fair US buy only while the live offer still matches this 15 billion CFU pouch.](assets/are-vaginal-probiotics-worth-it-how-much-2026/inline-3-reorder-v3.webp)
 
 <p style="text-align:center;margin:26px 0;">
 <a href="https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies" style="display:inline-block;background:#54b94a;color:#ffffff;font-weight:700;padding:14px 34px;border-radius:999px;text-decoration:none;">See the current price and label →</a>

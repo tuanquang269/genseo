@@ -18,7 +18,7 @@ A separate randomized trial studied a standardized Physta water extract of tongk
 
 **Read the product label rather than relying on a promotional dose claim.** The Wellness Nest label identifies Premium Turkesterone Advanced Formula, KSM-66 Ashwagandha, Colostrum, Tongkat Ali, BioPerine Black Pepper, Dietary Supplement, and a 60 Capsules badge. The curated label record does not provide a milligram amount, a serving count, or a day-supply, so this article does not invent them.
 
-![Read the Turkesterone Advanced Formula jar itself: green jar, black lid, Premium Turkesterone, Advanced Formula, 60 capsules badge.](/Users/kevinkreative/genseo/run-assets/turkesterone-over-60-5-checks-us-2026/pack.webp)
+![Read the Turkesterone Advanced Formula jar itself: green jar, black lid, Premium Turkesterone, Advanced Formula, 60 capsules badge.](assets/turkesterone-over-60-5-checks-us-2026/pack.webp)
 
 The current product page lists the formula at $75 when checked for this article, but price and availability can change; verify the live [Turkesterone Advanced Formula page](https://wellnessnest.co/products/turkesterone-advanced-formula) before ordering. The product label, not a generated image or an older page description, is the authority for identity and quantity.
 
@@ -35,7 +35,7 @@ This distinction matters for an older lifter comparing a supplement with a train
 
 **Ask a physician or pharmacist to review the complete label before use if you take medicines or have a chronic condition.** This is especially important for thyroid disease, diabetes, blood-pressure treatment, liver disease, or a complicated medication list. Do not stop a prescribed medicine to try a supplement.
 
-![Ask a physician or pharmacist to review the full label before use if you take medicines: jar beside the phone for that check.](/Users/kevinkreative/genseo/run-assets/turkesterone-over-60-5-checks-us-2026/inline-medication-review-reroll.webp)
+![Ask a physician or pharmacist to review the full label before use if you take medicines: jar beside the phone for that check.](assets/turkesterone-over-60-5-checks-us-2026/inline-medication-review-reroll.webp)
 
 The National Center for Complementary and Integrative Health says evidence is insufficient to establish long-term ashwagandha safety, and it is not recommended for people with thyroid or autoimmune disorders. NCCIH also notes reports linking ashwagandha supplements with liver injury and possible interactions with medicines for diabetes and high blood pressure ([NCCIH safety guidance](https://www.nccih.nih.gov/health/ashwagandha)). Those warnings do not prove that this formula will cause an interaction, but they make a medication review sensible.
 
@@ -63,7 +63,7 @@ A useful order of operations is:
 - **Tracking:** record exercises, repetitions, energy, pain, and recovery before judging a supplement.
 - **Supplement:** consider only after the label and medication review are complete.
 
-![Training, food, sleep, and medical care outrank the capsule: jar on the garage-gym shelf after the session.](/Users/kevinkreative/genseo/run-assets/turkesterone-over-60-5-checks-us-2026/inline-training-protein-reroll.webp)
+![Training, food, sleep, and medical care outrank the capsule: jar on the garage-gym shelf after the session.](assets/turkesterone-over-60-5-checks-us-2026/inline-training-protein-reroll.webp)
 
 The comparison is not “supplement versus nothing.” It is “an unproven ingredient claim versus a measurable plan.” If strength, balance, or daily function is the goal, track that outcome directly. A change in scale weight or a subjective feeling after starting a blend does not prove that turkesterone caused a useful adaptation.
 

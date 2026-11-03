@@ -20,7 +20,7 @@ The agency's December 2, 2025 reinstatement letter made the practical consequenc
 
 Sources: [FDA September 29, 2025 response, docket FDA-2023-P-0872-2754](https://www.regulations.gov/document/FDA-2023-P-0872-2754) and [FDA December 2, 2025 reinstatement letter, docket FDA-2022-S-0023-0069](https://www.regulations.gov/document/FDA-2022-S-0023-0069).
 
-![NMN can be bought in the US when the product meets current FDA supplement rules: white AgeAura NMN + TMG bottle beside a blank checklist.](/Users/kevinkreative/genseo/run-assets/where-to-buy-nmn-fda-status-explained-us-2026/label-check.webp)
+![NMN can be bought in the US when the product meets current FDA supplement rules: white AgeAura NMN + TMG bottle beside a blank checklist.](assets/where-to-buy-nmn-fda-status-explained-us-2026/label-check.webp)
 
 ## What to Check Before You Buy NMN in the US
 
@@ -46,7 +46,7 @@ The product page describes a capsule formula; it is not a claim that the FDA app
 
 You can also browse [Wellness Nest best sellers](https://wellnessnest.co/collections/best-seller) as a general store category. That collection link is a browse suggestion; it is not a claim that AgeAura appears in the collection. The product link above is the page to use for the current NMN listing. A second [best-seller collection browse link](https://wellnessnest.co/collections/best-seller) can help compare current store options without implying that every product appears there.
 
-![Buy AgeAura Pure NMN + TMG NAD+ Complex from the Wellness Nest listing, then match the bottle to the live page before checkout.](/Users/kevinkreative/genseo/run-assets/where-to-buy-nmn-fda-status-explained-us-2026/marketplace-check.webp)
+![Buy AgeAura Pure NMN + TMG NAD+ Complex from the Wellness Nest listing, then match the bottle to the live page before checkout.](assets/where-to-buy-nmn-fda-status-explained-us-2026/marketplace-check.webp)
 
 ## NMN Marketplace Availability Is Not the Same as FDA Status
 
@@ -65,7 +65,7 @@ NMN is a precursor involved in NAD+ biology, but a regulatory classification is 
 
 For example, a dose-ranging human study tested 300, 600 and 900 mg of NMN daily for 60 days, while other trials used different amounts and populations. AgeAura's live page states 500 mg NMN per two-capsule serving. That makes it a label comparison point, not proof that the product will reproduce any trial result. Read [NMN capsules vs powder vs sublingual](https://wellnessnest.co/blogs/news/nmn-capsules-vs-powder-vs-sublingual-best-form-us-2026) for format trade-offs and the limits of comparing a product label with a study protocol.
 
-![NMN fits the evidence as a daily supplement routine, and the bottle is not an FDA-approved drug: AgeAura bottle, calendar card, and water.](/Users/kevinkreative/genseo/run-assets/where-to-buy-nmn-fda-status-explained-us-2026/routine.webp)
+![NMN fits the evidence as a daily supplement routine, and the bottle is not an FDA-approved drug: AgeAura bottle, calendar card, and water.](assets/where-to-buy-nmn-fda-status-explained-us-2026/routine.webp)
 
 ## Frequently Asked Questions
 

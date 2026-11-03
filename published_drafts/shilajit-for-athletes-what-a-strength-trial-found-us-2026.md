@@ -8,7 +8,7 @@ The 2019 Keller et al. randomized, double-blind, placebo-controlled trial found 
 
 The study enrolled 63 recreationally active men for eight weeks. Participants received placebo, a lower study dose, or a higher study dose of PrimaVie® shilajit. The exercise test used two sets of 50 maximal bilateral concentric leg extensions at 180°/s, separated by two minutes. That design matters: it tested performance immediately after a prescribed fatigue challenge, not an athlete's entire training cycle.
 
-![The strength trial measured force after fatigue, and it is not a promise for every gym session: ShilaSource jar beside a stopwatch.](/Users/kevinkreative/genseo/run-assets/shilajit-for-athletes-what-a-strength-trial-found-us-2026/inline-training.webp)
+![The strength trial measured force after fatigue, and it is not a promise for every gym session: ShilaSource jar beside a stopwatch.](assets/shilajit-for-athletes-what-a-strength-trial-found-us-2026/inline-training.webp)
 
 Among all participants, the reported post-fatigue MVIC decline was 9.1% with the higher study dose versus 15.7% with the lower study dose. The paper reported no significant group difference for decline in concentric peak torque. The result supports a possible effect on maintaining force under this laboratory challenge; it does not establish a universal shilajit dose for athletes.
 
@@ -26,7 +26,7 @@ The trial used two quantified daily doses of a named purified shilajit extract. 
 
 ShilaSource's live product page identifies the product as a resin-format dietary supplement in one 30 g jar and says the featured package states 75 servings. The jar label reads **70% Fulvic Acid**, **Lab-Tested for Purity**, **1.06oz (30g)**, and **75 SERVINGS**. It does not provide a milligram amount in the label record used for this article. Follow the directions on the package received; do not convert the Keller study dose into a scoop or serving of this product.
 
-![Do not copy the trial amount onto ShilaSource: read this canister and amber jar, 1.06 oz (30 g), 75 servings, 70% fulvic acid.](/Users/kevinkreative/genseo/run-assets/shilajit-for-athletes-what-a-strength-trial-found-us-2026/pack.webp)
+![Do not copy the trial amount onto ShilaSource: read this canister and amber jar, 1.06 oz (30 g), 75 servings, 70% fulvic acid.](assets/shilajit-for-athletes-what-a-strength-trial-found-us-2026/pack.webp)
 
 | Question | What the evidence supports | What it does not establish |
 |---|---|---|
@@ -51,7 +51,7 @@ Athletes should also avoid treating a supplement as a substitute for food, carbo
 
 Shilajit is not automatically cleared for every tested-sport program because a package says “natural” or “lab-tested.” The Keller paper did not establish sport-certification status for retail products. Before use, check the current prohibited-substance rules that govern the athlete and ask the relevant governing body or anti-doping professional about the exact product and lot.
 
-![Tested athletes should compare the label with their sport's rules on paper before buying: training log and blank notes on the desk.](/Users/kevinkreative/genseo/run-assets/shilajit-for-athletes-what-a-strength-trial-found-us-2026/inline-comparison.webp)
+![Tested athletes should compare the label with their sport's rules on paper before buying: training log and blank notes on the desk.](assets/shilajit-for-athletes-what-a-strength-trial-found-us-2026/inline-comparison.webp)
 
 For a supplement sold in the US, check four things:
 

@@ -3,7 +3,7 @@
 
 Vaginal probiotics do not universally require an empty stomach. For US readers, the safer general approach is to follow the product label and take a bacterial probiotic with a meal or shortly before one when the label allows it. A laboratory gut model found better survival with food than after a meal, but it did not test FloraFresh or prove a clinical outcome.
 
-![An empty stomach is not required for vaginal probiotics: dusty-pink FloraFresh pouch on the breakfast table beside a cropped torso.](/Users/kevinkreative/genseo/run-assets/vaginal-probiotics-on-an-empty-stomach-us-2026/hero.webp)
+![An empty stomach is not required for vaginal probiotics: dusty-pink FloraFresh pouch on the breakfast table beside a cropped torso.](assets/vaginal-probiotics-on-an-empty-stomach-us-2026/hero.webp)
 
 This answers the food question, not the morning-versus-night question. For clock timing, see [the guide to the best time to take vaginal probiotics](https://wellnessnest.co/blogs/news/best-time-to-take-vaginal-probiotics-6-rules-us-2026). For common reactions and warning signs, read [vaginal probiotics side effects: normal versus stop](https://wellnessnest.co/blogs/news/vaginal-probiotics-side-effects-normal-vs-stop-us-2026).
 
@@ -15,7 +15,7 @@ An empty stomach can be convenient, but convenience is not the same as better su
 
 For FloraFresh Vaginal Probiotic Gummies, the Supplement Facts and package information are the relevant reference for the product identity and serving directions. The curated label record identifies the pouch as FloraFresh Vaginal Probiotic Gummies and shows a 60 GUMMIES DIETARY SUPPLEMENT package. Check the current package before use because labels can change.
 
-![An empty stomach is not the rule: hand placing a breakfast plate beside the upright FloraFresh pouch.](/Users/kevinkreative/genseo/run-assets/vaginal-probiotics-on-an-empty-stomach-us-2026/meal-context.webp)
+![An empty stomach is not the rule: hand placing a breakfast plate beside the upright FloraFresh pouch.](assets/vaginal-probiotics-on-an-empty-stomach-us-2026/meal-context.webp)
 
 ## What does meal-timing research say?
 
@@ -25,7 +25,7 @@ In that model, the tested probiotic had better survival when given with a meal o
 
 A practical reading of the evidence is narrower than “always take probiotics with food”: if the label permits either option, taking the product with a normal meal may be a sensible default. Do not override a product-specific instruction, medication plan, or clinician recommendation based on a lab model.
 
-![Meal-timing research does not set one clock time for this gummy: water glass and FloraFresh pouch on the dresser.](/Users/kevinkreative/genseo/run-assets/vaginal-probiotics-on-an-empty-stomach-us-2026/routine-scene.webp)
+![Meal-timing research does not set one clock time for this gummy: water glass and FloraFresh pouch on the dresser.](assets/vaginal-probiotics-on-an-empty-stomach-us-2026/routine-scene.webp)
 
 ## How should you choose between food and fasting?
 
@@ -39,7 +39,7 @@ Use this decision sequence:
 4. **Use water unless the label says otherwise.** Do not mix the product into a hot drink or alter it in a way the label does not describe.
 5. **Keep the routine steady.** If a dose is missed, return to the normal label direction rather than doubling up unless a qualified clinician or the label specifically says to do so.
 
-![Choose food or fasting from the FloraFresh label, and when the label is silent pick the cue you will repeat: hand, phone, and pouch.](/Users/kevinkreative/genseo/run-assets/vaginal-probiotics-on-an-empty-stomach-us-2026/label-detail.webp)
+![Choose food or fasting from the FloraFresh label, and when the label is silent pick the cue you will repeat: hand, phone, and pouch.](assets/vaginal-probiotics-on-an-empty-stomach-us-2026/label-detail.webp)
 
 ## Does food change the answer for FloraFresh?
 
@@ -49,7 +49,7 @@ The package label is also the source of truth for what is in FloraFresh. It iden
 
 If you have a medical condition, take prescription medicines, are pregnant or breastfeeding, or are immunocompromised, ask a qualified healthcare professional whether the product is appropriate. A supplement is not a treatment for an infection. New, persistent, painful, or unusual symptoms need clinical evaluation rather than a timing experiment.
 
-![Food does not change the FloraFresh serving: amber gummy on a dish beside the dusty-pink pouch, still 15 billion CFU per 2 gummies.](/Users/kevinkreative/genseo/run-assets/vaginal-probiotics-on-an-empty-stomach-us-2026/mechanism.webp)
+![Food does not change the FloraFresh serving: amber gummy on a dish beside the dusty-pink pouch, still 15 billion CFU per 2 gummies.](assets/vaginal-probiotics-on-an-empty-stomach-us-2026/mechanism.webp)
 
 ## Empty stomach versus meal: what is the practical choice in the US?
 

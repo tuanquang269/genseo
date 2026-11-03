@@ -3,7 +3,7 @@
 
 Shilajit gummies are easier to carry on a US trip than a sticky resin container: keep the original resealable pouch closed, protect it from prolonged heat, and follow the package directions with or without a meal according to your own tolerance. A missed travel day does not call for doubling the next serving.
 
-![Shilajit gummies travel more easily than resin when the pouch stays in the carry-on: black-to-green pouch in the hotel room.](/Users/kevinkreative/genseo/run-assets/shilajit-gummies-while-traveling-with-food-us-2026/hero.webp)
+![Shilajit gummies travel more easily than resin when the pouch stays in the carry-on: black-to-green pouch in the hotel room.](assets/shilajit-gummies-while-traveling-with-food-us-2026/hero.webp)
 
 Travel changes the setting, not the product label. The useful plan is simple: carry the pouch, keep it dry and shaded, decide how meals fit your routine, and avoid turning a delayed flight into a reason to improvise.
 
@@ -18,7 +18,7 @@ Travel changes the setting, not the product label. The useful plan is simple: ca
 
 Yes. A resealable gummy pouch avoids the leaking, melting, and spoon-cleaning concerns that can make resin awkward in a carry-on. It does not make the product travel-proof, though: the pouch still needs protection from heat, moisture, and crushing.
 
-![Gummies are easier to pack than shilajit resin: the Premium Himalayan Shilajit Gummies pouch fits beside a carry-on and a travel wallet.](/Users/kevinkreative/genseo/run-assets/shilajit-gummies-while-traveling-with-food-us-2026/travel-pouch.webp)
+![Gummies are easier to pack than shilajit resin: the Premium Himalayan Shilajit Gummies pouch fits beside a carry-on and a travel wallet.](assets/shilajit-gummies-while-traveling-with-food-us-2026/travel-pouch.webp)
 
 The Wellness Nest product page identifies the product as a 60-gummy pouch and lists a serving size of 2 gummies, with 30 servings per pouch. Use the package you receive as the final reference, because labels and product documentation can change.
 
@@ -43,7 +43,7 @@ Shilajit is a complex natural substance, and the human evidence is not a substit
 
 Heat can change the texture and condition of gummies, so do not leave the pouch in a parked car or in direct sun. Move it into a shaded, temperature-controlled place when you arrive, and follow any storage direction printed on the package.
 
-![Heat in a US car softens shilajit gummies, so the pouch goes into an insulated bag in the shade.](/Users/kevinkreative/genseo/run-assets/shilajit-gummies-while-traveling-with-food-us-2026/hot-car.webp)
+![Heat in a US car softens shilajit gummies, so the pouch goes into an insulated bag in the shade.](assets/shilajit-gummies-while-traveling-with-food-us-2026/hot-car.webp)
 
 A hot-car problem is usually a storage problem, not a dosing problem. If the pouch has been exposed to prolonged heat, looks damaged, has an unusual odor, or the gummies have changed in a way that concerns you, do not guess. Contact Wellness Nest support with the product and lot details and ask whether the pouch should be replaced.
 
@@ -60,7 +60,7 @@ The live product page lists the one-time price as $59.99 and notes that no Gummi
 
 Resume the labeled routine when you can; do not double the next serving to compensate. A missed day during a flight delay, hotel change, or packed itinerary is a reason to reset the reminder, not to create a new dose plan.
 
-![A missed travel day means restart the next serving, and skip a catch-up stack: pouch on the hotel nightstand.](/Users/kevinkreative/genseo/run-assets/shilajit-gummies-while-traveling-with-food-us-2026/missed-day.webp)
+![A missed travel day means restart the next serving, and skip a catch-up stack: pouch on the hotel nightstand.](assets/shilajit-gummies-while-traveling-with-food-us-2026/missed-day.webp)
 
 A low-friction reset works better than a complicated travel schedule:
 
@@ -75,7 +75,7 @@ The FDA explains that dietary supplements are not approved for safety and effect
 
 You can [buy Premium Himalayan Shilajit Gummies from Wellness Nest](https://wellnessnest.co/products/premium-himalayan-shilajit-gummies) online and review the current price, label details, availability, and shipping terms before a trip. Wellness Nest's [Shilajit Wellness Stack collection](https://wellnessnest.co/collections/shilajit-wellness-stack) and [Best Seller collection](https://wellnessnest.co/collections/best-seller) provide additional store navigation.
 
-![Buy Premium Himalayan Shilajit Gummies in the US from the Wellness Nest listing, and match checkout to this black-to-green pouch, 60 gummies.](/Users/kevinkreative/genseo/run-assets/shilajit-gummies-while-traveling-with-food-us-2026/pack.webp)
+![Buy Premium Himalayan Shilajit Gummies in the US from the Wellness Nest listing, and match checkout to this black-to-green pouch, 60 gummies.](assets/shilajit-gummies-while-traveling-with-food-us-2026/pack.webp)
 
 Order early enough to read the product page and inspect the pouch before departure. The [Wellness Nest shipping policy](https://wellnessnest.co/policies/shipping-policy) is the source for current shipping terms; this article does not promise a delivery speed. If you are comparing forms, read [shilajit resin versus gummies](https://wellnessnest.co/blogs/news/shilajit-resin-vs-gummies-which-works-better-us-2026) rather than treating gummies, resin, gold resin, and drops as interchangeable products.
 
