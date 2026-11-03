@@ -9,8 +9,11 @@ That file's optional lines include "60 GUMMIES", "60-DAY SUPPLY", and
 "1500mg Shilajit". They do not include a 30-serving panel, a 2-gummy serving,
 or a 150 mg extract line. Copy that names this product may say 60 gummies and
 a 60-day supply, and a milligram amount only when that exact token is in the
-file. Shockwave, Gold Resin, and ShilaSource resin are different products and
-are out of scope.
+file. The product is in scope under the full name, "Himalayan Shilajit
+Gummies", "Shilajit Gummies" (including "Shilajit Gummies for Men"), or the
+handle. A milligram in the sentence right after that name is still this
+product's dose when the previous sentence says trial or studied. Shockwave,
+Gold Resin, and ShilaSource resin are different products and are out of scope.
 
 brand_rules.assess() merges these violations. Landing specs go through
 brand_rules.spec_violations(). Keep the whitelist in the label file; do not
@@ -47,6 +50,8 @@ LANDING_NOTE = (
 
 _PRODUCT = re.compile(
     r"premium[\s_-]+himalayan[\s_-]+shilajit[\s_-]+gummies"
+    r"|himalayan[\s_-]+shilajit[\s_-]+gumm(?:y|ies)"
+    r"|\bshilajit[\s_-]+gumm(?:y|ies)\b"
     r"|\b" + re.escape(HANDLE) + r"\b",
     re.I,
 )
@@ -79,6 +84,12 @@ _NEG_CUE = re.compile(
     re.I,
 )
 _NEG_BREAK = re.compile(r"\b(?:but|however|yet|although|though|while|whereas)\b", re.I)
+# "no fillers and delivers 250 mg" is a dose. "no 250 mg" and "do not claim" are denials.
+_NO_GAP = re.compile(
+    r"\band\b"
+    r"|(?:\w+\s+){1,8}(?:delivers?|provides?|contains?|includes?|lists?|has|have|gives?|adds?|offers?)\b",
+    re.I,
+)
 _OTHER = re.compile(
     r"\b(?:other\s+brands?|another\s+brand|competitors?|brand\s+[a-z0-9]+|"
     r"florafresh|fusiforce|ageaura|turkesterone|menomate|shockwave|"
@@ -183,7 +194,12 @@ def listed(phrase, tokens):
 
 
 def in_scope(text):
-    """True when the text names this product (full name or handle), not every shilajit SKU."""
+    """True when the text names this product, not every shilajit SKU.
+
+    Full name, "Himalayan Shilajit Gummies", "Shilajit Gummies" (including
+    "Shilajit Gummies for Men"), or the handle. Shockwave, Gold Resin, and
+    ShilaSource resin do not match.
+    """
     return bool(_PRODUCT.search(text or ""))
 
 
@@ -282,11 +298,21 @@ def _clauses(visible):
 
 
 def _negated(clause, start):
+    """True when a denial cue governs this match.
+
+    Bare "no" only covers the claim it sits on. "no fillers and deliver 250 mg"
+    is still a dose. "Do not claim 150 mg" stays a denial.
+    """
     pre = clause[max(0, start - 100):start]
     cues = list(_NEG_CUE.finditer(pre))
-    if cues and not _NEG_BREAK.search(pre, cues[-1].end()):
-        return True
-    return False
+    if not cues:
+        return False
+    last = cues[-1]
+    if _NEG_BREAK.search(pre, last.end()):
+        return False
+    if last.group(0).lower() == "no" and _NO_GAP.search(pre, last.end()):
+        return False
+    return True
 
 
 def _other_only(clause):
@@ -332,14 +358,14 @@ def _scan(visible, tokens, attributed):
             continue
         carried = attributed or (prev_named and (prev_delim == ":" or bool(_CARRY.match(clause))))
         owned = _owned(clause, attributed, carried)
-        _check_clause(clause, tokens, counts, days, owned, prev_window, reasons)
+        _check_clause(clause, tokens, counts, days, owned, prev_window, prev_named, reasons)
         prev_named = bool(_PRODUCT.search(clause)) or carried
         prev_delim = delim
         prev_window = (prev_window + " " + clause)[-240:]
     return _dedupe(reasons)
 
 
-def _check_clause(clause, tokens, counts, days, owned, prev_window, reasons):
+def _check_clause(clause, tokens, counts, days, owned, prev_window, prev_named, reasons):
     label_count = ("%d gummies" % counts[0]) if len(counts) == 1 else (
         "no gummy count in the whitelist" if not counts else "or ".join("%d gummies" % n for n in counts))
 
@@ -409,7 +435,9 @@ def _check_clause(clause, tokens, counts, days, owned, prev_window, reasons):
         raw = match.group("n")
         if _mg_listed(raw, tokens):
             continue
-        if not owned and studyish:
+        # A foreign study dose stays allowed. The sentence right after this
+        # product's name does not: "were studied. Participants took 250 mg."
+        if not owned and studyish and not prev_named:
             continue
         reasons.append(_PREFIX + raw + " mg is not on the pack label whitelist")
 

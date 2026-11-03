@@ -11,8 +11,10 @@ vault_servings: 30 servings and 3 gummies per serving. Those lines are not a
 second pack count. The file does not include 84, a milligram amount, or ginseng.
 Copy that names FusiForce may say creatine monohydrate, 90 gummies, 30 servings,
 and 3 gummies per serving. It may not state 84 gummies, 25 mg, 50 mg, 5,000 mg,
-any other serving count, any milligram amount, or ginseng unless that exact
-token is in the whitelist file.
+any other serving count, any milligram amount, any gram amount (5 g, 5 grams),
+or ginseng unless that exact token is in the whitelist file. A bare "no" only
+covers the claim it directly modifies, so "no fillers and 5000 mg" still fails
+and "Do not claim 25 mg" still passes.
 
 brand_rules.assess() merges these violations. Landing specs go through
 brand_rules.spec_violations(). Keep the whitelist in the label file; do not
@@ -78,6 +80,12 @@ _NEG_CUE = re.compile(
     re.I,
 )
 _NEG_BREAK = re.compile(r"\b(?:but|however|yet|although|though|while|whereas)\b", re.I)
+# "no fillers and delivers 5000 mg" is a dose. "no 5,000 mg" and "do not claim" are denials.
+_NO_GAP = re.compile(
+    r"\band\b"
+    r"|(?:\w+\s+){1,8}(?:delivers?|provides?|contains?|includes?|lists?|has|have|gives?|adds?|offers?)\b",
+    re.I,
+)
 _OTHER = re.compile(
     r"\b(?:other\s+brands?|another\s+brand|competitors?|brand\s+[a-z0-9]+|"
     r"shilajit|ageaura|florafresh|turkesterone|menomate)\b",
@@ -95,6 +103,15 @@ _PACK = re.compile(
 _EIGHTY_FOUR = re.compile(r"\beighty[\s-]*four\b", re.I)
 _EQ84 = re.compile(r"28\s*[x×*]\s*3\s*=\s*84\b", re.I)
 _SERVINGS = re.compile(r"(?<![\d.,])(?P<n>\d{1,4})\s*-?\s*servings?\b", re.I)
+_WORD_SERVING_NUM = {"twenty": 20, "thirty": 30, "sixty": 60, "ninety": 90}
+_WORD_SERVINGS = re.compile(
+    r"\b(?P<w>twenty|thirty|sixty|ninety)\s*-?\s*servings?\b",
+    re.I,
+)
+_GRAM = re.compile(
+    r"(?<![\d.,])(?P<n>\d{1,3}(?:,\d{3})+|\d+(?:\.\d+)?)\s*-?\s*(?:grams?|g)\b",
+    re.I,
+)
 _PER_SERVING = re.compile(
     r"serving\s*\(\s*(?P<n>\d{1,2})\s*gummies\s*\)"
     r"|(?<![\d.,])(?P<n2>\d{1,2})\s*-?\s*gummies?\s+per\s+serving\b"
@@ -260,11 +277,22 @@ def _clauses(visible):
 
 
 def _negated(clause, start):
+    """True when a denial cue governs this match.
+
+    Bare "no" only covers the claim it sits on. The closest "no" does not hide
+    a later dose after "and" or a new verb ("no fillers and delivers 5000 mg").
+    "Do not claim 25 mg" stays a denial because that cue is "not", not "no".
+    """
     pre = clause[max(0, start - 100):start]
     cues = list(_NEG_CUE.finditer(pre))
-    if cues and not _NEG_BREAK.search(pre, cues[-1].end()):
-        return True
-    return False
+    if not cues:
+        return False
+    last = cues[-1]
+    if _NEG_BREAK.search(pre, last.end()):
+        return False
+    if last.group(0).lower() == "no" and _NO_GAP.search(pre, last.end()):
+        return False
+    return True
 
 
 def _other_only(clause):
@@ -320,10 +348,10 @@ def _check_clause(clause, tokens, count, owned, reasons):
     m = _EQ84.search(clause)
     if m and _hit(clause, m.start(), owned):
         reasons.append(_PREFIX + "28 x 3 = 84 is not the pack count (label: 90 gummies)")
-    for m in _SERVINGS.finditer(clause):
+    for m in list(_SERVINGS.finditer(clause)) + list(_WORD_SERVINGS.finditer(clause)):
         if not _hit(clause, m.start(), owned):
             continue
-        n = m.group("n")
+        n = str(_WORD_SERVING_NUM[m.group("w").lower()]) if m.re is _WORD_SERVINGS else m.group("n")
         if listed(n + " servings", tokens) or listed(n + " serving", tokens):
             continue
         reasons.append(_PREFIX + n + " servings is not on the pack label whitelist")
@@ -341,6 +369,19 @@ def _check_clause(clause, tokens, count, owned, reasons):
         if listed(raw + " mg", tokens) or listed(raw.replace(",", "") + " mg", tokens):
             continue
         reasons.append(_PREFIX + raw + " mg is not on the pack label whitelist")
+    for m in _GRAM.finditer(clause):
+        # A gram amount counts only when this clause names FusiForce (or carries
+        # it). "price per 5 g dose. Apply them to FusiForce" stays a separate dose.
+        if not owned or _negated(clause, m.start()) or _other_only(clause):
+            continue
+        raw = m.group("n")
+        plain = raw.replace(",", "")
+        phrases = []
+        for n in (raw, plain):
+            phrases.extend((n + " g", n + "g", n + " gram", n + " grams"))
+        if any(listed(phrase, tokens) for phrase in phrases):
+            continue
+        reasons.append(_PREFIX + plain + " g is not on the pack label whitelist")
     for m in _GINSENG.finditer(clause):
         if not _hit(clause, m.start(), owned):
             continue

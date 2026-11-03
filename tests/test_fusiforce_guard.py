@@ -84,10 +84,12 @@ class LabelCopyPasses(unittest.TestCase):
             "Do not claim 25 mg or 50 mg or 28 servings for FusiForce.",
             "Unlike other brands' 84-count tubs, FusiForce is 90 gummies.",
             "| FusiForce | 90 gummies |\n| Brand X | 84 gummies | 30 servings |",
-            "Shilajit gummies: 30 servings and ginseng.",
             "Some tubs are 84 gummies.",
         ):
             self.assertEqual(br.violations(text), [], text)
+        # Short shilajit-gummies names are that guard's scope, not FusiForce's.
+        other_sku = "Shilajit gummies: 30 servings and ginseng."
+        self.assertEqual(fu.violations(other_sku), [])
         age = "AgeAura Pure NMN + TMG provides 50 mg apigenin across 30 servings."
         self.assertEqual(fu.violations(age), [])
         self.assertEqual(br.violations(age), [])
@@ -132,6 +134,36 @@ class WrongCountsRejected(unittest.TestCase):
         self.assertFalse(any("3 gummies per serving" in r for r in bad), bad)
         self.assertRejected("FusiForce, 4 gummies per serving.", "4 gummies per serving")
         self.assertRejected("Take FusiForce per 2-gummy serving.", "2 gummies per serving")
+
+    def test_gram_creatine_doses_fail(self):
+        self.assertRejected("FusiForce gives 5 g of creatine per serving.", "5 g is not")
+        self.assertRejected("FusiForce gives 5 grams of creatine monohydrate.", "5 g is not")
+        self.assertRejected("FusiForce creatine gummies, 5g per serving.", "5 g is not")
+        self.assertEqual(
+            fu.violations("FusiForce gives 5 g of creatine.", tokens=["5 g", "90", "Creatine"]), [])
+        self.assertEqual(
+            fu.violations("FusiForce gives 5 grams of creatine.", tokens=["5 grams", "90", "Creatine"]), [])
+        self.assertEqual(br.violations("price per 5 g dose. Apply them to FusiForce honestly."), [])
+        self.assertEqual(
+            br.violations("how many gummies equal 5 g of creatine. FusiForce Creatine Monohydrate Gummies."),
+            [])
+
+    def test_word_serving_counts_are_read(self):
+        # "thirty" is 30, the vault line, so the gate reads the word and allows it.
+        self.assertEqual(br.violations("FusiForce has thirty servings."), [])
+        self.assertEqual(fu.violations("FusiForce has thirty servings."), [])
+        self.assertRejected("FusiForce has sixty servings.", "60 servings")
+        self.assertRejected("FusiForce has twenty servings.", "20 servings")
+
+    def test_no_fillers_does_not_hide_a_milligram(self):
+        self.assertRejected("FusiForce has no fillers and delivers 5000 mg.", "5000 mg")
+        self.assertRejected("FusiForce has no fillers and 5000 mg.", "5000 mg")
+        self.assertRejected("FusiForce provides 5000 mg.", "5000 mg")
+        self.assertEqual(br.violations("FusiForce has no 5000 mg."), [])
+        self.assertEqual(br.violations("Do not claim 25 mg or 50 mg or 28 servings for FusiForce."), [])
+        self.assertEqual(br.violations("FusiForce is not 84 gummies. The pouch says 90 gummies."), [])
+        self.assertEqual(br.violations(fu.TICKET_LINE), [])
+        self.assertEqual(br.violations(fu.LANDING_NOTE), [])
 
     def test_milligrams_and_ginseng_fail_unless_whitelisted(self):
         self.assertRejected("FusiForce provides 25 mg of ginseng.", "25 mg", "ginseng")

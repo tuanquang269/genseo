@@ -132,6 +132,65 @@ class WrongCountsRejected(unittest.TestCase):
         self.assertRejected(
             "Premium Himalayan Shilajit Gummies are easy. The count is 30 servings.", "30 servings")
 
+    def test_short_name_without_handle_is_in_scope(self):
+        for text in (
+            "Himalayan Shilajit Gummies have 30 servings and 150 mg.",
+            "Shilajit Gummies have 30 servings.",
+            "Shilajit Gummies for Men have 30 servings and 150 mg.",
+            "Shilajit Gummies for Men provide 250 mg.",
+        ):
+            self.assertTrue(sg.in_scope(text), text)
+            self.assertNotIn(sg.HANDLE, text.lower())
+            self.assertRejected(text)
+        self.assertTrue(any("30 servings" in r for r in br.violations(
+            "Himalayan Shilajit Gummies have 30 servings and 150 mg.")))
+        self.assertTrue(any("150 mg" in r for r in br.violations(
+            "Himalayan Shilajit Gummies have 30 servings and 150 mg.")))
+        self.assertEqual(br.violations("Shilajit Gummies for Men are 60 gummies and a 60-day supply."), [])
+        self.assertTrue(sg.in_scope("Shilajit Gummies for Men"))
+        self.assertNotEqual(tf.assess("Shilajit Gummies for Men")[1], "shilajit-gummies-label")
+        self.assertEqual(tf.assess("Shilajit Gummies for Men have 30 servings")[1], "shilajit-gummies-label")
+        for text in (
+            "Shilajit Shockwave, 30 servings and 500 mg.",
+            "Pure Shilajit Gold Resin, 30 servings.",
+            "ShilaSource resin, 150 mg per serving.",
+            "shilajit benefits for men",
+        ):
+            self.assertFalse(sg.in_scope(text), text)
+            self.assertEqual(sg.violations(text), [], text)
+
+    def test_study_dose_in_the_next_sentence_fails(self):
+        self.assertRejected(
+            "A clinical trial of Premium Himalayan Shilajit Gummies. The dose was 250 mg.", "250 mg")
+        self.assertRejected(
+            "Premium Himalayan Shilajit Gummies were studied. Participants took 250 mg.", "250 mg")
+        self.assertRejected(
+            "A clinical trial of Shilajit Gummies for Men. The dose was 250 mg.", "250 mg")
+        pandit = (
+            "The Pandit trial used 250 mg of purified shilajit. "
+            "Premium Himalayan Shilajit Gummies are 60 gummies and a 60-day supply.")
+        self.assertEqual(sg.violations(pandit), [])
+        self.assertEqual(br.violations(pandit), [])
+        separate = (
+            "Premium Himalayan Shilajit Gummies are 60 gummies and a 60-day supply. "
+            "Labels differ across brands. "
+            "The Pandit trial used 250 mg of purified shilajit.")
+        self.assertEqual(sg.violations(separate), [])
+        self.assertEqual(br.violations(separate), [])
+        self.assertEqual(br.violations("Premium Himalayan Shilajit Gummies list 1500mg Shilajit."), [])
+        self.assertEqual(
+            br.violations("Premium Himalayan Shilajit Gummies were studied. Participants took 1500 mg."), [])
+
+    def test_no_fillers_does_not_hide_a_milligram(self):
+        self.assertRejected(
+            "Premium Himalayan Shilajit Gummies have no fillers and deliver 250 mg.", "250 mg")
+        self.assertRejected("Shilajit Gummies have no fillers and 150 mg.", "150 mg")
+        self.assertEqual(
+            br.violations("Do not claim 30 servings or 150 mg for Premium Himalayan Shilajit Gummies."), [])
+        self.assertEqual(br.violations("Shilajit Gummies have no 250 mg."), [])
+        self.assertEqual(br.violations(sg.TICKET_LINE), [])
+        self.assertEqual(br.violations(sg.LANDING_NOTE), [])
+
     def test_invented_milligrams_fail_and_label_milligrams_pass(self):
         self.assertRejected("Premium Himalayan Shilajit Gummies provide 150 mg of extract.", "150 mg")
         self.assertRejected("Premium Himalayan Shilajit Gummies provide 250 mg.", "250 mg")

@@ -6,7 +6,9 @@ The pack-label whitelist is the source of truth for this one product (`https://w
 
 Optional lines in that file include `60 GUMMIES`, `60-DAY SUPPLY`, `1500mg Shilajit`, `75% Fulvic Acid`, `85+ Trace Minerals`, `ASHWAGANDHA`, `GOKSHURA`, and `BLACK MUSLI`. The file was read off the pack shot with `scripts/tools/label_ocr.swift` on 2026-10-08. It does not include a 30-serving panel, a 2-gummy serving, or `150 mg`.
 
-Copy that names Premium Himalayan Shilajit Gummies may say **60 gummies** and a **60-day supply**. It fails closed when it states any of the following and that exact token is not in the whitelist file:
+The product is in scope under the full name, **Himalayan Shilajit Gummies**, **Shilajit Gummies**, or **Shilajit Gummies for Men**, with or without the handle. Shockwave, Pure Shilajit Gold Resin, and ShilaSource resin are still out of scope.
+
+Copy that names this product may say **60 gummies** and a **60-day supply**. It fails closed when it states any of the following and that exact token is not in the whitelist file:
 
 - a pack count other than 60 (including 30 gummies, 84 gummies, or 2 gummies a day)
 - **30 servings**, servings per container 30, or any other serving count
@@ -17,7 +19,7 @@ Copy that names Premium Himalayan Shilajit Gummies may say **60 gummies** and a 
 
 `brand_rules.assess()` merges these violations, so every `brand_rules` caller enforces them: `lint_tickets.py` (open tickets only), `validate_article.py`, `validate_landing.py` / `landing_render.py` / `landing_publisher.py` (through `brand_rules.spec_violations()`), `topic_fitness.py` (`FAIL [shilajit-gummies-label]`), the ticket and landing builders, image prompts, and `shopify_publisher.py` (publish and update). `refill_tickets.py` adds the pack-label line to every Shilajit gummies ticket. `build_landing_tickets.py` adds a label note to Shilajit gummies landing briefs. AgeAura rules are unchanged (NMN + TMG only). FloraFresh count is 15B CFU of SNZ-1969 per 2 gummies (Kevin 2026-10-21). This change does not edit florafresh_rules.py.
 
-Negations ("not a 30-serving panel") and another brand's row ("Brand X | 30 servings") pass. A study sentence that states a trial dose ("the trial used 250 mg") passes when it does not claim that dose for this product. A sentence that names this product and states 150 mg or 30 servings does not. Chart sources that cite a trial dose pass; a chart source that is only "250 mg per serving" does not.
+Negations ("not a 30-serving panel", "Do not claim 150 mg") and another brand's row ("Brand X | 30 servings") pass. Bare "no" does not hide a later dose (`no fillers and deliver 250 mg`). A study sentence that states a trial dose ("The Pandit trial used 250 mg of purified shilajit") passes when that dose is not this product's claim. The sentence right after the product name does not pass (`were studied. Participants took 250 mg.`), even when the previous sentence says trial or studied. A different study's dose with a sentence in between stays allowed. A sentence that names this product and states 150 mg or 30 servings does not. Chart sources that cite a trial dose pass; a chart source that is only "250 mg per serving" does not.
 
 ```bash
 python3 -m unittest tests/test_shilajit_gummies_guard.py
