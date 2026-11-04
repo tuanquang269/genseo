@@ -383,6 +383,11 @@ def finalize_page(page, template, row, package, hero, day):
            (' fetchpriority="high"' if approved.has_attr('fetchpriority') else '') + '>')
     page, n = re.subn(r'(<figure class="hero">\s*)<img\b[^>]*>', lambda m: m.group(1) + tag, page, count=1)
     require(n == 1, 'Hero figure is missing')
+    # The shell prints the sticky bar from journal.pick (the rail pick): its link and label are machine-owned (slot 4 2026-11-04 linked another product)
+    pick = re.search(r'<div class="pick"[^>]*>.*?<b>(.*?)</b>.*?<a class="btn" href="(/products/[a-z0-9-]+)"', page, re.S)
+    if pick:
+        page = re.sub(r'(<div class="stick"[^>]*>\s*<b>).*?(</b>\s*<a class="btn" href=")/products/[a-z0-9-]+',
+                      lambda m: m.group(1) + pick.group(1) + m.group(2) + pick.group(2), page, count=1, flags=re.S)
     require(len(soup(page).select('article figure')) == 1, 'Use no <figure> except the hero: the approved template has none, and the Journal shell lays a bare figure out differently (put product photos in the approved cards)')
     # Band cards: the 4a-4d templates print <div class="mini"> without data-product, the shell prints it (from journal.band.minis).
     def mini(m):
