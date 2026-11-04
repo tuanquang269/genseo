@@ -90,7 +90,7 @@ class Profile:
         require(not any(d in text.lower() for d in foreign), 'Cross-store domain in content')
         names = ('wellness nest', 'wellnessnest', 'shilasource', 'florafresh', 'fusiforce', 'ageaura', 'turkesterone') if self.store == 'cherish' else ('the cherish company', 'thecherishcompany')
         require(not any(n in text.lower() for n in names), 'Cross-store brand context in content')
-        for match in re.finditer(r'(?:https?://[^\s<>"\')]+)?/products/([^\s<>"\')?#/|]+)', text, re.I):
+        for match in re.finditer(r'(?:https?://[^\s<>"\')\\]+)?/products/([^\s<>"\')?#/|\\]+)', text, re.I):
             url = match.group(0)
             host = (urlsplit(url).hostname or '').removeprefix('www.')
             own = (self.data['domain'], self.data['shop'])
