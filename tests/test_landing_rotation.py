@@ -43,6 +43,33 @@ def undated(handle):
     return {"hero": {"cta": {"href": url(handle)}}}
 
 
+QUEUE_FIXTURES = os.path.join(ROOT, "tests", "fixtures", "queues")
+
+
+def queue_snapshot(name):
+    return os.path.join(QUEUE_FIXTURES, name)
+
+
+def frozen_landing_specs():
+    """Dated handles projected from landing_drafts at the snapshot revision.
+
+    ensure_open only reads spec_landings pairs. A draft added on disk later
+    must not change this test. Each row round-trips through spec_landings.
+    """
+    with open(queue_snapshot("landing_rotation_spec_landings.json"), encoding="utf-8") as fh:
+        payload = json.load(fh)
+    specs = []
+    got = set()
+    want = set()
+    for row in payload["landings"]:
+        specs.append(dated(row["handle"], row["created"]))
+        want.add((dt.date.fromisoformat(row["created"]), row["handle"]))
+        got.update(landing.spec_landings(specs[-1]))
+    if got != want:
+        raise AssertionError("frozen spec landings do not round-trip through spec_landings")
+    return specs
+
+
 def fill(uses, n, on=ON, eligible=None):
     picks = []
     for _ in range(n):
@@ -368,12 +395,16 @@ class OpenQueueTests(unittest.TestCase):
     def test_rebalanced_open_tickets_include_both_priorities(self):
         """The open line is the builder's next pick, and the 7-day window keeps both priorities.
 
+        Inputs are tests/fixtures/queues/, the 2026-10-26 queue and the dated
+        draft handles at origin/main 56a84387. The live ticket file and
+        landing_drafts/ are not read.
+
         The 2026-10-19 stock (gold resin, then Shockwave, FloraFresh, gummies,
         Turkesterone, ShilaSource, AgeAura, ShilaSource) was closed by the daily
         lane. Those two ShilaSource days and the AgeAura day are dated landings.
         What remains open is the Shockwave line ensure_open appends for that history.
         """
-        path = os.path.join(ROOT, "daily-landing-tickets.md")
+        path = queue_snapshot("daily-landing-tickets.md")
         with open(path, encoding="utf-8") as fh:
             text = fh.read()
         lines = text.splitlines()
@@ -410,7 +441,7 @@ class OpenQueueTests(unittest.TestCase):
         self.assertEqual(handles.count(FUSI), 0)
         self.assertTrue(all(a != b for a, b in zip(handles, handles[1:])))
 
-        specs = landing.load_specs()
+        specs = frozen_landing_specs()
         closed = "\n".join(line for line in lines if not line.startswith("- [ ] "))
         if text.endswith("\n"):
             closed += "\n"
