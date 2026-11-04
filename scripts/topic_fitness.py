@@ -105,6 +105,9 @@ SEGMENT_MODIFIERS = [
  # page that no existing article competes with. This does NOT loosen cannibalisation: the moment
  # one buy-intent article exists, seg_taken flips and the branch goes back to FAIL.
  'where to buy','where can i buy','buy','price','cost','how much does',
+ # Safety and trust intents, added 2026-11-04 (lane A queue recovery): buyer questions with no live
+ # title on any brand (checked against 158 live articles). seg_taken still flips to FAIL once one exists.
+ 'fake','blood pressure','metformin','kidneys','odor','after sex','hair',
 ]
 # category head-terms a COLLECTION owns — a new article cannibalises them
 COLLECTION_HEADTERMS = [

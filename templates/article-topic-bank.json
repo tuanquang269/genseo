@@ -51,7 +51,12 @@
   "yeast": "\\byeast\\b|\\bcandida\\b",
   "strains": "\\bstrains?\\b",
   "loading": "\\bloading\\b",
-  "hair": "\\bhair\\b"
+  "hair": "\\bhair\\b",
+  "medications": "\\bmetformin\\b|\\bblood pressure\\b|\\bhypertension\\b|\\bmedications?\\b|\\bblood thinners?\\b",
+  "kidneys": "\\bkidneys?\\b|\\bcreatinine\\b",
+  "urinary": "\\burinary\\b|\\butis?\\b|\\bd-mannose\\b",
+  "odor": "\\bodou?r\\b|\\bsmell\\b",
+  "intimacy": "\\bafter sex\\b|\\bintercourse\\b|\\bsemen\\b"
  },
  "covered_topics": [
   "meal plan", "menomate", "menopaus", "dad[- ]?bod", "what is shilajit", "shilajit benefits(?! for)",
@@ -1771,6 +1776,216 @@
     "vaginal-probiotics-for-beginners-what-to-expect-in-the-us",
     "vaginal-probiotics-side-effects-normal-vs-stop-us-2026",
     "vaginal-probiotics-which-strains-actually-work-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "fake-turkesterone-underdosed-labels",
+   "product": "turkesterone-advanced-formula",
+   "primary": "fake turkesterone",
+   "title": "Fake Turkesterone: 5 Signs of an Underdosed Label (US {year})",
+   "secondary": [
+    "is turkesterone real",
+    "underdosed turkesterone",
+    "turkesterone scam",
+    "how to spot fake turkesterone"
+   ],
+   "segment": "authenticity",
+   "intent": "buyer who read that some turkesterone products contained almost none and wants to check a label before buying",
+   "template": "LISTICLE",
+   "angle": "Independent assays and a 2025 trial found some products held under 1% of the claimed turkesterone. Give the label checks a buyer can do: extract standard named, ecdysteroid vs turkesterone mg, certificate from an ISO 17025 lab, price per real mg. No muscle-gain claim.",
+   "fanout": [
+    "how much turkesterone did tested products contain",
+    "what does a standardized extract mean",
+    "what is the difference between ecdysteroids and turkesterone",
+    "what should a test certificate show"
+   ],
+   "evidence": "Fetch the 2025 randomized trial that assayed a commercial turkesterone product, and the published independent assay reports. Cite only what they state.",
+   "link": [
+    "turkesterone-vs-ecdysterone-which-is-worth-it-us-2026",
+    "where-to-buy-turkesterone-in-the-us-what-to-check-2026",
+    "turkesterone-side-effects-4-ingredients-to-check-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "shilajit-and-blood-pressure",
+   "product": "shilasource-himalayan-shilajit-resin",
+   "primary": "shilajit and blood pressure",
+   "title": "Shilajit and Blood Pressure: Who Checks First (US {year})",
+   "secondary": [
+    "shilajit high blood pressure",
+    "shilajit with blood pressure medication",
+    "does shilajit lower blood pressure",
+    "shilajit hypertension"
+   ],
+   "segment": "medications",
+   "intent": "adult on blood pressure medication who wants to know whether shilajit is safe to add",
+   "template": "EDITORIAL",
+   "angle": "Separate what is measured in humans from rodent data. Name the drug classes where a doctor check matters. Give the plain rule: ask the prescriber, check readings for two weeks. No treatment claim.",
+   "fanout": [
+    "does shilajit raise or lower blood pressure",
+    "can I take it with ACE inhibitors or beta blockers",
+    "what did human trials measure",
+    "what readings mean stop"
+   ],
+   "evidence": "PubMed human trials of shilajit that report blood pressure (for example the 2019 and 2016 RCTs). If none report it, say so.",
+   "link": [
+    "shilajit-side-effects-7-signs-to-watch-for-us-2026",
+    "how-much-shilajit-per-day-dosage-by-form-us-2026",
+    "shilajit-for-seniors-5-safety-checks-over-60-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "nmn-and-metformin",
+   "product": "ageaura-pure-nmn-tmg-nad-complex",
+   "primary": "nmn and metformin",
+   "title": "NMN and Metformin: What the Human Data Says (US {year})",
+   "secondary": [
+    "can you take nmn with metformin",
+    "nmn metformin interaction",
+    "nmn blood sugar",
+    "metformin nad"
+   ],
+   "segment": "medications",
+   "intent": "adult already prescribed metformin who wants to know whether NMN fits next to it",
+   "template": "EDITORIAL",
+   "angle": "Explain the two different mechanisms in plain words, the one human NMN insulin-sensitivity trial and its limits, and why the prescriber decides. No blood sugar treatment claim.",
+   "fanout": [
+    "does metformin lower NAD",
+    "does NMN change blood sugar in humans",
+    "is there an interaction study",
+    "what should I ask my doctor"
+   ],
+   "evidence": "Yoshino 2021 Science (NMN in prediabetic women) and any published human NMN plus metformin data. Say there is no combination trial if none is found.",
+   "link": [
+    "nmn-side-effects-6-checks-before-you-start-us-2026",
+    "how-much-nmn-per-day-what-trials-used-us-2026",
+    "nmn-and-tmg-together-why-the-pairing-matters-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "creatine-gummies-and-kidneys",
+   "product": "fusiforce-creatine-gummies",
+   "primary": "creatine gummies and kidneys",
+   "title": "Creatine Gummies and Kidneys: The Bloodwork (US {year})",
+   "secondary": [
+    "is creatine bad for your kidneys",
+    "creatine creatinine blood test",
+    "creatine gummies kidney safety",
+    "creatine kidney damage myth"
+   ],
+   "segment": "kidneys",
+   "intent": "buyer worried that creatine harms the kidneys or that a raised creatinine test means damage",
+   "template": "EDITORIAL",
+   "angle": "Explain why creatinine rises on a lab test, what long-term trials in healthy adults found, and who must ask a doctor first (existing kidney disease). No cure claim.",
+   "fanout": [
+    "why does creatine raise creatinine",
+    "what did long-term trials find",
+    "who should not take creatine",
+    "should I tell my doctor before a blood test"
+   ],
+   "evidence": "ISSN position stand on creatine safety and the long-term renal-function trials it cites. Fetch them.",
+   "link": [
+    "creatine-gummies-side-effects-4-real-3-myths-us-2026",
+    "creatine-gummies-dosage-how-many-a-day-us-2026",
+    "how-to-take-creatine-gummies-in-the-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "turkesterone-and-hair-loss",
+   "product": "turkesterone-advanced-formula",
+   "primary": "turkesterone hair loss",
+   "title": "Turkesterone and Hair Loss: The DHT Question (US {year})",
+   "secondary": [
+    "turkesterone dht",
+    "turkesterone and hair",
+    "turkesterone balding",
+    "is turkesterone hormonal"
+   ],
+   "segment": "hair",
+   "intent": "man worried about hair loss who wants to know whether turkesterone acts on DHT",
+   "template": "EDITORIAL",
+   "angle": "Turkesterone is not shown to raise DHT or testosterone in humans; say what the few human trials measured and what they did not. Name the honest limit.",
+   "fanout": [
+    "does turkesterone raise testosterone or DHT",
+    "what did human trials measure",
+    "why do forums link it to hair loss",
+    "what to do if shedding starts"
+   ],
+   "evidence": "Human turkesterone or ecdysterone trials that measured hormones (for example Isenmann 2019). Cite only measured outcomes.",
+   "link": [
+    "turkesterone-side-effects-4-ingredients-to-check-us-2026",
+    "turkesterone-for-men-over-40-5-honest-checks-us-2026",
+    "how-to-take-turkesterone-in-the-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "vaginal-probiotics-for-odor",
+   "product": "florafresh-vaginal-probiotics-gummies",
+   "primary": "vaginal probiotics for odor",
+   "title": "Vaginal Probiotics for Odor: What They Can Do (US {year})",
+   "secondary": [
+    "probiotics for vaginal odor",
+    "feminine odor probiotic",
+    "fishy odor probiotics",
+    "ph balance probiotic gummies"
+   ],
+   "segment": "odor",
+   "intent": "woman with odor who wants to know whether a probiotic gummy helps or whether it needs a doctor",
+   "template": "EDITORIAL",
+   "angle": "Odor is a symptom with several causes. Say which one needs a test (BV, trichomoniasis), what the label strain (Bacillus coagulans SNZ-1969) was studied for, and what a gummy cannot replace. No cure claim.",
+   "fanout": [
+    "what causes vaginal odor",
+    "when is odor BV",
+    "can a probiotic change odor",
+    "when to see a doctor"
+   ],
+   "evidence": "Bacillus coagulans and oral probiotic trials that report odor or Amsel criteria outcomes, plus CDC BV guidance.",
+   "link": [
+    "yeast-infection-vs-bv-how-to-tell-them-apart-us-2026",
+    "probiotics-for-bv-do-they-actually-work-us-2026",
+    "vaginal-probiotics-how-long-until-they-work-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "vaginal-probiotics-after-sex",
+   "product": "florafresh-vaginal-probiotics-gummies",
+   "primary": "vaginal probiotics after sex",
+   "title": "Vaginal Probiotics After Sex: What Changes (US {year})",
+   "secondary": [
+    "probiotics after intercourse",
+    "vaginal ph after sex",
+    "semen ph balance",
+    "new partner bv"
+   ],
+   "segment": "intimacy",
+   "intent": "woman who notices irritation or odor after sex and asks whether a daily probiotic changes that",
+   "template": "EDITORIAL",
+   "angle": "Explain why semen shifts vaginal pH for a few hours, what a daily oral probiotic can and cannot change, and the symptoms that need a test. No prevention claim.",
+   "fanout": [
+    "why does pH change after sex",
+    "does a daily probiotic help",
+    "is a new partner a BV risk",
+    "when to test"
+   ],
+   "evidence": "Peer-reviewed data on post-coital vaginal pH and the CDC BV risk factors.",
+   "link": [
+    "vaginal-probiotics-for-beginners-what-to-expect-in-the-us",
+    "probiotics-for-bv-do-they-actually-work-us-2026",
+    "yeast-infection-vs-bv-how-to-tell-them-apart-us-2026"
    ],
    "priority": 1,
    "inline": []
