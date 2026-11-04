@@ -1650,3 +1650,127 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Link, don't restate:** `/blogs/news/vaginal-probiotics-for-beginners-what-to-expect-in-the-us`, `/blogs/news/probiotics-for-bv-do-they-actually-work-us-2026`, `/blogs/news/yeast-infection-vs-bv-how-to-tell-them-apart-us-2026`
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** probiotic + intimacy checked 2026-11-04 against 158 live articles (blog listing + sitemap + Atom + local caches) and all 111 tickets in this file; STEP 0 re-checks at write time
+
+# BATCH 2026-11-04 (refill_tickets.py — ids #MB1104-8…#MB1104-15)
+
+Built by `scripts/refill_tickets.py` at 2026-11-04 15:43 ICT from `templates/article-topic-bank.json` + `board/ideas.csv`
+(search volume: No data — GSC/Ads not used). Every ticket passed, against the live store at build time:
+brand_rules + `lint_tickets.py` · hero product live and in stock · not a covered topic (header rule 6) ·
+not already queued · not live (163 published articles: blog listing + sitemap + Atom + local caches; one article per brand + segment) ·
+`topic_fitness.py` strict on primary and title · STEP 0 suggest.json.
+A `topic_fitness` REVIEW [covered-segment] verdict is allowed under Kevin's standing greenlight for mined queues (2026-08-13).
+A topic is a brief, not copy: source every claim or cut it.
+
+**Rules for this batch:** from the 2026-10-08 batch rules — fan-out answers, a "Where to buy <product> in the US"
+section (live price, the ticket's product link only), roster.json byline only (never an invented person or
+credential), the logged fact-check pass (`logs/claims/<slug>.md`; delete unconfirmed claims), the brand gate.
+Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py once. The hero is the picked face plus the real pack unless pick prints NO-FACE. One inline image uses that face. The other inline images have no recognizable face but still show a hand, forearm, or body cropped below the eyes. A no-face image is the fallback for one frame after a face refusal or two QC misses, not a batch-wide ban. The MacBook article plist sets `GENSEO_NO_FACE=0`, and that value does not switch the lane. Prices were read live at build time; re-check the PDP while writing.
+
+- [ ] **#MB1104-8 — fake vaginal probiotics** — `Fake Vaginal Probiotics: 5 Label Checks (US 2026)`
+  - **Primary keyword:** `fake vaginal probiotics` · **Secondary:** fake probiotics, probiotic label checks, best vaginal probiotic label
+  - **Search intent:** woman comparing vaginal probiotic labels who wants to spot a weak or fake product
+  - **Template:** LISTICLE · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-04 15:43 ICT)
+  - **Hero product:** `/products/florafresh-vaginal-probiotics-gummies` (FloraFresh Vaginal Probiotics Gummies, $40.99, in stock 2026-11-04)
+  - **FloraFresh formula (Supplement Facts label, the source of truth):** per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 1 billion CFU, Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain); sweetened with maltitol and isomalt, so not sugar-free; label badges Allergen Free, Vegan, Halal, Gluten Free. Cite the Supplement Facts label, never the live PDP description or an older FloraFresh article (both repeat a wrong formula); a PDP/label mismatch is a gate failure.
+  - **Collection links (≥2, verify live):** `/collections/womens-essentials-collection` (contains it), `/collections/best-seller` (contains it)
+  - **Angle:** Five label checks: named strain with ID, CFU at expiry not at manufacture, storage, third-party testing, realistic claims. Show the FloraFresh label as one example. No cure claim.
+  - **Fan-out answers to cover:** how to tell if a probiotic is real; vaginal probiotic label; cfu at expiry; probiotic strain id
+  - **Evidence to fetch & confirm (claims log):** USP/ISAPP guidance on probiotic labels; studies on label accuracy of probiotic products.
+  - **Link, don't restate:** `/blogs/news/probiotics-for-bv-do-they-actually-work-us-2026`, `/blogs/news/vaginal-probiotics-how-long-until-they-work-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** probiotic + authenticity checked 2026-11-04 against 163 live articles (blog listing + sitemap + Atom + local caches) and all 118 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1104-9 — turkesterone and kidneys** — `Turkesterone and Kidneys: Liver and Kidney Checks (US 2026)`
+  - **Primary keyword:** `turkesterone and kidneys` · **Secondary:** turkesterone liver kidneys, turkesterone blood test, ecdysterone kidneys
+  - **Search intent:** lifter who wants to know if turkesterone stresses the kidneys or liver
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-04 15:43 ICT)
+  - **Hero product:** `/products/turkesterone-advanced-formula` (Turkesterone Advanced Formula, $75, in stock 2026-11-04)
+  - **Turkesterone Advanced Formula pack label (source of truth):** wellness, nest, PREMIUM, TURKESTERONE, ADVANCED, FORMULA, AMPLIFY, MUSCLE, ENDURANCE, 60, Dietary Supplement, Capsules. No milligram amount and no Supplement Facts panel were read. Do not add one. The capsule badge is the separate lines in product_refs/turkesterone-advanced-formula.label.json. Do not state a milligram amount, a serving count, a different capsule count, or a day-supply.
+  - **Collection links (≥2, verify live):** `/collections/mens-essential-collection` (contains it), `/collections/shilajit-wellness-stack` (contains it)
+  - **Angle:** Separate ecdysteroid data from steroid myths. Say what bloodwork a careful user checks and when to stop. No muscle-gain promise.
+  - **Fan-out answers to cover:** is turkesterone bad for kidneys; turkesterone liver; turkesterone bloodwork; turkesterone side effects kidneys
+  - **Evidence to fetch & confirm (claims log):** Ecdysterone human trials with safety labs (e.g. Isenmann 2019); reviews on ecdysteroid toxicology.
+  - **Link, don't restate:** `/blogs/news/fake-turkesterone-5-label-checks-in-the-us`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** turkesterone + kidneys checked 2026-11-04 against 163 live articles (blog listing + sitemap + Atom + local caches) and all 118 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1104-10 — creatine gummies and blood pressure** — `Creatine Gummies and Blood Pressure (US 2026)`
+  - **Primary keyword:** `creatine gummies and blood pressure` · **Secondary:** creatine hypertension, creatine blood pressure medication
+  - **Search intent:** adult with high blood pressure who wants to start creatine gummies
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-04 15:43 ICT)
+  - **Hero product:** `/products/fusiforce-creatine-gummies` (FusiForce Creatine Gummies, $79.99, in stock 2026-11-04)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** What creatine trials report on blood pressure, water weight vs BP, sugar per gummy from the live label, who asks a doctor (BP meds, kidney disease).
+  - **Fan-out answers to cover:** does creatine raise blood pressure; creatine hypertension; creatine with blood pressure medication
+  - **Evidence to fetch & confirm (claims log):** ISSN creatine position stand; RCTs reporting BP; FusiForce live label.
+  - **Link, don't restate:** `/blogs/news/creatine-gummies-and-kidneys-bloodwork-in-the-us`, `/blogs/news/creatine-gummies-ingredients-us-label-guide`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** creatine + medications checked 2026-11-04 against 163 live articles (blog listing + sitemap + Atom + local caches) and all 118 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1104-11 — nmn and kidneys** — `NMN and Kidneys: What Human Data Shows (US 2026)`
+  - **Primary keyword:** `nmn and kidneys` · **Secondary:** nmn kidney function, nmn creatinine, nad kidneys
+  - **Search intent:** adult on NMN or thinking about it who has a kidney question
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-04 15:43 ICT)
+  - **Hero product:** `/products/ageaura-pure-nmn-tmg-nad-complex` (AgeAura Pure NMN + TMG NAD+ Complex, $79.99, in stock 2026-11-04)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` twice (browse link — AgeAura Pure NMN + TMG NAD+ Complex is not in it, never claim it is) · no other AgeAura product and no AgeAura collection link (brand_rules)
+  - **Angle:** What NMN does to NAD+ in the kidney in animal vs human studies; what human trials measured (eGFR, creatinine); who should ask a doctor first. Mark animal data clearly.
+  - **Fan-out answers to cover:** is nmn safe for kidneys; nmn creatinine; nmn kidney disease; nmn tmg kidneys
+  - **Evidence to fetch & confirm (claims log):** Human NMN RCTs that report renal labs; reviews on NAD+ and kidney; label of AgeAura NMN + TMG.
+  - **Link, don't restate:** `/blogs/news/nmn-and-metformin-human-data-in-the-us`, `/blogs/news/real-or-fake-nmn-6-label-checks-for-us-buyers`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** nmn + kidneys checked 2026-11-04 against 163 live articles (blog listing + sitemap + Atom + local caches) and all 118 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1104-12 — shilajit and kidneys** — `Shilajit and Kidneys: What to Check First (US 2026)`
+  - **Primary keyword:** `shilajit and kidneys` · **Secondary:** is shilajit safe for kidneys, shilajit kidney stones, shilajit creatinine
+  - **Search intent:** buyer with a kidney question who wants to know if shilajit resin is safe to take
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-04 15:43 ICT)
+  - **Hero product:** `/products/shilasource-himalayan-shilajit-resin` (ShilaSource Himalayan Shilajit Resin, $69.99, in stock 2026-11-04)
+  - **ShilaSource Himalayan Shilajit Resin pack label (source of truth):** ShilaSource, Himalayan, Shilajit, Resin, 75, Dietary Supplement, Wellness, Nest, 70% Fulvic Acid*, Lab-Tested for Purity*, 1.06oz (30g), SERVINGS, Servings. No milligram amount and no Supplement Facts panel were read into that file. Do not add one. Do not state a serving count, volume, weight, fulvic percentage, mineral count, or day-supply other than the lines in product_refs/shilasource-himalayan-shilajit-resin.label.json.
+  - **Collection links (≥2, verify live):** `/collections/shilajit-wellness-stack` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** Answer first: what human data exists, what heavy-metal testing means for kidneys, who must ask a doctor (CKD, kidney stones, dialysis). No cure or safety guarantee.
+  - **Fan-out answers to cover:** is shilajit bad for kidneys; shilajit kidney stones; shilajit heavy metals kidneys; who should not take shilajit
+  - **Evidence to fetch & confirm (claims log):** PubMed human trials of purified shilajit with renal markers; NIH/ODS heavy-metal guidance; live PDP test info.
+  - **Link, don't restate:** `/blogs/news/shilajit-and-blood-pressure-check-first-in-the-us`, `/blogs/news/fake-shilajit-6-signs-yours-isnt-real-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** shilajit + kidneys checked 2026-11-04 against 163 live articles (blog listing + sitemap + Atom + local caches) and all 118 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1104-13 — turkesterone and blood pressure** — `Turkesterone and Blood Pressure: What We Know (US 2026)`
+  - **Primary keyword:** `turkesterone and blood pressure` · **Secondary:** turkesterone hypertension, turkesterone blood pressure medication
+  - **Search intent:** person with high blood pressure or BP medication who considers turkesterone
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-04 15:43 ICT)
+  - **Hero product:** `/products/turkesterone-advanced-formula` (Turkesterone Advanced Formula, $75, in stock 2026-11-04)
+  - **Turkesterone Advanced Formula pack label (source of truth):** wellness, nest, PREMIUM, TURKESTERONE, ADVANCED, FORMULA, AMPLIFY, MUSCLE, ENDURANCE, 60, Dietary Supplement, Capsules. No milligram amount and no Supplement Facts panel were read. Do not add one. The capsule badge is the separate lines in product_refs/turkesterone-advanced-formula.label.json. Do not state a milligram amount, a serving count, a different capsule count, or a day-supply.
+  - **Collection links (≥2, verify live):** `/collections/mens-essential-collection` (contains it), `/collections/shilajit-wellness-stack` (contains it)
+  - **Angle:** What human data says about ecdysteroids and blood pressure, what is unknown, and why BP medication users ask a doctor first. No treatment claim.
+  - **Fan-out answers to cover:** does turkesterone raise blood pressure; turkesterone hypertension; turkesterone with bp meds
+  - **Evidence to fetch & confirm (claims log):** Ecdysteroid human trials that report BP; drug-interaction references.
+  - **Link, don't restate:** `/blogs/news/fake-turkesterone-5-label-checks-in-the-us`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** turkesterone + medications checked 2026-11-04 against 163 live articles (blog listing + sitemap + Atom + local caches) and all 118 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1104-14 — vaginal probiotics with food or coffee** — `Vaginal Probiotics With Food or Coffee? (US 2026)`
+  - **Primary keyword:** `vaginal probiotics with food or coffee` · **Secondary:** probiotics and coffee, probiotics with breakfast, probiotic gummy timing
+  - **Search intent:** woman who takes a probiotic gummy with her morning coffee and wants to know if heat or caffeine harms it
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-04 15:43 ICT)
+  - **Hero product:** `/products/florafresh-vaginal-probiotics-gummies` (FloraFresh Vaginal Probiotics Gummies, $40.99, in stock 2026-11-04)
+  - **FloraFresh formula (Supplement Facts label, the source of truth):** per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 1 billion CFU, Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain); sweetened with maltitol and isomalt, so not sugar-free; label badges Allergen Free, Vegan, Halal, Gluten Free. Cite the Supplement Facts label, never the live PDP description or an older FloraFresh article (both repeat a wrong formula); a PDP/label mismatch is a gate failure.
+  - **Collection links (≥2, verify live):** `/collections/womens-essentials-collection` (contains it), `/collections/best-seller` (contains it)
+  - **Angle:** What is known about heat, acid and caffeine on spore-forming Bacillus coagulans vs Lactobacillus, what the live label says, a simple routine. No cure claim.
+  - **Fan-out answers to cover:** can i take probiotics with coffee; probiotics with food or empty stomach; does hot coffee kill probiotics
+  - **Evidence to fetch & confirm (claims log):** Studies on Bacillus coagulans spore survival (heat, gastric acid); ISAPP guidance on timing; FloraFresh live label.
+  - **Link, don't restate:** `/blogs/news/vaginal-probiotics-how-long-until-they-work-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** probiotic + caffeine checked 2026-11-04 against 163 live articles (blog listing + sitemap + Atom + local caches) and all 118 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1104-15 — nmn body odor** — `NMN and Body Odor: Why It Happens (US 2026)`
+  - **Primary keyword:** `nmn body odor` · **Secondary:** tmg body odor, nmn smell, nmn tmg side effects odor
+  - **Search intent:** NMN + TMG user who notices a fishy or strong body or urine odor and wants to know why
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-04 15:43 ICT)
+  - **Hero product:** `/products/ageaura-pure-nmn-tmg-nad-complex` (AgeAura Pure NMN + TMG NAD+ Complex, $79.99, in stock 2026-11-04)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` twice (browse link — AgeAura Pure NMN + TMG NAD+ Complex is not in it, never claim it is) · no other AgeAura product and no AgeAura collection link (brand_rules)
+  - **Angle:** TMG (betaine) and choline-type compounds can raise TMAO; some people with low FMO3 notice a fishy odor. Say what is known, what to change (dose, food), and when to see a doctor. No treatment claim.
+  - **Fan-out answers to cover:** does nmn make you smell; tmg fishy odor; nmn urine smell; trimethylaminuria supplements
+  - **Evidence to fetch & confirm (claims log):** Papers on betaine/TMG and TMAO; NIH GARD trimethylaminuria page; AgeAura live label.
+  - **Link, don't restate:** `/blogs/news/nmn-and-metformin-human-data-in-the-us`, `/blogs/news/real-or-fake-nmn-6-label-checks-for-us-buyers`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** nmn + odor checked 2026-11-04 against 163 live articles (blog listing + sitemap + Atom + local caches) and all 118 tickets in this file; STEP 0 re-checks at write time
