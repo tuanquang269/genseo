@@ -323,25 +323,50 @@ def stem(url):
     return re.sub(r'\.\w+$', '', (url or '').split('?')[0].rsplit('/', 1)[-1])
 
 
-def pick_hero(api, row, articles, budget):
+def file_kb(url):
+    """A Files URL as Chrome downloads it (no width transform), in KB."""
+    req = urllib.request.Request(url, headers={'Accept': 'image/avif,image/webp,image/*,*/*;q=0.8', 'User-Agent': 'Mozilla/5.0 Chrome/130'})
+    return round(len(urllib.request.urlopen(req, timeout=60).read()) / 1024)
+
+
+def hero_slots(rec):
+    """A hero set (hero_budget.py build_set) as the five srcset slots journal.hero_set needs. A slot takes the smallest file at or above
+    its width, else the largest file: files are never upscaled (a photo 800 px wide fills 1100/1200/2200 with its 800 file)."""
+    files = sorted((int(w), v['url']) for w, v in rec['files'].items())
+    return [(slot, next((u for w, u in files if w >= slot), files[-1][1])) for slot in (550, 750, 1100, 1200, 2200)]
+
+
+def pick_hero(api, row, articles, budget, hero_sets=None):
     """First photo of the target product that no Journal article uses as its hero and that fits the hero budget at width 1100.
-    ponytail: no automatic hero set; a product with only heavy unused photos fails the row (build a set by hand, hero_budget.py)."""
+    A heavy photo with a lighter set in `hero_sets` (journal-data/hero-sets.json, built by hero_budget.py build_set: same photo, lighter
+    encode) is used through that set when its 1100 slot fits the budget (Kevin D1 2026-11-04). Never a reused photo, never a generated one."""
     from journal_fields import served_kb
+    hero_sets = {k: v for k, v in (hero_sets or {}).items() if not k.startswith('_')}
     used = {stem((a.get('image') or {}).get('src')) for a in articles}
+    # an article on set files carries a set file name: count the set's source photo as used too
+    used |= {k for k, rec in hero_sets.items() if used & {stem(v['url']) for v in rec['files'].values()}}
     product = api.product(row['target_product_handle'])
     heavy = []
     for image in product.get('images', []):
         if stem(image['src']) in used:
             continue
+        alt = image.get('alt') or 'The Cherish Company — ' + product['title']
         kb = served_kb(image['src']) if budget else 0
         if not budget or kb <= int(budget):
-            return {'src': image['src'], 'alt': image.get('alt') or 'The Cherish Company — ' + product['title']}
+            return {'src': image['src'], 'alt': alt}
+        rec = hero_sets.get(stem(image['src']))
+        if rec:
+            slots = hero_slots(rec)
+            set_kb = file_kb(dict(slots)[1100])   # pass-through file: the browser downloads the URL as written
+            if set_kb <= int(budget):
+                return {'src': dict(slots)[2200], 'alt': alt, 'set': slots}
+            heavy.append(f"{stem(image['src'])} {kb} KB (set {set_kb} KB)")
+            continue
         heavy.append(f"{stem(image['src'])} {kb} KB")
     n = len(product.get('images', []))
     raise StoreGuardError(f"No unused hero photo within the hero budget for {row['target_product_handle']}: "
                           f"{n} photos, {n - len(heavy)} already a Journal hero, unused over {budget} KB at width 1100: "
                           + (', '.join(heavy) or 'none') + ('. Build a lighter set of the same photo (cherish-seo/journal-data/hero_budget.py build_set)' if heavy else '. Add a real product photo'))
-
 
 def finalize_page(page, template, row, package, hero, day):
     """Machine-owned values the shell prints from metafields: hero tag, Updated date, and the BlogPosting fields
@@ -350,7 +375,10 @@ def finalize_page(page, template, row, package, hero, day):
     require(not soup(page).select('.preview, .spec, .spec-sec'), 'Delete the .preview bar and every .spec / .spec-sec annotation')
     approved = soup(template).select_one('figure.hero img')
     src = hero['src']
-    tag = (f'<img src="{src}&width=1100" srcset="' + ', '.join(f'{src}&width={w} {w}w' for w in (550, 750, 1100, 2200)) +
+    # a hero set: five pass-through Files URLs (journal_fields.hero_set_from_srcset reads them back into journal.hero_set)
+    first, srcset = ((dict(hero['set'])[1100], ', '.join(f'{u} {w}w' for w, u in hero['set'])) if hero.get('set') else
+                     (f'{src}&width=1100', ', '.join(f'{src}&width={w} {w}w' for w in (550, 750, 1100, 2200))))
+    tag = (f'<img src="{first}" srcset="{srcset}' +
            f'" sizes="{approved["sizes"]}" width="{approved["width"]}" height="{approved["height"]}" alt="{html.escape(hero["alt"])}"' +
            (' fetchpriority="high"' if approved.has_attr('fetchpriority') else '') + '>')
     page, n = re.subn(r'(<figure class="hero">\s*)<img\b[^>]*>', lambda m: m.group(1) + tag, page, count=1)
@@ -481,7 +509,8 @@ def prepare_row(api, profile, row, path, existing, state, generate_on, attempts=
     handles = {row['target_product_handle']} | profile.linked_handles(template)
     live_products = {h: api.product(h) for h in handles}
     collections = live_collections(api, profile, template)
-    hero = pick_hero(api, row, existing, profile.data.get('hero_budget_kb'))
+    sets = Path(profile.data['hero_sets']) if profile.data.get('hero_sets') else None
+    hero = pick_hero(api, row, existing, profile.data.get('hero_budget_kb'), json.loads(sets.read_text()) if sets and sets.exists() else None)
     day = dt.datetime.now(ZoneInfo('Asia/Ho_Chi_Minh')).date()
     feedback = previous = None
     for attempt in range(1, attempts + 1):
