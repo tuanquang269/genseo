@@ -15,6 +15,7 @@ import tempfile
 import unittest
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+QUEUE_FIXTURES = os.path.join(ROOT, "tests", "fixtures", "queues")
 sys.path.insert(0, os.path.join(ROOT, "scripts"))
 
 import genseo_queue_closures as qc  # noqa: E402
@@ -103,8 +104,14 @@ def first_line(queue, repo):
 
 class FreshCheckoutTests(unittest.TestCase):
     def test_tracked_files_close_todays_tickets_without_a_ledger(self):
-        article_path = os.path.join(ROOT, "daily-tickets.md")
-        landing_path = os.path.join(ROOT, "daily-landing-tickets.md")
+        """First open lines come from the frozen queue snapshot, not the live files.
+
+        The snapshot is the queue at origin/main 56a84387: article CA1016-7 is
+        still the first open article line, and the landing head is the Shockwave
+        ticket. A later edit to the live queues must not move these assertions.
+        """
+        article_path = os.path.join(QUEUE_FIXTURES, "daily-tickets.md")
+        landing_path = os.path.join(QUEUE_FIXTURES, "daily-landing-tickets.md")
         with open(article_path, encoding="utf-8") as fh:
             article = fh.read()
         with open(landing_path, encoding="utf-8") as fh:
@@ -159,7 +166,7 @@ class FreshCheckoutTests(unittest.TestCase):
             "premium-himalayan-shilajit-gummies" in line and "missed day" in line
             for line in landing_open
         ))
-        with open(os.path.join(ROOT, "PUBLISHED_ARTICLES_TRACKER.csv"), encoding="utf-8") as fh:
+        with open(os.path.join(QUEUE_FIXTURES, "published_articles_tracker.snapshot.csv"), encoding="utf-8") as fh:
             tracker = fh.read()
         for ticket_id, url in zip(CLOSED_IDS, LIVE_URLS):
             self.assertIn(ticket_id + ",", tracker)
