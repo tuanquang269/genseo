@@ -19,6 +19,7 @@ import os
 import re
 import subprocess
 import sys
+import time
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -84,14 +85,32 @@ def gate_page(page, template):
     return page.replace('</body>', '<script>' + script + '</script>\n</body>', 1)
 
 
-def noindex(url):
-    """robots meta as real Chrome sees it (curl gets HTTP 429 on this store)."""
-    code = ('import sys\nfrom playwright.sync_api import sync_playwright\n'
+def noindex(url, tries=3):
+    """robots meta as a real browser sees it (curl gets HTTP 429 on this store). Returns (ok, detail); fails closed.
+    A non-200 answer or a browser error is retried after a pause (the store rate-limits right after a fidelity run),
+    and the detail names the HTTP status or the error, so a blocked read never reads as 'no noindex'."""
+    code = ('import sys,json\nfrom playwright.sync_api import sync_playwright\n'
             'with sync_playwright() as p:\n'
-            ' b=p.chromium.launch(channel="chromium",args=["--disable-gpu"]); pg=b.new_page(); pg.goto(sys.argv[1],wait_until="domcontentloaded",timeout=90000)\n'
-            ' m=pg.query_selector(\'meta[name="robots"]\'); print(m.get_attribute("content") if m else ""); b.close()\n')
-    out = subprocess.run([PY, '-c', code, url], capture_output=True, text=True, timeout=180)
-    return 'noindex' in out.stdout.lower()
+            ' b=p.chromium.launch(channel="chromium",args=["--disable-gpu"]); pg=b.new_page(); r=pg.goto(sys.argv[1],wait_until="domcontentloaded",timeout=90000)\n'
+            ' m=pg.query_selector(\'meta[name="robots"]\'); print(json.dumps({"status": r.status if r else 0, "robots": m.get_attribute("content") if m else ""})); b.close()\n')
+    detail = ''
+    for attempt in range(tries):
+        if attempt:
+            time.sleep(30 * attempt)
+        try:
+            out = subprocess.run([PY, '-c', code, url], capture_output=True, text=True, timeout=180)
+            res = json.loads((out.stdout.strip().splitlines() or ['{}'])[-1])
+        except (subprocess.SubprocessError, ValueError) as error:
+            detail = f'browser error: {error}'
+            continue
+        if not res:
+            detail = 'browser error: ' + (out.stderr.strip().splitlines() or ['no output'])[-1][:200]
+            continue
+        if res['status'] != 200:
+            detail = f"HTTP {res['status']}"
+            continue
+        return 'noindex' in res['robots'].lower(), f"robots={res['robots']!r}"
+    return False, detail + f' after {tries} tries'
 
 
 def fidelity(pairs, run_id, theme, qa_copy, rundir):
@@ -221,8 +240,10 @@ def main(argv=None):
                     tpl = rundir/f"style-{row['style']}-{e['handle']}.html"
                     tpl.write_text(gate_page(package['body_html'], template))
                     qa_url = f"https://{domain}/blogs/{profile_gate()['qa_blog_handle']}/{e['handle']}"
-                    if not noindex(qa_url):
-                        e['gate'] = 'FAIL: QA copy is not noindex in Chrome'
+                    hidden, why = noindex(qa_url)
+                    log('noindex', row['slot'], e['handle'], why)
+                    if not hidden:
+                        e['gate'] = 'FAIL: QA copy noindex not proven: ' + why
                         continue
                     pairs = rundir/f"qa-{e['handle']}.json"
                     pairs.write_text(json.dumps([{'style': row['style'], 'slug': e['handle'], 'tpl': str(tpl),
