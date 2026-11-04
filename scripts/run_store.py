@@ -32,10 +32,36 @@ CHROME_GET = ('import sys\nfrom playwright.sync_api import sync_playwright\nwith
               ' r=pg.goto(sys.argv[1],wait_until="domcontentloaded",timeout=60000); assert r.status==200, r.status\n'
               ' sys.stdout.write(pg.content()); b.close()\n')
 
+REDDIT_THREAD = re.compile(r'https?://(?:www\.|old\.)?reddit\.com/r/[^/]+/comments/([a-z0-9]+)')
+
+def reddit_text(post_id):
+    """Reddit answers scripts and headless Chrome with 403 / "Prove your humanity" (2026-11-04: calendar slot 7 failed 5/5 on an
+    empty page). Arctic-Shift archives the same post + comments; header curl/8.7.1 per 00.6-mistakes 2026-10-27. Same thread, same words."""
+    base, ua = 'https://arctic-shift.photon-reddit.com/api/', {'User-Agent': 'curl/8.7.1'}
+    def get(path):
+        for attempt in range(4):
+            try:
+                with urllib.request.urlopen(urllib.request.Request(base + path, headers=ua), timeout=40) as res:
+                    return json.loads(res.read())['data']
+            except (urllib.error.URLError, TimeoutError) as error:
+                if attempt == 3:
+                    raise
+                time.sleep(8)
+    post = get(f'posts/ids?ids={post_id}')
+    if not post:
+        raise urllib.error.URLError(f'reddit post {post_id} not in Arctic-Shift')
+    comments = get(f'comments/search?link_id={post_id}&limit=100')
+    p = post[0]
+    return '\n\n'.join([f"r/{p.get('subreddit')} · {p.get('title', '')}", p.get('selftext') or ''] + [c.get('body') or '' for c in comments])
+
 @functools.lru_cache(maxsize=64)
 def fetch_page(url):
     """One GET per evidence page per run (the fact gate used to fetch it once per fact and drew HTTP 429).
-    Some stores (bearaby.com) answer every script with HTTP 429 and serve Chrome: a 429 goes to headless Chrome once."""
+    Some stores (bearaby.com) answer every script with HTTP 429 and serve Chrome: a 429 goes to headless Chrome once.
+    A Reddit thread is read from Arctic-Shift (reddit_text)."""
+    m = REDDIT_THREAD.match(url)
+    if m:
+        return reddit_text(m.group(1))
     try:
         with urllib.request.urlopen(urllib.request.Request(url, headers={'User-Agent': 'GenSEO/1.0 fact-check'}), timeout=40) as res:
             return res.read(4_000_000).decode('utf-8', errors='replace')
