@@ -1539,3 +1539,114 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Link, don't restate:** `/blogs/news/how-much-shilajit-per-day-dosage-by-form-us-2026`, `/blogs/news/how-to-take-shilajit-resin-dissolve-it-right-us-2026`, `/blogs/news/shilajit-for-beginners-5-checks-before-your-first-pouch`
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** shilajit + loading checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
+
+# BATCH 2026-11-04 (refill_tickets.py — ids #MB1104-1…#MB1104-7)
+
+Built by `scripts/refill_tickets.py` at 2026-11-04 09:21 ICT from `templates/article-topic-bank.json` + `board/ideas.csv`
+(search volume: No data — GSC/Ads not used). Every ticket passed, against the live store at build time:
+brand_rules + `lint_tickets.py` · hero product live and in stock · not a covered topic (header rule 6) ·
+not already queued · not live (158 published articles: blog listing + sitemap + Atom + local caches; one article per brand + segment) ·
+`topic_fitness.py` strict on primary and title · STEP 0 suggest.json.
+A `topic_fitness` REVIEW [covered-segment] verdict is allowed under Kevin's standing greenlight for mined queues (2026-08-13).
+A topic is a brief, not copy: source every claim or cut it.
+
+**Rules for this batch:** from the 2026-10-08 batch rules — fan-out answers, a "Where to buy <product> in the US"
+section (live price, the ticket's product link only), roster.json byline only (never an invented person or
+credential), the logged fact-check pass (`logs/claims/<slug>.md`; delete unconfirmed claims), the brand gate.
+Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py once. The hero is the picked face plus the real pack unless pick prints NO-FACE. One inline image uses that face. The other inline images have no recognizable face but still show a hand, forearm, or body cropped below the eyes. A no-face image is the fallback for one frame after a face refusal or two QC misses, not a batch-wide ban. The MacBook article plist sets `GENSEO_NO_FACE=0`, and that value does not switch the lane. Prices were read live at build time; re-check the PDP while writing.
+
+- [ ] **#MB1104-1 — vaginal probiotics for odor** — `Vaginal Probiotics for Odor: What They Can Do (US 2026)`
+  - **Primary keyword:** `vaginal probiotics for odor` · **Secondary:** probiotics for vaginal odor, feminine odor probiotic, fishy odor probiotics, ph balance probiotic gummies
+  - **Search intent:** woman with odor who wants to know whether a probiotic gummy helps or whether it needs a doctor
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-04 09:21 ICT)
+  - **Hero product:** `/products/florafresh-vaginal-probiotics-gummies` (FloraFresh Vaginal Probiotics Gummies, $40.99, in stock 2026-11-04)
+  - **FloraFresh formula (Supplement Facts label, the source of truth):** per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 1 billion CFU, Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain); sweetened with maltitol and isomalt, so not sugar-free; label badges Allergen Free, Vegan, Halal, Gluten Free. Cite the Supplement Facts label, never the live PDP description or an older FloraFresh article (both repeat a wrong formula); a PDP/label mismatch is a gate failure.
+  - **Collection links (≥2, verify live):** `/collections/womens-essentials-collection` (contains it), `/collections/best-seller` (contains it)
+  - **Angle:** Odor is a symptom with several causes. Say which one needs a test (BV, trichomoniasis), what the label strain (Bacillus coagulans SNZ-1969) was studied for, and what a gummy cannot replace. No cure claim.
+  - **Fan-out answers to cover:** what causes vaginal odor; when is odor BV; can a probiotic change odor; when to see a doctor
+  - **Evidence to fetch & confirm (claims log):** Bacillus coagulans and oral probiotic trials that report odor or Amsel criteria outcomes, plus CDC BV guidance.
+  - **Link, don't restate:** `/blogs/news/yeast-infection-vs-bv-how-to-tell-them-apart-us-2026`, `/blogs/news/probiotics-for-bv-do-they-actually-work-us-2026`, `/blogs/news/vaginal-probiotics-how-long-until-they-work-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** probiotic + odor checked 2026-11-04 against 158 live articles (blog listing + sitemap + Atom + local caches) and all 111 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1104-2 — fake turkesterone** — `Fake Turkesterone: 5 Signs of an Underdosed Label (US 2026)`
+  - **Primary keyword:** `fake turkesterone` · **Secondary:** is turkesterone real, underdosed turkesterone, turkesterone scam, how to spot fake turkesterone
+  - **Search intent:** buyer who read that some turkesterone products contained almost none and wants to check a label before buying
+  - **Template:** LISTICLE · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-04 09:21 ICT)
+  - **Hero product:** `/products/turkesterone-advanced-formula` (Turkesterone Advanced Formula, $75, in stock 2026-11-04)
+  - **Turkesterone Advanced Formula pack label (source of truth):** wellness, nest, PREMIUM, TURKESTERONE, ADVANCED, FORMULA, AMPLIFY, MUSCLE, ENDURANCE, 60, Dietary Supplement, Capsules. No milligram amount and no Supplement Facts panel were read. Do not add one. The capsule badge is the separate lines in product_refs/turkesterone-advanced-formula.label.json. Do not state a milligram amount, a serving count, a different capsule count, or a day-supply.
+  - **Collection links (≥2, verify live):** `/collections/mens-essential-collection` (contains it), `/collections/shilajit-wellness-stack` (contains it)
+  - **Angle:** Independent assays and a 2025 trial found some products held under 1% of the claimed turkesterone. Give the label checks a buyer can do: extract standard named, ecdysteroid vs turkesterone mg, certificate from an ISO 17025 lab, price per real mg. No muscle-gain claim.
+  - **Fan-out answers to cover:** how much turkesterone did tested products contain; what does a standardized extract mean; what is the difference between ecdysteroids and turkesterone; what should a test certificate show
+  - **Evidence to fetch & confirm (claims log):** Fetch the 2025 randomized trial that assayed a commercial turkesterone product, and the published independent assay reports. Cite only what they state.
+  - **Link, don't restate:** `/blogs/news/turkesterone-vs-ecdysterone-which-is-worth-it-us-2026`, `/blogs/news/where-to-buy-turkesterone-in-the-us-what-to-check-2026`, `/blogs/news/turkesterone-side-effects-4-ingredients-to-check-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** turkesterone + authenticity checked 2026-11-04 against 158 live articles (blog listing + sitemap + Atom + local caches) and all 111 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1104-3 — creatine gummies and kidneys** — `Creatine Gummies and Kidneys: The Bloodwork (US 2026)`
+  - **Primary keyword:** `creatine gummies and kidneys` · **Secondary:** is creatine bad for your kidneys, creatine creatinine blood test, creatine gummies kidney safety, creatine kidney damage myth
+  - **Search intent:** buyer worried that creatine harms the kidneys or that a raised creatinine test means damage
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-04 09:21 ICT)
+  - **Hero product:** `/products/fusiforce-creatine-gummies` (FusiForce Creatine Gummies, $79.99, in stock 2026-11-04)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** Explain why creatinine rises on a lab test, what long-term trials in healthy adults found, and who must ask a doctor first (existing kidney disease). No cure claim.
+  - **Fan-out answers to cover:** why does creatine raise creatinine; what did long-term trials find; who should not take creatine; should I tell my doctor before a blood test
+  - **Evidence to fetch & confirm (claims log):** ISSN position stand on creatine safety and the long-term renal-function trials it cites. Fetch them.
+  - **Link, don't restate:** `/blogs/news/creatine-gummies-side-effects-4-real-3-myths-us-2026`, `/blogs/news/creatine-gummies-dosage-how-many-a-day-us-2026`, `/blogs/news/how-to-take-creatine-gummies-in-the-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** creatine + kidneys checked 2026-11-04 against 158 live articles (blog listing + sitemap + Atom + local caches) and all 111 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1104-4 — nmn and metformin** — `NMN and Metformin: What the Human Data Says (US 2026)`
+  - **Primary keyword:** `nmn and metformin` · **Secondary:** can you take nmn with metformin, nmn metformin interaction, nmn blood sugar, metformin nad
+  - **Search intent:** adult already prescribed metformin who wants to know whether NMN fits next to it
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-04 09:21 ICT)
+  - **Hero product:** `/products/ageaura-pure-nmn-tmg-nad-complex` (AgeAura Pure NMN + TMG NAD+ Complex, $79.99, in stock 2026-11-04)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` twice (browse link — AgeAura Pure NMN + TMG NAD+ Complex is not in it, never claim it is) · no other AgeAura product and no AgeAura collection link (brand_rules)
+  - **Angle:** Explain the two different mechanisms in plain words, the one human NMN insulin-sensitivity trial and its limits, and why the prescriber decides. No blood sugar treatment claim.
+  - **Fan-out answers to cover:** does metformin lower NAD; does NMN change blood sugar in humans; is there an interaction study; what should I ask my doctor
+  - **Evidence to fetch & confirm (claims log):** Yoshino 2021 Science (NMN in prediabetic women) and any published human NMN plus metformin data. Say there is no combination trial if none is found.
+  - **Link, don't restate:** `/blogs/news/nmn-side-effects-6-checks-before-you-start-us-2026`, `/blogs/news/how-much-nmn-per-day-what-trials-used-us-2026`, `/blogs/news/nmn-and-tmg-together-why-the-pairing-matters-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** nmn + medications checked 2026-11-04 against 158 live articles (blog listing + sitemap + Atom + local caches) and all 111 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1104-5 — shilajit and blood pressure** — `Shilajit and Blood Pressure: Who Checks First (US 2026)`
+  - **Primary keyword:** `shilajit and blood pressure` · **Secondary:** shilajit high blood pressure, shilajit with blood pressure medication, does shilajit lower blood pressure, shilajit hypertension
+  - **Search intent:** adult on blood pressure medication who wants to know whether shilajit is safe to add
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-04 09:21 ICT)
+  - **Hero product:** `/products/shilasource-himalayan-shilajit-resin` (ShilaSource Himalayan Shilajit Resin, $69.99, in stock 2026-11-04)
+  - **ShilaSource Himalayan Shilajit Resin pack label (source of truth):** ShilaSource, Himalayan, Shilajit, Resin, 75, Dietary Supplement, Wellness, Nest, 70% Fulvic Acid*, Lab-Tested for Purity*, 1.06oz (30g), SERVINGS, Servings. No milligram amount and no Supplement Facts panel were read into that file. Do not add one. Do not state a serving count, volume, weight, fulvic percentage, mineral count, or day-supply other than the lines in product_refs/shilasource-himalayan-shilajit-resin.label.json.
+  - **Collection links (≥2, verify live):** `/collections/shilajit-wellness-stack` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** Separate what is measured in humans from rodent data. Name the drug classes where a doctor check matters. Give the plain rule: ask the prescriber, check readings for two weeks. No treatment claim.
+  - **Fan-out answers to cover:** does shilajit raise or lower blood pressure; can I take it with ACE inhibitors or beta blockers; what did human trials measure; what readings mean stop
+  - **Evidence to fetch & confirm (claims log):** PubMed human trials of shilajit that report blood pressure (for example the 2019 and 2016 RCTs). If none report it, say so.
+  - **Link, don't restate:** `/blogs/news/shilajit-side-effects-7-signs-to-watch-for-us-2026`, `/blogs/news/how-much-shilajit-per-day-dosage-by-form-us-2026`, `/blogs/news/shilajit-for-seniors-5-safety-checks-over-60-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** shilajit + medications checked 2026-11-04 against 158 live articles (blog listing + sitemap + Atom + local caches) and all 111 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1104-6 — turkesterone hair loss** — `Turkesterone and Hair Loss: The DHT Question (US 2026)`
+  - **Primary keyword:** `turkesterone hair loss` · **Secondary:** turkesterone dht, turkesterone and hair, turkesterone balding, is turkesterone hormonal
+  - **Search intent:** man worried about hair loss who wants to know whether turkesterone acts on DHT
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-04 09:21 ICT)
+  - **Hero product:** `/products/turkesterone-advanced-formula` (Turkesterone Advanced Formula, $75, in stock 2026-11-04)
+  - **Turkesterone Advanced Formula pack label (source of truth):** wellness, nest, PREMIUM, TURKESTERONE, ADVANCED, FORMULA, AMPLIFY, MUSCLE, ENDURANCE, 60, Dietary Supplement, Capsules. No milligram amount and no Supplement Facts panel were read. Do not add one. The capsule badge is the separate lines in product_refs/turkesterone-advanced-formula.label.json. Do not state a milligram amount, a serving count, a different capsule count, or a day-supply.
+  - **Collection links (≥2, verify live):** `/collections/mens-essential-collection` (contains it), `/collections/shilajit-wellness-stack` (contains it)
+  - **Angle:** Turkesterone is not shown to raise DHT or testosterone in humans; say what the few human trials measured and what they did not. Name the honest limit.
+  - **Fan-out answers to cover:** does turkesterone raise testosterone or DHT; what did human trials measure; why do forums link it to hair loss; what to do if shedding starts
+  - **Evidence to fetch & confirm (claims log):** Human turkesterone or ecdysterone trials that measured hormones (for example Isenmann 2019). Cite only measured outcomes.
+  - **Link, don't restate:** `/blogs/news/turkesterone-side-effects-4-ingredients-to-check-us-2026`, `/blogs/news/turkesterone-for-men-over-40-5-honest-checks-us-2026`, `/blogs/news/how-to-take-turkesterone-in-the-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** turkesterone + hair checked 2026-11-04 against 158 live articles (blog listing + sitemap + Atom + local caches) and all 111 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1104-7 — vaginal probiotics after sex** — `Vaginal Probiotics After Sex: What Changes (US 2026)`
+  - **Primary keyword:** `vaginal probiotics after sex` · **Secondary:** probiotics after intercourse, vaginal ph after sex, semen ph balance, new partner bv
+  - **Search intent:** woman who notices irritation or odor after sex and asks whether a daily probiotic changes that
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-04 09:21 ICT)
+  - **Hero product:** `/products/florafresh-vaginal-probiotics-gummies` (FloraFresh Vaginal Probiotics Gummies, $40.99, in stock 2026-11-04)
+  - **FloraFresh formula (Supplement Facts label, the source of truth):** per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 1 billion CFU, Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain); sweetened with maltitol and isomalt, so not sugar-free; label badges Allergen Free, Vegan, Halal, Gluten Free. Cite the Supplement Facts label, never the live PDP description or an older FloraFresh article (both repeat a wrong formula); a PDP/label mismatch is a gate failure.
+  - **Collection links (≥2, verify live):** `/collections/womens-essentials-collection` (contains it), `/collections/best-seller` (contains it)
+  - **Angle:** Explain why semen shifts vaginal pH for a few hours, what a daily oral probiotic can and cannot change, and the symptoms that need a test. No prevention claim.
+  - **Fan-out answers to cover:** why does pH change after sex; does a daily probiotic help; is a new partner a BV risk; when to test
+  - **Evidence to fetch & confirm (claims log):** Peer-reviewed data on post-coital vaginal pH and the CDC BV risk factors.
+  - **Link, don't restate:** `/blogs/news/vaginal-probiotics-for-beginners-what-to-expect-in-the-us`, `/blogs/news/probiotics-for-bv-do-they-actually-work-us-2026`, `/blogs/news/yeast-infection-vs-bv-how-to-tell-them-apart-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** probiotic + intimacy checked 2026-11-04 against 158 live articles (blog listing + sitemap + Atom + local caches) and all 111 tickets in this file; STEP 0 re-checks at write time
