@@ -1609,7 +1609,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** nmn + medications checked 2026-11-04 against 158 live articles (blog listing + sitemap + Atom + local caches) and all 111 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#MB1104-5 — shilajit and blood pressure** — `Shilajit and Blood Pressure: Who Checks First (US 2026)`
+- [DONE 2026-11-04 https://wellnessnest.co/blogs/news/shilajit-and-blood-pressure-check-first-in-the-us] **#MB1104-5 — shilajit and blood pressure** — `Shilajit and Blood Pressure: Who Checks First (US 2026)`
   - **Primary keyword:** `shilajit and blood pressure` · **Secondary:** shilajit high blood pressure, shilajit with blood pressure medication, does shilajit lower blood pressure, shilajit hypertension
   - **Search intent:** adult on blood pressure medication who wants to know whether shilajit is safe to add
   - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-04 09:21 ICT)
