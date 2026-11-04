@@ -28,7 +28,7 @@ def norm(text):
 
 
 CHROME_GET = ('import sys\nfrom playwright.sync_api import sync_playwright\nwith sync_playwright() as p:\n'
-              ' b=p.chromium.launch(channel="chrome",args=["--disable-gpu"]); pg=b.new_page()\n'
+              ' b=p.chromium.launch(channel="chromium",args=["--disable-gpu"]); pg=b.new_page()\n'
               ' r=pg.goto(sys.argv[1],wait_until="domcontentloaded",timeout=60000); assert r.status==200, r.status\n'
               ' sys.stdout.write(pg.content()); b.close()\n')
 
