@@ -303,12 +303,18 @@ def pick_hero(api, row, articles, budget):
     from journal_fields import served_kb
     used = {stem((a.get('image') or {}).get('src')) for a in articles}
     product = api.product(row['target_product_handle'])
+    heavy = []
     for image in product.get('images', []):
         if stem(image['src']) in used:
             continue
-        if not budget or served_kb(image['src']) <= int(budget):
+        kb = served_kb(image['src']) if budget else 0
+        if not budget or kb <= int(budget):
             return {'src': image['src'], 'alt': image.get('alt') or 'The Cherish Company — ' + product['title']}
-    raise StoreGuardError('No unused hero photo within the hero budget for ' + row['target_product_handle'])
+        heavy.append(f"{stem(image['src'])} {kb} KB")
+    n = len(product.get('images', []))
+    raise StoreGuardError(f"No unused hero photo within the hero budget for {row['target_product_handle']}: "
+                          f"{n} photos, {n - len(heavy)} already a Journal hero, unused over {budget} KB at width 1100: "
+                          + (', '.join(heavy) or 'none') + ('. Build a lighter set of the same photo (cherish-seo/journal-data/hero_budget.py build_set)' if heavy else '. Add a real product photo'))
 
 
 def finalize_page(page, template, row, package, hero, day):
