@@ -80,6 +80,29 @@ class ClosureUnitTests(unittest.TestCase):
             rc = qc.main(["count", "--queue", queue, "--repo", tmp])
             self.assertEqual(rc, 2)
 
+    def test_eligible_count_matches_for_refill_and_wrapper(self):
+        """Lane A 2026-11-04: refill said "5 open" while the wrapper saw 0. One count now serves both."""
+        import refill_tickets as rt
+        mixed = ARTICLE + "- [ ] check the sitemap after deploy\n## [ ] Ticket #9 — NEW ARTICLE\n"
+        with tempfile.TemporaryDirectory() as tmp:
+            os.makedirs(os.path.join(tmp, "state"))
+            queue = os.path.join(tmp, "daily-tickets.md")
+            with open(queue, "w", encoding="utf-8") as fh:
+                fh.write(mixed)
+            entries = qc.closures_between(ARTICLE_CLOSED, ARTICLE, "daily-tickets.md")
+            with open(os.path.join(tmp, "state", "queue-closures.json"), "w", encoding="utf-8") as fh:
+                json.dump({"version": 1, "entries": entries}, fh)
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                qc.main(["count", "--queue", queue, "--repo", tmp])
+            wrapper = int(buf.getvalue().strip())
+            self.assertEqual(wrapper, 2)  # CA1016-7 + Ticket #9; ledger-closed CA1016-2 and the note are not work
+            self.assertEqual(qc.eligible_count(queue), wrapper)
+            args = rt.argparse.Namespace(queue=queue, if_below=2, count=5)
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                self.assertEqual(rt.refill(args), 0)
+            self.assertIn("2 eligible article ticket(s) >= 2", buf.getvalue())
 
 CLOSED_IDS = ("CA1016-2", "CA1016-3", "CA1016-4", "CA1016-5", "CA1016-6")
 LIVE_URLS = (

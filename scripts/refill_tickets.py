@@ -63,6 +63,7 @@ import shilasource_resin_rules as sr  # noqa: E402
 import shockwave_rules as sw  # noqa: E402
 import turkesterone_rules as tk  # noqa: E402
 import topic_fitness as tf  # noqa: E402
+import genseo_queue_closures as qc  # noqa: E402
 
 SITE = "https://wellnessnest.co"
 BLOG = "news"
@@ -808,9 +809,12 @@ def append_block(path, block, expect):
 
 def refill(a):
     text = read(a.queue)
-    n_open = len(OPEN_RX.findall(text))
+    try:
+        n_open = qc.eligible_count(a.queue)  # same count as the daily wrapper (ledger-closed tickets excluded)
+    except (OSError, ValueError) as e:
+        raise Refuse(f"queue closures unreadable ({e}) — failing closed")
     if a.if_below is not None and n_open >= a.if_below:
-        print(f"refill_tickets: {n_open} open ticket(s) >= {a.if_below} — nothing to do")
+        print(f"refill_tickets: {n_open} eligible article ticket(s) >= {a.if_below} — nothing to do")
         return 0
     if a.count < 1:
         print("refill_tickets: --count < 1 — nothing to do")
@@ -833,7 +837,7 @@ def refill(a):
     ctx = build_ctx(bank, queue, store, local_inventory(), now, "skip" if a.offline or a.no_suggest else "live")
     ids_day = batch_day(now, a.day)
     cands, held = candidates(bank, rows, ctx)
-    print(f"refill_tickets: {n_open} open ticket(s) · {ctx['stamp']} ICT · {len(ctx['live_handles'])} live articles"
+    print(f"refill_tickets: {n_open} eligible article ticket(s) · {ctx['stamp']} ICT · {len(ctx['live_handles'])} live articles"
           f"{' + local caches' if ctx['local'] else ''} · {sum(1 for p in store[0].values() if p['available'])} "
           f"products in stock · {len(cands)} candidate topic(s)"
           + (f" ({len(held)} bank topic(s) already on the board)" if held else ""))
