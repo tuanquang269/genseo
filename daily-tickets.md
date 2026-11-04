@@ -1555,7 +1555,7 @@ section (live price, the ticket's product link only), roster.json byline only (n
 credential), the logged fact-check pass (`logs/claims/<slug>.md`; delete unconfirmed claims), the brand gate.
 Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py once. The hero is the picked face plus the real pack unless pick prints NO-FACE. One inline image uses that face. The other inline images have no recognizable face but still show a hand, forearm, or body cropped below the eyes. A no-face image is the fallback for one frame after a face refusal or two QC misses, not a batch-wide ban. The MacBook article plist sets `GENSEO_NO_FACE=0`, and that value does not switch the lane. Prices were read live at build time; re-check the PDP while writing.
 
-- [ ] **#MB1104-1 — vaginal probiotics for odor** — `Vaginal Probiotics for Odor: What They Can Do (US 2026)`
+- [DONE 2026-11-04 https://wellnessnest.co/blogs/news/vaginal-probiotics-for-odor-limits-in-the-us] **#MB1104-1 — vaginal probiotics for odor** — `Vaginal Probiotics for Odor: What They Can Do (US 2026)`
   - **Primary keyword:** `vaginal probiotics for odor` · **Secondary:** probiotics for vaginal odor, feminine odor probiotic, fishy odor probiotics, ph balance probiotic gummies
   - **Search intent:** woman with odor who wants to know whether a probiotic gummy helps or whether it needs a doctor
   - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-04 09:21 ICT)
