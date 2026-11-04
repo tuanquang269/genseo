@@ -307,8 +307,8 @@ genseo_queue_low_water() {
   case "${after:-}" in ''|*[!0-9]*) after=$open ;; esac
   if [ "$after" -lt "$LOW_WATER" ]; then
     incident "$([ "$after" -eq 0 ] && echo queue-empty || echo queue-low)" \
-      "$after eligible article ticket(s) < $LOW_WATER (2 days at $TARGET/day); live today $(live_count)/$TARGET" \
-      "${why:-refill added too few} — refill dedup rejects the remaining bank topics" \
+      "$after eligible article ticket(s) < $LOW_WATER (2 days at $TARGET/day)" \
+      "${why:-refill added too few}" \
       "add researched, product-mapped topics to templates/article-topic-bank.json or board/ideas.csv, then refill_tickets.py --count 5 --dry-run" \
       "next daily slot (07:30 / 08:05 / 14:47 ICT)"
   fi
