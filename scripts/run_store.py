@@ -127,6 +127,12 @@ def read_package(path, profile, row, live_products=None, collections=None):
                 print(f'SOURCE-CHECK FAIL {source}: {error}', file=sys.stderr, flush=True)
                 problems.append(f'Source could not be read today ({error}); delete every claim that cites it: {source}')
                 continue
+        elif source.startswith(f"shopify://{profile.data['shop']}/collections/"):
+            # Own-store collections are evidence only while published and linked (Kevin D2 2026-11-04: buy-one-get-one-free-1).
+            handle = source.rsplit('/', 1)[1]
+            problems.append(f'Collection source not linked in the body (or not published): add <a href="/collections/{handle}"> '
+                            f'where the claim is, or delete the claim: {source}')
+            continue
         else:
             problems.append('Unapproved fact source: ' + source)
             continue
@@ -388,7 +394,7 @@ WRITER RULES (the runner gates every one; a failure returns here with the error)
 - Date: write "Updated {human}" in the meta row and {iso} for datePublished and dateModified.
 - Every sentence inside <article> that holds a digit (except the meta row) must contain the exact text of at least one facts claim, for example the price "$69.95" or the size "50 × 60 in", and that claim's quote must be in its source. Write offer, guarantee, shipping and competitor numbers as words. Use digits only for product facts the LIVE PRODUCT FACTS prove (prices as $NN.NN or $NN exactly as a variant price).
 - Every facts item: claim = an exact phrase from the article; source = an evidence URL from SOURCE EVIDENCE, an approved context path, exactly shopify://{shop}/products/<handle> for a supplied live product, or exactly shopify://{shop}/collections/<handle> for a supplied live collection; quote = 12+ characters copied exactly from that source text (for a live product or collection, from its JSON).
-- A sentence with a digit or a percent ("100% cotton", "Buy 1 Get 1 Free", "six layers") needs a facts claim that is a part of that sentence. Offer membership: cite the LIVE COLLECTION FACTS of the offer collection (a style it names is in the offer; a style it does not name is not). A number you cannot cite: write it as words or delete it.
+- A sentence with a digit or a percent ("100% cotton", "Buy 1 Get 1 Free", "six layers") needs a facts claim that is a part of that sentence. Offer membership: cite the LIVE COLLECTION FACTS of the offer collection (a style it names is in the offer; a style it does not name is not) and keep a link <a href="/collections/<handle>"> to that collection in the body (the checker reads only linked collections). A number you cannot cite: write it as words or delete it.
 - Authority links (the template's authority count) come from the approved authority pages in SOURCE EVIDENCE (ncbi, nidirect, medlineplus); link them with a sentence their text supports. Do not cite or link the UNREADABLE SOURCES. Every product link and data-product handle is an allowed product handle. Product card prices equal a current variant price.
 - Hit every #rules-machine limit (words, h2, question h2, cards, images, authority links, Journal links, table, rows, sources). Words: aim for the middle of the range; the count is every word inside <article>. Images = hero + every .pcard photo + rail pick + band minis: keep every product card the template has. Title and H1 are equal and at most 60 characters. Meta description 120 to 165 characters.
 - Numbered list labels use a hash and a digit, never a word: "Reason #1: <full header>" as the H2 of each reason, "Rank #1 ...", "Pick #2: ...", "Setup #1: ...". A TOC item for a numbered section is that section's full H2 text ("Reason #1: An open weave lets air move"; for the rank section, the rank H2), never "Reason one" or "The rank" (Kevin 2026-10-28).

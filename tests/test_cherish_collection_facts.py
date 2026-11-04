@@ -17,4 +17,8 @@ def coll(h):
 got = r.live_collections(types.SimpleNamespace(collection=coll), prof, html)
 assert set(got) == {'buy-one-get-one-free-1', 'blankets'}, got   # unpublished is never evidence
 assert 'shopify://{shop}/collections/<handle>' in r.WRITER_RULES and 'LIVE COLLECTION FACTS' in r.WRITER_RULES
+# Kevin D2: an own collection cited but not linked gets a fix-it message (link it or drop the claim), not "Unapproved"
+import inspect
+assert 'Collection source not linked in the body' in inspect.getsource(r.read_package)
+assert 'keep a link <a href="/collections/<handle>">' in r.WRITER_RULES
 print('collection facts OK')
