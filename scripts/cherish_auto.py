@@ -129,7 +129,27 @@ def fidelity_once(pairs, run_id, theme, qa_copy, rundir):
         code = subprocess.call([PY, '-I', str(SKILL/'fidelity_gate.py'), '--theme', str(theme), '--pairs', str(pairs),
                                 '--jobs', '2', '--run-id', run_id], stdout=f, stderr=subprocess.STDOUT, env=env, timeout=3600)
     last = (logf.read_text().strip().splitlines() or [''])[-1]
-    return code == 0 and 'GATE: PASS' in last, last
+    ok = code == 0 and 'GATE: PASS' in last
+    return ok, last if ok else last + gate_why(Path(json.loads(GATE_PROFILE.read_text())['runs_dir'])/run_id)
+
+
+def gate_why(run_dir):
+    """The failing rules of a fidelity run, from its REPORT.md table and first dom.diff, so a FAIL names its cause."""
+    report = run_dir/'REPORT.md'
+    if not report.exists():
+        return ' (no REPORT.md in ' + str(run_dir) + ')'
+    heads, cells = None, []
+    for line in report.read_text().splitlines():
+        cols = [c.strip() for c in line.strip('|').split('|')]
+        if cols[:2] == ['style', 'width']:
+            heads = cols
+        elif heads and len(cols) == len(heads) and 'FAIL' in line:
+            cells.append(f"{cols[0]}@{cols[1]}: " + ', '.join(f'{h} {v}' for h, v in zip(heads[2:], cols[2:]) if 'FAIL' in v))
+        elif heads and not line.startswith('|'):
+            heads = None if cells else heads
+    diff = next(iter(sorted(run_dir.glob('*/*/dom.diff'))), None)
+    first = [l.strip() for l in diff.read_text().splitlines() if l[:1] in '-+' and l[:3] not in ('---', '+++')][:2] if diff else []
+    return ' | ' + '; '.join(cells[:3]) + (' | dom: ' + ' => '.join(x[:160] for x in first) if first else '')
 
 
 def qa_stage(cmd, rundir, targets=None):
