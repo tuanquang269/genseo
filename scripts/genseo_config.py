@@ -76,7 +76,9 @@ def assert_legacy_request(request):
                 elif isinstance(v, list): yield from (s for x in v for s in _strings(x))
             text = "\n".join(_strings(_json.loads(text)))
         except ValueError:
-            text = text.replace("\\/", "/")
+            pass
+        # Inline JSON-LD inside body_html keeps escaped slashes after the outer decode.
+        text = text.replace("\\/", "/")
         profile.check_text(text)
 
 

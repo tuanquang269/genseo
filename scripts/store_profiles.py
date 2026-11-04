@@ -94,7 +94,7 @@ class Profile:
             url = match.group(0)
             host = (urlsplit(url).hostname or '').removeprefix('www.')
             own = (self.data['domain'], self.data['shop'])
-            handle = unquote(match.group(1))
+            handle = unquote(match.group(1)).rstrip('.,;:!')  # a URL that ends a sentence
             require(host not in foreign, 'Cross-store product link')
             if host and host not in own:
                 # A third-party page (a competitor citation) is fine. A foreign host that reuses OUR handle is not.

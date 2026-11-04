@@ -12,6 +12,10 @@ def req(html):
 class T(unittest.TestCase):
     def test_valid_link_passes(self):
         cfg.assert_legacy_request(req('<a href="/products/ageaura-pure-nmn-tmg-nad-complex">NMN</a>'))
+    def test_jsonld_escaped_slash_passes(self):
+        cfg.assert_legacy_request(req('<script type="application/ld+json">{"url":"https:\\/\\/wellnessnest.co\\/products\\/ageaura-pure-nmn-tmg-nad-complex\\/"}</script>'))
+    def test_sentence_period_passes(self):
+        cfg.assert_legacy_request(req('Buy at https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex. Then'))
     def test_bad_handle_fails(self):
         with self.assertRaises(BaseException):
             cfg.assert_legacy_request(req('<a href="/products/not-a-real-handle-xyz">x</a>'))
