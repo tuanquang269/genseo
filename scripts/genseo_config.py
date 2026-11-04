@@ -67,8 +67,17 @@ def assert_legacy_request(request):
     require(headers.get("x-shopify-access-token") == TOKEN, "Legacy write uses a different credential")
     if request.data:
         text = request.data.decode("utf-8", errors="replace")
-        # Admin JSON may encode URLs with escaped slashes.
-        profile.check_text(text.replace("\\/", "/"))
+        # Decode JSON first: escaped quotes (\\") would otherwise end up inside the product handle.
+        try:
+            import json as _json
+            def _strings(v):
+                if isinstance(v, str): yield v
+                elif isinstance(v, dict): yield from (s for x in v.values() for s in _strings(x))
+                elif isinstance(v, list): yield from (s for x in v for s in _strings(x))
+            text = "\n".join(_strings(_json.loads(text)))
+        except ValueError:
+            text = text.replace("\\/", "/")
+        profile.check_text(text)
 
 
 # All existing Shopify helpers import this module. Keep one transport guard so
