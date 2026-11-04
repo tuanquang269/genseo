@@ -1,7 +1,7 @@
 """The fidelity gate injects its CSS on a CSP store page (live Cherish: nonce-only style-src). python3 tests/test_cherish_gate_csp.py"""
 import http.server, threading, sys
 from pathlib import Path
-sys.path.insert(0, str(Path.home()/'.claude/skills/shopify-article-template-genseo/scripts'))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'scripts'))
 import fidelity_gate as g
 from playwright.sync_api import sync_playwright
 

@@ -261,6 +261,17 @@ ISOLATE_JS = r"""() => {
   return { top: t, bottom: b };
 }"""
 
+# complete != painted. ISOLATE_JS and the rail/stick scroll re-lay out the page, so a srcset image can pick a new candidate and
+# show blank until it arrives (2026-11-04: template-side .pick photo captured blank, 6-10 tile pixel FAIL on slots 1 and 2).
+# Called right before every screenshot: wait for every image to finish, decode it, then two frames. No threshold changes.
+PAINT_JS = r"""async () => {
+  const t0 = Date.now();
+  while (Date.now() - t0 < 8000 && [...document.images].some(i => !i.complete)) await new Promise(r => setTimeout(r, 100));
+  await Promise.all([...document.images].filter(i => i.complete && i.naturalWidth > 0).map(i => i.decode().catch(() => {})));
+  await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+  return [...document.images].filter(i => !i.complete).length;
+}"""
+
 IMAGES_JS = r"""async () => {
   for (const i of document.images) { if (i.loading === 'lazy') i.loading = 'eager'; i.decoding = 'sync'; }
   const h = document.documentElement.scrollHeight;
@@ -615,6 +626,7 @@ def capture_side(browser, width, source, cfg, out_dir, side, mutate=None):
             page.wait_for_timeout(450)
             r = page.evaluate("(() => { const s = document.querySelector('.stick'); const b = s.getBoundingClientRect(); return {x: b.left, y: b.top, w: b.width, h: b.height}; })()")
             if r["h"] > 0 and r["w"] > 0 and r["y"] < page.viewport_size["height"]:
+                page.evaluate(PAINT_JS)
                 page.screenshot(path=str(out_dir / (side + "-stick.png")), clip={"x": r["x"], "y": r["y"], "width": r["w"], "height": min(r["h"], page.viewport_size["height"] - r["y"])})
                 res["stick_png"] = str(out_dir / (side + "-stick.png"))
         if width >= 1100 and res.get("rail", {}).get("present"):
@@ -623,6 +635,7 @@ def capture_side(browser, width, source, cfg, out_dir, side, mutate=None):
             r = page.evaluate("(() => { const s = document.querySelector('.rail-in'); const b = s.getBoundingClientRect(); return {x: b.left, y: b.top, w: b.width, h: b.height}; })()")
             vh = page.viewport_size["height"]
             if r["h"] > 0 and 0 <= r["y"] < vh:
+                page.evaluate(PAINT_JS)
                 page.screenshot(path=str(out_dir / (side + "-rail.png")), clip={"x": r["x"], "y": r["y"], "width": r["w"], "height": min(r["h"], vh - r["y"])})
                 res["rail_png"] = str(out_dir / (side + "-rail.png"))
         return res
@@ -636,6 +649,7 @@ def shoot(page, top, height, width, path, chunk=6000):
     while y < height:
         h = min(chunk, height - y)
         tmp = str(path) + ".part.png"
+        page.evaluate(PAINT_JS)
         page.screenshot(path=tmp, full_page=True, clip={"x": 0, "y": top + y, "width": width, "height": h})
         parts.append(Image.open(tmp).convert("RGB").copy())
         y += h
