@@ -54,7 +54,28 @@ def year_label(row):
     day = dt.date.fromisoformat(row['day'])
     return str(day.year + 1) if row['style'] in ('2', '4c') and day.month >= 10 else ''
 
-def read_package(path, profile, row, live_products=None):
+def linked_collections(profile, text):
+    """Own-store collection handles linked in `text` (relative /collections/<h> or this store's domain)."""
+    out = set()
+    for match in re.finditer(r'(?:https?://[^\s<>"\')]+)?/collections/([a-z0-9-]+)', text, re.I):
+        host = (urlsplit(match.group(0)).hostname or '').removeprefix('www.')
+        if not host or host in (profile.data['domain'], profile.data['shop']):
+            out.add(match.group(1).lower())
+    return out
+
+
+def live_collections(api, profile, text):
+    """Live collection facts (title + description) for the collections linked in `text`: the citable source for offer membership."""
+    out = {}
+    for handle in sorted(linked_collections(profile, text)):
+        try:
+            out[handle] = api.collection(handle)
+        except StoreGuardError:
+            pass   # an unpublished collection is not evidence; a link to it fails elsewhere
+    return out
+
+
+def read_package(path, profile, row, live_products=None, collections=None):
     package = json.loads(path.read_text())
     for key, value in [('store', profile.store), ('day', row['day']), ('slot', row['slot'])]:
         require(str(package.get(key)) == value, 'Article package identity mismatch: '+key)
@@ -89,6 +110,7 @@ def read_package(path, profile, row, live_products=None):
     plain = html.unescape(re.sub(r'<[^>]*>', ' ', body))
     problems = []   # every fact problem in one message, so the writer can fix them all in one round
     live_sources = {f"shopify://{profile.data['shop']}/products/{h}": product for h,product in (live_products or {}).items()}
+    live_sources.update({f"shopify://{profile.data['shop']}/collections/{h}": c for h, c in (collections or {}).items()})
     for fact in facts:
         require(set(('claim','source','quote')) <= fact.keys(), 'Fact evidence is incomplete')
         if not (fact['claim'] and norm(fact['claim']) in norm(plain)):
@@ -339,7 +361,8 @@ WRITER RULES (the runner gates every one; a failure returns here with the error)
 - Hero: keep <figure class="hero"><img ...> with the alt text you see; the runner sets the hero photo, the BlogPosting image, dates, wordCount and about.
 - Date: write "Updated {human}" in the meta row and {iso} for datePublished and dateModified.
 - Every sentence inside <article> that holds a digit (except the meta row) must contain the exact text of at least one facts claim, for example the price "$69.95" or the size "50 × 60 in", and that claim's quote must be in its source. Write offer, guarantee, shipping and competitor numbers as words. Use digits only for product facts the LIVE PRODUCT FACTS prove (prices as $NN.NN or $NN exactly as a variant price).
-- Every facts item: claim = an exact phrase from the article; source = an evidence URL from SOURCE EVIDENCE, an approved context path, or exactly shopify://{shop}/products/<handle> for a supplied live product; quote = 12+ characters copied exactly from that source text (for a live product, from its JSON).
+- Every facts item: claim = an exact phrase from the article; source = an evidence URL from SOURCE EVIDENCE, an approved context path, exactly shopify://{shop}/products/<handle> for a supplied live product, or exactly shopify://{shop}/collections/<handle> for a supplied live collection; quote = 12+ characters copied exactly from that source text (for a live product or collection, from its JSON).
+- A sentence with a digit or a percent ("100% cotton", "Buy 1 Get 1 Free", "six layers") needs a facts claim that is a part of that sentence. Offer membership: cite the LIVE COLLECTION FACTS of the offer collection (a style it names is in the offer; a style it does not name is not). A number you cannot cite: write it as words or delete it.
 - Authority links (the template's authority count) come from the approved authority pages in SOURCE EVIDENCE (ncbi, nidirect, medlineplus); link them with a sentence their text supports. Do not cite or link the UNREADABLE SOURCES. Every product link and data-product handle is an allowed product handle. Product card prices equal a current variant price.
 - Hit every #rules-machine limit (words, h2, question h2, cards, images, authority links, Journal links, table, rows, sources). Title and H1 are equal and at most 60 characters. Meta description 120 to 165 characters.
 - Numbered list labels use a hash and a digit, never a word: "Reason #1: <full header>" as the H2 of each reason, "Rank #1 ...", "Pick #2: ...", "Setup #1: ...". A TOC item for a numbered section is that section's full H2 text ("Reason #1: An open weave lets air move"; for the rank section, the rank H2), never "Reason one" or "The rank" (Kevin 2026-10-28).
@@ -348,11 +371,13 @@ WRITER RULES (the runner gates every one; a failure returns here with the error)
 """
 
 
-def generate(profile, row, path, live_products, hero, day, feedback=None, previous=None):
+def generate(profile, row, path, live_products, hero, day, feedback=None, previous=None, collections=None):
     """Use the existing OAuth-backed hosted router. No tools, skills, or global context."""
     key = router_key()
     evidence, unreadable = fetch_evidence(row, profile.data.get('authority_sources', []))
     prompt = profile.prompt(row) + '\nLIVE PRODUCT FACTS:\n' + json.dumps(live_products, ensure_ascii=False)
+    if collections:
+        prompt += '\nLIVE COLLECTION FACTS (offer membership; cite as shopify://{shop}/collections/<handle>):\n'.format(shop=profile.data['shop']) + json.dumps(collections, ensure_ascii=False)
     prompt += '\nSOURCE EVIDENCE:\n' + json.dumps(evidence, ensure_ascii=False)
     prompt += '\nUNREADABLE SOURCES (do not cite):\n' + json.dumps(unreadable)
     prompt += '\nHERO PHOTO (runner-owned):\n' + json.dumps(hero, ensure_ascii=False)
@@ -392,7 +417,7 @@ def check_package(api, profile, row, path, existing, state):
     profile.check_text(candidate.get('body_html',''))
     handles = {row['target_product_handle']} | profile.linked_handles(candidate.get('body_html',''))
     live_products = {h:api.product(h) for h in handles}
-    package = read_package(path, profile, row, live_products)
+    package = read_package(path, profile, row, live_products, live_collections(api, profile, candidate.get('body_html', '')))
     duplicate_guard(package, row, existing)
     # Each own-product card uses that product's current variant prices.
     for card in soup(package['body_html']).select('[data-product]'):
@@ -423,12 +448,13 @@ def prepare_row(api, profile, row, path, existing, state, generate_on, attempts=
     template, _ = profile.template(row['style'])
     handles = {row['target_product_handle']} | profile.linked_handles(template)
     live_products = {h: api.product(h) for h in handles}
+    collections = live_collections(api, profile, template)
     hero = pick_hero(api, row, existing, profile.data.get('hero_budget_kb'))
     day = dt.datetime.now(ZoneInfo('Asia/Ho_Chi_Minh')).date()
     feedback = previous = None
     for attempt in range(1, attempts + 1):
         try:
-            generate(profile, row, path, live_products, hero, day, feedback, previous)
+            generate(profile, row, path, live_products, hero, day, feedback, previous, collections)
             return check_package(api, profile, row, path, existing, state)
         except ROW_ERRORS as error:
             feedback = f'{type(error).__name__}: {error}' + (' (the reply was not one JSON object)' if isinstance(error, json.JSONDecodeError) else '')

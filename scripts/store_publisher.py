@@ -2,6 +2,7 @@
 import importlib.util
 import __future__
 import json
+import re
 import time
 import urllib.error
 import urllib.request
@@ -79,6 +80,15 @@ class Shopify:
         require(len(rows) == 1 and rows[0]['handle'] == handle, 'Product does not exist in this store')
         require(rows[0]['status'] == 'active', 'Product is not active')
         return rows[0]
+
+    def collection(self, handle):
+        """A published own-store collection (custom or smart): the live source for offer facts (which styles are in an offer)."""
+        require(re.fullmatch(r'[a-z0-9]+(?:-[a-z0-9]+)*', handle) is not None, 'Invalid collection handle')
+        for kind in ('custom_collections', 'smart_collections'):
+            rows = self.request(f'/admin/api/2026-04/{kind}.json?handle={handle}')[kind]
+            if rows and rows[0]['handle'] == handle and rows[0].get('published_at'):
+                return {k: rows[0].get(k) for k in ('handle', 'title', 'body_html', 'updated_at')}
+        require(False, 'Collection is not published in this store: ' + handle)
 
     def hero_gid(self, src):
         """Files id (MediaImage) of the hero file named in `src`. Read-only GraphQL query; exactly one READY image must match."""
