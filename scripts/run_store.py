@@ -201,7 +201,27 @@ def render_gate(profile, package, row, directory):
     done = subprocess.run([sys.executable, gate, str(path)], capture_output=True, text=True, timeout=300)
     sys.stdout.write(done.stdout)
     bad = [l.strip() for l in (done.stdout + done.stderr).splitlines() if re.search(r'FAIL|NUMBERED|Error', l)]
-    require(done.returncode == 0, 'Render gate (check.py) failed: ' + ' | '.join(bad)[-1500:])
+    require(done.returncode == 0, 'Render gate (check.py) failed: ' + ' | '.join(bad)[-1500:] + shortfall_hint(done.stdout, profile.template(row['style'])[1]))
+
+
+def shortfall_hint(out, rules):
+    """Turn check.py counts into exact writer instructions (a writer told only 'words=1396' adds 50 words and fails again).
+    Targets sit at the middle of each range; the gate limits are unchanged."""
+    m = re.search(r'RULES FAIL \[([^\]]*)\] words=(\d+) .*?cards=(\d+) imgs=(\d+)', out)
+    if not m:
+        return ''
+    failed, words, cards, imgs = m.group(1), int(m.group(2)), int(m.group(3)), int(m.group(4))
+    tips = []
+    lo, hi = rules['words']
+    if "'words'" in failed and words < lo:
+        tips.append(f'WORDS: the article holds {words} words; the minimum is {lo}. Add about {(lo + hi) // 2 - words} words of new body text '
+                    f'(aim for {(lo + hi) // 2}): longer answers inside the existing sections, not new sections or filler.')
+    ilo, ihi = rules['img']
+    if "'images'" in failed and imgs < ilo:
+        tips.append(f'IMAGES: {imgs} images; the minimum is {ilo}. Images = hero + every .pcard photo + rail pick + band minis. '
+                    f'Keep every product card the template has (cards now {cards}, allowed {rules["cards"][0]}-{rules["cards"][1]}); '
+                    f'add {ilo - imgs} more .pcard with a real photo of an allowed product. Never add a <figure>.')
+    return (' || FIX: ' + ' '.join(tips)) if tips else ''
 
 
 def duplicate_guard(package, row, existing):
@@ -370,7 +390,7 @@ WRITER RULES (the runner gates every one; a failure returns here with the error)
 - Every facts item: claim = an exact phrase from the article; source = an evidence URL from SOURCE EVIDENCE, an approved context path, exactly shopify://{shop}/products/<handle> for a supplied live product, or exactly shopify://{shop}/collections/<handle> for a supplied live collection; quote = 12+ characters copied exactly from that source text (for a live product or collection, from its JSON).
 - A sentence with a digit or a percent ("100% cotton", "Buy 1 Get 1 Free", "six layers") needs a facts claim that is a part of that sentence. Offer membership: cite the LIVE COLLECTION FACTS of the offer collection (a style it names is in the offer; a style it does not name is not). A number you cannot cite: write it as words or delete it.
 - Authority links (the template's authority count) come from the approved authority pages in SOURCE EVIDENCE (ncbi, nidirect, medlineplus); link them with a sentence their text supports. Do not cite or link the UNREADABLE SOURCES. Every product link and data-product handle is an allowed product handle. Product card prices equal a current variant price.
-- Hit every #rules-machine limit (words, h2, question h2, cards, images, authority links, Journal links, table, rows, sources). Title and H1 are equal and at most 60 characters. Meta description 120 to 165 characters.
+- Hit every #rules-machine limit (words, h2, question h2, cards, images, authority links, Journal links, table, rows, sources). Words: aim for the middle of the range; the count is every word inside <article>. Images = hero + every .pcard photo + rail pick + band minis: keep every product card the template has. Title and H1 are equal and at most 60 characters. Meta description 120 to 165 characters.
 - Numbered list labels use a hash and a digit, never a word: "Reason #1: <full header>" as the H2 of each reason, "Rank #1 ...", "Pick #2: ...", "Setup #1: ...". A TOC item for a numbered section is that section's full H2 text ("Reason #1: An open weave lets air move"; for the rank section, the rank H2), never "Reason one" or "The rank" (Kevin 2026-10-28).
 - Competitor links: only on a "<Brand> alternative" article, only that brand's /products/ spec page, once, inside the Sources list (the runner adds rel="nofollow noopener"). In the body, write the brand name as plain text. Never link a competitor blog, care, guide or collection page: cite a neutral source (NIH, MedlinePlus, Cleveland Clinic, press, Reddit) for the same fact, or drop the fact. Every Sources note names the dated fact read on that page ("Bearaby product page, checked {iso}: 100% organic cotton knit, 10–25 lb"), never "page title and product menu".
 - No ratings, review counts, or our own reviews. No health, cure, certification or "luxury" claims.
