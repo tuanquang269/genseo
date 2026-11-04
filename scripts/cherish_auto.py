@@ -42,7 +42,7 @@ def log(*a):
 # Values the Journal shell prints from metafields and theme settings, never from the writer's page (the day-23 truth pages carry the same).
 # ponytail: constants mirror the live shell; change them with the theme (journal shell snippet, band guarantee setting).
 SHELL_IMG = {'width': '1122', 'height': '1402', 'sizes': '(min-width:1100px) 720px, 100vw', 'loading': 'eager'}
-SHIP_LINE = '100 nights from delivery · you keep it · no return postage · free US standard shipping at $69+ · fulfilled and shipped in the US in 1–3 working days on average, with tracking'
+SHIP_LINE = '100 nights from delivery · you keep it · no return postage · free standard shipping on 4+ items · fulfilled and shipped in the US in 1–3 working days on average, with tracking'
 
 
 def set_attrs(tag, attrs):
