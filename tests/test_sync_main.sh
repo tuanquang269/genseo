@@ -987,8 +987,8 @@ EOF
 fi
 
 echo "6c. sync_main scope: this checkout blocks, another absolute path does not, a relative name fails closed"
-# Direct calls. The reconcile and self-apply callers stay on #120; this locks
-# the helper those callers can source. Temp dirs only.
+# Direct calls. Reconcile and self-apply source this helper; these lock the
+# return codes. Temp dirs only.
 . "$HELPER"
 scope_repo=$(mktemp -d "$WORK/scope-repo.XXXXXX")
 scope_repo=$(cd "$scope_repo" && pwd -P)
