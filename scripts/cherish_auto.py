@@ -14,6 +14,7 @@ import argparse
 import csv
 import datetime as dt
 import fcntl
+import html
 import json
 import os
 import re
@@ -72,7 +73,7 @@ def shell_owned(page):
     return page
 
 
-def gate_page(page, template):
+def gate_page(page, template, title=None):
     """The fidelity gate's truth page: the writer's filled template with the approved CSS and the approved sticky-bar script
     (minus the preview label toggle, whose button the writer removed)."""
     style = re.search(r'<style\b[^>]*>.*?</style>', template, re.S).group(0)
@@ -82,6 +83,8 @@ def gate_page(page, template):
     page = page.replace(marker, style, 1) if marker in page else page.replace('</head>', style + '</head>', 1)
     require(style in page and '</body>' in page, 'Gate page assembly failed')
     page = shell_owned(page)
+    if title:   # the shell prints <title> from article.title (no global.title_tag is written); the writer may add a brand suffix
+        page = re.sub(r'<title>[^<]*</title>', lambda m: f'<title>{html.escape(title, quote=False)}</title>', page, count=1)
     return page.replace('</body>', '<script>' + script + '</script>\n</body>', 1)
 
 
@@ -258,7 +261,7 @@ def main(argv=None):
                     package = json.loads((ROOT/'stores/cherish/drafts'/f"{row['day']}-{row['slot']}.json").read_text())
                     template, _ = profile.template(row['style'])
                     tpl = rundir/f"style-{row['style']}-{e['handle']}.html"
-                    tpl.write_text(gate_page(package['body_html'], template))
+                    tpl.write_text(gate_page(package['body_html'], template, package['title']))
                     qa_url = f"https://{domain}/blogs/{profile_gate()['qa_blog_handle']}/{e['handle']}"
                     hidden, why = noindex(qa_url)
                     log('noindex', row['slot'], e['handle'], why)
