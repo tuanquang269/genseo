@@ -986,6 +986,59 @@ EOF
   wait "$scope_pid" 2>/dev/null || true
 fi
 
+echo "6c. sync_main scope: this checkout blocks, another absolute path does not, a relative name fails closed"
+# Direct calls. The reconcile and self-apply callers stay on #120; this locks
+# the helper those callers can source. Temp dirs only.
+. "$HELPER"
+scope_repo=$(mktemp -d "$WORK/scope-repo.XXXXXX")
+scope_repo=$(cd "$scope_repo" && pwd -P)
+mkdir -p "$scope_repo/scripts"
+scope_other=$(mktemp -d "$WORK/scope-other.XXXXXX")
+scope_other=$(cd "$scope_other" && pwd -P)
+scope_home=$(mktemp -d "$WORK/scope-home.XXXXXX")
+mkdir -p "$scope_home/bin"
+ln -s "$scope_repo" "$scope_home/genseo"
+scope_home=$(cd "$scope_home" && pwd -P)
+scope_home_other=$(mktemp -d "$WORK/scope-home-other.XXXXXX")
+mkdir -p "$scope_home_other/bin" "$scope_home_other/genseo"
+scope_home_other=$(cd "$scope_home_other" && pwd -P)
+scope_copy=$(mktemp "$WORK/run_landing_daily.XXXXXX")
+printf '%s\n' "$scope_repo" >"$scope_copy.repo"
+scope_copy_none=$(mktemp "$WORK/run_landing_daily.XXXXXX")
+rm -f "$scope_copy_none.repo"
+scope_copy_other=$(mktemp "$WORK/grokbot-genseo-daily.XXXXXX")
+printf '%s\n' "$scope_other" >"$scope_copy_other.repo"
+check_scope() {
+  local want=$1 repo=$2 cmd=$3 label=$4 got=0
+  genseo_sync_cmd_repo_scope "$repo" "$cmd"
+  got=$?
+  if [ "$got" = "$want" ]; then ok "$label"
+  else bad "$label (rc $got, want $want)"; fi
+}
+check_scope 0 "$scope_repo" "/bin/bash $scope_repo/scripts/run_landing_daily.sh" "in-checkout script blocks"
+check_scope 1 "$scope_repo" "/bin/bash $scope_other/run_landing_daily.sh" "another directory does not block"
+check_scope 1 "$scope_repo" "/bin/bash ${scope_repo}-other/scripts/run_landing_daily.sh" "a sibling prefix does not block"
+check_scope 2 "$scope_repo" "bash run_landing_daily.sh" "a relative job name fails closed"
+check_scope 2 "$scope_repo" "scripts/run_landing_daily.sh" "a relative path fails closed"
+check_scope 2 "$scope_repo" "" "an empty command fails closed"
+check_scope 2 "" "/bin/bash $scope_repo/scripts/run_landing_daily.sh" "an empty checkout fails closed"
+check_scope 0 "$scope_repo" "/bin/bash $scope_copy" "same-checkout stable copy blocks"
+check_scope 1 "$scope_repo" "/bin/bash $scope_copy_none" "a stable copy with no sidecar does not block"
+check_scope 1 "$scope_repo" "/bin/bash $scope_copy_other" "another checkout's stable copy does not block"
+check_scope 0 "$scope_repo" "/bin/bash $scope_home/bin/grokbot-genseo-daily.sh" "this home's launcher blocks"
+check_scope 1 "$scope_repo" "/bin/bash $scope_home_other/bin/grokbot-genseo-daily.sh" "another home's launcher does not block"
+check_scope 0 "$scope_repo" "/bin/bash $scope_repo/scripts/shopify_publisher.py" "an in-checkout publisher blocks"
+check_scope 1 "$scope_repo" "/bin/bash $scope_other/landing_publisher.py" "a publisher in another directory does not block"
+check_scope 2 "$scope_repo" "/bin/bash" "bash alone is not a writer path"
+check_scope 2 "$scope_repo" "shopify_publisher.py" "a relative publisher name fails closed"
+genseo_sync_cmd_has_absolute_job_path "/bin/bash"
+if [ "$?" = 1 ]; then ok "bash alone has no absolute writer path"
+else bad "bash alone looked like a writer path"; fi
+genseo_sync_cmd_has_absolute_job_path "/bin/bash $scope_other/run_ticket_headless.sh"
+if [ "$?" = 0 ]; then ok "an absolute lane script is a writer path"
+else bad "an absolute lane script was not a writer path"; fi
+rm -f "$scope_copy" "$scope_copy.repo" "$scope_copy_none" "$scope_copy_other" "$scope_copy_other.repo"
+
 echo "7. a stale launcher re-execs the repo script when main is already current"
 if ! init_repo stale; then
   bad "stale fixture"
