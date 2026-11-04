@@ -194,9 +194,18 @@ class DraftImageSrc(unittest.TestCase):
                 fh.write(b"RIFF-out")
             linked_slug = os.path.join(folder, "assets", "linked")
             os.symlink(outside_dir, linked_slug)
+            # Lexical assets/<slug>/<file>, realpath in the draft folder but
+            # outside the assets directory.
+            sibling = os.path.join(folder, "secret.webp")
+            with open(sibling, "wb") as fh:
+                fh.write(b"secret")
+            os.symlink(sibling, os.path.join(folder, "assets", "slug", "sib.webp"))
+            alias = os.path.join(folder, "assets", "slug", "alias.webp")
+            os.symlink(hero, alias)
             cases = [
                 "assets/slug/escape.webp",
                 "assets/linked/hero.webp",
+                "assets/slug/sib.webp",
                 "../secret.webp",
                 # one more .. than assets/slug: normpath leaves published_drafts
                 "assets/slug/../../../secret.webp",
@@ -210,6 +219,10 @@ class DraftImageSrc(unittest.TestCase):
                 self.assertEqual(
                     len(va.visible_body_images(html, True, folder)), 0, src)
                 self.assertTrue(va.remote_image_fail(src, folder), src)
+            # A symlink whose target stays inside the assets directory still counts.
+            self.assertEqual(va.draft_image_file_fails(
+                '<img alt="pack" src="assets/slug/alias.webp">', folder), [])
+            self.assertEqual(va.remote_image_fail("assets/slug/alias.webp", folder), "")
 
     def test_reference_style_remote_image_fails(self):
         remote = "https://cdn.shopify.com/s/files/a.webp"
@@ -244,6 +257,40 @@ class DraftImageSrc(unittest.TestCase):
         self.assertEqual(len(fails), 1)
         self.assertIn("remote URL", fails[0])
 
+    def test_publisher_markdown_forms_cannot_hide_a_remote_image(self):
+        # markdown.markdown(..., extensions=['extra']) emits an <img> for each
+        # of these. The old one-line regex left them as text, so the gate saw
+        # zero images and the article could pass.
+        remote = "https://cdn.shopify.com/s/files/a.webp"
+        forms = [
+            "![closet pouch][pack]\n\n[pack]:\t%s\n" % remote,
+            "![closet pouch][pack]\n\n[pack]:\n\t%s\n" % remote,
+            "![closet pouch][pack]\r\n\r\n[pack]: %s\r\n" % remote,
+            "![foo [bar]](%s)" % remote,
+            "![closet](<%s>)" % remote,
+            '![closet](<%s> "title with ) paren")' % remote,
+            "![closet](%s)" % ("\n" + remote),
+            "Before the pouch.\n<img\nsrc=\"%s\">" % remote,
+        ]
+        for raw in forms:
+            html = va.draft_struct_html(raw)
+            self.assertIn("<img", html, raw)
+            fails = va.draft_image_file_fails(html, "/private/tmp/missing-base")
+            self.assertGreaterEqual(len(fails), 1, raw)
+            self.assertTrue(
+                any("remote URL" in item for item in fails), (raw, fails))
+            self.assertFalse(
+                any("no such file" in item for item in fails), fails)
+            self.assertEqual(
+                len(va.visible_body_images(html, True, "/private/tmp")), 0, raw)
+        source = "Before the pouch.\n<source\nsrcset=\"%s 1x\">" % remote
+        source_html = va.draft_struct_html(source)
+        self.assertIn("<source", source_html)
+        self.assertNotIn("\n", va._SOURCE_TAG_RE.findall(source_html)[0])
+        source_fails = va.draft_image_file_fails(source_html, "/private/tmp")
+        self.assertEqual(len(source_fails), 1)
+        self.assertIn("remote URL", source_fails[0])
+
     def test_img_slash_src_without_space_fails(self):
         raw_tags = [
             '<img/src="https://cdn.shopify.com/s/files/a.webp">',
@@ -264,8 +311,12 @@ class DraftImageSrc(unittest.TestCase):
             self.assertNotIn("no such file", fails[0], raw)
 
     def test_srcset_and_source_srcset_fail(self):
-        local = _real_private_webp()
-        try:
+        with tempfile.TemporaryDirectory() as folder:
+            os.makedirs(os.path.join(folder, "assets", "slug"))
+            local = "assets/slug/hero.webp"
+            with open(os.path.join(folder, local), "wb") as fh:
+                fh.write(b"RIFF")
+            self.assertEqual(va.remote_image_fail(local, folder), "")
             cases = [
                 '<img src="%s" srcset="https://cdn.shopify.com/s/files/evil.webp 1x">' % local,
                 '<img src="%s" srcset="https://cdn.example/a.webp 1x, https://cdn.example/b.webp 2x">' % local,
@@ -278,58 +329,57 @@ class DraftImageSrc(unittest.TestCase):
                 '<img src="%s" srcset=" //cdn.shopify.com/s/files/evil.webp 1x">' % local,
             ]
             for html in cases:
-                fails = va.draft_image_file_fails(html, "/private/tmp")
+                fails = va.draft_image_file_fails(html, folder)
                 self.assertGreaterEqual(len(fails), 1, html)
                 self.assertTrue(
                     any("remote URL" in item for item in fails), fails)
                 self.assertFalse(
                     any("no such file" in item for item in fails), fails)
                 self.assertEqual(
-                    len(va.visible_body_images(html, True, "/private/tmp")), 0, html)
-        finally:
-            os.remove(local)
+                    len(va.visible_body_images(html, True, folder)), 0, html)
 
     def test_alt_src_bait_does_not_hide_remote_src(self):
-        local = _real_private_webp()
-        try:
-            self.assertEqual(va.remote_image_fail(local), "")
-            self.assertTrue(os.path.isfile(local))
+        with tempfile.TemporaryDirectory() as folder:
+            os.makedirs(os.path.join(folder, "assets", "slug"))
+            local = "assets/slug/hero.webp"
+            with open(os.path.join(folder, local), "wb") as fh:
+                fh.write(b"RIFF")
+            self.assertEqual(va.remote_image_fail(local, folder), "")
+            self.assertTrue(os.path.isfile(os.path.join(folder, local)))
             hidden = (
                 '<img alt="bait src=%s" src="https://cdn.shopify.com/s/files/evil.webp">'
                 % local)
             self.assertEqual(
                 va.img_tag_src(hidden),
                 "https://cdn.shopify.com/s/files/evil.webp")
-            fails = va.draft_image_file_fails(hidden, "/private/tmp")
+            fails = va.draft_image_file_fails(hidden, folder)
             self.assertEqual(len(fails), 1)
             self.assertIn("remote URL", fails[0])
             self.assertNotIn(local, fails[0])
             self.assertNotIn("no such file", fails[0])
-            self.assertEqual(len(va.visible_body_images(hidden, True)), 0)
+            self.assertEqual(len(va.visible_body_images(hidden, True, folder)), 0)
             # The same bait after a real local src is alt text, not a second image.
             # A later real src attribute is still an image load.
             later = (
                 '<img src="%s" alt="caption" src="https://cdn.shopify.com/s/files/evil.webp">'
                 % local)
-            later_fails = va.draft_image_file_fails(later, "/private/tmp")
+            later_fails = va.draft_image_file_fails(later, folder)
             self.assertTrue(any("remote URL" in item for item in later_fails), later_fails)
-            self.assertEqual(len(va.visible_body_images(later, True)), 0)
+            self.assertEqual(len(va.visible_body_images(later, True, folder)), 0)
             alt_only = (
                 '<img alt="caption src=https://cdn.shopify.com/s/files/evil.webp" src="%s">'
                 % local)
-            self.assertEqual(va.draft_image_file_fails(alt_only, "/private/tmp"), [])
-            self.assertEqual(len(va.visible_body_images(alt_only, True)), 1)
+            self.assertEqual(va.draft_image_file_fails(alt_only, folder), [])
+            self.assertEqual(len(va.visible_body_images(alt_only, True, folder)), 1)
             # A ">" inside alt used to end the tag regex before the real src.
             quoted_gt = '<img alt="a>b" src="https://cdn.shopify.com/s/files/evil.webp">'
             self.assertEqual(
                 va.img_tag_src(va._IMG_TAG_RE.findall(quoted_gt)[0]),
                 "https://cdn.shopify.com/s/files/evil.webp")
-            gt_fails = va.draft_image_file_fails(quoted_gt, "/private/tmp")
+            gt_fails = va.draft_image_file_fails(quoted_gt, folder)
             self.assertEqual(len(gt_fails), 1)
             self.assertIn("remote URL", gt_fails[0])
-            self.assertEqual(len(va.visible_body_images(quoted_gt, True)), 0)
-        finally:
-            os.remove(local)
+            self.assertEqual(len(va.visible_body_images(quoted_gt, True, folder)), 0)
 
     def test_users_traversal_is_outside_allowed_roots(self):
         cases = [
@@ -339,8 +389,11 @@ class DraftImageSrc(unittest.TestCase):
             "/private/tmp/../../etc/passwd",
         ]
         for src in cases:
-            self.assertTrue(os.path.exists(src), src)
-            self.assertNotEqual(os.path.realpath(src), src)
+            # The lexical path may not exist (/Users is absent on Linux). The
+            # normalized file does, which is what a naive isfile() would open.
+            resolved = os.path.realpath(src)
+            self.assertTrue(os.path.isfile(resolved), src)
+            self.assertNotEqual(resolved, src)
             msg = va.remote_image_fail(src)
             self.assertIn("outside", msg, src)
             self.assertNotIn("no such file", msg, src)
@@ -358,8 +411,15 @@ class DraftImageSrc(unittest.TestCase):
         self.assertGreaterEqual(len(srcset_fails), 2)
         self.assertTrue(all("outside" in item for item in srcset_fails))
         # No ".." in the written path. normpath stays under /Users.
-        # realpath of the symlink is /private/etc/passwd, which must still fail.
-        parent = tempfile.mkdtemp(prefix="t32-img-", dir=ROOT)
+        # realpath of the symlink is outside /Users (on macOS, /private/etc/passwd).
+        # A Mac checkout lives under /Users. Otherwise use a writable /Users.
+        users_dir = ROOT if ROOT.startswith("/Users/") else None
+        if users_dir is None and os.path.isdir("/Users") and os.access("/Users", os.W_OK):
+            users_dir = "/Users"
+        if users_dir is None:
+            self._assert_symlink_realpath_leaves_its_root()
+            return
+        parent = tempfile.mkdtemp(prefix="t32-img-", dir=users_dir)
         link = os.path.join(parent, "escape.webp")
         good = os.path.join(parent, "hero.webp")
         try:
@@ -383,19 +443,33 @@ class DraftImageSrc(unittest.TestCase):
                 os.remove(good)
             os.rmdir(parent)
 
+    def _assert_symlink_realpath_leaves_its_root(self):
+        """Same jail as the /Users symlink, without requiring that prefix."""
+        parent = tempfile.mkdtemp(prefix="t32-root-")
+        root = os.path.join(parent, "root")
+        outside = os.path.join(parent, "outside")
+        os.makedirs(root)
+        os.makedirs(outside)
+        secret = os.path.join(outside, "secret.webp")
+        good = os.path.join(root, "hero.webp")
+        link = os.path.join(root, "escape.webp")
+        try:
+            with open(secret, "wb") as fh:
+                fh.write(b"secret")
+            with open(good, "wb") as fh:
+                fh.write(b"RIFF")
+            os.symlink(secret, link)
+            self.assertNotIn("..", link)
+            self.assertFalse(va._stays_under(link, root))
+            self.assertTrue(va._stays_under(good, root))
+        finally:
+            if os.path.lexists(link):
+                os.remove(link)
+            if os.path.exists(good):
+                os.remove(good)
+            if os.path.exists(secret):
+                os.remove(secret)
+            os.rmdir(root)
+            os.rmdir(outside)
+            os.rmdir(parent)
 
-def _real_private_webp():
-    """A real file whose path the publisher accepts (/private or /Users).
-
-    mkstemp often returns /var/folders/... which realpath maps to
-    /private/var/folders/... The two names are one file. Callers delete
-    the realpath.
-    """
-    fd, raw = tempfile.mkstemp(suffix=".webp")
-    os.write(fd, b"RIFF")
-    os.close(fd)
-    local = os.path.realpath(raw)
-    if not (local.startswith("/private/") or local.startswith("/Users/")):
-        os.remove(raw)
-        raise AssertionError("temp image is not under /private or /Users: %s" % local)
-    return local

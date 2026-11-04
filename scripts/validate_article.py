@@ -262,17 +262,25 @@ def draft_struct_html(raw):
     Reference images (![alt][id] with [id]: url) become <img> as well.
     markdown.markdown(..., extensions=['extra']) emits that tag, and a
     remote definition used to skip this gate entirely.
+    Newlines and tabs are normalized first, the same way that parser expands
+    them, so a tab or CR in a reference definition cannot hide the URL.
+    Inline images keep nested alt brackets and <url> destinations. A raw
+    <img> or <source> that spans lines is joined before the first-paragraph
+    wrap, which used to split src onto a line the tag regex missed.
     """
-    html=raw
+    html=_normalize_md_ws(raw)
     html=re.sub(r'^###\s+(.*)$', r'<h3>\1</h3>', html, flags=re.M)
     html=re.sub(r'^##\s+(.*)$',  r'<h2>\1</h2>', html, flags=re.M)
     html=re.sub(r'^#\s+(.*)$',   r'<h1>\1</h1>', html, flags=re.M)
-    html=re.sub(r'!\[([^\]]*)\]\(([^)]+)\)', r'<img alt="\1" src="\2">', html)
+    html=_replace_inline_images(html)
     html=_expand_reference_images(html)
     html=re.sub(r'\[([^\]]+)\]\((https?://[^)]+)\)', r'<a href="\2">\1</a>', html)
     # markdown tables -> mark presence
     if re.search(r'^\|.*\|\s*$', html, flags=re.M) and re.search(r'^\|[-: |]+\|\s*$', html, flags=re.M):
         html+="\n<table><th>markdown-table</th></table>"
+    # Join multiline image tags before the paragraph pass. That pass wraps
+    # the first plain line, which used to be the src line of <img\nsrc="...">.
+    html=_flatten_image_tags(html)
     # first PLAIN-TEXT paragraph as answer block — skip any line already starting
     # with a tag or comment (the skill's mandatory line-2 `<!-- meta_description -->`
     # otherwise becomes the "first paragraph" and every correct draft fails)
@@ -280,10 +288,166 @@ def draft_struct_html(raw):
     return html
 
 
+def _normalize_md_ws(text):
+    """CRLF to LF, then tabs to spaces. Python-Markdown does this before references."""
+    text=(text or "").replace("\r\n", "\n").replace("\r", "\n")
+    return text.expandtabs(4)
+
+
+def _replace_inline_images(text):
+    """Turn ![alt](dest) into <img>, including forms the one-line regex dropped.
+
+    Nested brackets in the alt, a destination in <angle> brackets, a quoted
+    title that itself contains ')', and parentheses inside the URL are all
+    images markdown.markdown will publish. The old [^)]+ pattern stopped at
+    the first ')' and left the remote URL as plain text.
+    """
+    text=text or ""
+    out=[]
+    i=0
+    n=len(text)
+    while i<n:
+        if text.startswith("![", i) and (i==0 or text[i-1]!="\\"):
+            alt, j, ok=_parse_md_alt(text, i+1)
+            if ok and j<n and text[j]=="(":
+                src, k, ok2=_parse_md_dest(text, j)
+                if ok2:
+                    out.append('<img alt="%s" src="%s">' % (_esc_attr(alt), _esc_attr(src)))
+                    i=k
+                    continue
+            # ![alt][id] is a reference image. Leave it for _expand_reference_images.
+        out.append(text[i])
+        i+=1
+    return "".join(out)
+
+
+def _parse_md_alt(text, i):
+    """text[i] is the '[' of ![. Return (alt, index after ']', ok)."""
+    if i>=len(text) or text[i]!="[":
+        return None, i, False
+    i+=1
+    depth=1
+    buf=[]
+    n=len(text)
+    while i<n and depth:
+        c=text[i]
+        if c=="\\" and i+1<n:
+            buf.append(text[i+1])
+            i+=2
+            continue
+        if c=="[":
+            depth+=1
+            buf.append(c)
+        elif c=="]":
+            depth-=1
+            if depth==0:
+                return "".join(buf), i+1, True
+            buf.append(c)
+        else:
+            buf.append(c)
+        i+=1
+    return None, i, False
+
+
+def _skip_md_ws(text, i):
+    n=len(text)
+    while i<n and text[i] in " \t\n":
+        i+=1
+    return i
+
+
+def _skip_md_title(text, i):
+    """Skip an optional markdown link title. Return the index after it."""
+    n=len(text)
+    i=_skip_md_ws(text, i)
+    if i>=n:
+        return i
+    if text[i] in "'\"":
+        q=text[i]
+        j=text.find(q, i+1)
+        if j<0:
+            return i
+        return j+1
+    if text[i]=="(":
+        depth=1
+        i+=1
+        while i<n and depth:
+            if text[i]=="(":
+                depth+=1
+            elif text[i]==")":
+                depth-=1
+            i+=1
+        return i
+    return i
+
+
+def _dest_without_title(body):
+    body=(body or "").strip()
+    titled=re.search(r'\s+(?P<q>["\']).*?(?P=q)\s*$', body, re.S)
+    if titled and titled.start()>0:
+        return body[:titled.start()].strip()
+    paren=re.search(r'\s+\([^)]*\)\s*$', body, re.S)
+    if paren and paren.start()>0:
+        return body[:paren.start()].strip()
+    return body
+
+
+def _parse_md_dest(text, i):
+    """text[i] is the '(' of a markdown destination. Return (src, index after ')', ok)."""
+    if i>=len(text) or text[i]!="(":
+        return None, i, False
+    i+=1
+    n=len(text)
+    i=_skip_md_ws(text, i)
+    if i<n and text[i]=="<":
+        end=text.find(">", i+1)
+        if end<0:
+            return None, i, False
+        src=text[i+1:end].strip()
+        i=_skip_md_title(text, end+1)
+        i=_skip_md_ws(text, i)
+        if i<n and text[i]==")":
+            return src, i+1, True
+        return None, i, False
+    start=i
+    depth=1
+    quote=None
+    while i<n:
+        c=text[i]
+        if quote:
+            if c==quote:
+                quote=None
+            i+=1
+            continue
+        # A title is whitespace plus a quote. An apostrophe inside a URL is not.
+        if c in "'\"" and i>start and text[i-1] in " \t\n":
+            quote=c
+            i+=1
+            continue
+        if c=="(":
+            depth+=1
+        elif c==")":
+            depth-=1
+            if depth==0:
+                return _dest_without_title(text[start:i]), i+1, True
+        i+=1
+    return None, i, False
+
+
+def _flatten_image_tags(html):
+    """One line per <img> and <source>, so a newline cannot hide src or srcset."""
+    def flat(match):
+        return re.sub(r'[ \t\r\n]+', ' ', match.group(0))
+    html=re.sub(r'(?is)<img\b'+_TAG_BODY+r'>', flat, html)
+    html=re.sub(r'(?is)<source\b'+_TAG_BODY+r'>', flat, html)
+    return html
+
+
 # shopify_publisher uploads an absolute path only when the string itself
 # starts with /Users or /private, and (once it knows the draft) a relative
 # assets/<slug>/<file> joined to the draft directory. Do not import the
-# publisher. realpath has to stay inside that same root: /Users/../../etc/passwd
+# publisher. realpath of that relative form has to stay inside the draft's
+# assets directory, not merely the draft folder. /Users/../../etc/passwd
 # exists, and on macOS it resolves under /private/etc.
 _TAG_BODY=r'''(?:[^>"']|"[^"]*"|'[^']*')*'''
 _IMG_TAG_RE=re.compile(r'(?is)<img\b'+_TAG_BODY+'>')
@@ -420,18 +584,21 @@ def _stays_under(path, root):
 def remote_image_fail(src, base=None):
     """Fail a draft image shopify_publisher will not upload.
 
-    http(s), a protocol-relative // host, and the same URLs with leading
-    whitespace are remote. data: is inline, not a file. An absolute /Users
-    or /private path is local only when realpath stays inside that prefix.
-    assets/<slug>/<file> is local when base is the draft directory and
-    realpath stays inside that directory. Any other relative path is not.
+    http(s), a protocol-relative // host, the same URLs wrapped in <angle>
+    brackets, and the same URLs with leading whitespace are remote. data:
+    is inline, not a file. An absolute /Users or /private path is local
+    only when realpath stays inside that prefix. assets/<slug>/<file> is
+    local when base is the draft directory and realpath stays inside that
+    draft's assets directory. A symlink from assets/<slug>/<file> to
+    another file in the draft folder, or to anywhere else, is not. Any
+    other relative path is not.
     """
     root=_abs_local_root(src)
     if root:
         if _stays_under(src, root):
             return ""
         return _outside_root_message(src)
-    stripped=src.strip()
+    stripped=_unwrap_angle(src)
     if re.match(r'(?i)https?://', stripped) or stripped.startswith("//"):
         return _remote_url_image_message(src)
     if re.match(r'(?i)data:', stripped):
@@ -441,8 +608,19 @@ def remote_image_fail(src, base=None):
         if not _stays_under(joined, base):
             return _outside_root_message(src)
         if _ASSET_REL_RE.match(src):
+            assets_root=os.path.join(base, "assets")
+            if not _stays_under(joined, assets_root):
+                return _outside_root_message(src)
             return ""
     return _not_local_image_message(src)
+
+
+def _unwrap_angle(src):
+    """Strip one pair of markdown <angle> brackets around a destination."""
+    stripped=(src or "").strip()
+    if len(stripped)>=2 and stripped[0]=="<" and stripped[-1]==">":
+        return stripped[1:-1].strip()
+    return stripped
 
 
 def _norm_ref_id(text):
@@ -508,9 +686,9 @@ def visible_body_images(html, md_draft, base=None):
 
     A .md draft must not let a data: URI, a remote URL, a srcset URL, a
     bare relative path, or a path that realpath leaves the allowed root
-    satisfy the floor. assets/<slug>/<file> inside the draft directory
-    counts: the publisher uploads that form and strips the first local
-    file into article.image.
+    satisfy the floor. assets/<slug>/<file> counts only when realpath
+    stays inside the draft's assets directory: the publisher uploads that
+    form and strips the first local file into article.image.
     """
     real=[]
     for tag in _IMG_TAG_RE.findall(html):
