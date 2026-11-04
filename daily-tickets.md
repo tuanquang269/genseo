@@ -1583,7 +1583,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** turkesterone + authenticity checked 2026-11-04 against 158 live articles (blog listing + sitemap + Atom + local caches) and all 111 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#MB1104-3 — creatine gummies and kidneys** — `Creatine Gummies and Kidneys: The Bloodwork (US 2026)`
+- [DONE 2026-11-04 https://wellnessnest.co/blogs/news/creatine-gummies-and-kidneys-bloodwork-in-the-us] **#MB1104-3 — creatine gummies and kidneys** — `Creatine Gummies and Kidneys: The Bloodwork (US 2026)`
   - **Primary keyword:** `creatine gummies and kidneys` · **Secondary:** is creatine bad for your kidneys, creatine creatinine blood test, creatine gummies kidney safety, creatine kidney damage myth
   - **Search intent:** buyer worried that creatine harms the kidneys or that a raised creatinine test means damage
   - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-04 09:21 ICT)
