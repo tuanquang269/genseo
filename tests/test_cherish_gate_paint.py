@@ -26,4 +26,8 @@ with sync_playwright() as p:
     px = Image.open(io.BytesIO(pg.screenshot(clip={'x': 0, 'y': 0, 'width': 200, 'height': 200}))).convert('RGB').getpixel((100, 100))
     assert px[0] > 150 and px[1] < 60, f'image not painted: {px}'
     b.close()
-srv.shutdown(); print('gate paint OK')
+srv.shutdown()
+import inspect
+src = inspect.getsource(g.capture_side)
+assert src.index('PAINT_JS') < src.index('COLLECT_JS'), 'capture_side must wait for images before COLLECT_JS'
+print('gate paint OK')

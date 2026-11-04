@@ -615,6 +615,7 @@ def capture_side(browser, width, source, cfg, out_dir, side, mutate=None):
             res["rail"] = page.evaluate(STICKY_JS, {"mode": "rail"})
             page.evaluate("window.scrollTo(0,0)")
             page.wait_for_timeout(200)
+        page.evaluate(PAINT_JS)  # the rail/stick scroll can start new srcset fetches: collect only after they land (selftest control 8)
         coll = page.evaluate(COLLECT_JS, {"sets": cfg["root_sets"], "scope": sorted(SCOPE_CLASSES), "textProps": TEXT_PROPS, "boxProps": BOX_PROPS,
                                           "pseudoProps": PSEUDO_PROPS, "attrs": ATTRS_KEEP, "regionTop": 0})
         if "error" in coll:
