@@ -81,7 +81,7 @@ Also: never `rm` repo files (move them to `_superseded/`); never put CDN URLs in
 - Never mention or link MuscleMax or any product the store does not sell.
 - No COA / "lab-tested" / "clinically tested" as the lead advantage (house rule `no-coa-competitive-advantage`).
 - Every claim (dose, study, number, mechanism) must come from a source actually fetched, logged in
-  `logs/claims/<slug>.md`; unconfirmed claims are deleted, not softened. FDA structure/function language only.
+  `logs/claims/<slug>.md`; unconfirmed claims are deleted, not softened.
 - Articles need ≥2 live `/collections/` links; a collection the product is not in is a browse link only — never
   claim membership.
 
