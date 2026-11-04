@@ -203,4 +203,48 @@ class StoreIsolationTests(unittest.TestCase):
         self.assertIn(b'Wellness Nest only',result.stderr)
 
 
+class CherishRecoveryTests(unittest.TestCase):
+    """Lane A 2026-11-04: a renamed source stopped Cherish for days with no report."""
+    def test_renamed_source_fails_before_generation_and_reports(self):
+        import cherish_auto
+        original = Path.read_text
+        def read(path, *a, **kw):
+            text = original(path, *a, **kw)
+            if path == ROOT/'stores/cherish/profile.json':
+                return text.replace('20-8b-cherish-copy-pdp-core-three.md', '8b-cherish-copy-pdp-core-three.md')
+            return text
+        with patch.object(Path, 'read_text', read), self.assertRaisesRegex(StoreGuardError, 'Missing approved input') as caught:
+            Profile('cherish')
+        with patch.object(cherish_auto, 'incident') as sent:
+            self.assertEqual(cherish_auto.blocked(caught.exception), 1)
+        self.assertEqual(sent.call_args[0][0], 'missing-source')
+
+    def test_second_run_after_a_publish_does_not_exceed_the_daily_allowance(self):
+        import cherish_auto
+        with tempfile.TemporaryDirectory() as tmp:
+            day = cherish_auto.dt.datetime.now(cherish_auto.ICT).date().isoformat()
+            (Path(tmp)/'daily').mkdir()
+            (Path(tmp)/'daily'/f'{day}.md').write_text('Calendar day x · approval=auto rows: 7 · published: 3 · job\n')
+            with patch.object(cherish_auto, 'WORK', Path(tmp)), patch.object(cherish_auto.subprocess, 'run') as run, \
+                 patch.object(cherish_auto.subprocess, 'call') as call:
+                self.assertEqual(cherish_auto.main([]), 0)
+            run.assert_not_called(); call.assert_not_called()
+
+    def test_eligible_rows_skip_published_past_and_manual_rows(self):
+        import cherish_auto
+        class Fake:
+            data = {'calendar': 'c'}
+            def read_context(self, _):
+                return ('day,slot,approval,uniqueness_key\n2026-11-03,1,auto,a\n2026-11-04,1,auto,b\n'
+                        '2026-11-04,2,auto,c\n2026-11-05,1,manual,d\n2026-11-05,2,auto,e\n')
+        with tempfile.TemporaryDirectory() as tmp:
+            (Path(tmp)/'articles.json').write_text(json.dumps({'b': {'published': True}}))
+            with patch.object(cherish_auto, 'STATE', Path(tmp)):
+                keys = [r['uniqueness_key'] for r in cherish_auto.eligible_rows(Fake(), today='2026-11-04')]
+                self.assertEqual(keys, ['c', 'e'])
+                with patch.object(cherish_auto, 'incident') as sent:
+                    self.assertEqual(cherish_auto.queue_check(Fake()), 2)
+                self.assertEqual(sent.call_args[0][0], 'queue-low')
+
+
 if __name__=='__main__': unittest.main()

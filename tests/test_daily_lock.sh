@@ -966,6 +966,22 @@ check "stocked queue is at the threshold" grep -q ">= 10" "$H/out.log"
 check "stocked queue wrote no args" test ! -e "$H/genseo/state/refill-args"
 check "stocked queue cleared no marker by calling refill" test ! -e "$H/genseo/state/queue-low-water.marker"
 
+echo "33. an empty queue sends one incident per day through notify_lark, not one per run"
+reset_wrap
+sandbox incident
+printf '%s\n' 0 >"$H/genseo/state/live-count"
+printf '%s\n' 3 >"$H/genseo/state/refill-rc"
+cp "$TMP/wrap-lowfill/genseo/scripts/refill_tickets.py" "$H/genseo/scripts/refill_tickets.py"
+cp "$ROOT/scripts/notify_lark.sh" "$H/genseo/scripts/notify_lark.sh"
+run_wrapper 20
+check "incident run exit 0" test "$RC" = 0
+check "incident recorded with owner and next checkpoint" grep -q '"kind": "queue-empty".*"owner": "GenSEO coordinator".*"next_checkpoint"' "$H/genseo/state/incidents.jsonl"
+check "no Lark config is on record, not silent" grep -q '"lark": "no-config"' "$H/genseo/state/incidents.jsonl"
+rm -f "$H/genseo/state/genseo-daily-"*.lock "$H/genseo/state/"*.done 2>/dev/null
+run_wrapper 20
+check "second run same day exit 0" test "$RC" = 0
+check "second run did not send a second incident" test "$(grep -c queue-empty "$H/genseo/state/incidents.jsonl")" = 1
+
 echo
 printf '%s passed, %s failed\n' "$PASS" "$FAIL"
 [ "$FAIL" = 0 ]

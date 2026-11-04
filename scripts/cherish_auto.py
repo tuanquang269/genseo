@@ -11,6 +11,7 @@
 The MAIN theme is read, never written. No Wellness Nest path is touched.
 """
 import argparse
+import csv
 import datetime as dt
 import fcntl
 import json
@@ -87,7 +88,7 @@ def noindex(url):
     """robots meta as real Chrome sees it (curl gets HTTP 429 on this store)."""
     code = ('import sys\nfrom playwright.sync_api import sync_playwright\n'
             'with sync_playwright() as p:\n'
-            ' b=p.chromium.launch(channel="chrome",args=["--disable-gpu"]); pg=b.new_page(); pg.goto(sys.argv[1],wait_until="domcontentloaded",timeout=90000)\n'
+            ' b=p.chromium.launch(channel="chromium",args=["--disable-gpu"]); pg=b.new_page(); pg.goto(sys.argv[1],wait_until="domcontentloaded",timeout=90000)\n'
             ' m=pg.query_selector(\'meta[name="robots"]\'); print(m.get_attribute("content") if m else ""); b.close()\n')
     out = subprocess.run([PY, '-c', code, url], capture_output=True, text=True, timeout=180)
     return 'noindex' in out.stdout.lower()
@@ -129,14 +130,39 @@ def save_ledger(ledger):
 def next_day(profile):
     """One calendar day per run, the first from today that still has an unpublished auto row (Kevin 2026-10-30).
     "Tomorrow" broke when earlier runs had already published days ahead: 29 and 30 Oct got no new post."""
-    import csv
+    open_days = sorted({r['day'] for r in eligible_rows(profile)})
+    return open_days[0] if open_days else dt.datetime.now(ICT).date().isoformat()
+
+
+LOW_ROWS = 14  # two days at daily_volume 7
+
+
+def eligible_rows(profile, today=None):
+    """Unpublished approval=auto calendar rows from today on: the work the runner can still publish."""
+    today = today or dt.datetime.now(ICT).date().isoformat()
     ledger_path = STATE/'articles.json'
     ledger = json.loads(ledger_path.read_text()) if ledger_path.exists() else {}
-    today = dt.datetime.now(ICT).date().isoformat()
     rows = csv.DictReader(profile.read_context(profile.data['calendar']).splitlines())
-    open_days = sorted({r['day'] for r in rows if r['day'] >= today and r['approval'] == 'auto'
-                        and not ledger.get(r['uniqueness_key'], {}).get('published')})
-    return open_days[0] if open_days else today
+    return [r for r in rows if r['day'] >= today and r['approval'] == 'auto'
+            and not ledger.get(r['uniqueness_key'], {}).get('published')]
+
+
+def incident(kind, shortfall, cause, action, checkpoint='next run 07:45 ICT (catch-up 09:45)'):
+    """One Lark message per kind per ICT day through the existing GenSEO bot. Never raises."""
+    try:
+        subprocess.run(['/bin/bash', str(ROOT/'scripts'/'notify_lark.sh'), '--incident', 'cherish', kind,
+                        shortfall, cause, action, checkpoint], timeout=60, check=False)
+    except (OSError, subprocess.SubprocessError) as error:
+        log('incident not sent:', error)
+
+
+def queue_check(profile):
+    n = len(eligible_rows(profile))
+    if n < LOW_ROWS:
+        incident('queue-empty' if n == 0 else 'queue-low', f'{n} eligible calendar rows < {LOW_ROWS} (2 days at 7/day)',
+                 'calendar.csv has too few unpublished approval=auto rows', 'add researched rows to genseo-400/calendar.csv')
+    return n
+
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
@@ -236,6 +262,12 @@ def main(argv=None):
         failures = [json.loads(l) for l in (STATE/'failures.jsonl').read_text().splitlines()] if (STATE/'failures.jsonl').exists() else []
         failures = {f['slot']: f['error'] for f in failures if f['day'] == args.day and f['at'] >= started.isoformat(timespec='seconds')}
         write_daily(args.day, started, results, failures, notes, rundir)
+    pub = sum(1 for _, e in results if e and e.get('published'))
+    if rows and not pub:
+        incident('batch-failed', f'0/{len(rows)} posts published for calendar day {args.day}',
+                 '; '.join(notes)[:300] or 'every row failed a gate (see daily list)',
+                 f'read {WORK}/daily/{started.date().isoformat()}.md and {rundir}')
+    queue_check(profile)
     return 0 if all(e and e.get('published') for _, e in results) and not notes else 2
 
 
@@ -283,9 +315,16 @@ def write_daily(day, started, results, failures, notes, rundir):
     log('daily list', out)
 
 
+def blocked(error):
+    """A run that stops before its daily list: one incident, exit 1. A renamed approved input is 'missing-source'."""
+    print('Cherish auto blocked:', str(error), file=sys.stderr)
+    kind = 'missing-source' if 'Missing approved input' in str(error) else 'batch-failed'
+    incident(kind, 'batch did not start or stopped early', str(error)[:300],
+             'fix the named input or guard, then rerun scripts/cherish_auto.py')
+    return 1
+
 if __name__ == '__main__':
     try:
         sys.exit(main())
     except (StoreGuardError, subprocess.SubprocessError, OSError, json.JSONDecodeError) as error:
-        print('Cherish auto blocked:', str(error), file=sys.stderr)
-        sys.exit(1)
+        sys.exit(blocked(error))
