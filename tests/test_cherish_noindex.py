@@ -17,6 +17,8 @@ c.subprocess.run = fake(['{"status": 429, "robots": ""}'] * 3)
 ok, why = c.noindex('u'); assert not ok and 'HTTP 429' in why, why
 c.subprocess.run = fake(['', '', ''])
 ok, why = c.noindex('u'); assert not ok and 'boom' in why, why
+c.subprocess.run = fake(['{"status": 200, "robots": "", "title": "Browser verification"}', '{"status": 200, "robots": "noindex,nofollow", "title": "x"}'])
+assert c.noindex('u') == (True, "robots='noindex,nofollow'")   # 2026-11-04 slot 2: bot check page read as robots=''
 c.subprocess.run = fake(['{"status": 200, "robots": "index,follow"}'])
 assert c.noindex('u') == (False, "robots='index,follow'")
 for _p in _patches: _p.stop()   # never leak into the unittest run (the suite imports every test_*.py)

@@ -95,7 +95,7 @@ def noindex(url, tries=3):
     code = ('import sys,json\nfrom playwright.sync_api import sync_playwright\n'
             'with sync_playwright() as p:\n'
             ' b=p.chromium.launch(channel="chromium",args=["--disable-gpu"]); pg=b.new_page(); r=pg.goto(sys.argv[1],wait_until="domcontentloaded",timeout=90000)\n'
-            ' m=pg.query_selector(\'meta[name="robots"]\'); print(json.dumps({"status": r.status if r else 0, "robots": m.get_attribute("content") if m else ""})); b.close()\n')
+            ' m=pg.query_selector(\'meta[name="robots"]\'); print(json.dumps({"status": r.status if r else 0, "robots": m.get_attribute("content") if m else "", "title": pg.title()})); b.close()\n')
     detail = ''
     for attempt in range(tries):
         if attempt:
@@ -109,8 +109,8 @@ def noindex(url, tries=3):
         if not res:
             detail = 'browser error: ' + (out.stderr.strip().splitlines() or ['no output'])[-1][:200]
             continue
-        if res['status'] != 200:
-            detail = f"HTTP {res['status']}"
+        if res['status'] != 200 or 'verif' in res.get('title', '').lower():   # Shopify bot check can answer 200 "Browser verification"
+            detail = f"HTTP {res['status']} {res.get('title', '')!r}"
             continue
         return 'noindex' in res['robots'].lower(), f"robots={res['robots']!r}"
     return False, detail + f' after {tries} tries'

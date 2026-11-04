@@ -579,14 +579,29 @@ def swap_js(art, body):
     }""" % (json.dumps(art["title"]), json.dumps(art["img"] + ("&" if "?" in art["img"] else "?") + "width=1440"), json.dumps(art.get("alt") or ""), json.dumps(body), json.dumps(art.get("seo_title", art["title"])))
 
 
+CHALLENGE = ("browser verification", "verify your browser")
+
+def goto_past_challenge(page, source, waits=(30, 60, 120)):
+    """Load `source`. Shopify bot protection answers a busy headless browser with a "Browser verification" page (HTTP 403, sometimes
+    200/404), which has no article: 2026-11-04 it showed as "no region root found" and robots=''. Back off and reload; if the store still
+    challenges, raise a named error (a FAIL, never a pass). Local files never see it."""
+    for wait in (0,) + tuple(waits):
+        if wait:
+            page.wait_for_timeout(wait * 1000)
+        r = page.goto(source, wait_until="domcontentloaded", timeout=90000)
+        page.wait_for_timeout(600)
+        title = (page.title() or "").lower()
+        if not any(c in title for c in CHALLENGE) and not (r and r.status in (403, 429)):
+            return r
+    raise RuntimeError(f"store bot challenge: HTTP {r.status if r else 0} '{page.title()}' after {len(waits)} back-offs (not a page difference)")
+
 def capture_side(browser, width, source, cfg, out_dir, side, mutate=None):
     """Load one side, collect everything. Returns a dict (JSON-able) and writes <side>.png (+ crops)."""
     ctx = new_context(browser, width)
     page = ctx.new_page()
     res = {"side": side, "url": source}
     try:
-        page.goto(source, wait_until="domcontentloaded", timeout=90000)
-        page.wait_for_timeout(600)
+        goto_past_challenge(page, source)
         res["images"] = prepare(page, mutate)
         res["head"] = page.evaluate(HEAD_JS)
         res["chrome"] = page.evaluate(CHROME_JS)
