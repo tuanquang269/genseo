@@ -59,7 +59,8 @@ def shell_owned(page):
     hero = {k: SHELL_IMG[k] for k in ('width', 'height')}
     page = re.sub(r'(<figure class="hero">\s*)(<img\b[^>]*>)', lambda m: m.group(1) + set_attrs(m.group(2), hero), page, count=1)
     def card(m, widths):   # the shell prints the image URL list per card type: pick 300/600/1200 (src 600), mini 200/400/800 (src 400)
-        base = re.search(r'src="([^"]+?)&(?:amp;)?width=\d+"', m.group(2)).group(1)
+        base = re.search(r'src="([^"]+?)(?:&(?:amp;)?width=\d+)?"', m.group(2)).group(1)   # slot 5 2026-11-05: writer src had no width
+        base += '' if '?' in base else '?'
         srcset = ', '.join(f'{base}&amp;width={w} {w}w' for w in widths)
         return m.group(1) + set_attrs(m.group(2), dict(SHELL_IMG, src=f'{base}&amp;width={widths[1]}', srcset=srcset))
     page = re.sub(r'(<div class="pick"[^>]*>\s*)(<img\b[^>]*>)', lambda m: card(m, (300, 600, 1200)), page)
