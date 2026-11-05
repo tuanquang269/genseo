@@ -285,6 +285,10 @@ def shortfall_hint(out, rules):
     if "'cards'" in failed and cards < clo:
         tips.append(f'CARDS: {cards} product cards (.pcard); the template needs {clo}-{chi}. Keep every .pcard the template has and fill '
                     f'each with an allowed product (data-product, href, real photo, current price).')
+    qh2 = re.search(r'qh2=(\d+)', out)
+    if "'question_h2'" in failed and qh2:
+        tips.append(f'QUESTION H2: {qh2.group(1)} H2 headings end with "?"; the minimum is {rules.get("q_h2", 3)}. Reword plain H2s '
+                    f'(not the numbered "Reason #N" labels) into reader questions that end with "?". Keep the H2 count.')
     if "'journal_links'" in failed and journal < rules['journal_links']:
         tips.append(f'JOURNAL LINKS: {journal} links to /blogs/news/; the minimum is {rules["journal_links"]}. Link the Journal posts '
                     f'in the row internal_links inside body sentences.')
@@ -571,6 +575,13 @@ def check_package(api, profile, row, path, existing, state):
     return package
 
 
+# The writer answered a thin-evidence row with prose that asks for approval (2026-11-05 slot 5, 5/5 attempts).
+NOT_JSON_HINT = (' (the reply was not one JSON object). Your reply asked for approval or more inputs. No person reads it and '
+                 'none will come. Approval is given now: narrow the article to what the supplied facts and sources prove, link only '
+                 'products with supplied JSON, drop any offer line without a supplied offer collection, use the supplied hero as is. '
+                 'Reply with the full package only: first character {, last character }.')
+
+
 def prepare_row(api, profile, row, path, existing, state, generate_on, attempts=5):
     """Gate a package. With --generate and no package on disk, write it and send each gate failure back to the writer (max `attempts`).
     A package that never passes is moved to <name>.failed.json so a rerun writes a fresh one."""
@@ -590,7 +601,7 @@ def prepare_row(api, profile, row, path, existing, state, generate_on, attempts=
             generate(profile, row, path, live_products, hero, day, feedback, previous, collections)
             return check_package(api, profile, row, path, existing, state)
         except ROW_ERRORS as error:
-            feedback = f'{type(error).__name__}: {error}' + (' (the reply was not one JSON object)' if isinstance(error, json.JSONDecodeError) else '')
+            feedback = f'{type(error).__name__}: {error}' + (NOT_JSON_HINT if isinstance(error, json.JSONDecodeError) else '')
             previous = path.read_text() if path.exists() else None   # the package that failed, sent back for an edit
             print(f"Slot {row['slot']} attempt {attempt}/{attempts} failed: {feedback[:300]}", file=sys.stderr)
             if attempt == attempts:

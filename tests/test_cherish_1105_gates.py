@@ -46,6 +46,12 @@ class T(unittest.TestCase):
         hint = rs.shortfall_hint(out, {'words': [1500, 2200], 'img': [6, 10], 'cards': [2, 2], 'journal_links': 2})
         self.assertIn('CARDS: 1', hint)
         self.assertIn('JOURNAL LINKS: 1', hint)
+        q = rs.shortfall_hint("RULES FAIL ['question_h2'] words=1510 h2=10 qh2=2 cards=2 imgs=7 authority=2 journal=4 tables=1", {'words': [1500, 2200], 'img': [6, 10], 'cards': [2, 2], 'journal_links': 2, 'q_h2': 3})
+        self.assertIn('QUESTION H2: 2', q)
+
+    def test_not_json_feedback_grants_approval(self):
+        self.assertIn('Approval is given now', rs.NOT_JSON_HINT)
+        self.assertIn('NOT_JSON_HINT', inspect.getsource(rs.prepare_row))
 
     def test_paint_forces_eager(self):
         import fidelity_gate
