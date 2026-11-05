@@ -1,6 +1,6 @@
 ---
 name: genseo-aeo-tracker
-description: "Use when the AEO Tracker Agent scripts identify a low Brand Mention score and triggers an emergency AEO response. This agent formulates aggressive AI-focused PR-Entity Briefs."
+description: "Record Wellness Nest AI visibility with mention and citation kept separate. Unknown stays unknown. Use when aeo_tracker.py reports a gap or a legacy Gemini mention count."
 ---
 
 # genseo-aeo-tracker
