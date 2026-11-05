@@ -12,13 +12,13 @@
     "token_key": "access_token"
   },
   "context": [
-    "/Users/kevinkreative/genseo/brand/wellnessnest.json",
+    "brand/wellnessnest.json",
     "/Users/kevinkreative/PATI/LLM-Wiki/20-brands/1-wellnessnest.md"
   ],
   "templates": [
     "/Users/kevinkreative/.claude/skills/genseo-auto-publish/references/article-templates.md"
   ],
-  "calendar": "/Users/kevinkreative/genseo/daily-tickets.md",
+  "calendar": "daily-tickets.md",
   "product_handles": [
     "ageaura-pure-nmn-tmg-nad-complex",
     "ageaura-pure-nmn-tmg-p2",
@@ -43,7 +43,7 @@
     "turkesterone-advanced-formula"
   ],
   "gates": [
-    "/Users/kevinkreative/genseo/scripts/validate_article.py"
+    "scripts/validate_article.py"
   ],
-  "legacy_runner": "/Users/kevinkreative/genseo/scripts/run_ticket_headless.sh"
+  "legacy_runner": "scripts/run_ticket_headless.sh"
 }
