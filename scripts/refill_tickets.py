@@ -838,9 +838,15 @@ def refill(a):
     else:
         try:
             store = read_store()
+            save_cache(store, now.strftime("%Y-%m-%d %H:%M ICT"))
         except (OSError, ValueError, KeyError) as e:
-            raise Refuse(f"live store unreadable ({type(e).__name__}: {e}) — failing closed")
-        save_cache(store, now.strftime("%Y-%m-%d %H:%M ICT"))
+            # ponytail: a storefront throttle (429) falls back to a snapshot under 12 h old; STEP 0 re-checks every
+            # ticket live anyway. Any other read error, or an older snapshot, still fails closed.
+            fresh = os.path.exists(CACHE) and time.time() - os.path.getmtime(CACHE) < 12 * 3600
+            if not (getattr(e, "code", None) == 429 and fresh):
+                raise Refuse(f"live store unreadable ({type(e).__name__}: {e}) — failing closed")
+            print(f"  ! storefront throttled (429) — using the snapshot under 12 h old")
+            store = load_cache()
     ctx = build_ctx(bank, queue, store, local_inventory(), now, "skip" if a.offline or a.no_suggest else "live")
     ids_day = batch_day(now, a.day)
     cands, held = candidates(bank, rows, ctx)
