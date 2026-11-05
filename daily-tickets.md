@@ -958,9 +958,9 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
 
 ## Ranking leverage 2026-11-05 (1.4, GSC 28 d) — run these first
 
-- [ ] **#RL1105-1 — [REFRESH EXISTING] /blogs/news/probiotics-and-birth-control-can-you-take-both-us-2026** — GSC 28 d: 737 impr, avg pos 7.2, CTR < 1%. ARTICLE_ID: look up by handle in STEP 0. Append-only depth for the queries at pos 4–20 (keep title + URL), sharpen meta description for click-through, add 2 internal links from sibling articles in the same cluster to this URL.
-- [ ] **#RL1105-2 — [REFRESH EXISTING] /blogs/news/probiotics-during-your-period-keep-taking-them-us-2026** — GSC 28 d: 632 impr, avg pos 8.9, CTR < 1%. ARTICLE_ID: look up by handle in STEP 0. Append-only depth for the queries at pos 4–20 (keep title + URL), sharpen meta description for click-through, add 2 internal links from sibling articles in the same cluster to this URL.
-- [ ] **#RL1105-3 — [REFRESH EXISTING] /blogs/news/best-time-to-take-vaginal-probiotics-6-rules-us-2026** — GSC 28 d: 518 impr, avg pos 8.7, CTR < 1%. ARTICLE_ID: look up by handle in STEP 0. Append-only depth for the queries at pos 4–20 (keep title + URL), sharpen meta description for click-through, add 2 internal links from sibling articles in the same cluster to this URL.
+- [SKIPPED-DUPLICATE 2026-11-05 https://wellnessnest.co/blogs/news/probiotics-and-birth-control-can-you-take-both-us-2026] **#RL1105-1 — [REFRESH EXISTING] /blogs/news/probiotics-and-birth-control-can-you-take-both-us-2026** — GSC 28 d: 737 impr, avg pos 7.2, CTR < 1%. ARTICLE_ID: look up by handle in STEP 0. Append-only depth for the queries at pos 4–20 (keep title + URL), sharpen meta description for click-through, add 2 internal links from sibling articles in the same cluster to this URL.
+- [SKIPPED-DUPLICATE 2026-11-05 https://wellnessnest.co/blogs/news/probiotics-during-your-period-keep-taking-them-us-2026] **#RL1105-2 — [REFRESH EXISTING] /blogs/news/probiotics-during-your-period-keep-taking-them-us-2026** — GSC 28 d: 632 impr, avg pos 8.9, CTR < 1%. ARTICLE_ID: look up by handle in STEP 0. Append-only depth for the queries at pos 4–20 (keep title + URL), sharpen meta description for click-through, add 2 internal links from sibling articles in the same cluster to this URL.
+- [SKIPPED-DUPLICATE 2026-11-05 https://wellnessnest.co/blogs/news/best-time-to-take-vaginal-probiotics-6-rules-us-2026] **#RL1105-3 — [REFRESH EXISTING] /blogs/news/best-time-to-take-vaginal-probiotics-6-rules-us-2026** — GSC 28 d: 518 impr, avg pos 8.7, CTR < 1%. ARTICLE_ID: look up by handle in STEP 0. Append-only depth for the queries at pos 4–20 (keep title + URL), sharpen meta description for click-through, add 2 internal links from sibling articles in the same cluster to this URL.
 - [DEFERRED 2026-11-05 rule E: refresh not allowed headless] **#RL1105-4 — [REFRESH EXISTING] /blogs/news/do-creatine-gummies-expire-6-storage-facts-us-2026** — GSC 28 d: 383 impr, avg pos 7.4, CTR < 1%. ARTICLE_ID: look up by handle in STEP 0. Append-only depth for the queries at pos 4–20 (keep title + URL), sharpen meta description for click-through, add 2 internal links from sibling articles in the same cluster to this URL.
 - [DEFERRED 2026-11-05 rule E: refresh not allowed headless] **#RL1105-5 — [REFRESH EXISTING] /blogs/news/vaginal-probiotics-side-effects-normal-vs-stop-us-2026** — GSC 28 d: 345 impr, avg pos 8.6, CTR < 1%. ARTICLE_ID: look up by handle in STEP 0. Append-only depth for the queries at pos 4–20 (keep title + URL), sharpen meta description for click-through, add 2 internal links from sibling articles in the same cluster to this URL.
 - [ ] **#RL1105-6 — [NEW ARTICLE or REFRESH] best way to take NMN (with or without food)** — GSC shows 150 impr at pos 65–72 for "best way to take nmn" + "take nmn with or without food". STEP 0: if an article already covers it, refresh that one instead.
@@ -1646,7 +1646,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** turkesterone + hair checked 2026-11-04 against 158 live articles (blog listing + sitemap + Atom + local caches) and all 111 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#MB1104-7 — vaginal probiotics after sex** — `Vaginal Probiotics After Sex: What Changes (US 2026)`
+- [SKIPPED-DUPLICATE 2026-11-05 https://wellnessnest.co/blogs/news/vaginal-probiotics-after-sex-3-checks-in-the-us] **#MB1104-7 — vaginal probiotics after sex** — `Vaginal Probiotics After Sex: What Changes (US 2026)`
   - **Primary keyword:** `vaginal probiotics after sex` · **Secondary:** probiotics after intercourse, vaginal ph after sex, semen ph balance, new partner bv
   - **Search intent:** woman who notices irritation or odor after sex and asks whether a daily probiotic changes that
   - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-04 09:21 ICT)
@@ -1675,7 +1675,7 @@ section (live price, the ticket's product link only), roster.json byline only (n
 credential), the logged fact-check pass (`logs/claims/<slug>.md`; delete unconfirmed claims), the brand gate.
 Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py once. The hero is the picked face plus the real pack unless pick prints NO-FACE. One inline image uses that face. The other inline images have no recognizable face but still show a hand, forearm, or body cropped below the eyes. A no-face image is the fallback for one frame after a face refusal or two QC misses, not a batch-wide ban. The MacBook article plist sets `GENSEO_NO_FACE=0`, and that value does not switch the lane. Prices were read live at build time; re-check the PDP while writing.
 
-- [ ] **#MB1104-8 — fake vaginal probiotics** — `Fake Vaginal Probiotics: 5 Label Checks (US 2026)`
+- [DONE 2026-11-05 https://wellnessnest.co/blogs/news/fake-vaginal-probiotics-5-checks-in-the-us] **#MB1104-8 — fake vaginal probiotics** — `Fake Vaginal Probiotics: 5 Label Checks (US 2026)`
   - **Primary keyword:** `fake vaginal probiotics` · **Secondary:** fake probiotics, probiotic label checks, best vaginal probiotic label
   - **Search intent:** woman comparing vaginal probiotic labels who wants to spot a weak or fake product
   - **Template:** LISTICLE · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-04 15:43 ICT)
@@ -1689,7 +1689,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** probiotic + authenticity checked 2026-11-04 against 163 live articles (blog listing + sitemap + Atom + local caches) and all 118 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#MB1104-9 — turkesterone and kidneys** — `Turkesterone and Kidneys: Liver and Kidney Checks (US 2026)`
+- [DONE 2026-11-05 https://wellnessnest.co/blogs/news/turkesterone-and-kidneys-3-checks-in-the-us] **#MB1104-9 — turkesterone and kidneys** — `Turkesterone and Kidneys: Liver and Kidney Checks (US 2026)`
   - **Primary keyword:** `turkesterone and kidneys` · **Secondary:** turkesterone liver kidneys, turkesterone blood test, ecdysterone kidneys
   - **Search intent:** lifter who wants to know if turkesterone stresses the kidneys or liver
   - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-04 15:43 ICT)
