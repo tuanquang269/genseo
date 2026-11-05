@@ -83,5 +83,11 @@ class T(unittest.TestCase):
             self.assertEqual(json.loads((Path(d)/'articles.json').read_text()), {'a': 2, 'slot5': {'held': True}})
 
 
+    def test_card_image_without_width(self):
+        import cherish_auto as ca
+        out = ca.shell_owned('<div class="pick"><img src="https://cdn.shopify.com/x.webp?v=1" width="1600" height="2000" alt="a" loading="lazy"></div>')
+        self.assertIn('x.webp?v=1&amp;width=600', out)
+
+
 if __name__ == '__main__':
     unittest.main()
