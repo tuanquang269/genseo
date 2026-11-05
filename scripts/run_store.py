@@ -289,6 +289,14 @@ def shortfall_hint(out, rules):
     if "'question_h2'" in failed and qh2:
         tips.append(f'QUESTION H2: {qh2.group(1)} H2 headings end with "?"; the minimum is {rules.get("q_h2", 3)}. Reword plain H2s '
                     f'(not the numbered "Reason #N" labels) into reader questions that end with "?". Keep the H2 count.')
+    h2 = re.search(r' h2=(\d+)', out)
+    if "'h2'" in failed and h2 and 'h2' in rules:
+        n, (hlo, hhi) = int(h2.group(1)), rules['h2']
+        tips.append(f'H2: {n} H2 headings; the template allows {hlo}-{hhi}. ' + (
+            f'Merge or delete {n - hhi} plain H2 sections (fold their text into the nearest section). Keep every template id (TOC links).'
+            if n > hhi else f'Add {hlo - n} H2 sections the template has. Keep every template id.'))
+    if "'words'" in failed and words > hi:
+        tips.append(f'WORDS: {words} words; the maximum is {hi}. Cut about {words - (lo + hi) // 2} words (aim for {(lo + hi) // 2}).')
     if "'journal_links'" in failed and journal < rules['journal_links']:
         tips.append(f'JOURNAL LINKS: {journal} links to /blogs/news/; the minimum is {rules["journal_links"]}. Link the Journal posts '
                     f'in the row internal_links inside body sentences.')
@@ -449,10 +457,10 @@ def finalize_page(page, template, row, package, hero, day):
     page, n = re.subn(r'(<figure class="hero">\s*)<img\b[^>]*>', lambda m: m.group(1) + tag, page, count=1)
     require(n == 1, 'Hero figure is missing')
     # The shell prints the sticky bar from journal.pick (the rail pick): its link and label are machine-owned (slot 4 2026-11-04 linked another product)
-    pick = re.search(r'<div class="pick"[^>]*>.*?<b>(.*?)</b>.*?<a class="btn" href="(/products/[a-z0-9-]+)"', page, re.S)
-    if pick:
-        page = re.sub(r'(<div class="stick"[^>]*>\s*<b>).*?(</b>\s*<a class="btn" href=")/products/[a-z0-9-]+',
-                      lambda m: m.group(1) + pick.group(1) + m.group(2) + pick.group(2), page, count=1, flags=re.S)
+    pick = re.search(r'<div class="pick"[^>]*>.*?<b>(.*?)</b>.*?<a class="btn" href="(/products/[a-z0-9-]+)"[^>]*>(.*?)</a>', page, re.S)
+    if pick:   # name, link, and the shell's fixed "See it" label (slot 6 2026-11-05: writer "See them" failed fidelity)
+        page = re.sub(r'(<div class="stick"[^>]*>\s*<b>).*?(</b>\s*<a class="btn" href=")/products/[a-z0-9-]+("[^>]*>).*?(</a>)',
+                      lambda m: m.group(1) + pick.group(1) + m.group(2) + pick.group(2) + m.group(3) + 'See it' + m.group(4), page, count=1, flags=re.S)
     require(len(soup(page).select('article figure')) == 1, 'Use no <figure> except the hero: the approved template has none, and the Journal shell lays a bare figure out differently (put product photos in the approved cards)')
     # Band cards: the 4a-4d templates print <div class="mini"> without data-product, the shell prints it (from journal.band.minis).
     def mini(m):
@@ -461,6 +469,12 @@ def finalize_page(page, template, row, package, hero, day):
         require(link is not None, 'A band card (.mini) must link to one product page (/products/<handle>), not a collection')
         return f'<div class="mini" data-product="{link.group(1)}">'
     page = re.sub(r'<div class="mini">', mini, page)
+    # The shell prints the rail TOC from journal.toc, which is read from the inline TOC: an entry only in the rail is lost on
+    # live and fails fidelity (slot 3 2026-11-05, "Check first"). The runner copies the rail entries into the inline TOC.
+    rail = re.search(r'<details class="toc" open>.*?<ol>(.*?)</ol>', page, re.S)
+    if rail:
+        items = '\n'.join(re.findall(r'<li>.*?</li>', rail.group(1), re.S))
+        page = re.sub(r'(<details class="toc inline">.*?<ol>).*?(</ol>)', lambda m: m.group(1) + '\n' + items + '\n' + m.group(2), page, count=1, flags=re.S)
     human = f'{day:%b} {day.day}, {day.year}'
     # The meta row is the approved template's (byline, Updated, N min read, note); the writer dropped a span and the publisher refused it.
     meta = re.search(r'<p class="meta">.*?</p>', template, re.S)
