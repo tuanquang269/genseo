@@ -1689,7 +1689,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** probiotic + authenticity checked 2026-11-04 against 163 live articles (blog listing + sitemap + Atom + local caches) and all 118 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#MB1104-9 — turkesterone and kidneys** — `Turkesterone and Kidneys: Liver and Kidney Checks (US 2026)`
+- [DONE 2026-11-05 https://wellnessnest.co/blogs/news/turkesterone-and-kidneys-3-checks-in-the-us] **#MB1104-9 — turkesterone and kidneys** — `Turkesterone and Kidneys: Liver and Kidney Checks (US 2026)`
   - **Primary keyword:** `turkesterone and kidneys` · **Secondary:** turkesterone liver kidneys, turkesterone blood test, ecdysterone kidneys
   - **Search intent:** lifter who wants to know if turkesterone stresses the kidneys or liver
   - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-04 15:43 ICT)
