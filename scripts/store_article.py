@@ -23,7 +23,7 @@ def prepare_html(body, template):
     return str(doc)
 
 
-def scope_css(css):
+def scope_css(css, root='genseo-cherish'):
     # Approved templates use ordinary selectors and media rules. Process leaf
     # blocks so media conditions remain intact and font-face definitions survive.
     require('@keyframes' not in css and '@import' not in css, 'Unsupported template CSS rule')
@@ -34,22 +34,22 @@ def scope_css(css):
         out = []
         for selector in selectors.split(','):
             selector = selector.strip()
-            selector = re.sub(r'^(?::root|html|body)(?=\b|\s|:|$)', '#genseo-cherish', selector)
-            if not selector.startswith('#genseo-cherish'):
-                selector = '#genseo-cherish ' + selector
+            selector = re.sub(r'^(?::root|html|body)(?=\b|\s|:|$)', '#'+root, selector)
+            if not selector.startswith('#'+root):
+                selector = '#'+root+' ' + selector
             out.append(selector)
         return ','.join(out)+'{'+declarations+'}'
     return re.sub(r'([^{}]+)\{([^{}]*)\}', leaf, css)
 
 
-def article_fragment(body):
+def article_fragment(body, root='genseo-cherish'):
     doc = soup(body)
     layout = doc.select_one('.layout')
     require(layout is not None, 'Article layout is missing')
     sections = ''.join(str(node) for node in doc.select('section.band'))
-    css = '\n'.join(scope_css(node.get_text()) for node in doc.select('style'))
+    css = '\n'.join(scope_css(node.get_text(), root) for node in doc.select('style'))
     schema = ''.join(str(node) for node in doc.select('script[type="application/ld+json"]'))
-    return '<style>'+css+'</style><div id="genseo-cherish">'+str(layout)+sections+'</div>'+schema
+    return '<style>'+css+'</style><div id="'+root+'">'+str(layout)+sections+'</div>'+schema
 
 
 def validate_schema(body, package, profile):

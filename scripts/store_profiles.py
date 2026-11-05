@@ -21,26 +21,28 @@ def require(ok, message):
 
 class Profile:
     def __init__(self, store):
-        require(store in ('wellnessnest', 'cherish'), 'Unknown store')
+        require(store in ('wellnessnest', 'cherish', 'southedc'), 'Unknown store')
         self.store = store
         self.path = ROOT / 'stores' / store / 'profile.json'
         self.data = json.loads(self.path.read_text())
         require(self.data['id'] == store, 'Profile identity mismatch')
         expected = {'wellnessnest': ('wellnessnest.co', 'wellnessnest1.myshopify.com'),
-                    'cherish': ('thecherishcompany.com', 'uxfaue-s1.myshopify.com')}[store]
+                    'cherish': ('thecherishcompany.com', 'uxfaue-s1.myshopify.com'),
+                    'southedc': ('southedc.store', 'wellness-nest-de.myshopify.com')}[store]
         require((self.data['domain'], self.data['shop']) == expected, 'Store domain mismatch')
-        self.other = 'cherish' if store == 'wellnessnest' else 'wellnessnest'
-        self.other_data = json.loads((ROOT / 'stores' / self.other / 'profile.json').read_text())
+        self.others = [s for s in ('wellnessnest', 'cherish', 'southedc') if s != store]
+        self.others_data = [json.loads((ROOT / 'stores' / s / 'profile.json').read_text()) for s in self.others]
         self.allowed = {Path(p).expanduser().resolve() for key in ('context', 'templates', 'gates')
                         for p in self.data[key]}
         self.allowed.add(Path(self.data['calendar']).resolve())
         if 'registry' in self.data:
             self.allowed.add(Path(self.data['registry']).resolve())
-        foreign = {Path(p).expanduser().resolve() for key in ('context', 'templates', 'gates')
-                   for p in self.other_data[key]}
-        foreign.add(Path(self.other_data['calendar']).resolve())
-        if 'registry' in self.other_data:
-            foreign.add(Path(self.other_data['registry']).resolve())
+        foreign = set()
+        for od in self.others_data:
+            foreign |= {Path(p).expanduser().resolve() for key in ('context', 'templates', 'gates') for p in od[key]}
+            foreign.add(Path(od['calendar']).resolve())
+            if 'registry' in od:
+                foreign.add(Path(od['registry']).resolve())
         require(not self.allowed.intersection(foreign), 'Cross-store context in profile')
         # Profile edits cannot grant access to the vault root, another store, or a secret file.
         home = Path.home()
@@ -48,6 +50,8 @@ class Profile:
         work = home/'PATI/work'
         if store == 'cherish':
             ownership = [vault/'20-brands/23-new-bedding-brand', work/'cherish-seo', work/'cherish-ids']
+        elif store == 'southedc':
+            ownership = [work/'southedc-seo']
         else:
             ownership = [ROOT/'brand', ROOT/'scripts', home/'.claude/skills/genseo-auto-publish/references']
         for p in self.allowed:
@@ -66,6 +70,9 @@ class Profile:
             require(Path(c['env_file']).resolve() == Path.home()/'PATI/LLM-Wiki/.env', 'Wrong credential file')
             require(all(k.startswith(c['prefix']) for k in c['keys']), 'Cross-store credential key')
             require(Path(c['adapter']).resolve() == Path('/Users/kevinkreative/PATI/work/cherish-launch-tools/t3_store.py'), 'Unapproved credential adapter')
+        elif self.store == 'southedc':
+            require(c['prefix'] == 'SHOPIFY_SOUTHEDC_' and all(k.startswith(c['prefix']) for k in c['keys']), 'Wrong credential namespace')
+            require(Path(c['adapter']).resolve() == Path('/Users/kevinkreative/PATI/work/_tools/shopify-app/shop-app.py'), 'Unapproved credential adapter')
         else:
             require(c['kind'] == 'legacy-json', 'Wrong credential source')
             require(Path(c['path']).expanduser().resolve() == Path.home()/'.genseo/shopify_token.json', 'Wrong credential path')
@@ -86,9 +93,11 @@ class Profile:
 
     def check_text(self, text):
         # Apply to generated content, not approved history which can mention other brands.
-        foreign = (self.other_data['domain'], self.other_data['shop'])
+        foreign = tuple(d for od in self.others_data for d in (od['domain'], od['shop']))
         require(not any(d in text.lower() for d in foreign), 'Cross-store domain in content')
-        names = ('wellness nest', 'wellnessnest', 'shilasource', 'florafresh', 'fusiforce', 'ageaura', 'turkesterone') if self.store == 'cherish' else ('the cherish company', 'thecherishcompany')
+        names = {'wellnessnest': ('wellness nest', 'wellnessnest', 'shilasource', 'florafresh', 'fusiforce', 'ageaura', 'turkesterone'),
+                 'cherish': ('the cherish company', 'thecherishcompany'), 'southedc': ('southedc',)}
+        names = tuple(n for s in self.others for n in names[s])
         require(not any(n in text.lower() for n in names), 'Cross-store brand context in content')
         for match in re.finditer(r'(?:https?://[^\s<>"\')\\]+)?/products/([^\s<>"\')?#/|\\]+)', text, re.I):
             url = match.group(0)
@@ -118,6 +127,8 @@ class Profile:
             path = Path(os.environ.get('GENSEO_CONFIG', c['path'])).expanduser()
             cfg = json.loads(path.read_text())
             domain = cfg['shop']
+        elif self.store == 'southedc':   # shop-app.py client credentials: the shop comes from its alias map, not .env
+            domain = self.adapter().store_id(self.store) + '.myshopify.com'
         else:
             env = {}
             for line in Path(c['env_file']).read_text().splitlines():
@@ -184,11 +195,20 @@ class Profile:
                            'output_contract': 'Return an article package with store, day, slot, title, handle, meta_description, body_html, and facts. Preserve approved CSS and structure. Include rules-machine exactly. Each facts item needs claim and source (an approved path, evidence URL, or shopify://<shop>/products/<handle> from the supplied live product facts) and quote. Do not invent claims. Do not read global GenSEO skills. Use a style- prefixed HTML filename for the render gate. Publishing is performed by the guarded runner only.' + self.journal_contract()}, ensure_ascii=False, indent=2)
 
     def journal_contract(self):
+        if self.data.get('article_contract') == 'fragment-v1':
+            return ' Output one body fragment rooted at #genseo-' + self.store + '.'
         if self.data.get('article_contract') != 'journal-v1':
             return ''
         from journal_fields import CHIP_TAGS
         return (' The package also needs "tags": 1 to 3 values chosen only from ' + json.dumps(CHIP_TAGS) +
                 '. The runner writes the article body and journal.* metafields from your page; it adds no CSS or JSON-LD to the body.')
+
+    def adapter(self):
+        import importlib.util
+        path = self.data['credential']['adapter']
+        spec = importlib.util.spec_from_file_location('genseo_shop_app', path)
+        mod = importlib.util.module_from_spec(spec); spec.loader.exec_module(mod)
+        return mod
 
     def fingerprint(self):
         return hashlib.sha256(self.path.read_bytes()).hexdigest()
