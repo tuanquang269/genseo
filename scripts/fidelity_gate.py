@@ -267,6 +267,8 @@ ISOLATE_JS = r"""() => {
 # A loading="lazy" image the theme re-inserts after IMAGES_JS never starts (2026-11-05 probe: live rail .pick img lazy,
 # visible, complete=false after 8 s; eager = loaded at once). Make every image eager here too, then wait.
 PAINT_JS = r"""async () => {
+  // Hard cap 25 s: an evaluate without a cap hung the 900 px live capture for 20 min (slot 2 2026-11-05).
+  const work = (async () => {
   for (const i of document.images) if (i.loading === 'lazy') i.loading = 'eager';
   const t0 = Date.now();
   while (Date.now() - t0 < 8000 && [...document.images].some(i => !i.complete)) await new Promise(r => setTimeout(r, 100));
@@ -276,6 +278,8 @@ PAINT_JS = r"""async () => {
   await Promise.all([...document.images].filter(i => i.complete && i.naturalWidth > 0).map(i => i.decode().catch(() => {})));
   await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
   return [...document.images].filter(i => !i.complete).length;
+  })();
+  return Promise.race([work, new Promise(r => setTimeout(() => r(-1), 25000))]);
 }"""
 
 IMAGES_JS = r"""async () => {
