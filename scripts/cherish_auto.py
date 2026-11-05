@@ -129,8 +129,11 @@ def fidelity_once(pairs, run_id, theme, qa_copy, rundir):
         env['GATE_QA_COPY'] = '1'
     logf = rundir/f'gate-{run_id}.log'
     with logf.open('w') as f:
-        code = subprocess.call([PY, '-I', str(SKILL/'fidelity_gate.py'), '--theme', str(theme), '--pairs', str(pairs),
-                                '--jobs', '2', '--run-id', run_id], stdout=f, stderr=subprocess.STDOUT, env=env, timeout=3600)
+        try:   # 15 min cap: a hung capture must fail into the retry, not block the day (slot 2 2026-11-05 hung 20 min)
+            code = subprocess.call([PY, '-I', str(SKILL/'fidelity_gate.py'), '--theme', str(theme), '--pairs', str(pairs),
+                                    '--jobs', '2', '--run-id', run_id], stdout=f, stderr=subprocess.STDOUT, env=env, timeout=900)
+        except subprocess.TimeoutExpired:
+            f.write('\nGATE: FAIL (timeout 900 s)\n'); code = 124
     last = (logf.read_text().strip().splitlines() or [''])[-1]
     ok = code == 0 and 'GATE: PASS' in last
     return ok, last if ok else last + gate_why(Path(json.loads(GATE_PROFILE.read_text())['runs_dir'])/run_id)
