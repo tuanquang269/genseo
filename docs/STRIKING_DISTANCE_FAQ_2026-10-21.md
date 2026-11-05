@@ -2,7 +2,7 @@
 
 DRAFT report. Nothing here was published. No ticket was added to `daily-tickets.md`. No Shopify write.
 
-Aligned with Kevin's 2026-10-21 decisions, using draft PR #88 (`cursor/florafresh-15b-mike-moretti-0e04`) as the rule source: FloraFresh is 15B CFU of Bacillus coagulans SNZ-1969 per 2 gummies, and the blog byline is Mike Moretti, role `Co-founder, Wellness Nest`. This diff does not include #88's script, roster, ticket, or test edits. `https://wellnessnest.co/pages/mike-moretti` returned HTTP 404 on 2026-10-21 (PR #88; `https://wellnessnest.co/pages/dr-marcus-hale` returned HTTP 200). Applying any of these refreshes still waits on Kevin creating `/pages/mike-moretti`.
+Superseded 2026-10-28. Do not apply this proposal. FloraFresh is Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies. The 2026-10-21 draft (PR #88, `cursor/florafresh-15b-mike-moretti-0e04`) used a closed count and named Mike Moretti. That count is not the label. The blog byline stays Dr. Marcus Hale until `/pages/mike-moretti` returns HTTP 200. On 2026-10-21 that page returned HTTP 404 and `/pages/dr-marcus-hale` returned HTTP 200. This file does not edit `scripts/florafresh_rules.py`, `roster.json`, or any live post.
 
 Window: GSC daily file `~/genseo-wt/inputs/2026-10-21-gsc.md`, raw rows in `~/genseo-wt/inputs/2026-10-21-gsc-raw.csv`, current period 2026-10-12 through 2026-10-18. Page rows below are summed from that CSV (impressions weighted). Locale paths (`/sk/`, `/el/`) are the same handle, not a second article.
 
@@ -49,21 +49,21 @@ On each proposal's `proposed-block` HTML, after the 2026-10-21 alignment. `flora
 | NMN and coffee | 0 | allow (`ageaura-pure-nmn-tmg-nad-complex`) | 0 fails, 0 warnings | 58 |
 | creatine gummies | 0 | allow | 0 fails, 0 warnings | 59 |
 
-The same three checks on each full proposal file (notes plus block) also returned 0 FloraFresh violations, `allow`, and 0 citability fails or warnings. This report is not an answer block. On #88's FloraFresh rules it has 0 violations, and `brand_rules.assess` returns allow. This branch's `florafresh_rules.py` still encodes the 2026-10-09 count: `violations()` on the birth-control block returns 1 hit and treats the 15B CFU line as the rejected PDP figure.
+The same three checks on each full proposal file (notes plus block) also returned 0 FloraFresh violations, `allow`, and 0 citability fails or warnings. This report is not an answer block. Those 2026-10-21 checks used PR #88's module. `scripts/florafresh_rules.py` on main locks 1 billion CFU, so `violations()` on a block that still uses the closed 2026-10-21 count returns 1 hit and treats that count as the rejected PDP figure.
 
 `validate_article.py` was not run. These files are patches, not 900-word drafts, and they are not in `published_drafts/`. A later update still has to pass `validate_article.py --draft` before `shopify_publisher.py update`. Link liveness in that gate fails a roster author page that returns 404.
 
 ## Facts the proposals follow, and facts they still leave out
 
-- **FloraFresh count.** Kevin 2026-10-21, via PR #88's `scripts/florafresh_rules.py`: Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies, vitamin C 30 mg, pineapple fruit powder 100 mg (with bromelain), sweetened with maltitol and isomalt. The birth-control proposal uses that Supplement Facts line. The PDP strain story stays out of the block. This pass does not change `scripts/florafresh_rules.py` or `docs/FLORAFRESH_FORMULA_GUARD.md`. On this branch those files still encode the 2026-10-09 count, so a lint that imports this branch's script rejects 15B CFU. The lint below used #88's script.
-- **Byline.** All three proposals use **Mike Moretti**, role `Co-founder, Wellness Nest`. PR #88 adds that roster row (bio copied verbatim, headshot marked TODO) and records the author-page check: `/pages/mike-moretti` HTTP 404, `/pages/dr-marcus-hale` HTTP 200, both on 2026-10-21. A HEAD request during this edit returned the same two codes. This PR does not edit `roster.json` and does not create the page. The earlier draft of this PR recorded the live Article author as Dr. Marcus Hale. This pass does not update those posts. Applying the Mike Moretti byline waits on Kevin creating the page.
+- **FloraFresh count.** Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, vitamin C 30 mg, pineapple fruit powder 100 mg (with bromelain), sweetened with maltitol and isomalt. Kevin closed the earlier count on 2026-10-28. The birth-control proposal uses that Supplement Facts line. The PDP strain story stays out of the block. Do not apply PR #88's closed count, and do not change `scripts/florafresh_rules.py` or `docs/FLORAFRESH_FORMULA_GUARD.md` in order to accept it.
+- **Byline.** The byline stays **Dr. Marcus Hale** until `/pages/mike-moretti` returns HTTP 200. The 2026-10-21 draft named Mike Moretti, role `Co-founder, Wellness Nest`. PR #88 recorded `/pages/mike-moretti` HTTP 404 and `/pages/dr-marcus-hale` HTTP 200 on 2026-10-21. This file does not edit `roster.json` and does not update live posts.
 - **AgeAura Pure NMN + TMG NAD+ Complex milligrams** (`/products/ageaura-pure-nmn-tmg-nad-complex`). The public product page prints a per-serving milligram line. The 2026-10-08 pack-shot whitelist does not. The NMN proposal states no milligram amount.
 - **Creatine days per pouch.** Not calculated. Front OCR lists 90 and no serving size.
 
 ## What needs Kevin's GO
 
-1. Create `https://wellnessnest.co/pages/mike-moretti`. PR #88 recorded HTTP 404 on 2026-10-21. A HEAD request during this edit returned 404 again (`/pages/dr-marcus-hale` returned 200). `validate_article.py` fails link liveness on a roster author page that 404s. PR #88's byline check requires the Mike Moretti name, the role `Co-founder, Wellness Nest`, and `/pages/mike-moretti`, and it leaves the headshot as TODO. This pass does not invent a headshot and does not create the page.
-2. Apply the three blocks in place (opening plus FAQ, byline Mike Moretti). That means `shopify_publisher.py update` only after `validate_article.py` prints PASS. This pass did not update the live posts.
-3. Land PR #88's rule and roster edits before anyone re-lints these blocks with this branch's `scripts/florafresh_rules.py`. This PR does not carry those edits.
+1. Do not switch the byline. `/pages/mike-moretti` returned HTTP 404 on 2026-10-21 and `/pages/dr-marcus-hale` returned HTTP 200. The byline stays Dr. Marcus Hale until `/pages/mike-moretti` returns HTTP 200. This pass does not create that page.
+2. Do not apply these blocks to live posts. A later update still has to pass `validate_article.py` before any `shopify_publisher.py update`. This pass did not update the live posts.
+3. Do not land PR #88. `scripts/florafresh_rules.py` on main already locks Bacillus coagulans SNZ-1969 at 1 billion CFU per 2 gummies.
 4. A title or meta test for these 0-click page-1 queries. Titles were left unchanged because the pages already rank.
 5. Any ticket or queue append. None was written.

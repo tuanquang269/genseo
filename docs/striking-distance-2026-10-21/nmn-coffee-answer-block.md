@@ -2,7 +2,7 @@
 
 Status: **DRAFT. Not published. Not a ticket. No Shopify write.**
 
-This is a refresh block for the blog post that already ranks. Do not open a second URL. Do not change the title or the handle. The byline to apply is Mike Moretti, Co-founder, Wellness Nest. Applying the refresh still waits on a live `/pages/mike-moretti` (HTTP 404 on 2026-10-21, recorded in PR #88).
+Superseded 2026-10-28. Do not apply this block. Do not open a second URL. Do not change the title or the handle. The byline stays Dr. Marcus Hale until `/pages/mike-moretti` returns HTTP 200. The 2026-10-21 draft named Mike Moretti, and that page returned HTTP 404 on 2026-10-21 (PR #88). AgeAura stays NMN + TMG only.
 
 | Field | Value |
 |---|---|
@@ -10,7 +10,7 @@ This is a refresh block for the blog post that already ranks. Do not open a seco
 | Owning URL | https://wellnessnest.co/blogs/news/nmn-and-coffee-can-you-take-them-together-us-2026 |
 | Same article, other locale paths | `/sk/blogs/news/nmn-and-coffee-can-you-take-them-together-us-2026` (2 impressions on the everyday query); `/el/blogs/news/nmn-and-coffee-can-you-take-them-together-us-2026` (2 impressions on the powder query) |
 | Action | Refresh the opening so it answers "every day" and "powder in coffee," and add those FAQ lines. Keep the existing sections. |
-| Byline | **Mike Moretti**, role `Co-founder, Wellness Nest` (Kevin 2026-10-21). The earlier draft recorded the live Article author as Dr. Marcus Hale. This pass does not update the post. `/pages/mike-moretti` returned HTTP 404 on 2026-10-21 (PR #88; HEAD during this edit was 404 again), so the apply waits on Kevin creating that page. |
+| Byline | **Dr. Marcus Hale** until `/pages/mike-moretti` returns HTTP 200. The 2026-10-21 draft named Mike Moretti and recorded HTTP 404 for that page (PR #88). This pass does not update the live post. |
 | Title | Keep `NMN and Coffee: Can You Take Them Together? (US 2026)`. |
 | Product | AgeAura Pure NMN + TMG NAD+ Complex only. Do not link any other AgeAura handle. |
 
