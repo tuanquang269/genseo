@@ -328,14 +328,6 @@
       "source": "draft PR #75 data/offpage_seeds/shilasource.json on cursor/offpage-listicle-gap-1020"
     },
     {
-      "id": "florafresh-florafresh-morning-or-night",
-      "brand_id": "florafresh",
-      "text": "vaginal probiotics morning or night",
-      "prompt_status": "hypothesised",
-      "source": "templates/article-topic-bank.json topic florafresh-morning-or-night primary",
-      "bank_id": "florafresh-morning-or-night"
-    },
-    {
       "id": "florafresh-vaginal-probiotic-dosage",
       "brand_id": "florafresh",
       "text": "vaginal probiotic dosage",
@@ -451,6 +443,38 @@
       "prompt_status": "hypothesised",
       "source": "templates/article-topic-bank.json topic vaginal-probiotics-for-athletes primary",
       "bank_id": "vaginal-probiotics-for-athletes"
+    },
+    {
+      "id": "florafresh-vaginal-probiotics-for-odor",
+      "brand_id": "florafresh",
+      "text": "vaginal probiotics for odor",
+      "prompt_status": "hypothesised",
+      "source": "templates/article-topic-bank.json topic vaginal-probiotics-for-odor primary",
+      "bank_id": "vaginal-probiotics-for-odor"
+    },
+    {
+      "id": "florafresh-vaginal-probiotics-after-sex",
+      "brand_id": "florafresh",
+      "text": "vaginal probiotics after sex",
+      "prompt_status": "hypothesised",
+      "source": "templates/article-topic-bank.json topic vaginal-probiotics-after-sex primary",
+      "bank_id": "vaginal-probiotics-after-sex"
+    },
+    {
+      "id": "florafresh-fake-vaginal-probiotics",
+      "brand_id": "florafresh",
+      "text": "fake vaginal probiotics",
+      "prompt_status": "hypothesised",
+      "source": "templates/article-topic-bank.json topic fake-vaginal-probiotics primary",
+      "bank_id": "fake-vaginal-probiotics"
+    },
+    {
+      "id": "florafresh-vaginal-probiotics-with-coffee",
+      "brand_id": "florafresh",
+      "text": "vaginal probiotics with food or coffee",
+      "prompt_status": "hypothesised",
+      "source": "templates/article-topic-bank.json topic vaginal-probiotics-with-coffee primary",
+      "bank_id": "vaginal-probiotics-with-coffee"
     }
   ]
 }

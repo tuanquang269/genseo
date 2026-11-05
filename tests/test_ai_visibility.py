@@ -69,7 +69,7 @@ def errors_for(**overrides):
 class PromptSet(unittest.TestCase):
     def test_size_and_status(self):
         data = catalog()
-        self.assertEqual(len(data["prompts"]), 51)
+        self.assertEqual(len(data["prompts"]), 54)
         self.assertEqual(len(data["platforms"]), 6)
         self.assertEqual(
             [item["id"] for item in data["platforms"]],
@@ -91,7 +91,7 @@ class PromptSet(unittest.TestCase):
         problems = ai_visibility.florafresh_bank_problems(catalog())
         self.assertEqual(problems, [])
         flora = [prompt for prompt in catalog()["prompts"] if prompt["brand_id"] == "florafresh"]
-        self.assertEqual(len(flora), 15)
+        self.assertEqual(len(flora), 18)
         self.assertTrue(any(prompt.get("paste_caution") for prompt in flora))
 
     def test_competitor_patterns_match_pr75_counts(self):
@@ -119,7 +119,7 @@ class PromptSet(unittest.TestCase):
 class Validator(unittest.TestCase):
     def test_blank_template_validates(self):
         doc = ai_visibility.template_document()
-        self.assertEqual(len(doc["observations"]), 306)
+        self.assertEqual(len(doc["observations"]), 324)
         self.assertEqual(ai_visibility.validate_ledger(doc), [])
         self.assertTrue(all(row["observed"] is False for row in doc["observations"]))
         self.assertTrue(all(row["brand_mentioned"] == "unknown" for row in doc["observations"]))
@@ -181,7 +181,7 @@ class Validator(unittest.TestCase):
         doc = ai_visibility.template_document()
         text = ai_visibility.rows_to_csv(doc["observations"])
         rows = ai_visibility.rows_from_csv(text)
-        self.assertEqual(len(rows), 306)
+        self.assertEqual(len(rows), 324)
         self.assertEqual(ai_visibility.validate_ledger({"observations": rows}), [])
         header = next(csv.reader(io.StringIO(text)))
         self.assertIn("domain_cited", header)
@@ -192,7 +192,7 @@ class MatrixAndGaps(unittest.TestCase):
     def test_empty_ledger_is_all_unknown_and_has_no_gaps(self):
         data = catalog()
         matrix = ai_visibility.build_matrix(data, [])
-        self.assertEqual(sum(cell["prompts"] for cell in matrix), 306)
+        self.assertEqual(sum(cell["prompts"] for cell in matrix), 324)
         age_chatgpt = next(
             cell for cell in matrix
             if cell["brand_id"] == "ageaura" and cell["platform"] == "chatgpt"
@@ -580,15 +580,15 @@ class Cli(unittest.TestCase):
         )
         self.assertEqual(self_check.returncode, 0, self_check.stdout + self_check.stderr)
         self.assertIn("✓ PASS", self_check.stdout)
-        self.assertIn("prompts=51", self_check.stdout)
-        self.assertIn("slots=306", self_check.stdout)
+        self.assertIn("prompts=54", self_check.stdout)
+        self.assertIn("slots=324", self_check.stdout)
 
         report = subprocess.run(
             [PY, SCRIPT, "report"], cwd=ROOT, env=env,
             capture_output=True, text=True,
         )
         self.assertEqual(report.returncode, 0, report.stdout + report.stderr)
-        self.assertIn("Slots: 306", report.stdout)
+        self.assertIn("Slots: 324", report.stdout)
         self.assertIn("Disagreement gaps: 0", report.stdout)
         self.assertIn("## Mentioned but not cited", report.stdout)
         self.assertIn("## Cited but not mentioned", report.stdout)
