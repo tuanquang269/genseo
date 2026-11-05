@@ -1623,7 +1623,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** shilajit + medications checked 2026-11-04 against 158 live articles (blog listing + sitemap + Atom + local caches) and all 111 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#MB1104-6 — turkesterone hair loss** — `Turkesterone and Hair Loss: The DHT Question (US 2026)`
+- [DONE 2026-11-05 https://wellnessnest.co/blogs/news/turkesterone-hair-loss-dht-evidence-in-the-us] **#MB1104-6 — turkesterone hair loss** — `Turkesterone and Hair Loss: The DHT Question (US 2026)`
   - **Primary keyword:** `turkesterone hair loss` · **Secondary:** turkesterone dht, turkesterone and hair, turkesterone balding, is turkesterone hormonal
   - **Search intent:** man worried about hair loss who wants to know whether turkesterone acts on DHT
   - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-04 09:21 ICT)
