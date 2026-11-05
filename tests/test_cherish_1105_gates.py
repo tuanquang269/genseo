@@ -75,6 +75,13 @@ class T(unittest.TestCase):
             tocs = [re.findall(r'href="#([^"]+)"', m.group(0)) for m in re.finditer(r'<details class="toc[^"]*".*?</details>', t, re.S)]
             self.assertEqual(tocs[0], tocs[1], f)
 
+    def test_save_ledger_keeps_concurrent_entries(self):
+        import json, tempfile, cherish_auto as ca
+        with tempfile.TemporaryDirectory() as d, mock.patch.object(ca, 'STATE', Path(d)):
+            (Path(d)/'articles.json').write_text(json.dumps({'a': 1, 'slot5': {'held': True}}))  # run_store wrote slot5 mid-run
+            ca.save_ledger({'a': 2})
+            self.assertEqual(json.loads((Path(d)/'articles.json').read_text()), {'a': 2, 'slot5': {'held': True}})
+
 
 if __name__ == '__main__':
     unittest.main()

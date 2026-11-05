@@ -167,6 +167,9 @@ def qa_stage(cmd, rundir, targets=None):
 
 def save_ledger(ledger):
     path = STATE/'articles.json'
+    # Merge: a run_store write during this run (another slot) must survive (slot 5 2026-11-05 was lost on overwrite).
+    disk = json.loads(path.read_text()) if path.exists() else {}
+    ledger = {**disk, **ledger}
     temp = path.with_suffix('.tmp')
     temp.write_text(json.dumps(ledger, indent=2) + '\n')
     temp.replace(path)
