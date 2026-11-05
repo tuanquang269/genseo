@@ -22,7 +22,7 @@ import ageaura_rules as ar
 import brand_rules as br
 from gsc_fetcher import get_service
 
-SITE = "https://wellnessnest.co/"
+SITE = "sc-domain:wellnessnest.co"  # token lists sc-domain properties only (2026-11-05)
 CLIMB_LO, CLIMB_HI = 8.0, 20.0     # just-off-page-1 .. top-of-page-2 = realistic to climb with depth
 CTR_LO, CTR_HI = 2.0, 7.99         # page-1 positions where a weak CTR is a meta/title problem
 CTR_FLOOR = 0.02                   # < 2% CTR at a page-1 position = fixable underclick
