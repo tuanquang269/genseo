@@ -1,3 +1,5 @@
+<!-- meta_description: On a rest day in the US, follow the shilajit label instead of adding extra resin. No trial compared here found a gym-day versus rest-day difference. -->
+
 If you take shilajit on gym days, a rest day does not automatically require a different routine. Follow the product label, keep the same portion rather than adding extra resin, and take it with or without food according to what feels comfortable. For US shoppers, the important distinction is consistency: no human trial found here compared shilajit on training days with shilajit on rest days.
 
 ## Should you take shilajit on rest days?
@@ -88,6 +90,4 @@ The curated label record for ShilaSource Himalayan Shilajit Resin does not list 
 
 ### About the Author
 
-[Dr. Marcus Hale](/pages/dr-marcus-hale)
-
-Dr. Marcus Hale is the resident health researcher behind Wellness Nest's editorial team, translating peer-reviewed sports-nutrition and longevity research into practical daily guidance for US readers.
+[Mike Moretti](/pages/mike-moretti) — Mike Moretti is a co-founder of Wellness Nest and the brand's public face.

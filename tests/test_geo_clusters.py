@@ -116,14 +116,15 @@ class AssignAndGuards(unittest.TestCase):
         resin = wc._evidence("shilajit", wc.RESIN)
         aura = wc._evidence("ageaura-nmn", wc.AGEAURA)
         self.assertIn("SNZ-1969", flora)
-        self.assertIn("1 billion CFU", flora)
-        self.assertNotIn("15 billion", flora)
+        self.assertIn("15B CFU", flora)
+        self.assertNotIn("1 billion CFU", flora)
+        self.assertNotIn("1B CFU", flora)
         self.assertNotIn("sugar-free", flora.lower())
         self.assertEqual(wc.guard_topic_text(flora, wc.FLORA), [])
         self.assertEqual(wc.guard_topic_text(resin, wc.RESIN), [])
         self.assertEqual(wc.guard_topic_text(aura, wc.AGEAURA), [])
         self.assertIn("ageaura-pure-nmn-tmg-nad-complex", aura)
-        bad = "FloraFresh is sugar-free with 15 billion CFU from four Lactobacillus strains and XOS."
+        bad = "FloraFresh is sugar-free with 1 billion CFU from four Lactobacillus strains and XOS."
         self.assertTrue(wc.guard_topic_text(bad, wc.FLORA))
         self.assertTrue(wc.guard_topic_text("buy urolithin a", wc.AGEAURA))
         self.assertTrue(wc.query_blocked("shilajit", "shilajit gummies price"))
@@ -253,7 +254,7 @@ class QuestionsAndLinks(unittest.TestCase):
 
     def test_sugar_free_title_does_not_become_the_anchor(self):
         self.assertEqual(
-            wc.anchor_text("FloraFresh is sugar-free with 15 billion CFU"),
+            wc.anchor_text("FloraFresh is sugar-free with 1B CFU"),
             "the related article in this cluster",
         )
         self.assertIn("Shilajit", wc.anchor_text("What Is Shilajit: A Complete Guide"))

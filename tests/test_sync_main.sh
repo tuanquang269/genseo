@@ -1,6 +1,8 @@
 #!/bin/bash
 # Pre-run fast-forward of origin/main for the article and landing launchd wrappers.
 # Temp git repos only. No Shopify, no network, no launchd, no push.
+# A run_landing_daily.sh outside every fixture stays open for the whole file.
+# The sync guard must ignore that process.
 #   bash tests/test_sync_main.sh
 # Syntax target is bash 3.2 (macOS /bin/bash).
 set -uo pipefail
@@ -27,6 +29,24 @@ cleanup() {
   rm -rf "$WORK"
 }
 trap cleanup EXIT
+
+# Live job in another directory. bash holds the script open on fd 3.
+# This must not change any assertion, including the stale-launcher re-exec.
+FOREIGN="$WORK/foreign-landing"
+mkdir -p "$FOREIGN"
+cat >"$FOREIGN/run_landing_daily.sh" <<'EOF'
+#!/bin/bash
+exec 3<"$0"
+sleep 600
+EOF
+chmod 755 "$FOREIGN/run_landing_daily.sh"
+(cd "$FOREIGN" && exec /bin/bash "$FOREIGN/run_landing_daily.sh") &
+HOLD_PIDS="$HOLD_PIDS $!"
+sleep 0.2
+if ! ps -p "$!" -ww -o args= | grep -F -q "$FOREIGN/run_landing_daily.sh"; then
+  printf '  FAIL foreign run_landing_daily.sh did not stay open\n' >&2
+  exit 1
+fi
 
 ok() { PASS=$((PASS + 1)); printf '  ok   %s\n' "$*"; }
 bad() { FAIL=$((FAIL + 1)); printf '  FAIL %s\n' "$*"; }
@@ -674,6 +694,9 @@ trap 'genseo_stable_copy_release now' EXIT
 printf '%s\n' 'echo ontAsk' >"$GENSEO_LAUNCH_SOURCE"
 echo STABLE_OK
 echo "STABLE_SCRIPT:$GENSEO_STABLE_SCRIPT"
+if [ -f "${GENSEO_STABLE_SCRIPT:-}.repo" ]; then
+  echo "STABLE_REPO:$(cat "$GENSEO_STABLE_SCRIPT.repo")"
+fi
 EOF
 : >"$WORK/out"
 : >"$WORK/err"
@@ -690,6 +713,13 @@ if [ -n "$stable_path" ] && [ ! -e "$stable_path" ]; then
 else
   bad "stable copy left behind ($stable_path)"
 fi
+if [ -n "$stable_path" ] && [ ! -e "$stable_path.repo" ]; then
+  ok "stable copy repo marker removed on exit"
+else
+  bad "stable copy repo marker left behind (${stable_path}.repo)"
+fi
+want_repo=$(cd "$home5/genseo" && pwd -P)
+has "$WORK/out" "STABLE_REPO:$want_repo" "stable copy records this checkout"
 
 echo "6. a fast-forward re-execs the repo script and adopts the lock"
 if ! init_repo reexec; then
@@ -757,6 +787,203 @@ EOF
   [ -f "$REPO/FROM_ORIGIN" ] && ok "re-exec fast-forward brought the origin file" || bad "re-exec missed the origin file"
   [ "$(bare_main)" = "$bare_before" ] && ok "re-exec did not push" || bad "re-exec pushed"
   [ "$(head_of "$REPO")" = "$(git -C "$REPO" rev-parse origin/main)" ] && ok "re-exec HEAD matches origin/main" || bad "re-exec HEAD drifted"
+fi
+
+echo "6b. a job outside this checkout does not block; one for this checkout still does"
+if ! init_repo foreignok || ! advance_origin foreignok; then
+  bad "foreignok fixture"
+else
+  ok "foreignok fixture"
+  before=$(head_of "$REPO")
+  run_sync
+  assert_rc 0 "foreign job still fast-forwards"
+  has "$WORK/out" "fast-forwarded" "foreign run_landing_daily.sh does not block"
+  lacks "$WORK/out" "another GenSeo job has a script open" "foreign run_landing_daily.sh is not this checkout"
+  [ "$(head_of "$REPO")" != "$before" ] && ok "foreign job left HEAD moved" || bad "foreign job left HEAD in place"
+fi
+
+if ! init_repo stableme || ! advance_origin stableme; then
+  bad "stableme fixture"
+else
+  ok "stableme fixture"
+  copy=$(mktemp "${TMPDIR:-/tmp}/run_landing_daily.XXXXXX")
+  cat >"$copy" <<'EOF'
+#!/bin/bash
+exec 3<"$0"
+sleep 120
+EOF
+  chmod 700 "$copy"
+  repo_phys=$(cd "$REPO" && pwd -P)
+  printf '%s\n' "$repo_phys" >"$copy.repo"
+  /bin/bash "$copy" >/dev/null 2>&1 &
+  scope_pid=$!
+  HOLD_PIDS="$HOLD_PIDS $scope_pid"
+  sleep 0.2
+  before=$(head_of "$REPO")
+  run_sync
+  assert_rc 0 "same-checkout stable copy exits 0"
+  has "$WORK/out" "another GenSeo job has a script open" "same-checkout stable copy blocks"
+  lacks "$WORK/out" "fast-forwarded" "same-checkout stable copy did not fast-forward"
+  [ "$(head_of "$REPO")" = "$before" ] && ok "same-checkout stable copy left HEAD" || bad "same-checkout stable copy moved HEAD"
+  [ ! -e "$REPO/FROM_ORIGIN" ] && ok "same-checkout stable copy did not take the origin file" || bad "same-checkout stable copy took the origin file"
+  kill "$scope_pid" 2>/dev/null || true
+  wait "$scope_pid" 2>/dev/null || true
+  rm -f "$copy" "$copy.repo"
+fi
+
+if ! init_repo stablenone || ! advance_origin stablenone; then
+  bad "stablenone fixture"
+else
+  ok "stablenone fixture"
+  copy=$(mktemp "${TMPDIR:-/tmp}/run_landing_daily.XXXXXX")
+  cat >"$copy" <<'EOF'
+#!/bin/bash
+exec 3<"$0"
+sleep 120
+EOF
+  chmod 700 "$copy"
+  rm -f "$copy.repo"
+  /bin/bash "$copy" >/dev/null 2>&1 &
+  scope_pid=$!
+  HOLD_PIDS="$HOLD_PIDS $scope_pid"
+  sleep 0.2
+  before=$(head_of "$REPO")
+  run_sync
+  assert_rc 0 "unscoped stable copy still fast-forwards"
+  has "$WORK/out" "fast-forwarded" "stable copy without a checkout marker does not block"
+  lacks "$WORK/out" "another GenSeo job has a script open" "unscoped stable copy is not this checkout"
+  [ "$(head_of "$REPO")" != "$before" ] && ok "unscoped stable copy left HEAD moved" || bad "unscoped stable copy left HEAD in place"
+  kill "$scope_pid" 2>/dev/null || true
+  wait "$scope_pid" 2>/dev/null || true
+  rm -f "$copy" "$copy.repo"
+fi
+
+if ! init_repo stableother || ! advance_origin stableother; then
+  bad "stableother fixture"
+else
+  ok "stableother fixture"
+  copy=$(mktemp "${TMPDIR:-/tmp}/grokbot-genseo-daily.XXXXXX")
+  cat >"$copy" <<'EOF'
+#!/bin/bash
+exec 3<"$0"
+sleep 120
+EOF
+  chmod 700 "$copy"
+  other_co=$(mktemp -d "$WORK/other-checkout.XXXXXX")
+  printf '%s\n' "$(cd "$other_co" && pwd -P)" >"$copy.repo"
+  /bin/bash "$copy" >/dev/null 2>&1 &
+  scope_pid=$!
+  HOLD_PIDS="$HOLD_PIDS $scope_pid"
+  sleep 0.2
+  before=$(head_of "$REPO")
+  run_sync
+  assert_rc 0 "other-checkout stable copy still fast-forwards"
+  has "$WORK/out" "fast-forwarded" "other-checkout stable copy does not block"
+  lacks "$WORK/out" "another GenSeo job has a script open" "other-checkout stable copy is not this checkout"
+  [ "$(head_of "$REPO")" != "$before" ] && ok "other-checkout stable copy left HEAD moved" || bad "other-checkout stable copy left HEAD in place"
+  kill "$scope_pid" 2>/dev/null || true
+  wait "$scope_pid" 2>/dev/null || true
+  rm -f "$copy" "$copy.repo"
+fi
+
+if ! init_repo psfail || ! advance_origin psfail; then
+  bad "psfail fixture"
+else
+  ok "psfail fixture"
+  printf '%s\n' '#!/bin/bash' 'exit 1' >"$WORK/ps-fail"
+  chmod 755 "$WORK/ps-fail"
+  before=$(head_of "$REPO")
+  SYNC_ENV="GENSEO_SYNC_TEST=1 GENSEO_SYNC_PS=$WORK/ps-fail"
+  run_sync
+  unset SYNC_ENV
+  assert_rc 0 "unreadable process list exits 0"
+  has "$WORK/out" "another GenSeo job has a script open" "unreadable process list fails closed"
+  [ "$(head_of "$REPO")" = "$before" ] && ok "unreadable process list left HEAD" || bad "unreadable process list moved HEAD"
+  [ ! -e "$REPO/FROM_ORIGIN" ] && ok "unreadable process list did not take the origin file" || bad "unreadable process list took the origin file"
+fi
+
+if ! init_repo psin || ! advance_origin psin; then
+  bad "psin fixture"
+else
+  ok "psin fixture"
+  mkdir -p "$REPO/scripts"
+  printf '%s\n' '#!/bin/bash' 'exit 0' >"$REPO/scripts/run_ticket_headless.sh"
+  chmod 755 "$REPO/scripts/run_ticket_headless.sh"
+  repo_phys=$(cd "$REPO" && pwd -P)
+  sleep 120 &
+  scope_pid=$!
+  HOLD_PIDS="$HOLD_PIDS $scope_pid"
+  cat >"$WORK/ps-in" <<EOF
+#!/bin/bash
+printf '%s %s\n' "$scope_pid" "/bin/bash $repo_phys/scripts/run_ticket_headless.sh"
+exit 0
+EOF
+  chmod 755 "$WORK/ps-in"
+  before=$(head_of "$REPO")
+  SYNC_ENV="GENSEO_SYNC_TEST=1 GENSEO_SYNC_PS=$WORK/ps-in"
+  run_sync
+  unset SYNC_ENV
+  assert_rc 0 "injected in-checkout script exits 0"
+  has "$WORK/out" "another GenSeo job has a script open" "injected in-checkout script blocks"
+  [ "$(head_of "$REPO")" = "$before" ] && ok "injected in-checkout script left HEAD" || bad "injected in-checkout script moved HEAD"
+  kill "$scope_pid" 2>/dev/null || true
+  wait "$scope_pid" 2>/dev/null || true
+fi
+
+if ! init_repo binother || ! advance_origin binother; then
+  bad "binother fixture"
+else
+  ok "binother fixture"
+  sleep 120 &
+  scope_pid=$!
+  HOLD_PIDS="$HOLD_PIDS $scope_pid"
+  cat >"$WORK/ps-binother" <<EOF
+#!/bin/bash
+printf '%s %s\n' "$scope_pid" "/bin/bash /Users/kevinkreative/bin/grokbot-genseo-daily.sh"
+exit 0
+EOF
+  chmod 755 "$WORK/ps-binother"
+  before=$(head_of "$REPO")
+  SYNC_ENV="GENSEO_SYNC_TEST=1 GENSEO_SYNC_PS=$WORK/ps-binother"
+  run_sync
+  unset SYNC_ENV
+  assert_rc 0 "other home bin launcher still fast-forwards"
+  has "$WORK/out" "fast-forwarded" "other home bin launcher does not block this checkout"
+  lacks "$WORK/out" "another GenSeo job has a script open" "other home bin launcher is not this checkout"
+  [ "$(head_of "$REPO")" != "$before" ] && ok "other home bin launcher left HEAD moved" || bad "other home bin launcher left HEAD in place"
+  kill "$scope_pid" 2>/dev/null || true
+  wait "$scope_pid" 2>/dev/null || true
+fi
+
+if ! init_repo binmine || ! advance_origin binmine; then
+  bad "binmine fixture"
+else
+  ok "binmine fixture"
+  home_b="$WORK/home-binmine"
+  rm -rf "$home_b"
+  mkdir -p "$home_b/bin"
+  ln -s "$REPO" "$home_b/genseo"
+  printf '%s\n' '#!/bin/bash' 'exit 0' >"$home_b/bin/grokbot-genseo-daily.sh"
+  chmod 755 "$home_b/bin/grokbot-genseo-daily.sh"
+  sleep 120 &
+  scope_pid=$!
+  HOLD_PIDS="$HOLD_PIDS $scope_pid"
+  cat >"$WORK/ps-binmine" <<EOF
+#!/bin/bash
+printf '%s %s\n' "$scope_pid" "/bin/bash $home_b/bin/grokbot-genseo-daily.sh"
+exit 0
+EOF
+  chmod 755 "$WORK/ps-binmine"
+  before=$(head_of "$REPO")
+  SYNC_ENV="GENSEO_SYNC_TEST=1 GENSEO_SYNC_PS=$WORK/ps-binmine"
+  run_sync
+  unset SYNC_ENV
+  assert_rc 0 "this home bin launcher exits 0"
+  has "$WORK/out" "another GenSeo job has a script open" "this home bin launcher blocks its checkout"
+  [ "$(head_of "$REPO")" = "$before" ] && ok "this home bin launcher left HEAD" || bad "this home bin launcher moved HEAD"
+  [ ! -e "$REPO/FROM_ORIGIN" ] && ok "this home bin launcher did not take the origin file" || bad "this home bin launcher took the origin file"
+  kill "$scope_pid" 2>/dev/null || true
+  wait "$scope_pid" 2>/dev/null || true
 fi
 
 echo "7. a stale launcher re-execs the repo script when main is already current"
