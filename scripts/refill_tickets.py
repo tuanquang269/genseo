@@ -317,18 +317,25 @@ def update_board(rows, queue, picked, rejected, day):
 # ---------- live store ----------
 
 def fetch(url, tries=3, timeout=25):
-    for i in range(tries):
+    throttled = 0
+    i = 0
+    while True:
         try:
             with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=timeout) as r:
                 return r.read().decode("utf-8", "replace")
         except urllib.error.HTTPError as e:
+            # Shopify storefront throttle: wait it out, up to 4 waits (11-05 refill failed closed on 429)
+            if e.code == 429 and throttled < 4:
+                throttled += 1
+                time.sleep(min(float(e.headers.get("Retry-After") or 0) or 5 * throttled, 65))
+                continue
             if e.code == 404 or i == tries - 1:
                 raise
         except OSError:
             if i == tries - 1:
                 raise
         time.sleep(2 ** i)
-
+        i += 1
 
 def listing_page(n):
     found = {}
