@@ -13,6 +13,7 @@ import sys, os, re, glob, json, subprocess, tempfile, urllib.request, urllib.err
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import genseo_roster
 import brand_rules as _br
+import entity_names
 import first_hand_experience as _fh
 import geo_citability
 
@@ -298,6 +299,15 @@ def http_ok(url):
             time.sleep(1.5 * (attempt + 1))
     return code in ("429", "430", "503")  # throttled/transient → don't fail the article on it
 
+
+def extend_entity_warnings(html, warns):
+    """Non-canonical entity spellings are a WARN. They do not fail the publish gate."""
+    try:
+        warns.extend(entity_names.variant_warnings(html))
+    except Exception as e:
+        warns.append(f"entity name check skipped ({e})")
+
+
 def test_author_gate():
     """python3 scripts/validate_article.py --self-check-author"""
     if not genseo_roster.ROSTER:
@@ -525,6 +535,10 @@ def main():
     fh_fails, fh_warns = _fh.article_findings(html)
     fails.extend(fh_fails)
     warns.extend(fh_warns)
+
+    # Entity names (SEL 2026-10-15). Non-canonical spellings WARN only.
+    # data/entity_canonical_names.json is the proposal. This does not fail publish.
+    extend_entity_warnings(html, warns)
 
     # Citability (answer shape, FAQ, question H2s, product + related article,
     # primary source, alt text, draft meta length, no hand-written Published date).
