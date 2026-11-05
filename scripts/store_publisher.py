@@ -16,9 +16,14 @@ FILES_QUERY = 'query($q:String!){ files(first:5, query:$q){ nodes{ id fileStatus
 
 class Shopify:
     def __init__(self, profile):
-        require(profile.store == 'cherish', 'Use the legacy publisher for Wellness Nest')
+        require(profile.store in ('cherish', 'southedc'), 'Use the legacy publisher for Wellness Nest')
         self.profile = profile
         profile.credential_domain()
+        self.domain = profile.data['shop']
+        if profile.store == 'southedc':   # shop-app.py: client-credentials token per store alias
+            app = profile.adapter()
+            self.auth = type('Auth', (), {'token': staticmethod(lambda live=True: app.token(app.store_id('southedc')))})
+            return
         path = profile.data['credential']['adapter']
         spec = importlib.util.spec_from_file_location('cherish_genseo_auth', path)
         self.auth = importlib.util.module_from_spec(spec)
@@ -136,7 +141,7 @@ class Shopify:
         self.identity()
         if self.profile.data.get('article_contract') == 'journal-v1':
             return self.publish_journal(package, blog, live)
-        fragment = article_fragment(package['body_html'])
+        fragment = article_fragment(package['body_html'], 'genseo-'+self.profile.store)
         article = {'title': package['title'], 'handle': package['handle'],
                    'body_html': fragment, 'published': False,
                    'author': self.profile.data['name'],
@@ -150,7 +155,7 @@ class Shopify:
         require(not readback.get('published_at'), 'Article was not created unpublished')
         validate_schema(readback['body_html'], package, self.profile)
         rendered = soup(readback['body_html'])
-        require(rendered.select_one('#genseo-cherish') is not None and rendered.style is not None,
+        require(rendered.select_one('#genseo-'+self.profile.store) is not None and rendered.style is not None,
                 'Article layout or styles missing in Shopify readback')
         require(len(rendered.select('img')) == len(soup(fragment).select('img')), 'Images lost in Shopify readback')
         self.profile.check_text(readback['body_html'])

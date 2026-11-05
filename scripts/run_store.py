@@ -153,6 +153,8 @@ def read_package(path, profile, row, live_products=None, collections=None):
     match = re.search(r'<script[^>]*id="rules-machine"[^>]*>(.*?)</script>', body, re.S)
     require(match is not None and match.group(1).strip().startswith('{') and json.loads(match.group(1)) == rules, 'Article changed approved template rules: copy #rules-machine exactly')
     require(not re.search(r'clinically proven|cures? insomnia|softer every wash|softer by day 100|\bluxury\b', body, re.I), 'Unsupported or banned claim')
+    if profile.store == 'southedc':   # topic guard: no gun use, ballistics or legal advice
+        require(not re.search(r'ballistic|calib(?:er|re)|stopping power|how to (?:draw|shoot)|reciprocity|is it legal|undetectable|zero printing', body, re.I), 'Banned SouthEDC topic')
     package['raw_html'], package['style'], package['keyword'] = body, row['style'], row['primary_keyword']  # journal-v1 reads the full page; prepare_html strips the sticky bar
     body = prepare_html(body, template)
     package['body_html'] = body
@@ -423,7 +425,7 @@ def pick_hero(api, row, articles, budget, hero_sets=None):
     for image in product.get('images', []):
         if stem(image['src']) in used:
             continue
-        alt = image.get('alt') or 'The Cherish Company — ' + product['title']
+        alt = image.get('alt') or getattr(getattr(api, 'profile', None), 'data', {}).get('name', 'The Cherish Company') + ' — ' + product['title']
         kb = served_kb(image['src']) if budget else 0
         if not budget or kb <= int(budget):
             return {'src': image['src'], 'alt': alt}
@@ -626,7 +628,7 @@ def prepare_row(api, profile, row, path, existing, state, generate_on, attempts=
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument('--store', required=True, choices=['wellnessnest','cherish'])
+    ap.add_argument('--store', required=True, choices=['wellnessnest','cherish','southedc'])
     ap.add_argument('--day', default=dt.datetime.now(ZoneInfo('Asia/Ho_Chi_Minh')).date().isoformat())
     ap.add_argument('--dry-run', action='store_true')
     ap.add_argument('--print-prompt', action='store_true')

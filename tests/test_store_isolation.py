@@ -219,12 +219,12 @@ class CherishRecoveryTests(unittest.TestCase):
             self.assertEqual(cherish_auto.blocked(caught.exception), 1)
         self.assertEqual(sent.call_args[0][0], 'missing-source')
 
-    def test_second_run_after_a_publish_does_not_exceed_the_daily_allowance(self):
+    def test_run_after_the_daily_target_is_reached_does_nothing(self):   # e106dfb: a partial day (3/7) runs again to fill the target
         import cherish_auto
         with tempfile.TemporaryDirectory() as tmp:
             day = cherish_auto.dt.datetime.now(cherish_auto.ICT).date().isoformat()
             (Path(tmp)/'daily').mkdir()
-            (Path(tmp)/'daily'/f'{day}.md').write_text('Calendar day x · approval=auto rows: 7 · published: 3 · job\n')
+            (Path(tmp)/'daily'/f'{day}.md').write_text('Calendar day x · approval=auto rows: 7 · published: 7 · job\n')
             with patch.object(cherish_auto, 'WORK', Path(tmp)), patch.object(cherish_auto.subprocess, 'run') as run, \
                  patch.object(cherish_auto.subprocess, 'call') as call:
                 self.assertEqual(cherish_auto.main([]), 0)
