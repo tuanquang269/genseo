@@ -264,7 +264,10 @@ ISOLATE_JS = r"""() => {
 # complete != painted. ISOLATE_JS and the rail/stick scroll re-lay out the page, so a srcset image can pick a new candidate and
 # show blank until it arrives (2026-11-04: template-side .pick photo captured blank, 6-10 tile pixel FAIL on slots 1 and 2).
 # Called right before every screenshot: wait for every image to finish, decode it, then two frames. No threshold changes.
+# A loading="lazy" image the theme re-inserts after IMAGES_JS never starts (2026-11-05 probe: live rail .pick img lazy,
+# visible, complete=false after 8 s; eager = loaded at once). Make every image eager here too, then wait.
 PAINT_JS = r"""async () => {
+  for (const i of document.images) if (i.loading === 'lazy') i.loading = 'eager';
   const t0 = Date.now();
   while (Date.now() - t0 < 8000 && [...document.images].some(i => !i.complete)) await new Promise(r => setTimeout(r, 100));
   await Promise.all([...document.images].filter(i => i.complete && i.naturalWidth > 0).map(i => i.decode().catch(() => {})));
