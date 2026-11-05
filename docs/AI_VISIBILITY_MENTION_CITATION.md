@@ -36,7 +36,7 @@ The shipped ledger is empty. Add a row only after a person, or a confirmed adapt
 
 ## Prompt set
 
-51 hypothesised prompts. 18 AgeAura and 18 ShilaSource are the query lists from draft PR #75 (`cursor/offpage-listicle-gap-1020`, `data/offpage_seeds`). 15 FloraFresh prompts are topic-bank primaries. Five of those primaries are segment glue (`paste_caution` on the prompt). They were not observed in an answer engine.
+54 hypothesised prompts. 18 AgeAura and 18 ShilaSource are the query lists from draft PR #75 (`cursor/offpage-listicle-gap-1020`, `data/offpage_seeds`). 18 FloraFresh prompts are the current topic-bank primaries, in bank order. The old `florafresh-morning-or-night` primary is no longer in the bank, so it is not in this catalog. Five of the FloraFresh primaries are segment glue (`paste_caution` on the prompt). They were not observed in an answer engine.
 
 PR #75's pages are a different measurement: `ai_citation_observed: false`, evidence `web search rank`. Do not copy them in as citations. Competitor name patterns are the string list from that draft, used only to mark a name that appears in answer text. FloraFresh has no pattern list because that draft did not record one. An unmatched name is not a confirmed absence.
 
