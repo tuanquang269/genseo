@@ -270,6 +270,9 @@ PAINT_JS = r"""async () => {
   for (const i of document.images) if (i.loading === 'lazy') i.loading = 'eager';
   const t0 = Date.now();
   while (Date.now() - t0 < 8000 && [...document.images].some(i => !i.complete)) await new Promise(r => setTimeout(r, 100));
+  // A failed fetch is also "complete" (naturalWidth 0) and paints blank (slot 6 2026-11-05 pcard): reload it once.
+  for (const i of document.images) if (i.complete && i.naturalWidth === 0 && i.currentSrc) { const s = i.srcset; i.srcset = ''; i.srcset = s; i.src = i.src; }
+  while (Date.now() - t0 < 15000 && [...document.images].some(i => !i.complete)) await new Promise(r => setTimeout(r, 100));
   await Promise.all([...document.images].filter(i => i.complete && i.naturalWidth > 0).map(i => i.decode().catch(() => {})));
   await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
   return [...document.images].filter(i => !i.complete).length;
