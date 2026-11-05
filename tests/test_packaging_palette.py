@@ -152,8 +152,6 @@ class SpecGate(unittest.TestCase):
         names = (
             "florafresh-listicle-261009.json",
             "ageaura-nmn-listicle-261008.json",
-            "fusiforce-creatine-listicle-261008.json",
-            "shilajit-gummies-listicle-261008.json",
             "shilasource-resin-listicle-261008.json",
         )
         for name in names:
@@ -161,6 +159,18 @@ class SpecGate(unittest.TestCase):
                 spec = json.load(fh)
             self.assertEqual(pp.spec_violations(spec), [], name)
             self.assertEqual(br.spec_violations(spec), [], name)
+        # 2026-10-08 drafts still state doses the pack whitelist does not list.
+        # Palette stays valid. The label guards fail closed.
+        for name, prefix in (
+            ("fusiforce-creatine-listicle-261008.json", "FusiForce label:"),
+            ("shilajit-gummies-listicle-261008.json", "Shilajit gummies label:"),
+        ):
+            with open(os.path.join(ROOT, "landing_drafts", name), encoding="utf-8") as fh:
+                spec = json.load(fh)
+            self.assertEqual(pp.spec_violations(spec), [], name)
+            bad = br.spec_violations(spec)
+            self.assertTrue(bad, name)
+            self.assertTrue(all(item.startswith(prefix) for item in bad), bad)
 
     def test_florafresh_opt_out_and_green_hue_fail(self):
         off = _spec(FF, palette="off")
