@@ -37,7 +37,7 @@ def get_service():
         sys.exit(1)
 
     if os.path.exists(token_path):
-        creds = Credentials.from_authorized_user_file(token_path, SCOPES)
+        creds = Credentials.from_authorized_user_file(token_path)  # token scopes win: requesting a narrower scope on refresh = invalid_scope (2026-11-05)
     
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
