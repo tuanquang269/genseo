@@ -1703,7 +1703,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** turkesterone + kidneys checked 2026-11-04 against 163 live articles (blog listing + sitemap + Atom + local caches) and all 118 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#MB1104-10 — creatine gummies and blood pressure** — `Creatine Gummies and Blood Pressure (US 2026)`
+- [DONE 2026-11-05 https://wellnessnest.co/blogs/news/creatine-gummies-and-blood-pressure-the-us-2026-data] **#MB1104-10 — creatine gummies and blood pressure** — `Creatine Gummies and Blood Pressure (US 2026)`
   - **Primary keyword:** `creatine gummies and blood pressure` · **Secondary:** creatine hypertension, creatine blood pressure medication
   - **Search intent:** adult with high blood pressure who wants to start creatine gummies
   - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-04 15:43 ICT)
