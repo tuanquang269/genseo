@@ -214,10 +214,11 @@ def main(argv=None):
     started = dt.datetime.now(ICT)
     profile = Profile('cherish')
     if args.day is None:
-        # One publishing day per calendar day: the 09:45 catch-up only runs when 07:45 published nothing.
+        # Catch-up runs (09:45, 11:45, 13:45, 15:45) retry until the day holds daily_volume posts (Kevin 2026-11-05: hit the target).
         report = WORK/'daily'/f'{started.date().isoformat()}.md'
-        if report.exists() and re.search(r'· published: [1-9]', report.read_text()):
-            log('already published today, skip'); return 0
+        done = max(map(int, re.findall(r'· published: (\d+)', report.read_text())), default=0) if report.exists() else 0
+        if done >= int(profile.data.get('daily_volume', 7)):
+            log('daily target reached, skip'); return 0
         args.day = next_day(profile)
     require(profile.credential_domain() == 'uxfaue-s1.myshopify.com', 'Not the Cherish store')
     rows = [r for r in profile.calendar(args.day) if r['approval'] == 'auto']
@@ -243,6 +244,11 @@ def main(argv=None):
         main_theme = next(t['id'] for t in api.request('/admin/api/2026-04/themes.json')['themes'] if t['role'] == 'main')
         ledger = json.loads((STATE/'articles.json').read_text())
         topics = {r['uniqueness_key']: r for r in rows}
+        # A gate FAIL is retried on later runs (max 3 gate tries): runner fixes and flaky captures (lazy image) clear on a rerun.
+        # ponytail: a structural writer error fails all 3; upgrade = regenerate the body and PUT it onto the held article.
+        for e in ledger.values():
+            if e.get('held') and not e['published'] and str(e.get('gate', '')).startswith('FAIL') and e.get('tries', 1) < 3:
+                e['tries'] = e.get('tries', 1) + 1; e.pop('gate')
         held = {t: e for t, e in ledger.items() if t in topics and e.get('held') and not e['published'] and 'gate' not in e}
         domain, blog = profile.data['domain'], profile.data['blog_handle']
         if held:
