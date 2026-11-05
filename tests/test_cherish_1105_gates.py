@@ -58,5 +58,23 @@ class T(unittest.TestCase):
         self.assertIn("i.loading = 'eager'", fidelity_gate.PAINT_JS)
 
 
+    def test_h2_over_max_hint(self):
+        out = "RULES FAIL ['h2'] words=1818 h2=11 qh2=7 cards=4 imgs=6 authority=1 journal=4"
+        tip = rs.shortfall_hint(out, {'words': [1500, 2200], 'img': [6, 10], 'cards': [2, 4], 'h2': [7, 10], 'journal_links': 2})
+        self.assertIn('Merge or delete 1', tip)
+
+    def test_runner_owns_toc_and_sticky_label(self):
+        src = inspect.getsource(rs.finalize_page)
+        self.assertIn('<details class="toc inline">', src)   # inline TOC copies the rail entries (journal.toc source)
+        self.assertIn("'See it'", src)                        # sticky label = shell's fixed label
+
+    def test_templates_inline_toc_equals_rail(self):
+        import glob, re
+        for f in glob.glob(str(Path.home()/'PATI/work/cherish-seo/blog-styles/style-*.html')):
+            t = Path(f).read_text()
+            tocs = [re.findall(r'href="#([^"]+)"', m.group(0)) for m in re.finditer(r'<details class="toc[^"]*".*?</details>', t, re.S)]
+            self.assertEqual(tocs[0], tocs[1], f)
+
+
 if __name__ == '__main__':
     unittest.main()
