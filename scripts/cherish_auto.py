@@ -198,8 +198,8 @@ def incident(kind, shortfall, cause, action, checkpoint='next run 07:45 ICT (cat
         log('incident not sent:', error)
 
 
-def queue_check(profile):
-    n = len(eligible_rows(profile))
+def queue_check(profile, today=None):
+    n = len(eligible_rows(profile, today=today))
     if n < LOW_ROWS:
         incident('queue-empty' if n == 0 else 'queue-low', f'{n} eligible calendar rows < {LOW_ROWS} (2 days at 7/day)',
                  'calendar.csv has too few unpublished approval=auto rows', 'add researched rows to genseo-400/calendar.csv')

@@ -243,7 +243,7 @@ class CherishRecoveryTests(unittest.TestCase):
                 keys = [r['uniqueness_key'] for r in cherish_auto.eligible_rows(Fake(), today='2026-11-04')]
                 self.assertEqual(keys, ['c', 'e'])
                 with patch.object(cherish_auto, 'incident') as sent:
-                    self.assertEqual(cherish_auto.queue_check(Fake()), 2)
+                    self.assertEqual(cherish_auto.queue_check(Fake(), today='2026-11-04'), 2)
                 self.assertEqual(sent.call_args[0][0], 'queue-low')
 
 
