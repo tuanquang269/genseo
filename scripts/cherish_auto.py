@@ -21,6 +21,7 @@ import re
 import subprocess
 import sys
 import time
+import urllib.request
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -165,6 +166,22 @@ def qa_stage(cmd, rundir, targets=None):
     (rundir/f'qa-{cmd}.log').write_text(out.stdout + out.stderr)
     require(out.returncode == 0, f'qa_stage {cmd} failed: ' + (out.stdout + out.stderr)[-400:])
 
+
+def indexnow(urls):
+    """Submit new posts to Bing (feeds ChatGPT search + Copilot) via Webmaster URL Submission API.
+    ponytail: IndexNow key file cannot sit at Shopify root (Bing 403 on 301), so Bing API key (Keychain) instead;
+    100 URLs/day quota, no retry; a failed submit only logs, the sitemap still covers the URL."""
+    if not urls:
+        return
+    try:
+        key = subprocess.run(['security', 'find-generic-password', '-a', 'pati', '-s', 'bing-webmaster-api-key', '-w'],
+                             capture_output=True, text=True, check=True).stdout.strip()
+        body = json.dumps({'siteUrl': 'https://thecherishcompany.com/', 'urlList': urls}).encode()
+        req = urllib.request.Request(f'https://ssl.bing.com/webmaster/api.svc/json/SubmitUrlBatch?apikey={key}', data=body,
+                                     method='POST', headers={'Content-Type': 'application/json; charset=utf-8'})
+        log('bing submit', urllib.request.urlopen(req, timeout=30).getcode(), len(urls), 'urls')
+    except Exception as error:
+        log('bing submit FAILED', type(error).__name__, getattr(error, 'code', ''), error.read()[:200] if hasattr(error, 'read') else '')
 
 def save_ledger(ledger):
     path = STATE/'articles.json'
@@ -314,6 +331,7 @@ def main(argv=None):
                 e['gate'] = 'FAIL after publish (unpublished again): ' + last
         ledger.update(held)
         save_ledger(ledger)
+        indexnow([e['url'] for e in held.values() if e.get('published') and e.get('url')])
         for topic, row in sorted(topics.items(), key=lambda kv: int(kv[1]['slot'])):
             results.append((row, ledger.get(topic)))
         failures = [json.loads(l) for l in (STATE/'failures.jsonl').read_text().splitlines()] if (STATE/'failures.jsonl').exists() else []
