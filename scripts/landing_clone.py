@@ -231,8 +231,12 @@ ICO = {
 STAR_G = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#2f8a3b" d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7-4.4 6.4-.8z"/></svg>'
 
 
-def gstars(n=5):
-    return f'<span class="gslp-stars" aria-label="{n} out of 5 stars">' + STAR_G * int(n) + '</span>'
+def gstars(n=5, total=5):
+    """Filled stars out of `total`. n=5 keeps the previous five-green markup."""
+    n = max(0, min(int(n), int(total)))
+    empty = STAR_G.replace('fill="#2f8a3b"', 'fill="#c5c9ce"')
+    return (f'<span class="gslp-stars" aria-label="{n} out of {total} stars">'
+            + STAR_G * n + empty * (total - n) + '</span>')
 
 
 def sec(kind, inner, extra=""):
@@ -272,7 +276,7 @@ def render_listicle(spec, imgs):
         if spec.get("trust"):
             lis = ""
             for t in spec["trust"]:
-                icon = f'<i class="gslp-trust__stars">{gstars(5)}</i>' if t.get("icon") == "stars" else ICO.get(t.get("icon", "check"), ICO["check"])
+                icon = f'<i class="gslp-trust__stars">{gstars(t.get("stars", 5))}</i>' if t.get("icon") == "stars" else ICO.get(t.get("icon", "check"), ICO["check"])
                 lis += f'<li>{icon}<span>{t["html"]}</span></li>'
             out.append(sec("listicle-trust gslp-trust", f'<ul>{lis}</ul>'))
     else:
@@ -348,7 +352,7 @@ def revs_html(revs):
 
 def offer_extras(of):
     pr = of.get("price") or {}
-    rating = f'<p class="gslp-rating">{gstars(5)}<span>{of["rating_html"]}</span></p>' if of.get("rating_html") else ""
+    rating = f'<p class="gslp-rating">{gstars(of.get("stars", 5))}<span>{of["rating_html"]}</span></p>' if of.get("rating_html") else ""
     price = ""
     if pr.get("now"):
         price = (f'<div class="gslp-price"><span class="gslp-price__now">{E(pr["now"])}</span>'

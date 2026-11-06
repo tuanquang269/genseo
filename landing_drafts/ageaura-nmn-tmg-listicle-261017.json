@@ -49,11 +49,11 @@
       "source": "https://doi.org/10.3389/fragi.2022.851698",
       "image": "tmp_images/landing-ageaura-nmn-tmg-listicle-261017/row01-nad.webp",
       "alt": "Abstract unmarked circles on cream paper beside water and travertine, illustrating a cellular pathway",
-      "evidence_label": "Human RCT · Huang et al., Front Aging 2022"
+      "evidence_label": "Human RCT · Huang H, Front Aging 2022"
     },
     {
       "title": "Results depend on the outcome",
-      "body": "<p>In a <a href=\"https://doi.org/10.3389/fragi.2022.851698\" target=\"_blank\" rel=\"noopener\">60-day trial</a> of 66 adults aged 40 to 65, the NMN group’s blood NAD+/NADH rose 38% from baseline.</p><p>Placebo rose 14.3%. The study measured blood markers and selected health measures, not a universal feeling of vitality.</p>",
+      "body": "<p>In a <a href=\"https://doi.org/10.3389/fragi.2022.851698\" target=\"_blank\" rel=\"noopener\">60-day trial</a> of 66 adults aged 40 to 65, the NMN group’s blood NAD+/NADH rose 38% from baseline.</p><p>Placebo rose 14.3%. The trial measured blood markers and a few health scores, not a feeling of vitality.</p><p>A <a href=\"https://doi.org/10.1080/10408398.2024.2387324\" target=\"_blank\" rel=\"noopener\">2025 review</a> of 12 adult trials found higher blood NAD. Most glucose and lipid results did not differ.</p>",
       "evidence": "Human RCT, Frontiers in Aging 2022",
       "source": "https://doi.org/10.3389/fragi.2022.851698",
       "image": "tmp_images/landing-ageaura-nmn-tmg-listicle-261017/row02-trial.webp",
@@ -84,9 +84,9 @@
             "display": "+14.3%"
           }
         ],
-        "source": "Huang et al., Front Aging 2022. 66 adults, 60 days, NMN vs placebo."
+        "source": "Huang H, Front Aging 2022. 66 adults, 60 days, NMN vs placebo."
       },
-      "evidence_label": "Human RCT · Huang et al., Front Aging 2022"
+      "evidence_label": "Human RCT · Huang H, Front Aging 2022"
     },
     {
       "title": "TMG has a different research role",
@@ -127,13 +127,13 @@
       "evidence_label": "Human RCT, TMG only · Olthof et al., J Nutr 2003"
     },
     {
-      "title": "A rationale is not proof",
-      "body": "<p>NMN and TMG are often discussed together because NMN research examines NAD-related metabolism while betaine research examines methylation-related markers.</p><p>Separate mechanisms can explain a pairing. They cannot establish that the combination improves a result.</p>",
-      "evidence": "Interpretation based on the separate NMN and betaine trials cited",
+      "title": "This trial tested NMN only",
+      "body": "<p>In a <a href=\"https://doi.org/10.1007/s11357-024-01204-1\" target=\"_blank\" rel=\"noopener\">12-week trial</a> of 60 older adults, daily NMN raised blood NAD. A 4-meter walk was faster than placebo.</p><p>The main stepping test did not differ. Sleep quality scores improved. This trial did not test TMG.</p>",
+      "evidence": "Human RCT, GeroScience 2024, NMN alone",
       "source": "https://doi.org/10.1007/s11357-024-01204-1",
       "image": "tmp_images/landing-ageaura-nmn-tmg-listicle-261017/row05-methyl.webp",
-      "alt": "Unmarked smooth stones arranged in a chain on travertine, illustrating a proposed pathway without labels",
-      "evidence_label": "Evidence interpretation · separate ingredient studies"
+      "alt": "Unmarked smooth stones arranged in a chain on travertine",
+      "evidence_label": "Human RCT, NMN only · Morifuji et al., GeroScience 2024"
     },
     {
       "title": "No combined trial was found",
@@ -147,17 +147,17 @@
     },
     {
       "title": "The studies used daily routines",
-      "body": "<p>The cited interventions followed daily routines over weeks, rather than occasional use. That design tells us what researchers actually tested.</p><p>For any supplement routine, the practical format is the one a person can follow consistently.</p>",
-      "evidence": "Study-design pattern across the cited human trials",
-      "source": "https://doi.org/10.1007/s11357-024-01204-1",
+      "body": "<p>The <a href=\"https://doi.org/10.3389/fragi.2022.851698\" target=\"_blank\" rel=\"noopener\">NMN trial</a> dosed people daily for 60 days. The <a href=\"https://doi.org/10.1007/s11357-024-01204-1\" target=\"_blank\" rel=\"noopener\">walking trial</a> dosed people daily for 12 weeks.</p><p>The <a href=\"https://doi.org/10.1093/jn/133.12.4135\" target=\"_blank\" rel=\"noopener\">betaine trial</a> dosed people daily for six weeks. None of them tested occasional use.</p>",
+      "evidence": "Dosing schedule in the three cited human trials",
+      "source": "https://doi.org/10.3389/fragi.2022.851698",
       "image": "tmp_images/landing-ageaura-nmn-tmg-listicle-261017/row07-routine.webp",
       "alt": "Clear water beside an unmarked weekly organizer on linen, illustrating a simple daily routine",
-      "evidence_label": "Study-design pattern · daily interventions"
+      "evidence_label": "Study design · daily dosing in three trials"
     }
   ],
   "bridge": {
     "title": "Convenience is part of consistency",
-    "body": "<p>The research tested repeatable routines, not occasional use. The useful question is which format you can follow without adding friction.</p><p>AgeAura Pure NMN + TMG NAD+ Complex is one option that puts both ingredients on one label, with the product details available for inspection.</p><p>Taking medication or managing a health condition? Ask your doctor before starting a supplement.</p>",
+    "body": "<p>The research tested repeatable routines, not occasional use. The useful question is which format you can follow without adding friction.</p><p>AgeAura Pure NMN + TMG NAD+ Complex is one option that lists NMN and TMG together. The product page has the full ingredient list.</p><p>Taking medication or managing a health condition? Ask your doctor before starting a supplement.</p>",
     "image": "tmp_images/landing-ageaura-nmn-tmg-listicle-261017/bridge.webp",
     "alt": "AgeAura Pure NMN + TMG NAD+ Complex bottle on a travertine podium"
   },
@@ -201,39 +201,41 @@
     "pill": "AGEAURA NMN + TMG COMPLEX",
     "accent": "NMN + TMG",
     "title": "on One Label",
-    "sub": "A daily NMN + TMG formula. The product page lists $69.95 one-time or $59.46 with Subscribe & Save delivered every four weeks.",
+    "sub": "Buy 1 is $69.95 one-time or $59.46 every four weeks at 15% off. The product page opens on a 3-bottle offer: $139.90 one-time or $120.31 with Subscribe & Save.",
     "cta": "SEE INGREDIENTS",
     "href": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex",
     "meta": [
       "<b>90-Day</b> Guarantee",
       "<b>FREE</b> shipping over $69"
     ],
-    "guarantee": "Your first order is covered by the store's 90-day money-back guarantee, subject to the published policy.",
+    "guarantee": "Your first order is covered by the store's 90-day money-back guarantee. Eligibility rules in the published policy apply.",
     "image": "tmp_images/landing-ageaura-nmn-tmg-listicle-261017/offer.webp",
     "alt": "AgeAura Pure NMN + TMG NAD+ Complex bottle on stacked travertine discs",
-    "source": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex (price, selling plans, guarantee and product details fetched 2026-10-17); https://wellnessnest.co/policies/refund-policy (published refund policy).",
+    "source": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex (Buy 1 and the preselected 3-bottle prices read on the live PDP 2026-10-17); https://wellnessnest.co/policies/refund-policy (published refund policy).",
     "rating_html": "<b>4.2</b> TrustScore · 1,144 reviews on Trustpilot",
+    "stars": 4,
     "price": {
       "now": "$59.46",
       "was": "$69.95",
-      "tag": "Save 15%",
-      "note": "with Subscribe & Save, delivered every 4 weeks. Or $69.95 one-time."
+      "tag": "Buy 1, 15% off",
+      "note": "Buy 1 with Subscribe & Save, every 4 weeks. One-time Buy 1 is $69.95. This price is under the free-shipping line."
     },
     "bullets": [
       "<b>500 mg NMN</b> per daily serving, as printed on the PDP",
       "<b>250 mg TMG</b> per daily serving, as printed on the PDP",
       "60 vegan capsules · 30 servings per bottle",
-      "90-day money-back guarantee, subject to the published policy"
+      "The page opens on 3 bottles: $139.90 one-time or $120.31 with subscribe",
+      "Free shipping is on orders over $69. The $59.46 Buy 1 plan is under that line."
     ],
-    "price_source": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex (PDP JSON, price and selling plan fetched 2026-10-17); label and PDP product details fetched 2026-10-17. TrustScore/count from https://www.trustpilot.com/review/wellnessnest.co and state/trustpilot/wellnessnest.json."
+    "price_source": "Live PDP buy box read 2026-10-17. Buy 1: one-time $69.95, Subscribe & Save 15% at $59.46 every 4 weeks (selling plan 9884729659, allocation 5946). Preselected deal is Buy 2 get 1 free, quantity 3: one-time $139.90, Subscribe & Save 14% at $120.31. Variant price in /products/ageaura-pure-nmn-tmg-nad-complex.js is 6995. TrustScore 4.2 and 1,144 reviews, Trustpilot star display 4, read 2026-10-17 from trustpilot.com/review/wellnessnest.co."
   },
   "product": {
     "name": "AgeAura Pure NMN + TMG NAD+ Complex",
     "image": "tmp_images/landing-ageaura-nmn-tmg-listicle-261017/offer.webp",
     "bullets": [
-      "500 mg NMN (β-Nicotinamide Mononucleotide) per daily serving of 2 capsules",
-      "250 mg TMG (Betaine Anhydrous / Trimethylglycine) per daily serving",
-      "Also lists Quercetin, Trans-Resveratrol, Apigenin, Folate, and Spermidine"
+      "500 mg NMN (β-Nicotinamide Mononucleotide) per daily serving of 2 capsules, from the PDP ingredient list",
+      "250 mg TMG (Betaine Anhydrous / Trimethylglycine) per daily serving, from the PDP ingredient list",
+      "The same PDP list also names quercetin, trans-resveratrol, apigenin, folate, and spermidine. Those lines are not in the OCR front-label file."
     ],
     "source": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex (live PDP and /products/ageaura-pure-nmn-tmg-nad-complex.js fetched 2026-10-17)"
   },
@@ -243,7 +245,7 @@
   },
   "sources": [
     {
-      "label": "Huang H et al. Frontiers in Aging 2022. doi:10.3389/fragi.2022.851698",
+      "label": "Huang H. Frontiers in Aging 2022. doi:10.3389/fragi.2022.851698",
       "url": "https://doi.org/10.3389/fragi.2022.851698"
     },
     {
@@ -262,6 +264,7 @@
   "trust": [
     {
       "icon": "stars",
+      "stars": 4,
       "html": "<b>4.2 TrustScore</b> <small>1,144 Trustpilot reviews</small>"
     },
     {
@@ -277,10 +280,10 @@
       "html": "<b>Vegan capsules</b> <small>NMN + TMG formula</small>"
     }
   ],
-  "trust_source": "TrustScore/count and reviews: state/trustpilot/wellnessnest.json fetched 2026-10-17. Guarantee, shipping and vegan capsule wording: live PDP, label and refund policy fetched 2026-10-17.",
+  "trust_source": "TrustScore 4.2, 1,144 reviews, and Trustpilot's own star display of 4: trustpilot.com/review/wellnessnest.co read 2026-10-17. The three quoted reviews were opened the same day and matched the page text. Guarantee, shipping, and vegan capsule wording: live PDP, label, and refund policy fetched 2026-10-17.",
   "sticky_cta": {
     "name": "AgeAura NMN + TMG",
-    "note": "From $59.46",
+    "note": "Buy 1 $59.46",
     "cta": "SEE INGREDIENTS",
     "href": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex"
   },
