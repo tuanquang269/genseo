@@ -6,7 +6,7 @@ Creatine gummies for runners make the most sense for training that includes inte
 
 Creatine helps replenish phosphocreatine, a rapid energy system used during brief, hard efforts. That makes the evidence more relevant to repeated intervals, hill surges, finishing kicks, and gym sessions than to an uninterrupted easy run. The International Society of Sports Nutrition position stand describes the strongest performance rationale around high-intensity and repetitive exercise, while evidence for prolonged steady-state endurance is less consistent ([Kreider et al., 2017](https://pmc.ncbi.nlm.nih.gov/articles/PMC5469049/)).
 
-![FusiForce pouch and one green gummy on a track-side bench after intervals](https://cdn.shopify.com/s/files/1/0810/1563/6283/files/interval-runner.webp?v=1792129435) 
+![Creatine can support repeated hard efforts, and it cannot promise a faster easy mile: FusiForce pouch and one green gummy on a track bench.](assets/creatine-gummies-for-runners-what-trials-show-us-2026/interval-runner.webp)
 
 FusiForce is listed at $69.99 on the current US product page; check the live page for current pricing and availability.
 
@@ -45,11 +45,13 @@ There is no established requirement to take creatine immediately before or after
 
 A practical routine is three labeled gummies with a meal or snack that is easy to remember. On a morning-run day, that may be breakfast; on an evening-run day, it may be dinner. Do not double up after a missed serving. For more detail on timing, use [when to take creatine before or after a workout](https://wellnessnest.co/blogs/news/best-time-to-take-creatine-before-or-after-us-2026).
 
-![FusiForce pouch beside a race bib and breakfast oats on a kitchen counter](https://cdn.shopify.com/s/files/1/0810/1563/6283/files/race-week.webp?v=1792129441) 
+![Runners should take creatine on a repeatable daily routine, then recheck the race calendar: FusiForce pouch beside breakfast.](assets/creatine-gummies-for-runners-what-trials-show-us-2026/race-week.webp)
 
 ## Creatine gummies for runners in the US: a practical choice
 
 The US runner's best choice depends on training demands, race timing, body-mass priorities, and medical context. The product page lists FusiForce at $69.99, while the evidence supports treating it as a convenience format for a label-directed routine—not as a promise of faster distance running.
+
+![The practical US creatine gummy is the bright-green FusiForce stand-up pouch, green apple, 90 gummies.](assets/creatine-gummies-for-runners-what-trials-show-us-2026/pack.webp)
 
 ## How to build a runner-friendly gummy routine
 
@@ -62,8 +64,6 @@ A low-friction routine reduces the chance that a runner changes several variable
 5. **Review after several weeks.** Keep it only if the routine fits the training goal and the tradeoffs are acceptable.
 
 The gummy format can remove mixing and measuring, but convenience does not make a supplement universally appropriate. Review the [best-seller collection](https://wellnessnest.co/collections/best-seller) and [men's essentials collection](https://wellnessnest.co/collections/mens-essential-collection) only after checking that the product fits the runner's plan.
-
-![Water bottle, training plan, shoes, and foam roller at a park recovery table](https://cdn.shopify.com/s/files/1/0810/1563/6283/files/hydration-and-recovery.webp?v=1792129446) 
 
 The image shows a recovery setup, not a clinical treatment claim. Keep hydration, fueling, sleep, and progressive training as the foundation of a runner's plan.
 

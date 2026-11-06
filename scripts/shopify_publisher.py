@@ -18,6 +18,7 @@ if __name__ == "__main__" and "--store" in sys.argv:
 
 import genseo_config as _gcfg
 import genseo_roster
+import draft_image_paths
 import brand_rules
 import florafresh_rules
 import gold_resin_rules
@@ -320,27 +321,41 @@ def upload_image_to_shopify_files(shop, token, local_path):
     return None
 
 
+def _refuse_escaped_image(exc):
+    """Stop publish/update before any image outside the draft folder is opened."""
+    print(f"✗ ABORT: {exc}")
+    print("  Refusing to open or upload an image outside the draft folder.")
+    sys.exit(2)
+
+
 # ---------------------------------------------------------------------------
 # Discover all image references in a markdown string.
 # Returns: (local_paths, cdn_paths)
-#   local_paths: absolute ~/... paths that exist on disk
+#   local_paths: markdown tokens the publisher can open. /Users and /private
+#                stay absolute only when no draft file is known. A
+#                draft-relative token such as assets/<slug>/<file>.webp is
+#                included when draft_path is set. draft_image_paths.disk_path
+#                joins it to the draft's directory (the same join
+#                validate_article.py --draft already uses) and raises
+#                DraftImagePathError when the realpath leaves that directory
+#                (`../`, a symlink, or an absolute path).
 #   cdn_paths:   relative /cdn/... or /blogs/... paths (phantom refs)
 # ---------------------------------------------------------------------------
 IMG_RE = re.compile(r"!\[.*?\]\(([^)]+)\)")
 
-def discover_images(md_text):
+def discover_images(md_text, draft_path=None):
     local_paths = []
     cdn_paths   = []
     for m in IMG_RE.finditer(md_text):
         p = m.group(1)
-        if p.startswith("/Users") or p.startswith("/private"):
-            local_paths.append(p)
-        elif p.startswith("/blogs/") or p.startswith("/cdn/"):
+        if p.startswith("/blogs/") or p.startswith("/cdn/"):
             cdn_paths.append(p)
+        elif draft_image_paths.disk_path(p, draft_path):
+            local_paths.append(p)
     return local_paths, cdn_paths
 
 
-def persona_credits_html(md_text):
+def persona_credits_html(md_text, draft_path=None):
     """The CC BY credits this article's images owe, as an HTML block — or "" if none.
 
     All three usable faces in the persona bank are CC BY 2.0, whose one condition is credit
@@ -354,11 +369,16 @@ def persona_credits_html(md_text):
     CREDITS.json beside the renders it made, so the credit is attached to the images that
     actually exist, not to whatever the draft claims about them. Call this BEFORE the upload
     step rewrites the local paths to CDN URLs."""
-    local, _ = discover_images(md_text)
+    local, _ = discover_images(md_text, draft_path)
     creds = {}
     for path in local:
+        # Do not fall back to the raw token. A relative `../` or an absolute
+        # path outside the draft folder must raise, not be opened.
+        disk = draft_image_paths.disk_path(path, draft_path)
+        if not disk:
+            continue
         try:
-            with open(os.path.join(os.path.dirname(path), "CREDITS.json")) as fh:
+            with open(os.path.join(os.path.dirname(disk), "CREDITS.json")) as fh:
                 creds.update(json.load(fh))
         except (OSError, ValueError):
             continue
@@ -440,7 +460,7 @@ def live_article_cover(shop, token, blog_id, article_id):
         return ""
 
 
-def _process_images_for_publish(shop, token, md_text, strip_hero=True):
+def _process_images_for_publish(shop, token, md_text, strip_hero=True, draft_path=None):
     """
     Upload all local images to Shopify Files.
     Returns (updated_md_text, thumbnail_base64, hero_cdn_url, upload_count, fail_count)
@@ -452,7 +472,7 @@ def _process_images_for_publish(shop, token, md_text, strip_hero=True):
                      image-repair pass inserted 3 images into 19 articles and every one came out
                      with exactly 2. On update, keep all body images.
     """
-    local_paths, phantom_paths = discover_images(md_text)
+    local_paths, phantom_paths = discover_images(md_text, draft_path)
 
     if phantom_paths and not local_paths:
         print(f"  ⚠  WARNING: Draft contains {len(phantom_paths)} relative image paths (e.g. /blogs/news/...) that don't exist on disk.")
@@ -469,14 +489,17 @@ def _process_images_for_publish(shop, token, md_text, strip_hero=True):
     print(f"\n  📸 Uploading {len(local_paths)} image(s) to Shopify Files...")
 
     for i, local_path in enumerate(local_paths):
-        if not os.path.exists(local_path):
+        # local_path is the markdown token. Relative tokens are not cwd paths;
+        # open the file next to the draft, and replace the token afterwards.
+        disk = draft_image_paths.disk_path(local_path, draft_path)
+        if not disk or not os.path.exists(disk):
             print(f"  ✗ [{i+1}] NOT FOUND on disk: {local_path}")
             fail_count += 1
             continue
 
-        fname = os.path.basename(local_path)
+        fname = os.path.basename(disk)
         print(f"  [{i+1}/{len(local_paths)}] Uploading {fname}...", end=" ", flush=True)
-        cdn_url = upload_image_to_shopify_files(shop, token, local_path)
+        cdn_url = upload_image_to_shopify_files(shop, token, disk)
 
         if cdn_url:
             uploaded_cache[local_path] = cdn_url
@@ -487,7 +510,7 @@ def _process_images_for_publish(shop, token, md_text, strip_hero=True):
                 first_local   = local_path
                 hero_cdn_url  = cdn_url
                 # Also prepare base64 for the article.image field
-                with open(local_path, "rb") as f:
+                with open(disk, "rb") as f:
                     thumbnail_b64 = base64.b64encode(f.read()).decode("utf-8")
             time.sleep(0.3)
         else:
@@ -683,10 +706,12 @@ def do_publish(file_path, blog_id, live=False):
     # information: _process_images_for_publish rewrites every local path in md_text to a CDN
     # URL, and the local path is the only thing that points at the directory where
     # article_images.py left CREDITS.json. One line later there is nothing left to read.
-    credits_html = persona_credits_html(md_text)
-
-    # ── Image Upload ────────────────────────────────────────────────────────
-    md_text, thumbnail_b64, hero_cdn_url, upload_count, fail_count = _process_images_for_publish(shop, token, md_text)
+    try:
+        credits_html = persona_credits_html(md_text, file_path)
+        # ── Image Upload ────────────────────────────────────────────────────
+        md_text, thumbnail_b64, hero_cdn_url, upload_count, fail_count = _process_images_for_publish(shop, token, md_text, draft_path=file_path)
+    except draft_image_paths.DraftImagePathError as exc:
+        _refuse_escaped_image(exc)
 
     if fail_count > 0:
         print(f"\n  ⚠  {fail_count} image(s) failed to upload. The article will be published but images will be broken.")
@@ -913,7 +938,10 @@ def do_update(file_path, blog_id, article_id, replace_cover=False, no_carry_cred
     # breach reintroduced by a routine refresh is the kind nobody ever notices. A refresh draft
     # usually carries CDN URLs, not local paths, so the usual read finds nothing; in that case
     # the live page is the record of what it owes, so carry its block forward verbatim.
-    credits_html = persona_credits_html(md_text)
+    try:
+        credits_html = persona_credits_html(md_text, file_path)
+    except draft_image_paths.DraftImagePathError as exc:
+        _refuse_escaped_image(exc)
     # --replace-cover means every image is new, so the live block credits images that are gone;
     # --no-carry-credits drops it explicitly (e.g. a follow-up refresh of such an article).
     if not credits_html and (replace_cover or no_carry_credits):
@@ -934,7 +962,10 @@ def do_update(file_path, blog_id, article_id, replace_cover=False, no_carry_cred
             print('✗ ABORT (update --replace-cover): the draft has no local hero image to use as the new cover.')
             sys.exit(2)
         _hero_alt = _hm.group(1).strip() or None
-    md_text, thumbnail_b64, hero_cdn_url, upload_count, fail_count = _process_images_for_publish(shop, token, md_text, strip_hero=replace_cover)
+    try:
+        md_text, thumbnail_b64, hero_cdn_url, upload_count, fail_count = _process_images_for_publish(shop, token, md_text, strip_hero=replace_cover, draft_path=file_path)
+    except draft_image_paths.DraftImagePathError as exc:
+        _refuse_escaped_image(exc)
 
     if fail_count > 0:
         print(f"\n  ⚠  {fail_count} image(s) failed to upload.")

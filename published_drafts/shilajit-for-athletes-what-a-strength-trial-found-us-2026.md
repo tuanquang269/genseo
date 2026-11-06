@@ -8,7 +8,7 @@ The 2019 Keller et al. randomized, double-blind, placebo-controlled trial found 
 
 The study enrolled 63 recreationally active men for eight weeks. Participants received placebo, a lower study dose, or a higher study dose of PrimaVie® shilajit. The exercise test used two sets of 50 maximal bilateral concentric leg extensions at 180°/s, separated by two minutes. That design matters: it tested performance immediately after a prescribed fatigue challenge, not an athlete's entire training cycle.
 
-![ShilaSource Himalayan Shilajit Resin jar beside a stopwatch after a gym session](https://cdn.shopify.com/s/files/1/0810/1563/6283/files/inline-training.webp?v=1792126053)
+![The strength trial measured force after fatigue, and it is not a promise for every gym session: ShilaSource jar beside a stopwatch.](assets/shilajit-for-athletes-what-a-strength-trial-found-us-2026/inline-training.webp)
 
 Among all participants, the reported post-fatigue MVIC decline was 9.1% with the higher study dose versus 15.7% with the lower study dose. The paper reported no significant group difference for decline in concentric peak torque. The result supports a possible effect on maintaining force under this laboratory challenge; it does not establish a universal shilajit dose for athletes.
 
@@ -26,7 +26,7 @@ The trial used two quantified daily doses of a named purified shilajit extract. 
 
 ShilaSource's live product page identifies the product as a resin-format dietary supplement in one 30 g jar and says the featured package states 75 servings. The jar label reads **70% Fulvic Acid**, **Lab-Tested for Purity**, **1.06oz (30g)**, and **75 SERVINGS**. It does not provide a milligram amount in the label record used for this article. Follow the directions on the package received; do not convert the Keller study dose into a scoop or serving of this product.
 
-![ShilaSource Himalayan Shilajit Resin jar beside blank notes during a package check](https://cdn.shopify.com/s/files/1/0810/1563/6283/files/inline-label_f5dedb9c-a5e6-42d6-9a4a-82763667343c.webp?v=1792126058)   
+![Do not copy the trial amount onto ShilaSource: read this canister and amber jar, 1.06 oz (30 g), 75 servings, 70% fulvic acid.](assets/shilajit-for-athletes-what-a-strength-trial-found-us-2026/pack.webp)
 
 | Question | What the evidence supports | What it does not establish |
 |---|---|---|
@@ -51,6 +51,8 @@ Athletes should also avoid treating a supplement as a substitute for food, carbo
 
 Shilajit is not automatically cleared for every tested-sport program because a package says “natural” or “lab-tested.” The Keller paper did not establish sport-certification status for retail products. Before use, check the current prohibited-substance rules that govern the athlete and ask the relevant governing body or anti-doping professional about the exact product and lot.
 
+![Tested athletes should compare the label with their sport's rules on paper before buying: training log and blank notes on the desk.](assets/shilajit-for-athletes-what-a-strength-trial-found-us-2026/inline-comparison.webp)
+
 For a supplement sold in the US, check four things:
 
 - **Identity:** the product name and format should match the jar received.
@@ -65,8 +67,6 @@ The current ShilaSource product page lists one-time purchase at $59.99 and direc
 [ShilaSource Himalayan Shilajit Resin](https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin) is available through Wellness Nest online at the current one-time price of $59.99. Check the live product page for current inventory, package directions, documentation, and checkout terms before ordering. The store's [Shilajit Wellness Stack](https://wellnessnest.co/collections/shilajit-wellness-stack) and [Men's Essential Collection](https://wellnessnest.co/collections/mens-essential-collection) provide the relevant US shopping context without treating every listed product as equivalent to the trial intervention.
 
 For background rather than a repeat of this study, see [shilajit and creatine together](https://wellnessnest.co/blogs/news/shilajit-and-creatine-can-you-take-both-daily-us-2026), [how much shilajit per day by form](https://wellnessnest.co/blogs/news/how-much-shilajit-per-day-dosage-by-form-us-2026), and [six signs of potentially fake shilajit](https://wellnessnest.co/blogs/news/fake-shilajit-6-signs-yours-isnt-real-us-2026).
-
-![Training log and blank comparison notes on a desk after a workout](https://cdn.shopify.com/s/files/1/0810/1563/6283/files/inline-comparison.webp?v=1792126063)   
 
 ## Frequently Asked Questions
 

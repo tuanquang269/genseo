@@ -10,7 +10,7 @@ The source is **Biswas TK et al., “Clinical evaluation of spermatogenic activi
 
 The study also measured hormones and a marker of oxidative stress. Those findings can support a hypothesis for future research; they cannot establish that shilajit improves conception odds. The study did not show a pregnancy-rate, live-birth, or time-to-pregnancy benefit.
 
-![Notebook, glasses, and laptop on a dining table for reviewing fertility evidence](https://cdn.shopify.com/s/files/1/0810/1563/6283/files/evidence-notebook.webp?v=1792201706)
+![The fertility trial found semen-measure changes in a small group after 90 days: the notebook is for those limits.](assets/shilajit-for-fertility-what-one-small-trial-found-us-2026/evidence-notebook.webp)
 
 ## Does shilajit increase sperm count?
 
@@ -42,7 +42,7 @@ No conclusion can be made that a retail resin is identical to the processed prep
 
 The **ShilaSource Himalayan Shilajit Resin** label identifies ShilaSource, Himalayan Shilajit Resin, a Dietary Supplement, 70% Fulvic Acid*, Lab-Tested for Purity*, 1.06oz (30g), and a 75-servings badge. The product page lists a current price of $59.99 and availability. Those are product-page facts, not evidence of a fertility effect. See the [ShilaSource Himalayan Shilajit Resin](https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin) page for the current label and purchase details.
 
-![ShilaSource Himalayan Shilajit Resin carton and jar on a hallway console](https://cdn.shopify.com/s/files/1/0810/1563/6283/files/label-review_90f34db0-804e-4c9e-a7e4-552549ad11a7.webp?v=1792201711)
+![Compare ShilaSource with the study preparation before treating them as the same product: canister and amber jar, 70% fulvic acid, 1.06 oz, 75 servings.](assets/shilajit-for-fertility-what-one-small-trial-found-us-2026/pack.webp)
 
 A buyer can also compare the product with the [Shilajit Wellness Stack collection](https://wellnessnest.co/collections/shilajit-wellness-stack) and the [Men's Essential collection](https://wellnessnest.co/collections/mens-essential-collection). Collection placement does not prove that a product treats infertility. Wellness Nest is an online store serving US buyers; check the live product page for current price, stock, label details, and store policy before ordering.
 
@@ -60,6 +60,8 @@ Do not use the trial's study protocol as a self-prescribed dose. The study mater
 
 Seek care sooner for a known or suspected condition that can affect fertility, sexual dysfunction, a history of testicular injury or surgery, recurrent pregnancy loss, or an abnormal semen analysis. Otherwise, the appropriate timing depends on both partners' ages and medical history.
 
+![See a fertility specialist for a conception plan: bag, folder, and water ready for that visit.](assets/shilajit-for-fertility-what-one-small-trial-found-us-2026/appointment-preparation.webp)
+
 The [American Society for Reproductive Medicine committee opinion](https://www.asrm.org/practice-guidance/practice-committee-documents/fertility-evaluation-of-infertile-women-a-committee-opinion-2021/) says evaluation may begin after 12 months of regular unprotected intercourse when the female partner is younger than 35, after 6 months when the female partner is 35 or older, and more immediately when the female partner is over 40 or a relevant condition is present. It also states that, when a male partner contributes to the pregnancy, evaluation of both partners should begin at the same time and a semen analysis is part of the initial assessment.
 
 A fertility clinician can decide whether to repeat semen testing, review medications, examine hormone or genetic factors, or refer to a reproductive urologist. Bring the full supplement label and any certificate-of-analysis information to that visit. Stop and ask for medical advice if a product causes a reaction or if symptoms develop.
@@ -69,8 +71,6 @@ A fertility clinician can decide whether to repeat semen testing, review medicat
 Shilajit for fertility has a plausible but unproven evidence story. One small clinical trial in men with low sperm counts reported improved semen measures after 90 days of a processed preparation. That is not proof of improved conception, pregnancy, or live birth, and it does not establish that a retail resin matches the trial material.
 
 For a US buyer, the sensible sequence is to get appropriate fertility testing, discuss supplement use with a clinician, inspect the exact label and quality documentation, and treat a product page as a source of identity and purchasing information—not as proof of a fertility outcome. Readers who want broader context can review [shilajit benefits for men](https://wellnessnest.co/blogs/news/shilajit-benefits-for-men-4-claims-ranked-us-2026), [shilajit side effects](https://wellnessnest.co/blogs/news/shilajit-side-effects-7-signs-to-watch-for-us-2026), and [how much shilajit per day by form](https://wellnessnest.co/blogs/news/how-much-shilajit-per-day-dosage-by-form-us-2026), while keeping the evidence limits in view.
-
-![Canvas bag, document folder, and water bottle prepared for an appointment](https://cdn.shopify.com/s/files/1/0810/1563/6283/files/appointment-preparation.webp?v=1792201717)
 
 | Question | What the trial supports | What it does not establish |
 |---|---|---|

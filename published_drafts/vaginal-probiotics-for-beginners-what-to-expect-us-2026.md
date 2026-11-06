@@ -26,7 +26,7 @@ The first week is mainly an adjustment and observation period. Some people notic
 
 Expectations should stay modest. A supplement cannot confirm whether symptoms come from bacterial vaginosis, candidiasis, an STI, irritation, or a hormonal change. If discharge or discomfort is new, recurrent, or worsening, a clinician can decide whether examination or testing is appropriate. For timing questions, see [how long vaginal probiotics may take to work](https://wellnessnest.co/blogs/news/vaginal-probiotics-how-long-until-they-work-us-2026), rather than assuming that a first-week experience proves the product is effective or ineffective.
 
-![FloraFresh pouch and gummy beside water on a bathroom vanity](https://cdn.shopify.com/s/files/1/0810/1563/6283/files/week-one-routine-reroll.webp?v=1792133524)
+![Week one of a vaginal probiotic is the labeled FloraFresh routine, and it is not a list of promised changes: pouch and gummy beside water.](assets/vaginal-probiotics-for-beginners-what-to-expect-us-2026/week-one-routine-reroll.webp)
 
 <div style="background:linear-gradient(90deg,#54b94a,#3a9e40);border-radius:10px;padding:14px 20px;margin:28px 0 4px;">
 <p style="margin:0;color:#ffffff;font-weight:700;font-size:1.05em;letter-spacing:.02em;">READ THE LABEL, NOT THE HYPE</p>
@@ -38,7 +38,7 @@ Start with the serving and timing printed on the package. Do not double the serv
 
 For FloraFresh, the Supplement Facts label lists, per 2 gummies, Bacillus coagulans SNZ-1969 (a spore-based probiotic) at 15 billion CFU, Vitamin C at 30 mg, and pineapple fruit powder with bromelain at 100 mg. The label also lists maltitol and isomalt as sweeteners, so it should not be described as sugar-free. Those are label facts, not a promise to prevent or treat disease.
 
-![Hands reviewing a generic probiotic wellness note at a home desk](https://cdn.shopify.com/s/files/1/0810/1563/6283/files/mechanism-microbiome.webp?v=1792133529)
+![Start vaginal probiotics by reading the FloraFresh serving and repeating it: hands on a blank note at a home desk.](assets/vaginal-probiotics-for-beginners-what-to-expect-us-2026/mechanism-microbiome.webp)
 
 A new supplement can be easier to assess when you change one thing at a time. Record the date started, the labeled serving, and any digestive or vaginal symptoms. People who are pregnant, nursing, immunocompromised, managing a medical condition, or taking medicines should ask a qualified healthcare professional before starting a supplement.
 
@@ -66,7 +66,7 @@ Seek medical advice for pelvic pain, fever, sores, painful urination, unusual bl
 
 Read [vaginal probiotic side effects and warning signs](https://wellnessnest.co/blogs/news/vaginal-probiotics-side-effects-normal-vs-stop-us-2026) for a focused safety discussion. If you are unsure whether symptoms resemble BV or a yeast infection, use [this comparison of common causes](https://wellnessnest.co/blogs/news/yeast-infection-vs-bv-how-to-tell-them-apart-us-2026) as background, not as a diagnosis.
 
-![Preparing questions for a clinician at a kitchen table](https://cdn.shopify.com/s/files/1/0810/1563/6283/files/clinician-check.webp?v=1792133535)
+![See a clinician for symptoms that need a diagnosis: questions ready on the kitchen table, and the gummy is not that visit.](assets/vaginal-probiotics-for-beginners-what-to-expect-us-2026/clinician-check.webp)
 
 ## Where can beginners buy FloraFresh in the US?
 
