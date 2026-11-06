@@ -498,7 +498,11 @@ def finalize_page(page, template, row, package, hero, day):
              'acceptedAnswer': {'@type': 'Answer', 'text': d.select_one('div').get_text(' ', strip=True)}}
            for d in soup(page).select('.faq details') if d.select_one('summary h3') and d.select_one('div')]
     require(len(faq) >= 3, 'The visible FAQ needs at least 3 questions (summary > h3, then a div answer)')
-    next(n for n in graph['@graph'] if n.get('@type') == 'FAQPage')['mainEntity'] = faq
+    node = next((n for n in graph['@graph'] if n.get('@type') == 'FAQPage'), None)
+    if node is None:  # some style templates ship without the FAQPage node; the visible FAQ still needs one
+        node = {'@type': 'FAQPage'}
+        graph['@graph'].append(node)
+    node['mainEntity'] = faq
     post.update({'headline': package['title'], 'description': package['meta_description'], 'image': src.split('?')[0],
                  'datePublished': day.isoformat(), 'dateModified': day.isoformat(),
                  'about': plain(row['primary_keyword']), 'wordCount': count_words(article)})
