@@ -1,0 +1,302 @@
+{
+  "store": "https://wellnessnest.co",
+  "audited_on": "2026-10-19",
+  "note": "Starter seed from the 2026-10-19 public crawl plus a read-only Admin files query. Assay values were not read from any file. html_equivalent_url is null unless a same-store HTML page was nominated as the same proof.",
+  "pdfs": [
+    {
+      "url": "http://therdsf.org/wp-content/uploads/2014/06/shilijitNEW-1.pdf",
+      "linked_from": [
+        "https://wellnessnest.co/blogs/news/what-is-shilajit-history-chemical-properties-processing"
+      ],
+      "product": "UNKNOWN",
+      "role": "citation",
+      "html_equivalent_url": null,
+      "notes": "Third-party citation in a blog article. Not a Wellness Nest certificate of analysis."
+    },
+    {
+      "url": "http://www.ccras.nic.in/sites/default/files/viewpdf/jimh/JIMH_2010/13%20to%2024.pdf",
+      "linked_from": [
+        "https://wellnessnest.co/blogs/news/what-is-shilajit-history-chemical-properties-processing"
+      ],
+      "product": "UNKNOWN",
+      "role": "citation",
+      "html_equivalent_url": null,
+      "notes": "Third-party citation. Not a Wellness Nest certificate of analysis."
+    },
+    {
+      "url": "https://www.researchgate.net/profile/Ramesh_Gupta10/publication/279746105_Anti-Inflammatory_and_Anti-Arthritic_Efficacy_and_Safety_of_Purified_Shilajit_in_Moderately_Arthritic_Dogs/links/559bff9d08ae7f3eb4cee827.pdf",
+      "linked_from": [
+        "https://wellnessnest.co/blogs/news/what-is-shilajit-history-chemical-properties-processing"
+      ],
+      "product": "UNKNOWN",
+      "role": "citation",
+      "html_equivalent_url": null,
+      "notes": "Third-party citation. Not a Wellness Nest certificate of analysis."
+    },
+    {
+      "url": "https://www.shd.org.rs/JSCS/Vol75/No3/14_4376_3974.pdf",
+      "linked_from": [
+        "https://wellnessnest.co/blogs/news/what-is-shilajit-history-chemical-properties-processing"
+      ],
+      "product": "UNKNOWN",
+      "role": "citation",
+      "html_equivalent_url": null,
+      "notes": "Third-party citation. Not a Wellness Nest certificate of analysis."
+    },
+    {
+      "url": "https://globalresearchonline.net/journalcontents/v59-1/23.pdf",
+      "linked_from": [
+        "https://wellnessnest.co/blogs/news/2-what-is-ayuveda"
+      ],
+      "product": "UNKNOWN",
+      "role": "citation",
+      "html_equivalent_url": null,
+      "notes": "Third-party citation. Not a Wellness Nest certificate of analysis."
+    },
+    {
+      "url": "https://interscience.org.uk/images/article/v15-i4/3ijahm.pdf",
+      "linked_from": [
+        "https://wellnessnest.co/pages/shilasource-post-hysterectomy-libido-women"
+      ],
+      "product": "UNKNOWN",
+      "role": "citation",
+      "html_equivalent_url": null,
+      "notes": "Third-party citation on a listicle. Not a Wellness Nest certificate of analysis."
+    },
+    {
+      "url": "https://isappscience.org/wp-content/uploads/2024/12/ISAPP-Clinician-resource-probiotic-use-alongside-antibiotics.pdf",
+      "linked_from": [
+        "https://wellnessnest.co/blogs/news/probiotics-after-antibiotics-for-women-when-to-start-us"
+      ],
+      "product": "UNKNOWN",
+      "role": "citation",
+      "html_equivalent_url": null,
+      "notes": "Third-party clinician resource. Not a FloraFresh or Wellness Nest certificate of analysis."
+    },
+    {
+      "url": "https://www.aaos.org/contentassets/1cd7f41417ec4dd4b5c4c48532183b96/1184-the-impact-of-obesity-on-bone-and-joint-health1.pdf",
+      "linked_from": [
+        "https://wellnessnest.co/blogs/news/from-stiff-to-strong-overcoming-joint-pain-during-menopause-1"
+      ],
+      "product": "UNKNOWN",
+      "role": "citation",
+      "html_equivalent_url": null,
+      "notes": "Third-party citation. Not a Wellness Nest certificate of analysis."
+    },
+    {
+      "url": "https://www.womens-health-concern.org/wp-content/uploads/2023/07/28-WHC-FACTSHEET-Nutrition-in-Menopause-JULY2023-A.pdf",
+      "linked_from": [
+        "https://wellnessnest.co/blogs/news/taming-the-storm-managing-emotional-rage-during-menopause"
+      ],
+      "product": "UNKNOWN",
+      "role": "citation",
+      "html_equivalent_url": null,
+      "notes": "Third-party factsheet citation. Not a Wellness Nest certificate of analysis."
+    },
+    {
+      "url": "https://cdn.shopify.com/s/files/1/0742/9102/0008/files/MAGNALI_FUEL_-_CLINICAL_EVIDENCE.pdf?v=1762315274",
+      "linked_from": [
+        "https://wellnessnest.co/pages/charlesanderson"
+      ],
+      "product": "UNKNOWN",
+      "role": "off_store_clinical_pdf",
+      "html_equivalent_url": null,
+      "notes": "Linked from /pages/charlesanderson. The file is on Shopify shop 0742/9102/0008, not the Wellness Nest files shop 0810/1563/6283. Not a Wellness Nest certificate of analysis."
+    }
+  ],
+  "raster_lab_sheets": [
+    {
+      "url": "https://cdn.shopify.com/s/files/1/0810/1563/6283/files/2503-Batch1000pcs-Commercial_Lab_Test_Shilajit_Gold.png",
+      "linked_from": [
+        "https://wellnessnest.co/pages/lab-certificate",
+        "https://wellnessnest.co/pages/lab-certificate-de",
+        "https://wellnessnest.co/pages/lab-certificate-dk",
+        "https://wellnessnest.co/pages/lab-certificate-el",
+        "https://wellnessnest.co/pages/lab-certificate-en",
+        "https://wellnessnest.co/pages/lab-certificate-fr",
+        "https://wellnessnest.co/pages/lab-certificate-hr",
+        "https://wellnessnest.co/pages/lab-certificate-hu",
+        "https://wellnessnest.co/pages/lab-certificate-no",
+        "https://wellnessnest.co/pages/lab-certificate-pt",
+        "https://wellnessnest.co/pages/lab-certificate-se",
+        "https://wellnessnest.co/pages/lab-certificate-sl",
+        "https://wellnessnest.co/pages/lab-test-spanish"
+      ],
+      "product": "UNKNOWN",
+      "html_summary_url": "https://wellnessnest.co/pages/lab-certificate-en",
+      "image_header": {
+        "width": 2916,
+        "height": 3654
+      },
+      "notes": "PNG linked from live lab-certificate pages. The English page has prose around the image. Per-analyte values were not read. The page does not name a current SKU handle."
+    },
+    {
+      "url": "https://cdn.shopify.com/s/files/1/0810/1563/6283/files/2503-Batch1000pcs-Eurofins_Test_Shilajit_Gold_1.png",
+      "linked_from": [
+        "https://wellnessnest.co/pages/lab-test-spanish"
+      ],
+      "product": "UNKNOWN",
+      "html_summary_url": "https://wellnessnest.co/pages/lab-test-spanish",
+      "image_header": {
+        "width": 595,
+        "height": 841
+      },
+      "notes": "PNG on the Spanish lab page. Per-analyte values were not read. The page does not name a current SKU handle."
+    },
+    {
+      "url": "https://cdn.shopify.com/s/files/1/0810/1563/6283/files/Eurofin_Lab_Test.png",
+      "linked_from": [
+        "https://wellnessnest.co/pages/fusiforce-creatine-gummies-gr",
+        "https://wellnessnest.co/pages/fusiforce-creatine-gummies-bb",
+        "https://wellnessnest.co/pages/fusiforce-creatine-gummies-om-it",
+        "https://wellnessnest.co/pages/fusiforce-creatine-gummies-cz",
+        "https://wellnessnest.co/pages/fusiforce-creatine-gummies-de",
+        "https://wellnessnest.co/pages/fusiforce-creatine-gummies-om",
+        "https://wellnessnest.co/pages/fusiforce-creatine-gummies-pl",
+        "https://wellnessnest.co/pages/fusiforce-creatine-gummies-nl",
+        "https://wellnessnest.co/pages/jay-new-homepage",
+        "https://wellnessnest.co/products/fusiforce-creatine-gummies"
+      ],
+      "product": "fusiforce-creatine-gummies",
+      "html_summary_url": null,
+      "image_header": {
+        "width": 800,
+        "height": 1847
+      },
+      "notes": "PNG linked from the FusiForce product page and several FusiForce listicles. Pixels were not read. No HTML assay table was nominated."
+    },
+    {
+      "url": "https://cdn.shopify.com/s/files/1/0810/1563/6283/files/Creatine_Gummies_Lab_Test.jpg",
+      "linked_from": [
+        "https://wellnessnest.co/pages/adv-ltc01",
+        "https://wellnessnest.co/pages/fusiforce-6-reasons-why-people-are-obsessed-with",
+        "https://wellnessnest.co/pages/kevin-shilasource-shilajit-resin-listicle-ed-angle"
+      ],
+      "product": "UNKNOWN",
+      "html_summary_url": null,
+      "image_header": {
+        "width": 740,
+        "height": 400
+      },
+      "notes": "JPEG. Filename mentions creatine gummies. Also linked from a ShilaSource listicle. Pixels were not read."
+    },
+    {
+      "url": "https://cdn.shopify.com/s/files/1/0810/1563/6283/files/Shilajit_labtest.webp",
+      "linked_from": [
+        "https://wellnessnest.co/pages/shilasource-himalayan-shilajit-resin-fr",
+        "https://wellnessnest.co/pages/shilasource-himalayan-shilajit-resin-de",
+        "https://wellnessnest.co/pages/kevin-shilasource-shilajti-resin-ldp-10-03-2026-omn-tailor",
+        "https://wellnessnest.co/pages/shilasource-himalayan-shilajit-resin-gr",
+        "https://wellnessnest.co/pages/shilasource-himalayan-shilajit-resin-cz",
+        "https://wellnessnest.co/pages/psg-it",
+        "https://wellnessnest.co/pages/psg-de",
+        "https://wellnessnest.co/pages/psg-cz",
+        "https://wellnessnest.co/pages/psg-gr",
+        "https://wellnessnest.co/pages/premium-himalayan-shilajit-gummies-nl",
+        "https://wellnessnest.co/pages/psg-fr",
+        "https://wellnessnest.co/pages/psg-se",
+        "https://wellnessnest.co/pages/shilasource-himalayan-shilajit-resin-se",
+        "https://wellnessnest.co/pages/shilasource-himalayan-shilajit-resin-wm-en",
+        "https://wellnessnest.co/pages/shilasource-himalayan-shilajit-resin-wm-cz",
+        "https://wellnessnest.co/pages/shilasource-himalayan-shilajit-resin-wm-it",
+        "https://wellnessnest.co/pages/premium-himalayan-shilajit-gummies-wm-en",
+        "https://wellnessnest.co/pages/shilasource-himalayan-shilajit-resin-wm-gr",
+        "https://wellnessnest.co/pages/jay-new-homepage",
+        "https://wellnessnest.co/pages/shilasource-himalayan-shilajit-resin-wm-de",
+        "https://wellnessnest.co/pages/shilasource-himalayan-shilajit-resin-wm-nl",
+        "https://wellnessnest.co/pages/premium-himalayan-shilajit-gummies-wm-cz",
+        "https://wellnessnest.co/pages/premium-himalayan-shilajit-gummies-wm-it",
+        "https://wellnessnest.co/pages/premium-himalayan-shilajit-gummies-wm-gr",
+        "https://wellnessnest.co/pages/premium-himalayan-shilajit-gummies-wm-de",
+        "https://wellnessnest.co/pages/premium-himalayan-shilajit-gummies-wm-fr",
+        "https://wellnessnest.co/pages/premium-himalayan-shilajit-gummies-wm-nl",
+        "https://wellnessnest.co/products/premium-himalayan-shilajit-gummies"
+      ],
+      "product": "UNKNOWN",
+      "html_summary_url": null,
+      "image_header": {
+        "width": 537,
+        "height": 1024
+      },
+      "notes": "Image linked from shilajit listicles and the gummies product page. Header dimensions are from the bytes returned for this URL. Pixels were not read as an assay."
+    },
+    {
+      "url": "https://cdn.shopify.com/s/files/1/0810/1563/6283/files/20250625-144427.jpg",
+      "linked_from": [
+        "https://wellnessnest.co/pages/lab-certificate-florafresh"
+      ],
+      "product": "florafresh-vaginal-probiotics-gummies",
+      "html_summary_url": "https://wellnessnest.co/pages/lab-certificate-florafresh",
+      "image_header": {
+        "width": 1260,
+        "height": 1222
+      },
+      "notes": "JPEG on the FloraFresh lab page. Pixels were not read. Marketing sentences on that page were not copied into this seed."
+    },
+    {
+      "url": "https://cdn.shopify.com/s/files/1/0810/1563/6283/files/gempages_501444340413891578-8567b1e6-70e4-4200-9cd5-0f4efe096444.png",
+      "linked_from": [
+        "https://wellnessnest.co/pages/lab-test-result"
+      ],
+      "product": "UNKNOWN",
+      "html_summary_url": "https://wellnessnest.co/pages/lab-test-result",
+      "image_header": {
+        "width": 2404,
+        "height": 914
+      },
+      "notes": "Image embedded on Archived ShilaSource Resin Documentation. The page names Pure Himalayan Shilajit Resin, batch AHS2401, report AIR-24-IR-052483-01, dated June 5, 2024. The page says this does not verify gummies or every current resin lot. Per-analyte values were not read."
+    },
+    {
+      "url": "https://cdn.shopify.com/s/files/1/0810/1563/6283/files/gempages_501444340413891578-e79a0ef9-c00f-488e-bb7e-08ee4691d649.png",
+      "linked_from": [
+        "https://wellnessnest.co/pages/lab-test-result"
+      ],
+      "product": "UNKNOWN",
+      "html_summary_url": "https://wellnessnest.co/pages/lab-test-result",
+      "image_header": {
+        "width": 1080,
+        "height": 1892
+      },
+      "notes": "Second image embedded on Archived ShilaSource Resin Documentation. Same page limits as the other GemPages image. Per-analyte values were not read."
+    },
+    {
+      "url": "https://cdn.shopify.com/s/files/1/0810/1563/6283/files/gempages_501444340413891578-12126c61-3093-4444-a147-f4432d0bfa4b.png",
+      "linked_from": [
+        "https://wellnessnest.co/pages/lab-test-result"
+      ],
+      "product": "UNKNOWN",
+      "html_summary_url": "https://wellnessnest.co/pages/lab-test-result",
+      "image_header": null,
+      "notes": "Third GemPages image URL referenced by the archived documentation page. Header was not read."
+    },
+    {
+      "url": "https://wellnessnest.co/cdn/shop/files/CERTIFICATE_4537ce94-8d6c-4cbb-9344-b388aa3a59a1.png?v=1772185346",
+      "linked_from": [
+        "https://wellnessnest.co/products/pure-shilajit-gold-resin"
+      ],
+      "product": "pure-shilajit-gold-resin",
+      "html_summary_url": null,
+      "image_header": {
+        "width": 1500,
+        "height": 1500
+      },
+      "notes": "PNG whose filename contains CERTIFICATE, linked from the Gold Resin product page. Pixels were not read."
+    },
+    {
+      "url": "https://cdn.shopify.com/s/files/1/0810/1563/6283/files/mnm_en_lab.webp",
+      "linked_from": [
+        "https://wellnessnest.co/pages/menomate-hormonal-balance-weight",
+        "https://wellnessnest.co/pages/menomate-glp1",
+        "https://wellnessnest.co/pages/menomate-complete-joint-pain",
+        "https://wellnessnest.co/pages/menomate-hip-pain-v2-ldp"
+      ],
+      "product": "UNKNOWN",
+      "html_summary_url": null,
+      "image_header": {
+        "width": 1520,
+        "height": 1521
+      },
+      "notes": "Image linked from MenoMate pages. MenoMate is not a current for-sale SKU. Pixels were not read. Header dimensions are from the bytes returned for this URL."
+    }
+  ]
+}

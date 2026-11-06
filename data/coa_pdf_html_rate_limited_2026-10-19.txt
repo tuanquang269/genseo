@@ -1,0 +1,36 @@
+# Public URLs that returned HTTP 429 on 2026-10-19 during the sitemap crawl.
+# They were not fetched. Re-run:
+#   python3 scripts/coa_pdf_html_check.py --urls data/coa_pdf_html_rate_limited_2026-10-19.txt --max-pages 40
+https://wellnessnest.co/blogs/news/best-time-to-take-vaginal-probiotics-6-rules-us-2026
+https://wellnessnest.co/blogs/news/creatine-and-alcohol-what-happens-if-you-drink-us-2026
+https://wellnessnest.co/blogs/news/nmn-and-exercise-before-or-after-a-workout-us-2026
+https://wellnessnest.co/blogs/news/nmn-and-coffee-can-you-take-them-together-us-2026
+https://wellnessnest.co/blogs/news/vaginal-probiotics-while-traveling-7-us-rules
+https://wellnessnest.co/blogs/news/vaginal-probiotic-dosage-how-many-cfu-a-day-us-2026
+https://wellnessnest.co/blogs/news/turkesterone-for-athletes-drug-test-guide-us-2026
+https://wellnessnest.co/blogs/news/where-to-buy-creatine-gummies-5-label-checks-us-2026
+https://wellnessnest.co/blogs/news/where-to-buy-turkesterone-in-the-us-what-to-check-2026
+https://wellnessnest.co/blogs/news/shilajit-price-cost-per-serving-by-form-us-2026
+https://wellnessnest.co/blogs/news/where-to-buy-nmn-in-the-us-fda-status-explained-2026
+https://wellnessnest.co/blogs/news/nmn-for-seniors-what-2-trials-show-in-the-us-2026
+https://wellnessnest.co/blogs/news/creatine-gummies-for-beginners-30-days-in-the-us
+https://wellnessnest.co/blogs/news/shilajit-for-athletes-what-a-trial-found-in-the-us
+https://wellnessnest.co/blogs/news/where-to-buy-vaginal-probiotics-in-the-us-5-checks-2026
+https://wellnessnest.co/blogs/news/creatine-gummies-for-runners-what-trials-show-us-2026
+https://wellnessnest.co/blogs/news/creatine-gummies-over-60-trial-findings-in-the-us
+https://wellnessnest.co/blogs/news/turkesterone-over-60-5-checks-in-the-us
+https://wellnessnest.co/blogs/news/vaginal-probiotics-for-beginners-what-to-expect-in-the-us
+https://wellnessnest.co/blogs/news/shilajit-for-seniors-5-safety-checks-over-60-us-2026
+https://wellnessnest.co/blogs/news/turkesterone-price-5-cost-checks-in-the-us-2026
+https://wellnessnest.co/blogs/news/shilajit-on-an-empty-stomach-yes-or-no-in-the-us
+https://wellnessnest.co/blogs/news/shilajit-for-fertility-trial-limits-for-the-us
+https://wellnessnest.co/blogs/news/vaginal-probiotics-price-us-cost-2026
+https://wellnessnest.co/blogs/news/creatine-gummies-price-69-99-in-the-us-2026
+https://wellnessnest.co/blogs/news/turkesterone-for-fertility-the-us-evidence-2026
+https://wellnessnest.co/blogs/news/nmn-for-fertility-human-evidence-in-the-us-2026
+https://wellnessnest.co/blogs/news/how-to-take-nmn-a-capsule-routine-in-the-us
+https://wellnessnest.co/blogs/news/vaginal-probiotics-over-60-5-checks-in-the-us
+https://wellnessnest.co/blogs/news/creatine-gummies-on-an-empty-stomach-us-guide
+https://wellnessnest.co/blogs/news/vaginal-probiotics-for-fertility-limits-in-the-us
+https://wellnessnest.co/blogs/news/nmn-price-bottle-vs-serving-cost-in-the-us
+https://wellnessnest.co/blogs/news
