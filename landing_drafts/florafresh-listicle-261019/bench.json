@@ -1,0 +1,163 @@
+{
+ "url": "file:///Users/kevinkreative/genseo/landing_drafts/florafresh-listicle-261019/preview.html",
+ "desktop": {
+  "viewport": "1440x900",
+  "page_height_px": 8102,
+  "screens_tall": 9,
+  "h1": {
+   "text": "7 Ways to Make a Probiotic Habit Easier",
+   "font_px": 41.36,
+   "lines": 2
+  },
+  "headings": [
+   "H1:7 Ways to Make a Probiotic Habit Easier",
+   "H2:Give it a familiar cue",
+   "H2:Expect practice, not perfection",
+   "H2:Choose the steps you prefer",
+   "H2:Check the name, not the hype",
+   "H2:Make room for sweetener checks",
+   "H2:Keep convenience in its lane",
+   "H2:Plan for your ordinary day",
+   "H2:Convenience is part of consistency",
+   "H2:Store service, in customers' words",
+   "H2:A gummy option for your daily routine"
+  ],
+  "heading_count": 11,
+  "body_font_px_median": 19,
+  "body_line_height_ratio": 1.4,
+  "paragraph_words_median": 16,
+  "paragraph_words_max": 28,
+  "paragraphs_over_60_words": 0,
+  "line_length_chars_median": 63,
+  "paragraphs": 39,
+  "image_alts": [
+   "475x475 Real dusty-pink FloraFresh pouch with the white Wellness Nest wordmark",
+   "540x517 Oatmeal, a spoon and a blank habit card beside a linen napkin",
+   "540x517 An empty ceramic dish and spoon on a counter with folded linen",
+   "540x517 A small dish of sugar beside a magnifying glass and blank notebook",
+   "420x402 Research papers and reading glasses beside an open notebook",
+   "540x517 A small travel pouch and house keys beside an open daily planner",
+   "540x517 The real FloraFresh pouch on a pale background",
+   "616x560 Real FloraFresh pouch with the vertical white Wellness Nest logo",
+   "640x894 Uncropped real FloraFresh gummy pouch on a pale background"
+  ],
+  "images": 9,
+  "image_area_share": 0.232,
+  "ctas": [
+   {
+    "text": "SEE INGREDIENTS",
+    "y": 522,
+    "h": 56,
+    "wraps": false
+   },
+   {
+    "text": "SEE INGREDIENTS",
+    "y": 7653,
+    "h": 79,
+    "wraps": true
+   }
+  ],
+  "cta_count": 2,
+  "first_cta_y": 522,
+  "wrapped_ctas": 1,
+  "first_screen": [
+   "P:A PRACTICAL GUIDE TO DAILY CONSISTENCY",
+   "H1:7 Ways to Make a Probiotic Habit Easier",
+   "IMG(48x48)",
+   "P:By Dr. Marcus Hale | Wellness Nest editorial team",
+   "P:Last Updated Oct 19, 2026",
+   "P:A gummy may suit your routine if you dislike pills. For vaginal probio",
+   "A:SEE INGREDIENTS",
+   "IMG(475x475)",
+   "IMG(540x517)"
+  ],
+  "small_text_blocks_under_13px": 0,
+  "em_dashes": 0,
+  "en_dashes": 0,
+  "distinct_accent_bg_colors": 1,
+  "distinct_corner_radii": 6,
+  "has_countdown": false,
+  "star_or_rating_mentions": 7,
+  "horizontal_overflow": false
+ },
+ "mobile": {
+  "viewport": "375x812",
+  "page_height_px": 10401,
+  "screens_tall": 12.8,
+  "h1": {
+   "text": "7 Ways to Make a Probiotic Habit Easier",
+   "font_px": 30,
+   "lines": 3
+  },
+  "headings": [
+   "H1:7 Ways to Make a Probiotic Habit Easier",
+   "H2:Give it a familiar cue",
+   "H2:Expect practice, not perfection",
+   "H2:Choose the steps you prefer",
+   "H2:Check the name, not the hype",
+   "H2:Make room for sweetener checks",
+   "H2:Keep convenience in its lane",
+   "H2:Plan for your ordinary day",
+   "H2:Convenience is part of consistency",
+   "H2:Store service, in customers' words",
+   "H2:A gummy option for your daily routine"
+  ],
+  "heading_count": 11,
+  "body_font_px_median": 17.5,
+  "body_line_height_ratio": 1.4,
+  "paragraph_words_median": 16,
+  "paragraph_words_max": 28,
+  "paragraphs_over_60_words": 0,
+  "line_length_chars_median": 39,
+  "paragraphs": 39,
+  "image_alts": [
+   "315x252 Real dusty-pink FloraFresh pouch with the white Wellness Nest wordmark",
+   "339x339 Oatmeal, a spoon and a blank habit card beside a linen napkin",
+   "339x339 An empty ceramic dish and spoon on a counter with folded linen",
+   "339x339 A small dish of sugar beside a magnifying glass and blank notebook",
+   "303x303 Research papers and reading glasses beside an open notebook",
+   "339x339 A small travel pouch and house keys beside an open daily planner",
+   "339x339 The real FloraFresh pouch on a pale background",
+   "343x280 Real FloraFresh pouch with the vertical white Wellness Nest logo",
+   "343x343 Uncropped real FloraFresh gummy pouch on a pale background"
+  ],
+  "images": 9,
+  "image_area_share": 0.246,
+  "ctas": [
+   {
+    "text": "SEE INGREDIENTS",
+    "y": 788,
+    "h": 54,
+    "wraps": false
+   },
+   {
+    "text": "SEE INGREDIENTS",
+    "y": 9865,
+    "h": 69,
+    "wraps": false
+   }
+  ],
+  "cta_count": 2,
+  "first_cta_y": 788,
+  "wrapped_ctas": 0,
+  "first_screen": [
+   "P:A PRACTICAL GUIDE TO DAILY CONSISTENCY",
+   "H1:7 Ways to Make a Probiotic Habit Easier",
+   "IMG(40x40)",
+   "P:By Dr. Marcus Hale | Wellness Nest editorial team",
+   "P:Last Updated Oct 19, 2026",
+   "P:A gummy may suit your routine if you dislike pills. For vaginal probio",
+   "A:SEE INGREDIENTS",
+   "IMG(315x252)"
+  ],
+  "small_text_blocks_under_13px": 8,
+  "em_dashes": 0,
+  "en_dashes": 0,
+  "distinct_accent_bg_colors": 1,
+  "distinct_corner_radii": 6,
+  "has_countdown": false,
+  "star_or_rating_mentions": 7,
+  "horizontal_overflow": false
+ },
+ "text": "WELLNESS NEST EDITORIAL GUIDE\nROUTINE FIRST. READ THE LABEL.\n\nA PRACTICAL GUIDE TO DAILY CONSISTENCY\n\n7 Ways to Make a Probiotic Habit Easier\n\nBy Dr. Marcus Hale | Wellness Nest editorial team\n\nLast Updated Oct 19, 2026\n\nA gummy may suit your routine if you dislike pills. For vaginal probiotics, convenience is only the start: check the label, sweeteners, and what the evidence actually tested.\n\nSEE INGREDIENTS\nGummy format. Label-first choices.\n4.2 TrustScore\n1,144 Trustpilot reviews\n90-day refund policy\neligibility applies\nFree shipping\non orders over $69\nVegan\nSupplement Facts label badge\n01\nGive it a familiar cue\n\nPut your routine next to something you already do, like breakfast. A familiar cue gives you a concrete moment to remember.\n\nA habit study tracked daily actions in the same setting. It studied eating, drinking, and activity, not probiotic gummies.\n\nHabit research, not vaginal-health evidence\n\n02\nExpect practice, not perfection\n\nIn a 12-week study, 96 volunteers practiced a daily action. Missing an opportunity did not materially affect the habit-building process.\n\nThat is permission to resume your routine, not to double a serving. The research did not compare gummies with capsules.\n\nDaily repetition, not a guaranteed deadline\n\nWhat the habit study tracked\n\n96\nVOLUNTEERS ENROLLED\n12 weeks\nOBSERVATION PERIOD\nDaily\nCHOSEN ACTION\n\nLally et al., Eur J Soc Psychol 2010; n=96; 12 weeks.\n\n03\nChoose the steps you prefer\n\nIf swallowing pills feels like a chore, a chewable format may be more appealing. Choose around your preferences, not somebody else's ideal routine.\n\nThis is a practical format choice, not proof of better adherence. The cited habit research did not test which supplement format people preferred.\n\nPreference is personal, not a trial result\n\n04\nCheck the name, not the hype\n\nRead the full probiotic name, including its strain identifier. NCCIH explains that different types can have different effects.\n\nThen ask what the research actually tested. A benefit reported for another probiotic is not automatic evidence for the gummy you choose.\n\nDifferent probiotics can have different effects\n\nRead beyond the word probiotic\n\nName\nIDENTIFY THE PROBIOTIC\nStudy\nMATCH THE EVIDENCE\nGoal\nCHECK WHAT WAS TESTED\n\nNCCIH, Probiotics: Usefulness and Safety; read Oct 19, 2026.\n\n05\nMake room for sweetener checks\n\nA gummy's format tells you little about its sweeteners. Read the ingredient list before deciding whether it fits your preferences.\n\nDo not assume a gummy is sugar-free from its appearance. Make checking the actual label part of choosing your routine.\n\nFormat does not tell you the ingredients\n\n06\nKeep convenience in its lane\n\nEasy to take does not mean proven to help vaginal symptoms. The habit study here did not measure vaginal health.\n\nUnusual odor, discharge, itching, or burning deserves clinical advice. CDC guidance describes medical evaluation and antibiotic treatment for bacterial vaginosis.\n\nEvidence gap: routine is not treatment\n\n07\nPlan for your ordinary day\n\nPicture a busy morning, not a perfect one. Decide when you would take the labeled serving before adding another product to your shelf.\n\nA reminder can be a practical starting point. Keep expectations grounded: this is a routine suggestion, not evidence that gummies outperform other formats.\n\nChoose a cue that fits your day\n\n08\nConvenience is part of consistency\n\nA daily routine needs a place in your day. If pills feel like friction, a gummy is another format to consider.\n\nFloraFresh is one option. Check its Supplement Facts label and your own preferences before deciding whether it belongs in your routine.\n\nTaking medication, pregnant, or managing a health condition? Ask your clinician first. A supplement is not a substitute for symptom evaluation.\n\n09\nStore service, in customers' words\n\n“Henry did an excellent job with my order. Thank you”\n\nSheila George · Trustpilot · July 24, 2026\n\nright on time with subscription Don't have to worry about ordering it \nTonya · US · Oct 1, 2026\nVerified\nHenry was very responsive and helpful when there was a problem that needed resolving \nMel Barrett · GB · Aug 25, 2026\nHenry did an excellent job with my order. Thank you\nSheila George · US · July 24, 2026\nFLORAFRESH GUMMIES\nA gummy option\nfor your daily routine\n\n4.2 TrustScore · 1,144 store reviews on Trustpilot\n\n$35.25\n$40.99\nMONTHLY SUBSCRIPTION\n\nOne product every month with Subscribe & Save. $40.99 one-time. Recurring deliveries; review terms before ordering.\n\nPineapple fruit powder 100 mg with bromelain per 2 gummies\nVitamin C 30 mg per 2 gummies\nBacillus coagulans SNZ-1969: 1 billion CFU per 2 gummies\nContains maltitol and isomalt. Not sugar-free.\nSEE INGREDIENTS\n\nGummy format\n\nLabel-first choice\n\n90-day refund policy for eligible first orders. Conditions and exclusions apply; see the refund policy.\n\nThese statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease."
+}

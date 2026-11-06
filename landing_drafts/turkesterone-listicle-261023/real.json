@@ -1,0 +1,62 @@
+{
+ "url": "https://wellnessnest.co/pages/gsl-preview-turkesterone-listicle-261023?v=1792726591807",
+ "desktop": {
+  "http": 200,
+  "title": "6 Things to Check Before You Buy Turkesterone – Wellness Nest",
+  "status_text": "Skip to content\n\n↩️ 90-Day Refund Policy — Eligibility Applies\n\n🚚 Free Shipping",
+  "body_class": "gradient link-btns--glow action-btns--glow",
+  "gsl_ref": true,
+  "premium_markup": true,
+  "premium_css_applied": "24px",
+  "premium_kicker_radius": "999px",
+  "premium_css_in_dom": true,
+  "offer_text": "TURKESTERONE ADVANCED FORMULA TURKESTERONE Advanced Formula, 60 Capsules 4.2 TrustScore · 1,144 reviews on Trustpilot $75.00 $119.98 COMPARE AT PRICE one-time price shown on the product page; no Subscribe and Save sellin",
+  "old_v2_offer_copy": false,
+  "sticky": true,
+  "imgs": 15,
+  "broken": [],
+  "overflow": false,
+  "height": 8629,
+  "clipped": [],
+  "palette": {
+   "cta_bg": "rgb(2, 57, 2)",
+   "accent": "rgb(50, 116, 47)",
+   "kicker": "rgb(50, 116, 47)",
+   "topbar_bg": "rgb(2, 57, 2)",
+   "pill_bg": "rgb(2, 57, 2)",
+   "offer_cta_bg": "rgb(2, 57, 2)"
+  }
+ },
+ "mobile": {
+  "http": 200,
+  "title": "6 Things to Check Before You Buy Turkesterone – Wellness Nest",
+  "status_text": "Skip to content\n\n↩️ 90-Day Refund Policy — Eligibility Applies\n\n🚚 Free Shipping",
+  "body_class": "gradient link-btns--glow action-btns--glow",
+  "gsl_ref": true,
+  "premium_markup": true,
+  "premium_css_applied": "20px",
+  "premium_kicker_radius": "999px",
+  "premium_css_in_dom": true,
+  "offer_text": "TURKESTERONE ADVANCED FORMULA TURKESTERONE Advanced Formula, 60 Capsules 4.2 TrustScore · 1,144 reviews on Trustpilot $75.00 $119.98 COMPARE AT PRICE one-time price shown on the product page; no Subscribe and Save sellin",
+  "old_v2_offer_copy": false,
+  "sticky": true,
+  "imgs": 15,
+  "broken": [],
+  "overflow": false,
+  "height": 12208,
+  "clipped": [],
+  "palette": {
+   "cta_bg": "rgb(2, 57, 2)",
+   "accent": "rgb(50, 116, 47)",
+   "kicker": "rgb(50, 116, 47)",
+   "topbar_bg": "rgb(2, 57, 2)",
+   "pill_bg": "rgb(2, 57, 2)",
+   "offer_cta_bg": "rgb(2, 57, 2)"
+  },
+  "sticky_check": {
+   "top": "off(scrollY=0 vh=812 offerTop=8724 bridgeTop=6743 rows=7 cls=gslp-sticky)",
+   "after_bridge": true,
+   "on_offer": "off(scrollY=8874 vh=812 offerTop=-150 bridgeTop=-2131 rows=7 cls=gslp-sticky)"
+  }
+ }
+}

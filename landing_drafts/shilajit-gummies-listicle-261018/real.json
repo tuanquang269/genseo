@@ -1,0 +1,62 @@
+{
+ "url": "https://wellnessnest.co/pages/gsl-preview-shilajit-gummies-listicle-261018?v=1792301599610",
+ "desktop": {
+  "http": 200,
+  "title": "7 Reasons to Consider Shilajit Gummies – Wellness Nest",
+  "status_text": "Skip to content\n\n↩️ 90-Day Refund Policy — Eligibility Applies\n\n🚚 Free Shipping",
+  "body_class": "gradient link-btns--glow action-btns--glow",
+  "gsl_ref": true,
+  "premium_markup": true,
+  "premium_css_applied": "24px",
+  "premium_kicker_radius": "999px",
+  "premium_css_in_dom": true,
+  "offer_text": "PREMIUM HIMALAYAN SHILAJIT GUMMIES A chewable format Start With the Label 4.2 TrustScore · 1,144 reviews on Trustpilot $44.99 $59.99 25% PLAN The 'Every 4 weeks' plan lists $44.99 per pouch. $59.99 one-time. Other plans ",
+  "old_v2_offer_copy": false,
+  "sticky": true,
+  "imgs": 15,
+  "broken": [],
+  "overflow": false,
+  "height": 9204,
+  "clipped": [],
+  "palette": {
+   "cta_bg": "rgb(34, 52, 36)",
+   "accent": "rgb(40, 116, 54)",
+   "kicker": "rgb(40, 116, 54)",
+   "topbar_bg": "rgb(34, 52, 36)",
+   "pill_bg": "rgb(34, 52, 36)",
+   "offer_cta_bg": "rgb(34, 52, 36)"
+  }
+ },
+ "mobile": {
+  "http": 200,
+  "title": "7 Reasons to Consider Shilajit Gummies – Wellness Nest",
+  "status_text": "Skip to content\n\n↩️ 90-Day Refund Policy — Eligibility Applies\n\n🚚 Free Shipping",
+  "body_class": "gradient link-btns--glow action-btns--glow klaviyo-prevent-body-scrolling",
+  "gsl_ref": true,
+  "premium_markup": true,
+  "premium_css_applied": "20px",
+  "premium_kicker_radius": "999px",
+  "premium_css_in_dom": true,
+  "offer_text": "PREMIUM HIMALAYAN SHILAJIT GUMMIES A chewable format Start With the Label 4.2 TrustScore · 1,144 reviews on Trustpilot $44.99 $59.99 25% PLAN The 'Every 4 weeks' plan lists $44.99 per pouch. $59.99 one-time. Other plans ",
+  "old_v2_offer_copy": false,
+  "sticky": true,
+  "imgs": 16,
+  "broken": [],
+  "overflow": false,
+  "height": 12755,
+  "clipped": [],
+  "palette": {
+   "cta_bg": "rgb(34, 52, 36)",
+   "accent": "rgb(40, 116, 54)",
+   "kicker": "rgb(40, 116, 54)",
+   "topbar_bg": "rgb(34, 52, 36)",
+   "pill_bg": "rgb(34, 52, 36)",
+   "offer_cta_bg": "rgb(34, 52, 36)"
+  },
+  "sticky_check": {
+   "top": "off(scrollY=0 vh=812 offerTop=9344 bridgeTop=7307 rows=8 cls=gslp-sticky)",
+   "after_bridge": true,
+   "on_offer": "off(scrollY=9494 vh=812 offerTop=-150 bridgeTop=-2187 rows=8 cls=gslp-sticky)"
+  }
+ }
+}

@@ -1,0 +1,62 @@
+{
+ "url": "https://wellnessnest.co/pages/gsl-preview-florafresh-listicle-261019?v=1792380042424",
+ "desktop": {
+  "http": 200,
+  "title": "7 Ways to Make a Probiotic Habit Easier – Wellness Nest",
+  "status_text": "Skip to content\n\n↩️ 90-Day Refund Policy — Eligibility Applies\n\n🚚 Free Shipping",
+  "body_class": "gradient link-btns--glow action-btns--glow klaviyo-prevent-body-scrolling",
+  "gsl_ref": true,
+  "premium_markup": true,
+  "premium_css_applied": "24px",
+  "premium_kicker_radius": "999px",
+  "premium_css_in_dom": true,
+  "offer_text": "FLORAFRESH GUMMIES A gummy option for your daily routine 4.2 TrustScore · 1,144 store reviews on Trustpilot $35.25 $40.99 MONTHLY SUBSCRIPTION One product every month with Subscribe & Save. $40.99 one-time. Recurring del",
+  "old_v2_offer_copy": false,
+  "sticky": true,
+  "imgs": 16,
+  "broken": [],
+  "overflow": false,
+  "height": 8986,
+  "clipped": [],
+  "palette": {
+   "cta_bg": "rgb(86, 27, 38)",
+   "accent": "rgb(164, 73, 88)",
+   "kicker": "rgb(164, 73, 88)",
+   "topbar_bg": "rgb(86, 27, 38)",
+   "pill_bg": "rgb(86, 27, 38)",
+   "offer_cta_bg": "rgb(86, 27, 38)"
+  }
+ },
+ "mobile": {
+  "http": 200,
+  "title": "7 Ways to Make a Probiotic Habit Easier – Wellness Nest",
+  "status_text": "Skip to content\n\n↩️ 90-Day Refund Policy — Eligibility Applies\n\n🚚 Free Shipping",
+  "body_class": "gradient link-btns--glow action-btns--glow klaviyo-prevent-body-scrolling",
+  "gsl_ref": true,
+  "premium_markup": true,
+  "premium_css_applied": "20px",
+  "premium_kicker_radius": "999px",
+  "premium_css_in_dom": true,
+  "offer_text": "FLORAFRESH GUMMIES A gummy option for your daily routine 4.2 TrustScore · 1,144 store reviews on Trustpilot $35.25 $40.99 MONTHLY SUBSCRIPTION One product every month with Subscribe & Save. $40.99 one-time. Recurring del",
+  "old_v2_offer_copy": false,
+  "sticky": true,
+  "imgs": 16,
+  "broken": [],
+  "overflow": false,
+  "height": 12457,
+  "clipped": [],
+  "palette": {
+   "cta_bg": "rgb(86, 27, 38)",
+   "accent": "rgb(164, 73, 88)",
+   "kicker": "rgb(164, 73, 88)",
+   "topbar_bg": "rgb(86, 27, 38)",
+   "pill_bg": "rgb(86, 27, 38)",
+   "offer_cta_bg": "rgb(86, 27, 38)"
+  },
+  "sticky_check": {
+   "top": "off(scrollY=0 vh=812 offerTop=9045 bridgeTop=7250 rows=8 cls=gslp-sticky)",
+   "after_bridge": true,
+   "on_offer": "off(scrollY=9195 vh=812 offerTop=-150 bridgeTop=-1945 rows=8 cls=gslp-sticky)"
+  }
+ }
+}

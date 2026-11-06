@@ -1,0 +1,62 @@
+{
+ "url": "https://wellnessnest.co/pages/gsl-preview-pure-shilajit-gold-resin-listicle-261020?v=1792467278027",
+ "desktop": {
+  "http": 200,
+  "title": "7 Things to Know About Daily Shilajit – Wellness Nest",
+  "status_text": "Skip to content\n\n↩️ 90-Day Refund Policy — Eligibility Applies\n\n🚚 Free Shipping",
+  "body_class": "gradient link-btns--glow action-btns--glow",
+  "gsl_ref": true,
+  "premium_markup": true,
+  "premium_css_applied": "24px",
+  "premium_kicker_radius": "999px",
+  "premium_css_in_dom": true,
+  "offer_text": "PURE SHILAJIT GOLD RESIN Gold Resin A Raw Resin Routine 4.2 TrustScore · 1,144 reviews on Trustpilot $67.50 $75.00 SAVE 10% with Subscribe & Save, delivered every 4 weeks. Or $75.00 one-time. Himalayan Shilajit, 75% Fulv",
+  "old_v2_offer_copy": false,
+  "sticky": true,
+  "imgs": 15,
+  "broken": [],
+  "overflow": false,
+  "height": 9026,
+  "clipped": [],
+  "palette": {
+   "cta_bg": "rgb(37, 52, 19)",
+   "accent": "rgb(76, 113, 23)",
+   "kicker": "rgb(76, 113, 23)",
+   "topbar_bg": "rgb(37, 52, 19)",
+   "pill_bg": "rgb(37, 52, 19)",
+   "offer_cta_bg": "rgb(37, 52, 19)"
+  }
+ },
+ "mobile": {
+  "http": 200,
+  "title": "7 Things to Know About Daily Shilajit – Wellness Nest",
+  "status_text": "Skip to content\n\n↩️ 90-Day Refund Policy — Eligibility Applies\n\n🚚 Free Shipping",
+  "body_class": "gradient link-btns--glow action-btns--glow klaviyo-prevent-body-scrolling",
+  "gsl_ref": true,
+  "premium_markup": true,
+  "premium_css_applied": "20px",
+  "premium_kicker_radius": "999px",
+  "premium_css_in_dom": true,
+  "offer_text": "PURE SHILAJIT GOLD RESIN Gold Resin A Raw Resin Routine 4.2 TrustScore · 1,144 reviews on Trustpilot $67.50 $75.00 SAVE 10% with Subscribe & Save, delivered every 4 weeks. Or $75.00 one-time. Himalayan Shilajit, 75% Fulv",
+  "old_v2_offer_copy": false,
+  "sticky": true,
+  "imgs": 16,
+  "broken": [],
+  "overflow": false,
+  "height": 12183,
+  "clipped": [],
+  "palette": {
+   "cta_bg": "rgb(37, 52, 19)",
+   "accent": "rgb(76, 113, 23)",
+   "kicker": "rgb(76, 113, 23)",
+   "topbar_bg": "rgb(37, 52, 19)",
+   "pill_bg": "rgb(37, 52, 19)",
+   "offer_cta_bg": "rgb(37, 52, 19)"
+  },
+  "sticky_check": {
+   "top": "off(scrollY=0 vh=812 offerTop=8959 bridgeTop=7137 rows=8 cls=gslp-sticky)",
+   "after_bridge": true,
+   "on_offer": "off(scrollY=9109 vh=812 offerTop=-150 bridgeTop=-1972 rows=8 cls=gslp-sticky)"
+  }
+ }
+}
