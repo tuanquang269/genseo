@@ -31,6 +31,17 @@ class StoreIsolationTests(unittest.TestCase):
             with self.assertRaises(StoreGuardError):
                 Profile(store).read_context(ROOT/'.env')
 
+    def test_wellnessnest_repo_paths_follow_this_checkout(self):
+        # A worktree must not keep reading the primary checkout's brand file,
+        # queue, or gate. The vault note stays an absolute path outside the repo.
+        p = Profile('wellnessnest')
+        self.assertEqual(Path(p.data['context'][0]).resolve(), (ROOT/'brand'/'wellnessnest.json').resolve())
+        self.assertEqual(Path(p.data['calendar']).resolve(), (ROOT/'daily-tickets.md').resolve())
+        self.assertEqual(Path(p.data['gates'][0]).resolve(), (ROOT/'scripts'/'validate_article.py').resolve())
+        self.assertEqual(Path(p.data['legacy_runner']).resolve(), (ROOT/'scripts'/'run_ticket_headless.sh').resolve())
+        vault = Path.home()/'PATI/LLM-Wiki/20-brands/1-wellnessnest.md'
+        self.assertIn(vault.resolve(), {Path(item).resolve() for item in p.data['context']})
+
     def test_foreign_product_links_and_handles_fail(self):
         wn, ch = Profile('wellnessnest'), Profile('cherish')
         for profile, content in [(ch,'https://wellnessnest.co/products/fusiforce-creatine-gummies'),
