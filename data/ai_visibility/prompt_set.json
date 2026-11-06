@@ -1,0 +1,456 @@
+{
+  "schema": 1,
+  "prompt_status": "hypothesised",
+  "store_name": "Wellness Nest",
+  "store_domain": "wellnessnest.co",
+  "note": "Prompt text is hypothesised. Nothing in this file was observed in ChatGPT, Gemini, Google AI Mode, AI Overviews, Perplexity, or Grok. AgeAura and ShilaSource strings are the query lists from draft PR #75. FloraFresh strings are topic-bank primaries. A web-search rank from that draft is not a citation.",
+  "platforms": [
+    {
+      "id": "chatgpt",
+      "label": "ChatGPT",
+      "adapter": "openai",
+      "env_key": "OPENAI_API_KEY",
+      "env_model": "OPENAI_VISIBILITY_MODEL"
+    },
+    {
+      "id": "gemini",
+      "label": "Gemini",
+      "adapter": "gemini",
+      "env_key": "GEMINI_API_KEY",
+      "env_model": "GEMINI_VISIBILITY_MODEL"
+    },
+    {
+      "id": "google_ai_mode",
+      "label": "Google AI Mode",
+      "adapter": null,
+      "env_key": null,
+      "env_model": null
+    },
+    {
+      "id": "ai_overviews",
+      "label": "AI Overviews",
+      "adapter": null,
+      "env_key": null,
+      "env_model": null
+    },
+    {
+      "id": "perplexity",
+      "label": "Perplexity",
+      "adapter": "perplexity",
+      "env_key": "PERPLEXITY_API_KEY",
+      "env_model": "PERPLEXITY_MODEL"
+    },
+    {
+      "id": "grok",
+      "label": "Grok/X",
+      "adapter": "xai",
+      "env_key": "XAI_API_KEY",
+      "env_model": "XAI_VISIBILITY_MODEL"
+    }
+  ],
+  "brands": [
+    {
+      "id": "ageaura",
+      "label": "AgeAura Pure NMN + TMG NAD+ Complex",
+      "product_name": "AgeAura Pure NMN + TMG NAD+ Complex",
+      "product_url": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex",
+      "handle": "ageaura-pure-nmn-tmg-nad-complex",
+      "mention": "AgeAura, and not a Urolithin-only mention"
+    },
+    {
+      "id": "shilasource",
+      "label": "Wellness Nest / ShilaSource shilajit",
+      "product_name": "ShilaSource Himalayan Shilajit Resin",
+      "product_url": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin",
+      "handle": "shilasource-himalayan-shilajit-resin",
+      "mention": "ShilaSource. Wellness Nest alone is store_mentioned, not brand_mentioned."
+    },
+    {
+      "id": "florafresh",
+      "label": "FloraFresh probiotic",
+      "product_name": "FloraFresh Vaginal Probiotics Gummies",
+      "product_url": "https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies",
+      "handle": "florafresh-vaginal-probiotics-gummies",
+      "mention": "FloraFresh"
+    }
+  ],
+  "prompts": [
+    {
+      "id": "ageaura-01-best-nmn-supplement",
+      "brand_id": "ageaura",
+      "text": "best NMN supplement",
+      "prompt_status": "hypothesised",
+      "source": "draft PR #75 data/offpage_seeds/ageaura.json on cursor/offpage-listicle-gap-1020"
+    },
+    {
+      "id": "ageaura-02-best-nmn-supplement-2026",
+      "brand_id": "ageaura",
+      "text": "best NMN supplement 2026",
+      "prompt_status": "hypothesised",
+      "source": "draft PR #75 data/offpage_seeds/ageaura.json on cursor/offpage-listicle-gap-1020"
+    },
+    {
+      "id": "ageaura-03-best-nmn-with-tmg",
+      "brand_id": "ageaura",
+      "text": "best NMN with TMG",
+      "prompt_status": "hypothesised",
+      "source": "draft PR #75 data/offpage_seeds/ageaura.json on cursor/offpage-listicle-gap-1020"
+    },
+    {
+      "id": "ageaura-04-nmn-vs-nr",
+      "brand_id": "ageaura",
+      "text": "NMN vs NR",
+      "prompt_status": "hypothesised",
+      "source": "draft PR #75 data/offpage_seeds/ageaura.json on cursor/offpage-listicle-gap-1020"
+    },
+    {
+      "id": "ageaura-05-best-nad-plus-supplement-2026",
+      "brand_id": "ageaura",
+      "text": "best NAD+ supplement 2026",
+      "prompt_status": "hypothesised",
+      "source": "draft PR #75 data/offpage_seeds/ageaura.json on cursor/offpage-listicle-gap-1020"
+    },
+    {
+      "id": "ageaura-06-best-nad-booster-supplement",
+      "brand_id": "ageaura",
+      "text": "best NAD booster supplement",
+      "prompt_status": "hypothesised",
+      "source": "draft PR #75 data/offpage_seeds/ageaura.json on cursor/offpage-listicle-gap-1020"
+    },
+    {
+      "id": "ageaura-07-best-nmn-capsules",
+      "brand_id": "ageaura",
+      "text": "best NMN capsules",
+      "prompt_status": "hypothesised",
+      "source": "draft PR #75 data/offpage_seeds/ageaura.json on cursor/offpage-listicle-gap-1020"
+    },
+    {
+      "id": "ageaura-08-nmn-and-tmg-together",
+      "brand_id": "ageaura",
+      "text": "NMN and TMG together",
+      "prompt_status": "hypothesised",
+      "source": "draft PR #75 data/offpage_seeds/ageaura.json on cursor/offpage-listicle-gap-1020"
+    },
+    {
+      "id": "ageaura-09-best-nmn-supplement-reddit",
+      "brand_id": "ageaura",
+      "text": "best NMN supplement reddit",
+      "prompt_status": "hypothesised",
+      "source": "draft PR #75 data/offpage_seeds/ageaura.json on cursor/offpage-listicle-gap-1020"
+    },
+    {
+      "id": "ageaura-10-top-nmn-brands-compared",
+      "brand_id": "ageaura",
+      "text": "top NMN brands compared",
+      "prompt_status": "hypothesised",
+      "source": "draft PR #75 data/offpage_seeds/ageaura.json on cursor/offpage-listicle-gap-1020"
+    },
+    {
+      "id": "ageaura-11-best-liposomal-nmn",
+      "brand_id": "ageaura",
+      "text": "best liposomal NMN",
+      "prompt_status": "hypothesised",
+      "source": "draft PR #75 data/offpage_seeds/ageaura.json on cursor/offpage-listicle-gap-1020"
+    },
+    {
+      "id": "ageaura-12-pure-nmn-supplement-brand",
+      "brand_id": "ageaura",
+      "text": "pure NMN supplement brand",
+      "prompt_status": "hypothesised",
+      "source": "draft PR #75 data/offpage_seeds/ageaura.json on cursor/offpage-listicle-gap-1020"
+    },
+    {
+      "id": "ageaura-13-best-nmn-for-longevity",
+      "brand_id": "ageaura",
+      "text": "best NMN for longevity",
+      "prompt_status": "hypothesised",
+      "source": "draft PR #75 data/offpage_seeds/ageaura.json on cursor/offpage-listicle-gap-1020"
+    },
+    {
+      "id": "ageaura-14-nmn-tmg-stack-review",
+      "brand_id": "ageaura",
+      "text": "NMN TMG stack review",
+      "prompt_status": "hypothesised",
+      "source": "draft PR #75 data/offpage_seeds/ageaura.json on cursor/offpage-listicle-gap-1020"
+    },
+    {
+      "id": "ageaura-15-best-nmn-supplement-third-party-tested",
+      "brand_id": "ageaura",
+      "text": "best NMN supplement third party tested",
+      "prompt_status": "hypothesised",
+      "source": "draft PR #75 data/offpage_seeds/ageaura.json on cursor/offpage-listicle-gap-1020"
+    },
+    {
+      "id": "ageaura-16-nad-plus-precursor-comparison-nmn-nr",
+      "brand_id": "ageaura",
+      "text": "NAD+ precursor comparison NMN NR",
+      "prompt_status": "hypothesised",
+      "source": "draft PR #75 data/offpage_seeds/ageaura.json on cursor/offpage-listicle-gap-1020"
+    },
+    {
+      "id": "ageaura-17-best-nmn-powder",
+      "brand_id": "ageaura",
+      "text": "best NMN powder",
+      "prompt_status": "hypothesised",
+      "source": "draft PR #75 data/offpage_seeds/ageaura.json on cursor/offpage-listicle-gap-1020"
+    },
+    {
+      "id": "ageaura-18-wonderfeel-vs-tru-niagen",
+      "brand_id": "ageaura",
+      "text": "Wonderfeel vs Tru Niagen",
+      "prompt_status": "hypothesised",
+      "source": "draft PR #75 data/offpage_seeds/ageaura.json on cursor/offpage-listicle-gap-1020"
+    },
+    {
+      "id": "shilasource-01-best-shilajit-resin",
+      "brand_id": "shilasource",
+      "text": "best shilajit resin",
+      "prompt_status": "hypothesised",
+      "source": "draft PR #75 data/offpage_seeds/shilasource.json on cursor/offpage-listicle-gap-1020"
+    },
+    {
+      "id": "shilasource-02-best-shilajit-gummies",
+      "brand_id": "shilasource",
+      "text": "best shilajit gummies",
+      "prompt_status": "hypothesised",
+      "source": "draft PR #75 data/offpage_seeds/shilasource.json on cursor/offpage-listicle-gap-1020"
+    },
+    {
+      "id": "shilasource-03-best-shilajit-supplement",
+      "brand_id": "shilasource",
+      "text": "best shilajit supplement",
+      "prompt_status": "hypothesised",
+      "source": "draft PR #75 data/offpage_seeds/shilasource.json on cursor/offpage-listicle-gap-1020"
+    },
+    {
+      "id": "shilasource-04-pure-himalayan-shilajit-brand",
+      "brand_id": "shilasource",
+      "text": "pure Himalayan shilajit brand",
+      "prompt_status": "hypothesised",
+      "source": "draft PR #75 data/offpage_seeds/shilasource.json on cursor/offpage-listicle-gap-1020"
+    },
+    {
+      "id": "shilasource-05-best-shilajit-2026",
+      "brand_id": "shilasource",
+      "text": "best shilajit 2026",
+      "prompt_status": "hypothesised",
+      "source": "draft PR #75 data/offpage_seeds/shilasource.json on cursor/offpage-listicle-gap-1020"
+    },
+    {
+      "id": "shilasource-06-best-shilajit-resin-reddit",
+      "brand_id": "shilasource",
+      "text": "best shilajit resin reddit",
+      "prompt_status": "hypothesised",
+      "source": "draft PR #75 data/offpage_seeds/shilasource.json on cursor/offpage-listicle-gap-1020"
+    },
+    {
+      "id": "shilasource-07-shilajit-resin-vs-gummies",
+      "brand_id": "shilasource",
+      "text": "shilajit resin vs gummies",
+      "prompt_status": "hypothesised",
+      "source": "draft PR #75 data/offpage_seeds/shilasource.json on cursor/offpage-listicle-gap-1020"
+    },
+    {
+      "id": "shilasource-08-best-authentic-shilajit",
+      "brand_id": "shilasource",
+      "text": "best authentic shilajit",
+      "prompt_status": "hypothesised",
+      "source": "draft PR #75 data/offpage_seeds/shilasource.json on cursor/offpage-listicle-gap-1020"
+    },
+    {
+      "id": "shilasource-09-best-shilajit-for-men",
+      "brand_id": "shilasource",
+      "text": "best shilajit for men",
+      "prompt_status": "hypothesised",
+      "source": "draft PR #75 data/offpage_seeds/shilasource.json on cursor/offpage-listicle-gap-1020"
+    },
+    {
+      "id": "shilasource-10-legitimate-shilajit-brands",
+      "brand_id": "shilasource",
+      "text": "legitimate shilajit brands",
+      "prompt_status": "hypothesised",
+      "source": "draft PR #75 data/offpage_seeds/shilasource.json on cursor/offpage-listicle-gap-1020"
+    },
+    {
+      "id": "shilasource-11-best-himalayan-shilajit-resin",
+      "brand_id": "shilasource",
+      "text": "best Himalayan shilajit resin",
+      "prompt_status": "hypothesised",
+      "source": "draft PR #75 data/offpage_seeds/shilasource.json on cursor/offpage-listicle-gap-1020"
+    },
+    {
+      "id": "shilasource-12-best-shilajit-supplement-2026",
+      "brand_id": "shilasource",
+      "text": "best shilajit supplement 2026",
+      "prompt_status": "hypothesised",
+      "source": "draft PR #75 data/offpage_seeds/shilasource.json on cursor/offpage-listicle-gap-1020"
+    },
+    {
+      "id": "shilasource-13-shilajit-brands-compared",
+      "brand_id": "shilasource",
+      "text": "shilajit brands compared",
+      "prompt_status": "hypothesised",
+      "source": "draft PR #75 data/offpage_seeds/shilasource.json on cursor/offpage-listicle-gap-1020"
+    },
+    {
+      "id": "shilasource-14-best-third-party-tested-shilajit",
+      "brand_id": "shilasource",
+      "text": "best third party tested shilajit",
+      "prompt_status": "hypothesised",
+      "source": "draft PR #75 data/offpage_seeds/shilasource.json on cursor/offpage-listicle-gap-1020"
+    },
+    {
+      "id": "shilasource-15-pure-shilajit-resin-brands",
+      "brand_id": "shilasource",
+      "text": "pure shilajit resin brands",
+      "prompt_status": "hypothesised",
+      "source": "draft PR #75 data/offpage_seeds/shilasource.json on cursor/offpage-listicle-gap-1020"
+    },
+    {
+      "id": "shilasource-16-best-shilajit-drops",
+      "brand_id": "shilasource",
+      "text": "best shilajit drops",
+      "prompt_status": "hypothesised",
+      "source": "draft PR #75 data/offpage_seeds/shilasource.json on cursor/offpage-listicle-gap-1020"
+    },
+    {
+      "id": "shilasource-17-shilajit-resin-brands-reddit",
+      "brand_id": "shilasource",
+      "text": "shilajit resin brands reddit",
+      "prompt_status": "hypothesised",
+      "source": "draft PR #75 data/offpage_seeds/shilasource.json on cursor/offpage-listicle-gap-1020"
+    },
+    {
+      "id": "shilasource-18-best-shilajit-gummies-2026",
+      "brand_id": "shilasource",
+      "text": "best shilajit gummies 2026",
+      "prompt_status": "hypothesised",
+      "source": "draft PR #75 data/offpage_seeds/shilasource.json on cursor/offpage-listicle-gap-1020"
+    },
+    {
+      "id": "florafresh-florafresh-morning-or-night",
+      "brand_id": "florafresh",
+      "text": "vaginal probiotics morning or night",
+      "prompt_status": "hypothesised",
+      "source": "templates/article-topic-bank.json topic florafresh-morning-or-night primary",
+      "bank_id": "florafresh-morning-or-night"
+    },
+    {
+      "id": "florafresh-vaginal-probiotic-dosage",
+      "brand_id": "florafresh",
+      "text": "vaginal probiotic dosage",
+      "prompt_status": "hypothesised",
+      "source": "templates/article-topic-bank.json topic vaginal-probiotic-dosage primary",
+      "bank_id": "vaginal-probiotic-dosage"
+    },
+    {
+      "id": "florafresh-where-to-buy-vaginal-probiotics",
+      "brand_id": "florafresh",
+      "text": "where to buy vaginal probiotics",
+      "prompt_status": "hypothesised",
+      "source": "templates/article-topic-bank.json topic where-to-buy-vaginal-probiotics primary",
+      "bank_id": "where-to-buy-vaginal-probiotics"
+    },
+    {
+      "id": "florafresh-vaginal-probiotics-for-beginners",
+      "brand_id": "florafresh",
+      "text": "vaginal probiotics for beginners",
+      "prompt_status": "hypothesised",
+      "source": "templates/article-topic-bank.json topic vaginal-probiotics-for-beginners primary",
+      "bank_id": "vaginal-probiotics-for-beginners"
+    },
+    {
+      "id": "florafresh-vaginal-probiotics-price",
+      "brand_id": "florafresh",
+      "text": "vaginal probiotics price",
+      "prompt_status": "hypothesised",
+      "source": "templates/article-topic-bank.json topic vaginal-probiotics-price primary",
+      "bank_id": "vaginal-probiotics-price"
+    },
+    {
+      "id": "florafresh-vaginal-probiotics-over-60",
+      "brand_id": "florafresh",
+      "text": "vaginal probiotics over 60",
+      "prompt_status": "hypothesised",
+      "source": "templates/article-topic-bank.json topic vaginal-probiotics-over-60 primary",
+      "bank_id": "vaginal-probiotics-over-60"
+    },
+    {
+      "id": "florafresh-vaginal-probiotics-for-fertility",
+      "brand_id": "florafresh",
+      "text": "vaginal probiotics for fertility",
+      "prompt_status": "hypothesised",
+      "source": "templates/article-topic-bank.json topic vaginal-probiotics-for-fertility primary",
+      "bank_id": "vaginal-probiotics-for-fertility"
+    },
+    {
+      "id": "florafresh-how-to-take-vaginal-probiotics",
+      "brand_id": "florafresh",
+      "text": "how to take vaginal probiotics",
+      "prompt_status": "hypothesised",
+      "source": "templates/article-topic-bank.json topic how-to-take-vaginal-probiotics primary",
+      "bank_id": "how-to-take-vaginal-probiotics"
+    },
+    {
+      "id": "florafresh-vaginal-probiotics-empty-stomach",
+      "brand_id": "florafresh",
+      "text": "vaginal probiotics on an empty stomach",
+      "prompt_status": "hypothesised",
+      "source": "templates/article-topic-bank.json topic vaginal-probiotics-empty-stomach primary",
+      "bank_id": "vaginal-probiotics-empty-stomach"
+    },
+    {
+      "id": "florafresh-vaginal-probiotics-worth-it",
+      "brand_id": "florafresh",
+      "text": "are vaginal probiotics worth it how much",
+      "prompt_status": "hypothesised",
+      "source": "templates/article-topic-bank.json topic vaginal-probiotics-worth-it primary",
+      "bank_id": "vaginal-probiotics-worth-it",
+      "paste_caution": "topic-bank segment glue, not phrasing observed in an answer engine"
+    },
+    {
+      "id": "florafresh-vaginal-probiotics-and-alcohol",
+      "brand_id": "florafresh",
+      "text": "how much vaginal probiotics and alcohol",
+      "prompt_status": "hypothesised",
+      "source": "templates/article-topic-bank.json topic vaginal-probiotics-and-alcohol primary",
+      "bank_id": "vaginal-probiotics-and-alcohol",
+      "paste_caution": "topic-bank segment glue, not phrasing observed in an answer engine"
+    },
+    {
+      "id": "florafresh-vaginal-probiotic-storage",
+      "brand_id": "florafresh",
+      "text": "how much vaginal probiotic storage",
+      "prompt_status": "hypothesised",
+      "source": "templates/article-topic-bank.json topic vaginal-probiotic-storage primary",
+      "bank_id": "vaginal-probiotic-storage",
+      "paste_caution": "topic-bank segment glue, not phrasing observed in an answer engine"
+    },
+    {
+      "id": "florafresh-vaginal-probiotic-ingredients",
+      "brand_id": "florafresh",
+      "text": "vaginal probiotic ingredients how much",
+      "prompt_status": "hypothesised",
+      "source": "templates/article-topic-bank.json topic vaginal-probiotic-ingredients primary",
+      "bank_id": "vaginal-probiotic-ingredients",
+      "paste_caution": "topic-bank segment glue, not phrasing observed in an answer engine"
+    },
+    {
+      "id": "florafresh-vaginal-probiotics-together",
+      "brand_id": "florafresh",
+      "text": "how much else with vaginal probiotics together",
+      "prompt_status": "hypothesised",
+      "source": "templates/article-topic-bank.json topic vaginal-probiotics-together primary",
+      "bank_id": "vaginal-probiotics-together",
+      "paste_caution": "topic-bank segment glue, not phrasing observed in an answer engine"
+    },
+    {
+      "id": "florafresh-vaginal-probiotics-for-athletes",
+      "brand_id": "florafresh",
+      "text": "vaginal probiotics for athletes",
+      "prompt_status": "hypothesised",
+      "source": "templates/article-topic-bank.json topic vaginal-probiotics-for-athletes primary",
+      "bank_id": "vaginal-probiotics-for-athletes"
+    }
+  ]
+}
