@@ -1757,7 +1757,8 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** turkesterone + medications checked 2026-11-04 against 163 live articles (blog listing + sitemap + Atom + local caches) and all 118 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#MB1104-14 — vaginal probiotics with food or coffee** — `Vaginal Probiotics With Food or Coffee? (US 2026)`
+- [SKIPPED-DUPLICATE 2026-11-06 https://wellnessnest.co/blogs/news/vaginal-probiotics-on-an-empty-stomach-us-guide] **#MB1104-14 — vaginal probiotics with food or coffee** — `Vaginal Probiotics With Food or Coffee? (US 2026)`
+  - Broad-intent dedup: existing live guide covers food versus fasting, breakfast, meal-timing research and avoiding heated beverages. Coffee/caffeine is a follow-up gap within that guide, not a separate article. Existing-post updates prohibited by run rule E; no publish, no persona reservation. Processed this ticket only.
   - **Primary keyword:** `vaginal probiotics with food or coffee` · **Secondary:** probiotics and coffee, probiotics with breakfast, probiotic gummy timing
   - **Search intent:** woman who takes a probiotic gummy with her morning coffee and wants to know if heat or caffeine harms it
   - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-04 15:43 ICT)
