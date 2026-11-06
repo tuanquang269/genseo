@@ -1,0 +1,37 @@
+# Off-Mac heartbeat for the article lane. Does not publish.
+#
+# The job is skipped unless the repository variable GENSEO_CLOUD_FAILOVER is
+# exactly 1. Unset is the default, so a merge does not arm this. The script
+# refuses the same way if that value is not in the environment. No secret is
+# referenced here. See docs/CLOUD_FAILOVER_FEASIBILITY.md.
+name: GenSeo cloud article failover
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 18:30 and 22:00 Asia/Bangkok (ICT, UTC+7). GitHub cron is UTC.
+    # 18:30 is after the MacBook slots 07:30, 08:05, and 14:47 ICT plus the
+    # 50-minute peer window. 22:00 is a second look if that first observation
+    # stood down because a post had just gone live.
+    - cron: '30 11 * * *'
+    - cron: '0 15 * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: genseo-cloud-failover
+  cancel-in-progress: false
+
+jobs:
+  heartbeat:
+    if: ${{ vars.GENSEO_CLOUD_FAILOVER == '1' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Heartbeat gate (does not publish)
+        env:
+          GENSEO_CLOUD_FAILOVER: ${{ vars.GENSEO_CLOUD_FAILOVER }}
+          GENSEO_NO_FACE: '1'
+        run: python3 scripts/genseo_cloud_failover.py
