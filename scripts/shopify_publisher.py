@@ -10,6 +10,12 @@ import time
 import html as html_mod          # `html` alone would shadow the many local html/html_content vars
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+# Explicit-store publishing uses the guarded runner before loading legacy context.
+# Existing Wellness Nest commands retain their original interface.
+if __name__ == "__main__" and "--store" in sys.argv:
+    from run_store import main
+    sys.exit(main())
+
 import genseo_config as _gcfg
 import genseo_roster
 import brand_rules
@@ -721,7 +727,8 @@ def do_publish(file_path, blog_id, live=False):
                    "mainEntity": main_entity} if main_entity else None)
 
     html_content = markdown.markdown(md_text, extensions=['extra'])
-    html_content += credits_html          # below the article, above the invisible ld+json
+    # ponytail: Kevin 2026-11-04 removed the visible CC BY credits block (looks bad). credits_html is still
+    # computed so a central credits page can reuse it; it is no longer appended to the article body.
     # The article theme template already renders an Article node; a body Article
     # made two Article JSON-LD blocks (2026-10-20). Keep article_schema for reference only.
     if faq_schema:
@@ -957,7 +964,8 @@ def do_update(file_path, blog_id, article_id, replace_cover=False, no_carry_cred
     faq_schema = ({"@context":"https://schema.org","@type":"FAQPage","mainEntity":me} if me else None)
 
     html_content = markdown.markdown(md_text, extensions=['extra'])
-    html_content += credits_html          # below the article, above the invisible ld+json
+    # ponytail: Kevin 2026-11-04 removed the visible CC BY credits block (looks bad). credits_html is still
+    # computed so a central credits page can reuse it; it is no longer appended to the article body.
     # The article theme template already renders an Article node; a body Article
     # made two Article JSON-LD blocks (2026-10-20). Keep article_schema for reference only.
     if faq_schema:

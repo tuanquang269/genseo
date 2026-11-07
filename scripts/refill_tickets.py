@@ -63,6 +63,7 @@ import shilasource_resin_rules as sr  # noqa: E402
 import shockwave_rules as sw  # noqa: E402
 import turkesterone_rules as tk  # noqa: E402
 import topic_fitness as tf  # noqa: E402
+import genseo_queue_closures as qc  # noqa: E402
 
 SITE = "https://wellnessnest.co"
 BLOG = "news"
@@ -98,7 +99,8 @@ A `topic_fitness` REVIEW [covered-segment] verdict is {greenlit}.
 A topic is a brief, not copy: source every claim or cut it.
 
 **Rules for this batch:** from the 2026-10-08 batch rules — fan-out answers, a "Where to buy <product> in the US"
-section (live price, the ticket's product link only), {byline}, the logged fact-check pass (`logs/claims/<slug>.md`; delete unconfirmed claims), the brand gate.
+section (live price, the ticket's product link only), roster.json byline only (never an invented person or
+credential), the logged fact-check pass (`logs/claims/<slug>.md`; delete unconfirmed claims), the brand gate.
 Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py once. The hero is the picked face plus the real pack unless pick prints NO-FACE. One inline image uses that face. The other inline images have no recognizable face but still show a hand, forearm, or body cropped below the eyes. A no-face image is the fallback for one frame after a face refusal or two QC misses, not a batch-wide ban. The MacBook article plist sets `GENSEO_NO_FACE=0`, and that value does not switch the lane. Prices were read live at build time; re-check the PDP while writing.
 """
 
@@ -315,18 +317,25 @@ def update_board(rows, queue, picked, rejected, day):
 # ---------- live store ----------
 
 def fetch(url, tries=3, timeout=25):
-    for i in range(tries):
+    throttled = 0
+    i = 0
+    while True:
         try:
             with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=timeout) as r:
                 return r.read().decode("utf-8", "replace")
         except urllib.error.HTTPError as e:
+            # Shopify storefront throttle: wait it out, up to 4 waits (11-05 refill failed closed on 429)
+            if e.code == 429 and throttled < 4:
+                throttled += 1
+                time.sleep(min(float(e.headers.get("Retry-After") or 0) or 5 * throttled, 65))
+                continue
             if e.code == 404 or i == tries - 1:
                 raise
         except OSError:
             if i == tries - 1:
                 raise
         time.sleep(2 ** i)
-
+        i += 1
 
 def listing_page(n):
     found = {}
@@ -771,43 +780,17 @@ def render(c, tid, ctx, info):
     if info["links"]:
         out.append("  - **Link, don't restate:** " + ", ".join(f"`/blogs/{BLOG}/{h}`" for h in info["links"]))
     src = "blog listing + sitemap + Atom" + (" + local caches" if ctx["local"] else "")
-    out += ["  - **Author:** " + _author_line(),
+    out += ["  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, "
+            "reviewer or credential",
             f"  - **Dedup note:** {c['family']} + {c['segment']} checked {ctx['day']} against "
             f"{len(ctx['live_handles'])} live articles ({src}) and all {len(ctx['queue'])} tickets in this file; "
             "STEP 0 re-checks at write time"]
     return "\n".join(out)
 
 
-def _blog_byline_phrase():
-    import genseo_roster
-    picked = genseo_roster.blog_default()
-    if not picked:
-        return "roster.json byline only (never an invented person or credential)"
-    handle, entry = picked
-    role = entry.get("role")
-    who = entry["name"] + ((", " + role) if role else "")
-    return ("blog byline %s (/pages/%s), roster.json bio copied verbatim "
-            "(no invented person, credential, degree, or headshot; "
-            "Dr. Marcus Hale is not the blog byline)" % (who, handle))
-
-
-def _author_line():
-    import genseo_roster
-    picked = genseo_roster.blog_default()
-    if not picked:
-        return ("roster.json byline — exact name + bio resolved at write time; "
-                "never invent a person, reviewer or credential")
-    handle, entry = picked
-    role = entry.get("role")
-    who = entry["name"] + ((", " + role) if role else "")
-    return ("%s (`/pages/%s`) — copy the roster.json bio verbatim; "
-            "never invent a person, reviewer, credential, degree, or headshot" % (who, handle))
-
-
 def batch_header(ctx, ids):
     return HEADER.format(day=ctx["day"], first=ids[0], last=ids[-1], stamp=ctx["stamp"],
                          n_live=len(ctx["live_handles"]), greenlit=GREENLIT,
-                         byline=_blog_byline_phrase(),
                          src="blog listing + sitemap + Atom" + (" + local caches" if ctx["local"] else ""))
 
 
@@ -833,9 +816,12 @@ def append_block(path, block, expect):
 
 def refill(a):
     text = read(a.queue)
-    n_open = len(OPEN_RX.findall(text))
+    try:
+        n_open = qc.eligible_count(a.queue)  # same count as the daily wrapper (ledger-closed tickets excluded)
+    except (OSError, ValueError) as e:
+        raise Refuse(f"queue closures unreadable ({e}) — failing closed")
     if a.if_below is not None and n_open >= a.if_below:
-        print(f"refill_tickets: {n_open} open ticket(s) >= {a.if_below} — nothing to do")
+        print(f"refill_tickets: {n_open} eligible article ticket(s) >= {a.if_below} — nothing to do")
         return 0
     if a.count < 1:
         print("refill_tickets: --count < 1 — nothing to do")
@@ -852,13 +838,19 @@ def refill(a):
     else:
         try:
             store = read_store()
+            save_cache(store, now.strftime("%Y-%m-%d %H:%M ICT"))
         except (OSError, ValueError, KeyError) as e:
-            raise Refuse(f"live store unreadable ({type(e).__name__}: {e}) — failing closed")
-        save_cache(store, now.strftime("%Y-%m-%d %H:%M ICT"))
+            # ponytail: a storefront throttle (429) falls back to a snapshot under 12 h old; STEP 0 re-checks every
+            # ticket live anyway. Any other read error, or an older snapshot, still fails closed.
+            fresh = os.path.exists(CACHE) and time.time() - os.path.getmtime(CACHE) < 12 * 3600
+            if not (getattr(e, "code", None) == 429 and fresh):
+                raise Refuse(f"live store unreadable ({type(e).__name__}: {e}) — failing closed")
+            print(f"  ! storefront throttled (429) — using the snapshot under 12 h old")
+            store = load_cache()
     ctx = build_ctx(bank, queue, store, local_inventory(), now, "skip" if a.offline or a.no_suggest else "live")
     ids_day = batch_day(now, a.day)
     cands, held = candidates(bank, rows, ctx)
-    print(f"refill_tickets: {n_open} open ticket(s) · {ctx['stamp']} ICT · {len(ctx['live_handles'])} live articles"
+    print(f"refill_tickets: {n_open} eligible article ticket(s) · {ctx['stamp']} ICT · {len(ctx['live_handles'])} live articles"
           f"{' + local caches' if ctx['local'] else ''} · {sum(1 for p in store[0].values() if p['available'])} "
           f"products in stock · {len(cands)} candidate topic(s)"
           + (f" ({len(held)} bank topic(s) already on the board)" if held else ""))
@@ -1067,10 +1059,8 @@ def self_test():
          dict(product="ageaura-pure-nmn-tmg-p2", primary="nmn morning or night",
               title="NMN: Morning or Night? (US 2026)"), "brand_rules"),
         ("Urolithin in the angle", ctx, dict(angle="Compare it with Urolithin A."), "banned"),
-        ("FloraFresh 1 billion CFU in the secondary (label: 15B CFU)", ctx,
-         dict(secondary=["1 billion cfu probiotic"]), "banned"),
-        ("FloraFresh 1B CFU in the secondary (label: 15B CFU)", ctx,
-         dict(secondary=["1B CFU probiotic"]), "banned"),
+        ("FloraFresh 15 billion CFU in the secondary (label: 1 billion)", ctx,
+         dict(secondary=["15 billion cfu probiotic"]), "banned"),
         ("FloraFresh formula cited from the PDP", ctx,
          dict(evidence="FloraFresh CFU and strains from the live PDP."), "banned"),
         ("sold-out hero product", ctx, dict(product="shilajit-shockwave", primary="shilajit shockwave for athletes",

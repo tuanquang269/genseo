@@ -1,0 +1,79 @@
+{
+  "id": "southedc",
+  "name": "SouthEDC",
+  "domain": "southedc.store",
+  "shop": "wellness-nest-de.myshopify.com",
+  "blog_handle": "news",
+  "article_contract": "fragment-v1",
+  "daily_volume": 3,
+  "credential": {
+    "kind": "client-credentials",
+    "env_file": "/Users/kevinkreative/PATI/LLM-Wiki/.env",
+    "prefix": "SHOPIFY_SOUTHEDC_",
+    "keys": [
+      "SHOPIFY_SOUTHEDC_CLIENT_ID",
+      "SHOPIFY_SOUTHEDC_CLIENT_SECRET"
+    ],
+    "adapter": "/Users/kevinkreative/PATI/work/_tools/shopify-app/shop-app.py"
+  },
+  "context": [
+    "/Users/kevinkreative/PATI/work/southedc-seo/brand-notes.md"
+  ],
+  "templates": [
+    "/Users/kevinkreative/PATI/work/southedc-seo/blog-styles/style-1-problem-solution.html",
+    "/Users/kevinkreative/PATI/work/southedc-seo/blog-styles/style-2-buyers-guide.html",
+    "/Users/kevinkreative/PATI/work/southedc-seo/blog-styles/style-3-care-guide.html",
+    "/Users/kevinkreative/PATI/work/southedc-seo/blog-styles/style-4a-material-vs.html",
+    "/Users/kevinkreative/PATI/work/southedc-seo/blog-styles/style-4b-brand-vs.html",
+    "/Users/kevinkreative/PATI/work/southedc-seo/blog-styles/style-4c-best-x.html",
+    "/Users/kevinkreative/PATI/work/southedc-seo/blog-styles/style-4d-n-reasons.html"
+  ],
+  "calendar": "/Users/kevinkreative/PATI/work/southedc-seo/calendar.csv",
+  "registry": "/Users/kevinkreative/PATI/work/southedc-seo/southedc-product-registry.csv",
+  "gates": [
+    "/Users/kevinkreative/PATI/work/southedc-seo/blog-styles/tools/check.py"
+  ],
+  "voice": "Direct, practical, plain US English for everyday carriers. Comfort, fit, fabric, sizing and care only. Never write gun-use instruction (draw, drills, shooting), ballistics, calibre or stopping-power content, or legal advice (carry law, permits, reciprocity); one neutral line may point to usa.gov/states-and-territories. Never invent product, price, test or review claims. Never promise zero printing or undetectable carry.",
+  "review_first": 0,
+  "writer_model": "cc/claude-sonnet-5-5",
+  "calendar_rows": 60,
+  "hero_budget_kb": 120,
+  "competitor_domains": [
+    "2tactic.com",
+    "concealmentexpress.com",
+    "bravoconcealment.com",
+    "aliengearholsters.com",
+    "undertechundercover.com",
+    "bigfootgunbelts.com",
+    "tulster.com",
+    "galcogunleather.com",
+    "comp-tac.com",
+    "lagtactical.com",
+    "urbancarryholsters.com",
+    "nexbelt.com",
+    "roundedgear.com",
+    "blade-tech.com"
+  ],
+  "authority_sources": [
+    "https://en.wikipedia.org/wiki/Holster",
+    "https://en.wikipedia.org/wiki/Kydex",
+    "https://en.wikipedia.org/wiki/Leather",
+    "https://en.wikipedia.org/wiki/Belt_(clothing)",
+    "https://en.wikipedia.org/wiki/Webbing",
+    "https://en.wikipedia.org/wiki/Nylon",
+    "https://en.wikipedia.org/wiki/Polyester",
+    "https://en.wikipedia.org/wiki/Spandex",
+    "https://en.wikipedia.org/wiki/Compression_garment",
+    "https://en.wikipedia.org/wiki/Neoprene",
+    "https://en.wikipedia.org/wiki/Moisture_wicking",
+    "https://en.wikipedia.org/wiki/Tempered_glass",
+    "https://en.wikipedia.org/wiki/Laminated_glass",
+    "https://en.wikipedia.org/wiki/Everyday_carry",
+    "https://en.wikipedia.org/wiki/Undershirt",
+    "https://en.wikipedia.org/wiki/Hook-and-loop_fastener",
+    "https://www.ecfr.gov/current/title-16/chapter-I/subchapter-C/part-423",
+    "https://www.weather.gov/safety/heat",
+    "https://www.nist.gov/pml/owm/si-units-length",
+    "https://www.usa.gov/states-and-territories"
+  ]
+}

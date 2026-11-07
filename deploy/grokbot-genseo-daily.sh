@@ -158,6 +158,9 @@ MINE="$G/state/published-by-$HOST.log"     # URLs this Mac published (one per li
 LOCK="$G/state/daily.lock"
 ts(){ date '+%F %T'; }
 say(){ echo "[$(ts)] [$HOST/$ROLE] $*" | tee -a "$LOG"; }
+# One Lark incident per kind per ICT day through the existing bot (scripts/notify_lark.sh). Never blocks the run.
+incident(){ [ -f "$G/scripts/notify_lark.sh" ] || return 0
+  /bin/bash "$G/scripts/notify_lark.sh" --incident wellnessnest "$@" >>"$LOG" 2>&1 || true; }
 export GENSEO_DAILY_TARGET="$TARGET"
 if declare -F genseo_power_assert_note >/dev/null 2>&1; then
   genseo_power_assert_note || true
@@ -300,6 +303,15 @@ genseo_queue_low_water() {
       _queue_low_marker "$marker" "$open" "$frc" "$why"
       ;;
   esac
+  after=$(queue_open_count "$G/daily-tickets.md" 2>/dev/null) || after=$open
+  case "${after:-}" in ''|*[!0-9]*) after=$open ;; esac
+  if [ "$after" -lt "$LOW_WATER" ]; then
+    incident "$([ "$after" -eq 0 ] && echo queue-empty || echo queue-low)" \
+      "$after eligible article ticket(s) < $LOW_WATER (2 days at $TARGET/day)" \
+      "${why:-refill added too few}" \
+      "add researched, product-mapped topics to templates/article-topic-bank.json or board/ideas.csv, then refill_tickets.py --count 5 --dry-run" \
+      "next daily slot (07:30 / 08:05 / 14:47 ICT)"
+  fi
   return 0
 }
 
@@ -349,7 +361,9 @@ for i in $(seq 1 $(( MAX_RUNS + ${GENSEO_PEER_MAX_WAITS:-6} ))); do
     fi
     n="$(live_count)"
   done
-  if [ "$n" -lt 0 ]; then say "live feed unreadable — fail closed, exit"; exit 1; fi
+  if [ "$n" -lt 0 ]; then say "live feed unreadable — fail closed, exit"
+    incident batch-failed "batch not started" "live feed and Admin API both unreadable" \
+      "check network and Shopify token (genseo_published_today.py)" "next daily slot"; exit 1; fi
   genseo_queue_low_water || say "QUEUE LOW: guard error — continuing"
   if [ "$n" -ge "$TARGET" ]; then say "DONE: $n/$TARGET live for $DAY (ICT)"; exit 0; fi
   peer="$($PY "$G/scripts/genseo_published_today.py" --peer-active "$PEER_WIN" --local-log "$MINE" 2>/dev/null)"; rc=$?
@@ -377,7 +391,12 @@ for i in $(seq 1 $(( MAX_RUNS + ${GENSEO_PEER_MAX_WAITS:-6} ))); do
       && git -C "$G" commit -q -m "queue: refill_tickets.py on $HOST" -- daily-tickets.md board/ideas.csv >/dev/null 2>&1
     open=$(queue_open_count "$G/daily-tickets.md") || { say "queue closures unreadable — fail closed, exit"; exit 1; }
   fi
-  if [ "${open:-0}" -eq 0 ]; then say "ticket queue EMPTY at $n/$TARGET — hard stop (no empty-queue model burn); refill daily-tickets.md"; exit 0; fi
+  if [ "${open:-0}" -eq 0 ]; then
+    say "ticket queue EMPTY at $n/$TARGET — hard stop (no empty-queue model burn); refill daily-tickets.md"
+    incident queue-empty "0 eligible article tickets; $n/$TARGET live today" "ticket queue empty — no model call made" \
+      "add researched topics to the bank or board, run refill_tickets.py" "next daily slot (07:30 / 08:05 / 14:47 ICT)"
+    exit 0
+  fi
   if ! lint="$($PY "$G/scripts/lint_tickets.py" "$G/daily-tickets.md" 2>&1)"; then
     say "ticket lint FAILED (banned AgeAura/Urolithin link in an open ticket) — fix daily-tickets.md; stopping"; echo "$lint" >> "$LOG"; exit 1
   fi
@@ -399,7 +418,9 @@ for i in $(seq 1 $(( MAX_RUNS + ${GENSEO_PEER_MAX_WAITS:-6} ))); do
     else
       say "run $i exit $rrc — nothing new went live (skip/dup/fail #$fails)"
     fi
-    [ "$fails" -ge 3 ] && { say "3 runs in a row without a publish — stopping; check logs/articles-*.log"; exit 1; }
+    [ "$fails" -ge 3 ] && { say "3 runs in a row without a publish — stopping; check logs/articles-*.log"
+      incident batch-failed "$n/$TARGET live today" "3 ticket runs in a row published nothing (last exit $rrc)" \
+        "read logs/articles-*.log and logs/daily/$DAY.log, fix the gate or ticket" "next daily slot"; exit 1; }
   fi
 done
 say "max runs reached at $(live_count)/$TARGET"

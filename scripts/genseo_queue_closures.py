@@ -32,6 +32,10 @@ ICT = dt.timezone(dt.timedelta(hours=7))
 CHECK = re.compile(r"^(?:- |## )\[([^\]]*)\](.*)$")
 TICKET_ID = re.compile(r"#([A-Z]{1,4}\d{4}-\d+)\b")
 WS = re.compile(r"\s+")
+# Article work in daily-tickets.md: "## [ ] Ticket #N — NEW ARTICLE" or "- [ ] **#ID — keyword**".
+# Any other checkbox there (a note, a to-do) is not article work and is never counted or offered.
+ARTICLE = re.compile(r"NEW ARTICLE|\*\*#[A-Z]{0,4}\d+(?:-\d+)? — ")
+ARTICLE_QUEUE = "daily-tickets.md"
 
 
 def norm_ws(text):
@@ -170,13 +174,20 @@ def effective_open_lines(text, entries, queue):
     """Open checkboxes, minus per-Mac ledger hides.
 
     A non-space checkbox is closed from the file alone. entries only suppress
-    lines that are still open in text.
+    lines that are still open in text. In daily-tickets.md only article tickets count.
     """
     out = []
     for row in checkbox_lines(text):
+        if queue == ARTICLE_QUEUE and not ARTICLE.search(row["line"]):
+            continue
         if row["open"] and not hidden(row, entries, queue):
             out.append(row["line"])
     return out
+
+def eligible_count(queue):
+    """The one eligible-article count: refill_tickets.py, the daily wrapper and the runner all use it."""
+    data = load_ledger(ledger_path(repo_of(queue, None)))
+    return len(effective_open_lines(read_queue(queue), data["entries"], queue_basename(queue)))
 
 
 def repo_of(queue, repo_arg):

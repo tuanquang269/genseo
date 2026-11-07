@@ -1,0 +1,49 @@
+{
+  "id": "wellnessnest",
+  "name": "Wellness Nest",
+  "domain": "wellnessnest.co",
+  "shop": "wellnessnest1.myshopify.com",
+  "blog_handle": "news",
+  "daily_volume": 5,
+  "credential": {
+    "kind": "legacy-json",
+    "path": "~/.genseo/shopify_token.json",
+    "shop_key": "shop",
+    "token_key": "access_token"
+  },
+  "context": [
+    "/Users/kevinkreative/genseo/brand/wellnessnest.json",
+    "/Users/kevinkreative/PATI/LLM-Wiki/20-brands/1-wellnessnest.md"
+  ],
+  "templates": [
+    "/Users/kevinkreative/.claude/skills/genseo-auto-publish/references/article-templates.md"
+  ],
+  "calendar": "/Users/kevinkreative/genseo/daily-tickets.md",
+  "product_handles": [
+    "ageaura-pure-nmn-tmg-nad-complex",
+    "ageaura-pure-nmn-tmg-p2",
+    "florafresh-3-month-reserve",
+    "florafresh-6-month-reserve",
+    "florafresh-single-bottle",
+    "florafresh-vaginal-probiotics-gummies",
+    "fusiforce-12-month-reserve",
+    "fusiforce-3-month-half-reserve",
+    "fusiforce-6-month-reserve",
+    "fusiforce-creatine-gummies",
+    "premium-himalayan-shilajit-gummies",
+    "pure-shilajit-gold-resin",
+    "shilajit-gummies-single-jar",
+    "shilajit-gummies-two-jar-pack",
+    "shilajit-shockwave",
+    "shilasource-12-month-reserve",
+    "shilasource-3-month-reserve",
+    "shilasource-6-month-reserve",
+    "shilasource-himalayan-shilajit-resin",
+    "shipping-protection",
+    "turkesterone-advanced-formula"
+  ],
+  "gates": [
+    "/Users/kevinkreative/genseo/scripts/validate_article.py"
+  ],
+  "legacy_runner": "/Users/kevinkreative/genseo/scripts/run_ticket_headless.sh"
+}

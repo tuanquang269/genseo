@@ -1,21 +1,99 @@
 {
  "_note": "Curated article topics for scripts/refill_tickets.py (daily-tickets.md refill). A topic is a BRIEF, not copy: the writer sources every claim (PubMed/DOI/official pages, live PDP) or cuts it. Rules for adding a topic: (1) product = a handle in `products` below (AgeAura = ageaura-pure-nmn-tmg-nad-complex only); (2) primary keyword AND title must contain one of topic_fitness.py SEGMENT_MODIFIERS (for beginners / for seniors / for athletes / for runners / for fertility / over 40|50|60 / side effects / dosage / how to take / how much / how long / vs / morning or night / before bed / empty stomach / with food / where to buy / buy / price / cost) — otherwise the strict gate FAILs [covered] once the brand has any article; (3) `segment` = a key of `segments` that no live title in the same family covers; (4) title <= 60 chars after {year}; (5) `link` = live /blogs/news handles to link instead of restating; (6) no Urolithin, peptides, MuscleMax, COA-led claims. Then: python3 scripts/refill_tickets.py --self-test && python3 scripts/refill_tickets.py --count 8 --dry-run. priority 1 runs first; reserve topics wait for the next refill.",
  "products": {
-  "fusiforce-creatine-gummies": {"name": "FusiForce Creatine Gummies", "family": "creatine", "collections": ["best-seller", "mens-essential-collection", "shilajit-wellness-stack"]},
-  "shilasource-himalayan-shilajit-resin": {"name": "ShilaSource Himalayan Shilajit Resin", "family": "shilajit", "collections": ["shilajit-wellness-stack", "mens-essential-collection", "best-seller"]},
-  "premium-himalayan-shilajit-gummies": {"name": "Premium Himalayan Shilajit Gummies", "family": "shilajit", "collections": ["shilajit-wellness-stack", "best-seller", "mens-essential-collection"]},
-  "pure-shilajit-gold-resin": {"name": "Pure Shilajit Gold Resin", "family": "shilajit", "collections": ["shilajit-wellness-stack", "mens-essential-collection"]},
-  "shilajit-shockwave": {"name": "Shilajit Shockwave", "family": "shilajit", "collections": ["shilajit-wellness-stack", "mens-essential-collection"]},
-  "florafresh-vaginal-probiotics-gummies": {"name": "FloraFresh Vaginal Probiotics Gummies", "family": "probiotic", "collections": ["womens-essentials-collection", "best-seller", "shilajit-wellness-stack"]},
-  "turkesterone-advanced-formula": {"name": "Turkesterone Advanced Formula", "family": "turkesterone", "collections": ["mens-essential-collection", "shilajit-wellness-stack"]},
-  "ageaura-pure-nmn-tmg-nad-complex": {"name": "AgeAura Pure NMN + TMG NAD+ Complex", "family": "nmn", "collections": ["best-seller"]}
+  "fusiforce-creatine-gummies": {
+   "name": "FusiForce Creatine Gummies",
+   "family": "creatine",
+   "collections": [
+    "best-seller",
+    "mens-essential-collection",
+    "shilajit-wellness-stack"
+   ]
+  },
+  "shilasource-himalayan-shilajit-resin": {
+   "name": "ShilaSource Himalayan Shilajit Resin",
+   "family": "shilajit",
+   "collections": [
+    "shilajit-wellness-stack",
+    "mens-essential-collection",
+    "best-seller"
+   ]
+  },
+  "premium-himalayan-shilajit-gummies": {
+   "name": "Premium Himalayan Shilajit Gummies",
+   "family": "shilajit",
+   "collections": [
+    "shilajit-wellness-stack",
+    "best-seller",
+    "mens-essential-collection"
+   ]
+  },
+  "pure-shilajit-gold-resin": {
+   "name": "Pure Shilajit Gold Resin",
+   "family": "shilajit",
+   "collections": [
+    "shilajit-wellness-stack",
+    "mens-essential-collection"
+   ]
+  },
+  "shilajit-shockwave": {
+   "name": "Shilajit Shockwave",
+   "family": "shilajit",
+   "collections": [
+    "shilajit-wellness-stack",
+    "mens-essential-collection"
+   ]
+  },
+  "florafresh-vaginal-probiotics-gummies": {
+   "name": "FloraFresh Vaginal Probiotics Gummies",
+   "family": "probiotic",
+   "collections": [
+    "womens-essentials-collection",
+    "best-seller",
+    "shilajit-wellness-stack"
+   ]
+  },
+  "turkesterone-advanced-formula": {
+   "name": "Turkesterone Advanced Formula",
+   "family": "turkesterone",
+   "collections": [
+    "mens-essential-collection",
+    "shilajit-wellness-stack"
+   ]
+  },
+  "ageaura-pure-nmn-tmg-nad-complex": {
+   "name": "AgeAura Pure NMN + TMG NAD+ Complex",
+   "family": "nmn",
+   "collections": [
+    "best-seller"
+   ]
+  }
  },
  "families": {
-  "creatine": ["creatine", "fusiforce"],
-  "shilajit": ["shilajit", "shilasource"],
-  "nmn": ["nmn", "ageaura", "tmg", "nad"],
-  "turkesterone": ["turkesterone", "ecdysterone"],
-  "probiotic": ["probiotic", "florafresh", "bv", "yeast infection"]
+  "creatine": [
+   "creatine",
+   "fusiforce"
+  ],
+  "shilajit": [
+   "shilajit",
+   "shilasource"
+  ],
+  "nmn": [
+   "nmn",
+   "ageaura",
+   "tmg",
+   "nad"
+  ],
+  "turkesterone": [
+   "turkesterone",
+   "ecdysterone"
+  ],
+  "probiotic": [
+   "probiotic",
+   "florafresh",
+   "bv",
+   "yeast infection"
+  ]
  },
  "segments": {
   "for-men": "\\bfor men\\b|\\bmen over\\b",
@@ -51,302 +129,509 @@
   "yeast": "\\byeast\\b|\\bcandida\\b",
   "strains": "\\bstrains?\\b",
   "loading": "\\bloading\\b",
-  "hair": "\\bhair\\b"
+  "hair": "\\bhair\\b",
+  "medications": "\\bmetformin\\b|\\bblood pressure\\b|\\bhypertension\\b|\\bmedications?\\b|\\bblood thinners?\\b",
+  "kidneys": "\\bkidneys?\\b|\\bcreatinine\\b",
+  "urinary": "\\burinary\\b|\\butis?\\b|\\bd-mannose\\b",
+  "odor": "\\bodou?r\\b|\\bsmell\\b",
+  "intimacy": "\\bafter sex\\b|\\bintercourse\\b|\\bsemen\\b"
  },
  "covered_topics": [
-  "meal plan", "menomate", "menopaus", "dad[- ]?bod", "what is shilajit", "shilajit benefits(?! for)",
-  "types of shilajit", "shilajit (sourc|origin|histor)", "lab[- ]test", "ayurved", "fulvic"
+  "meal plan",
+  "menomate",
+  "menopaus",
+  "dad[- ]?bod",
+  "what is shilajit",
+  "shilajit benefits(?! for)",
+  "types of shilajit",
+  "shilajit (sourc|origin|histor)",
+  "lab[- ]test",
+  "ayurved",
+  "fulvic"
  ],
  "banned_terms": [
-  "urolithin", "musclemax", "peptide", "rejuvenation duo", "longevity duo", "ageaura-pure-nmn-tmg-p2",
-  "collections/ageaura", "clinically (tested|proven)", "\\bcoa\\b"
+  "urolithin",
+  "musclemax",
+  "peptide",
+  "rejuvenation duo",
+  "longevity duo",
+  "ageaura-pure-nmn-tmg-p2",
+  "collections/ageaura",
+  "clinically (tested|proven)",
+  "\\bcoa\\b"
  ],
  "topics": [
-  {
-   "id": "florafresh-morning-or-night",
-   "product": "florafresh-vaginal-probiotics-gummies",
-   "primary": "vaginal probiotics morning or night",
-   "title": "When to Take Vaginal Probiotics: Morning or Night? (US {year})",
-   "secondary": ["best time to take vaginal probiotics", "when to take vaginal probiotics", "vaginal probiotics with food or empty stomach", "vaginal probiotics before bed"],
-   "segment": "timing",
-   "intent": "buyer who has (or is about to buy) FloraFresh and wants one clear daily routine",
-   "template": "LISTICLE",
-   "priority": 1,
-   "angle": "Oral vaginal probiotics pass through the gut first, so the timing question is really about surviving stomach acid and keeping a daily habit. Answer morning vs night plainly (consistency beats clock time), what the meal-timing evidence shows for probiotic survival, and how to fit FloraFresh (label directions) around antibiotics and other supplements. No cure or treatment claims; say when symptoms mean seeing a clinician.",
-   "fanout": ["should you take vaginal probiotics with food or on an empty stomach", "is it OK to take them at night", "can you take them with other supplements or medication", "what happens if you miss a day"],
-   "evidence": "Tompkins et al. 2011, Beneficial Microbes (probiotic survival taken with vs without a meal) — fetch and confirm before citing; FloraFresh directions from the live PDP only.",
-   "link": ["vaginal-probiotics-how-long-until-they-work-us-2026", "probiotics-after-antibiotics-for-women-when-to-start-us", "florafresh-gummies-vs-capsules-5-format-facts-us-2026"]
-  },
   {
    "id": "turkesterone-for-athletes",
    "product": "turkesterone-advanced-formula",
    "primary": "turkesterone for athletes",
    "title": "Turkesterone for Athletes: What Drug Tests Check (US {year})",
-   "secondary": ["is turkesterone banned", "turkesterone drug test", "turkesterone wada", "turkesterone ncaa"],
+   "secondary": [
+    "is turkesterone banned",
+    "turkesterone drug test",
+    "turkesterone wada",
+    "turkesterone ncaa"
+   ],
    "segment": "athletes",
    "intent": "tested or competitive athlete deciding whether a turkesterone product is safe to take in season",
    "template": "EDITORIAL",
    "priority": 1,
    "angle": "The athlete's real question is drug-test risk, not muscle. Check every label ingredient (turkesterone, KSM-66 ashwagandha, tongkat ali, colostrum, BioPerine) against the current WADA Prohibited List and Monitoring Program and the NCAA banned classes at write time; say plainly what is prohibited, monitored or neither, and that no sport certification is claimed unless the PDP shows one. Performance evidence only from fetched human trials.",
-   "fanout": ["is turkesterone banned by WADA", "will turkesterone show up on a drug test", "is colostrum allowed for tested athletes", "what certification should a tested athlete look for"],
+   "fanout": [
+    "is turkesterone banned by WADA",
+    "will turkesterone show up on a drug test",
+    "is colostrum allowed for tested athletes",
+    "what certification should a tested athlete look for"
+   ],
    "evidence": "WADA Prohibited List + Monitoring Program (current year) and the NCAA banned-drug classes — fetch the official pages at write time; WADA's published position on colostrum; Turkesterone Advanced panel from the live PDP.",
-   "link": ["turkesterone-side-effects-4-ingredients-to-check-us-2026", "turkesterone-vs-ecdysterone-which-is-worth-it-us-2026", "turkesterone-benefits-dosing-whats-real-us-2026"]
+   "link": [
+    "turkesterone-side-effects-4-ingredients-to-check-us-2026",
+    "turkesterone-vs-ecdysterone-which-is-worth-it-us-2026",
+    "turkesterone-benefits-dosing-whats-real-us-2026"
+   ]
   },
   {
    "id": "shilajit-price",
    "product": "shilasource-himalayan-shilajit-resin",
-   "inline": ["premium-himalayan-shilajit-gummies", "pure-shilajit-gold-resin", "shilajit-shockwave"],
+   "inline": [
+    "premium-himalayan-shilajit-gummies",
+    "pure-shilajit-gold-resin",
+    "shilajit-shockwave"
+   ],
    "primary": "shilajit price",
    "title": "Shilajit Price: Cost Per Serving by Form (US {year})",
-   "secondary": ["how much does shilajit cost", "shilajit cost per serving", "is shilajit expensive", "cheap shilajit"],
+   "secondary": [
+    "how much does shilajit cost",
+    "shilajit cost per serving",
+    "is shilajit expensive",
+    "cheap shilajit"
+   ],
    "segment": "price",
    "intent": "price-checking buyer comparing resin, gummies, gold resin and drops before buying",
    "template": "COMPARISON",
    "priority": 1,
    "angle": "Do the per-serving math from live PDP prices and serving counts (resin, gummies, gold resin, Shockwave drops, and the resin subscription price), show it as a table, and explain why the cheapest per serving is not always the cheapest per month (dose, wastage, format). Where a PDP publishes no serving count, say so instead of guessing. Explain why suspiciously cheap shilajit is a red flag by linking the fake-shilajit article — do not lead on lab testing.",
-   "fanout": ["how much does a month of shilajit cost", "why is real shilajit expensive", "is resin cheaper than gummies", "is the subscription worth it"],
+   "fanout": [
+    "how much does a month of shilajit cost",
+    "why is real shilajit expensive",
+    "is resin cheaper than gummies",
+    "is the subscription worth it"
+   ],
    "evidence": "Live PDP price and serving size for every product compared, re-checked at write time (prices change); never estimate a serving count the PDP does not state.",
-   "link": ["where-to-buy-wellness-nest-shilajit-in-the-us-2026", "shilajit-gold-resin-review-is-75-worth-it-us-2026", "how-much-shilajit-per-day-dosage-by-form-us-2026", "fake-shilajit-6-signs-yours-isnt-real-us-2026"]
+   "link": [
+    "where-to-buy-wellness-nest-shilajit-in-the-us-2026",
+    "shilajit-gold-resin-review-is-75-worth-it-us-2026",
+    "how-much-shilajit-per-day-dosage-by-form-us-2026",
+    "fake-shilajit-6-signs-yours-isnt-real-us-2026"
+   ]
   },
   {
    "id": "where-to-buy-nmn",
    "product": "ageaura-pure-nmn-tmg-nad-complex",
    "primary": "where to buy nmn",
    "title": "Where to Buy NMN in the US: FDA Status Explained ({year})",
-   "secondary": ["can you still buy nmn", "is nmn legal in the us", "nmn fda", "nmn amazon"],
+   "secondary": [
+    "can you still buy nmn",
+    "is nmn legal in the us",
+    "nmn fda",
+    "nmn amazon"
+   ],
    "segment": "buy",
    "intent": "US buyer who saw NMN disappear from big marketplaces and wants to know whether and where it can still be bought",
    "template": "EDITORIAL",
    "priority": 1,
    "angle": "Explain the regulatory story buyers ran into — FDA's 2022 position that NMN was excluded from the dietary-supplement definition, marketplaces pulling listings, and FDA's later reversal — with dates and wording confirmed from official pages fetched at write time. Then what to check before buying anywhere (NMN per serving, the full panel, price per 500 mg serving) and Wellness Nest as the official source for AgeAura NMN + TMG at the live price.",
-   "fanout": ["is NMN legal to buy in the US", "why did Amazon stop selling NMN", "is NMN still sold as a supplement", "what should an NMN label show"],
+   "fanout": [
+    "is NMN legal to buy in the US",
+    "why did Amazon stop selling NMN",
+    "is NMN still sold as a supplement",
+    "what should an NMN label show"
+   ],
    "evidence": "FDA statements on NMN (the 2022 exclusion and the later reversal) — fetch fda.gov / regulations.gov / Federal Register and confirm dates before citing; AgeAura panel (NMN and TMG per 2 capsules) from the live PDP.",
-   "link": ["how-much-nmn-per-day-what-trials-used-us-2026", "ageaura-nmn-tmg-ingredients-what-each-one-does-us", "nmn-capsules-vs-powder-vs-sublingual-best-form-us-2026"]
+   "link": [
+    "how-much-nmn-per-day-what-trials-used-us-2026",
+    "ageaura-nmn-tmg-ingredients-what-each-one-does-us",
+    "nmn-capsules-vs-powder-vs-sublingual-best-form-us-2026"
+   ]
   },
   {
    "id": "where-to-buy-creatine-gummies",
    "product": "fusiforce-creatine-gummies",
    "primary": "where to buy creatine gummies",
    "title": "Where to Buy Creatine Gummies: 5 Label Checks (US {year})",
-   "secondary": ["best place to buy creatine gummies", "creatine gummies in stores", "do creatine gummies have creatine", "creatine gummies price"],
+   "secondary": [
+    "best place to buy creatine gummies",
+    "creatine gummies in stores",
+    "do creatine gummies have creatine",
+    "creatine gummies price"
+   ],
    "segment": "buy",
    "intent": "buyer choosing a creatine gummy brand who has heard some gummies are under-dosed",
    "template": "LISTICLE",
    "priority": 1,
    "angle": "Five checks before buying anywhere: creatine monohydrate named on the panel, grams per serving and gummies per serving, count per bottle (days of supply), sugar per serving, and price per 5 g dose. Apply them to FusiForce honestly — disclose any mismatch between the front label and the panel (e.g. gummy count) instead of hiding it. Cite independent tests of creatine gummies only from a fetched source, and never imply FusiForce was tested unless that source says so.",
-   "fanout": ["can you buy creatine gummies in stores", "do creatine gummies actually contain creatine", "how many gummies equal 5 g of creatine", "how much should creatine gummies cost per day"],
+   "fanout": [
+    "can you buy creatine gummies in stores",
+    "do creatine gummies actually contain creatine",
+    "how many gummies equal 5 g of creatine",
+    "how much should creatine gummies cost per day"
+   ],
    "evidence": "FusiForce panel (creatine per serving, serving size, count) from the live PDP; any third-party test of creatine gummies only from a fetched primary report.",
-   "link": ["creatine-gummies-vs-powder-which-should-you-actually-take", "creatine-gummies-dosage-how-many-a-day-us-2026", "do-creatine-gummies-expire-6-storage-facts-us-2026"]
-  },
-  {
-   "id": "turkesterone-how-long",
-   "product": "turkesterone-advanced-formula",
-   "primary": "how long does turkesterone take to work",
-   "title": "How Long Does Turkesterone Take to Work? (US {year})",
-   "secondary": ["turkesterone results timeline", "turkesterone before and after", "when will i see turkesterone results", "turkesterone 4 weeks"],
-   "segment": "how-long",
-   "intent": "buyer a few weeks in (or about to start) who wants a realistic timeline",
-   "template": "EDITORIAL",
-   "priority": 1,
-   "angle": "Give the honest timeline: what the few human trials measured and over how many weeks (the same trial list the live turkesterone-for-women article uses), why most week-2 before-and-after claims are training and water, and a sensible check-in point at the label dose. Say plainly that no trial mapped a week-by-week time course. Match the house 'how long' series (creatine, NMN) without restating it.",
-   "fanout": ["how long until turkesterone works", "can you feel turkesterone in the first week", "how long should you take it before deciding", "do results last after stopping"],
-   "evidence": "Human turkesterone / ecdysteroid trials (duration, dose, outcomes) — fetch each study (PubMed / DOI) before citing; Turkesterone Advanced directions from the live PDP.",
-   "link": ["turkesterone-benefits-dosing-whats-real-us-2026", "turkesterone-cycle-do-you-need-breaks-us-2026", "turkesterone-for-women-3-trials-85-men-0-women-us-2026"]
-  },
-  {
-   "id": "nmn-for-runners",
-   "product": "ageaura-pure-nmn-tmg-nad-complex",
-   "primary": "nmn for runners",
-   "title": "NMN for Runners: What a 6-Week Trial Found (US {year})",
-   "secondary": ["nmn endurance", "nmn aerobic capacity", "nmn for athletes", "nmn exercise performance"],
-   "segment": "athletes",
-   "intent": "recreational runner or endurance athlete deciding whether NMN is worth adding",
-   "template": "STORY",
-   "priority": 1,
-   "angle": "Build the story around the randomized trial in amateur runners (several NMN doses for 6 weeks alongside training): what improved, what did not, and its limits (small, short, NMN alone — not NMN + TMG). Then what a runner can reasonably expect, how the AgeAura label dose compares, and what tested runners should check. No performance promises.",
-   "fanout": ["does NMN improve endurance", "how much NMN did the runners take", "when should runners take NMN", "is NMN allowed in tested sport"],
-   "evidence": "Liao et al. 2021, J Int Soc Sports Nutr (NMN in amateur runners) — fetch and confirm doses, sample size and outcomes; AgeAura panel from the live PDP.",
-   "link": ["nmn-and-creatine-together-safe-daily-stack-us-2026", "how-much-nmn-per-day-what-trials-used-us-2026", "how-long-does-nmn-take-to-work-week-1-to-12-us-2026"]
+   "link": [
+    "creatine-gummies-vs-powder-which-should-you-actually-take",
+    "creatine-gummies-dosage-how-many-a-day-us-2026",
+    "do-creatine-gummies-expire-6-storage-facts-us-2026"
+   ]
   },
   {
    "id": "creatine-gummies-for-beginners",
    "product": "fusiforce-creatine-gummies",
    "primary": "creatine gummies for beginners",
    "title": "Creatine Gummies for Beginners: Your First 30 Days (US {year})",
-   "secondary": ["how to start creatine gummies", "creatine for beginners", "first time taking creatine", "creatine gummies first week"],
+   "secondary": [
+    "how to start creatine gummies",
+    "creatine for beginners",
+    "first time taking creatine",
+    "creatine gummies first week"
+   ],
    "segment": "beginners",
    "intent": "first-time creatine buyer who wants a simple start plan",
    "template": "LISTICLE",
    "priority": 1,
    "angle": "A first-30-days plan: the daily dose in gummies, no loading needed, any time of day but every day, water, and what to expect in weeks 1-4 (scale weight, no 'pump'), plus the myths beginners worry about. This is the hub for the live creatine series — link each detail page instead of restating it.",
-   "fanout": ["how many creatine gummies should a beginner take", "do beginners need a loading phase", "will creatine make me gain weight", "can women take creatine gummies"],
+   "fanout": [
+    "how many creatine gummies should a beginner take",
+    "do beginners need a loading phase",
+    "will creatine make me gain weight",
+    "can women take creatine gummies"
+   ],
    "evidence": "ISSN position stand on creatine (Kreider et al. 2017, J Int Soc Sports Nutr) — fetch before citing; FusiForce serving facts from the live PDP.",
-   "link": ["creatine-gummies-dosage-how-many-a-day-us-2026", "best-time-to-take-creatine-before-or-after-us-2026", "creatine-gummies-side-effects-4-real-3-myths-us-2026", "creatine-gummies-loading-phase-is-it-needed-us-2026", "how-long-does-creatine-take-to-work-week-by-week-us-2026"]
+   "link": [
+    "creatine-gummies-dosage-how-many-a-day-us-2026",
+    "best-time-to-take-creatine-before-or-after-us-2026",
+    "creatine-gummies-side-effects-4-real-3-myths-us-2026",
+    "creatine-gummies-loading-phase-is-it-needed-us-2026",
+    "how-long-does-creatine-take-to-work-week-by-week-us-2026"
+   ]
   },
   {
    "id": "vaginal-probiotic-dosage",
    "product": "florafresh-vaginal-probiotics-gummies",
    "primary": "vaginal probiotic dosage",
    "title": "Vaginal Probiotic Dosage: How Many CFU a Day? (US {year})",
-   "secondary": ["how many cfu for vaginal health", "vaginal probiotic cfu", "15B cfu probiotic", "how many vaginal probiotics a day"],
+   "secondary": [
+    "how many cfu for vaginal health",
+    "vaginal probiotic cfu",
+    "1 billion cfu probiotic",
+    "how many vaginal probiotics a day"
+   ],
    "segment": "dosage",
    "intent": "buyer comparing CFU numbers on labels and unsure how much is enough",
    "template": "COMPARISON",
    "priority": 1,
-   "angle": "Explain what CFU means (live organisms at manufacture vs at expiry), what daily doses the oral vaginal-health trials used and with which strains, and why strain identity matters more than a bigger number. Compare common label ranges in a table, then place FloraFresh from its Supplement Facts label only: one spore-based strain (Bacillus coagulans SNZ-1969), 15B CFU per 2 gummies, which is not a strain the Lactobacillus trials tested (say so). The live PDP description does not match the label: if they disagree, the label wins, and a draft that cites the PDP formula fails the gate. No cure or treatment claims.",
-   "fanout": ["is 15B CFU enough", "can you take too many probiotics", "should CFU be guaranteed through expiry", "do more strains mean better results"],
+   "angle": "Explain what CFU means (live organisms at manufacture vs at expiry), what daily doses the oral vaginal-health trials used and with which strains, and why strain identity matters more than a bigger number. Compare common label ranges in a table, then place FloraFresh from its Supplement Facts label only: one spore-based strain (Bacillus coagulans SNZ-1969), 1 billion CFU per 2 gummies, which is not a strain the Lactobacillus trials tested (say so). The live PDP description does not match the label: if they disagree, the label wins, and a draft that cites the PDP formula fails the gate. No cure or treatment claims.",
+   "fanout": [
+    "is 1 billion CFU enough",
+    "can you take too many probiotics",
+    "should CFU be guaranteed through expiry",
+    "do more strains mean better results"
+   ],
    "evidence": "Oral Lactobacillus vaginal-health trials that state CFU per day — fetch each before citing; FloraFresh strain and CFU from its Supplement Facts label, not the PDP description.",
-   "link": ["vaginal-probiotics-which-strains-actually-work-us-2026", "florafresh-vs-generic-probiotics-4-strain-facts-us-2026", "vaginal-probiotics-side-effects-normal-vs-stop-us-2026"]
+   "link": [
+    "vaginal-probiotics-which-strains-actually-work-us-2026",
+    "florafresh-vs-generic-probiotics-4-strain-facts-us-2026",
+    "vaginal-probiotics-side-effects-normal-vs-stop-us-2026"
+   ]
   },
   {
    "id": "shilajit-for-athletes",
    "product": "shilasource-himalayan-shilajit-resin",
    "primary": "shilajit for athletes",
    "title": "Shilajit for Athletes: What a Strength Trial Found (US {year})",
-   "secondary": ["shilajit for strength", "shilajit muscle fatigue", "shilajit workout", "shilajit for performance"],
+   "secondary": [
+    "shilajit for strength",
+    "shilajit muscle fatigue",
+    "shilajit workout",
+    "shilajit for performance"
+   ],
    "segment": "athletes",
    "intent": "lifter or athlete weighing shilajit for training and recovery",
    "template": "EDITORIAL",
    "priority": 1,
    "angle": "Lead with the 8-week trial in recreationally active men (purified shilajit at two doses; strength retention after a fatiguing protocol): what it found, what it did not, and that it used a specific purified extract — never imply ShilaSource is equivalent. Then dose and timing around training, and what tested athletes should check (no sport certification is claimed unless the PDP shows one).",
-   "fanout": ["does shilajit increase strength", "how much shilajit did the trial use", "when should athletes take shilajit", "is shilajit allowed in tested sport"],
+   "fanout": [
+    "does shilajit increase strength",
+    "how much shilajit did the trial use",
+    "when should athletes take shilajit",
+    "is shilajit allowed in tested sport"
+   ],
    "evidence": "Keller et al. 2019, J Int Soc Sports Nutr (shilajit and fatigue-induced strength loss) — fetch and confirm doses and outcomes; ShilaSource serving facts from the live PDP.",
-   "link": ["shilajit-and-creatine-can-you-take-both-daily-us-2026", "how-much-shilajit-per-day-dosage-by-form-us-2026", "fake-shilajit-6-signs-yours-isnt-real-us-2026"]
+   "link": [
+    "shilajit-and-creatine-can-you-take-both-daily-us-2026",
+    "how-much-shilajit-per-day-dosage-by-form-us-2026",
+    "fake-shilajit-6-signs-yours-isnt-real-us-2026"
+   ]
   },
   {
    "id": "creatine-gummies-for-runners",
    "product": "fusiforce-creatine-gummies",
    "primary": "creatine gummies for runners",
    "title": "Creatine Gummies for Runners: What Trials Show (US {year})",
-   "secondary": ["creatine for runners", "creatine for endurance athletes", "does creatine slow you down", "creatine water weight runners"],
+   "secondary": [
+    "creatine for runners",
+    "creatine for endurance athletes",
+    "does creatine slow you down",
+    "creatine water weight runners"
+   ],
    "segment": "athletes",
    "intent": "runner worried creatine adds weight and slows them down",
    "template": "EDITORIAL",
    "priority": 2,
    "angle": "Runners ask two things: does creatine help their training (evidence is strongest for repeated sprints, intervals and hills, weaker for steady-state distance) and will the water weight slow them down. Answer both from fetched trials and reviews, then give the simple daily gummy routine. Link the dosage and side-effects pages instead of restating them.",
-   "fanout": ["does creatine help long-distance running", "will creatine make me heavier on race day", "should runners load creatine", "when should runners take creatine"],
+   "fanout": [
+    "does creatine help long-distance running",
+    "will creatine make me heavier on race day",
+    "should runners load creatine",
+    "when should runners take creatine"
+   ],
    "evidence": "ISSN creatine position stand (Kreider et al. 2017) and endurance-specific reviews — fetch before citing.",
-   "link": ["creatine-gummies-dosage-how-many-a-day-us-2026", "creatine-gummies-side-effects-4-real-3-myths-us-2026", "best-time-to-take-creatine-before-or-after-us-2026"]
+   "link": [
+    "creatine-gummies-dosage-how-many-a-day-us-2026",
+    "creatine-gummies-side-effects-4-real-3-myths-us-2026",
+    "best-time-to-take-creatine-before-or-after-us-2026"
+   ]
   },
   {
    "id": "creatine-gummies-over-60",
    "product": "fusiforce-creatine-gummies",
    "primary": "creatine gummies over 60",
    "title": "Creatine Gummies Over 60: What the Trials Show (US {year})",
-   "secondary": ["creatine for seniors", "creatine for older adults", "creatine muscle loss aging", "is creatine safe over 60"],
+   "secondary": [
+    "creatine for seniors",
+    "creatine for older adults",
+    "creatine muscle loss aging",
+    "is creatine safe over 60"
+   ],
    "segment": "seniors",
    "intent": "adult 60+ (or a family member) looking at creatine for strength and muscle with age",
    "template": "EDITORIAL",
    "priority": 2,
    "angle": "What trials in older adults found when creatine was combined with resistance training (lean mass, strength), what it does not do without training, kidney questions and the medication check with a clinician. Why the gummy format suits some older adults (no mixing) and the sugar per serving. Link the men-over-50 and women-over-40 pages instead of restating them.",
-   "fanout": ["is creatine safe for seniors", "does creatine help without exercise", "how much creatine do older adults take", "creatine and kidney function over 60"],
+   "fanout": [
+    "is creatine safe for seniors",
+    "does creatine help without exercise",
+    "how much creatine do older adults take",
+    "creatine and kidney function over 60"
+   ],
    "evidence": "Meta-analyses of creatine plus resistance training in older adults (e.g. Chilibeck et al. 2017; Candow reviews) — fetch before citing.",
-   "link": ["fusiforce-creatine-gummies-for-men-over-50-us-2026", "creatine-for-women-over-40-what-changes-in-the-us", "creatine-gummies-side-effects-4-real-3-myths-us-2026"]
+   "link": [
+    "fusiforce-creatine-gummies-for-men-over-50-us-2026",
+    "creatine-for-women-over-40-what-changes-in-the-us",
+    "creatine-gummies-side-effects-4-real-3-myths-us-2026"
+   ]
   },
   {
    "id": "nmn-for-seniors",
    "product": "ageaura-pure-nmn-tmg-nad-complex",
    "primary": "nmn for seniors",
    "title": "NMN for Seniors: What Trials in Adults 65+ Show (US {year})",
-   "secondary": ["nmn for older adults", "nmn for elderly", "nmn over 65", "nmn muscle strength aging"],
+   "secondary": [
+    "nmn for older adults",
+    "nmn for elderly",
+    "nmn over 65",
+    "nmn muscle strength aging"
+   ],
    "segment": "seniors",
    "intent": "adult 65+ (or a family member) asking whether NMN has been tested at their age",
    "template": "COMPARISON",
    "priority": 2,
    "angle": "Compare the human trials that enrolled older adults (dose, duration, what moved: blood NAD+, gait speed, grip, fatigue) in a table, and say plainly what has not been shown. Medication and clinician check, label dose vs trial doses. Link the men-over-50 page instead of restating it.",
-   "fanout": ["is NMN safe for seniors", "what dose did trials in older adults use", "does NMN improve muscle strength in older adults", "morning or afternoon for older adults"],
+   "fanout": [
+    "is NMN safe for seniors",
+    "what dose did trials in older adults use",
+    "does NMN improve muscle strength in older adults",
+    "morning or afternoon for older adults"
+   ],
    "evidence": "Igarashi et al. 2022, npj Aging (older men, 12 weeks) and Kim et al. 2022, Nutrients (older adults, morning vs afternoon intake) — fetch and confirm before citing.",
-   "link": ["ageaura-nmn-for-men-over-50-what-to-expect-us-2026", "how-much-nmn-per-day-what-trials-used-us-2026", "nmn-side-effects-6-checks-before-you-start-us-2026"]
+   "link": [
+    "ageaura-nmn-for-men-over-50-what-to-expect-us-2026",
+    "how-much-nmn-per-day-what-trials-used-us-2026",
+    "nmn-side-effects-6-checks-before-you-start-us-2026"
+   ]
   },
   {
    "id": "where-to-buy-turkesterone",
    "product": "turkesterone-advanced-formula",
    "primary": "where to buy turkesterone",
    "title": "Where to Buy Turkesterone in the US: What to Check ({year})",
-   "secondary": ["best place to buy turkesterone", "turkesterone in stores", "is my turkesterone real", "turkesterone price"],
+   "secondary": [
+    "best place to buy turkesterone",
+    "turkesterone in stores",
+    "is my turkesterone real",
+    "turkesterone price"
+   ],
    "segment": "buy",
    "intent": "buyer choosing where to buy turkesterone and worried about under-dosed products",
    "template": "LISTICLE",
    "priority": 2,
    "angle": "What to check before buying anywhere: turkesterone per serving and what the extract is standardized to, every other ingredient with its dose (no proprietary blend), price per serving, and returns. Cite independent analyses of turkesterone products only from a fetched source. Apply the checks to Turkesterone Advanced honestly; Wellness Nest as the official source at the live price.",
-   "fanout": ["can you buy turkesterone in stores", "how do you know turkesterone is real", "how much should turkesterone cost", "what should a turkesterone label show"],
+   "fanout": [
+    "can you buy turkesterone in stores",
+    "how do you know turkesterone is real",
+    "how much should turkesterone cost",
+    "what should a turkesterone label show"
+   ],
    "evidence": "Turkesterone Advanced panel from the live PDP; any independent product analysis only from a fetched primary source.",
-   "link": ["turkesterone-side-effects-4-ingredients-to-check-us-2026", "turkesterone-benefits-dosing-whats-real-us-2026", "turkesterone-for-beginners-5-checks-before-you-start"]
+   "link": [
+    "turkesterone-side-effects-4-ingredients-to-check-us-2026",
+    "turkesterone-benefits-dosing-whats-real-us-2026",
+    "turkesterone-for-beginners-5-checks-before-you-start"
+   ]
   },
   {
    "id": "where-to-buy-vaginal-probiotics",
    "product": "florafresh-vaginal-probiotics-gummies",
    "primary": "where to buy vaginal probiotics",
    "title": "Where to Buy Vaginal Probiotics in the US: 5 Checks ({year})",
-   "secondary": ["best place to buy vaginal probiotics", "vaginal probiotics at a pharmacy", "vaginal probiotics online", "vaginal probiotics price"],
+   "secondary": [
+    "best place to buy vaginal probiotics",
+    "vaginal probiotics at a pharmacy",
+    "vaginal probiotics online",
+    "vaginal probiotics price"
+   ],
    "segment": "buy",
    "intent": "buyer deciding between pharmacy, marketplace and brand-direct vaginal probiotics",
    "template": "LISTICLE",
    "priority": 2,
-   "angle": "Five checks before buying anywhere: strains named to strain level, CFU guaranteed through expiry, storage needs, format (gummies vs capsules — link, don't restate) and price per day. Apply them to FloraFresh honestly: strain and CFU from its Supplement Facts label (Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies), price from the live PDP, never the formula in the PDP description; Wellness Nest as the official source at the live price. No cure or treatment claims.",
-   "fanout": ["can you buy vaginal probiotics at a pharmacy", "do vaginal probiotics need refrigeration", "how much do vaginal probiotics cost per month", "what should a vaginal probiotic label show"],
+   "angle": "Five checks before buying anywhere: strains named to strain level, CFU guaranteed through expiry, storage needs, format (gummies vs capsules — link, don't restate) and price per day. Apply them to FloraFresh honestly: strain and CFU from its Supplement Facts label (Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies), price from the live PDP, never the formula in the PDP description; Wellness Nest as the official source at the live price. No cure or treatment claims.",
+   "fanout": [
+    "can you buy vaginal probiotics at a pharmacy",
+    "do vaginal probiotics need refrigeration",
+    "how much do vaginal probiotics cost per month",
+    "what should a vaginal probiotic label show"
+   ],
    "evidence": "FloraFresh strain and CFU from its Supplement Facts label, storage from the label or the PDP storage note (never formula facts from the PDP description); any retailer price only from a page fetched at write time.",
-   "link": ["florafresh-gummies-vs-capsules-5-format-facts-us-2026", "vaginal-probiotics-which-strains-actually-work-us-2026", "florafresh-vs-generic-probiotics-4-strain-facts-us-2026"]
+   "link": [
+    "florafresh-gummies-vs-capsules-5-format-facts-us-2026",
+    "vaginal-probiotics-which-strains-actually-work-us-2026",
+    "florafresh-vs-generic-probiotics-4-strain-facts-us-2026"
+   ]
   },
   {
    "id": "vaginal-probiotics-for-beginners",
    "product": "florafresh-vaginal-probiotics-gummies",
    "primary": "vaginal probiotics for beginners",
    "title": "Vaginal Probiotics for Beginners: What to Expect (US {year})",
-   "secondary": ["first time taking vaginal probiotics", "how to start vaginal probiotics", "what do vaginal probiotics do", "vaginal probiotics first week"],
+   "secondary": [
+    "first time taking vaginal probiotics",
+    "how to start vaginal probiotics",
+    "what do vaginal probiotics do",
+    "vaginal probiotics first week"
+   ],
    "segment": "beginners",
    "intent": "first-time buyer who wants to know what vaginal probiotics do and what the first weeks are like",
    "template": "STORY",
    "priority": 2,
    "angle": "A first-month walkthrough: what oral vaginal probiotics are meant to support (a Lactobacillus-dominant flora), what is normal in week one, how long until changes (link — don't restate), how to take FloraFresh daily, and which symptoms mean seeing a clinician instead. No cure or treatment claims.",
-   "fanout": ["what do vaginal probiotics actually do", "is it normal to notice changes in the first week", "can you take them every day long term", "when should you see a doctor instead"],
+   "fanout": [
+    "what do vaginal probiotics actually do",
+    "is it normal to notice changes in the first week",
+    "can you take them every day long term",
+    "when should you see a doctor instead"
+   ],
    "evidence": "Reviews of oral Lactobacillus for vaginal health — fetch before citing; FloraFresh directions from the live PDP.",
-   "link": ["vaginal-probiotics-how-long-until-they-work-us-2026", "vaginal-probiotics-side-effects-normal-vs-stop-us-2026", "yeast-infection-vs-bv-how-to-tell-them-apart-us-2026"]
+   "link": [
+    "vaginal-probiotics-how-long-until-they-work-us-2026",
+    "vaginal-probiotics-side-effects-normal-vs-stop-us-2026",
+    "yeast-infection-vs-bv-how-to-tell-them-apart-us-2026"
+   ]
   },
   {
    "id": "shilajit-for-seniors",
    "product": "shilasource-himalayan-shilajit-resin",
    "primary": "shilajit for seniors",
    "title": "Shilajit for Seniors: 5 Safety Checks Over 60 (US {year})",
-   "secondary": ["shilajit for older adults", "shilajit over 60", "is shilajit safe for elderly", "shilajit and blood pressure medication"],
+   "secondary": [
+    "shilajit for older adults",
+    "shilajit over 60",
+    "is shilajit safe for elderly",
+    "shilajit and blood pressure medication"
+   ],
    "segment": "seniors",
    "intent": "adult 60+ (or a family member) checking whether shilajit is safe alongside existing medication",
    "template": "LISTICLE",
    "priority": 3,
    "angle": "Human evidence in adults over 60 is thin — say so up front. Then five practical safety checks: medications to raise with a clinician, purity (link the fake-shilajit page; do not lead on lab testing), starting dose, form (pure resin vs gummies with added herbs), and stop signs. Link the side-effects and dosage pages instead of restating them.",
-   "fanout": ["is shilajit safe for seniors", "can shilajit interact with blood pressure or diabetes medication", "what dose should older adults start with", "resin or gummies for older adults"],
+   "fanout": [
+    "is shilajit safe for seniors",
+    "can shilajit interact with blood pressure or diabetes medication",
+    "what dose should older adults start with",
+    "resin or gummies for older adults"
+   ],
    "evidence": "Any human shilajit study that enrolled older adults, and interaction data — fetch before citing; say plainly where there is none.",
-   "link": ["shilajit-side-effects-7-signs-to-watch-for-us-2026", "how-much-shilajit-per-day-dosage-by-form-us-2026", "fake-shilajit-6-signs-yours-isnt-real-us-2026"]
+   "link": [
+    "shilajit-side-effects-7-signs-to-watch-for-us-2026",
+    "how-much-shilajit-per-day-dosage-by-form-us-2026",
+    "fake-shilajit-6-signs-yours-isnt-real-us-2026"
+   ]
   },
   {
    "id": "shilajit-for-fertility",
    "product": "shilasource-himalayan-shilajit-resin",
    "primary": "shilajit for fertility",
    "title": "Shilajit for Fertility: What One Small Trial Found (US {year})",
-   "secondary": ["shilajit sperm count", "shilajit male fertility", "shilajit for men trying to conceive", "shilajit and sperm motility"],
+   "secondary": [
+    "shilajit sperm count",
+    "shilajit male fertility",
+    "shilajit for men trying to conceive",
+    "shilajit and sperm motility"
+   ],
    "segment": "fertility",
    "intent": "man trying to conceive who is researching shilajit",
    "template": "EDITORIAL",
    "priority": 3,
    "angle": "One small, uncontrolled trial in men with low sperm count (processed shilajit for 90 days) is most of the evidence — describe it accurately, list its limits and what it cannot show. Structure/function language only, no treatment claims, and a clear 'see a fertility clinician' section. Shilajit is not for anyone pregnant or trying to become pregnant without medical advice. Link the men's benefits page instead of restating it.",
-   "fanout": ["does shilajit increase sperm count", "how long did the trial last", "should partners trying to conceive take shilajit", "when to see a fertility specialist"],
+   "fanout": [
+    "does shilajit increase sperm count",
+    "how long did the trial last",
+    "should partners trying to conceive take shilajit",
+    "when to see a fertility specialist"
+   ],
    "evidence": "Biswas et al. 2010, Andrologia (processed shilajit in oligospermic men) — fetch and confirm design and numbers before citing.",
-   "link": ["shilajit-benefits-for-men-4-claims-ranked-us-2026", "shilajit-side-effects-7-signs-to-watch-for-us-2026", "how-much-shilajit-per-day-dosage-by-form-us-2026"]
+   "link": [
+    "shilajit-benefits-for-men-4-claims-ranked-us-2026",
+    "shilajit-side-effects-7-signs-to-watch-for-us-2026",
+    "how-much-shilajit-per-day-dosage-by-form-us-2026"
+   ]
   },
   {
    "id": "turkesterone-over-60",
    "product": "turkesterone-advanced-formula",
    "primary": "turkesterone over 60",
    "title": "Turkesterone Over 60: 5 Checks for Older Lifters (US {year})",
-   "secondary": ["turkesterone for older men", "turkesterone for seniors", "turkesterone at 60", "is turkesterone safe for older men"],
+   "secondary": [
+    "turkesterone for older men",
+    "turkesterone for seniors",
+    "turkesterone at 60",
+    "is turkesterone safe for older men"
+   ],
    "segment": "seniors",
    "intent": "lifter 60+ deciding whether turkesterone is worth trying",
    "template": "COMPARISON",
    "priority": 3,
    "angle": "No turkesterone trial enrolled adults over 60 — say so. Compare in a table what the formula's other ingredients have been tested for in older adults (KSM-66 ashwagandha, tongkat ali; fetched trials only), the medication check with a clinician (thyroid, blood pressure, diabetes), and why training and protein matter more. Link the men-over-40 page instead of restating it.",
-   "fanout": ["is turkesterone safe for men over 60", "does turkesterone raise testosterone", "can older adults take ashwagandha daily", "what matters more than supplements after 60"],
+   "fanout": [
+    "is turkesterone safe for men over 60",
+    "does turkesterone raise testosterone",
+    "can older adults take ashwagandha daily",
+    "what matters more than supplements after 60"
+   ],
    "evidence": "Ashwagandha and tongkat ali trials in older adults — fetch each before citing; Turkesterone Advanced panel from the live PDP.",
-   "link": ["turkesterone-for-men-over-40-5-honest-checks-us-2026", "turkesterone-side-effects-4-ingredients-to-check-us-2026", "turkesterone-benefits-dosing-whats-real-us-2026"]
+   "link": [
+    "turkesterone-for-men-over-40-5-honest-checks-us-2026",
+    "turkesterone-side-effects-4-ingredients-to-check-us-2026",
+    "turkesterone-benefits-dosing-whats-real-us-2026"
+   ]
   },
   {
    "id": "creatine-gummies-price",
@@ -421,14 +706,14 @@
    "intent": "shopper comparing the monthly cost of vaginal probiotic gummies before buying",
    "template": "COMPARISON",
    "priority": 1,
-   "angle": "Do the monthly cost from the live PDP price only. Do not invent a bottle count or a day-supply the page does not print. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies, sweetened with maltitol and isomalt, so not sugar-free. Link the where-to-buy page instead of restating its checks.",
+   "angle": "Do the monthly cost from the live PDP price only. Do not invent a bottle count or a day-supply the page does not print. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt, so not sugar-free. Link the where-to-buy page instead of restating its checks.",
    "fanout": [
     "how much do vaginal probiotics cost per month",
     "are gummies priced like capsules",
     "what makes one brand cost more",
     "what the label should show for the price"
    ],
-   "evidence": "Live PDP price, fetched at write time. Strain and CFU only from the Supplement Facts label (Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies), never the PDP description.",
+   "evidence": "Live PDP price, fetched at write time. Strain and CFU only from the Supplement Facts label (Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies), never the PDP description.",
    "link": [
     "where-to-buy-vaginal-probiotics-in-the-us-5-checks-2026",
     "vaginal-probiotic-dosage-how-many-cfu-a-day-us-2026",
@@ -537,7 +822,7 @@
    "intent": "woman over 60, or someone buying for her, checking whether a vaginal probiotic gummy fits that age",
    "template": "LISTICLE",
    "priority": 1,
-   "angle": "Five checks for this age: what the vaginal microbiome does after menopause (fetched sources only), whether any oral-probiotic trial enrolled women over 60, medication questions for a clinician, the gummy routine, and when symptoms mean a clinician instead of a supplement. FloraFresh formula from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies, which is not a strain those Lactobacillus trials tested (say so). No cure or treatment claims. Link the over-50 page instead of restating it.",
+   "angle": "Five checks for this age: what the vaginal microbiome does after menopause (fetched sources only), whether any oral-probiotic trial enrolled women over 60, medication questions for a clinician, the gummy routine, and when symptoms mean a clinician instead of a supplement. FloraFresh formula from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, which is not a strain those Lactobacillus trials tested (say so). No cure or treatment claims. Link the over-50 page instead of restating it.",
    "fanout": [
     "do vaginal probiotics change after menopause",
     "were women over 60 in the trials",
@@ -682,7 +967,7 @@
    "intent": "woman trying to conceive who has been told a vaginal probiotic might help and wants the limit of that claim",
    "template": "EDITORIAL",
    "priority": 2,
-   "angle": "This is not the BV page and not the yeast page. Answer whether oral probiotics have been studied around conception, from papers you fetch, and say what they did not measure. FloraFresh formula from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies, which is not a strain those Lactobacillus trials tested (say so). Not a fertility treatment. No cure or treatment claims. Link the BV page and the strains page instead of restating them.",
+   "angle": "This is not the BV page and not the yeast page. Answer whether oral probiotics have been studied around conception, from papers you fetch, and say what they did not measure. FloraFresh formula from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, which is not a strain those Lactobacillus trials tested (say so). Not a fertility treatment. No cure or treatment claims. Link the BV page and the strains page instead of restating them.",
    "fanout": [
     "can vaginal probiotics help conception",
     "what did the studies measure",
@@ -1549,7 +1834,7 @@
    "segment": "how-to-take",
    "intent": "buyer who has the pouch and wants the daily chew, not another clock or CFU page",
    "template": "LISTICLE",
-   "angle": "Chew the gummies, water, and the same time you will remember. The best-time page owns the clock; link it. The dosage page owns the count; link it. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.",
+   "angle": "Chew the gummies, water, and the same time you will remember. The best-time page owns the clock; link it. The dosage page owns the count; link it. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.",
    "fanout": [
     "do you chew them",
     "do you take them with water",
@@ -1579,7 +1864,7 @@
    "segment": "fasting",
    "intent": "reader who wants the meal question separated from the morning-or-night question",
    "template": "EDITORIAL",
-   "angle": "The best-time page answers morning or night. This page answers with a meal or without one, from probiotic-survival research you fetch. Do not restate the clock. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.",
+   "angle": "The best-time page answers morning or night. This page answers with a meal or without one, from probiotic-survival research you fetch. Do not restate the clock. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.",
    "fanout": [
     "does a meal change survival",
     "is an empty stomach required",
@@ -1609,7 +1894,7 @@
    "segment": "reviews",
    "intent": "shopper who wants a straight worth-it check without a fake star rating",
    "template": "COMPARISON",
-   "angle": "Not the where-to-buy checklist and not a star-rating roundup. No invented reviews. What the Supplement Facts label lets you verify, and what the live PDP still has to show for the current offer. Link the where-to-buy page. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.",
+   "angle": "Not the where-to-buy checklist and not a star-rating roundup. No invented reviews. What the Supplement Facts label lets you verify, and what the live PDP still has to show for the current offer. Link the where-to-buy page. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.",
    "fanout": [
     "what can you verify without a review",
     "what a star rating cannot prove",
@@ -1639,7 +1924,7 @@
    "segment": "alcohol",
    "intent": "woman who drinks and wants the limit of any probiotic claim around alcohol",
    "template": "STORY",
-   "angle": "Not a treatment for anything alcohol does. Fetch papers on alcohol and the vaginal microbiome before citing a number. The gummy organism may not be the one those papers used; say so if it is not. Link the side-effects page. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.",
+   "angle": "Not a treatment for anything alcohol does. Fetch papers on alcohol and the vaginal microbiome before citing a number. The gummy organism may not be the one those papers used; say so if it is not. Link the side-effects page. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.",
    "fanout": [
     "is there a human study",
     "does the gummy match the papers",
@@ -1669,7 +1954,7 @@
    "segment": "storage",
    "intent": "pouch owner deciding between a cupboard and a fridge at home",
    "template": "LISTICLE",
-   "angle": "Home shelf, not the suitcase. The travel page owns planes and hotels; link it. Do not invent a fridge rule the PDP does not print. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.",
+   "angle": "Home shelf, not the suitcase. The travel page owns planes and hotels; link it. Do not invent a fridge rule the PDP does not print. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.",
    "fanout": [
     "does the pouch need a fridge",
     "what does heat do at home",
@@ -1699,7 +1984,7 @@
    "segment": "ingredients",
    "intent": "label reader who wants the rest of the panel, not another organism roundup",
    "template": "COMPARISON",
-   "angle": "The organism page owns which organisms were studied. Link it. This page is the rest of the Supplement Facts label: the named organism, the CFU line, vitamin C, pineapple fruit powder, and the sweeteners. Never the PDP description. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.",
+   "angle": "The organism page owns which organisms were studied. Link it. This page is the rest of the Supplement Facts label: the named organism, the CFU line, vitamin C, pineapple fruit powder, and the sweeteners. Never the PDP description. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.",
    "fanout": [
     "what else is on the panel",
     "where is the organism page",
@@ -1729,7 +2014,7 @@
    "segment": "stack",
    "intent": "woman who already takes other supplements and wants the same-day limit",
    "template": "EDITORIAL",
-   "angle": "Other supplements the same day: what to ask a clinician about, and what was not studied as a combination. Link the antibiotics page for that case. Do not name an amount for a product this ticket does not sell. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.",
+   "angle": "Other supplements the same day: what to ask a clinician about, and what was not studied as a combination. Link the antibiotics page for that case. Do not name an amount for a product this ticket does not sell. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.",
    "fanout": [
     "can you take them with a multivitamin",
     "what was not studied together",
@@ -1759,7 +2044,7 @@
    "segment": "athletes",
    "intent": "woman who trains and wants to know whether the gummy routine changes",
    "template": "EDITORIAL",
-   "angle": "A gym habit does not change the gummy routine. Say what research did not test in athletes. No performance claim and no cure claim. Link the beginners page and the side-effects page. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.",
+   "angle": "A gym habit does not change the gummy routine. Say what research did not test in athletes. No performance claim and no cure claim. Link the beginners page and the side-effects page. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.",
    "fanout": [
     "does a gym habit change the routine",
     "were athletes in the trials",
@@ -1771,6 +2056,432 @@
     "vaginal-probiotics-for-beginners-what-to-expect-in-the-us",
     "vaginal-probiotics-side-effects-normal-vs-stop-us-2026",
     "vaginal-probiotics-which-strains-actually-work-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "fake-turkesterone-underdosed-labels",
+   "product": "turkesterone-advanced-formula",
+   "primary": "fake turkesterone",
+   "title": "Fake Turkesterone: 5 Signs of an Underdosed Label (US {year})",
+   "secondary": [
+    "is turkesterone real",
+    "underdosed turkesterone",
+    "turkesterone scam",
+    "how to spot fake turkesterone"
+   ],
+   "segment": "authenticity",
+   "intent": "buyer who read that some turkesterone products contained almost none and wants to check a label before buying",
+   "template": "LISTICLE",
+   "angle": "Independent assays and a 2025 trial found some products held under 1% of the claimed turkesterone. Give the label checks a buyer can do: extract standard named, ecdysteroid vs turkesterone mg, certificate from an ISO 17025 lab, price per real mg. No muscle-gain claim.",
+   "fanout": [
+    "how much turkesterone did tested products contain",
+    "what does a standardized extract mean",
+    "what is the difference between ecdysteroids and turkesterone",
+    "what should a test certificate show"
+   ],
+   "evidence": "Fetch the 2025 randomized trial that assayed a commercial turkesterone product, and the published independent assay reports. Cite only what they state.",
+   "link": [
+    "turkesterone-vs-ecdysterone-which-is-worth-it-us-2026",
+    "where-to-buy-turkesterone-in-the-us-what-to-check-2026",
+    "turkesterone-side-effects-4-ingredients-to-check-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "shilajit-and-blood-pressure",
+   "product": "shilasource-himalayan-shilajit-resin",
+   "primary": "shilajit and blood pressure",
+   "title": "Shilajit and Blood Pressure: Who Checks First (US {year})",
+   "secondary": [
+    "shilajit high blood pressure",
+    "shilajit with blood pressure medication",
+    "does shilajit lower blood pressure",
+    "shilajit hypertension"
+   ],
+   "segment": "medications",
+   "intent": "adult on blood pressure medication who wants to know whether shilajit is safe to add",
+   "template": "EDITORIAL",
+   "angle": "Separate what is measured in humans from rodent data. Name the drug classes where a doctor check matters. Give the plain rule: ask the prescriber, check readings for two weeks. No treatment claim.",
+   "fanout": [
+    "does shilajit raise or lower blood pressure",
+    "can I take it with ACE inhibitors or beta blockers",
+    "what did human trials measure",
+    "what readings mean stop"
+   ],
+   "evidence": "PubMed human trials of shilajit that report blood pressure (for example the 2019 and 2016 RCTs). If none report it, say so.",
+   "link": [
+    "shilajit-side-effects-7-signs-to-watch-for-us-2026",
+    "how-much-shilajit-per-day-dosage-by-form-us-2026",
+    "shilajit-for-seniors-5-safety-checks-over-60-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "nmn-and-metformin",
+   "product": "ageaura-pure-nmn-tmg-nad-complex",
+   "primary": "nmn and metformin",
+   "title": "NMN and Metformin: What the Human Data Says (US {year})",
+   "secondary": [
+    "can you take nmn with metformin",
+    "nmn metformin interaction",
+    "nmn blood sugar",
+    "metformin nad"
+   ],
+   "segment": "medications",
+   "intent": "adult already prescribed metformin who wants to know whether NMN fits next to it",
+   "template": "EDITORIAL",
+   "angle": "Explain the two different mechanisms in plain words, the one human NMN insulin-sensitivity trial and its limits, and why the prescriber decides. No blood sugar treatment claim.",
+   "fanout": [
+    "does metformin lower NAD",
+    "does NMN change blood sugar in humans",
+    "is there an interaction study",
+    "what should I ask my doctor"
+   ],
+   "evidence": "Yoshino 2021 Science (NMN in prediabetic women) and any published human NMN plus metformin data. Say there is no combination trial if none is found.",
+   "link": [
+    "nmn-side-effects-6-checks-before-you-start-us-2026",
+    "how-much-nmn-per-day-what-trials-used-us-2026",
+    "nmn-and-tmg-together-why-the-pairing-matters-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "creatine-gummies-and-kidneys",
+   "product": "fusiforce-creatine-gummies",
+   "primary": "creatine gummies and kidneys",
+   "title": "Creatine Gummies and Kidneys: The Bloodwork (US {year})",
+   "secondary": [
+    "is creatine bad for your kidneys",
+    "creatine creatinine blood test",
+    "creatine gummies kidney safety",
+    "creatine kidney damage myth"
+   ],
+   "segment": "kidneys",
+   "intent": "buyer worried that creatine harms the kidneys or that a raised creatinine test means damage",
+   "template": "EDITORIAL",
+   "angle": "Explain why creatinine rises on a lab test, what long-term trials in healthy adults found, and who must ask a doctor first (existing kidney disease). No cure claim.",
+   "fanout": [
+    "why does creatine raise creatinine",
+    "what did long-term trials find",
+    "who should not take creatine",
+    "should I tell my doctor before a blood test"
+   ],
+   "evidence": "ISSN position stand on creatine safety and the long-term renal-function trials it cites. Fetch them.",
+   "link": [
+    "creatine-gummies-side-effects-4-real-3-myths-us-2026",
+    "creatine-gummies-dosage-how-many-a-day-us-2026",
+    "how-to-take-creatine-gummies-in-the-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "turkesterone-and-hair-loss",
+   "product": "turkesterone-advanced-formula",
+   "primary": "turkesterone hair loss",
+   "title": "Turkesterone and Hair Loss: The DHT Question (US {year})",
+   "secondary": [
+    "turkesterone dht",
+    "turkesterone and hair",
+    "turkesterone balding",
+    "is turkesterone hormonal"
+   ],
+   "segment": "hair",
+   "intent": "man worried about hair loss who wants to know whether turkesterone acts on DHT",
+   "template": "EDITORIAL",
+   "angle": "Turkesterone is not shown to raise DHT or testosterone in humans; say what the few human trials measured and what they did not. Name the honest limit.",
+   "fanout": [
+    "does turkesterone raise testosterone or DHT",
+    "what did human trials measure",
+    "why do forums link it to hair loss",
+    "what to do if shedding starts"
+   ],
+   "evidence": "Human turkesterone or ecdysterone trials that measured hormones (for example Isenmann 2019). Cite only measured outcomes.",
+   "link": [
+    "turkesterone-side-effects-4-ingredients-to-check-us-2026",
+    "turkesterone-for-men-over-40-5-honest-checks-us-2026",
+    "how-to-take-turkesterone-in-the-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "vaginal-probiotics-for-odor",
+   "product": "florafresh-vaginal-probiotics-gummies",
+   "primary": "vaginal probiotics for odor",
+   "title": "Vaginal Probiotics for Odor: What They Can Do (US {year})",
+   "secondary": [
+    "probiotics for vaginal odor",
+    "feminine odor probiotic",
+    "fishy odor probiotics",
+    "ph balance probiotic gummies"
+   ],
+   "segment": "odor",
+   "intent": "woman with odor who wants to know whether a probiotic gummy helps or whether it needs a doctor",
+   "template": "EDITORIAL",
+   "angle": "Odor is a symptom with several causes. Say which one needs a test (BV, trichomoniasis), what the label strain (Bacillus coagulans SNZ-1969) was studied for, and what a gummy cannot replace. No cure claim.",
+   "fanout": [
+    "what causes vaginal odor",
+    "when is odor BV",
+    "can a probiotic change odor",
+    "when to see a doctor"
+   ],
+   "evidence": "Bacillus coagulans and oral probiotic trials that report odor or Amsel criteria outcomes, plus CDC BV guidance.",
+   "link": [
+    "yeast-infection-vs-bv-how-to-tell-them-apart-us-2026",
+    "probiotics-for-bv-do-they-actually-work-us-2026",
+    "vaginal-probiotics-how-long-until-they-work-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "vaginal-probiotics-after-sex",
+   "product": "florafresh-vaginal-probiotics-gummies",
+   "primary": "vaginal probiotics after sex",
+   "title": "Vaginal Probiotics After Sex: What Changes (US {year})",
+   "secondary": [
+    "probiotics after intercourse",
+    "vaginal ph after sex",
+    "semen ph balance",
+    "new partner bv"
+   ],
+   "segment": "intimacy",
+   "intent": "woman who notices irritation or odor after sex and asks whether a daily probiotic changes that",
+   "template": "EDITORIAL",
+   "angle": "Explain why semen shifts vaginal pH for a few hours, what a daily oral probiotic can and cannot change, and the symptoms that need a test. No prevention claim.",
+   "fanout": [
+    "why does pH change after sex",
+    "does a daily probiotic help",
+    "is a new partner a BV risk",
+    "when to test"
+   ],
+   "evidence": "Peer-reviewed data on post-coital vaginal pH and the CDC BV risk factors.",
+   "link": [
+    "vaginal-probiotics-for-beginners-what-to-expect-in-the-us",
+    "probiotics-for-bv-do-they-actually-work-us-2026",
+    "yeast-infection-vs-bv-how-to-tell-them-apart-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "shilajit-and-kidneys",
+   "product": "shilasource-himalayan-shilajit-resin",
+   "primary": "shilajit and kidneys",
+   "title": "Shilajit and Kidneys: What to Check First (US {year})",
+   "secondary": [
+    "is shilajit safe for kidneys",
+    "shilajit kidney stones",
+    "shilajit creatinine"
+   ],
+   "segment": "kidneys",
+   "intent": "buyer with a kidney question who wants to know if shilajit resin is safe to take",
+   "template": "EDITORIAL",
+   "angle": "Answer first: what human data exists, what heavy-metal testing means for kidneys, who must ask a doctor (CKD, kidney stones, dialysis). No cure or safety guarantee.",
+   "fanout": [
+    "is shilajit bad for kidneys",
+    "shilajit kidney stones",
+    "shilajit heavy metals kidneys",
+    "who should not take shilajit"
+   ],
+   "evidence": "PubMed human trials of purified shilajit with renal markers; NIH/ODS heavy-metal guidance; live PDP test info.",
+   "link": [
+    "shilajit-and-blood-pressure-check-first-in-the-us",
+    "fake-shilajit-6-signs-yours-isnt-real-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "nmn-and-kidneys",
+   "product": "ageaura-pure-nmn-tmg-nad-complex",
+   "primary": "nmn and kidneys",
+   "title": "NMN and Kidneys: What Human Data Shows (US {year})",
+   "secondary": [
+    "nmn kidney function",
+    "nmn creatinine",
+    "nad kidneys"
+   ],
+   "segment": "kidneys",
+   "intent": "adult on NMN or thinking about it who has a kidney question",
+   "template": "EDITORIAL",
+   "angle": "What NMN does to NAD+ in the kidney in animal vs human studies; what human trials measured (eGFR, creatinine); who should ask a doctor first. Mark animal data clearly.",
+   "fanout": [
+    "is nmn safe for kidneys",
+    "nmn creatinine",
+    "nmn kidney disease",
+    "nmn tmg kidneys"
+   ],
+   "evidence": "Human NMN RCTs that report renal labs; reviews on NAD+ and kidney; label of AgeAura NMN + TMG.",
+   "link": [
+    "nmn-and-metformin-human-data-in-the-us",
+    "real-or-fake-nmn-6-label-checks-for-us-buyers"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "turkesterone-and-kidneys",
+   "product": "turkesterone-advanced-formula",
+   "primary": "turkesterone and kidneys",
+   "title": "Turkesterone and Kidneys: Liver and Kidney Checks (US {year})",
+   "secondary": [
+    "turkesterone liver kidneys",
+    "turkesterone blood test",
+    "ecdysterone kidneys"
+   ],
+   "segment": "kidneys",
+   "intent": "lifter who wants to know if turkesterone stresses the kidneys or liver",
+   "template": "EDITORIAL",
+   "angle": "Separate ecdysteroid data from steroid myths. Say what bloodwork a careful user checks and when to stop. No muscle-gain promise.",
+   "fanout": [
+    "is turkesterone bad for kidneys",
+    "turkesterone liver",
+    "turkesterone bloodwork",
+    "turkesterone side effects kidneys"
+   ],
+   "evidence": "Ecdysterone human trials with safety labs (e.g. Isenmann 2019); reviews on ecdysteroid toxicology.",
+   "link": [
+    "fake-turkesterone-5-label-checks-in-the-us"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "turkesterone-and-blood-pressure",
+   "product": "turkesterone-advanced-formula",
+   "primary": "turkesterone and blood pressure",
+   "title": "Turkesterone and Blood Pressure: What We Know (US {year})",
+   "secondary": [
+    "turkesterone hypertension",
+    "turkesterone blood pressure medication"
+   ],
+   "segment": "medications",
+   "intent": "person with high blood pressure or BP medication who considers turkesterone",
+   "template": "EDITORIAL",
+   "angle": "What human data says about ecdysteroids and blood pressure, what is unknown, and why BP medication users ask a doctor first. No treatment claim.",
+   "fanout": [
+    "does turkesterone raise blood pressure",
+    "turkesterone hypertension",
+    "turkesterone with bp meds"
+   ],
+   "evidence": "Ecdysteroid human trials that report BP; drug-interaction references.",
+   "link": [
+    "fake-turkesterone-5-label-checks-in-the-us"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "creatine-gummies-and-blood-pressure",
+   "product": "fusiforce-creatine-gummies",
+   "primary": "creatine gummies and blood pressure",
+   "title": "Creatine Gummies and Blood Pressure (US {year})",
+   "secondary": [
+    "creatine hypertension",
+    "creatine blood pressure medication"
+   ],
+   "segment": "medications",
+   "intent": "adult with high blood pressure who wants to start creatine gummies",
+   "template": "EDITORIAL",
+   "angle": "What creatine trials report on blood pressure, water weight vs BP, sugar per gummy from the live label, who asks a doctor (BP meds, kidney disease).",
+   "fanout": [
+    "does creatine raise blood pressure",
+    "creatine hypertension",
+    "creatine with blood pressure medication"
+   ],
+   "evidence": "ISSN creatine position stand; RCTs reporting BP; FusiForce live label.",
+   "link": [
+    "creatine-gummies-and-kidneys-bloodwork-in-the-us",
+    "creatine-gummies-ingredients-us-label-guide"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "fake-vaginal-probiotics",
+   "product": "florafresh-vaginal-probiotics-gummies",
+   "primary": "fake vaginal probiotics",
+   "title": "Fake Vaginal Probiotics: 5 Label Checks (US {year})",
+   "secondary": [
+    "fake probiotics",
+    "probiotic label checks",
+    "best vaginal probiotic label"
+   ],
+   "segment": "authenticity",
+   "intent": "woman comparing vaginal probiotic labels who wants to spot a weak or fake product",
+   "template": "LISTICLE",
+   "angle": "Five label checks: named strain with ID, CFU at expiry not at manufacture, storage, third-party testing, realistic claims. Show the FloraFresh label as one example. No cure claim.",
+   "fanout": [
+    "how to tell if a probiotic is real",
+    "vaginal probiotic label",
+    "cfu at expiry",
+    "probiotic strain id"
+   ],
+   "evidence": "USP/ISAPP guidance on probiotic labels; studies on label accuracy of probiotic products.",
+   "link": [
+    "probiotics-for-bv-do-they-actually-work-us-2026",
+    "vaginal-probiotics-how-long-until-they-work-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "vaginal-probiotics-with-coffee",
+   "product": "florafresh-vaginal-probiotics-gummies",
+   "primary": "vaginal probiotics with food or coffee",
+   "title": "Vaginal Probiotics With Food or Coffee? (US {year})",
+   "secondary": [
+    "probiotics and coffee",
+    "probiotics with breakfast",
+    "probiotic gummy timing"
+   ],
+   "segment": "caffeine",
+   "intent": "woman who takes a probiotic gummy with her morning coffee and wants to know if heat or caffeine harms it",
+   "template": "EDITORIAL",
+   "angle": "What is known about heat, acid and caffeine on spore-forming Bacillus coagulans vs Lactobacillus, what the live label says, a simple routine. No cure claim.",
+   "fanout": [
+    "can i take probiotics with coffee",
+    "probiotics with food or empty stomach",
+    "does hot coffee kill probiotics"
+   ],
+   "evidence": "Studies on Bacillus coagulans spore survival (heat, gastric acid); ISAPP guidance on timing; FloraFresh live label.",
+   "link": [
+    "vaginal-probiotics-how-long-until-they-work-us-2026"
+   ],
+   "priority": 1,
+   "inline": []
+  },
+  {
+   "id": "nmn-body-odor",
+   "product": "ageaura-pure-nmn-tmg-nad-complex",
+   "primary": "nmn body odor",
+   "title": "NMN and Body Odor: Why It Happens (US {year})",
+   "secondary": [
+    "tmg body odor",
+    "nmn smell",
+    "nmn tmg side effects odor"
+   ],
+   "segment": "odor",
+   "intent": "NMN + TMG user who notices a fishy or strong body or urine odor and wants to know why",
+   "template": "EDITORIAL",
+   "angle": "TMG (betaine) and choline-type compounds can raise TMAO; some people with low FMO3 notice a fishy odor. Say what is known, what to change (dose, food), and when to see a doctor. No treatment claim.",
+   "fanout": [
+    "does nmn make you smell",
+    "tmg fishy odor",
+    "nmn urine smell",
+    "trimethylaminuria supplements"
+   ],
+   "evidence": "Papers on betaine/TMG and TMAO; NIH GARD trimethylaminuria page; AgeAura live label.",
+   "link": [
+    "nmn-and-metformin-human-data-in-the-us",
+    "real-or-fake-nmn-6-label-checks-for-us-buyers"
    ],
    "priority": 1,
    "inline": []

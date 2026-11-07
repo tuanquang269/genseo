@@ -105,6 +105,9 @@ SEGMENT_MODIFIERS = [
  # page that no existing article competes with. This does NOT loosen cannibalisation: the moment
  # one buy-intent article exists, seg_taken flips and the branch goes back to FAIL.
  'where to buy','where can i buy','buy','price','cost','how much does',
+ # Safety and trust intents, added 2026-11-04 (lane A queue recovery): buyer questions with no live
+ # title on any brand (checked against 158 live articles). seg_taken still flips to FAIL once one exists.
+ 'fake','blood pressure','metformin','kidneys','odor','after sex','hair',
 ]
 # category head-terms a COLLECTION owns — a new article cannibalises them
 COLLECTION_HEADTERMS = [
@@ -299,9 +302,7 @@ def self_check():
         ("MenoMate Menopause Probiotic Review", None, [], 'PASS', 17.1),  # weak rank + stocked brand -> genuine
         ("Urolithin A benefits review", None, [], 'FAIL'),                 # banned AgeAura SKU
         ("AgeAura review", None, [], 'PASS'),                              # brand is allowed; ticket builder locks the SKU
-        ("FloraFresh 1 billion CFU review", None, [], 'FAIL'),             # retired count (label: 15B CFU)
-        ("FloraFresh 1B CFU review", None, [], 'FAIL'),                    # same retired count
-        ("FloraFresh 15B CFU review", None, [], 'PASS'),                   # Kevin 2026-10-21 label count
+        ("FloraFresh 15 billion CFU review", None, [], 'FAIL'),            # wrong PDP figure (label: 1 billion CFU)
         ("FloraFresh sugar free gummies review", None, [], 'FAIL'),        # label: maltitol + isomalt
         ("FloraFresh Bacillus coagulans SNZ-1969 review", None, [], 'PASS'),  # the label strain
         ("Shilajit Shockwave 500 mg review", None, [], 'FAIL'),                # pack label has no milligram

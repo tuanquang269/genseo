@@ -12,7 +12,8 @@ Usage:
   genseo_published_today.py --peer-active MIN --local-log FILE
         -> exit 3 if a post published today in the last MIN minutes is NOT in FILE
            (i.e. the OTHER Mac is mid-batch right now), else exit 0. Prints the reason.
-Fails CLOSED: if the feed cannot be read, prints -1 / exits 4 so callers do not publish blind.
+Feed blocked (e.g. storefront HTTP 429) falls back to the Admin API (~/.genseo token).
+Fails CLOSED: if neither can be read, prints -1 / exits 4 so callers do not publish blind.
 """
 import argparse, datetime as dt, json, re, sys, urllib.request
 from xml.etree import ElementTree as ET
@@ -41,6 +42,20 @@ def entries():
     return out
 
 
+def admin_entries():
+    """Fallback when the storefront rate-limits the feed (HTTP 429): same store, read by Admin API."""
+    sys.path.insert(0, __import__("os").path.dirname(__import__("os").path.abspath(__file__)))
+    from genseo_config import SHOP, TOKEN
+    base = f"https://{SHOP}/admin/api/2026-04"
+    def get(path):
+        req = urllib.request.Request(base + path, headers={"X-Shopify-Access-Token": TOKEN})
+        return json.load(urllib.request.urlopen(req, timeout=30))
+    blog = get("/blogs.json?handle=news")["blogs"][0]["id"]
+    since = (dt.datetime.now(ICT) - dt.timedelta(days=2)).isoformat()
+    arts = get(f"/blogs/{blog}/articles.json?published_status=published&published_at_min={since}&limit=250&fields=handle,title,published_at")["articles"]
+    return [{"url": f"https://wellnessnest.co/blogs/news/{a['handle']}", "title": a["title"],
+             "published_ict": dt.datetime.fromisoformat(a["published_at"]).astimezone(ICT)} for a in arts]
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--json", action="store_true")
@@ -50,7 +65,11 @@ def main():
     a = ap.parse_args()
     day = a.date or dt.datetime.now(ICT).date().isoformat()
     try:
-        es = [e for e in entries() if e["published_ict"].date().isoformat() == day]
+        try:
+            src = entries()
+        except Exception:  # noqa: BLE001 — feed 429/blocked: Admin API is the same shared state
+            src = admin_entries()
+        es = [e for e in src if e["published_ict"].date().isoformat() == day]
     except Exception as exc:  # noqa: BLE001
         print(-1 if not a.json else json.dumps({"date": day, "count": -1, "error": str(exc)}))
         sys.exit(4)

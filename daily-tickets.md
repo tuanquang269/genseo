@@ -11,7 +11,7 @@ Agent được lệnh *"continue with the next ticket in daily-tickets.md"* → 
 
 1. Mọi internal link phải trỏ tới URL đang LIVE. Link 404 sẽ bị gate chặn.
 2. Không tạo bài mới cho keyword đã có bài — STEP 0 check trước, trùng thì refresh.
-3. Blog byline mặc định: **Mike Moretti**, Co-founder (`/pages/mike-moretti`), bio chép đúng câu trong `roster.json`. Không dùng Dr. Marcus Hale cho bài blog (gate từ chối). Landing vẫn mặc định Hale. Không bịa credential, bằng cấp, năm kinh nghiệm, medical reviewer, hay headshot (`headshot` đang null). Roster rỗng = STOP, báo Kevin. `/pages/mike-moretti` phải HTTP 200 trước khi bài của Mike qua gate; không tự tạo trang đó.
+3. Byline lấy từ `/Users/kevinkreative/genseo/roster.json`. Roster rỗng = STOP, báo Kevin.
 4. Publish bằng `scripts/shopify_publisher.py` (mặc định DRAFT — Kevin duyệt trong admin).
 5. Ảnh: `scripts/article_images.py` (ima2 OAuth). **HARD RULE (Kevin 2026-08-07):** ảnh CÓ
    sản phẩm trong khung → bắt buộc `--product-ref <handle>` (tự tải pack shot thật từ
@@ -503,8 +503,8 @@ blog 104008483131, publish `--live`, claims log), PLUS the 2026-10-08 guideline 
   listed in the ticket (as H2/H3 sections or FAQ entries) — each must make sense quoted alone.
 - **Where to buy:** every article has a short "Where to buy <product> in the US" section naming Wellness Nest
   (wellnessnest.co) as the official source, with the live price above and a link to the ticket's product page only.
-- **No fake authors:** blog byline = Mike Moretti (roster.json). Copy his bio verbatim after `[Mike Moretti](/pages/mike-moretti)`. Role is "Co-founder, Wellness Nest" and does not replace the bio. Never invent a person,
-  credential, reviewer, headshot or "team member"; never dress "Wellness Nest Research Team" up as an individual. TODO: no approved headshot. Do not byline Dr. Marcus Hale. Landing pages stay on Hale.
+- **No fake authors:** byline = Dr. Marcus Hale (roster.json) with the exact roster bio. Never invent a person,
+  credential, reviewer, headshot or "team member"; never dress "Wellness Nest Research Team" up as an individual.
 - **Fact-check pass (logged):** before publish write `~/genseo/logs/claims/<slug>.md` (claim | source URL | fetched &
   confirmed Y/N); delete any claim not confirmed from a fetched source; dosages and study numbers must match the
   source and expert consensus (YMYL). Add a line `fact-check: <n> claims, all Y` to the run report.
@@ -625,7 +625,7 @@ A `topic_fitness` REVIEW [covered-segment] verdict is allowed under Kevin's stan
 A topic is a brief, not copy: source every claim or cut it.
 
 **Rules for this batch:** from the 2026-10-08 batch rules — fan-out answers, a "Where to buy <product> in the US"
-section (live price, the ticket's product link only), Mike Moretti (/pages/mike-moretti), roster.json bio copied verbatim, role Co-founder, Wellness Nest (never an invented person or
+section (live price, the ticket's product link only), roster.json byline only (never an invented person or
 credential), the logged fact-check pass (`logs/claims/<slug>.md`; delete unconfirmed claims), the brand gate.
 Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py once. The hero is the picked face plus the real pack unless pick prints NO-FACE. One inline image uses that face. The other inline images have no recognizable face but still show a hand, forearm, or body cropped below the eyes. A no-face image is the fallback for one frame after a face refusal or two QC misses, not a batch-wide ban. The MacBook article plist sets `GENSEO_NO_FACE=0`, and that value does not switch the lane. Prices were read live at build time; re-check the PDP while writing.
 
@@ -773,7 +773,7 @@ A `topic_fitness` REVIEW [covered-segment] verdict is allowed under Kevin's stan
 A topic is a brief, not copy: source every claim or cut it.
 
 **Rules for this batch:** from the 2026-10-08 batch rules — fan-out answers, a "Where to buy <product> in the US"
-section (live price, the ticket's product link only), Mike Moretti (/pages/mike-moretti), roster.json bio copied verbatim, role Co-founder, Wellness Nest (never an invented person or
+section (live price, the ticket's product link only), roster.json byline only (never an invented person or
 credential), the logged fact-check pass (`logs/claims/<slug>.md`; delete unconfirmed claims), the brand gate.
 Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py once. The hero is the picked face plus the real pack unless pick prints NO-FACE. One inline image uses that face. The other inline images have no recognizable face but still show a hand, forearm, or body cropped below the eyes. A no-face image is the fallback for one frame after a face refusal or two QC misses, not a batch-wide ban. The MacBook article plist sets `GENSEO_NO_FACE=0`, and that value does not switch the lane. Prices were read live at build time; re-check the PDP while writing.
 
@@ -870,7 +870,7 @@ A `topic_fitness` REVIEW [covered-segment] verdict is allowed under Kevin's stan
 A topic is a brief, not copy: source every claim or cut it.
 
 **Rules for this batch:** from the 2026-10-08 batch rules — fan-out answers, a "Where to buy <product> in the US"
-section (live price, the ticket's product link only), Mike Moretti (/pages/mike-moretti), roster.json bio copied verbatim, role Co-founder, Wellness Nest (never an invented person or
+section (live price, the ticket's product link only), roster.json byline only (never an invented person or
 credential), the logged fact-check pass (`logs/claims/<slug>.md`; delete unconfirmed claims), the brand gate.
 Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py once. The hero is the picked face plus the real pack unless pick prints NO-FACE. One inline image uses that face. The other inline images have no recognizable face but still show a hand, forearm, or body cropped below the eyes. A no-face image is the fallback for one frame after a face refusal or two QC misses, not a batch-wide ban. The MacBook article plist sets `GENSEO_NO_FACE=0`, and that value does not switch the lane. Prices were read live at build time; re-check the PDP while writing.
 
@@ -956,18 +956,38 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** nmn + fertility checked 2026-10-16 against 123 live articles (blog listing + sitemap + Atom + local caches) and all 63 tickets in this file; STEP 0 re-checks at write time
 
+## Ranking leverage 2026-11-05 (1.4, GSC 28 d) — run these first
+
+- [SKIPPED-DUPLICATE 2026-11-05 https://wellnessnest.co/blogs/news/probiotics-and-birth-control-can-you-take-both-us-2026] **#RL1105-1 — [REFRESH EXISTING] /blogs/news/probiotics-and-birth-control-can-you-take-both-us-2026** — GSC 28 d: 737 impr, avg pos 7.2, CTR < 1%. ARTICLE_ID: look up by handle in STEP 0. Append-only depth for the queries at pos 4–20 (keep title + URL), sharpen meta description for click-through, add 2 internal links from sibling articles in the same cluster to this URL.
+- [SKIPPED-DUPLICATE 2026-11-05 https://wellnessnest.co/blogs/news/probiotics-during-your-period-keep-taking-them-us-2026] **#RL1105-2 — [REFRESH EXISTING] /blogs/news/probiotics-during-your-period-keep-taking-them-us-2026** — GSC 28 d: 632 impr, avg pos 8.9, CTR < 1%. ARTICLE_ID: look up by handle in STEP 0. Append-only depth for the queries at pos 4–20 (keep title + URL), sharpen meta description for click-through, add 2 internal links from sibling articles in the same cluster to this URL.
+- [SKIPPED-DUPLICATE 2026-11-05 https://wellnessnest.co/blogs/news/best-time-to-take-vaginal-probiotics-6-rules-us-2026] **#RL1105-3 — [REFRESH EXISTING] /blogs/news/best-time-to-take-vaginal-probiotics-6-rules-us-2026** — GSC 28 d: 518 impr, avg pos 8.7, CTR < 1%. ARTICLE_ID: look up by handle in STEP 0. Append-only depth for the queries at pos 4–20 (keep title + URL), sharpen meta description for click-through, add 2 internal links from sibling articles in the same cluster to this URL.
+- [DEFERRED 2026-11-05 rule E: refresh not allowed headless] **#RL1105-4 — [REFRESH EXISTING] /blogs/news/do-creatine-gummies-expire-6-storage-facts-us-2026** — GSC 28 d: 383 impr, avg pos 7.4, CTR < 1%. ARTICLE_ID: look up by handle in STEP 0. Append-only depth for the queries at pos 4–20 (keep title + URL), sharpen meta description for click-through, add 2 internal links from sibling articles in the same cluster to this URL.
+- [DEFERRED 2026-11-05 rule E: refresh not allowed headless] **#RL1105-5 — [REFRESH EXISTING] /blogs/news/vaginal-probiotics-side-effects-normal-vs-stop-us-2026** — GSC 28 d: 345 impr, avg pos 8.6, CTR < 1%. ARTICLE_ID: look up by handle in STEP 0. Append-only depth for the queries at pos 4–20 (keep title + URL), sharpen meta description for click-through, add 2 internal links from sibling articles in the same cluster to this URL.
+- [ ] **#RL1105-6 — [NEW ARTICLE or REFRESH] best way to take NMN (with or without food)** — GSC shows 150 impr at pos 65–72 for "best way to take nmn" + "take nmn with or without food". STEP 0: if an article already covers it, refresh that one instead.
+
+## Ranking leverage 2026-11-06 (1.4, GSC 28 d to 11-03) — run first
+
+WN 7 d vs prior: avg pos 26.0 (was 23.8), top 3 28 (-5), top 10 101 (-20), top 20 153 (-14). Leverage sits in pages at pos 4–20, so refresh + internal links rank first. These need an interactive run or Kevin lifting rule E; headless runs keep them DEFERRED and move to the new-article ticket.
+
+- [DEFERRED rule E — needs Kevin OK] **#RL1106-1 — [REFRESH EXISTING] /blogs/news/turkesterone-for-athletes-drug-test-guide-us-2026** — "is turkesterone banned by wada" pos 5.9 (33 impr), "will turkesterone fail drug test" pos 7.7 (21). Append-only: add a short WADA / drug-test FAQ block answering both queries verbatim. Keep title + URL. Add 2 internal links to it from `/blogs/news/turkesterone-cycle-do-you-need-breaks-us-2026` and one sibling turkesterone page.
+- [DEFERRED rule E — needs Kevin OK] **#RL1106-2 — [REFRESH EXISTING] /blogs/news/do-creatine-gummies-expire-6-storage-facts-us-2026** — "do creatine gummies expire" pos 10.5 (24 impr). Append-only depth (shelf life after opening, heat, signs it went off). Sharpen meta. 2 internal links from FusiForce sibling pages.
+- [DEFERRED rule E — needs Kevin OK] **#RL1106-3 — [REFRESH EXISTING] /blogs/news/probiotics-during-your-period-keep-taking-them-us-2026** — 4 period queries at pos 8.5–14.9 (54 impr total). Add FAQ lines that match "can i take women probiotic gummies during my period" and "while on period". Keep title. 2 internal links from FloraFresh siblings.
+- [DEFERRED rule E — needs Kevin OK] **#RL1106-4 — [REFRESH EXISTING] /blogs/news/wellness-nest-shilajit-reviews-what-85-buyers-report** — "wellness nest shilajit" pos 5.8, 241 impr, CTR 0.4 %. Meta description + title-tag snippet only (refresh_targets.py CTR case). Body untouched.
+- [DEFERRED rule E — needs Kevin OK] **#RL1106-5 — [REFRESH EXISTING] NMN+TMG head term** — "nmn tmg" pos 50 (74 impr) split across `nmn-tmg-benefits-what-human-trials-show` and `nmn-alone-vs-nmn-tmg-which-fits-your-goal`. Pick the page Google ranks (STEP 0, page-level GSC), append depth there, and point the other page plus `how-to-take-nmn-a-capsule-routine-in-the-us` at it with exact-match anchor "NMN + TMG".
+- [ ] **#RL1106-6 — [NEW ARTICLE] probiotics during IVF** — `Probiotics During IVF: What Trials Show (US 2026)` — GSC adjacent: "ivf probiotic" pos 69 (26 impr), "best probiotic for conception" pos 73 (15), "fertility supplement with probiotics" pos 54 (16). No IVF/conception page exists (grep 2026-11-06). STEP 0 must check `/blogs/news/vaginal-probiotics-for-fertility-limits-in-*`; if it owns "ivf", mark SKIPPED-DUPLICATE. Hero `/products/florafresh-vaginal-probiotics-gummies`. FloraFresh formula from the Supplement Facts label only (Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies); say the IVF trials used other strains. Link out to the fertility-limits page and `probiotics-and-birth-control-can-you-take-both-us-2026`.
+
 - [ ] **#CA1016-7 — vaginal probiotics over 60** — `Vaginal Probiotics Over 60: 5 Checks (US 2026)`
   - **Primary keyword:** `vaginal probiotics over 60` · **Secondary:** vaginal probiotics for older women, probiotics after menopause, vaginal probiotics at 60, probiotics for postmenopausal women
   - **Search intent:** woman over 60, or someone buying for her, checking whether a vaginal probiotic gummy fits that age
   - **Template:** LISTICLE · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-16 18:52 ICT)
   - **Hero product:** `/products/florafresh-vaginal-probiotics-gummies` (FloraFresh Vaginal Probiotics Gummies, $40.99, in stock 2026-10-16)
-  - **FloraFresh formula (Supplement Facts label, the source of truth):** per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 15B CFU, Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain); sweetened with maltitol and isomalt, so not sugar-free; label badges Allergen Free, Vegan, Halal, Gluten Free. Cite the Supplement Facts label, never the live PDP description or an older FloraFresh article. Kevin 2026-10-21: the label count is 15B CFU of Bacillus coagulans SNZ-1969. A 1-billion figure is retired. The PDP story is still wrong: not four Lactobacillus strains, not XOS, not D-mannose, and not sugar-free. A PDP/label mismatch is a gate failure.
+  - **FloraFresh formula (Supplement Facts label, the source of truth):** per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 1 billion CFU, Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain); sweetened with maltitol and isomalt, so not sugar-free; label badges Allergen Free, Vegan, Halal, Gluten Free. Cite the Supplement Facts label, never the live PDP description or an older FloraFresh article (both repeat a wrong formula); a PDP/label mismatch is a gate failure.
   - **Collection links (≥2, verify live):** `/collections/womens-essentials-collection` (contains it), `/collections/best-seller` (contains it)
-  - **Angle:** Five checks for this age: what the vaginal microbiome does after menopause (fetched sources only), whether any oral-probiotic trial enrolled women over 60, medication questions for a clinician, the gummy routine, and when symptoms mean a clinician instead of a supplement. FloraFresh formula from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies, which is not a strain those Lactobacillus trials tested (say so). No cure or treatment claims. Link the over-50 page instead of restating it.
+  - **Angle:** Five checks for this age: what the vaginal microbiome does after menopause (fetched sources only), whether any oral-probiotic trial enrolled women over 60, medication questions for a clinician, the gummy routine, and when symptoms mean a clinician instead of a supplement. FloraFresh formula from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, which is not a strain those Lactobacillus trials tested (say so). No cure or treatment claims. Link the over-50 page instead of restating it.
   - **Fan-out answers to cover:** do vaginal probiotics change after menopause; were women over 60 in the trials; can you take them with other medication; when should you see a clinician instead
   - **Evidence to fetch & confirm (claims log):** Reviews of the vaginal microbiome after menopause, and any oral probiotic trial that enrolled women over 60 — fetch before citing. FloraFresh strain and CFU from the Supplement Facts label, not the PDP description.
   - **Link, don't restate:** `/blogs/news/vaginal-probiotics-which-strains-actually-work-us-2026`, `/blogs/news/vaginal-probiotics-side-effects-normal-vs-stop-us-2026`, `/blogs/news/florafresh-vs-generic-probiotics-4-strain-facts-us-2026`
-  - **Author:** Mike Moretti (/pages/mike-moretti) — Co-founder, Wellness Nest. Copy the roster.json bio verbatim after the link. The role line alone does not pass the gate. TODO: no approved headshot and /pages/mike-moretti is not confirmed live — do not extend the bio, invent a credential, or add a photo.
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** probiotic + seniors checked 2026-10-16 against 123 live articles (blog listing + sitemap + Atom + local caches) and all 63 tickets in this file; STEP 0 re-checks at write time
 
 - [ ] **#CA1016-8 — creatine gummies on an empty stomach** — `Creatine Gummies on an Empty Stomach (US 2026)`
@@ -980,7 +1000,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Fan-out answers to cover:** can you take creatine without food; does a meal change absorption; will gummies bother an empty stomach; what if you train before breakfast
   - **Evidence to fetch & confirm (claims log):** Trials or reviews of creatine taken with and without carbohydrate or a meal — fetch each before citing. FusiForce directions from the live PDP only.
   - **Link, don't restate:** `/blogs/news/best-time-to-take-creatine-before-or-after-us-2026`, `/blogs/news/creatine-gummies-dosage-how-many-a-day-us-2026`, `/blogs/news/creatine-gummies-side-effects-4-real-3-myths-us-2026`
-  - **Author:** Mike Moretti (/pages/mike-moretti) — Co-founder, Wellness Nest. Copy the roster.json bio verbatim after the link. The role line alone does not pass the gate. TODO: no approved headshot and /pages/mike-moretti is not confirmed live — do not extend the bio, invent a credential, or add a photo.
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** creatine + fasting checked 2026-10-16 against 123 live articles (blog listing + sitemap + Atom + local caches) and all 63 tickets in this file; STEP 0 re-checks at write time
 
 - [ ] **#CA1016-9 — how to take nmn** — `How to Take NMN: A Simple Capsule Routine (2026)`
@@ -993,7 +1013,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Fan-out answers to cover:** do you swallow NMN capsules; do you take them with water; what if you miss a day; can you open the capsule
   - **Evidence to fetch & confirm (claims log):** Pack-label directions in product_refs/ageaura-pure-nmn-tmg-nad-complex.label.json and the live PDP. No invented milligram.
   - **Link, don't restate:** `/blogs/news/when-to-take-nmn-morning-or-night-us-2026`, `/blogs/news/how-much-nmn-per-day-what-trials-used-us-2026`, `/blogs/news/nmn-side-effects-6-checks-before-you-start-us-2026`
-  - **Author:** Mike Moretti (/pages/mike-moretti) — Co-founder, Wellness Nest. Copy the roster.json bio verbatim after the link. The role line alone does not pass the gate. TODO: no approved headshot and /pages/mike-moretti is not confirmed live — do not extend the bio, invent a credential, or add a photo.
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** nmn + how-to-take checked 2026-10-16 against 123 live articles (blog listing + sitemap + Atom + local caches) and all 63 tickets in this file; STEP 0 re-checks at write time
 
 - [ ] **#CA1016-10 — vaginal probiotics for fertility** — `Vaginal Probiotics for Fertility: The Limits (2026)`
@@ -1001,13 +1021,13 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Search intent:** woman trying to conceive who has been told a vaginal probiotic might help and wants the limit of that claim
   - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-16 18:52 ICT)
   - **Hero product:** `/products/florafresh-vaginal-probiotics-gummies` (FloraFresh Vaginal Probiotics Gummies, $40.99, in stock 2026-10-16)
-  - **FloraFresh formula (Supplement Facts label, the source of truth):** per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 15B CFU, Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain); sweetened with maltitol and isomalt, so not sugar-free; label badges Allergen Free, Vegan, Halal, Gluten Free. Cite the Supplement Facts label, never the live PDP description or an older FloraFresh article. Kevin 2026-10-21: the label count is 15B CFU of Bacillus coagulans SNZ-1969. A 1-billion figure is retired. The PDP story is still wrong: not four Lactobacillus strains, not XOS, not D-mannose, and not sugar-free. A PDP/label mismatch is a gate failure.
+  - **FloraFresh formula (Supplement Facts label, the source of truth):** per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 1 billion CFU, Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain); sweetened with maltitol and isomalt, so not sugar-free; label badges Allergen Free, Vegan, Halal, Gluten Free. Cite the Supplement Facts label, never the live PDP description or an older FloraFresh article (both repeat a wrong formula); a PDP/label mismatch is a gate failure.
   - **Collection links (≥2, verify live):** `/collections/womens-essentials-collection` (contains it), `/collections/best-seller` (contains it)
-  - **Angle:** This is not the BV page and not the yeast page. Answer whether oral probiotics have been studied around conception, from papers you fetch, and say what they did not measure. FloraFresh formula from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies, which is not a strain those Lactobacillus trials tested (say so). Not a fertility treatment. No cure or treatment claims. Link the BV page and the strains page instead of restating them.
+  - **Angle:** This is not the BV page and not the yeast page. Answer whether oral probiotics have been studied around conception, from papers you fetch, and say what they did not measure. FloraFresh formula from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, which is not a strain those Lactobacillus trials tested (say so). Not a fertility treatment. No cure or treatment claims. Link the BV page and the strains page instead of restating them.
   - **Fan-out answers to cover:** can vaginal probiotics help conception; what did the studies measure; can you take them while trying to conceive; when should you see a clinician
   - **Evidence to fetch & confirm (claims log):** Trials or reviews of probiotics and conception or vaginal flora in women trying to conceive — fetch before citing. FloraFresh strain and CFU from the Supplement Facts label, not the PDP description.
   - **Link, don't restate:** `/blogs/news/vaginal-probiotics-which-strains-actually-work-us-2026`, `/blogs/news/probiotics-for-bv-do-they-actually-work-us-2026`, `/blogs/news/yeast-infection-vs-bv-how-to-tell-them-apart-us-2026`
-  - **Author:** Mike Moretti (/pages/mike-moretti) — Co-founder, Wellness Nest. Copy the roster.json bio verbatim after the link. The role line alone does not pass the gate. TODO: no approved headshot and /pages/mike-moretti is not confirmed live — do not extend the bio, invent a credential, or add a photo.
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** probiotic + fertility checked 2026-10-16 against 123 live articles (blog listing + sitemap + Atom + local caches) and all 63 tickets in this file; STEP 0 re-checks at write time
 
 - [ ] **#CA1016-11 — nmn price** — `NMN Price: What a Bottle Costs in the US (2026)`
@@ -1020,7 +1040,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Fan-out answers to cover:** how much does a bottle of NMN cost; what does one serving cost; why do NMN prices differ; what should the label show before you pay
   - **Evidence to fetch & confirm (claims log):** Live PDP price, fetched at write time. Serving facts only from the pack label in product_refs/ageaura-pure-nmn-tmg-nad-complex.label.json. No invented milligram.
   - **Link, don't restate:** `/blogs/news/where-to-buy-nmn-in-the-us-fda-status-explained-2026`, `/blogs/news/how-much-nmn-per-day-what-trials-used-us-2026`, `/blogs/news/ageaura-nmn-tmg-ingredients-what-each-one-does-us`
-  - **Author:** Mike Moretti (/pages/mike-moretti) — Co-founder, Wellness Nest. Copy the roster.json bio verbatim after the link. The role line alone does not pass the gate. TODO: no approved headshot and /pages/mike-moretti is not confirmed live — do not extend the bio, invent a credential, or add a photo.
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** nmn + price checked 2026-10-16 against 123 live articles (blog listing + sitemap + Atom + local caches) and all 63 tickets in this file; STEP 0 re-checks at write time
 
 - [DONE 2026-10-19 https://wellnessnest.co/blogs/news/how-to-take-creatine-gummies-in-the-us-2026] **#CA1016-12 — how to take creatine gummies** — `How to Take Creatine Gummies Each Day (US 2026)`
@@ -1060,7 +1080,7 @@ A `topic_fitness` REVIEW [covered-segment] verdict is allowed under Kevin's stan
 A topic is a brief, not copy: source every claim or cut it.
 
 **Rules for this batch:** from the 2026-10-08 batch rules — fan-out answers, a "Where to buy <product> in the US"
-section (live price, the ticket's product link only), Mike Moretti (/pages/mike-moretti), roster.json bio copied verbatim, role Co-founder, Wellness Nest (never an invented person or
+section (live price, the ticket's product link only), roster.json byline only (never an invented person or
 credential), the logged fact-check pass (`logs/claims/<slug>.md`; delete unconfirmed claims), the brand gate.
 Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py once. The hero is the picked face plus the real pack unless pick prints NO-FACE. One inline image uses that face. The other inline images have no recognizable face but still show a hand, forearm, or body cropped below the eyes. A no-face image is the fallback for one frame after a face refusal or two QC misses, not a batch-wide ban. The MacBook article plist sets `GENSEO_NO_FACE=0`, and that value does not switch the lane. Prices were read live at build time; re-check the PDP while writing.
 
@@ -1169,7 +1189,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Fan-out answers to cover:** do you take weeks off creatine; is cycling different from loading; what happens if you stop; does a gummy change that
   - **Evidence to fetch & confirm (claims log):** ISSN creatine position stand (Kreider et al. 2017) — fetch before citing. FusiForce directions from the live PDP only.
   - **Link, don't restate:** `/blogs/news/creatine-gummies-loading-phase-is-it-needed-us-2026`, `/blogs/news/how-long-does-creatine-take-to-work-week-by-week-us-2026`, `/blogs/news/creatine-gummies-on-rest-days-keep-taking-them-us-2026`
-  - **Author:** Mike Moretti (/pages/mike-moretti) — Co-founder, Wellness Nest. Copy the roster.json bio verbatim after the link. The role line alone does not pass the gate. TODO: no approved headshot and /pages/mike-moretti is not confirmed live — do not extend the bio, invent a credential, or add a photo.
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** creatine + cycle checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
 - [DONE 2026-10-22 https://wellnessnest.co/blogs/news/turkesterone-while-traveling-us-packing-guide] **#CA1017-9 — how much turkesterone while traveling** — `Turkesterone While Traveling: How Much to Pack? (2026)`
@@ -1183,7 +1203,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Fan-out answers to cover:** does the whole jar travel; what if you miss a day; what does hotel heat change; where is the daily routine
   - **Evidence to fetch & confirm (claims log):** Live PDP and the pack-label file. No invented capsule count or temperature.
   - **Link, don't restate:** `/blogs/news/turkesterone-timing-food-protein-or-fasted-us-2026`, `/blogs/news/turkesterone-side-effects-4-ingredients-to-check-us-2026`, `/blogs/news/where-to-buy-turkesterone-in-the-us-what-to-check-2026`
-  - **Author:** Mike Moretti (/pages/mike-moretti) — Co-founder, Wellness Nest. Copy the roster.json bio verbatim after the link. The role line alone does not pass the gate. TODO: no approved headshot and /pages/mike-moretti is not confirmed live — do not extend the bio, invent a credential, or add a photo.
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** turkesterone + travel checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
 - [DONE 2026-10-22 https://wellnessnest.co/blogs/news/are-vaginal-probiotics-worth-it-40-99-us-check-2026] **#CA1017-10 — are vaginal probiotics worth it how much** — `Are Vaginal Probiotics Worth It? How Much You Check (2026)`
@@ -1191,13 +1211,13 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Search intent:** shopper who wants a straight worth-it check without a fake star rating
   - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
   - **Hero product:** `/products/florafresh-vaginal-probiotics-gummies` (FloraFresh Vaginal Probiotics Gummies, $40.99, in stock 2026-10-17)
-  - **FloraFresh formula (Supplement Facts label, the source of truth):** per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 15B CFU, Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain); sweetened with maltitol and isomalt, so not sugar-free; label badges Allergen Free, Vegan, Halal, Gluten Free. Cite the Supplement Facts label, never the live PDP description or an older FloraFresh article. Kevin 2026-10-21: the label count is 15B CFU of Bacillus coagulans SNZ-1969. A 1-billion figure is retired. The PDP story is still wrong: not four Lactobacillus strains, not XOS, not D-mannose, and not sugar-free. A PDP/label mismatch is a gate failure.
+  - **FloraFresh formula (Supplement Facts label, the source of truth):** per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 1 billion CFU, Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain); sweetened with maltitol and isomalt, so not sugar-free; label badges Allergen Free, Vegan, Halal, Gluten Free. Cite the Supplement Facts label, never the live PDP description or an older FloraFresh article (both repeat a wrong formula); a PDP/label mismatch is a gate failure.
   - **Collection links (≥2, verify live):** `/collections/womens-essentials-collection` (contains it), `/collections/best-seller` (contains it)
-  - **Angle:** Not the where-to-buy checklist and not a star-rating roundup. No invented reviews. What the Supplement Facts label lets you verify, and what the live PDP still has to show for the current offer. Link the where-to-buy page. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.
+  - **Angle:** Not the where-to-buy checklist and not a star-rating roundup. No invented reviews. What the Supplement Facts label lets you verify, and what the live PDP still has to show for the current offer. Link the where-to-buy page. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.
   - **Fan-out answers to cover:** what can you verify without a review; what a star rating cannot prove; what do you still read on the product page; where is the buy checklist
   - **Evidence to fetch & confirm (claims log):** Supplement Facts label plus the live PDP offer, fetched at write time. No invented review or rating.
   - **Link, don't restate:** `/blogs/news/where-to-buy-vaginal-probiotics-in-the-us-5-checks-2026`, `/blogs/news/florafresh-gummies-vs-capsules-5-format-facts-us-2026`, `/blogs/news/vaginal-probiotics-which-strains-actually-work-us-2026`
-  - **Author:** Mike Moretti (/pages/mike-moretti) — Co-founder, Wellness Nest. Copy the roster.json bio verbatim after the link. The role line alone does not pass the gate. TODO: no approved headshot and /pages/mike-moretti is not confirmed live — do not extend the bio, invent a credential, or add a photo.
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** probiotic + reviews checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
 - [DONE 2026-10-22 https://wellnessnest.co/blogs/news/turkesterone-and-coffee-with-food-us-2026] **#CA1017-11 — turkesterone and coffee with food** — `Turkesterone and Coffee, With Food (US 2026)`
@@ -1211,7 +1231,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Fan-out answers to cover:** can capsules go with coffee; is there an interaction study; does a meal change it; where is the timing page
   - **Evidence to fetch & confirm (claims log):** PubMed or DOI search for turkesterone and caffeine — fetch a paper or state that you found none. No milligram.
   - **Link, don't restate:** `/blogs/news/turkesterone-timing-food-protein-or-fasted-us-2026`, `/blogs/news/turkesterone-side-effects-4-ingredients-to-check-us-2026`, `/blogs/news/turkesterone-benefits-dosing-whats-real-us-2026`
-  - **Author:** Mike Moretti (/pages/mike-moretti) — Co-founder, Wellness Nest. Copy the roster.json bio verbatim after the link. The role line alone does not pass the gate. TODO: no approved headshot and /pages/mike-moretti is not confirmed live — do not extend the bio, invent a credential, or add a photo.
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** turkesterone + caffeine checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
 - [DONE 2026-10-22 https://wellnessnest.co/blogs/news/nmn-on-rest-days-take-it-with-food-us] **#CA1017-12 — nmn on rest days with food** — `NMN Capsules on a Day Off, With Food (US 2026)`
@@ -1224,7 +1244,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Fan-out answers to cover:** do you take NMN on days off; does a meal matter more on a rest day; what if you only take it on gym days; where is the clock-time page
   - **Evidence to fetch & confirm (claims log):** Any trial that reported non-training days — fetch it or say you found none. No invented milligram. AgeAura Pure NMN + TMG NAD+ Complex only.
   - **Link, don't restate:** `/blogs/news/nmn-and-exercise-before-or-after-a-workout-us-2026`, `/blogs/news/when-to-take-nmn-morning-or-night-us-2026`, `/blogs/news/how-much-nmn-per-day-what-trials-used-us-2026`
-  - **Author:** Mike Moretti (/pages/mike-moretti) — Co-founder, Wellness Nest. Copy the roster.json bio verbatim after the link. The role line alone does not pass the gate. TODO: no approved headshot and /pages/mike-moretti is not confirmed live — do not extend the bio, invent a credential, or add a photo.
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** nmn + rest-days checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
 - [DONE 2026-10-23 https://wellnessnest.co/blogs/news/creatine-gummies-worth-it-us-2026-check] **#CA1017-13 — are creatine gummies worth it how much** — `Are Creatine Gummies Worth It? How Much You Get (2026)`
@@ -1237,7 +1257,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Fan-out answers to cover:** what can you verify on the label; what a review cannot prove; how do gummies differ from powder; what should you ignore in ads
   - **Evidence to fetch & confirm (claims log):** Live FusiForce PDP, fetched at write time. Any third-party gummy test only from a fetched report, and only if that report names the product.
   - **Link, don't restate:** `/blogs/news/creatine-gummies-vs-powder-which-should-you-actually-take`, `/blogs/news/where-to-buy-creatine-gummies-5-label-checks-us-2026`, `/blogs/news/creatine-gummies-dosage-how-many-a-day-us-2026`
-  - **Author:** Mike Moretti (/pages/mike-moretti) — Co-founder, Wellness Nest. Copy the roster.json bio verbatim after the link. The role line alone does not pass the gate. TODO: no approved headshot and /pages/mike-moretti is not confirmed live — do not extend the bio, invent a credential, or add a photo.
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** creatine + reviews checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
 - [DONE 2026-10-23 https://wellnessnest.co/blogs/news/nmn-storage-with-food-5-us-rules] **#CA1017-14 — nmn storage with food** — `Where Should NMN Capsules Sit, With Food Nearby? (2026)`
@@ -1250,7 +1270,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Fan-out answers to cover:** does the bottle need a fridge; what does heat do; can it sit near food; what if the pack prints a date
   - **Evidence to fetch & confirm (claims log):** Live PDP and the pack-label file only. No invented expiry or temperature. AgeAura Pure NMN + TMG NAD+ Complex only.
   - **Link, don't restate:** `/blogs/news/when-to-take-nmn-morning-or-night-us-2026`, `/blogs/news/nmn-side-effects-6-checks-before-you-start-us-2026`, `/blogs/news/how-much-nmn-per-day-what-trials-used-us-2026`
-  - **Author:** Mike Moretti (/pages/mike-moretti) — Co-founder, Wellness Nest. Copy the roster.json bio verbatim after the link. The role line alone does not pass the gate. TODO: no approved headshot and /pages/mike-moretti is not confirmed live — do not extend the bio, invent a credential, or add a photo.
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** nmn + storage checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
 - [DONE 2026-10-23 https://wellnessnest.co/blogs/news/shilajit-and-coffee-with-food-us-guide] **#CA1017-15 — shilajit and coffee with food** — `Shilajit and Coffee, With Food (US 2026)`
@@ -1264,7 +1284,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Fan-out answers to cover:** can resin go with morning coffee; does coffee change the routine; is there any caffeine in the resin; what if your stomach objects
   - **Evidence to fetch & confirm (claims log):** Any fetched paper on shilajit and caffeine. If none, say so. Pack-label line only. No invented caffeine amount.
   - **Link, don't restate:** `/blogs/news/when-to-take-shilajit-morning-or-night-us-2026`, `/blogs/news/how-to-take-shilajit-resin-dissolve-it-right-us-2026`, `/blogs/news/shilajit-side-effects-7-signs-to-watch-for-us-2026`
-  - **Author:** Mike Moretti (/pages/mike-moretti) — Co-founder, Wellness Nest. Copy the roster.json bio verbatim after the link. The role line alone does not pass the gate. TODO: no approved headshot and /pages/mike-moretti is not confirmed live — do not extend the bio, invent a credential, or add a photo.
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** shilajit + caffeine checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
 - [DONE 2026-10-23 https://wellnessnest.co/blogs/news/how-to-take-turkesterone-in-the-us-2026] **#CA1017-16 — how to take turkesterone** — `How to Take Turkesterone Capsules (US 2026)`
@@ -1278,7 +1298,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Fan-out answers to cover:** do you swallow the capsules; do you take them with water; what if you miss one; where is the clock-time page
   - **Evidence to fetch & confirm (claims log):** Live PDP directions and product_refs/turkesterone-advanced-formula.label.json. No milligram and no extra capsule count beyond the split badge the ticket line prints.
   - **Link, don't restate:** `/blogs/news/turkesterone-timing-food-protein-or-fasted-us-2026`, `/blogs/news/turkesterone-benefits-dosing-whats-real-us-2026`, `/blogs/news/turkesterone-side-effects-4-ingredients-to-check-us-2026`
-  - **Author:** Mike Moretti (/pages/mike-moretti) — Co-founder, Wellness Nest. Copy the roster.json bio verbatim after the link. The role line alone does not pass the gate. TODO: no approved headshot and /pages/mike-moretti is not confirmed live — do not extend the bio, invent a credential, or add a photo.
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** turkesterone + how-to-take checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
 - [DONE 2026-10-24 https://wellnessnest.co/blogs/news/is-nmn-worth-it-with-food-us-check] **#CA1017-17 — is nmn worth it with food** — `Is NMN Worth It, With Food? (US 2026)`
@@ -1291,7 +1311,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Fan-out answers to cover:** what can you verify on the bottle; what trials have not shown; is a meal part of the decision; where is the regulatory story
   - **Evidence to fetch & confirm (claims log):** Live PDP for AgeAura Pure NMN + TMG NAD+ Complex only. Human trials only from papers you fetch. No invented review.
   - **Link, don't restate:** `/blogs/news/where-to-buy-nmn-in-the-us-fda-status-explained-2026`, `/blogs/news/ageaura-nmn-tmg-ingredients-what-each-one-does-us`, `/blogs/news/nmn-side-effects-6-checks-before-you-start-us-2026`
-  - **Author:** Mike Moretti (/pages/mike-moretti) — Co-founder, Wellness Nest. Copy the roster.json bio verbatim after the link. The role line alone does not pass the gate. TODO: no approved headshot and /pages/mike-moretti is not confirmed live — do not extend the bio, invent a credential, or add a photo.
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** nmn + reviews checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
 - [DONE 2026-10-24 https://wellnessnest.co/blogs/news/creatine-gummies-ingredients-us-label-guide] **#CA1017-18 — creatine gummies ingredients how much** — `Creatine Gummies Ingredients: How Much Is Named (2026)`
@@ -1304,7 +1324,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Fan-out answers to cover:** is the creatine monohydrate; what else is on the panel; what if the front and the panel disagree; where is the daily amount explained
   - **Evidence to fetch & confirm (claims log):** FusiForce ingredient list from the live PDP only. No invented gram, count, or sweetener the page does not print.
   - **Link, don't restate:** `/blogs/news/creatine-gummies-dosage-how-many-a-day-us-2026`, `/blogs/news/where-to-buy-creatine-gummies-5-label-checks-us-2026`, `/blogs/news/creatine-gummies-side-effects-4-real-3-myths-us-2026`
-  - **Author:** Mike Moretti (/pages/mike-moretti) — Co-founder, Wellness Nest. Copy the roster.json bio verbatim after the link. The role line alone does not pass the gate. TODO: no approved headshot and /pages/mike-moretti is not confirmed live — do not extend the bio, invent a credential, or add a photo.
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** creatine + ingredients checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
 - [DONE 2026-10-24 https://wellnessnest.co/blogs/news/nmn-loading-phase-is-it-needed-in-the-us] **#CA1017-19 — nmn loading with food** — `NMN Loading Phase, With Food or Not? (2026)`
@@ -1317,7 +1337,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Fan-out answers to cover:** did human trials use a bigger start; is a loading week required; where is the steady amount; does a meal change the start
   - **Evidence to fetch & confirm (claims log):** Human NMN trials you fetch — describe the schedule. If none used a load, say so. No invented milligram. AgeAura Pure NMN + TMG NAD+ Complex only.
   - **Link, don't restate:** `/blogs/news/how-much-nmn-per-day-what-trials-used-us-2026`, `/blogs/news/how-long-does-nmn-take-to-work-week-1-to-12-us-2026`, `/blogs/news/nmn-side-effects-6-checks-before-you-start-us-2026`
-  - **Author:** Mike Moretti (/pages/mike-moretti) — Co-founder, Wellness Nest. Copy the roster.json bio verbatim after the link. The role line alone does not pass the gate. TODO: no approved headshot and /pages/mike-moretti is not confirmed live — do not extend the bio, invent a credential, or add a photo.
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** nmn + loading checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
 - [DONE 2026-10-24 https://wellnessnest.co/blogs/news/shilajit-cycling-with-food-us-rules] **#CA1017-20 — shilajit cycling with food** — `Do You Cycle Shilajit? With Food Rules (2026)`
@@ -1331,7 +1351,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Fan-out answers to cover:** do you need weeks off; is a pause different from stopping; what did trials actually do; does a meal change a pause
   - **Evidence to fetch & confirm (claims log):** Any human shilajit trial schedule you fetch. If none used a planned pause, say so. Pack-label line only for the resin.
   - **Link, don't restate:** `/blogs/news/for-how-long-can-we-take-shilajit`, `/blogs/news/how-much-shilajit-per-day-dosage-by-form-us-2026`, `/blogs/news/shilajit-side-effects-7-signs-to-watch-for-us-2026`
-  - **Author:** Mike Moretti (/pages/mike-moretti) — Co-founder, Wellness Nest. Copy the roster.json bio verbatim after the link. The role line alone does not pass the gate. TODO: no approved headshot and /pages/mike-moretti is not confirmed live — do not extend the bio, invent a credential, or add a photo.
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** shilajit + cycle checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
 - [DONE 2026-10-24 https://wellnessnest.co/blogs/news/vaginal-probiotics-and-alcohol-in-the-us-2026] **#CA1017-21 — how much vaginal probiotics and alcohol** — `Vaginal Probiotics and Alcohol: How Much Matters? (2026)`
@@ -1339,13 +1359,13 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Search intent:** woman who drinks and wants the limit of any probiotic claim around alcohol
   - **Template:** STORY · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
   - **Hero product:** `/products/florafresh-vaginal-probiotics-gummies` (FloraFresh Vaginal Probiotics Gummies, $40.99, in stock 2026-10-17)
-  - **FloraFresh formula (Supplement Facts label, the source of truth):** per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 15B CFU, Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain); sweetened with maltitol and isomalt, so not sugar-free; label badges Allergen Free, Vegan, Halal, Gluten Free. Cite the Supplement Facts label, never the live PDP description or an older FloraFresh article. Kevin 2026-10-21: the label count is 15B CFU of Bacillus coagulans SNZ-1969. A 1-billion figure is retired. The PDP story is still wrong: not four Lactobacillus strains, not XOS, not D-mannose, and not sugar-free. A PDP/label mismatch is a gate failure.
+  - **FloraFresh formula (Supplement Facts label, the source of truth):** per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 1 billion CFU, Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain); sweetened with maltitol and isomalt, so not sugar-free; label badges Allergen Free, Vegan, Halal, Gluten Free. Cite the Supplement Facts label, never the live PDP description or an older FloraFresh article (both repeat a wrong formula); a PDP/label mismatch is a gate failure.
   - **Collection links (≥2, verify live):** `/collections/womens-essentials-collection` (contains it), `/collections/best-seller` (contains it)
-  - **Angle:** Not a treatment for anything alcohol does. Fetch papers on alcohol and the vaginal microbiome before citing a number. The gummy organism may not be the one those papers used; say so if it is not. Link the side-effects page. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.
+  - **Angle:** Not a treatment for anything alcohol does. Fetch papers on alcohol and the vaginal microbiome before citing a number. The gummy organism may not be the one those papers used; say so if it is not. Link the side-effects page. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.
   - **Fan-out answers to cover:** is there a human study; does the gummy match the papers; is it a next-morning fix; when should you see a clinician
   - **Evidence to fetch & confirm (claims log):** Fetched papers on alcohol and the vaginal microbiome only. No treatment claim.
   - **Link, don't restate:** `/blogs/news/vaginal-probiotics-side-effects-normal-vs-stop-us-2026`, `/blogs/news/vaginal-probiotics-which-strains-actually-work-us-2026`, `/blogs/news/probiotics-for-bv-do-they-actually-work-us-2026`
-  - **Author:** Mike Moretti (/pages/mike-moretti) — Co-founder, Wellness Nest. Copy the roster.json bio verbatim after the link. The role line alone does not pass the gate. TODO: no approved headshot and /pages/mike-moretti is not confirmed live — do not extend the bio, invent a credential, or add a photo.
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** probiotic + alcohol checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
 - [DONE 2026-10-25 https://wellnessnest.co/blogs/news/turkesterone-storage-heat-rules-for-the-us] **#CA1017-22 — how much heat turkesterone storage** — `Turkesterone Storage: How Much Heat Matters? (2026)`
@@ -1359,7 +1379,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Fan-out answers to cover:** does the jar need a fridge; what does a hot car change; what does the label say about storage; what if the capsules soften
   - **Evidence to fetch & confirm (claims log):** Live PDP and product_refs/turkesterone-advanced-formula.label.json. No invented temperature.
   - **Link, don't restate:** `/blogs/news/turkesterone-side-effects-4-ingredients-to-check-us-2026`, `/blogs/news/where-to-buy-turkesterone-in-the-us-what-to-check-2026`, `/blogs/news/turkesterone-benefits-dosing-whats-real-us-2026`
-  - **Author:** Mike Moretti (/pages/mike-moretti) — Co-founder, Wellness Nest. Copy the roster.json bio verbatim after the link. The role line alone does not pass the gate. TODO: no approved headshot and /pages/mike-moretti is not confirmed live — do not extend the bio, invent a credential, or add a photo.
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** turkesterone + storage checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
 - [DONE 2026-10-25 https://wellnessnest.co/blogs/news/nmn-for-hair-with-food-us-evidence] **#CA1017-23 — nmn for hair with food** — `NMN and Hair Claims, Taken With Food (US 2026)`
@@ -1372,7 +1392,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Fan-out answers to cover:** is there a human hair trial; what did animal papers measure; does a meal change the claim; when should you ignore the ad
   - **Evidence to fetch & confirm (claims log):** PubMed or DOI papers on NMN and hair — fetch each one and label human or animal. No borrowed result. AgeAura Pure NMN + TMG NAD+ Complex only.
   - **Link, don't restate:** `/blogs/news/nmn-side-effects-6-checks-before-you-start-us-2026`, `/blogs/news/nmn-for-women-what-the-all-female-trial-missed-us-2026`, `/blogs/news/how-much-nmn-per-day-what-trials-used-us-2026`
-  - **Author:** Mike Moretti (/pages/mike-moretti) — Co-founder, Wellness Nest. Copy the roster.json bio verbatim after the link. The role line alone does not pass the gate. TODO: no approved headshot and /pages/mike-moretti is not confirmed live — do not extend the bio, invent a credential, or add a photo.
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** nmn + hair checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
 - [DONE 2026-10-25 https://wellnessnest.co/blogs/news/shilajit-and-alcohol-with-food-us-guide] **#CA1017-24 — shilajit and alcohol with food** — `Shilajit and Alcohol, With Food (US 2026)`
@@ -1386,7 +1406,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Fan-out answers to cover:** is there a human study; does a meal change anything; is it a hangover aid; when should you skip it
   - **Evidence to fetch & confirm (claims log):** PubMed or DOI search on shilajit and alcohol — fetch a paper or state that you found none. No treatment claim.
   - **Link, don't restate:** `/blogs/news/shilajit-side-effects-7-signs-to-watch-for-us-2026`, `/blogs/news/how-to-take-shilajit-resin-dissolve-it-right-us-2026`, `/blogs/news/when-to-take-shilajit-morning-or-night-us-2026`
-  - **Author:** Mike Moretti (/pages/mike-moretti) — Co-founder, Wellness Nest. Copy the roster.json bio verbatim after the link. The role line alone does not pass the gate. TODO: no approved headshot and /pages/mike-moretti is not confirmed live — do not extend the bio, invent a credential, or add a photo.
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** shilajit + alcohol checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
 - [DONE 2026-10-25 https://wellnessnest.co/blogs/news/vaginal-probiotic-storage-7-heat-checks-us] **#CA1017-25 — how much vaginal probiotic storage** — `Vaginal Probiotic Gummies at Home: How Much Heat? (2026)`
@@ -1394,13 +1414,13 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Search intent:** pouch owner deciding between a cupboard and a fridge at home
   - **Template:** LISTICLE · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
   - **Hero product:** `/products/florafresh-vaginal-probiotics-gummies` (FloraFresh Vaginal Probiotics Gummies, $40.99, in stock 2026-10-17)
-  - **FloraFresh formula (Supplement Facts label, the source of truth):** per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 15B CFU, Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain); sweetened with maltitol and isomalt, so not sugar-free; label badges Allergen Free, Vegan, Halal, Gluten Free. Cite the Supplement Facts label, never the live PDP description or an older FloraFresh article. Kevin 2026-10-21: the label count is 15B CFU of Bacillus coagulans SNZ-1969. A 1-billion figure is retired. The PDP story is still wrong: not four Lactobacillus strains, not XOS, not D-mannose, and not sugar-free. A PDP/label mismatch is a gate failure.
+  - **FloraFresh formula (Supplement Facts label, the source of truth):** per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 1 billion CFU, Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain); sweetened with maltitol and isomalt, so not sugar-free; label badges Allergen Free, Vegan, Halal, Gluten Free. Cite the Supplement Facts label, never the live PDP description or an older FloraFresh article (both repeat a wrong formula); a PDP/label mismatch is a gate failure.
   - **Collection links (≥2, verify live):** `/collections/womens-essentials-collection` (contains it), `/collections/best-seller` (contains it)
-  - **Angle:** Home shelf, not the suitcase. The travel page owns planes and hotels; link it. Do not invent a fridge rule the PDP does not print. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.
+  - **Angle:** Home shelf, not the suitcase. The travel page owns planes and hotels; link it. Do not invent a fridge rule the PDP does not print. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.
   - **Fan-out answers to cover:** does the pouch need a fridge; what does heat do at home; how is that different from a trip; what if the gummies soften
   - **Evidence to fetch & confirm (claims log):** Live PDP storage line, if it prints one. If it does not, say so. No invented temperature.
   - **Link, don't restate:** `/blogs/news/vaginal-probiotics-while-traveling-7-us-rules`, `/blogs/news/florafresh-gummies-vs-capsules-5-format-facts-us-2026`, `/blogs/news/vaginal-probiotics-side-effects-normal-vs-stop-us-2026`
-  - **Author:** Mike Moretti (/pages/mike-moretti) — Co-founder, Wellness Nest. Copy the roster.json bio verbatim after the link. The role line alone does not pass the gate. TODO: no approved headshot and /pages/mike-moretti is not confirmed live — do not extend the bio, invent a credential, or add a photo.
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** probiotic + storage checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
 - [DONE 2026-10-26 https://wellnessnest.co/blogs/news/turkesterone-loading-is-it-needed-in-the-us-1] **#CA1017-26 — how much turkesterone loading** — `Turkesterone Loading: How Much the Start Changes? (2026)`
@@ -1414,7 +1434,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Fan-out answers to cover:** did any trial use a bigger start; is a loading week required; how is that different from a pause; what should you not invent
   - **Evidence to fetch & confirm (claims log):** Human turkesterone trials you fetch — describe the schedule or say you found no loading protocol. No milligram.
   - **Link, don't restate:** `/blogs/news/turkesterone-cycle-do-you-need-breaks-us-2026`, `/blogs/news/how-long-does-turkesterone-take-to-work-us-2026`, `/blogs/news/turkesterone-benefits-dosing-whats-real-us-2026`
-  - **Author:** Mike Moretti (/pages/mike-moretti) — Co-founder, Wellness Nest. Copy the roster.json bio verbatim after the link. The role line alone does not pass the gate. TODO: no approved headshot and /pages/mike-moretti is not confirmed live — do not extend the bio, invent a credential, or add a photo.
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** turkesterone + loading checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
 - [DONE 2026-10-26 https://wellnessnest.co/blogs/news/vaginal-probiotics-together-what-else-in-the-us] **#CA1017-27 — how much else with vaginal probiotics together** — `Vaginal Probiotics Together: How Much Else? (2026)`
@@ -1422,13 +1442,13 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Search intent:** woman who already takes other supplements and wants the same-day limit
   - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
   - **Hero product:** `/products/florafresh-vaginal-probiotics-gummies` (FloraFresh Vaginal Probiotics Gummies, $40.99, in stock 2026-10-17)
-  - **FloraFresh formula (Supplement Facts label, the source of truth):** per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 15B CFU, Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain); sweetened with maltitol and isomalt, so not sugar-free; label badges Allergen Free, Vegan, Halal, Gluten Free. Cite the Supplement Facts label, never the live PDP description or an older FloraFresh article. Kevin 2026-10-21: the label count is 15B CFU of Bacillus coagulans SNZ-1969. A 1-billion figure is retired. The PDP story is still wrong: not four Lactobacillus strains, not XOS, not D-mannose, and not sugar-free. A PDP/label mismatch is a gate failure.
+  - **FloraFresh formula (Supplement Facts label, the source of truth):** per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 1 billion CFU, Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain); sweetened with maltitol and isomalt, so not sugar-free; label badges Allergen Free, Vegan, Halal, Gluten Free. Cite the Supplement Facts label, never the live PDP description or an older FloraFresh article (both repeat a wrong formula); a PDP/label mismatch is a gate failure.
   - **Collection links (≥2, verify live):** `/collections/womens-essentials-collection` (contains it), `/collections/best-seller` (contains it)
-  - **Angle:** Other supplements the same day: what to ask a clinician about, and what was not studied as a combination. Link the antibiotics page for that case. Do not name an amount for a product this ticket does not sell. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.
+  - **Angle:** Other supplements the same day: what to ask a clinician about, and what was not studied as a combination. Link the antibiotics page for that case. Do not name an amount for a product this ticket does not sell. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.
   - **Fan-out answers to cover:** can you take them with a multivitamin; what was not studied together; where is the antibiotics page; when should you ask a clinician
   - **Evidence to fetch & confirm (claims log):** Fetched papers on combining oral probiotics with other supplements, or say you found none. No invented combination result.
   - **Link, don't restate:** `/blogs/news/probiotics-after-antibiotics-for-women-when-to-start-us`, `/blogs/news/vaginal-probiotics-side-effects-normal-vs-stop-us-2026`, `/blogs/news/best-time-to-take-vaginal-probiotics-6-rules-us-2026`
-  - **Author:** Mike Moretti (/pages/mike-moretti) — Co-founder, Wellness Nest. Copy the roster.json bio verbatim after the link. The role line alone does not pass the gate. TODO: no approved headshot and /pages/mike-moretti is not confirmed live — do not extend the bio, invent a credential, or add a photo.
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** probiotic + stack checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
 - [DONE 2026-10-26 https://wellnessnest.co/blogs/news/fake-creatine-gummies-how-much-in-the-us] **#CA1017-28 — fake creatine gummies how much** — `Fake Creatine Gummies: How Much Is Missing? (2026)`
@@ -1441,7 +1461,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Fan-out answers to cover:** how can a gummy be under-filled; what does the panel have to name; was FusiForce in any public test; what should you do if the label is vague
   - **Evidence to fetch & confirm (claims log):** A fetched primary report of creatine gummy content, only if you can open it. Live FusiForce PDP for what this product prints. No invented test result.
   - **Link, don't restate:** `/blogs/news/where-to-buy-creatine-gummies-5-label-checks-us-2026`, `/blogs/news/creatine-gummies-vs-powder-which-should-you-actually-take`, `/blogs/news/creatine-gummies-dosage-how-many-a-day-us-2026`
-  - **Author:** Mike Moretti (/pages/mike-moretti) — Co-founder, Wellness Nest. Copy the roster.json bio verbatim after the link. The role line alone does not pass the gate. TODO: no approved headshot and /pages/mike-moretti is not confirmed live — do not extend the bio, invent a credential, or add a photo.
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** creatine + authenticity checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
 - [DONE 2026-10-26 https://wellnessnest.co/blogs/news/vaginal-probiotic-ingredients-what-to-read-us] **#CA1017-29 — vaginal probiotic ingredients how much** — `Vaginal Probiotic Ingredients: How Much to Read (2026)`
@@ -1449,13 +1469,13 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Search intent:** label reader who wants the rest of the panel, not another organism roundup
   - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
   - **Hero product:** `/products/florafresh-vaginal-probiotics-gummies` (FloraFresh Vaginal Probiotics Gummies, $40.99, in stock 2026-10-17)
-  - **FloraFresh formula (Supplement Facts label, the source of truth):** per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 15B CFU, Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain); sweetened with maltitol and isomalt, so not sugar-free; label badges Allergen Free, Vegan, Halal, Gluten Free. Cite the Supplement Facts label, never the live PDP description or an older FloraFresh article. Kevin 2026-10-21: the label count is 15B CFU of Bacillus coagulans SNZ-1969. A 1-billion figure is retired. The PDP story is still wrong: not four Lactobacillus strains, not XOS, not D-mannose, and not sugar-free. A PDP/label mismatch is a gate failure.
+  - **FloraFresh formula (Supplement Facts label, the source of truth):** per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 1 billion CFU, Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain); sweetened with maltitol and isomalt, so not sugar-free; label badges Allergen Free, Vegan, Halal, Gluten Free. Cite the Supplement Facts label, never the live PDP description or an older FloraFresh article (both repeat a wrong formula); a PDP/label mismatch is a gate failure.
   - **Collection links (≥2, verify live):** `/collections/womens-essentials-collection` (contains it), `/collections/best-seller` (contains it)
-  - **Angle:** The organism page owns which organisms were studied. Link it. This page is the rest of the Supplement Facts label: the named organism, the CFU line, vitamin C, pineapple fruit powder, and the sweeteners. Never the PDP description. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.
+  - **Angle:** The organism page owns which organisms were studied. Link it. This page is the rest of the Supplement Facts label: the named organism, the CFU line, vitamin C, pineapple fruit powder, and the sweeteners. Never the PDP description. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.
   - **Fan-out answers to cover:** what else is on the panel; where is the organism page; what sweetener is named; what should you not copy from the product description
   - **Evidence to fetch & confirm (claims log):** Supplement Facts label only for formula facts. Live PDP for the offer, not the formula.
   - **Link, don't restate:** `/blogs/news/vaginal-probiotics-which-strains-actually-work-us-2026`, `/blogs/news/florafresh-gummies-vs-capsules-5-format-facts-us-2026`, `/blogs/news/vaginal-probiotic-dosage-how-many-cfu-a-day-us-2026`
-  - **Author:** Mike Moretti (/pages/mike-moretti) — Co-founder, Wellness Nest. Copy the roster.json bio verbatim after the link. The role line alone does not pass the gate. TODO: no approved headshot and /pages/mike-moretti is not confirmed live — do not extend the bio, invent a credential, or add a photo.
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** probiotic + ingredients checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
 - [DONE 2026-10-26 https://wellnessnest.co/blogs/news/shilajit-storage-6-home-rules-for-the-us] **#CA1017-30 — shilajit storage with food** — `Shilajit Storage at Home, With Food Nearby (2026)`
@@ -1469,7 +1489,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Fan-out answers to cover:** does the jar need a fridge; what does heat do to resin; can it sit near food; what does the label actually say about servings
   - **Evidence to fetch & confirm (claims log):** Live gold-resin PDP and product_refs/pure-shilajit-gold-resin.label.json only. No invented temperature or shelf-life.
   - **Link, don't restate:** `/blogs/news/how-to-take-shilajit-resin-dissolve-it-right-us-2026`, `/blogs/news/shilajit-gold-resin-review-is-75-worth-it-us-2026`, `/blogs/news/how-much-shilajit-per-day-dosage-by-form-us-2026`
-  - **Author:** Mike Moretti (/pages/mike-moretti) — Co-founder, Wellness Nest. Copy the roster.json bio verbatim after the link. The role line alone does not pass the gate. TODO: no approved headshot and /pages/mike-moretti is not confirmed live — do not extend the bio, invent a credential, or add a photo.
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** shilajit + storage checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
 - [DONE 2026-10-27 https://wellnessnest.co/blogs/news/vaginal-probiotics-for-athletes-us-routine] **#CA1017-31 — vaginal probiotics for athletes** — `Vaginal Probiotics for Athletes (US 2026)`
@@ -1477,13 +1497,13 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Search intent:** woman who trains and wants to know whether the gummy routine changes
   - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-10-17 14:56 ICT)
   - **Hero product:** `/products/florafresh-vaginal-probiotics-gummies` (FloraFresh Vaginal Probiotics Gummies, $40.99, in stock 2026-10-17)
-  - **FloraFresh formula (Supplement Facts label, the source of truth):** per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 15B CFU, Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain); sweetened with maltitol and isomalt, so not sugar-free; label badges Allergen Free, Vegan, Halal, Gluten Free. Cite the Supplement Facts label, never the live PDP description or an older FloraFresh article. Kevin 2026-10-21: the label count is 15B CFU of Bacillus coagulans SNZ-1969. A 1-billion figure is retired. The PDP story is still wrong: not four Lactobacillus strains, not XOS, not D-mannose, and not sugar-free. A PDP/label mismatch is a gate failure.
+  - **FloraFresh formula (Supplement Facts label, the source of truth):** per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 1 billion CFU, Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain); sweetened with maltitol and isomalt, so not sugar-free; label badges Allergen Free, Vegan, Halal, Gluten Free. Cite the Supplement Facts label, never the live PDP description or an older FloraFresh article (both repeat a wrong formula); a PDP/label mismatch is a gate failure.
   - **Collection links (≥2, verify live):** `/collections/womens-essentials-collection` (contains it), `/collections/best-seller` (contains it)
-  - **Angle:** A gym habit does not change the gummy routine. Say what research did not test in athletes. No performance claim and no cure claim. Link the beginners page and the side-effects page. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 15B CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.
+  - **Angle:** A gym habit does not change the gummy routine. Say what research did not test in athletes. No performance claim and no cure claim. Link the beginners page and the side-effects page. FloraFresh formula, if you name it, comes from the Supplement Facts label only: Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, sweetened with maltitol and isomalt. Never the PDP description. No cure or treatment claims.
   - **Fan-out answers to cover:** does a gym habit change the routine; were athletes in the trials; is there a performance claim; where is the beginners page
   - **Evidence to fetch & confirm (claims log):** Any oral-probiotic trial that enrolled women athletes — fetch it or say you found none. No performance claim.
   - **Link, don't restate:** `/blogs/news/vaginal-probiotics-for-beginners-what-to-expect-in-the-us`, `/blogs/news/vaginal-probiotics-side-effects-normal-vs-stop-us-2026`, `/blogs/news/vaginal-probiotics-which-strains-actually-work-us-2026`
-  - **Author:** Mike Moretti (/pages/mike-moretti) — Co-founder, Wellness Nest. Copy the roster.json bio verbatim after the link. The role line alone does not pass the gate. TODO: no approved headshot and /pages/mike-moretti is not confirmed live — do not extend the bio, invent a credential, or add a photo.
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** probiotic + athletes checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
 - [DONE 2026-10-27 https://wellnessnest.co/blogs/news/real-or-fake-nmn-6-label-checks-for-us-buyers] **#CA1017-32 — real or fake nmn with food** — `Real or Fake NMN, With Food Checks (US 2026)`
@@ -1496,7 +1516,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Fan-out answers to cover:** what should the panel name; how do listings go wrong; what is the regulatory page for; what can you check without a lab
   - **Evidence to fetch & confirm (claims log):** Live PDP for AgeAura Pure NMN + TMG NAD+ Complex only. No invented test. The where-to-buy article holds the regulatory dates.
   - **Link, don't restate:** `/blogs/news/where-to-buy-nmn-in-the-us-fda-status-explained-2026`, `/blogs/news/ageaura-nmn-tmg-ingredients-what-each-one-does-us`, `/blogs/news/nmn-capsules-vs-powder-vs-sublingual-best-form-us-2026`
-  - **Author:** Mike Moretti (/pages/mike-moretti) — Co-founder, Wellness Nest. Copy the roster.json bio verbatim after the link. The role line alone does not pass the gate. TODO: no approved headshot and /pages/mike-moretti is not confirmed live — do not extend the bio, invent a credential, or add a photo.
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** nmn + authenticity checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
 - [DONE 2026-10-27 https://wellnessnest.co/blogs/news/shilajit-gummies-ingredients-6-label-checks-in-the-us] **#CA1017-33 — shilajit gummies ingredients with food** — `Shilajit Gummy Ingredients, Taken With Food (2026)`
@@ -1509,7 +1529,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Fan-out answers to cover:** what does the gummy label name; how is that different from resin; what if a word is missing; do you take them with a meal
   - **Evidence to fetch & confirm (claims log):** Live gummy PDP ingredient list, fetched at write time. No borrowed resin percentage.
   - **Link, don't restate:** `/blogs/news/shilajit-resin-vs-gummies-which-works-better-us-2026`, `/blogs/news/how-to-choose-shilajit-gummies-7-checks-us-2026`, `/blogs/news/best-shilajit-gummies-6-us-labels-compared-2026`
-  - **Author:** Mike Moretti (/pages/mike-moretti) — Co-founder, Wellness Nest. Copy the roster.json bio verbatim after the link. The role line alone does not pass the gate. TODO: no approved headshot and /pages/mike-moretti is not confirmed live — do not extend the bio, invent a credential, or add a photo.
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** shilajit + ingredients checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
 - [DONE 2026-10-27 https://wellnessnest.co/blogs/news/shilajit-for-hair-with-food-us-evidence] **#CA1017-34 — shilajit for hair with food** — `Shilajit for Hair, Taken With Food (US 2026)`
@@ -1523,7 +1543,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Fan-out answers to cover:** is there a human hair trial; what did the studies actually measure; does a meal change anything; when should you skip the claim
   - **Evidence to fetch & confirm (claims log):** PubMed or DOI search for shilajit and hair — fetch each paper and label it human or not. No unfetched result.
   - **Link, don't restate:** `/blogs/news/shilajit-side-effects-7-signs-to-watch-for-us-2026`, `/blogs/news/shilajit-benefits-for-men-4-claims-ranked-us-2026`, `/blogs/news/how-much-shilajit-per-day-dosage-by-form-us-2026`
-  - **Author:** Mike Moretti (/pages/mike-moretti) — Co-founder, Wellness Nest. Copy the roster.json bio verbatim after the link. The role line alone does not pass the gate. TODO: no approved headshot and /pages/mike-moretti is not confirmed live — do not extend the bio, invent a credential, or add a photo.
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** shilajit + hair checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
 
 - [DONE 2026-10-27 https://wellnessnest.co/blogs/news/shilajit-loading-with-food-us-trial-evidence] **#CA1017-35 — shilajit loading with food** — `Shilajit Loading, With Food or Not? (2026)`
@@ -1537,5 +1557,240 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Fan-out answers to cover:** did any trial use a bigger start; is a loading week required; what does the steady page cover; does a meal change the start
   - **Evidence to fetch & confirm (claims log):** Human shilajit trials you fetch — describe the schedule they used. If none loaded, say so.
   - **Link, don't restate:** `/blogs/news/how-much-shilajit-per-day-dosage-by-form-us-2026`, `/blogs/news/how-to-take-shilajit-resin-dissolve-it-right-us-2026`, `/blogs/news/shilajit-for-beginners-5-checks-before-your-first-pouch`
-  - **Author:** Mike Moretti (/pages/mike-moretti) — Co-founder, Wellness Nest. Copy the roster.json bio verbatim after the link. The role line alone does not pass the gate. TODO: no approved headshot and /pages/mike-moretti is not confirmed live — do not extend the bio, invent a credential, or add a photo.
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** shilajit + loading checked 2026-10-17 against 128 live articles (blog listing + sitemap + Atom + local caches) and all 76 tickets in this file; STEP 0 re-checks at write time
+
+# BATCH 2026-11-04 (refill_tickets.py — ids #MB1104-1…#MB1104-7)
+
+Built by `scripts/refill_tickets.py` at 2026-11-04 09:21 ICT from `templates/article-topic-bank.json` + `board/ideas.csv`
+(search volume: No data — GSC/Ads not used). Every ticket passed, against the live store at build time:
+brand_rules + `lint_tickets.py` · hero product live and in stock · not a covered topic (header rule 6) ·
+not already queued · not live (158 published articles: blog listing + sitemap + Atom + local caches; one article per brand + segment) ·
+`topic_fitness.py` strict on primary and title · STEP 0 suggest.json.
+A `topic_fitness` REVIEW [covered-segment] verdict is allowed under Kevin's standing greenlight for mined queues (2026-08-13).
+A topic is a brief, not copy: source every claim or cut it.
+
+**Rules for this batch:** from the 2026-10-08 batch rules — fan-out answers, a "Where to buy <product> in the US"
+section (live price, the ticket's product link only), roster.json byline only (never an invented person or
+credential), the logged fact-check pass (`logs/claims/<slug>.md`; delete unconfirmed claims), the brand gate.
+Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py once. The hero is the picked face plus the real pack unless pick prints NO-FACE. One inline image uses that face. The other inline images have no recognizable face but still show a hand, forearm, or body cropped below the eyes. A no-face image is the fallback for one frame after a face refusal or two QC misses, not a batch-wide ban. The MacBook article plist sets `GENSEO_NO_FACE=0`, and that value does not switch the lane. Prices were read live at build time; re-check the PDP while writing.
+
+- [ ] **#MB1104-1 — vaginal probiotics for odor** — `Vaginal Probiotics for Odor: What They Can Do (US 2026)`
+  - **Primary keyword:** `vaginal probiotics for odor` · **Secondary:** probiotics for vaginal odor, feminine odor probiotic, fishy odor probiotics, ph balance probiotic gummies
+  - **Search intent:** woman with odor who wants to know whether a probiotic gummy helps or whether it needs a doctor
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-04 09:21 ICT)
+  - **Hero product:** `/products/florafresh-vaginal-probiotics-gummies` (FloraFresh Vaginal Probiotics Gummies, $40.99, in stock 2026-11-04)
+  - **FloraFresh formula (Supplement Facts label, the source of truth):** per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 1 billion CFU, Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain); sweetened with maltitol and isomalt, so not sugar-free; label badges Allergen Free, Vegan, Halal, Gluten Free. Cite the Supplement Facts label, never the live PDP description or an older FloraFresh article (both repeat a wrong formula); a PDP/label mismatch is a gate failure.
+  - **Collection links (≥2, verify live):** `/collections/womens-essentials-collection` (contains it), `/collections/best-seller` (contains it)
+  - **Angle:** Odor is a symptom with several causes. Say which one needs a test (BV, trichomoniasis), what the label strain (Bacillus coagulans SNZ-1969) was studied for, and what a gummy cannot replace. No cure claim.
+  - **Fan-out answers to cover:** what causes vaginal odor; when is odor BV; can a probiotic change odor; when to see a doctor
+  - **Evidence to fetch & confirm (claims log):** Bacillus coagulans and oral probiotic trials that report odor or Amsel criteria outcomes, plus CDC BV guidance.
+  - **Link, don't restate:** `/blogs/news/yeast-infection-vs-bv-how-to-tell-them-apart-us-2026`, `/blogs/news/probiotics-for-bv-do-they-actually-work-us-2026`, `/blogs/news/vaginal-probiotics-how-long-until-they-work-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** probiotic + odor checked 2026-11-04 against 158 live articles (blog listing + sitemap + Atom + local caches) and all 111 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1104-2 — fake turkesterone** — `Fake Turkesterone: 5 Signs of an Underdosed Label (US 2026)`
+  - **Primary keyword:** `fake turkesterone` · **Secondary:** is turkesterone real, underdosed turkesterone, turkesterone scam, how to spot fake turkesterone
+  - **Search intent:** buyer who read that some turkesterone products contained almost none and wants to check a label before buying
+  - **Template:** LISTICLE · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-04 09:21 ICT)
+  - **Hero product:** `/products/turkesterone-advanced-formula` (Turkesterone Advanced Formula, $75, in stock 2026-11-04)
+  - **Turkesterone Advanced Formula pack label (source of truth):** wellness, nest, PREMIUM, TURKESTERONE, ADVANCED, FORMULA, AMPLIFY, MUSCLE, ENDURANCE, 60, Dietary Supplement, Capsules. No milligram amount and no Supplement Facts panel were read. Do not add one. The capsule badge is the separate lines in product_refs/turkesterone-advanced-formula.label.json. Do not state a milligram amount, a serving count, a different capsule count, or a day-supply.
+  - **Collection links (≥2, verify live):** `/collections/mens-essential-collection` (contains it), `/collections/shilajit-wellness-stack` (contains it)
+  - **Angle:** Independent assays and a 2025 trial found some products held under 1% of the claimed turkesterone. Give the label checks a buyer can do: extract standard named, ecdysteroid vs turkesterone mg, certificate from an ISO 17025 lab, price per real mg. No muscle-gain claim.
+  - **Fan-out answers to cover:** how much turkesterone did tested products contain; what does a standardized extract mean; what is the difference between ecdysteroids and turkesterone; what should a test certificate show
+  - **Evidence to fetch & confirm (claims log):** Fetch the 2025 randomized trial that assayed a commercial turkesterone product, and the published independent assay reports. Cite only what they state.
+  - **Link, don't restate:** `/blogs/news/turkesterone-vs-ecdysterone-which-is-worth-it-us-2026`, `/blogs/news/where-to-buy-turkesterone-in-the-us-what-to-check-2026`, `/blogs/news/turkesterone-side-effects-4-ingredients-to-check-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** turkesterone + authenticity checked 2026-11-04 against 158 live articles (blog listing + sitemap + Atom + local caches) and all 111 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1104-3 — creatine gummies and kidneys** — `Creatine Gummies and Kidneys: The Bloodwork (US 2026)`
+  - **Primary keyword:** `creatine gummies and kidneys` · **Secondary:** is creatine bad for your kidneys, creatine creatinine blood test, creatine gummies kidney safety, creatine kidney damage myth
+  - **Search intent:** buyer worried that creatine harms the kidneys or that a raised creatinine test means damage
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-04 09:21 ICT)
+  - **Hero product:** `/products/fusiforce-creatine-gummies` (FusiForce Creatine Gummies, $79.99, in stock 2026-11-04)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** Explain why creatinine rises on a lab test, what long-term trials in healthy adults found, and who must ask a doctor first (existing kidney disease). No cure claim.
+  - **Fan-out answers to cover:** why does creatine raise creatinine; what did long-term trials find; who should not take creatine; should I tell my doctor before a blood test
+  - **Evidence to fetch & confirm (claims log):** ISSN position stand on creatine safety and the long-term renal-function trials it cites. Fetch them.
+  - **Link, don't restate:** `/blogs/news/creatine-gummies-side-effects-4-real-3-myths-us-2026`, `/blogs/news/creatine-gummies-dosage-how-many-a-day-us-2026`, `/blogs/news/how-to-take-creatine-gummies-in-the-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** creatine + kidneys checked 2026-11-04 against 158 live articles (blog listing + sitemap + Atom + local caches) and all 111 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1104-4 — nmn and metformin** — `NMN and Metformin: What the Human Data Says (US 2026)`
+  - **Primary keyword:** `nmn and metformin` · **Secondary:** can you take nmn with metformin, nmn metformin interaction, nmn blood sugar, metformin nad
+  - **Search intent:** adult already prescribed metformin who wants to know whether NMN fits next to it
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-04 09:21 ICT)
+  - **Hero product:** `/products/ageaura-pure-nmn-tmg-nad-complex` (AgeAura Pure NMN + TMG NAD+ Complex, $79.99, in stock 2026-11-04)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` twice (browse link — AgeAura Pure NMN + TMG NAD+ Complex is not in it, never claim it is) · no other AgeAura product and no AgeAura collection link (brand_rules)
+  - **Angle:** Explain the two different mechanisms in plain words, the one human NMN insulin-sensitivity trial and its limits, and why the prescriber decides. No blood sugar treatment claim.
+  - **Fan-out answers to cover:** does metformin lower NAD; does NMN change blood sugar in humans; is there an interaction study; what should I ask my doctor
+  - **Evidence to fetch & confirm (claims log):** Yoshino 2021 Science (NMN in prediabetic women) and any published human NMN plus metformin data. Say there is no combination trial if none is found.
+  - **Link, don't restate:** `/blogs/news/nmn-side-effects-6-checks-before-you-start-us-2026`, `/blogs/news/how-much-nmn-per-day-what-trials-used-us-2026`, `/blogs/news/nmn-and-tmg-together-why-the-pairing-matters-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** nmn + medications checked 2026-11-04 against 158 live articles (blog listing + sitemap + Atom + local caches) and all 111 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1104-5 — shilajit and blood pressure** — `Shilajit and Blood Pressure: Who Checks First (US 2026)`
+  - **Primary keyword:** `shilajit and blood pressure` · **Secondary:** shilajit high blood pressure, shilajit with blood pressure medication, does shilajit lower blood pressure, shilajit hypertension
+  - **Search intent:** adult on blood pressure medication who wants to know whether shilajit is safe to add
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-04 09:21 ICT)
+  - **Hero product:** `/products/shilasource-himalayan-shilajit-resin` (ShilaSource Himalayan Shilajit Resin, $69.99, in stock 2026-11-04)
+  - **ShilaSource Himalayan Shilajit Resin pack label (source of truth):** ShilaSource, Himalayan, Shilajit, Resin, 75, Dietary Supplement, Wellness, Nest, 70% Fulvic Acid*, Lab-Tested for Purity*, 1.06oz (30g), SERVINGS, Servings. No milligram amount and no Supplement Facts panel were read into that file. Do not add one. Do not state a serving count, volume, weight, fulvic percentage, mineral count, or day-supply other than the lines in product_refs/shilasource-himalayan-shilajit-resin.label.json.
+  - **Collection links (≥2, verify live):** `/collections/shilajit-wellness-stack` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** Separate what is measured in humans from rodent data. Name the drug classes where a doctor check matters. Give the plain rule: ask the prescriber, check readings for two weeks. No treatment claim.
+  - **Fan-out answers to cover:** does shilajit raise or lower blood pressure; can I take it with ACE inhibitors or beta blockers; what did human trials measure; what readings mean stop
+  - **Evidence to fetch & confirm (claims log):** PubMed human trials of shilajit that report blood pressure (for example the 2019 and 2016 RCTs). If none report it, say so.
+  - **Link, don't restate:** `/blogs/news/shilajit-side-effects-7-signs-to-watch-for-us-2026`, `/blogs/news/how-much-shilajit-per-day-dosage-by-form-us-2026`, `/blogs/news/shilajit-for-seniors-5-safety-checks-over-60-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** shilajit + medications checked 2026-11-04 against 158 live articles (blog listing + sitemap + Atom + local caches) and all 111 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-11-05 https://wellnessnest.co/blogs/news/turkesterone-hair-loss-dht-evidence-in-the-us] **#MB1104-6 — turkesterone hair loss** — `Turkesterone and Hair Loss: The DHT Question (US 2026)`
+  - **Primary keyword:** `turkesterone hair loss` · **Secondary:** turkesterone dht, turkesterone and hair, turkesterone balding, is turkesterone hormonal
+  - **Search intent:** man worried about hair loss who wants to know whether turkesterone acts on DHT
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-04 09:21 ICT)
+  - **Hero product:** `/products/turkesterone-advanced-formula` (Turkesterone Advanced Formula, $75, in stock 2026-11-04)
+  - **Turkesterone Advanced Formula pack label (source of truth):** wellness, nest, PREMIUM, TURKESTERONE, ADVANCED, FORMULA, AMPLIFY, MUSCLE, ENDURANCE, 60, Dietary Supplement, Capsules. No milligram amount and no Supplement Facts panel were read. Do not add one. The capsule badge is the separate lines in product_refs/turkesterone-advanced-formula.label.json. Do not state a milligram amount, a serving count, a different capsule count, or a day-supply.
+  - **Collection links (≥2, verify live):** `/collections/mens-essential-collection` (contains it), `/collections/shilajit-wellness-stack` (contains it)
+  - **Angle:** Turkesterone is not shown to raise DHT or testosterone in humans; say what the few human trials measured and what they did not. Name the honest limit.
+  - **Fan-out answers to cover:** does turkesterone raise testosterone or DHT; what did human trials measure; why do forums link it to hair loss; what to do if shedding starts
+  - **Evidence to fetch & confirm (claims log):** Human turkesterone or ecdysterone trials that measured hormones (for example Isenmann 2019). Cite only measured outcomes.
+  - **Link, don't restate:** `/blogs/news/turkesterone-side-effects-4-ingredients-to-check-us-2026`, `/blogs/news/turkesterone-for-men-over-40-5-honest-checks-us-2026`, `/blogs/news/how-to-take-turkesterone-in-the-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** turkesterone + hair checked 2026-11-04 against 158 live articles (blog listing + sitemap + Atom + local caches) and all 111 tickets in this file; STEP 0 re-checks at write time
+
+- [SKIPPED-DUPLICATE 2026-11-05 https://wellnessnest.co/blogs/news/vaginal-probiotics-after-sex-3-checks-in-the-us] **#MB1104-7 — vaginal probiotics after sex** — `Vaginal Probiotics After Sex: What Changes (US 2026)`
+  - **Primary keyword:** `vaginal probiotics after sex` · **Secondary:** probiotics after intercourse, vaginal ph after sex, semen ph balance, new partner bv
+  - **Search intent:** woman who notices irritation or odor after sex and asks whether a daily probiotic changes that
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-04 09:21 ICT)
+  - **Hero product:** `/products/florafresh-vaginal-probiotics-gummies` (FloraFresh Vaginal Probiotics Gummies, $40.99, in stock 2026-11-04)
+  - **FloraFresh formula (Supplement Facts label, the source of truth):** per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 1 billion CFU, Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain); sweetened with maltitol and isomalt, so not sugar-free; label badges Allergen Free, Vegan, Halal, Gluten Free. Cite the Supplement Facts label, never the live PDP description or an older FloraFresh article (both repeat a wrong formula); a PDP/label mismatch is a gate failure.
+  - **Collection links (≥2, verify live):** `/collections/womens-essentials-collection` (contains it), `/collections/best-seller` (contains it)
+  - **Angle:** Explain why semen shifts vaginal pH for a few hours, what a daily oral probiotic can and cannot change, and the symptoms that need a test. No prevention claim.
+  - **Fan-out answers to cover:** why does pH change after sex; does a daily probiotic help; is a new partner a BV risk; when to test
+  - **Evidence to fetch & confirm (claims log):** Peer-reviewed data on post-coital vaginal pH and the CDC BV risk factors.
+  - **Link, don't restate:** `/blogs/news/vaginal-probiotics-for-beginners-what-to-expect-in-the-us`, `/blogs/news/probiotics-for-bv-do-they-actually-work-us-2026`, `/blogs/news/yeast-infection-vs-bv-how-to-tell-them-apart-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** probiotic + intimacy checked 2026-11-04 against 158 live articles (blog listing + sitemap + Atom + local caches) and all 111 tickets in this file; STEP 0 re-checks at write time
+
+# BATCH 2026-11-04 (refill_tickets.py — ids #MB1104-8…#MB1104-15)
+
+Built by `scripts/refill_tickets.py` at 2026-11-04 15:43 ICT from `templates/article-topic-bank.json` + `board/ideas.csv`
+(search volume: No data — GSC/Ads not used). Every ticket passed, against the live store at build time:
+brand_rules + `lint_tickets.py` · hero product live and in stock · not a covered topic (header rule 6) ·
+not already queued · not live (163 published articles: blog listing + sitemap + Atom + local caches; one article per brand + segment) ·
+`topic_fitness.py` strict on primary and title · STEP 0 suggest.json.
+A `topic_fitness` REVIEW [covered-segment] verdict is allowed under Kevin's standing greenlight for mined queues (2026-08-13).
+A topic is a brief, not copy: source every claim or cut it.
+
+**Rules for this batch:** from the 2026-10-08 batch rules — fan-out answers, a "Where to buy <product> in the US"
+section (live price, the ticket's product link only), roster.json byline only (never an invented person or
+credential), the logged fact-check pass (`logs/claims/<slug>.md`; delete unconfirmed claims), the brand gate.
+Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py once. The hero is the picked face plus the real pack unless pick prints NO-FACE. One inline image uses that face. The other inline images have no recognizable face but still show a hand, forearm, or body cropped below the eyes. A no-face image is the fallback for one frame after a face refusal or two QC misses, not a batch-wide ban. The MacBook article plist sets `GENSEO_NO_FACE=0`, and that value does not switch the lane. Prices were read live at build time; re-check the PDP while writing.
+
+- [DONE 2026-11-05 https://wellnessnest.co/blogs/news/fake-vaginal-probiotics-5-checks-in-the-us] **#MB1104-8 — fake vaginal probiotics** — `Fake Vaginal Probiotics: 5 Label Checks (US 2026)`
+  - **Primary keyword:** `fake vaginal probiotics` · **Secondary:** fake probiotics, probiotic label checks, best vaginal probiotic label
+  - **Search intent:** woman comparing vaginal probiotic labels who wants to spot a weak or fake product
+  - **Template:** LISTICLE · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-04 15:43 ICT)
+  - **Hero product:** `/products/florafresh-vaginal-probiotics-gummies` (FloraFresh Vaginal Probiotics Gummies, $40.99, in stock 2026-11-04)
+  - **FloraFresh formula (Supplement Facts label, the source of truth):** per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 1 billion CFU, Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain); sweetened with maltitol and isomalt, so not sugar-free; label badges Allergen Free, Vegan, Halal, Gluten Free. Cite the Supplement Facts label, never the live PDP description or an older FloraFresh article (both repeat a wrong formula); a PDP/label mismatch is a gate failure.
+  - **Collection links (≥2, verify live):** `/collections/womens-essentials-collection` (contains it), `/collections/best-seller` (contains it)
+  - **Angle:** Five label checks: named strain with ID, CFU at expiry not at manufacture, storage, third-party testing, realistic claims. Show the FloraFresh label as one example. No cure claim.
+  - **Fan-out answers to cover:** how to tell if a probiotic is real; vaginal probiotic label; cfu at expiry; probiotic strain id
+  - **Evidence to fetch & confirm (claims log):** USP/ISAPP guidance on probiotic labels; studies on label accuracy of probiotic products.
+  - **Link, don't restate:** `/blogs/news/probiotics-for-bv-do-they-actually-work-us-2026`, `/blogs/news/vaginal-probiotics-how-long-until-they-work-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** probiotic + authenticity checked 2026-11-04 against 163 live articles (blog listing + sitemap + Atom + local caches) and all 118 tickets in this file; STEP 0 re-checks at write time
+
+- [DONE 2026-11-05 https://wellnessnest.co/blogs/news/turkesterone-and-kidneys-3-checks-in-the-us] **#MB1104-9 — turkesterone and kidneys** — `Turkesterone and Kidneys: Liver and Kidney Checks (US 2026)`
+  - **Primary keyword:** `turkesterone and kidneys` · **Secondary:** turkesterone liver kidneys, turkesterone blood test, ecdysterone kidneys
+  - **Search intent:** lifter who wants to know if turkesterone stresses the kidneys or liver
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-04 15:43 ICT)
+  - **Hero product:** `/products/turkesterone-advanced-formula` (Turkesterone Advanced Formula, $75, in stock 2026-11-04)
+  - **Turkesterone Advanced Formula pack label (source of truth):** wellness, nest, PREMIUM, TURKESTERONE, ADVANCED, FORMULA, AMPLIFY, MUSCLE, ENDURANCE, 60, Dietary Supplement, Capsules. No milligram amount and no Supplement Facts panel were read. Do not add one. The capsule badge is the separate lines in product_refs/turkesterone-advanced-formula.label.json. Do not state a milligram amount, a serving count, a different capsule count, or a day-supply.
+  - **Collection links (≥2, verify live):** `/collections/mens-essential-collection` (contains it), `/collections/shilajit-wellness-stack` (contains it)
+  - **Angle:** Separate ecdysteroid data from steroid myths. Say what bloodwork a careful user checks and when to stop. No muscle-gain promise.
+  - **Fan-out answers to cover:** is turkesterone bad for kidneys; turkesterone liver; turkesterone bloodwork; turkesterone side effects kidneys
+  - **Evidence to fetch & confirm (claims log):** Ecdysterone human trials with safety labs (e.g. Isenmann 2019); reviews on ecdysteroid toxicology.
+  - **Link, don't restate:** `/blogs/news/fake-turkesterone-5-label-checks-in-the-us`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** turkesterone + kidneys checked 2026-11-04 against 163 live articles (blog listing + sitemap + Atom + local caches) and all 118 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1104-10 — creatine gummies and blood pressure** — `Creatine Gummies and Blood Pressure (US 2026)`
+  - **Primary keyword:** `creatine gummies and blood pressure` · **Secondary:** creatine hypertension, creatine blood pressure medication
+  - **Search intent:** adult with high blood pressure who wants to start creatine gummies
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-04 15:43 ICT)
+  - **Hero product:** `/products/fusiforce-creatine-gummies` (FusiForce Creatine Gummies, $79.99, in stock 2026-11-04)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** What creatine trials report on blood pressure, water weight vs BP, sugar per gummy from the live label, who asks a doctor (BP meds, kidney disease).
+  - **Fan-out answers to cover:** does creatine raise blood pressure; creatine hypertension; creatine with blood pressure medication
+  - **Evidence to fetch & confirm (claims log):** ISSN creatine position stand; RCTs reporting BP; FusiForce live label.
+  - **Link, don't restate:** `/blogs/news/creatine-gummies-and-kidneys-bloodwork-in-the-us`, `/blogs/news/creatine-gummies-ingredients-us-label-guide`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** creatine + medications checked 2026-11-04 against 163 live articles (blog listing + sitemap + Atom + local caches) and all 118 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1104-11 — nmn and kidneys** — `NMN and Kidneys: What Human Data Shows (US 2026)`
+  - **Primary keyword:** `nmn and kidneys` · **Secondary:** nmn kidney function, nmn creatinine, nad kidneys
+  - **Search intent:** adult on NMN or thinking about it who has a kidney question
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-04 15:43 ICT)
+  - **Hero product:** `/products/ageaura-pure-nmn-tmg-nad-complex` (AgeAura Pure NMN + TMG NAD+ Complex, $79.99, in stock 2026-11-04)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` twice (browse link — AgeAura Pure NMN + TMG NAD+ Complex is not in it, never claim it is) · no other AgeAura product and no AgeAura collection link (brand_rules)
+  - **Angle:** What NMN does to NAD+ in the kidney in animal vs human studies; what human trials measured (eGFR, creatinine); who should ask a doctor first. Mark animal data clearly.
+  - **Fan-out answers to cover:** is nmn safe for kidneys; nmn creatinine; nmn kidney disease; nmn tmg kidneys
+  - **Evidence to fetch & confirm (claims log):** Human NMN RCTs that report renal labs; reviews on NAD+ and kidney; label of AgeAura NMN + TMG.
+  - **Link, don't restate:** `/blogs/news/nmn-and-metformin-human-data-in-the-us`, `/blogs/news/real-or-fake-nmn-6-label-checks-for-us-buyers`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** nmn + kidneys checked 2026-11-04 against 163 live articles (blog listing + sitemap + Atom + local caches) and all 118 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1104-12 — shilajit and kidneys** — `Shilajit and Kidneys: What to Check First (US 2026)`
+  - **Primary keyword:** `shilajit and kidneys` · **Secondary:** is shilajit safe for kidneys, shilajit kidney stones, shilajit creatinine
+  - **Search intent:** buyer with a kidney question who wants to know if shilajit resin is safe to take
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-04 15:43 ICT)
+  - **Hero product:** `/products/shilasource-himalayan-shilajit-resin` (ShilaSource Himalayan Shilajit Resin, $69.99, in stock 2026-11-04)
+  - **ShilaSource Himalayan Shilajit Resin pack label (source of truth):** ShilaSource, Himalayan, Shilajit, Resin, 75, Dietary Supplement, Wellness, Nest, 70% Fulvic Acid*, Lab-Tested for Purity*, 1.06oz (30g), SERVINGS, Servings. No milligram amount and no Supplement Facts panel were read into that file. Do not add one. Do not state a serving count, volume, weight, fulvic percentage, mineral count, or day-supply other than the lines in product_refs/shilasource-himalayan-shilajit-resin.label.json.
+  - **Collection links (≥2, verify live):** `/collections/shilajit-wellness-stack` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** Answer first: what human data exists, what heavy-metal testing means for kidneys, who must ask a doctor (CKD, kidney stones, dialysis). No cure or safety guarantee.
+  - **Fan-out answers to cover:** is shilajit bad for kidneys; shilajit kidney stones; shilajit heavy metals kidneys; who should not take shilajit
+  - **Evidence to fetch & confirm (claims log):** PubMed human trials of purified shilajit with renal markers; NIH/ODS heavy-metal guidance; live PDP test info.
+  - **Link, don't restate:** `/blogs/news/shilajit-and-blood-pressure-check-first-in-the-us`, `/blogs/news/fake-shilajit-6-signs-yours-isnt-real-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** shilajit + kidneys checked 2026-11-04 against 163 live articles (blog listing + sitemap + Atom + local caches) and all 118 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1104-13 — turkesterone and blood pressure** — `Turkesterone and Blood Pressure: What We Know (US 2026)`
+  - **Primary keyword:** `turkesterone and blood pressure` · **Secondary:** turkesterone hypertension, turkesterone blood pressure medication
+  - **Search intent:** person with high blood pressure or BP medication who considers turkesterone
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-04 15:43 ICT)
+  - **Hero product:** `/products/turkesterone-advanced-formula` (Turkesterone Advanced Formula, $75, in stock 2026-11-04)
+  - **Turkesterone Advanced Formula pack label (source of truth):** wellness, nest, PREMIUM, TURKESTERONE, ADVANCED, FORMULA, AMPLIFY, MUSCLE, ENDURANCE, 60, Dietary Supplement, Capsules. No milligram amount and no Supplement Facts panel were read. Do not add one. The capsule badge is the separate lines in product_refs/turkesterone-advanced-formula.label.json. Do not state a milligram amount, a serving count, a different capsule count, or a day-supply.
+  - **Collection links (≥2, verify live):** `/collections/mens-essential-collection` (contains it), `/collections/shilajit-wellness-stack` (contains it)
+  - **Angle:** What human data says about ecdysteroids and blood pressure, what is unknown, and why BP medication users ask a doctor first. No treatment claim.
+  - **Fan-out answers to cover:** does turkesterone raise blood pressure; turkesterone hypertension; turkesterone with bp meds
+  - **Evidence to fetch & confirm (claims log):** Ecdysteroid human trials that report BP; drug-interaction references.
+  - **Link, don't restate:** `/blogs/news/fake-turkesterone-5-label-checks-in-the-us`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** turkesterone + medications checked 2026-11-04 against 163 live articles (blog listing + sitemap + Atom + local caches) and all 118 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1104-14 — vaginal probiotics with food or coffee** — `Vaginal Probiotics With Food or Coffee? (US 2026)`
+  - **Primary keyword:** `vaginal probiotics with food or coffee` · **Secondary:** probiotics and coffee, probiotics with breakfast, probiotic gummy timing
+  - **Search intent:** woman who takes a probiotic gummy with her morning coffee and wants to know if heat or caffeine harms it
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-04 15:43 ICT)
+  - **Hero product:** `/products/florafresh-vaginal-probiotics-gummies` (FloraFresh Vaginal Probiotics Gummies, $40.99, in stock 2026-11-04)
+  - **FloraFresh formula (Supplement Facts label, the source of truth):** per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 1 billion CFU, Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain); sweetened with maltitol and isomalt, so not sugar-free; label badges Allergen Free, Vegan, Halal, Gluten Free. Cite the Supplement Facts label, never the live PDP description or an older FloraFresh article (both repeat a wrong formula); a PDP/label mismatch is a gate failure.
+  - **Collection links (≥2, verify live):** `/collections/womens-essentials-collection` (contains it), `/collections/best-seller` (contains it)
+  - **Angle:** What is known about heat, acid and caffeine on spore-forming Bacillus coagulans vs Lactobacillus, what the live label says, a simple routine. No cure claim.
+  - **Fan-out answers to cover:** can i take probiotics with coffee; probiotics with food or empty stomach; does hot coffee kill probiotics
+  - **Evidence to fetch & confirm (claims log):** Studies on Bacillus coagulans spore survival (heat, gastric acid); ISAPP guidance on timing; FloraFresh live label.
+  - **Link, don't restate:** `/blogs/news/vaginal-probiotics-how-long-until-they-work-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** probiotic + caffeine checked 2026-11-04 against 163 live articles (blog listing + sitemap + Atom + local caches) and all 118 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1104-15 — nmn body odor** — `NMN and Body Odor: Why It Happens (US 2026)`
+  - **Primary keyword:** `nmn body odor` · **Secondary:** tmg body odor, nmn smell, nmn tmg side effects odor
+  - **Search intent:** NMN + TMG user who notices a fishy or strong body or urine odor and wants to know why
+  - **Template:** EDITORIAL · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-04 15:43 ICT)
+  - **Hero product:** `/products/ageaura-pure-nmn-tmg-nad-complex` (AgeAura Pure NMN + TMG NAD+ Complex, $79.99, in stock 2026-11-04)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` twice (browse link — AgeAura Pure NMN + TMG NAD+ Complex is not in it, never claim it is) · no other AgeAura product and no AgeAura collection link (brand_rules)
+  - **Angle:** TMG (betaine) and choline-type compounds can raise TMAO; some people with low FMO3 notice a fishy odor. Say what is known, what to change (dose, food), and when to see a doctor. No treatment claim.
+  - **Fan-out answers to cover:** does nmn make you smell; tmg fishy odor; nmn urine smell; trimethylaminuria supplements
+  - **Evidence to fetch & confirm (claims log):** Papers on betaine/TMG and TMAO; NIH GARD trimethylaminuria page; AgeAura live label.
+  - **Link, don't restate:** `/blogs/news/nmn-and-metformin-human-data-in-the-us`, `/blogs/news/real-or-fake-nmn-6-label-checks-for-us-buyers`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** nmn + odor checked 2026-11-04 against 163 live articles (blog listing + sitemap + Atom + local caches) and all 118 tickets in this file; STEP 0 re-checks at write time
