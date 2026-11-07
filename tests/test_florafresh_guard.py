@@ -358,6 +358,50 @@ class QueueData(unittest.TestCase):
         self.assertIn("the label wins", dosage["angle"])
         self.assertIn("fails the gate", dosage["angle"])
 
+    def test_instruction_docs_lock_snz1969_1b(self):
+        self.assertEqual(ff.CFU, "1 billion CFU")
+        self.assertEqual(ff._LABEL_CFU, 1e9)
+        clean = (
+            "docs/LABEL_OCR_GATE.md",
+            "knowledge_base/AEO_GEO_GUIDELINES.md",
+            "templates/related-questions-block.md",
+            "daily-landing-tickets.md",
+            "docs/STRIKING_DISTANCE_FAQ_2026-10-21.md",
+            "docs/striking-distance-2026-10-21/probiotics-birth-control-answer-block.md",
+            "docs/striking-distance-2026-10-21/nmn-coffee-answer-block.md",
+            "docs/striking-distance-2026-10-21/creatine-gummies-shelf-life-answer-block.md",
+        )
+        for rel in clean:
+            text = read(rel)
+            self.assertNotIn("15B CFU", text, rel)
+            self.assertNotIn("1 billion CFU and 1B CFU are retired", text, rel)
+            self.assertNotRegex(text, r"(?i)15\s*billion\s*CFU", rel)
+        for rel in clean[:6]:
+            text = read(rel)
+            self.assertIn("SNZ-1969", text, rel)
+            self.assertIn("1 billion CFU", text, rel)
+        for rel in clean[4:]:
+            text = read(rel)
+            self.assertIn("Dr. Marcus Hale", text, rel)
+            self.assertNotIn("The byline to apply is Mike Moretti", text, rel)
+            self.assertNotIn("byline Mike Moretti", text, rel)
+        guard = read("docs/FLORAFRESH_FORMULA_GUARD.md")
+        self.assertIn("1 billion CFU", guard)
+        self.assertIn("SNZ-1969", guard)
+        self.assertNotIn("1 billion CFU and 1B CFU are retired", guard)
+        rules = read(".cursor/rules/genseo-operating-rules.mdc")
+        self.assertIn("1 billion CFU per 2 gummies", rules)
+        self.assertNotIn("1 billion CFU and 1B CFU are retired", rules)
+        report = read("reports/reconcile-byline-15b-2026-10-31.md")
+        banner = report.split("\n\n", 2)[1]
+        self.assertIn("Superseded", banner)
+        self.assertIn("1 billion CFU per 2 gummies", banner)
+        self.assertIn("Dr. Marcus Hale", banner)
+        self.assertIn("Do not apply", banner)
+        block = read("docs/striking-distance-2026-10-21/probiotics-birth-control-answer-block.md")
+        proposed = block.split("<!-- proposed-block -->", 1)[1].split("<!-- /proposed-block -->", 1)[0]
+        self.assertEqual(br.violations(proposed), [], proposed)
+
     def test_call_sites_use_the_guard(self):
         for rel in ("scripts/validate_landing.py", "scripts/landing_render.py", "scripts/landing_publisher.py",
                     "scripts/tools/landing_task5_specs.py"):
