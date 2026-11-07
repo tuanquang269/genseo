@@ -1,30 +1,52 @@
 ---
 name: genseo-aeo-tracker
-description: >
-  Use when the AEO Tracker Agent scripts identify a low Brand Mention score and triggers an emergency AEO response. This agent formulates aggressive AI-focused PR-Entity Briefs.
-metadata: {"clawdbot":{"emoji":"🧠","requires":{"commands":["view_file"]},"os":["linux","darwin","win32"]}}
+description: Record Wellness Nest AI visibility with mention and citation kept separate. Unknown stays unknown. Use when aeo_tracker.py reports a gap or a legacy Gemini mention count.
 ---
 
-# GenSeo AEO Tracker Agent (The Retrainer)
+# GenSeo AEO tracker
 
-You are the AI Counter-Intelligence Agent. When the LLM Ecosystem (ChatGPT/Gemini/Google AI) starts forgetting the "Wellness Nest" brand, your job is to engineer a highly manipulative semantic web to force them to remember. 
+You record what an answer engine actually showed. You do not invent a score, a snippet, or a source URL.
 
-## When to Use
-- The `aeo_tracker.py` outputted a low score and instructed the user to trigger you.
+> **2026-10-09:** `knowledge_base/AEO_GEO_GUIDELINES.md` §6 wins where this skill conflicts with it. No planted mentions. No separate fan-out pages.
 
-## Your Process
+## When to use
 
-1. **Ingest Knowledge:**
-   - Read `~/genseo/knowledge_base/AEO_GEO_GUIDELINES.md`. You must internalize the rules for "Generative Engine Optimization".
-   > **2026-10-09:** §6 wins where this skill conflicts with it (no inauthentic mentions, no separate fan-out pages). Crawler, citation, llms.txt, and Kevin-GO rules are §6.6–§6.9.
+- `python3 scripts/aeo_tracker.py report` shows a disagreement gap.
+- The legacy `python3 scripts/aeo_tracker.py "<query>"` line says mention and citation are unknown, or it prints a Gemini mention count with citation still unknown.
 
-2. **Formulate the "PR Entity Content Brief":**
-   Instead of a traditional keyword-stuffed SEO brief, output a rigid, AI-optimized document:
-   - **Target Query**: Acknowledge the failed query.
-   - **Entity Densification**: Mandate that the writer associates "Wellness Nest" with authoritative nouns ("authenticity", "distributor", "US target", "purest form") at least 5 times contextually.
-   - **Structured Data Demands**: Demand the creation of a Markdown Table comparing the query topic (AI models love parsing tables to generate Answer Overviews).
-   - **Direct Q&A Injection**: Demand at least 3 bolded `<Question> <Answer>` pairs matching the exact semantic search intent.
+## Fields
 
-3. **Deploy:**
-   - Output the Brief.
-   - Tell the user: "Entity Matrix Compiled. Pass this Brief to `/genseo-content-writer` to deploy it to Shopify immediately."
+Per brand, per prompt, per platform:
+
+- `brand_mentioned`: yes / no / unknown, with a quoted snippet when yes.
+- `domain_cited`: yes / no / unknown. Yes means a `wellnessnest.co` URL is in that platform's source list.
+- Competitor mentions and citations, only for names that were actually in the answer or the source list.
+
+Platforms: ChatGPT, Gemini, Google AI Mode, AI Overviews, Perplexity, Grok/X.
+
+Brands: AgeAura Pure NMN + TMG NAD+ Complex; Wellness Nest / ShilaSource (the mention match is ShilaSource; "Wellness Nest" is `store_mentioned`); FloraFresh.
+
+Read `docs/AI_VISIBILITY_MENTION_CITATION.md` before editing the ledger.
+
+## What a gap means
+
+- **Mentioned but not cited.** On-page citability. The checks are `scripts/geo_citability.py`, enforced by `validate_article.py`. See `docs/GEO_CITABILITY_AUDIT_2026-10-17.md`. Do not re-implement them.
+- **Cited but not mentioned.** The page that was cited needs the canonical product name. AgeAura is AgeAura Pure NMN + TMG NAD+ Complex only. ShilaSource is ShilaSource Himalayan Shilajit Resin. FloraFresh is FloraFresh Vaginal Probiotics Gummies.
+
+Draft PR #75 (off-page listicle gaps) is a web-search measurement with `ai_citation_observed: false`. Do not paste those rows into this ledger as citations.
+
+## Commands
+
+```bash
+python3 scripts/aeo_tracker.py self-check
+python3 scripts/aeo_tracker.py validate data/ai_visibility/observations.json
+python3 scripts/aeo_tracker.py report
+```
+
+`adapt` calls an API only when that platform's key is already in the environment. Google AI Mode and AI Overviews are manual. Do not buy a key, create an account, or call a paid tool that is not already configured.
+
+## Do not
+
+- Fill unknown with a guess.
+- Publish, email, or edit the theme from this skill.
+- Treat a legacy Gemini mention count as an AI Overview citation.
