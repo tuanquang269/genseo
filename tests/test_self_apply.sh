@@ -716,9 +716,10 @@ seed_plist "com.pati.genseo-landing.plist" "OLD-LANDING"
 sleep 60 &
 SLEEPER=$!
 HOLD_PIDS="$HOLD_PIDS $SLEEPER"
+printf '%s\n' '#!/bin/bash' 'exit 0' >"$FIX/scripts/run_landing_daily.sh"
 cat >"$WORK/ps-landing" <<EOF
 #!/bin/bash
-printf '%s %s\n' "$SLEEPER" "bash /tmp/run_landing_daily.sh"
+printf '%s %s\n' "$SLEEPER" "bash $FIX/scripts/run_landing_daily.sh"
 exit 0
 EOF
 chmod 755 "$WORK/ps-landing"
@@ -747,7 +748,7 @@ assert_continued "ps unreadable"
 has "$LOGF" "self-apply: com.pati.genseo-landing left in place — process list unreadable" "unreadable ps is fail-closed"
 [ "$(cat "$(landing_plist)")" = "OLD-LANDING" ] && ok "unreadable ps does not copy" || bad "unreadable ps copied"
 
-echo "9c. test mode ignores writers outside the checkout; the host scan does not"
+echo "9c. test mode ignores writers outside the checkout; the host scan skips another directory"
 OUTSIDE=$(mktemp -d "${TMPDIR:-/tmp}/self-apply-outside.XXXXXX") || exit 1
 EXTRA_DIRS="$EXTRA_DIRS $OUTSIDE"
 mkdir -p "$WORK/in-checkout" "$WORK/nops"
@@ -770,7 +771,7 @@ else bad "outside landing writer did not start"; fi
 rc=$(job_rc 1 landing "$WORK/in-checkout")
 [ "$rc" = 1 ] && ok "outside writer is invisible in test mode" || bad "outside writer was visible in test mode (rc $rc)"
 rc=$(job_rc 0 landing "$WORK/in-checkout")
-[ "$rc" = 0 ] && ok "host scan still sees a writer outside the checkout" || bad "host scan missed the outside writer (rc $rc)"
+[ "$rc" = 1 ] && ok "host scan skips a writer in another directory" || bad "host scan outside writer rc was $rc"
 "$WORK/in-checkout/run_landing_daily.sh" &
 IN_PID=$!
 HOLD_PIDS="$HOLD_PIDS $IN_PID"
@@ -779,6 +780,8 @@ if kill -0 "$IN_PID" 2>/dev/null; then ok "in-checkout landing writer is alive"
 else bad "in-checkout landing writer did not start"; fi
 rc=$(job_rc 1 landing "$WORK/in-checkout")
 [ "$rc" = 0 ] && ok "in-checkout writer still blocks test mode" || bad "in-checkout writer rc was $rc"
+rc=$(job_rc 0 landing "$WORK/in-checkout")
+[ "$rc" = 0 ] && ok "host scan blocks an in-checkout writer" || bad "host scan in-checkout rc was $rc"
 rc=$(env -i PATH="$WORK/nops:/usr/bin:/bin" GENSEO_SELF_APPLY_SH="$SELF" /bin/bash -c '
   . "$GENSEO_SELF_APPLY_SH"
   GENSEO_SELF_APPLY_TEST=1
@@ -791,6 +794,137 @@ kill "$OUT_PID" "$IN_PID" 2>/dev/null || true
 wait "$OUT_PID" 2>/dev/null || true
 wait "$IN_PID" 2>/dev/null || true
 HOLD_PIDS=""
+
+echo "9d. self-apply scope: 0 leaves the plist, 1 reloads, 2 fails closed"
+SLEEPER=""
+inject_scope_ps() {
+  local line=$1
+  sleep 60 &
+  SLEEPER=$!
+  HOLD_PIDS="$HOLD_PIDS $SLEEPER"
+  cat >"$WORK/ps-scope" <<EOF
+#!/bin/bash
+printf '%s %s\n' "$SLEEPER" "$line"
+exit 0
+EOF
+  chmod 755 "$WORK/ps-scope"
+}
+stop_scope_ps() {
+  if [ -n "${SLEEPER:-}" ]; then
+    kill "$SLEEPER" 2>/dev/null || true
+    wait "$SLEEPER" 2>/dev/null || true
+  fi
+  SLEEPER=""
+  HOLD_PIDS=""
+}
+begin_landing_scope() {
+  local name=$1
+  new_fix "$name"
+  seed_wrapper_match
+  mkdir -p "$HOME_DIR/Library/LaunchAgents"
+  cp "$FIX/deploy/com.pati.genseo-daily.macbook.plist" "$(daily_plist)"
+  stamp_loaded "com.pati.genseo-daily.plist"
+  seed_plist "com.pati.genseo-landing.plist" "OLD-LANDING"
+  write_launchctl ok "$WORK/lc-$name"
+  APPLY_ENV="GENSEO_SELF_APPLY_TEST=1 GENSEO_INSTALL_WRAPPER_TEST=1 GENSEO_HOST_KIND=macbook GENSEO_LAUNCHCTL=$WORK/lc-$name GENSEO_SELF_APPLY_PS=$WORK/ps-scope"
+}
+begin_daily_scope() {
+  local name=$1
+  new_fix "$name"
+  seed_wrapper_match
+  LABEL="com.pati.genseo-landing"
+  mkdir -p "$HOME_DIR/Library/LaunchAgents"
+  cp "$FIX/deploy/com.pati.genseo-landing.macbook.plist" "$(landing_plist)"
+  stamp_loaded "com.pati.genseo-landing.plist"
+  seed_plist "com.pati.genseo-daily.plist" "OLD-DAILY"
+  write_launchctl ok "$WORK/lc-$name"
+  APPLY_ENV="GENSEO_SELF_APPLY_TEST=1 GENSEO_INSTALL_WRAPPER_TEST=1 GENSEO_HOST_KIND=macbook GENSEO_LAUNCHCTL=$WORK/lc-$name GENSEO_SELF_APPLY_PS=$WORK/ps-scope"
+}
+
+begin_landing_scope scope-here
+inject_scope_ps "bash $FIX/scripts/run_landing_daily.sh"
+run_apply
+assert_continued "in-checkout landing job"
+has "$LOGF" "self-apply: com.pati.genseo-landing left in place — a job is running" "scope 0 leaves the plist"
+[ "$(cat "$(landing_plist)")" = "OLD-LANDING" ] && ok "scope 0 does not copy" || bad "scope 0 copied"
+stop_scope_ps
+
+begin_landing_scope scope-other
+SCOPE_OTHER=$(mktemp -d "$WORK/self-scope-other.XXXXXX")
+inject_scope_ps "bash $SCOPE_OTHER/run_landing_daily.sh"
+run_apply
+assert_continued "other-directory landing job"
+has "$LOGF" "self-apply: com.pati.genseo-landing reloaded" "scope 1 reloads"
+lacks "$LOGF" "left in place — a job is running" "scope 1 is not this checkout's job"
+lacks "$LOGF" "no absolute writer path" "scope 1 has an absolute path"
+cmp -s "$FIX/deploy/com.pati.genseo-landing.macbook.plist" "$(landing_plist)" \
+  && ok "scope 1 copied the plist" || bad "scope 1 did not copy"
+stop_scope_ps
+
+begin_landing_scope scope-rel
+inject_scope_ps "bash run_landing_daily.sh"
+run_apply
+assert_continued "relative landing name"
+has "$LOGF" "self-apply: com.pati.genseo-landing left in place — job has no absolute writer path" "scope 2 fails closed"
+lacks "$LOGF" "left in place — a job is running" "scope 2 is not treated as this checkout"
+[ "$(cat "$(landing_plist)")" = "OLD-LANDING" ] && ok "scope 2 does not copy" || bad "scope 2 copied"
+stop_scope_ps
+
+begin_landing_scope scope-stable
+SCOPE_COPY=$(mktemp "$WORK/run_landing_daily.XXXXXX")
+printf '%s\n' "$(cd "$FIX" && pwd -P)" >"$SCOPE_COPY.repo"
+inject_scope_ps "bash $SCOPE_COPY"
+run_apply
+assert_continued "same-checkout stable copy"
+has "$LOGF" "self-apply: com.pati.genseo-landing left in place — a job is running" "same-checkout stable copy is a job"
+[ "$(cat "$(landing_plist)")" = "OLD-LANDING" ] && ok "same-checkout stable copy does not copy" || bad "same-checkout stable copy copied"
+stop_scope_ps
+rm -f "$SCOPE_COPY" "$SCOPE_COPY.repo"
+
+begin_landing_scope scope-noside
+SCOPE_COPY=$(mktemp "$WORK/run_landing_daily.XXXXXX")
+rm -f "$SCOPE_COPY.repo"
+inject_scope_ps "bash $SCOPE_COPY"
+run_apply
+assert_continued "stable copy without a sidecar"
+has "$LOGF" "self-apply: com.pati.genseo-landing reloaded" "a stable copy with no checkout marker does not block"
+cmp -s "$FIX/deploy/com.pati.genseo-landing.macbook.plist" "$(landing_plist)" \
+  && ok "unscoped stable copy still copies" || bad "unscoped stable copy did not copy"
+stop_scope_ps
+rm -f "$SCOPE_COPY" "$SCOPE_COPY.repo"
+
+begin_landing_scope scope-otherside
+SCOPE_COPY=$(mktemp "$WORK/run_landing_daily.XXXXXX")
+SCOPE_SIDE=$(mktemp -d "$WORK/self-scope-side.XXXXXX")
+printf '%s\n' "$(cd "$SCOPE_SIDE" && pwd -P)" >"$SCOPE_COPY.repo"
+inject_scope_ps "bash $SCOPE_COPY"
+run_apply
+assert_continued "other-checkout stable copy"
+has "$LOGF" "self-apply: com.pati.genseo-landing reloaded" "another checkout's stable copy does not block"
+cmp -s "$FIX/deploy/com.pati.genseo-landing.macbook.plist" "$(landing_plist)" \
+  && ok "other-checkout stable copy still copies" || bad "other-checkout stable copy did not copy"
+stop_scope_ps
+rm -f "$SCOPE_COPY" "$SCOPE_COPY.repo"
+
+begin_daily_scope scope-bin
+ln -sfn "$FIX" "$HOME_DIR/genseo"
+inject_scope_ps "bash $HOME_DIR/bin/grokbot-genseo-daily.sh"
+run_apply
+assert_continued "this home's article launcher"
+has "$LOGF" "self-apply: com.pati.genseo-daily left in place — a job is running" "this home's launcher is a job"
+[ "$(cat "$(daily_plist)")" = "OLD-DAILY" ] && ok "this home's launcher does not copy" || bad "this home's launcher copied"
+stop_scope_ps
+
+begin_daily_scope scope-binother
+SCOPE_HOME="$WORK/home-binother"
+mkdir -p "$SCOPE_HOME/bin" "$SCOPE_HOME/genseo"
+inject_scope_ps "bash $SCOPE_HOME/bin/grokbot-genseo-daily.sh"
+run_apply
+assert_continued "another home's article launcher"
+has "$LOGF" "self-apply: com.pati.genseo-daily reloaded" "another home's launcher does not block"
+cmp -s "$FIX/deploy/com.pati.genseo-daily.macbook.plist" "$(daily_plist)" \
+  && ok "another home's launcher still copies" || bad "another home's launcher did not copy"
+stop_scope_ps
 
 echo "10. reload failure restores the previous plist"
 new_fix fail-once

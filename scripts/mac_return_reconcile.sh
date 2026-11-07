@@ -10,8 +10,8 @@
 # checklist: 2. If local commits are not on origin, read them with git show and keep them. Do not run git push --force. Do not run git reset --hard. e1b8519 and 289803e were unpushed publish commits on this Mac. If either is still local, leave it.
 # checklist: 3. If personas/index.json is dirty, leave it. Do not hand-edit it. The article image lane uses persona_picker.py. A no-face frame is only the per-image fallback after a face refusal or a QC miss.
 # checklist: 4. A lock is cleared only when you pass --apply-stale-lock, the lock is older than its documented threshold, and no live writer PID is running. The report prints the rmdir command on a dry-run and does not run it. If that directory changes before removal, it is left in place.
-# checklist:    daily.lock threshold is 21600 seconds (6h), GENSEO_LOCK_STALE_SEC in scripts/genseo_daily_lock.sh. A live grokbot-genseo-daily or run_ticket_headless.sh blocks removal at any age.
-# checklist:    landing-daily.lock threshold is 14400 seconds (4h), hardcoded in scripts/run_landing_daily.sh. A live run_landing_daily.sh or run_landing_headless.sh blocks removal at any age.
+# checklist:    daily.lock threshold is 21600 seconds (6h), GENSEO_LOCK_STALE_SEC in scripts/genseo_daily_lock.sh. A live grokbot-genseo-daily or run_ticket_headless.sh for this checkout blocks removal at any age. A script in another directory does not. A job name with no absolute path blocks removal. An unreadable process list blocks removal.
+# checklist:    landing-daily.lock threshold is 14400 seconds (4h), hardcoded in scripts/run_landing_daily.sh. A live run_landing_daily.sh, a run_landing_daily.XXXX stable copy, or run_landing_headless.sh for this checkout blocks removal at any age. A script in another directory does not. A job name with no absolute path blocks removal. An unreadable process list blocks removal.
 # checklist: 5. --apply on article/* or publish/* records queue closures (state/queue-closures.json) and switches HEAD to main, keeping that branch ref and its unpushed commits. It does not delete the ref. Untracked files stay. Tracked local edits block the switch. Then it fast-forwards main: git merge --ff-only origin/main, only when HEAD is main, there is no tracked local edit, fetch succeeded, and every commit on HEAD is already on origin. Other branches are not switched. Local commits that are not on origin stay on their branch. This script does not rebase them and does not push. Do not run git push --force.
 # checklist: 6. When that fast-forward is allowed, or main is already up to date, --apply reinstalls the daily wrapper: bash scripts/install_mac_daily_wrapper.sh. Dry-run prints the plan and does not copy. The installer does not start launchd.
 # checklist:    Docs: DAILY-RUN.md and docs/TICKET_REFILL.md. launchd label com.pati.genseo-daily runs ~/bin/grokbot-genseo-daily.sh. Pulling alone does not update ~/bin.
@@ -218,9 +218,18 @@ reconcile_cmd_is_daily_writer() {
 }
 
 reconcile_cmd_is_landing_writer() {
-  local cmd=$1
+  local cmd=$1 first="" token=""
   reconcile_cmd_has_token "$cmd" "run_landing_daily.sh" && return 0
   reconcile_cmd_has_token "$cmd" "run_landing_headless.sh" && return 0
+  # Stable copy run_landing_daily.XXXX, with or without a bash prefix.
+  # Checkout scoping decides whether that copy belongs here.
+  reconcile_cmd_has_token "$cmd" "run_landing_daily." && return 0
+  cmd="${cmd#"${cmd%%[![:space:]]*}"}"
+  first=${cmd%% *}
+  token=${first##*/}
+  case "$token" in
+    run_landing_daily.*) return 0 ;;
+  esac
   return 1
 }
 
@@ -255,7 +264,8 @@ reconcile_cmd_matches_lane() {
 # GENSEO_RECONCILE_TEST=1 reads GENSEO_RECONCILE_PS and does not fall through
 # to the host process list. Any other value ignores that hook, so a stray
 # variable cannot hide a live writer. Production still fail-closes when ps
-# cannot be read or any writer is visible.
+# cannot be read. An absolute writer path in another checkout does not count.
+# A job name with no absolute writer path fail-closes.
 reconcile_read_process_listing() {
   local tmp=""
   if [ "${GENSEO_RECONCILE_TEST:-0}" = 1 ]; then
@@ -279,12 +289,51 @@ reconcile_read_process_listing() {
   return 1
 }
 
+# The checkout filter lives in scripts/genseo_sync_main.sh. A stable copy
+# counts only when its "<copy>.repo" sidecar names this checkout. ps failure,
+# a missing helper, or an unresolvable checkout leaves RECONCILE_PS_OK=0.
+# RECONCILE_NO_ABSOLUTE=1 when a matching job has no absolute writer path.
+reconcile_load_sync() {
+  local sync=""
+  if declare -F genseo_sync_cmd_repo_scope >/dev/null 2>&1 \
+    && declare -F genseo_sync_physical_path >/dev/null 2>&1; then
+    return 0
+  fi
+  sync="$SCRIPT_DIR/genseo_sync_main.sh"
+  [ -f "$sync" ] || return 1
+  # shellcheck source=genseo_sync_main.sh
+  . "$sync"
+}
+
+# 0 when cmd should block this checkout. 1 when an absolute writer path is
+# somewhere else. 2 when the job has no absolute writer path.
+reconcile_cmd_scope() {
+  local cmd=$1 repo_phys=""
+  repo_phys=$(genseo_sync_physical_path "${REPO:-}" || true)
+  if [ -z "$repo_phys" ] || [ -z "$cmd" ]; then
+    return 2
+  fi
+  genseo_sync_cmd_repo_scope "$repo_phys" "$cmd"
+}
+
 # Space-separated PIDs in RECONCILE_LIVE_WRITERS. Does not print the process list.
-# RECONCILE_PS_OK=0 when the listing has no numeric pid: absence of a writer is then unknown.
+# RECONCILE_PS_OK=0 when the listing has no numeric pid, the helper cannot be
+# loaded, or this checkout cannot be resolved: absence of a writer is then unknown.
+# A writer whose absolute path is another checkout is not listed.
+# A job with no absolute writer path sets RECONCILE_NO_ABSOLUTE=1 and is not
+# listed as a live writer. Callers fail closed on that flag.
 reconcile_collect_writers() {
-  local lane=$1 psout="" pid="" cmd="" seen=0
+  local lane=$1 psout="" pid="" cmd="" seen=0 repo_phys="" scope_rc=1
   RECONCILE_LIVE_WRITERS=""
   RECONCILE_PS_OK=0
+  RECONCILE_NO_ABSOLUTE=0
+  if ! reconcile_load_sync; then
+    return 1
+  fi
+  repo_phys=$(genseo_sync_physical_path "${REPO:-}" || true)
+  if [ -z "$repo_phys" ]; then
+    return 1
+  fi
   if ! psout=$(reconcile_read_process_listing); then
     return 1
   fi
@@ -295,6 +344,13 @@ reconcile_collect_writers() {
     seen=1
     reconcile_pid_alive "$pid" || continue
     reconcile_cmd_matches_lane "$lane" "$cmd" || continue
+    genseo_sync_cmd_repo_scope "$repo_phys" "$cmd"
+    scope_rc=$?
+    case "$scope_rc" in
+      1) continue ;;
+      0) ;;
+      *) RECONCILE_NO_ABSOLUTE=1; continue ;;
+    esac
     case " $RECONCILE_LIVE_WRITERS " in
       *" $pid "*) ;;
       *) RECONCILE_LIVE_WRITERS="${RECONCILE_LIVE_WRITERS}${pid} " ;;
@@ -325,10 +381,14 @@ reconcile_note_writer() {
   esac
 }
 
-# Appends a live recorded PID when its command is a writer, a publisher, or unreadable.
+# Appends a live recorded PID when its command is a writer for this checkout,
+# a publisher for this checkout, or unreadable.
 # An unrelated live PID (the number was reused) does not count.
+# An absolute path in another checkout does not count.
+# A matching command with no absolute writer path sets RECONCILE_NO_ABSOLUTE
+# and does not count as a live writer. Callers fail closed on that flag.
 reconcile_recorded_writer() {
-  local path=$1 lane=$2 pid="" cmd=""
+  local path=$1 lane=$2 pid="" cmd="" scope_rc=1
   pid=$(reconcile_read_pid "$path" || true)
   [ -n "$pid" ] || return 1
   reconcile_pid_alive "$pid" || return 1
@@ -337,11 +397,40 @@ reconcile_recorded_writer() {
     reconcile_note_writer "$pid"
     return 0
   fi
-  if reconcile_cmd_matches_lane "$lane" "$cmd"; then
+  if ! reconcile_cmd_matches_lane "$lane" "$cmd"; then
+    return 1
+  fi
+  if ! reconcile_load_sync; then
     reconcile_note_writer "$pid"
     return 0
   fi
-  return 1
+  reconcile_cmd_scope "$cmd"
+  scope_rc=$?
+  case "$scope_rc" in
+    1) return 1 ;;
+    0)
+      reconcile_note_writer "$pid"
+      return 0
+      ;;
+  esac
+  RECONCILE_NO_ABSOLUTE=1
+  return 0
+}
+
+# alive-writer, alive-other, or alive-no-absolute-path.
+reconcile_recorded_scope_state() {
+  local cmd=$1 scope_rc=1
+  if ! reconcile_load_sync; then
+    printf '%s\n' alive-writer
+    return 0
+  fi
+  reconcile_cmd_scope "$cmd"
+  scope_rc=$?
+  case "$scope_rc" in
+    1) printf '%s\n' alive-other ;;
+    0) printf '%s\n' alive-writer ;;
+    *) printf '%s\n' alive-no-absolute-path ;;
+  esac
 }
 
 # Sets LOCK_* for one path. Suggests an unlock only when age > threshold,
@@ -385,10 +474,12 @@ reconcile_inspect_lock() {
     LOCK_RECORDED=$pid
     if reconcile_pid_alive "$pid"; then
       cmd=$(reconcile_pid_command "$pid")
-      if [ -z "$cmd" ] || reconcile_cmd_matches_lane "$lane" "$cmd"; then
+      if [ -z "$cmd" ]; then
         LOCK_RECORDED_STATE=alive-writer
-      else
+      elif ! reconcile_cmd_matches_lane "$lane" "$cmd"; then
         LOCK_RECORDED_STATE=alive-other
+      else
+        LOCK_RECORDED_STATE=$(reconcile_recorded_scope_state "$cmd")
       fi
     else
       LOCK_RECORDED_STATE=dead
@@ -406,6 +497,10 @@ reconcile_inspect_lock() {
   fi
   reconcile_recorded_writer "$path" "$lane" || true
   LOCK_LIVE=$RECONCILE_LIVE_WRITERS
+  if [ "${RECONCILE_NO_ABSOLUTE:-0}" = 1 ]; then
+    LOCK_REASON=no-absolute-writer-path
+    return 0
+  fi
   if [ -n "$LOCK_LIVE" ]; then
     LOCK_REASON=live-writer
     return 0
@@ -462,6 +557,9 @@ reconcile_print_lock() {
   fi
   printf 'lock %s suggested_unlock: %s\n' "$LOCK_LABEL" "$LOCK_SUGGEST"
   printf 'lock %s reason: %s\n' "$LOCK_LABEL" "$LOCK_REASON"
+  if [ "$LOCK_REASON" = no-absolute-writer-path ]; then
+    printf 'lock %s note: a job has no absolute writer path — fail closed\n' "$LOCK_LABEL"
+  fi
   if [ "$LOCK_SUGGEST" = yes ]; then
     if [ "$LOCK_LANE" = daily ]; then
       printf 'lock %s suggest: rm -f %q %q\n' "$LOCK_LABEL" "$LOCK_PATH/pid" "$LOCK_PATH/started"
@@ -537,6 +635,9 @@ reconcile_apply_lock() {
       ;;
     *)
       printf 'lock_apply %s: kept %s\n' "$LOCK_LABEL" "$LOCK_REASON"
+      if [ "$LOCK_REASON" = no-absolute-writer-path ]; then
+        printf 'lock_apply %s note: a job has no absolute writer path — fail closed\n' "$LOCK_LABEL"
+      fi
       return 4
       ;;
   esac
@@ -570,6 +671,11 @@ reconcile_apply_lock() {
     return 4
   fi
   reconcile_recorded_writer "$LOCK_PATH" "$LOCK_LANE" || true
+  if [ "${RECONCILE_NO_ABSOLUTE:-0}" = 1 ]; then
+    printf 'lock_apply %s: kept no-absolute-writer-path\n' "$LOCK_LABEL"
+    printf 'lock_apply %s note: a job has no absolute writer path — fail closed\n' "$LOCK_LABEL"
+    return 4
+  fi
   if [ -n "$RECONCILE_LIVE_WRITERS" ]; then
     printf 'lock_apply %s: kept live-writer\n' "$LOCK_LABEL"
     return 4
@@ -1377,6 +1483,11 @@ apply_allowed() {
   reconcile_collect_writers any || true
   if [ "$RECONCILE_PS_OK" != 1 ]; then
     printf '%s\n' "apply_block: process-list-unknown"
+    APPLY_ALLOWED=0
+  fi
+  if [ "${RECONCILE_NO_ABSOLUTE:-0}" = 1 ]; then
+    printf '%s\n' "apply_block: no-absolute-writer-path"
+    printf '%s\n' "apply_block_note: a job has no absolute writer path — fail closed"
     APPLY_ALLOWED=0
   fi
   if [ -n "$RECONCILE_LIVE_WRITERS" ]; then
