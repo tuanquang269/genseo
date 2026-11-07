@@ -30,9 +30,9 @@ Rebased onto `bf3ad1b` (merge-base is main, 0 behind):
 | #116 | `60aee102b54f365b1b83eac83f0489786c89b314` | `3f40c96c3c5f8bd414140670077e3a58396a9666` | Not the same. Delta vs old solo tree `66b37054` is only `tests/test_first_publish_url.py` (+10/−1). The test now imports under the Wellness Nest shop check. Was `1f401b9`. |
 | #124 | `a068ae32350ff52c236a65f0e1a0bc0d0eac20c1` | `d4d3640f4a3d24166b36e21e4f5dbc5708722d92` | Restacked onto #120 `2302f4b`, which is an ancestor. Delta vs old solo tree `4f6eb829` is only `board/burn-124-rebase-2026-11-07-t60.md`. The port files match old tip `5e2888d`. |
 
-#122 was not restacked. Tip `e8e8154dbbd86f67ef80ea00c8063d4e1a088ea8`. Commits since its merge-base with main: `6e82f79` (old image-src gate), `f5f60b7` (fail every non-local src), `ac20bd8` (warn-only dup-cluster gate), `e8e8154` (ima2 timeout start delay). `f5f60b7` is an ancestor. The new #119 tip is not. Missing from #122: `bed8f07`, `6b9b7ed`, `b42b78a`, `e557298`. GitHub base `cursor/draft-local-image-gate-1102` is CONFLICTING. Merge-tree of #122 onto `e557298` conflicts: content in `scripts/validate_article.py`, add/add in `tests/test_draft_image_src.py`.
+#122 moved during this pass. The first read was tip `e8e8154dbbd86f67ef80ea00c8063d4e1a088ea8`, GitHub CONFLICTING against `cursor/draft-local-image-gate-1102`. Merge-tree of that tip onto `e557298` conflicted: content in `scripts/validate_article.py`, add/add in `tests/test_draft_image_src.py`. At 2026-11-07 09:54 UTC the tip became `1fa33f6a90fd269d9d0f12a1513c5e79d4311072`, a merge of `e8e8154` with #119 `e557298`. GitHub is MERGEABLE / CLEAN against that base. #119 is an ancestor. The image-src conflict is gone. Solo tree vs main is `6245b57a89da92d58f2bd305d810220cdf0fb4c9` (0 behind / 9 ahead). The diff against #119 is six files: the warn-only dup-cluster gate plus `tests/test_ima2_retry.py`. The merge message keeps the parent's draft-image jail and its full test file, and the warn-only dup-cluster hook. FloraFresh in that message stays SNZ-1969 at 1 billion CFU.
 
-#122 merged onto main alone is git-clean (solo tree `56fc6aebd972dfbe5bceb0ae22526c93fb0c04f5`). That result is the wrong landing. It would take the old image-src commits and leave out `e557298`. Do not retarget #122 onto main to clear the red base.
+That ima2 file still conflicts with #118 in both orders, on `tests/test_ima2_retry.py`. On the step-18 chain the only conflict is that same file (`scripts/validate_article.py` auto-merges). #122 is clean on the wave-1 tip, before #118. It still cannot share a tree with #118, and it still conflicts with #77 on `scripts/validate_article.py`. Do not land #77 and #122 both.
 
 #123 was not restacked. Tip `58e59895b19a26837c541d25de87796660bc150f` still contains pre-rebase #120 `47f45a0`, not `2302f4b`. GitHub says MERGEABLE against base `cursor/hermetic-writer-ps-1102`, and merge-tree onto `2302f4b` is clean (tree `6c4afc97cd896ef1a36cea7f9d9a2036a52e2632`, the same tree as #123 vs main). Merge-tree of #123 with #124 now conflicts on the four port files. The 20:35 note that #123 and #124 merge cleanly in either direction is no longer true.
 
@@ -102,16 +102,16 @@ What each step is:
 14. **#118** hermetic queue and ima2 tests. Landing vehicle for #111. Test-only diff. Blocks #122 and #123 on `tests/test_ima2_retry.py`.
 15. **#120** hermetic writer tests. Ancestor of #124. Not an ancestor of #123; #123 still merges onto `2302f4b`.
 16. **#124** port of #115 onto #120, plus the restack note. This is the landing head, not #115. The port changes production job matching in `scripts/genseo_self_apply.sh`, `scripts/genseo_sync_main.sh`, and `scripts/mac_return_reconcile.sh`.
-17. **#119** remote-image draft gate. `scripts/validate_article.py` and `tests/test_draft_image_src.py`. Tip `e557298` is the base #122 no longer merges onto.
+17. **#119** remote-image draft gate. `scripts/validate_article.py` and `tests/test_draft_image_src.py`. Tip `e557298` is an ancestor of #122 `1fa33f6`.
 18. **#116** canonical URL gate, the replay of #67. `shopify_publisher.py` calls `_canonical_prepare` before image upload and exits 2 when the Article URL is not that article's clean blog URL. The guidelines hunk merged after #125, so the 1 billion CFU bullet stays. Theme JSON-LD stays out (that is #65).
 
 ## Pairwise conflicts
 
-Scope: the 31 open PRs that merge clean onto main. Every pair whose file lists overlap (45 pairs), both orders (90 merge-trees). 30 pairs are clean in both orders. 15 pairs conflict in both orders. No pair was clean in one order and conflicted in the other.
+Scope: the 31 open PRs that merge clean onto main, file lists taken before #122 moved. Every overlapping pair (45), both orders (90 merge-trees). 30 pairs were clean in both orders. 15 conflicted in both orders. No pair was clean in one order and conflicted in the other. After #122's tip moved to `1fa33f6`, three of those pairs were re-tested: #119 ↔ #122 is now clean both ways (#119 is a parent of that merge), #118 ↔ #122 still conflicts both ways on `tests/test_ima2_retry.py`, and #77 ↔ #122 still conflicts both ways on `scripts/validate_article.py`. The table omits the cleared #119 ↔ #122 row. The other 14 rows did not use the moved tip.
 
 Clean inside the recommended 18, both orders: #125/#127, #125/#128, #127/#128, #64/#120, #64/#124, #116/#119, #116/#125, #116/#127, #116/#128, #120/#124. #126 shares files with nobody.
 
-Also clean, and it changes the 20:35 read: #77/#116 and #97/#116. On these tips #77 and #97 do not conflict with #116. They conflict with #119, both orders, on `scripts/validate_article.py`. There is no order in which #77 or #97 lands in the same tree as #119. #116/#121, #116/#122, #120/#123, #83/#127, #81/#128, #85/#127, #97/#122, and #122/#123 are also clean both ways.
+Also clean, and it changes the 20:35 read: #77/#116 and #97/#116. On these tips #77 and #97 do not conflict with #116. They conflict with #119, both orders, on `scripts/validate_article.py`. There is no order in which #77 or #97 lands in the same tree as #119. #116/#121, #116/#122, #120/#123, #83/#127, #81/#128, #85/#127, and #122/#123 are also clean both ways. #97/#122 was clean against the old #122 tip and is not clean against `1fa33f6`: that tip contains #119, so #97 conflicts with it on `scripts/validate_article.py`, both orders.
 
 | Pair | Both orders | Files |
 | --- | --- | --- |
@@ -128,7 +128,6 @@ Also clean, and it changes the 20:35 read: #77/#116 and #97/#116. On these tips 
 | #115 ↔ #124 | conflict | `scripts/genseo_self_apply.sh`, `scripts/mac_return_reconcile.sh`, `tests/test_mac_return_reconcile.sh`, `tests/test_self_apply.sh` |
 | #118 ↔ #122 | conflict | `tests/test_ima2_retry.py` |
 | #118 ↔ #123 | conflict | `tests/test_ima2_retry.py` |
-| #119 ↔ #122 | conflict | `scripts/validate_article.py`, `tests/test_draft_image_src.py` |
 | #123 ↔ #124 | conflict | `scripts/genseo_self_apply.sh`, `scripts/mac_return_reconcile.sh`, `tests/test_mac_return_reconcile.sh`, `tests/test_self_apply.sh` |
 
 ## Chain probes
@@ -169,7 +168,7 @@ Conflict on that tip. "Same as solo" means the chain conflict paths are the solo
 | #111 | `tests/test_landing_rotation.py`, `tests/test_queue_closures.py` | `tests/test_landing_rotation.py` only. The second file is #118. |
 | #115 | `scripts/genseo_self_apply.sh`, `scripts/mac_return_reconcile.sh`, `tests/test_mac_return_reconcile.sh`, `tests/test_self_apply.sh` | clean vs main. Conflicts with #120 and #124. |
 | #117 | same as solo | `scripts/run_landing_headless.sh`, `scripts/run_ticket_headless.sh` |
-| #122 | `scripts/validate_article.py`, `tests/test_draft_image_src.py`, `tests/test_ima2_retry.py` | clean vs main, which is the wrong landing described above. Chain conflicts are #119 plus #118. |
+| #122 | `tests/test_ima2_retry.py` only, re-tested on tip `1fa33f6` | clean vs main and clean vs #119. The chain conflict is #118. The three-file conflict was the pre-restack tip `e8e8154`. |
 | #123 | `.cursor/rules/genseo-operating-rules.mdc`, `scripts/genseo_self_apply.sh`, `scripts/mac_return_reconcile.sh`, `tests/test_ima2_retry.py`, `tests/test_mac_return_reconcile.sh`, `tests/test_self_apply.sh` | clean vs main and clean onto #120. Chain conflicts are #64, #118, and #124. |
 
 ## Held out of this GO
@@ -177,10 +176,10 @@ Conflict on that tip. "Same as solo" means the chain conflict paths are the solo
 | PR | Why it is held |
 | --- | --- |
 | #83 | Clean vs main (solo tree `2eda9bead1dadb3f38077ca9f8c833d0ae8a03af`) and clean after #127. Conflicts with #128, and with #85, on `knowledge_base/AEO_GEO_GUIDELINES.md`. The PR says do not merge until Kevin says so. Next burn replays the one referrer-domain bullet onto the post-#128 guidelines. |
-| #97 | Shopify 429 on the draft dead-link check stays unverified (exit 3). Clean vs main (solo tree `40d0a155f8311147101d66f0678e5f49489c7ca2`) and clean with #116. Conflicts with #119 on `scripts/validate_article.py`, so it cannot join this chain. Replay onto the post-#119 validator, or land it only in a chain that does not include #119. |
+| #97 | Shopify 429 on the draft dead-link check stays unverified (exit 3). Clean vs main (solo tree `40d0a155f8311147101d66f0678e5f49489c7ca2`) and clean with #116. Conflicts with #119 on `scripts/validate_article.py`, and with #122 `1fa33f6` for the same reason, so it cannot join this chain. Replay onto the post-#119 validator, or land it only in a chain that does not include #119. |
 | #77 | Warn-only near-duplicate gate. Clean vs main (solo tree `535d36d8522754b1fad3295fccbd221c1d751d07`) and clean with #116. Conflicts with #119, and also with its own replay #122, on `scripts/validate_article.py`. Do not land #77 and #122 both. |
 | #121 | Not touched. Chain-clean and main-clean. The image-path rewrite adds alt lines that state 15 billion CFU, including `published_drafts/are-vaginal-probiotics-worth-it-how-much-2026.md`, `published_drafts/vaginal-probiotic-dosage-how-many-cfu-a-day-us-2026.md`, `published_drafts/vaginal-probiotics-on-an-empty-stomach-us-2026.md`, and `published_drafts/where-to-buy-vaginal-probiotics-in-the-us-5-checks-2026.md`. The PR itself says do not merge until the 13 heroes exist and `/pages/mike-moretti` is live. T3 owns the live 15B wording. |
-| #122 | Stacked replay of #77. GitHub CONFLICTING against #119. See the rebase section. Also conflicts with #118 on `tests/test_ima2_retry.py`. Restack onto `e557298` after #118 is in the tree. Until that restack exists, #122 is not landable and #77 stays open. |
+| #122 | Stacked replay of #77. The 09:54 UTC merge `1fa33f6` put it onto #119 `e557298`, and GitHub is CLEAN against that base. The image-src conflict is gone. It still conflicts with #118 on `tests/test_ima2_retry.py`, both orders, including on the step-18 chain. Reconcile that test with #118 before it can follow wave 2. Until then #122 is not landable and #77 stays open. |
 | #123 | Stacked replay of #38. Clean onto #120 `2302f4b` and clean onto main. On this chain it conflicts with #64 (`.cursor/rules/genseo-operating-rules.mdc`), #118 (`tests/test_ima2_retry.py`), and #124 (the four port files). Restack past #64, #118, and #124. The Mac Mini dry-run hold from #38 still applies. |
 
 ## Supersede
@@ -211,11 +210,11 @@ Nothing was closed.
 | #85 | Close after #128 is on main. | Merge-clean today, and wrong once the current DONE set is in the tree. |
 | #111 | Close after #118 is on main. | Conflicts. #118 is the clean fixture replay. |
 | #115 | Close after #124 is on main. | Clean vs main, and conflicts with #120 and with #124. |
-| #77 | Keep open. | Clean today. Conflicts once #119 is in. #122 is the replay and is not landable until it is restacked past #118 and `e557298`. |
+| #77 | Keep open. | Clean today. Conflicts once #119 is in. #122 is the replay. The #119 half of that restack landed at `1fa33f6`. It still conflicts with #118 on `tests/test_ima2_retry.py`. |
 | #38 | Keep open. | Not a draft. Conflicts with main. #123 is the replay and now also conflicts with #124. Same Mini dry-run hold. |
 | #9, #10, #90 | Keep open. | All conflict with main. #9 and #10 are not drafts. #117 is the intended guard replay and is not clean, and it still teaches 15B CFU and a Mike Moretti blog byline. |
 | #95 | Keep open. | Solo conflict is `scripts/genseo_sync_main.sh`. On the chain it also conflicts with #118 and #124. Those hunks are not the same patch. Closing it now drops the delta the later PRs did not take. |
-| #122, #123 | Keep open. | They are the replays of #77 and #38. They need restacks. Do not close them as if the work had landed. |
+| #122, #123 | Keep open. | They are the replays of #77 and #38. #122 is on #119 and still conflicts with #118. #123 still needs a restack past #64, #118, and #124. Do not close them as if the work had landed. |
 | #121 | Do not close. | Held, not superseded. Not touched. |
 | #83 | Keep open. | Clean vs main, conflicts with #128. Close only after the referrer bullet is replayed, or after Kevin says the report itself will not land. |
 | #117 | Do not close yet. | It is the only open guard bundle, and it is the wrong FloraFresh text. A later replay that keeps 1 billion CFU and Dr. Marcus Hale is what lets #9, #10, and #90 close. |
@@ -240,9 +239,9 @@ None inside the 18-step scratch merge. Each step applied clean.
 
 Blocked until someone restacks, not by this order:
 
-- **#122** cannot merge into rebased #119, and cannot follow #118. Do not retarget it onto main.
+- **#122** now merges into rebased #119 (`1fa33f6`). It still cannot share a tree with #118 (`tests/test_ima2_retry.py`, both orders).
 - **#123** cannot follow the chain once #64, #118, and #124 are in. It can still merge onto #120 alone. Do not merge it into the #120 branch ahead of #124; the two conflict.
-- **#77 and #97** cannot share a tree with #119. They can share a tree with #116.
+- **#77 and #97** cannot share a tree with #119. They can share a tree with #116. #97 also conflicts with #122 `1fa33f6`, because that tip contains #119.
 - **#83** cannot share a tree with #128.
 - **#115** cannot share a tree with #120 or #124.
 - **#121** is not a git blocker. It is a wording hold. Left untouched.
@@ -289,7 +288,7 @@ Read at 2026-11-07 16:49 +07 from `gh pr list`, local `git merge-tree --write-tr
 | #119 | yes | main | `e557298e96d8` | 0 / 4 | MERGEABLE / CLEAN | clean `883c4381c3e2` | 2 |
 | #120 | yes | main | `2302f4b62f10` | 0 / 1 | MERGEABLE / CLEAN | clean `7112e0e27827` | 4 |
 | #121 | yes | main | `a694616c8092` | 83 / 3 | MERGEABLE / CLEAN | clean `5c2bfdc12923` | 87 |
-| #122 | yes | `cursor/draft-local-image-gate-1102` | `e8e8154dbbd8` | 83 / 4 | CONFLICTING / DIRTY | clean `56fc6aebd972` | 7 |
+| #122 | yes | `cursor/draft-local-image-gate-1102` | `1fa33f6a90fd` | 0 / 9 | MERGEABLE / CLEAN | clean `6245b57a89da` | 6 |
 | #123 | yes | `cursor/hermetic-writer-ps-1102` | `58e59895b19a` | 83 / 4 | MERGEABLE / CLEAN | clean `6c4afc97cd89` | 13 |
 | #124 | yes | `cursor/hermetic-writer-ps-1102` | `a068ae32350f` | 0 / 4 | MERGEABLE / CLEAN | clean `d4d3640f4a3d` | 7 |
 | #125 | yes | main | `8875f68002b7` | 0 / 1 | MERGEABLE / CLEAN | clean `002a2c8fc643` | 11 |
@@ -299,7 +298,7 @@ Read at 2026-11-07 16:49 +07 from `gh pr list`, local `git merge-tree --write-tr
 | #129 | yes | main | `cdee61a26629` | 0 / 1 | MERGEABLE / CLEAN | clean `13c979637d81` | 1 |
 | #130 | yes | main | `3e85c5877436` | 0 / 1 | MERGEABLE / CLEAN | clean `d6ae4873aac5` | 1 |
 
-Conflict paths vs main (the 14 PRs whose solo merge-tree exits 1). #122 is GitHub-DIRTY against its base and is not in this table; its solo merge onto main is clean.
+Conflict paths vs main (the 14 PRs whose solo merge-tree exits 1). #122 is not in this table. On tip `1fa33f6` it is GitHub-CLEAN against #119 and clean against main.
 
 | PR | Conflict paths vs main |
 | --- | --- |
@@ -324,8 +323,9 @@ Conflict paths vs main (the 14 PRs whose solo merge-tree exits 1). #122 is GitHu
 git fetch origin main
 git rev-parse origin/main   # bf3ad1b7cd9723c310f3f6dae3f16ee2e9e18ba8
 git merge-tree --write-tree --name-only --messages origin/main d2f07e8405b718201404894547d233bcb1efb5a0
-git merge-tree --write-tree --name-only --messages origin/cursor/draft-local-image-gate-1102 e8e8154dbbd86f67ef80ea00c8063d4e1a088ea8
+git merge-tree --write-tree --name-only --messages origin/cursor/draft-local-image-gate-1102 1fa33f6a90fd269d9d0f12a1513c5e79d4311072
 # exit 0 and one tree line: clean. CONFLICT lines are the hold.
+# The pre-restack #122 tip e8e8154 conflicted on this base. 1fa33f6 does not.
 # Sequential proof, local worktree only. Do not push it.
 git worktree add --detach /tmp/land-sim origin/main
 git -C /tmp/land-sim merge --no-ff --no-edit d2f07e8405b718201404894547d233bcb1efb5a0
