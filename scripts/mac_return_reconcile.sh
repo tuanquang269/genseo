@@ -251,13 +251,43 @@ reconcile_cmd_matches_lane() {
   return 1
 }
 
+# stdout matches `ps -axww -o pid=,args=`. Returns 1 when the listing is unknown.
+# GENSEO_RECONCILE_TEST=1 reads GENSEO_RECONCILE_PS and does not fall through
+# to the host process list. Any other value ignores that hook, so a stray
+# variable cannot hide a live writer. Production still fail-closes when ps
+# cannot be read or any writer is visible.
+reconcile_read_process_listing() {
+  local tmp=""
+  if [ "${GENSEO_RECONCILE_TEST:-0}" = 1 ]; then
+    if [ -n "${GENSEO_RECONCILE_PS:-}" ] && [ -x "$GENSEO_RECONCILE_PS" ]; then
+      tmp=$(mktemp "${TMPDIR:-/tmp}/genseo-reconcile-ps.XXXXXX") || return 1
+      if "$GENSEO_RECONCILE_PS" >"$tmp" 2>/dev/null; then
+        cat "$tmp"
+        rm -f "$tmp"
+        return 0
+      fi
+      rm -f "$tmp"
+    fi
+    return 1
+  fi
+  if ps -axww -o pid=,args= 2>/dev/null; then
+    return 0
+  fi
+  if ps -eo pid=,args= 2>/dev/null; then
+    return 0
+  fi
+  return 1
+}
+
 # Space-separated PIDs in RECONCILE_LIVE_WRITERS. Does not print the process list.
 # RECONCILE_PS_OK=0 when the listing has no numeric pid: absence of a writer is then unknown.
 reconcile_collect_writers() {
   local lane=$1 psout="" pid="" cmd="" seen=0
   RECONCILE_LIVE_WRITERS=""
   RECONCILE_PS_OK=0
-  psout=$(ps -axww -o pid=,args= 2>/dev/null || ps -eo pid=,args= 2>/dev/null || true)
+  if ! psout=$(reconcile_read_process_listing); then
+    return 1
+  fi
   while read -r pid cmd; do
     case "$pid" in
       ''|*[!0-9]*|0) continue ;;
