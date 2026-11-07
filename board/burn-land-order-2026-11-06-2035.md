@@ -1,5 +1,7 @@
 # LAND order — Burn1106-t55 (2026-11-06 20:35 ICT)
 
+> Working recommendation moved on 2026-11-07 16:49 ICT to `board/burn-land-order-2026-11-07-1649.md`. The tables below are this snapshot and were not edited.
+
 Draft for Kevin's GO. Nothing in this pass was merged, closed, retargeted, or marked ready. No branch was force-pushed or rebased. Nothing was published. No Shopify write, no Meta spend, no email. FloraFresh live 15B corrections stay with T3. AgeAura in this order is NMN + TMG only.
 
 `origin/main` is `bf3ad1b7cd9723c310f3f6dae3f16ee2e9e18ba8` (2026-11-06 13:21:54 +0700, "cherish_auto: add band guarantee line + rail TOC the shell prints"). 43 pull requests are open. Every one of them is in a section below.
