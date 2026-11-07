@@ -36,7 +36,7 @@
   "voice": "Direct, practical, plain US English for everyday carriers. Comfort, fit, fabric, sizing and care only. Never write gun-use instruction (draw, drills, shooting), ballistics, calibre or stopping-power content, or legal advice (carry law, permits, reciprocity); one neutral line may point to usa.gov/states-and-territories. Never invent product, price, test or review claims. Never promise zero printing or undetectable carry.",
   "review_first": 0,
   "writer_model": "cc/claude-sonnet-5-5",
-  "calendar_rows": 60,
+  "calendar_rows": 62,
   "hero_budget_kb": 120,
   "competitor_domains": [
     "2tactic.com",
