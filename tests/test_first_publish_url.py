@@ -115,6 +115,12 @@ class ShopifyFake:
         return _Resp({"article": article, "blog": {"handle": self.blog_handle}, "metafields": []})
 
 
+# genseo_config refuses to import unless the credential shop is the Wellness Nest
+# admin domain. do_publish reads CONFIG_PATH, which stays on the fixture host.
+# urlopen is patched, so that host string is never contacted.
+LEGACY_SHOP = "wellnessnest1.myshopify.com"
+
+
 class FirstPublishURL(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -122,9 +128,12 @@ class FirstPublishURL(unittest.TestCase):
         cls.cfg = os.path.join(cls.tmpdir, "shopify_token.json")
         with open(cls.cfg, "w", encoding="utf-8") as handle:
             json.dump({"shop": SHOP, "access_token": "shpat_fixture_only"}, handle)
+        boot = os.path.join(cls.tmpdir, "legacy-import-token.json")
+        with open(boot, "w", encoding="utf-8") as handle:
+            json.dump({"shop": LEGACY_SHOP, "access_token": "shpat_fixture_only"}, handle)
         cls._old_config = os.environ.get("GENSEO_CONFIG")
         if "shopify_publisher" not in sys.modules and "genseo_config" not in sys.modules:
-            os.environ["GENSEO_CONFIG"] = cls.cfg
+            os.environ["GENSEO_CONFIG"] = boot
         import shopify_publisher as pub
         cls.pub = pub
         if cls._old_config is None:
