@@ -129,6 +129,25 @@ def has_any(text, needles):
 def _norm(s):
     return re.sub(r'[^a-z0-9]', '', s.lower())
 
+
+# Comparison object: the words a "vs" title compares, minus filler. "Shilajit vs Ashwagandha" and
+# "Shilajit Resin vs Gummies" share the brand and the "vs" modifier but answer two different
+# questions on two different SERPs (Kevin 2026-11-08: compare against alternative products). Two
+# "vs" pages clash only when their comparison objects overlap.
+_VS_STOP = {'which','better','is','works','work','should','you','take','actually','what','say','the','a',
+            'for','us','2026','best','facts','human','trials','6','5','4','3','format','strain','fits',
+            'your','goal','worth','it','how','to','tell','them','apart','normal','stop','compared','labels'}
+def vs_objects(text, brand_terms=()):
+    t = (text or '').lower().replace('-', ' ')
+    if not re.search(r'\b(vs|versus|or|compared)\b', t):
+        return set()
+    words = set(re.findall(r'[a-z]+', t)) - _VS_STOP - {'vs', 'versus', 'or', 'vaginal', 'supplements', 'supplement'}
+    return {w for w in words if not any(w in (b, b + 's') for b in brand_terms)}
+
+def vs_clash(a, b, brand_terms=()):
+    oa, ob = vs_objects(a, brand_terms), vs_objects(b, brand_terms)
+    return not oa or not ob or bool(oa & ob)
+
 _ARTIDX = {}
 def _article_index(articles):
     """(cached) list of (normalised-blob, token-set) per existing article — for coverage checks."""
@@ -235,6 +254,8 @@ def assess(topic, sg_imp=None, articles=None, collections=None, pos=None):
         # is by definition a page about the same brand.
         seg_taken = bool(seg) and any(
             re.search(r'\b' + re.escape(seg) + r'\b', a.get('title', '').lower())
+            and (seg not in ('vs', 'versus')
+                 or vs_clash(t, a.get('title', '') + ' ' + a.get('handle', ''), (bn,)))
             for a in articles
             if bn in _norm(a.get('title', '') + ' ' + a.get('handle', '')))
         for blob, toks in _article_index(articles):
@@ -279,6 +300,10 @@ _SEG_FIXTURE = [
 
 
 def self_check():
+    # vs pages clash only on a shared comparison object (Kevin 2026-11-08)
+    assert not vs_clash('shilajit vs ashwagandha', 'Shilajit Resin vs Gummies: Which Works Better?', ('shilajit',))
+    assert vs_clash('shilajit resin vs capsules', 'Shilajit Resin vs Gummies', ('shilajit',))
+    assert vs_clash('nmn vs nr', 'NMN vs NR: What 6 Human Trials Say', ('nmn',))
     arts = _load(f"{ROOT}/existing_articles.json", [])
     # (topic, sg_imp, articles, want). PASS cases use [] to test the winner-shape logic in isolation
     # (with the real catalog they'd correctly be 'covered' — we already have Atlas/Myprotein pages).

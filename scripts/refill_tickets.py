@@ -139,6 +139,7 @@ def load_bank(path):
     b["segments_rx"] = {k: re.compile(v) for k, v in b["segments"].items()}
     b["covered_rx"] = [re.compile(p) for p in b["covered_topics"]]
     b["banned_rx"] = [re.compile(p, re.I) for p in b["banned_terms"]]
+    BANK_TERMS.update(b["families"])
     b["family_rx"] = {f: re.compile(r"\b(%s)" % "|".join(re.escape(t) for t in terms))
                       for f, terms in b["families"].items()}
     return b
@@ -581,6 +582,9 @@ def fit_ok(r):
     return r[0] == "PASS" or (r[0] == "REVIEW" and r[1] == "covered-segment")
 
 
+BANK_TERMS = {}
+
+
 def clash(c, t):
     """Why candidate c duplicates t (a queued ticket, a live article or an earlier candidate), or ''."""
     if t.get("primary") and t["primary"] == c["primary"]:
@@ -590,6 +594,10 @@ def clash(c, t):
             if b and jaccard(a, b) >= tf.DUP_JACCARD:
                 return f"title overlap {jaccard(a, b):.2f}"
     shared = c["segs"] & t["segs"]
+    if shared == {"versus"} and not tf.vs_clash(f"{c['title']} {c['primary']}",
+                                                 f"{t.get('title') or ''} {t.get('primary') or ''}",
+                                                 (c["family"],)):
+        shared = set()  # different comparison objects = different question (Kevin 2026-11-08)
     if c["family"] in t["fams"] and shared:
         return f"{c['family']} + {'/'.join(sorted(shared))}"
     return ""
