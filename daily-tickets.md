@@ -1929,3 +1929,32 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Link, don't restate:** `/blogs/news/shilajit-benefits-for-men-4-claims-ranked-us-2026`, `/blogs/news/how-much-shilajit-per-day-dosage-by-form-us-2026`
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** shilajit + versus checked 2026-11-08 against 172 live articles (blog listing + sitemap + Atom + local caches) and all 144 tickets in this file; STEP 0 re-checks at write time
+
+# BATCH 2026-11-08 (refill_tickets.py — ids #MB1108-1…#MB1108-1)
+
+Built by `scripts/refill_tickets.py` at 2026-11-08 09:36 ICT from `templates/article-topic-bank.json` + `board/ideas.csv`
+(search volume: No data — GSC/Ads not used). Every ticket passed, against the live store at build time:
+brand_rules + `lint_tickets.py` · hero product live and in stock · not a covered topic (header rule 6) ·
+not already queued · not live (172 published articles: blog listing + sitemap + Atom + local caches; one article per brand + segment) ·
+`topic_fitness.py` strict on primary and title · STEP 0 suggest.json.
+A `topic_fitness` REVIEW [covered-segment] verdict is allowed under Kevin's standing greenlight for mined queues (2026-08-13).
+A topic is a brief, not copy: source every claim or cut it.
+
+**Rules for this batch:** from the 2026-10-08 batch rules — fan-out answers, a "Where to buy <product> in the US"
+section (live price, the ticket's product link only), roster.json byline only (never an invented person or
+credential), the logged fact-check pass (`logs/claims/<slug>.md`; delete unconfirmed claims), the brand gate.
+Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py once. The hero is the picked face plus the real pack unless pick prints NO-FACE. One inline image uses that face. The other inline images have no recognizable face but still show a hand, forearm, or body cropped below the eyes. A no-face image is the fallback for one frame after a face refusal or two QC misses, not a batch-wide ban. The MacBook article plist sets `GENSEO_NO_FACE=0`, and that value does not switch the lane. Prices were read live at build time; re-check the PDP while writing.
+
+- [ ] **#MB1108-1 — shilajit vs creatine** — `Shilajit vs Creatine: Different Jobs, Compared (US 2026)`
+  - **Primary keyword:** `shilajit vs creatine` · **Secondary:** can i take shilajit instead of creatine, is shilajit better than creatine
+  - **Search intent:** gym-goer asking whether shilajit can replace creatine
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-08 09:36 ICT)
+  - **Hero product:** `/products/shilasource-himalayan-shilajit-resin` (ShilaSource Himalayan Shilajit Resin, $69.99, in stock 2026-11-08)
+  - **ShilaSource Himalayan Shilajit Resin pack label (source of truth):** ShilaSource, Himalayan, Shilajit, Resin, 75, Dietary Supplement, Wellness, Nest, 70% Fulvic Acid*, Lab-Tested for Purity*, 1.06oz (30g), SERVINGS, Servings. No milligram amount and no Supplement Facts panel were read into that file. Do not add one. Do not state a serving count, volume, weight, fulvic percentage, mineral count, or day-supply other than the lines in product_refs/shilasource-himalayan-shilajit-resin.label.json.
+  - **Collection links (≥2, verify live):** `/collections/shilajit-wellness-stack` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** Explain that creatine has a large strength evidence base and shilajit does not replace it; what each does; how people stack them. Link FusiForce as the creatine option.
+  - **Fan-out answers to cover:** can shilajit replace creatine; can you take shilajit and creatine together; which is better for muscle; best time to take each
+  - **Evidence to fetch & confirm (claims log):** Fetched human trials (PubMed/DOI) for BOTH sides at write time; our product panel and price only from the live PDP; no claim the source does not state.
+  - **Link, don't restate:** `/blogs/news/creatine-gummies-vs-powder-which-should-you-actually-take`, `/blogs/news/shilajit-benefits-for-men-4-claims-ranked-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** shilajit + versus checked 2026-11-08 against 172 live articles (blog listing + sitemap + Atom + local caches) and all 152 tickets in this file; STEP 0 re-checks at write time
