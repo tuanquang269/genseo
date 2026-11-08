@@ -538,6 +538,9 @@ def generate(profile, row, path, live_products, hero, day, feedback=None, previo
     prompt += '\nUNREADABLE SOURCES (do not cite):\n' + json.dumps(unreadable)
     prompt += '\nHERO PHOTO (runner-owned):\n' + json.dumps(hero, ensure_ascii=False)
     prompt += WRITER_RULES.format(human=f'{day:%b} {day.day}, {day.year}', iso=day.isoformat(), shop=profile.data['shop'])
+    lo, hi = profile.template(row['style'])[1]['words']
+    # ponytail: writer told only "middle of the range" returned ~1450 words on 2000-floor styles (2026-11-08); give the numbers.
+    prompt += f'- WORD COUNT for this style: minimum {lo}, maximum {hi}. Write about {(lo + hi) // 2} words inside <article>. Count them before you reply; under {lo} fails the gate.\n'
     if year_label(row):
         prompt += f'- Title and H1 end with " ({year_label(row)})" (next year, Kevin 2026-10-29). The handle has no year.\n'
     if feedback and previous:
