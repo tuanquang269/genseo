@@ -1875,7 +1875,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** turkesterone + versus checked 2026-11-08 against 172 live articles (blog listing + sitemap + Atom + local caches) and all 144 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#RF1108-5 — nmn vs nmnh** — `NMN vs NMNH: What Is the Difference? (US 2026)`
+- [DONE 2026-11-08 https://wellnessnest.co/blogs/news/nmn-vs-nmnh-the-us-evidence-gap] **#RF1108-5 — nmn vs nmnh** — `NMN vs NMNH: What Is the Difference? (US 2026)`
   - **Primary keyword:** `nmn vs nmnh` · **Secondary:** is nmn better than nmnh, nmnh vs nmn
   - **Search intent:** informed longevity buyer who saw NMNH marketed as a stronger NMN
   - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-08 09:35 ICT)
