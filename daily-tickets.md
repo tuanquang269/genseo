@@ -1958,3 +1958,9 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Link, don't restate:** `/blogs/news/creatine-gummies-vs-powder-which-should-you-actually-take`, `/blogs/news/shilajit-benefits-for-men-4-claims-ranked-us-2026`
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** shilajit + versus checked 2026-11-08 against 172 live articles (blog listing + sitemap + Atom + local caches) and all 152 tickets in this file; STEP 0 re-checks at write time
+
+## RANKING REVIEW 2026-11-08 (Chief 08:45, GSC to 2026-11-05) — refresh/link plan, not article tickets
+WN avg 25.1→26.0 · top3 34→31 · top10 124→103 · top20 171→152 · 167 new kw.
+- REFRESH (pos 4–20, not touched 11-07): real-or-fake-nmn-6-label-checks-for-us-buyers (17.7) · probiotics-after-antibiotics-for-women-when-to-start-us (14.6) · are-vaginal-probiotics-worth-it-40-99-us-check-2026 (8.9). Append-only FAQ from the GSC queries.
+- LINKS → near page 1: do-creatine-gummies-expire… (20.0) from creatine-gummies-vs-powder + how-to-take-creatine pages; nmn-and-coffee… (14.6) from nmn-tmg-for-beginners + nmn-tmg-dosage.
+- NEW (adjacent kw with impressions): RF1108-1..8 comparison tickets (shilajit/turkesterone/nmn vs alternatives) run today.
