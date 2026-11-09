@@ -3116,6 +3116,253 @@
         "how-to-take-vaginal-probiotics-in-the-us",
         "are-vaginal-probiotics-worth-it-40-99-us-check-2026"
       ]
+    },
+    {
+      "segment": "versus",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "id": "nmn-vs-nr",
+      "product": "ageaura-pure-nmn-tmg-nad-complex",
+      "primary": "nmn vs nr",
+      "title": "NMN or NR for NAD+? Evidence Compared (US {year})",
+      "secondary": [
+        "nmn or nr",
+        "is nmn better than nr"
+      ],
+      "intent": "adult comparing NMN with nicotinamide riboside for NAD+ support",
+      "fanout": [
+        "can you take nmn and nr together",
+        "nmn vs nr benefits"
+      ]
+    },
+    {
+      "segment": "versus",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "id": "nmn-vs-niacin",
+      "product": "ageaura-pure-nmn-tmg-nad-complex",
+      "primary": "nmn vs niacin",
+      "title": "NMN vs Niacin: Which Fits Your Goal? (US {year})",
+      "secondary": [
+        "nmn or niacin",
+        "is nmn better than niacin"
+      ],
+      "intent": "adult comparing NMN with plain niacin",
+      "fanout": [
+        "can you take nmn and niacin together",
+        "nmn vs niacin benefits"
+      ]
+    },
+    {
+      "segment": "versus",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "id": "tmg-vs-nmn",
+      "product": "ageaura-pure-nmn-tmg-nad-complex",
+      "primary": "tmg vs nmn",
+      "title": "Tmg vs Nmn: Which Fits Your Goal? (US {year})",
+      "secondary": [
+        "tmg or nmn",
+        "is tmg better than nmn"
+      ],
+      "intent": "adult asking why TMG pairs with NMN",
+      "fanout": [
+        "can you take tmg and nmn together",
+        "tmg vs nmn benefits"
+      ]
+    },
+    {
+      "segment": "versus",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "id": "shilajit-vs-cordyceps",
+      "product": "shilasource-himalayan-shilajit-resin",
+      "primary": "shilajit vs cordyceps",
+      "title": "Shilajit vs Cordyceps: Which Fits Your Goal? (US {year})",
+      "secondary": [
+        "shilajit or cordyceps",
+        "is shilajit better than cordyceps"
+      ],
+      "intent": "adult comparing shilajit with cordyceps for energy",
+      "fanout": [
+        "can you take shilajit and cordyceps together",
+        "shilajit vs cordyceps benefits"
+      ]
+    },
+    {
+      "segment": "versus",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "id": "shilajit-vs-fulvic-acid",
+      "product": "shilasource-himalayan-shilajit-resin",
+      "primary": "shilajit vs fulvic acid",
+      "title": "Shilajit vs Fulvic Acid: Which Fits Your Goal? (US {year})",
+      "secondary": [
+        "shilajit or fulvic acid",
+        "is shilajit better than fulvic acid"
+      ],
+      "intent": "adult comparing shilajit resin with fulvic acid drops",
+      "fanout": [
+        "can you take shilajit and fulvic acid together",
+        "shilajit vs fulvic acid benefits"
+      ]
+    },
+    {
+      "segment": "versus",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "id": "turkesterone-vs-ecdysterone",
+      "product": "turkesterone-advanced-formula",
+      "primary": "turkesterone vs ecdysterone",
+      "title": "Turkesterone vs Ecdysterone: Which Fits Your Goal? (US {year})",
+      "secondary": [
+        "turkesterone or ecdysterone",
+        "is turkesterone better than ecdysterone"
+      ],
+      "intent": "lifter comparing turkesterone with ecdysterone",
+      "fanout": [
+        "can you take turkesterone and ecdysterone together",
+        "turkesterone vs ecdysterone benefits"
+      ]
+    },
+    {
+      "segment": "versus",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "id": "turkesterone-vs-epicatechin",
+      "product": "turkesterone-advanced-formula",
+      "primary": "turkesterone vs epicatechin",
+      "title": "Turkesterone vs Epicatechin: Which Fits Your Goal? (US {year})",
+      "secondary": [
+        "turkesterone or epicatechin",
+        "is turkesterone better than epicatechin"
+      ],
+      "intent": "lifter comparing turkesterone with epicatechin",
+      "fanout": [
+        "can you take turkesterone and epicatechin together",
+        "turkesterone vs epicatechin benefits"
+      ]
+    },
+    {
+      "segment": "versus",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "id": "creatine-gummies-vs-capsules",
+      "product": "fusiforce-creatine-gummies",
+      "primary": "creatine gummies vs capsules",
+      "title": "Creatine Gummies vs Capsules: Which Wins? (US {year})",
+      "secondary": [
+        "creatine gummies or capsules",
+        "is creatine gummies better than capsules"
+      ],
+      "intent": "adult choosing creatine gummies or capsules",
+      "fanout": [
+        "can you take creatine gummies and capsules together",
+        "creatine gummies vs capsules benefits"
+      ]
+    },
+    {
+      "segment": "versus",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "id": "vaginal-probiotic-vs-oral-probiotic",
+      "product": "florafresh-vaginal-probiotics-gummies",
+      "primary": "vaginal probiotic vs oral probiotic",
+      "title": "Vaginal Probiotic vs Oral: Which Fits? (US {year})",
+      "secondary": [
+        "vaginal probiotic or oral probiotic",
+        "is vaginal probiotic better than oral probiotic"
+      ],
+      "intent": "woman comparing vaginal-strain probiotics with general gut probiotics",
+      "fanout": [
+        "can you take vaginal probiotic and oral probiotic together",
+        "vaginal probiotic vs oral probiotic benefits"
+      ]
+    },
+    {
+      "segment": "versus",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "id": "shilajit-vs-rhodiola",
+      "product": "shilasource-himalayan-shilajit-resin",
+      "primary": "shilajit vs rhodiola",
+      "title": "Shilajit vs Rhodiola: Which Fits Your Goal? (US {year})",
+      "secondary": [
+        "shilajit or rhodiola",
+        "is shilajit better than rhodiola"
+      ],
+      "intent": "adult comparing shilajit with rhodiola for stress and energy",
+      "fanout": [
+        "can you take shilajit and rhodiola together",
+        "shilajit vs rhodiola benefits"
+      ]
+    },
+    {
+      "segment": "versus",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "id": "shilajit-vs-lions-mane",
+      "product": "shilasource-himalayan-shilajit-resin",
+      "primary": "shilajit vs lions mane",
+      "title": "Shilajit vs Lions Mane for Focus (US {year})",
+      "secondary": [
+        "shilajit or lions mane",
+        "is shilajit better than lions mane"
+      ],
+      "intent": "adult comparing shilajit with lions mane for focus",
+      "fanout": [
+        "can you take shilajit and lions mane together",
+        "shilajit vs lions mane benefits"
+      ]
+    },
+    {
+      "segment": "versus",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "id": "nmn-vs-glutathione",
+      "product": "ageaura-pure-nmn-tmg-nad-complex",
+      "primary": "nmn vs glutathione",
+      "title": "NMN vs Glutathione: What Each Does (US {year})",
+      "secondary": [
+        "nmn or glutathione",
+        "is nmn better than glutathione"
+      ],
+      "intent": "adult comparing NMN with glutathione for healthy aging",
+      "fanout": [
+        "can you take nmn and glutathione together",
+        "nmn vs glutathione benefits"
+      ]
+    },
+    {
+      "segment": "versus",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "id": "turkesterone-vs-dhea",
+      "product": "turkesterone-advanced-formula",
+      "primary": "turkesterone vs dhea",
+      "title": "Turkesterone vs DHEA: Key Differences (US {year})",
+      "secondary": [
+        "turkesterone or dhea",
+        "is turkesterone better than dhea"
+      ],
+      "intent": "adult comparing turkesterone with DHEA",
+      "fanout": [
+        "can you take turkesterone and dhea together",
+        "turkesterone vs dhea benefits"
+      ]
     }
   ]
 }
