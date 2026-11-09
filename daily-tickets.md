@@ -1902,7 +1902,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** shilajit + versus checked 2026-11-08 against 172 live articles (blog listing + sitemap + Atom + local caches) and all 144 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#RF1108-7 — shilajit vs sea moss** — `Shilajit vs Sea Moss: Minerals Compared (US 2026)`
+- [DONE 2026-11-09 https://wellnessnest.co/blogs/news/shilajit-vs-sea-moss-the-us-mineral-check] **#RF1108-7 — shilajit vs sea moss** — `Shilajit vs Sea Moss: Minerals Compared (US 2026)`
   - **Primary keyword:** `shilajit vs sea moss` · **Secondary:** shilajit or sea moss, is shilajit better than sea moss, shilajit compared to sea moss
   - **Search intent:** wellness buyer deciding between two mineral-rich trend supplements
   - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-08 09:35 ICT)
