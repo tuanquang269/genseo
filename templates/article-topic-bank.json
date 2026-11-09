@@ -2804,6 +2804,318 @@
         "florafresh-vs-generic-probiotics-4-strain-facts-us-2026",
         "probiotics-for-bv-do-they-actually-work-us-2026"
       ]
+    },
+    {
+      "id": "nmn-vs-resveratrol",
+      "product": "ageaura-pure-nmn-tmg-nad-complex",
+      "primary": "nmn vs resveratrol",
+      "title": "NMN vs Resveratrol: Which Fits Your Goal? (US {year})",
+      "secondary": [
+        "nmn or resveratrol",
+        "is nmn better than resveratrol"
+      ],
+      "segment": "versus",
+      "intent": "longevity buyer choosing between NMN and resveratrol",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "fanout": [
+        "can you take nmn and resveratrol together",
+        "which is better nmn or resveratrol",
+        "which works faster",
+        "who should take which"
+      ],
+      "evidence": "Fetched human trials (PubMed/DOI) for BOTH sides at write time; our product panel and price only from the live PDP; no claim the source does not state.",
+      "link": [
+        "nmn-tmg-dosage-how-much-per-day",
+        "nmn-tmg-for-beginners-4-things-to-know"
+      ]
+    },
+    {
+      "id": "nmn-vs-spermidine",
+      "product": "ageaura-pure-nmn-tmg-nad-complex",
+      "primary": "nmn vs spermidine",
+      "title": "NMN vs Spermidine: Which Fits Your Goal? (US {year})",
+      "secondary": [
+        "nmn or spermidine",
+        "is nmn better than spermidine"
+      ],
+      "segment": "versus",
+      "intent": "longevity buyer comparing NMN with spermidine",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "fanout": [
+        "can you take nmn and spermidine together",
+        "which is better nmn or spermidine",
+        "which works faster",
+        "who should take which"
+      ],
+      "evidence": "Fetched human trials (PubMed/DOI) for BOTH sides at write time; our product panel and price only from the live PDP; no claim the source does not state.",
+      "link": [
+        "nmn-tmg-dosage-how-much-per-day",
+        "nmn-tmg-for-beginners-4-things-to-know"
+      ]
+    },
+    {
+      "id": "nmn-vs-coq10",
+      "product": "ageaura-pure-nmn-tmg-nad-complex",
+      "primary": "nmn vs coq10",
+      "title": "NMN vs CoQ10: Which Fits Your Goal? (US {year})",
+      "secondary": [
+        "nmn or coq10",
+        "is nmn better than coq10"
+      ],
+      "segment": "versus",
+      "intent": "adult over 40 comparing NMN with CoQ10 for energy",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "fanout": [
+        "can you take nmn and coq10 together",
+        "which is better nmn or coq10",
+        "which works faster",
+        "who should take which"
+      ],
+      "evidence": "Fetched human trials (PubMed/DOI) for BOTH sides at write time; our product panel and price only from the live PDP; no claim the source does not state.",
+      "link": [
+        "nmn-tmg-dosage-how-much-per-day",
+        "nmn-tmg-for-beginners-4-things-to-know"
+      ]
+    },
+    {
+      "id": "shilajit-vs-ginseng",
+      "product": "shilasource-himalayan-shilajit-resin",
+      "primary": "shilajit vs ginseng",
+      "title": "Shilajit vs Ginseng: Which Fits Your Goal? (US {year})",
+      "secondary": [
+        "shilajit or ginseng",
+        "is shilajit better than ginseng"
+      ],
+      "segment": "versus",
+      "intent": "buyer comparing shilajit with ginseng for energy",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "fanout": [
+        "can you take shilajit and ginseng together",
+        "which is better shilajit or ginseng",
+        "which works faster",
+        "who should take which"
+      ],
+      "evidence": "Fetched human trials (PubMed/DOI) for BOTH sides at write time; our product panel and price only from the live PDP; no claim the source does not state.",
+      "link": [
+        "shilajit-benefits-for-men-4-claims-ranked-us-2026",
+        "how-much-shilajit-per-day-dosage-by-form-us-2026"
+      ]
+    },
+    {
+      "id": "shilajit-vs-moringa",
+      "product": "shilasource-himalayan-shilajit-resin",
+      "primary": "shilajit vs moringa",
+      "title": "Shilajit vs Moringa: Which Fits Your Goal? (US {year})",
+      "secondary": [
+        "shilajit or moringa",
+        "is shilajit better than moringa"
+      ],
+      "segment": "versus",
+      "intent": "buyer comparing two mineral-rich plant supplements",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "fanout": [
+        "can you take shilajit and moringa together",
+        "which is better shilajit or moringa",
+        "which works faster",
+        "who should take which"
+      ],
+      "evidence": "Fetched human trials (PubMed/DOI) for BOTH sides at write time; our product panel and price only from the live PDP; no claim the source does not state.",
+      "link": [
+        "shilajit-benefits-for-men-4-claims-ranked-us-2026",
+        "how-much-shilajit-per-day-dosage-by-form-us-2026"
+      ]
+    },
+    {
+      "id": "turkesterone-vs-ashwagandha",
+      "product": "turkesterone-advanced-formula",
+      "primary": "turkesterone vs ashwagandha",
+      "title": "Turkesterone vs Ashwagandha: Which Fits Your Goal? (US {year})",
+      "secondary": [
+        "turkesterone or ashwagandha",
+        "is turkesterone better than ashwagandha"
+      ],
+      "segment": "versus",
+      "intent": "lifter comparing turkesterone with ashwagandha",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "fanout": [
+        "can you take turkesterone and ashwagandha together",
+        "which is better turkesterone or ashwagandha",
+        "which works faster",
+        "who should take which"
+      ],
+      "evidence": "Fetched human trials (PubMed/DOI) for BOTH sides at write time; our product panel and price only from the live PDP; no claim the source does not state.",
+      "link": [
+        "turkesterone-cycle-do-you-need-breaks-us-2026",
+        "turkesterone-for-athletes-drug-test-guide-us-2026"
+      ]
+    },
+    {
+      "id": "turkesterone-vs-tribulus",
+      "product": "turkesterone-advanced-formula",
+      "primary": "turkesterone vs tribulus",
+      "title": "Turkesterone vs Tribulus: Which Fits Your Goal? (US {year})",
+      "secondary": [
+        "turkesterone or tribulus",
+        "is turkesterone better than tribulus"
+      ],
+      "segment": "versus",
+      "intent": "lifter comparing turkesterone with tribulus",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "fanout": [
+        "can you take turkesterone and tribulus together",
+        "which is better turkesterone or tribulus",
+        "which works faster",
+        "who should take which"
+      ],
+      "evidence": "Fetched human trials (PubMed/DOI) for BOTH sides at write time; our product panel and price only from the live PDP; no claim the source does not state.",
+      "link": [
+        "turkesterone-cycle-do-you-need-breaks-us-2026",
+        "turkesterone-for-athletes-drug-test-guide-us-2026"
+      ]
+    },
+    {
+      "id": "creatine-vs-beta-alanine",
+      "product": "fusiforce-creatine-gummies",
+      "primary": "creatine vs beta alanine",
+      "title": "Creatine vs Beta-Alanine: Which Fits Your Goal? (US {year})",
+      "secondary": [
+        "creatine or beta alanine",
+        "is creatine better than beta alanine"
+      ],
+      "segment": "versus",
+      "intent": "gym-goer choosing between creatine and beta-alanine",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "fanout": [
+        "can you take creatine and beta alanine together",
+        "which is better creatine or beta alanine",
+        "which works faster",
+        "who should take which"
+      ],
+      "evidence": "Fetched human trials (PubMed/DOI) for BOTH sides at write time; our product panel and price only from the live PDP; no claim the source does not state.",
+      "link": [
+        "creatine-gummies-vs-powder-which-should-you-actually-take",
+        "do-creatine-gummies-expire-6-storage-facts-us-2026"
+      ]
+    },
+    {
+      "id": "creatine-vs-protein-powder",
+      "product": "fusiforce-creatine-gummies",
+      "primary": "creatine vs protein powder",
+      "title": "Creatine vs Protein Powder: Which Fits Your Goal? (US {year})",
+      "secondary": [
+        "creatine or protein powder",
+        "is creatine better than protein powder"
+      ],
+      "segment": "versus",
+      "intent": "gym-goer asking whether creatine replaces protein",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "fanout": [
+        "can you take creatine and protein powder together",
+        "which is better creatine or protein powder",
+        "which works faster",
+        "who should take which"
+      ],
+      "evidence": "Fetched human trials (PubMed/DOI) for BOTH sides at write time; our product panel and price only from the live PDP; no claim the source does not state.",
+      "link": [
+        "creatine-gummies-vs-powder-which-should-you-actually-take",
+        "do-creatine-gummies-expire-6-storage-facts-us-2026"
+      ]
+    },
+    {
+      "id": "creatine-vs-pre-workout",
+      "product": "fusiforce-creatine-gummies",
+      "primary": "creatine vs pre workout",
+      "title": "Creatine vs Pre-Workout: Which Fits Your Goal? (US {year})",
+      "secondary": [
+        "creatine or pre workout",
+        "is creatine better than pre workout"
+      ],
+      "segment": "versus",
+      "intent": "gym-goer choosing creatine or a pre-workout",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "fanout": [
+        "can you take creatine and pre workout together",
+        "which is better creatine or pre workout",
+        "which works faster",
+        "who should take which"
+      ],
+      "evidence": "Fetched human trials (PubMed/DOI) for BOTH sides at write time; our product panel and price only from the live PDP; no claim the source does not state.",
+      "link": [
+        "creatine-gummies-vs-powder-which-should-you-actually-take",
+        "do-creatine-gummies-expire-6-storage-facts-us-2026"
+      ]
+    },
+    {
+      "id": "probiotics-vs-cranberry",
+      "product": "florafresh-vaginal-probiotics-gummies",
+      "primary": "probiotics vs cranberry",
+      "title": "Probiotics vs Cranberry: Which Fits Your Goal? (US {year})",
+      "secondary": [
+        "probiotics or cranberry",
+        "is probiotics better than cranberry"
+      ],
+      "segment": "versus",
+      "intent": "woman comparing vaginal probiotics with cranberry for urinary and vaginal health",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "fanout": [
+        "can you take probiotics and cranberry together",
+        "which is better probiotics or cranberry",
+        "which works faster",
+        "who should take which"
+      ],
+      "evidence": "Fetched human trials (PubMed/DOI) for BOTH sides at write time; our product panel and price only from the live PDP; no claim the source does not state.",
+      "link": [
+        "how-to-take-vaginal-probiotics-in-the-us",
+        "are-vaginal-probiotics-worth-it-40-99-us-check-2026"
+      ]
+    },
+    {
+      "id": "probiotics-vs-d-mannose",
+      "product": "florafresh-vaginal-probiotics-gummies",
+      "primary": "probiotics vs d mannose",
+      "title": "Probiotics vs D-Mannose: Which Fits Your Goal? (US {year})",
+      "secondary": [
+        "probiotics or d mannose",
+        "is probiotics better than d mannose"
+      ],
+      "segment": "versus",
+      "intent": "woman comparing probiotics with D-mannose",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "fanout": [
+        "can you take probiotics and d mannose together",
+        "which is better probiotics or d mannose",
+        "which works faster",
+        "who should take which"
+      ],
+      "evidence": "Fetched human trials (PubMed/DOI) for BOTH sides at write time; our product panel and price only from the live PDP; no claim the source does not state.",
+      "link": [
+        "how-to-take-vaginal-probiotics-in-the-us",
+        "are-vaginal-probiotics-worth-it-40-99-us-check-2026"
+      ]
     }
   ]
 }

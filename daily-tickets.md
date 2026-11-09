@@ -1964,3 +1964,107 @@ WN avg 25.1→26.0 · top3 34→31 · top10 124→103 · top20 171→152 · 167 
 - REFRESH (pos 4–20, not touched 11-07): real-or-fake-nmn-6-label-checks-for-us-buyers (17.7) · probiotics-after-antibiotics-for-women-when-to-start-us (14.6) · are-vaginal-probiotics-worth-it-40-99-us-check-2026 (8.9). Append-only FAQ from the GSC queries.
 - LINKS → near page 1: do-creatine-gummies-expire… (20.0) from creatine-gummies-vs-powder + how-to-take-creatine pages; nmn-and-coffee… (14.6) from nmn-tmg-for-beginners + nmn-tmg-dosage.
 - NEW (adjacent kw with impressions): RF1108-1..8 comparison tickets (shilajit/turkesterone/nmn vs alternatives) run today.
+
+# BATCH 2026-11-09 (refill_tickets.py — ids #RF1109-1…#RF1109-6)
+
+Built by `scripts/refill_tickets.py` at 2026-11-09 08:52 ICT from `templates/article-topic-bank.json` + `board/ideas.csv`
+(search volume: No data — GSC/Ads not used). Every ticket passed, against the live store at build time:
+brand_rules + `lint_tickets.py` · hero product live and in stock · not a covered topic (header rule 6) ·
+not already queued · not live (181 published articles: blog listing + sitemap + Atom + local caches; one article per brand + segment) ·
+`topic_fitness.py` strict on primary and title · STEP 0 suggest.json.
+A `topic_fitness` REVIEW [covered-segment] verdict is allowed under Kevin's standing greenlight for mined queues (2026-08-13).
+A topic is a brief, not copy: source every claim or cut it.
+
+**Rules for this batch:** from the 2026-10-08 batch rules — fan-out answers, a "Where to buy <product> in the US"
+section (live price, the ticket's product link only), roster.json byline only (never an invented person or
+credential), the logged fact-check pass (`logs/claims/<slug>.md`; delete unconfirmed claims), the brand gate.
+Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py once. The hero is the picked face plus the real pack unless pick prints NO-FACE. One inline image uses that face. The other inline images have no recognizable face but still show a hand, forearm, or body cropped below the eyes. A no-face image is the fallback for one frame after a face refusal or two QC misses, not a batch-wide ban. The MacBook article plist sets `GENSEO_NO_FACE=0`, and that value does not switch the lane. Prices were read live at build time; re-check the PDP while writing.
+
+- [ ] **#RF1109-1 — turkesterone vs ashwagandha** — `Turkesterone vs Ashwagandha: Which Fits Your Goal? (US 2026)`
+  - **Primary keyword:** `turkesterone vs ashwagandha` · **Secondary:** turkesterone or ashwagandha, is turkesterone better than ashwagandha
+  - **Search intent:** lifter comparing turkesterone with ashwagandha
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-09 08:52 ICT)
+  - **Hero product:** `/products/turkesterone-advanced-formula` (Turkesterone Advanced Formula, $75, in stock 2026-11-09)
+  - **Turkesterone Advanced Formula pack label (source of truth):** wellness, nest, PREMIUM, TURKESTERONE, ADVANCED, FORMULA, AMPLIFY, MUSCLE, ENDURANCE, 60, Dietary Supplement, Capsules. No milligram amount and no Supplement Facts panel were read. Do not add one. The capsule badge is the separate lines in product_refs/turkesterone-advanced-formula.label.json. Do not state a milligram amount, a serving count, a different capsule count, or a day-supply.
+  - **Collection links (≥2, verify live):** `/collections/mens-essential-collection` (contains it), `/collections/shilajit-wellness-stack` (contains it)
+  - **Angle:** Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.
+  - **Fan-out answers to cover:** can you take turkesterone and ashwagandha together; which is better turkesterone or ashwagandha; which works faster; who should take which
+  - **Evidence to fetch & confirm (claims log):** Fetched human trials (PubMed/DOI) for BOTH sides at write time; our product panel and price only from the live PDP; no claim the source does not state.
+  - **Link, don't restate:** `/blogs/news/turkesterone-cycle-do-you-need-breaks-us-2026`, `/blogs/news/turkesterone-for-athletes-drug-test-guide-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** turkesterone + versus checked 2026-11-09 against 181 live articles (blog listing + sitemap + Atom + local caches) and all 153 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#RF1109-2 — nmn vs spermidine** — `NMN vs Spermidine: Which Fits Your Goal? (US 2026)`
+  - **Primary keyword:** `nmn vs spermidine` · **Secondary:** nmn or spermidine, is nmn better than spermidine
+  - **Search intent:** longevity buyer comparing NMN with spermidine
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-09 08:52 ICT)
+  - **Hero product:** `/products/ageaura-pure-nmn-tmg-nad-complex` (AgeAura Pure NMN + TMG NAD+ Complex, $79.99, in stock 2026-11-09)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` twice (browse link — AgeAura Pure NMN + TMG NAD+ Complex is not in it, never claim it is) · no other AgeAura product and no AgeAura collection link (brand_rules)
+  - **Angle:** Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.
+  - **Fan-out answers to cover:** can you take nmn and spermidine together; which is better nmn or spermidine; which works faster; who should take which
+  - **Evidence to fetch & confirm (claims log):** Fetched human trials (PubMed/DOI) for BOTH sides at write time; our product panel and price only from the live PDP; no claim the source does not state.
+  - **Link, don't restate:** `/blogs/news/nmn-tmg-dosage-how-much-per-day`, `/blogs/news/nmn-tmg-for-beginners-4-things-to-know`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** nmn + versus checked 2026-11-09 against 181 live articles (blog listing + sitemap + Atom + local caches) and all 153 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#RF1109-3 — shilajit vs ginseng** — `Shilajit vs Ginseng: Which Fits Your Goal? (US 2026)`
+  - **Primary keyword:** `shilajit vs ginseng` · **Secondary:** shilajit or ginseng, is shilajit better than ginseng
+  - **Search intent:** buyer comparing shilajit with ginseng for energy
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-09 08:52 ICT)
+  - **Hero product:** `/products/shilasource-himalayan-shilajit-resin` (ShilaSource Himalayan Shilajit Resin, $69.99, in stock 2026-11-09)
+  - **ShilaSource Himalayan Shilajit Resin pack label (source of truth):** ShilaSource, Himalayan, Shilajit, Resin, 75, Dietary Supplement, Wellness, Nest, 70% Fulvic Acid*, Lab-Tested for Purity*, 1.06oz (30g), SERVINGS, Servings. No milligram amount and no Supplement Facts panel were read into that file. Do not add one. Do not state a serving count, volume, weight, fulvic percentage, mineral count, or day-supply other than the lines in product_refs/shilasource-himalayan-shilajit-resin.label.json.
+  - **Collection links (≥2, verify live):** `/collections/shilajit-wellness-stack` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.
+  - **Fan-out answers to cover:** can you take shilajit and ginseng together; which is better shilajit or ginseng; which works faster; who should take which
+  - **Evidence to fetch & confirm (claims log):** Fetched human trials (PubMed/DOI) for BOTH sides at write time; our product panel and price only from the live PDP; no claim the source does not state.
+  - **Link, don't restate:** `/blogs/news/shilajit-benefits-for-men-4-claims-ranked-us-2026`, `/blogs/news/how-much-shilajit-per-day-dosage-by-form-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** shilajit + versus checked 2026-11-09 against 181 live articles (blog listing + sitemap + Atom + local caches) and all 153 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#RF1109-4 — turkesterone vs tribulus** — `Turkesterone vs Tribulus: Which Fits Your Goal? (US 2026)`
+  - **Primary keyword:** `turkesterone vs tribulus` · **Secondary:** turkesterone or tribulus, is turkesterone better than tribulus
+  - **Search intent:** lifter comparing turkesterone with tribulus
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-09 08:52 ICT)
+  - **Hero product:** `/products/turkesterone-advanced-formula` (Turkesterone Advanced Formula, $75, in stock 2026-11-09)
+  - **Turkesterone Advanced Formula pack label (source of truth):** wellness, nest, PREMIUM, TURKESTERONE, ADVANCED, FORMULA, AMPLIFY, MUSCLE, ENDURANCE, 60, Dietary Supplement, Capsules. No milligram amount and no Supplement Facts panel were read. Do not add one. The capsule badge is the separate lines in product_refs/turkesterone-advanced-formula.label.json. Do not state a milligram amount, a serving count, a different capsule count, or a day-supply.
+  - **Collection links (≥2, verify live):** `/collections/mens-essential-collection` (contains it), `/collections/shilajit-wellness-stack` (contains it)
+  - **Angle:** Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.
+  - **Fan-out answers to cover:** can you take turkesterone and tribulus together; which is better turkesterone or tribulus; which works faster; who should take which
+  - **Evidence to fetch & confirm (claims log):** Fetched human trials (PubMed/DOI) for BOTH sides at write time; our product panel and price only from the live PDP; no claim the source does not state.
+  - **Link, don't restate:** `/blogs/news/turkesterone-cycle-do-you-need-breaks-us-2026`, `/blogs/news/turkesterone-for-athletes-drug-test-guide-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** turkesterone + versus checked 2026-11-09 against 181 live articles (blog listing + sitemap + Atom + local caches) and all 153 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#RF1109-5 — nmn vs coq10** — `NMN vs CoQ10: Which Fits Your Goal? (US 2026)`
+  - **Primary keyword:** `nmn vs coq10` · **Secondary:** nmn or coq10, is nmn better than coq10
+  - **Search intent:** adult over 40 comparing NMN with CoQ10 for energy
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-09 08:52 ICT)
+  - **Hero product:** `/products/ageaura-pure-nmn-tmg-nad-complex` (AgeAura Pure NMN + TMG NAD+ Complex, $79.99, in stock 2026-11-09)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` twice (browse link — AgeAura Pure NMN + TMG NAD+ Complex is not in it, never claim it is) · no other AgeAura product and no AgeAura collection link (brand_rules)
+  - **Angle:** Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.
+  - **Fan-out answers to cover:** can you take nmn and coq10 together; which is better nmn or coq10; which works faster; who should take which
+  - **Evidence to fetch & confirm (claims log):** Fetched human trials (PubMed/DOI) for BOTH sides at write time; our product panel and price only from the live PDP; no claim the source does not state.
+  - **Link, don't restate:** `/blogs/news/nmn-tmg-dosage-how-much-per-day`, `/blogs/news/nmn-tmg-for-beginners-4-things-to-know`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** nmn + versus checked 2026-11-09 against 181 live articles (blog listing + sitemap + Atom + local caches) and all 153 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#RF1109-6 — shilajit vs moringa** — `Shilajit vs Moringa: Which Fits Your Goal? (US 2026)`
+  - **Primary keyword:** `shilajit vs moringa` · **Secondary:** shilajit or moringa, is shilajit better than moringa
+  - **Search intent:** buyer comparing two mineral-rich plant supplements
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-09 08:52 ICT)
+  - **Hero product:** `/products/shilasource-himalayan-shilajit-resin` (ShilaSource Himalayan Shilajit Resin, $69.99, in stock 2026-11-09)
+  - **ShilaSource Himalayan Shilajit Resin pack label (source of truth):** ShilaSource, Himalayan, Shilajit, Resin, 75, Dietary Supplement, Wellness, Nest, 70% Fulvic Acid*, Lab-Tested for Purity*, 1.06oz (30g), SERVINGS, Servings. No milligram amount and no Supplement Facts panel were read into that file. Do not add one. Do not state a serving count, volume, weight, fulvic percentage, mineral count, or day-supply other than the lines in product_refs/shilasource-himalayan-shilajit-resin.label.json.
+  - **Collection links (≥2, verify live):** `/collections/shilajit-wellness-stack` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.
+  - **Fan-out answers to cover:** can you take shilajit and moringa together; which is better shilajit or moringa; which works faster; who should take which
+  - **Evidence to fetch & confirm (claims log):** Fetched human trials (PubMed/DOI) for BOTH sides at write time; our product panel and price only from the live PDP; no claim the source does not state.
+  - **Link, don't restate:** `/blogs/news/shilajit-benefits-for-men-4-claims-ranked-us-2026`, `/blogs/news/how-much-shilajit-per-day-dosage-by-form-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** shilajit + versus checked 2026-11-09 against 181 live articles (blog listing + sitemap + Atom + local caches) and all 153 tickets in this file; STEP 0 re-checks at write time
+
+## RANKING REVIEW 2026-11-09 (Chief 08:45, GSC 7 d to 2026-11-06 vs prior 7 d)
+WN avg 25.0→25.7 · top3 39→29 · top10 125→105 · top20 178→155 · 152 new kw · imp 2096→2153.
+- REFRESH (pos 4–20, append-only FAQ): probiotics-during-your-period… (14.3, 401 imp) · best-time-to-take-vaginal-probiotics… (7.7) · probiotics-and-birth-control… (7.1) · turkesterone-cycle-do-you-need-breaks (14.2, "how to cycle turkesterone").
+- LINKS → near page 1: do-creatine-gummies-expire (8.4) from creatine-gummies-vs-powder; nmn-and-coffee (11.5) from nmn-tmg-dosage; nmn-capsules-vs-powder (8.7, "nmn powder vs capsules") from how-to-take-nmn.
+- NEW: RF1109-1..6 substitute comparisons (bank +12). Adjacent GSC gap with no page: "take nmn with or without food" (38 imp, pos 70) → next refill.
+Cherish: 0 imp — sitemap_articles 70 submitted / 0 indexed; homepage "URL is unknown to Google". SouthEDC: 6 kw, avg 2.1→3.9 (brand terms only).
