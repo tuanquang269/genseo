@@ -1945,7 +1945,7 @@ section (live price, the ticket's product link only), roster.json byline only (n
 credential), the logged fact-check pass (`logs/claims/<slug>.md`; delete unconfirmed claims), the brand gate.
 Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py once. The hero is the picked face plus the real pack unless pick prints NO-FACE. One inline image uses that face. The other inline images have no recognizable face but still show a hand, forearm, or body cropped below the eyes. A no-face image is the fallback for one frame after a face refusal or two QC misses, not a batch-wide ban. The MacBook article plist sets `GENSEO_NO_FACE=0`, and that value does not switch the lane. Prices were read live at build time; re-check the PDP while writing.
 
-- [ ] **#MB1108-1 — shilajit vs creatine** — `Shilajit vs Creatine: Different Jobs, Compared (US 2026)`
+- [DONE 2026-11-09 https://wellnessnest.co/blogs/news/shilajit-vs-creatine-the-us-strength-verdict] **#MB1108-1 — shilajit vs creatine** — `Shilajit vs Creatine: Different Jobs, Compared (US 2026)`
   - **Primary keyword:** `shilajit vs creatine` · **Secondary:** can i take shilajit instead of creatine, is shilajit better than creatine
   - **Search intent:** gym-goer asking whether shilajit can replace creatine
   - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-08 09:36 ICT)
