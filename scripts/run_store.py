@@ -471,6 +471,17 @@ def finalize_page(page, template, row, package, hero, day):
         require(link is not None, 'A band card (.mini) must link to one product page (/products/<handle>), not a collection')
         return f'<div class="mini" data-product="{link.group(1)}">'
     page = re.sub(r'<div class="mini">', mini, page)
+    # The band is minis OR one CTA, as the template has it; the shell prints only one (slot 6 2026-11-09: style 3 CTA + writer row3 failed fidelity).
+    band = re.search(r'<section class="band".*?</section>', page, re.S)
+    tband = re.search(r'<section class="band".*?</section>', template, re.S)
+    if band and tband:
+        b = band.group(0)
+        if 'class="mini"' in tband.group(0):
+            b = re.sub(r'<p><a class="btn"[^>]*>.*?</a></p>\s*', '', b, flags=re.S) if 'class="mini"' in b else b
+            b = re.sub(r'<div class="row3"[^>]*>', '<div class="row3">', b)
+        else:
+            b = re.sub(r'<div class="row3"[^>]*>(?:\s*<div class="mini".*?</div>)*\s*</div>\s*', '', b, flags=re.S)
+        page = page[:band.start()] + b + page[band.end():]
     # The shell prints the rail TOC from journal.toc, which is read from the inline TOC: an entry only in the rail is lost on
     # live and fails fidelity (slot 3 2026-11-05, "Check first"). The runner copies the rail entries into the inline TOC.
     rail = re.search(r'<details class="toc" open>.*?<ol>(.*?)</ol>', page, re.S)
