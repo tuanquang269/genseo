@@ -1916,7 +1916,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** shilajit + versus checked 2026-11-08 against 172 live articles (blog listing + sitemap + Atom + local caches) and all 144 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#RF1108-8 — shilajit vs maca** — `Shilajit vs Maca Root: Which Should You Take? (US 2026)`
+- [DONE 2026-11-09 https://wellnessnest.co/blogs/news/shilajit-vs-maca-the-us-evidence-check] **#RF1108-8 — shilajit vs maca** — `Shilajit vs Maca Root: Which Should You Take? (US 2026)`
   - **Primary keyword:** `shilajit vs maca` · **Secondary:** shilajit or maca, is shilajit better than maca root, shilajit vs maca root
   - **Search intent:** buyer comparing shilajit with maca for energy and libido support
   - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-08 09:35 ICT)
