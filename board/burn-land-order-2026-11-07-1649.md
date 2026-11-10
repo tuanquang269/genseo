@@ -1,5 +1,7 @@
 # LAND order — 2026-11-07 16:49 ICT
 
+> Working recommendation moved on 2026-11-10 16:48 ICT to `board/burn-land-order-2026-11-10.md`. The tables below are this snapshot and were not edited.
+
 Draft for Kevin's GO. This pass updated the board only. Nothing was merged, closed, retargeted, marked ready, or published. No Shopify write. #121 was not edited, pushed, rebased, or commented. FloraFresh live 15 billion CFU wording stays with T3. AgeAura in this order is NMN + TMG only.
 
 A local scratch branch `scratch/land-order-sim-20261107` was test-merged in a worktree and then deleted. It was not pushed. Tree SHAs below are from those merges. A re-run on these tips has to reproduce the trees. The scratch commit SHAs are not on the remote.
