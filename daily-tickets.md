@@ -2048,7 +2048,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** nmn + versus checked 2026-11-09 against 181 live articles (blog listing + sitemap + Atom + local caches) and all 153 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#RF1109-6 — shilajit vs moringa** — `Shilajit vs Moringa: Which Fits Your Goal? (US 2026)`
+- [DONE 2026-11-10 https://wellnessnest.co/blogs/news/shilajit-vs-moringa-which-fits-you-in-the-us] **#RF1109-6 — shilajit vs moringa** — `Shilajit vs Moringa: Which Fits Your Goal? (US 2026)`
   - **Primary keyword:** `shilajit vs moringa` · **Secondary:** shilajit or moringa, is shilajit better than moringa
   - **Search intent:** buyer comparing two mineral-rich plant supplements
   - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-09 08:52 ICT)
