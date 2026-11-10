@@ -407,13 +407,13 @@ has "$WORK/out" "lock_apply daily.lock: kept symlink" "symlink kept"
 
 echo "9. a live daily writer blocks unlock; an unrelated live PID does not"
 init_repo live
-mkdir -p "$WORK/writers" "$REPO/state/daily.lock"
-cat >"$WORK/writers/grokbot-genseo-daily" <<'EOF'
+mkdir -p "$REPO/state/daily.lock"
+cat >"$REPO/grokbot-genseo-daily" <<'EOF'
 #!/bin/bash
 sleep 180
 EOF
-chmod +x "$WORK/writers/grokbot-genseo-daily"
-"$WORK/writers/grokbot-genseo-daily" &
+chmod +x "$REPO/grokbot-genseo-daily"
+"$REPO/grokbot-genseo-daily" &
 WRITER_PID=$!
 PIDS="$PIDS $WRITER_PID"
 sleep 1
@@ -458,13 +458,13 @@ PIDS=""
 
 echo "9b. a live landing writer blocks the landing lock"
 init_repo landlive
-mkdir -p "$WORK/writers" "$REPO/state/landing-daily.lock"
-cat >"$WORK/writers/run_landing_daily.sh" <<'EOF'
+mkdir -p "$REPO/state/landing-daily.lock"
+cat >"$REPO/run_landing_daily.sh" <<'EOF'
 #!/bin/bash
 sleep 180
 EOF
-chmod +x "$WORK/writers/run_landing_daily.sh"
-"$WORK/writers/run_landing_daily.sh" &
+chmod +x "$REPO/run_landing_daily.sh"
+"$REPO/run_landing_daily.sh" &
 LAND_PID=$!
 PIDS="$PIDS $LAND_PID"
 sleep 1
@@ -483,11 +483,9 @@ kill "$LAND_PID" 2>/dev/null || true
 wait "$LAND_PID" 2>/dev/null || true
 PIDS=""
 
-echo "9c. a writer outside this temp checkout stays off the injected table"
+echo "9c. an absolute writer in another directory does not block this checkout"
 init_repo outside
 mkdir -p "$REPO/state/daily.lock"
-printf '%s\n' 99999999 >"$REPO/state/daily.lock/pid"
-set_age "$REPO/state/daily.lock" 30000
 OUTSIDE=$(mktemp -d "${TMPDIR:-/tmp}/reconcile-outside.XXXXXX") || exit 1
 EXTRA_DIRS="$EXTRA_DIRS $OUTSIDE"
 cat >"$OUTSIDE/grokbot-genseo-daily" <<'EOF'
@@ -501,15 +499,26 @@ PIDS="$PIDS $OUT_PID"
 sleep 0.3
 if kill -0 "$OUT_PID" 2>/dev/null; then ok "outside writer is alive"
 else bad "outside writer did not start"; fi
+printf '%s\n' "$OUT_PID" >"$REPO/state/daily.lock/pid"
+set_age "$REPO/state/daily.lock" 30000
 GENSEO_RECONCILE_TEST=0 run_rec --apply-stale-lock
-assert_rc 4 "host scan blocks on a writer outside the temp checkout"
-has "$WORK/out" "lock_apply daily.lock: kept live-writer" "host scan still fail-closes"
-if grep -F -q -- "$OUT_PID" "$WORK/out"; then ok "host scan names the outside writer"
-else bad "host scan did not name the outside writer"; fi
+assert_rc 0 "host scan skips a writer in another directory"
+has "$WORK/out" "lock_apply daily.lock: removed" "host scan removed the lock"
+has "$WORK/out" "recorded_pid: $OUT_PID alive-other" "outside writer is not this checkout"
+if grep -F -q -- "live_writer: ${OUT_PID} " "$WORK/out"; then
+  bad "host scan named the outside writer"
+else
+  ok "host scan does not name the outside writer"
+fi
+[ ! -e "$REPO/state/daily.lock" ] && ok "lock removed while the outside writer lives" || bad "lock remained under an outside writer"
+mkdir -p "$REPO/state/daily.lock"
+printf '%s\n' "$OUT_PID" >"$REPO/state/daily.lock/pid"
+set_age "$REPO/state/daily.lock" 30000
 run_rec --apply-stale-lock
 assert_rc 0 "injected table ignores the outside writer"
 has "$WORK/out" "lock_apply daily.lock: removed" "outside writer did not keep the lock"
-[ ! -e "$REPO/state/daily.lock" ] && ok "lock removed while the outside writer lives" || bad "lock remained under an outside writer"
+has "$WORK/out" "recorded_pid: $OUT_PID alive-other" "injected table still classifies the outside pid"
+[ ! -e "$REPO/state/daily.lock" ] && ok "injected table removed the lock" || bad "injected table left the lock"
 kill -0 "$OUT_PID" 2>/dev/null && ok "outside writer was not killed" || bad "outside writer was killed"
 mkdir -p "$REPO/state/daily.lock"
 printf '%s\n' 99999999 >"$REPO/state/daily.lock/pid"
@@ -525,6 +534,209 @@ lacks "$WORK/out" "apply_block: live-writer" "failed hook does not fall through 
 kill "$OUT_PID" 2>/dev/null || true
 wait "$OUT_PID" 2>/dev/null || true
 PIDS=""
+
+echo "9d. reconcile callers: scope 0 blocks, scope 1 does not, scope 2 fails closed"
+SCOPE_PID=""
+scope_rec_ps() {
+  local line=$1
+  sleep 60 &
+  SCOPE_PID=$!
+  PIDS="$PIDS $SCOPE_PID"
+  cat >"$WORK/ps-scope-case" <<EOF
+#!/bin/bash
+printf '%s %s\n' "$SCOPE_PID" "$line"
+exit 0
+EOF
+  chmod 755 "$WORK/ps-scope-case"
+}
+scope_rec_stop() {
+  if [ -n "${SCOPE_PID:-}" ]; then
+    kill "$SCOPE_PID" 2>/dev/null || true
+    wait "$SCOPE_PID" 2>/dev/null || true
+  fi
+  SCOPE_PID=""
+  PIDS=""
+}
+
+init_repo scope-lock0
+mkdir -p "$REPO/scripts" "$REPO/state/daily.lock"
+printf '%s\n' 99999999 >"$REPO/state/daily.lock/pid"
+set_age "$REPO/state/daily.lock" 30000
+scope_rec_ps "bash $REPO/scripts/run_ticket_headless.sh"
+GENSEO_RECONCILE_TEST=1 GENSEO_RECONCILE_PS="$WORK/ps-scope-case" run_rec --apply-stale-lock
+assert_rc 4 "in-checkout writer keeps the lock"
+has "$WORK/out" "lock_apply daily.lock: kept live-writer" "scope 0 is a live writer"
+has "$WORK/out" "lock daily.lock reason: live-writer" "scope 0 reason is live-writer"
+[ -d "$REPO/state/daily.lock" ] && ok "scope 0 left the lock" || bad "scope 0 removed the lock"
+scope_rec_stop
+
+init_repo scope-lock1
+mkdir -p "$REPO/state/daily.lock"
+printf '%s\n' 99999999 >"$REPO/state/daily.lock/pid"
+set_age "$REPO/state/daily.lock" 30000
+SCOPE_OTHER=$(mktemp -d "$WORK/scope-other.XXXXXX")
+scope_rec_ps "bash $SCOPE_OTHER/run_ticket_headless.sh"
+GENSEO_RECONCILE_TEST=1 GENSEO_RECONCILE_PS="$WORK/ps-scope-case" run_rec --apply-stale-lock
+assert_rc 0 "other-directory writer does not keep the lock"
+has "$WORK/out" "lock_apply daily.lock: removed" "scope 1 removes the lock"
+lacks "$WORK/out" "kept live-writer" "scope 1 is not a live writer"
+lacks "$WORK/out" "no-absolute-writer-path" "scope 1 is not a missing path"
+[ ! -e "$REPO/state/daily.lock" ] && ok "scope 1 removed the lock dir" || bad "scope 1 left the lock dir"
+scope_rec_stop
+
+init_repo scope-lock2
+mkdir -p "$REPO/state/daily.lock"
+printf '%s\n' 99999999 >"$REPO/state/daily.lock/pid"
+set_age "$REPO/state/daily.lock" 30000
+scope_rec_ps "bash run_ticket_headless.sh"
+GENSEO_RECONCILE_TEST=1 GENSEO_RECONCILE_PS="$WORK/ps-scope-case" run_rec --apply-stale-lock
+assert_rc 4 "relative writer keeps the lock"
+has "$WORK/out" "lock_apply daily.lock: kept no-absolute-writer-path" "scope 2 keeps the lock"
+has "$WORK/out" "lock_apply daily.lock note: a job has no absolute writer path — fail closed" "scope 2 lock apply names the missing path"
+has "$WORK/out" "lock daily.lock reason: no-absolute-writer-path" "scope 2 reason is no absolute path"
+has "$WORK/out" "lock daily.lock note: a job has no absolute writer path — fail closed" "scope 2 report names the missing path"
+lacks "$WORK/out" "kept live-writer" "scope 2 is not reported as a scoped live writer"
+[ -d "$REPO/state/daily.lock" ] && ok "scope 2 left the lock" || bad "scope 2 removed the lock"
+scope_rec_stop
+
+init_repo scope-apply0
+advance_origin scope-apply0
+mkdir -p "$REPO/scripts"
+BEFORE="$(head_of "$REPO")"
+scope_rec_ps "bash $REPO/scripts/run_landing_daily.sh"
+GENSEO_RECONCILE_TEST=1 GENSEO_RECONCILE_PS="$WORK/ps-scope-case" run_rec --apply
+assert_rc 3 "in-checkout landing job blocks apply"
+has "$WORK/out" "apply_block: live-writer" "scope 0 blocks fast-forward"
+lacks "$WORK/out" "apply_block: no-absolute-writer-path" "scope 0 is an absolute path"
+[ "$(head_of "$REPO")" = "$BEFORE" ] && ok "scope 0 left HEAD" || bad "scope 0 moved HEAD"
+scope_rec_stop
+
+init_repo scope-apply1
+advance_origin scope-apply1
+BEFORE="$(head_of "$REPO")"
+scope_rec_ps "bash $SCOPE_OTHER/run_landing_daily.sh"
+GENSEO_RECONCILE_TEST=1 GENSEO_RECONCILE_PS="$WORK/ps-scope-case" run_rec --apply
+assert_rc 0 "other-directory landing job still fast-forwards"
+has "$WORK/out" "apply: fast-forward" "scope 1 fast-forwards"
+lacks "$WORK/out" "apply_block: live-writer" "scope 1 does not block apply"
+lacks "$WORK/out" "apply_block: no-absolute-writer-path" "scope 1 is not a missing path"
+[ "$(head_of "$REPO")" != "$BEFORE" ] && ok "scope 1 moved HEAD" || bad "scope 1 left HEAD"
+scope_rec_stop
+
+init_repo scope-apply2
+advance_origin scope-apply2
+BEFORE="$(head_of "$REPO")"
+scope_rec_ps "bash run_landing_daily.sh"
+GENSEO_RECONCILE_TEST=1 GENSEO_RECONCILE_PS="$WORK/ps-scope-case" run_rec --apply
+assert_rc 3 "relative landing name blocks apply"
+has "$WORK/out" "apply_block: no-absolute-writer-path" "scope 2 blocks fast-forward"
+has "$WORK/out" "apply_block_note: a job has no absolute writer path — fail closed" "scope 2 apply names the missing path"
+lacks "$WORK/out" "apply_block: live-writer" "scope 2 is not a scoped live writer"
+[ "$(head_of "$REPO")" = "$BEFORE" ] && ok "scope 2 left HEAD" || bad "scope 2 moved HEAD"
+scope_rec_stop
+
+init_repo scope-stable
+advance_origin scope-stable
+SCOPE_COPY=$(mktemp "$WORK/run_landing_daily.XXXXXX")
+printf '%s\n' "$(cd "$REPO" && pwd -P)" >"$SCOPE_COPY.repo"
+BEFORE="$(head_of "$REPO")"
+scope_rec_ps "bash $SCOPE_COPY"
+GENSEO_RECONCILE_TEST=1 GENSEO_RECONCILE_PS="$WORK/ps-scope-case" run_rec --apply
+assert_rc 3 "same-checkout stable copy blocks apply"
+has "$WORK/out" "apply_block: live-writer" "same-checkout stable copy is a live writer"
+[ "$(head_of "$REPO")" = "$BEFORE" ] && ok "same-checkout stable copy left HEAD" || bad "same-checkout stable copy moved HEAD"
+scope_rec_stop
+rm -f "$SCOPE_COPY" "$SCOPE_COPY.repo"
+
+init_repo scope-stablenone
+advance_origin scope-stablenone
+SCOPE_COPY=$(mktemp "$WORK/run_landing_daily.XXXXXX")
+rm -f "$SCOPE_COPY.repo"
+BEFORE="$(head_of "$REPO")"
+scope_rec_ps "bash $SCOPE_COPY"
+GENSEO_RECONCILE_TEST=1 GENSEO_RECONCILE_PS="$WORK/ps-scope-case" run_rec --apply
+assert_rc 0 "stable copy without a sidecar still fast-forwards"
+has "$WORK/out" "apply: fast-forward" "unscoped stable copy fast-forwards"
+lacks "$WORK/out" "apply_block: live-writer" "unscoped stable copy is not this checkout"
+[ "$(head_of "$REPO")" != "$BEFORE" ] && ok "unscoped stable copy moved HEAD" || bad "unscoped stable copy left HEAD"
+scope_rec_stop
+rm -f "$SCOPE_COPY" "$SCOPE_COPY.repo"
+
+init_repo scope-stableother
+advance_origin scope-stableother
+SCOPE_COPY=$(mktemp "$WORK/run_landing_daily.XXXXXX")
+SCOPE_SIDE=$(mktemp -d "$WORK/scope-side.XXXXXX")
+printf '%s\n' "$(cd "$SCOPE_SIDE" && pwd -P)" >"$SCOPE_COPY.repo"
+BEFORE="$(head_of "$REPO")"
+scope_rec_ps "bash $SCOPE_COPY"
+GENSEO_RECONCILE_TEST=1 GENSEO_RECONCILE_PS="$WORK/ps-scope-case" run_rec --apply
+assert_rc 0 "other-checkout stable copy still fast-forwards"
+has "$WORK/out" "apply: fast-forward" "other-checkout stable copy fast-forwards"
+lacks "$WORK/out" "apply_block: live-writer" "other-checkout stable copy is not this checkout"
+[ "$(head_of "$REPO")" != "$BEFORE" ] && ok "other-checkout stable copy moved HEAD" || bad "other-checkout stable copy left HEAD"
+scope_rec_stop
+rm -f "$SCOPE_COPY" "$SCOPE_COPY.repo"
+
+init_repo scope-bin
+advance_origin scope-bin
+SCOPE_HOME="$WORK/home-scope-bin"
+rm -rf "$SCOPE_HOME"
+mkdir -p "$SCOPE_HOME/bin"
+ln -s "$REPO" "$SCOPE_HOME/genseo"
+BEFORE="$(head_of "$REPO")"
+scope_rec_ps "bash $SCOPE_HOME/bin/grokbot-genseo-daily.sh"
+GENSEO_RECONCILE_TEST=1 GENSEO_RECONCILE_PS="$WORK/ps-scope-case" run_rec --apply
+assert_rc 3 "this home's launcher blocks apply"
+has "$WORK/out" "apply_block: live-writer" "this home's launcher is a live writer"
+[ "$(head_of "$REPO")" = "$BEFORE" ] && ok "this home's launcher left HEAD" || bad "this home's launcher moved HEAD"
+scope_rec_stop
+
+init_repo scope-binother
+advance_origin scope-binother
+SCOPE_HOME="$WORK/home-scope-binother"
+rm -rf "$SCOPE_HOME"
+mkdir -p "$SCOPE_HOME/bin" "$SCOPE_HOME/genseo"
+BEFORE="$(head_of "$REPO")"
+scope_rec_ps "bash $SCOPE_HOME/bin/grokbot-genseo-daily.sh"
+GENSEO_RECONCILE_TEST=1 GENSEO_RECONCILE_PS="$WORK/ps-scope-case" run_rec --apply
+assert_rc 0 "another home's launcher still fast-forwards"
+has "$WORK/out" "apply: fast-forward" "another home's launcher fast-forwards"
+lacks "$WORK/out" "apply_block: live-writer" "another home's launcher is not this checkout"
+[ "$(head_of "$REPO")" != "$BEFORE" ] && ok "another home's launcher moved HEAD" || bad "another home's launcher left HEAD"
+scope_rec_stop
+
+init_repo scope-pub0
+advance_origin scope-pub0
+mkdir -p "$REPO/scripts"
+BEFORE="$(head_of "$REPO")"
+scope_rec_ps "python3 $REPO/scripts/shopify_publisher.py"
+GENSEO_RECONCILE_TEST=1 GENSEO_RECONCILE_PS="$WORK/ps-scope-case" run_rec --apply
+assert_rc 3 "in-checkout publisher blocks apply"
+has "$WORK/out" "apply_block: live-writer" "in-checkout publisher is a live writer"
+[ "$(head_of "$REPO")" = "$BEFORE" ] && ok "in-checkout publisher left HEAD" || bad "in-checkout publisher moved HEAD"
+scope_rec_stop
+
+init_repo scope-pub1
+advance_origin scope-pub1
+BEFORE="$(head_of "$REPO")"
+scope_rec_ps "python3 $SCOPE_OTHER/landing_publisher.py"
+GENSEO_RECONCILE_TEST=1 GENSEO_RECONCILE_PS="$WORK/ps-scope-case" run_rec --apply
+assert_rc 0 "other-directory publisher still fast-forwards"
+has "$WORK/out" "apply: fast-forward" "other-directory publisher fast-forwards"
+lacks "$WORK/out" "apply_block: live-writer" "other-directory publisher is not this checkout"
+[ "$(head_of "$REPO")" != "$BEFORE" ] && ok "other-directory publisher moved HEAD" || bad "other-directory publisher left HEAD"
+scope_rec_stop
+
+init_repo scope-pub2
+advance_origin scope-pub2
+BEFORE="$(head_of "$REPO")"
+scope_rec_ps "python3 shopify_publisher.py"
+GENSEO_RECONCILE_TEST=1 GENSEO_RECONCILE_PS="$WORK/ps-scope-case" run_rec --apply
+assert_rc 3 "relative publisher blocks apply"
+has "$WORK/out" "apply_block: no-absolute-writer-path" "relative publisher fails closed"
+has "$WORK/out" "apply_block_note: a job has no absolute writer path — fail closed" "relative publisher names the missing path"
+[ "$(head_of "$REPO")" = "$BEFORE" ] && ok "relative publisher left HEAD" || bad "relative publisher moved HEAD"
+scope_rec_stop
 
 echo "10. a failed fetch refuses --apply and still exits 0 on dry-run"
 init_repo nofetch

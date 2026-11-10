@@ -30,8 +30,12 @@
 # until this PID has exited, then bootout + bootstrap. RunAtLoad must be
 # false. The helper does not kickstart and does not execute either wrapper.
 # The other label is reloaded immediately only when that lane's lock is free
-# and no job for it is in the process list. If reload fails, the previous
-# plist is put back and, when this script had unloaded the label, bootstrapped
+# and no job for this checkout is in the process list. A script in another
+# directory does not count. A stable copy counts only when its sidecar names
+# this checkout (scripts/genseo_sync_main.sh). An unreadable process list,
+# a missing helper, or a job name with no absolute path leaves the plist in
+# place. If reload fails, the previous plist is put back and, when this script
+# had unloaded the label, bootstrapped
 # again. The article or landing run keeps going either way.
 #
 # com.pati.genseo-catchup is not one of these labels. Its plist sets
@@ -50,7 +54,12 @@
 #                                 through to the host list. When the hook is
 #                                 unset, test mode keeps only commands that
 #                                 contain this checkout. Production (the flag
-#                                 unset) still reads the whole process list.
+#                                 unset) reads the whole process list, then
+#                                 keeps a job only when its writer path belongs
+#                                 to this checkout. An absolute path in another
+#                                 checkout does not block a reload. A job name
+#                                 with no absolute writer path leaves the plist
+#                                 in place.
 # GENSEO_SELF_APPLY_DISABLE=1 logs and returns without copying.
 # GENSEO_SYNC_DRY_RUN=1 logs and returns without copying.
 #
@@ -64,6 +73,12 @@ if [ "${BASH_SOURCE[0]}" = "$0" ]; then
       exit 2
       ;;
   esac
+fi
+
+# The deferred reload helper is a copy of this file outside the checkout.
+# Pin the sync helper to the file that was sourced, not to that copy.
+if [ -z "${GENSEO_SELF_APPLY_SYNC_SH:-}" ]; then
+  GENSEO_SELF_APPLY_SYNC_SH=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/genseo_sync_main.sh
 fi
 
 genseo_self_apply_queued=""
@@ -366,15 +381,40 @@ genseo_self_apply_scope_usable() {
   return 0
 }
 
-# 0 when a live process for this lane is visible. 2 when the list cannot be read.
-# Production reads the host process list and fail-closes when ps cannot be read.
-# GENSEO_SELF_APPLY_TEST=1 uses GENSEO_SELF_APPLY_PS when that hook is set.
-# A hook that is missing or exits non-zero does not fall through to host ps.
-# With the hook unset, test mode keeps commands that contain this checkout,
-# so a writer in another directory is not this lane's job. An unusable
-# checkout path in test mode is unreadable (fail closed).
+# Checkout filter from scripts/genseo_sync_main.sh. The reload helper is a
+# copy outside the checkout, so this prefers GENSEO_SELF_APPLY_SYNC_SH (set
+# when this file is sourced) and otherwise the checkout's copy.
+genseo_self_apply_load_sync() {
+  local repo=${1:-} src=""
+  if declare -F genseo_sync_cmd_repo_scope >/dev/null 2>&1 \
+    && declare -F genseo_sync_physical_path >/dev/null 2>&1; then
+    return 0
+  fi
+  src=${GENSEO_SELF_APPLY_SYNC_SH:-}
+  if [ -z "$src" ] && [ -n "$repo" ]; then
+    src="${repo%/}/scripts/genseo_sync_main.sh"
+  fi
+  if [ -z "$src" ]; then
+    src=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/genseo_sync_main.sh || return 1
+  fi
+  [ -f "$src" ] || return 1
+  # shellcheck source=genseo_sync_main.sh
+  . "$src"
+}
+
+# 0 when a live process for this lane is running for this checkout.
+# 1 when none is. 2 when the list cannot be read, the helper is missing, or
+# the checkout cannot be resolved. 3 when a lane job has no absolute writer
+# path (fail closed: a relative name is not proof the job is elsewhere).
+# Production reads the host process list. An absolute writer path in another
+# checkout does not count. GENSEO_SELF_APPLY_TEST=1 uses GENSEO_SELF_APPLY_PS
+# when that hook is set. A hook that is missing or exits non-zero does not
+# fall through to host ps. With the hook unset, test mode keeps commands that
+# contain this checkout, so a writer in another directory is not scanned. An
+# unusable checkout path in test mode is unreadable (fail closed).
 genseo_self_apply_job_running() {
   local lane=$1 repo=${2:-} tmp="" pid="" cmd="" saw=1 raw="" phys="" use_a="" use_b=""
+  local repo_phys="" scope_rc=1 saw_rel=0
   tmp=$(mktemp "${TMPDIR:-/tmp}/genseo-self-apply-ps.XXXXXX") || return 2
   if [ "${GENSEO_SELF_APPLY_TEST:-0}" = 1 ] && [ -n "${GENSEO_SELF_APPLY_PS:-}" ]; then
     if [ -x "$GENSEO_SELF_APPLY_PS" ] && "$GENSEO_SELF_APPLY_PS" >"$tmp" 2>/dev/null; then
@@ -418,6 +458,20 @@ genseo_self_apply_job_running() {
     rm -f "$tmp"
     return 2
   fi
+  if ! genseo_self_apply_load_sync "$repo"; then
+    rm -f "$tmp"
+    return 2
+  fi
+  repo=${repo%/}
+  if [ -z "$repo" ] || [ "$repo" = "/" ] || [ ! -d "$repo" ]; then
+    rm -f "$tmp"
+    return 2
+  fi
+  repo_phys=$(genseo_sync_physical_path "$repo" || true)
+  if [ -z "$repo_phys" ]; then
+    rm -f "$tmp"
+    return 2
+  fi
   while read -r pid cmd; do
     case "$pid" in
       ''|*[!0-9]*) continue ;;
@@ -425,10 +479,21 @@ genseo_self_apply_job_running() {
     [ "$pid" = "$$" ] && continue
     genseo_self_apply_cmd_is_lane "$lane" "$cmd" || continue
     genseo_self_apply_pid_alive "$pid" || continue
-    rm -f "$tmp"
-    return 0
+    genseo_sync_cmd_repo_scope "$repo_phys" "$cmd"
+    scope_rc=$?
+    case "$scope_rc" in
+      0)
+        rm -f "$tmp"
+        return 0
+        ;;
+      1) continue ;;
+    esac
+    saw_rel=1
   done <"$tmp"
   rm -f "$tmp"
+  if [ "$saw_rel" = 1 ]; then
+    return 3
+  fi
   return 1
 }
 
@@ -472,6 +537,10 @@ genseo_self_apply_lane_busy() {
   job_rc=$?
   if [ "$job_rc" = 0 ]; then
     genseo_self_apply_busy_reason="a job is running"
+    return 0
+  fi
+  if [ "$job_rc" = 3 ]; then
+    genseo_self_apply_busy_reason="job has no absolute writer path"
     return 0
   fi
   if [ "$job_rc" = 2 ]; then
@@ -675,6 +744,7 @@ genseo_self_apply_schedule() {
       GENSEO_SELF_APPLY_BACKUP="$backup" \
       GENSEO_SELF_APPLY_LOADED="$loaded" \
       GENSEO_SELF_APPLY_REPO="$repo" \
+      GENSEO_SELF_APPLY_SYNC_SH="${GENSEO_SELF_APPLY_SYNC_SH:-}" \
       GENSEO_SELF_APPLY_POLL="$poll" \
       GENSEO_SELF_APPLY_SETTLE="$settle" \
       GENSEO_SELF_APPLY_DEADLINE="$deadline" \
