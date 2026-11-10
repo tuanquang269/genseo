@@ -474,18 +474,18 @@ def finalize_page(page, template, row, package, hero, day):
     # The band is minis OR one CTA, as the template has it; the shell prints only one (slot 6 2026-11-09: style 3 CTA + writer row3 failed fidelity).
     band = re.search(r'<section class="band".*?</section>', page, re.S)
     tband = re.search(r'<section class="band".*?</section>', template, re.S)
-    row = None
+    minis_row = None
     if band and tband:
         b = band.group(0)
         if 'class="mini"' in tband.group(0):
             b = re.sub(r'<p><a class="btn"[^>]*>.*?</a></p>\s*', '', b, flags=re.S) if 'class="mini"' in b else b
             b = re.sub(r'<div class="row3"[^>]*>', '<div class="row3">', b)
         else:   # style 2/3: the mini row lives in the body before the FAQ, never in the band
-            row = re.search(r'<div class="row3"[^>]*>(?:\s*<div class="mini".*?</div>)*\s*</div>\s*', b, re.S)
-            b = b.replace(row.group(0), '') if row else b
+            minis_row = re.search(r'<div class="row3"[^>]*>(?:\s*<div class="mini".*?</div>)*\s*</div>\s*', b, re.S)
+            b = b.replace(minis_row.group(0), '') if minis_row else b
         page = page[:band.start()] + b + page[band.end():]
-        if row and 'class="row3"' not in page and '<h2 id="faq"' in page:
-            page = page.replace('<h2 id="faq"', row.group(0) + '<h2 id="faq"', 1)
+        if minis_row and 'class="row3"' not in page and '<h2 id="faq"' in page:
+            page = page.replace('<h2 id="faq"', minis_row.group(0) + '<h2 id="faq"', 1)
     # The shell prints the rail TOC from journal.toc, which is read from the inline TOC: an entry only in the rail is lost on
     # live and fails fidelity (slot 3 2026-11-05, "Check first"). The runner copies the rail entries into the inline TOC.
     rail = re.search(r'<details class="toc" open>.*?<ol>(.*?)</ol>', page, re.S)
