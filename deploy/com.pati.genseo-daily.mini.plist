@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- installed-by: mac_mini_failover_bootstrap
+     GenSeo daily articles. Mac Mini = primary only after the MacBook agents are unloaded.
+     Install: bash scripts/mac_mini_failover_bootstrap.sh with the enable-daily flag
+     (docs/FAILOVER.md). A stale heartbeat does not install this file.
+     That script rewrites /Users/kevinkreative to the current home.
+     Do not load this while com.pati.genseo-daily is still loaded on the MacBook.
+     Role is primary so a released MacBook does not leave this Mini waiting on a peer.
+     Do not load it beside a MacBook that is also primary.
+     GENSEO_NO_FACE=1 matches the landing Mini plist: the Mini has never had its persona
+     index confirmed, and a face angle spent twice breaks the one-angle rule.
+     Ticket prefix MM so ids cannot collide with the MacBook MB queue.
+     Listicle landings are the other plist; they stay unpublished drafts. -->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.pati.genseo-daily</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>/Users/kevinkreative/bin/grokbot-genseo-daily.sh</string>
+    </array>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>GENSEO_DAILY_TARGET</key><string>5</string>
+        <key>GENSEO_HOST_ROLE</key><string>primary</string>
+        <key>GENSEO_TICKET_PREFIX</key><string>MM</string>
+        <key>GENSEO_PEER_WINDOW_MIN</key><string>50</string>
+        <key>GENSEO_NO_FACE</key><string>1</string>
+    </dict>
+    <key>StartCalendarInterval</key>
+    <array>
+        <dict><key>Hour</key><integer>7</integer><key>Minute</key><integer>30</integer></dict>
+        <dict><key>Hour</key><integer>14</integer><key>Minute</key><integer>47</integer></dict>
+    </array>
+    <key>RunAtLoad</key>
+    <false/>
+    <key>StandardOutPath</key>
+    <string>/Users/kevinkreative/genseo/logs/launchd-daily.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/kevinkreative/genseo/logs/launchd-daily.err.log</string>
+</dict>
+</plist>

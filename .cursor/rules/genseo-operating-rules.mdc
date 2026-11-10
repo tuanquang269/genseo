@@ -97,8 +97,10 @@ Also: never `rm` repo files (move them to `_superseded/`); never put CDN URLs in
   when the bytes differ and reloads a changed LaunchAgent only after that job exits.
   `bash scripts/install_mac_daily_wrapper.sh` (does not start launchd) remains the one-time step
   when `~/bin` predates that re-exec. The MacBook article LaunchAgent is primary (`GENSEO_TICKET_PREFIX=MB`,
-  persona images; a no-face shot is only the per-image fallback) until a Mini failover release is explicit. The Mini stays unloaded until that
-  handover, then its daily plist is primary with `MM` ids. Do not load both.
+  persona images; a no-face shot is only the per-image fallback) until a Mini failover release is explicit. The Mini stays unloaded until
+  `scripts/mac_mini_failover_bootstrap.sh --enable-daily` after a newer `failover-release`
+  (`docs/FAILOVER.md`). A stale heartbeat does not install those plists. After that handover
+  the Mini daily plist is primary with `MM` ids. MacBook ids stay `MB`. Do not load both.
   `GENSEO_HOST_ROLE=standby` still waits for a healthy peer; the MacBook plist does not set it.
   Pulling alone does not update `~/bin/grokbot-genseo-daily.sh` until the next scheduled run.
 - **Landing pages — 1 unpublished draft/day, never counted in the 5.** `scripts/build_landing_tickets.py` →
@@ -127,4 +129,5 @@ python3 scripts/sync_cursor_skills.py --check           # .cursor/skills pointer
 bash tests/test_install_mac_daily_wrapper.sh            # daily wrapper copy into a temp HOME; no launchd, no Shopify
 bash tests/test_self_apply.sh                           # wrapper and plist drift after a sync; no launchd, no Shopify
 bash tests/test_boot_catchup.sh                         # missed-slot decision; no launchd, no Shopify
+bash tests/test_mac_mini_failover_bootstrap.sh          # Mini failover checklist; no launchctl, no Shopify
 ```

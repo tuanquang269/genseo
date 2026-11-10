@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<!-- GenSeo daily listicle landing DRAFT (1/day, never published). mini = primary.
+<!-- installed-by: mac_mini_failover_bootstrap
+     GenSeo daily listicle landing DRAFT (1/day, never published). mini = primary.
      Slots: 08:15, 09:20 check, 16:15 catch-up. Same job: a running instance is
      not started again, and state/landing-daily.lock exits 0 if one is.
      /usr/bin/caffeinate -i -s is a user-level assertion. No sudo, no pmset.
      The script also arms caffeinate; a pull picks that up. These intervals
      arrive when scripts/genseo_self_apply.sh bootstraps this file after the
-     running job exits. It does not start the job. An agent that was never
-     loaded still needs the copy and bootstrap below. There is no Mini article
+     running job exits. It does not start the job. There is no Mini article
      plist here; self-apply does not install the MacBook article agent.
-     install: cp deploy/com.pati.genseo-landing.mini.plist ~/Library/LaunchAgents/com.pati.genseo-landing.plist
-              launchctl bootout gui/$(id -u) ~/Library/LaunchAgents/com.pati.genseo-landing.plist
-              launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.pati.genseo-landing.plist -->
+     Install only with: bash scripts/mac_mini_failover_bootstrap.sh with the enable-daily flag
+     (docs/FAILOVER.md). Do not copy this file into LaunchAgents by hand.
+     A stale heartbeat does not install it. It does not publish.
+     A never-loaded agent still needs that installer. An already-installed agent
+     picks up interval changes from self-apply after the job exits. -->
 <plist version="1.0">
 <dict>
     <key>Label</key>
