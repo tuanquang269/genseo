@@ -454,11 +454,8 @@ class GenPngRetryTests(unittest.TestCase):
         sibling = subprocess.Popen(["/bin/sleep", "60"])
         grand = None
         try:
-            # 1s loses the race when perl's fork, setsid, and pidfile write
-            # take longer than the timeout on a busy Mac. The child then
-            # sleeps 30s, so 8s still expires and the tree must be killed.
             with self.assertRaises(subprocess.TimeoutExpired):
-                ai._run_ima2([script, pidfile], os.environ.copy(), 8)
+                ai._run_ima2([script, pidfile], os.environ.copy(), 1)
             self.assertTrue(os.path.isfile(pidfile))
             with open(pidfile, encoding="utf-8") as fh:
                 grand = int(fh.read().strip())
