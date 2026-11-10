@@ -4,10 +4,17 @@
 Never blocks publishing: always exits 0.
 It does not replace or loosen scripts/validate_article.py.
 
+Canonical URL checks (2026-10-19, SEL canonicalization guide) are printed here
+as canonical-mismatch, canonical-ambiguous, and canonical-autofix. A mismatch
+hard-fails validate_article.py; this script still exits 0. The publisher
+applies canonical-autofix before the Shopify request.
+
 Usage: python3 scripts/geo_official_lint.py ARTICLE.(html|md) [--title "..."] [--json]
 """
 import json, re, sys, html as _html
 from datetime import date
+
+import canonical_urls
 
 G_HELPFUL = "https://developers.google.com/search/docs/fundamentals/creating-helpful-content"
 G_GENAI = "https://developers.google.com/search/docs/fundamentals/using-gen-ai-content"
@@ -253,6 +260,7 @@ def lint(raw, title=""):
     if not any(any(d in link.lower() for d in AUTH_DOMAINS) for link in links):
         out.append({"rule": "no-primary-source", "msg": "No link to a primary study or regulator (PubMed/NIH/FDA/CDC/WHO, DOI, regulations.gov, Examine, USADA, or WADA). Inference rule for AI-search citability.",
                     "match": "", "source": O_DEEP})
+    out.extend(canonical_urls.lint_warnings(raw))
     return out
 
 def main(argv):

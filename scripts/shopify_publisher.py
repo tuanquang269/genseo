@@ -24,6 +24,7 @@ import gold_resin_rules
 import shilasource_resin_rules
 import shockwave_rules
 import turkesterone_rules
+import canonical_urls
 
 CONFIG_PATH = _gcfg.CONFIG_PATH
 API = _gcfg.API
@@ -60,6 +61,59 @@ def _refuse_guarded_draft(title, body):
         print(f"  Turkesterone Advanced Formula pack label: {turkesterone_rules.LABEL_LINE}")
         print("  Packaging palette: product_refs/<handle>.palette.json (docs/PACKAGING_PALETTE_GUARD.md)")
         sys.exit(2)
+
+
+def _canonical_prepare(md_text, canonical=None):
+    """Normalise internal links, then refuse a bad Article identity URL.
+
+    Called before image upload. Locale prefixes and unknown query parameters
+    are warnings, not a block. selling_plan is kept. `canonical` is the public
+    article URL when it is known. do_update passes the live URL. do_publish
+    passes the URL built from the blog handle and the article handle Shopify
+    returned on create. A missing canonical does not invent a URL from the
+    title.
+    """
+    fails, warns = canonical_urls.gate_messages(md_text, canonical)
+    for line in warns:
+        if line.startswith("canonical autofix"):
+            continue
+        print("  canonical: " + line)
+    if fails:
+        print("✗ ABORT: canonical URL check. An Article mainEntityOfPage, url, or @id "
+              "GenSeo would emit does not match one clean article URL.")
+        for line in fails[:8]:
+            print("  " + line)
+        sys.exit(2)
+    md_text, changes = canonical_urls.normalise_document(md_text, canonical)
+    if changes:
+        print("  canonical: normalised %d internal URL(s) before publish" % len(changes))
+        for line in changes[:6]:
+            print("    " + line)
+    return md_text
+
+
+def _read_live_article(shop, token, blog_id, article_id):
+    """Return (title, public_url) for an article that already exists.
+
+    public_url is None when the blog handle and the article handle cannot
+    both be read. The numeric blog id is not a handle. do_update aborts
+    before image upload when public_url is None, so Article JSON-LD is not
+    uploaded against an unknown URL.
+    """
+    headers = {"X-Shopify-Access-Token": token}
+    try:
+        article_req = urllib.request.Request(
+            f"https://{shop}/admin/api/{API}/blogs/{blog_id}/articles/{article_id}.json?fields=title,handle",
+            headers=headers)
+        article = json.loads(urllib.request.urlopen(article_req).read()).get("article") or {}
+        blog_req = urllib.request.Request(
+            f"https://{shop}/admin/api/{API}/blogs/{blog_id}.json?fields=handle",
+            headers=headers)
+        blog = json.loads(urllib.request.urlopen(blog_req).read()).get("blog") or {}
+    except Exception:
+        return None, None
+    url = canonical_urls.article_public_url(blog.get("handle"), article.get("handle"))
+    return article.get("title"), url
 
 
 def ping_indexnow(shop, token, blog_id, article_handle):
@@ -617,6 +671,69 @@ def _faq_main_entity(md_text):
     return out
 
 
+class FirstPublishURLError(Exception):
+    """Create did not yield a blog handle and an article handle."""
+
+
+def _delete_article(shop, token, blog_id, article_id):
+    """Delete an unpublished shell. A failed delete is printed, not raised."""
+    url = f"https://{shop}/admin/api/{API}/blogs/{blog_id}/articles/{article_id}.json"
+    req = urllib.request.Request(
+        url, headers={"X-Shopify-Access-Token": token}, method="DELETE")
+    try:
+        urllib.request.urlopen(req).read()
+    except Exception as exc:
+        print(f"  ⚠  could not delete unpublished article {article_id}: {exc}")
+
+
+def _read_blog_handle(shop, token, blog_id):
+    req = urllib.request.Request(
+        f"https://{shop}/admin/api/{API}/blogs/{blog_id}.json?fields=handle",
+        headers={"X-Shopify-Access-Token": token})
+    blog = json.loads(urllib.request.urlopen(req).read()).get("blog") or {}
+    return blog.get("handle") or ""
+
+
+def reserve_first_publish_url(shop, token, blog_id, title, author):
+    """Create an unpublished article and return the URL Shopify assigned.
+
+    Returns (article_id, public_url, article_handle, blog_handle).
+    public_url is canonical_urls.article_public_url(blog handle, article
+    handle). The article handle is the create response. The blog handle is
+    read from the blog id. The title is stored as the title and is not
+    converted into a handle. published is false. No body is sent. If the
+    response cannot name a public URL, the shell is deleted and
+    FirstPublishURLError is raised.
+    """
+    blog_handle = _read_blog_handle(shop, token, blog_id)
+    if not canonical_urls.public_handle(blog_handle):
+        raise FirstPublishURLError("blog %s did not return a public handle" % blog_id)
+    headers = {"X-Shopify-Access-Token": token, "Content-Type": "application/json"}
+    payload = {
+        "article": {
+            "title": title,
+            "author": author or FALLBACK_AUTHOR,
+            "published": False,
+        }
+    }
+    req = urllib.request.Request(
+        f"https://{shop}/admin/api/{API}/blogs/{blog_id}/articles.json",
+        data=json.dumps(payload).encode("utf-8"),
+        headers=headers,
+    )
+    created = json.loads(urllib.request.urlopen(req).read()).get("article") or {}
+    article_id = created.get("id")
+    article_handle = created.get("handle") or ""
+    public_url = canonical_urls.article_public_url(blog_handle, article_handle)
+    if not article_id or not public_url:
+        if article_id:
+            _delete_article(shop, token, blog_id, article_id)
+        raise FirstPublishURLError(
+            "create did not return a public article URL (blog %r, handle %r)"
+            % (blog_handle, article_handle))
+    return article_id, public_url, article_handle, blog_handle
+
+
 def do_publish(file_path, blog_id, live=False):
     if not os.path.exists(CONFIG_PATH):
         print("Error: Not authenticated. Please run the auth flow first.")
@@ -678,6 +795,36 @@ def do_publish(file_path, blog_id, live=False):
             continue
         stripped_lines.append(line)
     md_text = '\n'.join(stripped_lines).lstrip('\n')
+    # Homepage, a non-article identity, and disagreeing identity fields fail
+    # before any Shopify write. JSON-LD for a different article does not fail
+    # until the article URL is known. Shopify assigns that handle on create,
+    # including a collision suffix, so the shell is unpublished and has no
+    # body. The gate uses article_public_url(blog handle, returned handle).
+    # It does not derive the handle from the title. A failing gate deletes
+    # the shell before image upload. published becomes true only on the later
+    # write, after this gate, and only when the caller passed live=True.
+    pre_fails, _pre_warns = canonical_urls.gate_messages(md_text, None)
+    if pre_fails:
+        md_text = _canonical_prepare(md_text, None)
+    try:
+        article_id, public_url, article_handle, _blog_handle = reserve_first_publish_url(
+            shop, token, blog_id, title, FALLBACK_AUTHOR)
+    except FirstPublishURLError as exc:
+        print("✗ ABORT: first publish has no deterministic article URL.")
+        print(f"  {exc}")
+        print("  Refusing to upload images or publish.")
+        sys.exit(2)
+    except Exception as exc:
+        print(f"Failed to publish article: {exc}")
+        if hasattr(exc, "read"):
+            print(exc.read().decode())
+        sys.exit(1)
+    print(f"  canonical: Article JSON-LD must match {public_url}")
+    try:
+        md_text = _canonical_prepare(md_text, public_url)
+    except SystemExit:
+        _delete_article(shop, token, blog_id, article_id)
+        raise
 
     # ── Image credits — read BEFORE the upload step, which is destructive to this ──
     # information: _process_images_for_publish rewrites every local path in md_text to a CDN
@@ -734,15 +881,20 @@ def do_publish(file_path, blog_id, live=False):
     if faq_schema:
         html_content += _ldjson_block(faq_schema)
 
-    api_url = f"https://{shop}/admin/api/{API}/blogs/{blog_id}/articles.json"
+    api_url = f"https://{shop}/admin/api/{API}/blogs/{blog_id}/articles/{article_id}.json"
     headers = {"X-Shopify-Access-Token": token, "Content-Type": "application/json"}
     
     # Review posture (Kevin, 2026-08-07): articles land as DRAFTS until the operator
     # passes --live. Kevin reviews the first batch in Shopify admin; flip the default
-    # only after he releases the training wheels.
+    # only after he releases the training wheels. The shell was created unpublished.
+    # This write sends the gated body. published is true only for --live, and only
+    # after the article URL from create has been checked. handle is pinned to the
+    # handle Shopify already returned so the public URL cannot move.
     payload = {
         "article": {
+            "id": article_id,
             "title": title,
+            "handle": article_handle,
             "body_html": html_content,
             "author": author_name,
             "tags": "Guide, Supplements, Wellness Nest",
@@ -754,7 +906,8 @@ def do_publish(file_path, blog_id, live=False):
     if thumbnail_b64:
         payload["article"]["image"] = {"attachment": thumbnail_b64}
     
-    req = urllib.request.Request(api_url, data=json.dumps(payload).encode('utf-8'), headers=headers)
+    req = urllib.request.Request(
+        api_url, data=json.dumps(payload).encode('utf-8'), headers=headers, method='PUT')
     
     try:
         response = urllib.request.urlopen(req)
@@ -769,7 +922,7 @@ def do_publish(file_path, blog_id, live=False):
             print(f"  Admin      : https://admin.shopify.com/store/wellnessnest1/content/articles/{article_id}")
         print(f"  Article ID : {article_id}")
         print(f"  Handle     : {handle}")
-        print(f"  URL        : https://wellnessnest.co/blogs/news/{handle}" + ("" if live else "  (404 until published)"))
+        print(f"  URL        : {public_url}" + ("" if live else "  (404 until published)"))
 
         set_seo_metafields(shop, token, article_id, title=title, meta_description=meta_description)
 
@@ -867,13 +1020,11 @@ def do_update(file_path, blog_id, article_id, replace_cover=False, no_carry_cred
     # a different title is applied ONLY when it's a pure year-bump of the live title,
     # or the draft carries <!-- title-change-approved --> (CTR-diagnosed refreshes only).
     # Otherwise the LIVE title is kept and the body update still goes through.
-    try:
-        _gr = urllib.request.Request(
-            f"https://{shop}/admin/api/{API}/blogs/{blog_id}/articles/{article_id}.json?fields=title",
-            headers={"X-Shopify-Access-Token": token})
-        live_title = json.loads(urllib.request.urlopen(_gr).read())['article']['title']
-    except Exception:
-        live_title = None
+    live_title, live_url = _read_live_article(shop, token, blog_id, article_id)
+    if not live_url:
+        print("✗ ABORT (update): could not read the live article URL.")
+        print("  Article JSON-LD is checked against that URL. Refusing to update before image upload.")
+        sys.exit(2)
     if live_title and live_title.strip() != title.strip():
         _norm = lambda t: re.sub(r'20\d\d', '', t).lower().strip()
         year_bump_only = _norm(live_title) == _norm(title)
@@ -906,6 +1057,8 @@ def do_update(file_path, blog_id, article_id, replace_cover=False, no_carry_cred
             continue
         stripped_lines.append(line)
     md_text = '\n'.join(stripped_lines).lstrip('\n')
+    print(f"  canonical: Article JSON-LD must match {live_url}")
+    md_text = _canonical_prepare(md_text, live_url)
 
     # ── Credits before upload, for the reason given in do_publish ──
     # A refresh re-sends the WHOLE body, so a credits block omitted here is not merely absent
