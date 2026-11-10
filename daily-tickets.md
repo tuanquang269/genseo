@@ -2068,3 +2068,81 @@ WN avg 25.0→25.7 · top3 39→29 · top10 125→105 · top20 178→155 · 152 
 - LINKS → near page 1: do-creatine-gummies-expire (8.4) from creatine-gummies-vs-powder; nmn-and-coffee (11.5) from nmn-tmg-dosage; nmn-capsules-vs-powder (8.7, "nmn powder vs capsules") from how-to-take-nmn.
 - NEW: RF1109-1..6 substitute comparisons (bank +12). Adjacent GSC gap with no page: "take nmn with or without food" (38 imp, pos 70) → next refill.
 Cherish: 0 imp — sitemap_articles 70 submitted / 0 indexed; homepage "URL is unknown to Google". SouthEDC: 6 kw, avg 2.1→3.9 (brand terms only).
+
+# BATCH 2026-11-10 (refill_tickets.py — ids #MB1110-1…#MB1110-5)
+
+Built by `scripts/refill_tickets.py` at 2026-11-10 07:30 ICT from `templates/article-topic-bank.json` + `board/ideas.csv`
+(search volume: No data — GSC/Ads not used). Every ticket passed, against the live store at build time:
+brand_rules + `lint_tickets.py` · hero product live and in stock · not a covered topic (header rule 6) ·
+not already queued · not live (182 published articles: blog listing + sitemap + Atom + local caches; one article per brand + segment) ·
+`topic_fitness.py` strict on primary and title · STEP 0 suggest.json.
+A `topic_fitness` REVIEW [covered-segment] verdict is allowed under Kevin's standing greenlight for mined queues (2026-08-13).
+A topic is a brief, not copy: source every claim or cut it.
+
+**Rules for this batch:** from the 2026-10-08 batch rules — fan-out answers, a "Where to buy <product> in the US"
+section (live price, the ticket's product link only), roster.json byline only (never an invented person or
+credential), the logged fact-check pass (`logs/claims/<slug>.md`; delete unconfirmed claims), the brand gate.
+Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py once. The hero is the picked face plus the real pack unless pick prints NO-FACE. One inline image uses that face. The other inline images have no recognizable face but still show a hand, forearm, or body cropped below the eyes. A no-face image is the fallback for one frame after a face refusal or two QC misses, not a batch-wide ban. The MacBook article plist sets `GENSEO_NO_FACE=0`, and that value does not switch the lane. Prices were read live at build time; re-check the PDP while writing.
+
+- [ ] **#MB1110-1 — turkesterone vs epicatechin** — `Turkesterone vs Epicatechin: Which Fits Your Goal? (US 2026)`
+  - **Primary keyword:** `turkesterone vs epicatechin` · **Secondary:** turkesterone or epicatechin, is turkesterone better than epicatechin
+  - **Search intent:** lifter comparing turkesterone with epicatechin
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-10 07:30 ICT)
+  - **Hero product:** `/products/turkesterone-advanced-formula` (Turkesterone Advanced Formula, $75, in stock 2026-11-10)
+  - **Turkesterone Advanced Formula pack label (source of truth):** wellness, nest, PREMIUM, TURKESTERONE, ADVANCED, FORMULA, AMPLIFY, MUSCLE, ENDURANCE, 60, Dietary Supplement, Capsules. No milligram amount and no Supplement Facts panel were read. Do not add one. The capsule badge is the separate lines in product_refs/turkesterone-advanced-formula.label.json. Do not state a milligram amount, a serving count, a different capsule count, or a day-supply.
+  - **Collection links (≥2, verify live):** `/collections/mens-essential-collection` (contains it), `/collections/shilajit-wellness-stack` (contains it)
+  - **Angle:** Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.
+  - **Fan-out answers to cover:** can you take turkesterone and epicatechin together; turkesterone vs epicatechin benefits
+  - **Evidence to fetch & confirm (claims log):** every number, study and dose from a source fetched at write time — cut what you cannot confirm
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** turkesterone + versus checked 2026-11-10 against 182 live articles (blog listing + sitemap + Atom + local caches) and all 159 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1110-2 — vaginal probiotic vs oral probiotic** — `Vaginal Probiotic vs Oral: Which Fits? (US 2026)`
+  - **Primary keyword:** `vaginal probiotic vs oral probiotic` · **Secondary:** vaginal probiotic or oral probiotic, is vaginal probiotic better than oral probiotic
+  - **Search intent:** woman comparing vaginal-strain probiotics with general gut probiotics
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-10 07:30 ICT)
+  - **Hero product:** `/products/florafresh-vaginal-probiotics-gummies` (FloraFresh Vaginal Probiotics Gummies, $40.99, in stock 2026-11-10)
+  - **FloraFresh formula (Supplement Facts label, the source of truth):** per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 1 billion CFU, Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain); sweetened with maltitol and isomalt, so not sugar-free; label badges Allergen Free, Vegan, Halal, Gluten Free. Cite the Supplement Facts label, never the live PDP description or an older FloraFresh article (both repeat a wrong formula); a PDP/label mismatch is a gate failure.
+  - **Collection links (≥2, verify live):** `/collections/womens-essentials-collection` (contains it), `/collections/best-seller` (contains it)
+  - **Angle:** Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.
+  - **Fan-out answers to cover:** can you take vaginal probiotic and oral probiotic together; vaginal probiotic vs oral probiotic benefits
+  - **Evidence to fetch & confirm (claims log):** every number, study and dose from a source fetched at write time — cut what you cannot confirm
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** probiotic + versus checked 2026-11-10 against 182 live articles (blog listing + sitemap + Atom + local caches) and all 159 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1110-3 — nmn vs niacin** — `NMN vs Niacin: Which Fits Your Goal? (US 2026)`
+  - **Primary keyword:** `nmn vs niacin` · **Secondary:** nmn or niacin, is nmn better than niacin
+  - **Search intent:** adult comparing NMN with plain niacin
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-10 07:30 ICT)
+  - **Hero product:** `/products/ageaura-pure-nmn-tmg-nad-complex` (AgeAura Pure NMN + TMG NAD+ Complex, $79.99, in stock 2026-11-10)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` twice (browse link — AgeAura Pure NMN + TMG NAD+ Complex is not in it, never claim it is) · no other AgeAura product and no AgeAura collection link (brand_rules)
+  - **Angle:** Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.
+  - **Fan-out answers to cover:** can you take nmn and niacin together; nmn vs niacin benefits
+  - **Evidence to fetch & confirm (claims log):** every number, study and dose from a source fetched at write time — cut what you cannot confirm
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** nmn + versus checked 2026-11-10 against 182 live articles (blog listing + sitemap + Atom + local caches) and all 159 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1110-4 — turkesterone vs dhea** — `Turkesterone vs DHEA: Key Differences (US 2026)`
+  - **Primary keyword:** `turkesterone vs dhea` · **Secondary:** turkesterone or dhea, is turkesterone better than dhea
+  - **Search intent:** adult comparing turkesterone with DHEA
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-10 07:30 ICT)
+  - **Hero product:** `/products/turkesterone-advanced-formula` (Turkesterone Advanced Formula, $75, in stock 2026-11-10)
+  - **Turkesterone Advanced Formula pack label (source of truth):** wellness, nest, PREMIUM, TURKESTERONE, ADVANCED, FORMULA, AMPLIFY, MUSCLE, ENDURANCE, 60, Dietary Supplement, Capsules. No milligram amount and no Supplement Facts panel were read. Do not add one. The capsule badge is the separate lines in product_refs/turkesterone-advanced-formula.label.json. Do not state a milligram amount, a serving count, a different capsule count, or a day-supply.
+  - **Collection links (≥2, verify live):** `/collections/mens-essential-collection` (contains it), `/collections/shilajit-wellness-stack` (contains it)
+  - **Angle:** Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.
+  - **Fan-out answers to cover:** can you take turkesterone and dhea together; turkesterone vs dhea benefits
+  - **Evidence to fetch & confirm (claims log):** every number, study and dose from a source fetched at write time — cut what you cannot confirm
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** turkesterone + versus checked 2026-11-10 against 182 live articles (blog listing + sitemap + Atom + local caches) and all 159 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1110-5 — nmn vs glutathione** — `NMN vs Glutathione: What Each Does (US 2026)`
+  - **Primary keyword:** `nmn vs glutathione` · **Secondary:** nmn or glutathione, is nmn better than glutathione
+  - **Search intent:** adult comparing NMN with glutathione for healthy aging
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-10 07:30 ICT)
+  - **Hero product:** `/products/ageaura-pure-nmn-tmg-nad-complex` (AgeAura Pure NMN + TMG NAD+ Complex, $79.99, in stock 2026-11-10)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` twice (browse link — AgeAura Pure NMN + TMG NAD+ Complex is not in it, never claim it is) · no other AgeAura product and no AgeAura collection link (brand_rules)
+  - **Angle:** Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.
+  - **Fan-out answers to cover:** can you take nmn and glutathione together; nmn vs glutathione benefits
+  - **Evidence to fetch & confirm (claims log):** every number, study and dose from a source fetched at write time — cut what you cannot confirm
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** nmn + versus checked 2026-11-10 against 182 live articles (blog listing + sitemap + Atom + local caches) and all 159 tickets in this file; STEP 0 re-checks at write time
