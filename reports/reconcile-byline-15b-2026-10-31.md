@@ -1,5 +1,7 @@
 # Reconcile byline + FloraFresh 15B — 2026-10-31
 
+> Superseded. Do not apply this report. On current main, FloraFresh is Bacillus coagulans SNZ-1969, 1 billion CFU per 2 gummies, and the blog byline stays Dr. Marcus Hale until `/pages/mike-moretti` returns HTTP 200. The sections below describe a 2026-10-31 draft that was not landed.
+
 One draft off `origin/main` `6c46771` so Kevin can land this instead of choosing between conflicting drafts #82 and #94. Nothing here was published. #82, #88, and #94 were left open.
 
 Checked this run, read-only: `https://wellnessnest.co/pages/mike-moretti` returns **404**. `https://wellnessnest.co/pages/dr-marcus-hale` returns **200**. No Shopify page was created. No headshot was added (`roster.json` `headshot` is null).
