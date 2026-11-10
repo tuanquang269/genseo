@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Opt-in boot/login catch-up. Not installed by scripts/genseo_self_apply.sh.
+     RunAtLoad is true on purpose: a powered-off Mac does not replay
+     StartCalendarInterval slots, and the daily and landing agents keep
+     RunAtLoad false so their bootstrap does not start a run.
+     There is no StartCalendarInterval. Sleep already coalesces those slots.
+     This agent does not publish. The program decides, then may start the
+     existing article and landing commands, which themselves begin with
+     caffeinate. /usr/bin/caffeinate -i -s here keeps the Mac awake while
+     this process waits for those lanes. No sudo and no pmset change.
+     Install and uninstall text: scripts/genseo_boot_catchup.py print-install flag
+     Do not copy this file in place of com.pati.genseo-daily.plist. -->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.pati.genseo-catchup</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/bin/caffeinate</string>
+        <string>-i</string>
+        <string>-s</string>
+        <string>/usr/bin/python3</string>
+        <string>/Users/kevinkreative/genseo/scripts/genseo_boot_catchup.py</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>StandardOutPath</key>
+    <string>/Users/kevinkreative/genseo/logs/launchd-catchup.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/kevinkreative/genseo/logs/launchd-catchup.err.log</string>
+</dict>
+</plist>

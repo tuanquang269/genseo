@@ -105,6 +105,11 @@ Also: never `rm` repo files (move them to `_superseded/`); never put CDN URLs in
   `daily-landing-tickets.md` → `scripts/run_landing_daily.sh` (launchd 08:15 + 09:20 check + 16:15) keeps two open
   lines (`GENSEO_LANDING_LOW_WATER`, default 2, `build_landing_tickets.py --ensure`) and builds one `gsl-preview-*`
   page that Kevin approves. Skill `genseo-landing-pages`.
+- **Boot catch-up — opt-in, not loaded.** `com.pati.genseo-catchup` (`scripts/genseo_boot_catchup.py`,
+  `deploy/com.pati.genseo-catchup.plist`) may start today's article run and, when that draft is not built yet,
+  today's unpublished landing draft after a login that missed a morning slot. Self-apply does not install it.
+  Do not set `RunAtLoad` on `com.pati.genseo-daily` or `com.pati.genseo-landing`. Install and uninstall
+  one-liners are in `DAILY-RUN.md`. Offline: `bash tests/test_boot_catchup.sh`.
 
 ## Read-only checks a cloud agent can run
 ```bash
@@ -121,4 +126,5 @@ python3 scripts/refill_tickets.py --count 8 --dry-run   # storefront reads only;
 python3 scripts/sync_cursor_skills.py --check           # .cursor/skills pointers match skills/
 bash tests/test_install_mac_daily_wrapper.sh            # daily wrapper copy into a temp HOME; no launchd, no Shopify
 bash tests/test_self_apply.sh                           # wrapper and plist drift after a sync; no launchd, no Shopify
+bash tests/test_boot_catchup.sh                         # missed-slot decision; no launchd, no Shopify
 ```

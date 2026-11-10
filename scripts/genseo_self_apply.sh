@@ -34,6 +34,11 @@
 # plist is put back and, when this script had unloaded the label, bootstrapped
 # again. The article or landing run keeps going either way.
 #
+# com.pati.genseo-catchup is not one of these labels. Its plist sets
+# RunAtLoad true, which genseo_self_apply_plist_safe refuses, so this
+# script cannot install it. The one-liner in scripts/genseo_boot_catchup.py
+# is the only load path, and only after Kevin asks for it.
+#
 # Test hooks are ignored unless GENSEO_SELF_APPLY_TEST=1:
 #   GENSEO_LAUNCHCTL              executable used instead of launchctl
 #   GENSEO_SELF_APPLY_HOSTNAME    machine name, instead of hostname/scutil
