@@ -1,0 +1,2120 @@
+{
+  "date": "2026-10-21",
+  "generated_at": "2026-10-21T11:07:59+07:00",
+  "source": "public atom feed https://wellnessnest.co/blogs/news.atom",
+  "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1",
+  "shopify_writes": 0,
+  "theme_edits": 0,
+  "context": "The vault at ~/PATI/LLM-Wiki has no `90-sources/search-engine-land/sel-digest-2026-10-21.md`. The freshest digest on disk is `sel-digest-2026-10-20.md` (content pruning, social search, local AI). The clutter spark is Search Engine Land, 20 October 2026, [Google's clutterScore](https://searchengineland.com/google-clutterscore-seo-497178): intrusive pop-ups, sticky and floating layers, third-party scripts, and repeated templates. That article says the leaked field has no public formula, so this audit does not invent a clutterScore. `knowledge_base/AEO_GEO_GUIDELINES.md` already forbids a forced interstitial on an article. Existing writers were not extended: `scripts/patch_mobile.py` pushes collection HTML, `scripts/audit_article_images.py` reads the Admin API, and `scripts/patch_tables.py` writes article bodies. The spacer-image skip and the `article-table-wrapper` name are reused as checks only.",
+  "selection_note": "Selected the 5 newest `/blogs/news/` entries from the public Atom feed. Product, collection, home, checkout, and landing URLs are ignored. The tracker is a cross-check, not the sort. Shared titles in this set: vaginal probiotics on an empty stomach: us guide (vaginal-probiotics-on-an-empty-stomach-us-guide-1, vaginal-probiotics-on-an-empty-stomach-us-guide). Consolidation is a separate decision and needs Kevin GO. Feed: https://wellnessnest.co/blogs/news.atom.",
+  "post_count": 5,
+  "posts": [
+    {
+      "url": "https://wellnessnest.co/blogs/news/vaginal-probiotics-on-an-empty-stomach-us-guide-1",
+      "handle": "vaginal-probiotics-on-an-empty-stomach-us-guide-1",
+      "title": "Vaginal Probiotics on an Empty Stomach: US Guide",
+      "published_at": "2026-10-20T20:40:36-07:00",
+      "tracker_ticket": "CA1017-6",
+      "in_tracker": true,
+      "article_words": 1292,
+      "highest_severity": "high",
+      "findings": [
+        {
+          "signal": "content_start",
+          "severity": "low",
+          "summary": "The article body has 1 block element(s) before the first answer paragraph.",
+          "measured": {
+            "article_block_elements_before_answer": 1,
+            "answer_is_first_paragraph": false,
+            "article_markup_bytes_before_answer": 412,
+            "document_markup_bytes_before_answer": 70929,
+            "document_bytes_note": "Byte count includes theme chrome and scripts. It is not a viewport position."
+          },
+          "suggested_fix": "Move the answer paragraph above the introductory blocks. Suggestion only. This audit does not edit the article.",
+          "scope": "article",
+          "needs_kevin_go": false,
+          "issues": [
+            {
+              "severity": "low",
+              "summary": "The article body has 1 block element(s) before the first answer paragraph.",
+              "suggested_fix": "Move the answer paragraph above the introductory blocks. Suggestion only. This audit does not edit the article.",
+              "scope": "article",
+              "needs_kevin_go": false
+            }
+          ]
+        },
+        {
+          "signal": "popups_sticky_interstitials",
+          "severity": "high",
+          "summary": "Initial HTML references unexpected host(s): shopify.jsdeliver.cloud, cartassure, 240.1.2.3. Shop-this-article CSS sets position:fixed and stretches it to both side edges along the bottom. Trigger aria-expanded is false. Whether JavaScript hides the control is unknown. Overlay-vendor script host(s) loaded: static.klaviyo.com. No vendor form was required to record the script. Whether a popup opens after JavaScript is unknown. position:sticky is declared for .section-header. A CRO app script is on the page. What it injects on this mobile GET is unknown. Section shell(s) with no control text in the initial HTML: promo-popup, global-music-player, scroll-to-top. Rendered behavior is unknown.",
+          "measured": {
+            "fixed_selectors": [
+              {
+                "selector": "#ShopThisArticle-template--25995994530107__shop-this-article .sta__trigger",
+                "full_width_bottom": true
+              },
+              {
+                "selector": "#ShopThisArticle-template--25995994530107__shop-this-article .sta__overlay",
+                "full_width_bottom": false
+              },
+              {
+                "selector": "#ShopThisArticle-template--25995994530107__shop-this-article .sta__modal",
+                "full_width_bottom": true
+              }
+            ],
+            "sticky_selectors": [
+              ".section-header"
+            ],
+            "overlay_script_hosts": [
+              "static.klaviyo.com"
+            ],
+            "unexpected_hosts": [
+              "shopify.jsdeliver.cloud",
+              "cartassure",
+              "240.1.2.3"
+            ],
+            "cro_scripts_present": 1,
+            "placeholder_sections": [
+              {
+                "id": "promo-popup",
+                "text_in_initial_html": "",
+                "rendered_behavior": "unknown"
+              },
+              {
+                "id": "global-music-player",
+                "text_in_initial_html": "",
+                "rendered_behavior": "unknown"
+              },
+              {
+                "id": "scroll-to-top",
+                "text_in_initial_html": "",
+                "rendered_behavior": "unknown"
+              }
+            ],
+            "shop_trigger_aria_expanded": "false",
+            "popup_after_javascript": "unknown",
+            "other_script_hosts": [
+              "js.shrinetheme.com",
+              "wellnessnest.co",
+              "shop.app",
+              "cdn.shopify.com",
+              "static.rechargecdn.com"
+            ]
+          },
+          "suggested_fix": "Remove the unexpected script and any header item that references it, after a theme backup. Report only, needs Kevin GO. Do not pin a shop bar over the article on mobile. Keep the product mention inline. Report only, needs Kevin GO. Replace a full-screen email popup with an inline form that does not cover the article. Report only, needs Kevin GO. A sticky header is theme chrome. Leave it unless it stacks with the ticker and the shop bar. Report only, needs Kevin GO. No change suggested until the injected layer is identified. Report only, needs Kevin GO. No change suggested from the empty shell alone. Report only, needs Kevin GO.",
+          "scope": "theme",
+          "needs_kevin_go": true,
+          "issues": [
+            {
+              "severity": "high",
+              "summary": "Initial HTML references unexpected host(s): shopify.jsdeliver.cloud, cartassure, 240.1.2.3.",
+              "suggested_fix": "Remove the unexpected script and any header item that references it, after a theme backup. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            },
+            {
+              "severity": "high",
+              "summary": "Shop-this-article CSS sets position:fixed and stretches it to both side edges along the bottom. Trigger aria-expanded is false. Whether JavaScript hides the control is unknown.",
+              "suggested_fix": "Do not pin a shop bar over the article on mobile. Keep the product mention inline. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            },
+            {
+              "severity": "medium",
+              "summary": "Overlay-vendor script host(s) loaded: static.klaviyo.com. No vendor form was required to record the script. Whether a popup opens after JavaScript is unknown.",
+              "suggested_fix": "Replace a full-screen email popup with an inline form that does not cover the article. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            },
+            {
+              "severity": "low",
+              "summary": "position:sticky is declared for .section-header.",
+              "suggested_fix": "A sticky header is theme chrome. Leave it unless it stacks with the ticker and the shop bar. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            },
+            {
+              "severity": "info",
+              "summary": "A CRO app script is on the page. What it injects on this mobile GET is unknown.",
+              "suggested_fix": "No change suggested until the injected layer is identified. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            },
+            {
+              "severity": "info",
+              "summary": "Section shell(s) with no control text in the initial HTML: promo-popup, global-music-player, scroll-to-top. Rendered behavior is unknown.",
+              "suggested_fix": "No change suggested from the empty shell alone. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            }
+          ]
+        },
+        {
+          "signal": "images",
+          "severity": "high",
+          "summary": "4 content image(s) have no width and height and no aspect-ratio style. CLS is unknown. The article header image carries class mobile-hidden. Whether the phone hides it is unknown without the theme stylesheet.",
+          "measured": {
+            "content_images": 6,
+            "missing_width_and_height": 4,
+            "shop_this_article_images": 1,
+            "shop_this_article_missing_width_and_height": 0,
+            "cls": "unknown",
+            "rendered_px": "unknown",
+            "images": [
+              {
+                "region": "article_body",
+                "alt": "Woman checking FloraFresh vaginal probiotic gummies beside breakfast on a kitche",
+                "width_attr": "unknown",
+                "height_attr": "unknown",
+                "missing_width_and_height": true,
+                "aspect_ratio_in_style": false,
+                "class_mobile_hidden": false,
+                "rendered_px": "unknown",
+                "cls": "unknown"
+              },
+              {
+                "region": "article_body",
+                "alt": "Hand reaching for an amber gummy beside a breakfast plate and FloraFresh pouch",
+                "width_attr": "unknown",
+                "height_attr": "unknown",
+                "missing_width_and_height": true,
+                "aspect_ratio_in_style": false,
+                "class_mobile_hidden": false,
+                "rendered_px": "unknown",
+                "cls": "unknown"
+              },
+              {
+                "region": "article_body",
+                "alt": "Hand checking a morning wellness routine beside breakfast and water",
+                "width_attr": "unknown",
+                "height_attr": "unknown",
+                "missing_width_and_height": true,
+                "aspect_ratio_in_style": false,
+                "class_mobile_hidden": false,
+                "rendered_px": "unknown",
+                "cls": "unknown"
+              },
+              {
+                "region": "article_body",
+                "alt": "Woman preparing breakfast while FloraFresh pouch stands beside a bowl and spoon",
+                "width_attr": "unknown",
+                "height_attr": "unknown",
+                "missing_width_and_height": true,
+                "aspect_ratio_in_style": false,
+                "class_mobile_hidden": false,
+                "rendered_px": "unknown",
+                "cls": "unknown"
+              },
+              {
+                "region": "article_header",
+                "alt": "Woman checking FloraFresh vaginal probiotic gummies beside breakfast on a kitche",
+                "width_attr": "1200",
+                "height_attr": "800",
+                "missing_width_and_height": false,
+                "aspect_ratio_in_style": false,
+                "class_mobile_hidden": false,
+                "rendered_px": "unknown",
+                "cls": "unknown"
+              },
+              {
+                "region": "article_header",
+                "alt": "Woman checking FloraFresh vaginal probiotic gummies beside breakfast on a kitche",
+                "width_attr": "1500",
+                "height_attr": "1000",
+                "missing_width_and_height": false,
+                "aspect_ratio_in_style": false,
+                "class_mobile_hidden": true,
+                "rendered_px": "unknown",
+                "cls": "unknown"
+              }
+            ]
+          },
+          "suggested_fix": "Add width and height attributes that match each file's pixel size. Suggestion only. This audit does not edit the article. No change suggested from the class name alone. Report only, needs Kevin GO.",
+          "scope": "mixed",
+          "needs_kevin_go": true,
+          "issues": [
+            {
+              "severity": "high",
+              "summary": "4 content image(s) have no width and height and no aspect-ratio style. CLS is unknown.",
+              "suggested_fix": "Add width and height attributes that match each file's pixel size. Suggestion only. This audit does not edit the article.",
+              "scope": "article",
+              "needs_kevin_go": false
+            },
+            {
+              "severity": "info",
+              "summary": "The article header image carries class mobile-hidden. Whether the phone hides it is unknown without the theme stylesheet.",
+              "suggested_fix": "No change suggested from the class name alone. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            }
+          ]
+        },
+        {
+          "signal": "cta_density",
+          "severity": "medium",
+          "summary": "5 CTA block(s) across 1292 article words, 3.87 per 1,000 words (inline product links 3, shop cards 1, newsletter forms 1). The same product URL is linked 3 times in the article body.",
+          "measured": {
+            "inline_product_links": 3,
+            "shop_this_article_cards": 1,
+            "newsletter_forms": 1,
+            "cta_blocks": 5,
+            "inline_product_hrefs": [
+              "https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies",
+              "https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies",
+              "https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies"
+            ],
+            "article_words": 1292,
+            "cta_per_1000_words": 3.87,
+            "threshold_note": "Heuristic count of product links, shop cards, and email forms per 1,000 article words. Not clutterScore. Not the Better Ads 30 percent height test, which needs a layout viewport."
+          },
+          "suggested_fix": "Keep one product mention in the article. The shop card and the email form are theme sections. Report only, needs Kevin GO. Suggestion only. This audit does not edit the article. Keep a single product link near the label mention. Suggestion only. This audit does not edit the article.",
+          "scope": "mixed",
+          "needs_kevin_go": true,
+          "issues": [
+            {
+              "severity": "medium",
+              "summary": "5 CTA block(s) across 1292 article words, 3.87 per 1,000 words (inline product links 3, shop cards 1, newsletter forms 1).",
+              "suggested_fix": "Keep one product mention in the article. The shop card and the email form are theme sections. Report only, needs Kevin GO. Suggestion only. This audit does not edit the article.",
+              "scope": "mixed",
+              "needs_kevin_go": true
+            },
+            {
+              "severity": "low",
+              "summary": "The same product URL is linked 3 times in the article body.",
+              "suggested_fix": "Keep a single product link near the label mention. Suggestion only. This audit does not edit the article.",
+              "scope": "article",
+              "needs_kevin_go": false
+            }
+          ]
+        },
+        {
+          "signal": "wide_overflow",
+          "severity": "medium",
+          "summary": "1 table(s) in the article have no overflow wrapper. Whether they overflow a phone viewport is unknown.",
+          "measured": {
+            "tables": 1,
+            "tables_without_overflow_wrapper": 1,
+            "wide_inline_px": [],
+            "rendered_overflow": "unknown"
+          },
+          "suggested_fix": "Wrap each table in a div with class article-table-wrapper and overflow-x:auto. Do not run scripts/patch_tables.py from this audit; that script writes article HTML. Suggestion only. This audit does not edit the article.",
+          "scope": "article",
+          "needs_kevin_go": false,
+          "issues": [
+            {
+              "severity": "medium",
+              "summary": "1 table(s) in the article have no overflow wrapper. Whether they overflow a phone viewport is unknown.",
+              "suggested_fix": "Wrap each table in a div with class article-table-wrapper and overflow-x:auto. Do not run scripts/patch_tables.py from this audit; that script writes article HTML. Suggestion only. This audit does not edit the article.",
+              "scope": "article",
+              "needs_kevin_go": false
+            }
+          ]
+        },
+        {
+          "signal": "tap_targets",
+          "severity": "medium",
+          "summary": "Declared box 40.0x40.0 px on .sta__close is under 48 px. Rendered size is unknown.",
+          "measured": {
+            "crowded_sibling_groups": 0,
+            "crowded_group_sizes": [],
+            "declared_boxes_under_48px": [
+              {
+                "selector": "#ShopThisArticle-template--25995994530107__shop-this-article .sta__close",
+                "declared_width_px": 40.0,
+                "declared_height_px": 40.0,
+                "rendered_px": "unknown"
+              }
+            ],
+            "rendered_gap_px": "unknown",
+            "rendered_target_px": "unknown"
+          },
+          "suggested_fix": "Raise the declared width and height of that control to at least 48px. Report only, needs Kevin GO.",
+          "scope": "theme",
+          "needs_kevin_go": true,
+          "issues": [
+            {
+              "severity": "medium",
+              "summary": "Declared box 40.0x40.0 px on .sta__close is under 48 px. Rendered size is unknown.",
+              "suggested_fix": "Raise the declared width and height of that control to at least 48px. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            }
+          ]
+        },
+        {
+          "signal": "font_line_length",
+          "severity": "medium",
+          "summary": "Declared font-size under 16px: .sta__trigger at 13.0, .sta__trigger-label at 13.0, .sta__count at 12.0. Relative font-size present (0.85em). Rendered px is unknown.",
+          "measured": {
+            "declared_px_under_16": [
+              {
+                "where": ".sta__trigger",
+                "font_size_px": 13.0,
+                "rendered_px": "unknown"
+              },
+              {
+                "where": ".sta__trigger-label",
+                "font_size_px": 13.0,
+                "rendered_px": "unknown"
+              },
+              {
+                "where": ".sta__count",
+                "font_size_px": 12.0,
+                "rendered_px": "unknown"
+              }
+            ],
+            "relative_font_sizes": [
+              {
+                "where": "aside.image-credits",
+                "font_size": "0.85em",
+                "rendered_px": "unknown"
+              }
+            ],
+            "rendered_line_length": "unknown"
+          },
+          "suggested_fix": "Use at least 16px for the shop-bar label. Report only, needs Kevin GO. No change suggested until the computed pixel size is known. Suggestion only. This audit does not edit the article.",
+          "scope": "mixed",
+          "needs_kevin_go": true,
+          "issues": [
+            {
+              "severity": "medium",
+              "summary": "Declared font-size under 16px: .sta__trigger at 13.0, .sta__trigger-label at 13.0, .sta__count at 12.0.",
+              "suggested_fix": "Use at least 16px for the shop-bar label. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            },
+            {
+              "severity": "info",
+              "summary": "Relative font-size present (0.85em). Rendered px is unknown.",
+              "suggested_fix": "No change suggested until the computed pixel size is known. Suggestion only. This audit does not edit the article.",
+              "scope": "article",
+              "needs_kevin_go": false
+            }
+          ]
+        },
+        {
+          "signal": "above_the_fold",
+          "severity": "medium",
+          "summary": "One ticker sits before the H1, repeated as 36 item nodes (3 unique message(s)). Rendered bar height is unknown. Above-the-fold element count is unknown.",
+          "measured": {
+            "rendered_above_the_fold_elements": "unknown",
+            "source_block_elements_before_h1": 149,
+            "source_block_elements_before_h1_excluding_drawers_desktop_nav_and_hidden": 53,
+            "sections_before_h1": [
+              "horizontal-ticker",
+              "header",
+              "cart-drawer",
+              "article"
+            ],
+            "interactive_elements_between_h1_and_answer": 0,
+            "ticker_item_nodes": 36,
+            "ticker_unique_messages": [
+              "\u21a9\ufe0f 90-Day Refund Policy \u2014 Eligibility Applies",
+              "\ud83d\ude9a Free Shipping on Orders Over $69",
+              "\ud83d\udd0e Product Details and Purchase Terms Online"
+            ]
+          },
+          "suggested_fix": "Keep a single line in the ticker instead of repeating the same messages in the HTML. Report only, needs Kevin GO.",
+          "scope": "theme",
+          "needs_kevin_go": true,
+          "issues": [
+            {
+              "severity": "medium",
+              "summary": "One ticker sits before the H1, repeated as 36 item nodes (3 unique message(s)). Rendered bar height is unknown. Above-the-fold element count is unknown.",
+              "suggested_fix": "Keep a single line in the ticker instead of repeating the same messages in the HTML. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "http_status": 200
+    },
+    {
+      "url": "https://wellnessnest.co/blogs/news/vaginal-probiotics-on-an-empty-stomach-us-guide",
+      "handle": "vaginal-probiotics-on-an-empty-stomach-us-guide",
+      "title": "Vaginal Probiotics on an Empty Stomach: US Guide",
+      "published_at": "2026-10-20T20:11:03-07:00",
+      "tracker_ticket": "",
+      "in_tracker": false,
+      "article_words": 1275,
+      "highest_severity": "high",
+      "findings": [
+        {
+          "signal": "content_start",
+          "severity": "low",
+          "summary": "The article body has 1 block element(s) before the first answer paragraph.",
+          "measured": {
+            "article_block_elements_before_answer": 1,
+            "answer_is_first_paragraph": false,
+            "article_markup_bytes_before_answer": 437,
+            "document_markup_bytes_before_answer": 70874,
+            "document_bytes_note": "Byte count includes theme chrome and scripts. It is not a viewport position."
+          },
+          "suggested_fix": "Move the answer paragraph above the introductory blocks. Suggestion only. This audit does not edit the article.",
+          "scope": "article",
+          "needs_kevin_go": false,
+          "issues": [
+            {
+              "severity": "low",
+              "summary": "The article body has 1 block element(s) before the first answer paragraph.",
+              "suggested_fix": "Move the answer paragraph above the introductory blocks. Suggestion only. This audit does not edit the article.",
+              "scope": "article",
+              "needs_kevin_go": false
+            }
+          ]
+        },
+        {
+          "signal": "popups_sticky_interstitials",
+          "severity": "high",
+          "summary": "Initial HTML references unexpected host(s): shopify.jsdeliver.cloud, cartassure, 240.1.2.3. Shop-this-article CSS sets position:fixed and stretches it to both side edges along the bottom. Trigger aria-expanded is false. Whether JavaScript hides the control is unknown. Overlay-vendor script host(s) loaded: static.klaviyo.com. No vendor form was required to record the script. Whether a popup opens after JavaScript is unknown. position:sticky is declared for .section-header. A CRO app script is on the page. What it injects on this mobile GET is unknown. Section shell(s) with no control text in the initial HTML: promo-popup, global-music-player, scroll-to-top. Rendered behavior is unknown.",
+          "measured": {
+            "fixed_selectors": [
+              {
+                "selector": "#ShopThisArticle-template--25995994530107__shop-this-article .sta__trigger",
+                "full_width_bottom": true
+              },
+              {
+                "selector": "#ShopThisArticle-template--25995994530107__shop-this-article .sta__overlay",
+                "full_width_bottom": false
+              },
+              {
+                "selector": "#ShopThisArticle-template--25995994530107__shop-this-article .sta__modal",
+                "full_width_bottom": true
+              }
+            ],
+            "sticky_selectors": [
+              ".section-header"
+            ],
+            "overlay_script_hosts": [
+              "static.klaviyo.com"
+            ],
+            "unexpected_hosts": [
+              "shopify.jsdeliver.cloud",
+              "cartassure",
+              "240.1.2.3"
+            ],
+            "cro_scripts_present": 1,
+            "placeholder_sections": [
+              {
+                "id": "promo-popup",
+                "text_in_initial_html": "",
+                "rendered_behavior": "unknown"
+              },
+              {
+                "id": "global-music-player",
+                "text_in_initial_html": "",
+                "rendered_behavior": "unknown"
+              },
+              {
+                "id": "scroll-to-top",
+                "text_in_initial_html": "",
+                "rendered_behavior": "unknown"
+              }
+            ],
+            "shop_trigger_aria_expanded": "false",
+            "popup_after_javascript": "unknown",
+            "other_script_hosts": [
+              "js.shrinetheme.com",
+              "wellnessnest.co",
+              "shop.app",
+              "cdn.shopify.com",
+              "static.rechargecdn.com"
+            ]
+          },
+          "suggested_fix": "Remove the unexpected script and any header item that references it, after a theme backup. Report only, needs Kevin GO. Do not pin a shop bar over the article on mobile. Keep the product mention inline. Report only, needs Kevin GO. Replace a full-screen email popup with an inline form that does not cover the article. Report only, needs Kevin GO. A sticky header is theme chrome. Leave it unless it stacks with the ticker and the shop bar. Report only, needs Kevin GO. No change suggested until the injected layer is identified. Report only, needs Kevin GO. No change suggested from the empty shell alone. Report only, needs Kevin GO.",
+          "scope": "theme",
+          "needs_kevin_go": true,
+          "issues": [
+            {
+              "severity": "high",
+              "summary": "Initial HTML references unexpected host(s): shopify.jsdeliver.cloud, cartassure, 240.1.2.3.",
+              "suggested_fix": "Remove the unexpected script and any header item that references it, after a theme backup. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            },
+            {
+              "severity": "high",
+              "summary": "Shop-this-article CSS sets position:fixed and stretches it to both side edges along the bottom. Trigger aria-expanded is false. Whether JavaScript hides the control is unknown.",
+              "suggested_fix": "Do not pin a shop bar over the article on mobile. Keep the product mention inline. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            },
+            {
+              "severity": "medium",
+              "summary": "Overlay-vendor script host(s) loaded: static.klaviyo.com. No vendor form was required to record the script. Whether a popup opens after JavaScript is unknown.",
+              "suggested_fix": "Replace a full-screen email popup with an inline form that does not cover the article. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            },
+            {
+              "severity": "low",
+              "summary": "position:sticky is declared for .section-header.",
+              "suggested_fix": "A sticky header is theme chrome. Leave it unless it stacks with the ticker and the shop bar. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            },
+            {
+              "severity": "info",
+              "summary": "A CRO app script is on the page. What it injects on this mobile GET is unknown.",
+              "suggested_fix": "No change suggested until the injected layer is identified. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            },
+            {
+              "severity": "info",
+              "summary": "Section shell(s) with no control text in the initial HTML: promo-popup, global-music-player, scroll-to-top. Rendered behavior is unknown.",
+              "suggested_fix": "No change suggested from the empty shell alone. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            }
+          ]
+        },
+        {
+          "signal": "images",
+          "severity": "high",
+          "summary": "5 content image(s) have no width and height and no aspect-ratio style. CLS is unknown. The article header image carries class mobile-hidden. Whether the phone hides it is unknown without the theme stylesheet.",
+          "measured": {
+            "content_images": 7,
+            "missing_width_and_height": 5,
+            "shop_this_article_images": 1,
+            "shop_this_article_missing_width_and_height": 0,
+            "cls": "unknown",
+            "rendered_px": "unknown",
+            "images": [
+              {
+                "region": "article_body",
+                "alt": "Dusty-pink FloraFresh vaginal probiotic gummies pouch standing on a breakfast ta",
+                "width_attr": "unknown",
+                "height_attr": "unknown",
+                "missing_width_and_height": true,
+                "aspect_ratio_in_style": false,
+                "class_mobile_hidden": false,
+                "rendered_px": "unknown",
+                "cls": "unknown"
+              },
+              {
+                "region": "article_body",
+                "alt": "Hand placing a breakfast plate beside an upright dusty-pink FloraFresh vaginal p",
+                "width_attr": "unknown",
+                "height_attr": "unknown",
+                "missing_width_and_height": true,
+                "aspect_ratio_in_style": false,
+                "class_mobile_hidden": false,
+                "rendered_px": "unknown",
+                "cls": "unknown"
+              },
+              {
+                "region": "article_body",
+                "alt": "Shoulder-down human morning routine with a glass of water and FloraFresh pouch s",
+                "width_attr": "unknown",
+                "height_attr": "unknown",
+                "missing_width_and_height": true,
+                "aspect_ratio_in_style": false,
+                "class_mobile_hidden": false,
+                "rendered_px": "unknown",
+                "cls": "unknown"
+              },
+              {
+                "region": "article_body",
+                "alt": "Dusty-pink FloraFresh pouch beside a hand checking a blank phone and the package",
+                "width_attr": "unknown",
+                "height_attr": "unknown",
+                "missing_width_and_height": true,
+                "aspect_ratio_in_style": false,
+                "class_mobile_hidden": false,
+                "rendered_px": "unknown",
+                "cls": "unknown"
+              },
+              {
+                "region": "article_body",
+                "alt": "Human forearm placing an amber gummy on a ceramic dish beside an upright dusty-p",
+                "width_attr": "unknown",
+                "height_attr": "unknown",
+                "missing_width_and_height": true,
+                "aspect_ratio_in_style": false,
+                "class_mobile_hidden": false,
+                "rendered_px": "unknown",
+                "cls": "unknown"
+              },
+              {
+                "region": "article_header",
+                "alt": "Vaginal Probiotics on an Empty Stomach: US Guide",
+                "width_attr": "1200",
+                "height_attr": "800",
+                "missing_width_and_height": false,
+                "aspect_ratio_in_style": false,
+                "class_mobile_hidden": false,
+                "rendered_px": "unknown",
+                "cls": "unknown"
+              },
+              {
+                "region": "article_header",
+                "alt": "Vaginal Probiotics on an Empty Stomach: US Guide",
+                "width_attr": "1500",
+                "height_attr": "1000",
+                "missing_width_and_height": false,
+                "aspect_ratio_in_style": false,
+                "class_mobile_hidden": true,
+                "rendered_px": "unknown",
+                "cls": "unknown"
+              }
+            ]
+          },
+          "suggested_fix": "Add width and height attributes that match each file's pixel size. Suggestion only. This audit does not edit the article. No change suggested from the class name alone. Report only, needs Kevin GO.",
+          "scope": "mixed",
+          "needs_kevin_go": true,
+          "issues": [
+            {
+              "severity": "high",
+              "summary": "5 content image(s) have no width and height and no aspect-ratio style. CLS is unknown.",
+              "suggested_fix": "Add width and height attributes that match each file's pixel size. Suggestion only. This audit does not edit the article.",
+              "scope": "article",
+              "needs_kevin_go": false
+            },
+            {
+              "severity": "info",
+              "summary": "The article header image carries class mobile-hidden. Whether the phone hides it is unknown without the theme stylesheet.",
+              "suggested_fix": "No change suggested from the class name alone. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            }
+          ]
+        },
+        {
+          "signal": "cta_density",
+          "severity": "medium",
+          "summary": "5 CTA block(s) across 1275 article words, 3.92 per 1,000 words (inline product links 3, shop cards 1, newsletter forms 1). The same product URL is linked 3 times in the article body.",
+          "measured": {
+            "inline_product_links": 3,
+            "shop_this_article_cards": 1,
+            "newsletter_forms": 1,
+            "cta_blocks": 5,
+            "inline_product_hrefs": [
+              "https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies",
+              "https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies",
+              "https://wellnessnest.co/products/florafresh-vaginal-probiotics-gummies"
+            ],
+            "article_words": 1275,
+            "cta_per_1000_words": 3.92,
+            "threshold_note": "Heuristic count of product links, shop cards, and email forms per 1,000 article words. Not clutterScore. Not the Better Ads 30 percent height test, which needs a layout viewport."
+          },
+          "suggested_fix": "Keep one product mention in the article. The shop card and the email form are theme sections. Report only, needs Kevin GO. Suggestion only. This audit does not edit the article. Keep a single product link near the label mention. Suggestion only. This audit does not edit the article.",
+          "scope": "mixed",
+          "needs_kevin_go": true,
+          "issues": [
+            {
+              "severity": "medium",
+              "summary": "5 CTA block(s) across 1275 article words, 3.92 per 1,000 words (inline product links 3, shop cards 1, newsletter forms 1).",
+              "suggested_fix": "Keep one product mention in the article. The shop card and the email form are theme sections. Report only, needs Kevin GO. Suggestion only. This audit does not edit the article.",
+              "scope": "mixed",
+              "needs_kevin_go": true
+            },
+            {
+              "severity": "low",
+              "summary": "The same product URL is linked 3 times in the article body.",
+              "suggested_fix": "Keep a single product link near the label mention. Suggestion only. This audit does not edit the article.",
+              "scope": "article",
+              "needs_kevin_go": false
+            }
+          ]
+        },
+        {
+          "signal": "wide_overflow",
+          "severity": "medium",
+          "summary": "1 table(s) in the article have no overflow wrapper. Whether they overflow a phone viewport is unknown.",
+          "measured": {
+            "tables": 1,
+            "tables_without_overflow_wrapper": 1,
+            "wide_inline_px": [],
+            "rendered_overflow": "unknown"
+          },
+          "suggested_fix": "Wrap each table in a div with class article-table-wrapper and overflow-x:auto. Do not run scripts/patch_tables.py from this audit; that script writes article HTML. Suggestion only. This audit does not edit the article.",
+          "scope": "article",
+          "needs_kevin_go": false,
+          "issues": [
+            {
+              "severity": "medium",
+              "summary": "1 table(s) in the article have no overflow wrapper. Whether they overflow a phone viewport is unknown.",
+              "suggested_fix": "Wrap each table in a div with class article-table-wrapper and overflow-x:auto. Do not run scripts/patch_tables.py from this audit; that script writes article HTML. Suggestion only. This audit does not edit the article.",
+              "scope": "article",
+              "needs_kevin_go": false
+            }
+          ]
+        },
+        {
+          "signal": "tap_targets",
+          "severity": "medium",
+          "summary": "Declared box 40.0x40.0 px on .sta__close is under 48 px. Rendered size is unknown.",
+          "measured": {
+            "crowded_sibling_groups": 0,
+            "crowded_group_sizes": [],
+            "declared_boxes_under_48px": [
+              {
+                "selector": "#ShopThisArticle-template--25995994530107__shop-this-article .sta__close",
+                "declared_width_px": 40.0,
+                "declared_height_px": 40.0,
+                "rendered_px": "unknown"
+              }
+            ],
+            "rendered_gap_px": "unknown",
+            "rendered_target_px": "unknown"
+          },
+          "suggested_fix": "Raise the declared width and height of that control to at least 48px. Report only, needs Kevin GO.",
+          "scope": "theme",
+          "needs_kevin_go": true,
+          "issues": [
+            {
+              "severity": "medium",
+              "summary": "Declared box 40.0x40.0 px on .sta__close is under 48 px. Rendered size is unknown.",
+              "suggested_fix": "Raise the declared width and height of that control to at least 48px. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            }
+          ]
+        },
+        {
+          "signal": "font_line_length",
+          "severity": "medium",
+          "summary": "Declared font-size under 16px: .sta__trigger at 13.0, .sta__trigger-label at 13.0, .sta__count at 12.0.",
+          "measured": {
+            "declared_px_under_16": [
+              {
+                "where": ".sta__trigger",
+                "font_size_px": 13.0,
+                "rendered_px": "unknown"
+              },
+              {
+                "where": ".sta__trigger-label",
+                "font_size_px": 13.0,
+                "rendered_px": "unknown"
+              },
+              {
+                "where": ".sta__count",
+                "font_size_px": 12.0,
+                "rendered_px": "unknown"
+              }
+            ],
+            "relative_font_sizes": [],
+            "rendered_line_length": "unknown"
+          },
+          "suggested_fix": "Use at least 16px for the shop-bar label. Report only, needs Kevin GO.",
+          "scope": "theme",
+          "needs_kevin_go": true,
+          "issues": [
+            {
+              "severity": "medium",
+              "summary": "Declared font-size under 16px: .sta__trigger at 13.0, .sta__trigger-label at 13.0, .sta__count at 12.0.",
+              "suggested_fix": "Use at least 16px for the shop-bar label. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            }
+          ]
+        },
+        {
+          "signal": "above_the_fold",
+          "severity": "medium",
+          "summary": "One ticker sits before the H1, repeated as 36 item nodes (3 unique message(s)). Rendered bar height is unknown. Above-the-fold element count is unknown.",
+          "measured": {
+            "rendered_above_the_fold_elements": "unknown",
+            "source_block_elements_before_h1": 149,
+            "source_block_elements_before_h1_excluding_drawers_desktop_nav_and_hidden": 53,
+            "sections_before_h1": [
+              "horizontal-ticker",
+              "header",
+              "cart-drawer",
+              "article"
+            ],
+            "interactive_elements_between_h1_and_answer": 0,
+            "ticker_item_nodes": 36,
+            "ticker_unique_messages": [
+              "\u21a9\ufe0f 90-Day Refund Policy \u2014 Eligibility Applies",
+              "\ud83d\ude9a Free Shipping on Orders Over $69",
+              "\ud83d\udd0e Product Details and Purchase Terms Online"
+            ]
+          },
+          "suggested_fix": "Keep a single line in the ticker instead of repeating the same messages in the HTML. Report only, needs Kevin GO.",
+          "scope": "theme",
+          "needs_kevin_go": true,
+          "issues": [
+            {
+              "severity": "medium",
+              "summary": "One ticker sits before the H1, repeated as 36 item nodes (3 unique message(s)). Rendered bar height is unknown. Above-the-fold element count is unknown.",
+              "suggested_fix": "Keep a single line in the ticker instead of repeating the same messages in the HTML. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "http_status": 200
+    },
+    {
+      "url": "https://wellnessnest.co/blogs/news/nmn-while-traveling-with-food-5-us-tips",
+      "handle": "nmn-while-traveling-with-food-5-us-tips",
+      "title": "NMN While Traveling With Food: 5 US Tips",
+      "published_at": "2026-10-20T19:16:26-07:00",
+      "tracker_ticket": "CA1017-5",
+      "in_tracker": true,
+      "article_words": 1306,
+      "highest_severity": "high",
+      "findings": [
+        {
+          "signal": "content_start",
+          "severity": "info",
+          "summary": "The first long paragraph is the start of the article body (184 markup bytes inside the article before that paragraph).",
+          "measured": {
+            "article_block_elements_before_answer": 0,
+            "answer_is_first_paragraph": true,
+            "article_markup_bytes_before_answer": 184,
+            "document_markup_bytes_before_answer": 70589,
+            "document_bytes_note": "Byte count includes theme chrome and scripts. It is not a viewport position."
+          },
+          "suggested_fix": "No change suggested.",
+          "scope": "article",
+          "needs_kevin_go": false,
+          "issues": [
+            {
+              "severity": "info",
+              "summary": "The first long paragraph is the start of the article body (184 markup bytes inside the article before that paragraph).",
+              "suggested_fix": "No change suggested.",
+              "scope": "article",
+              "needs_kevin_go": false
+            }
+          ]
+        },
+        {
+          "signal": "popups_sticky_interstitials",
+          "severity": "high",
+          "summary": "Initial HTML references unexpected host(s): shopify.jsdeliver.cloud, cartassure, 240.1.2.3. Shop-this-article CSS sets position:fixed and stretches it to both side edges along the bottom. Trigger aria-expanded is false. Whether JavaScript hides the control is unknown. Overlay-vendor script host(s) loaded: static.klaviyo.com. No vendor form was required to record the script. Whether a popup opens after JavaScript is unknown. position:sticky is declared for .section-header. A CRO app script is on the page. What it injects on this mobile GET is unknown. Section shell(s) with no control text in the initial HTML: promo-popup, global-music-player, scroll-to-top. Rendered behavior is unknown.",
+          "measured": {
+            "fixed_selectors": [
+              {
+                "selector": "#ShopThisArticle-template--25995994530107__shop-this-article .sta__trigger",
+                "full_width_bottom": true
+              },
+              {
+                "selector": "#ShopThisArticle-template--25995994530107__shop-this-article .sta__overlay",
+                "full_width_bottom": false
+              },
+              {
+                "selector": "#ShopThisArticle-template--25995994530107__shop-this-article .sta__modal",
+                "full_width_bottom": true
+              }
+            ],
+            "sticky_selectors": [
+              ".section-header"
+            ],
+            "overlay_script_hosts": [
+              "static.klaviyo.com"
+            ],
+            "unexpected_hosts": [
+              "shopify.jsdeliver.cloud",
+              "cartassure",
+              "240.1.2.3"
+            ],
+            "cro_scripts_present": 1,
+            "placeholder_sections": [
+              {
+                "id": "promo-popup",
+                "text_in_initial_html": "",
+                "rendered_behavior": "unknown"
+              },
+              {
+                "id": "global-music-player",
+                "text_in_initial_html": "",
+                "rendered_behavior": "unknown"
+              },
+              {
+                "id": "scroll-to-top",
+                "text_in_initial_html": "",
+                "rendered_behavior": "unknown"
+              }
+            ],
+            "shop_trigger_aria_expanded": "false",
+            "popup_after_javascript": "unknown",
+            "other_script_hosts": [
+              "js.shrinetheme.com",
+              "wellnessnest.co",
+              "shop.app",
+              "cdn.shopify.com",
+              "static.rechargecdn.com"
+            ]
+          },
+          "suggested_fix": "Remove the unexpected script and any header item that references it, after a theme backup. Report only, needs Kevin GO. Do not pin a shop bar over the article on mobile. Keep the product mention inline. Report only, needs Kevin GO. Replace a full-screen email popup with an inline form that does not cover the article. Report only, needs Kevin GO. A sticky header is theme chrome. Leave it unless it stacks with the ticker and the shop bar. Report only, needs Kevin GO. No change suggested until the injected layer is identified. Report only, needs Kevin GO. No change suggested from the empty shell alone. Report only, needs Kevin GO.",
+          "scope": "theme",
+          "needs_kevin_go": true,
+          "issues": [
+            {
+              "severity": "high",
+              "summary": "Initial HTML references unexpected host(s): shopify.jsdeliver.cloud, cartassure, 240.1.2.3.",
+              "suggested_fix": "Remove the unexpected script and any header item that references it, after a theme backup. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            },
+            {
+              "severity": "high",
+              "summary": "Shop-this-article CSS sets position:fixed and stretches it to both side edges along the bottom. Trigger aria-expanded is false. Whether JavaScript hides the control is unknown.",
+              "suggested_fix": "Do not pin a shop bar over the article on mobile. Keep the product mention inline. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            },
+            {
+              "severity": "medium",
+              "summary": "Overlay-vendor script host(s) loaded: static.klaviyo.com. No vendor form was required to record the script. Whether a popup opens after JavaScript is unknown.",
+              "suggested_fix": "Replace a full-screen email popup with an inline form that does not cover the article. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            },
+            {
+              "severity": "low",
+              "summary": "position:sticky is declared for .section-header.",
+              "suggested_fix": "A sticky header is theme chrome. Leave it unless it stacks with the ticker and the shop bar. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            },
+            {
+              "severity": "info",
+              "summary": "A CRO app script is on the page. What it injects on this mobile GET is unknown.",
+              "suggested_fix": "No change suggested until the injected layer is identified. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            },
+            {
+              "severity": "info",
+              "summary": "Section shell(s) with no control text in the initial HTML: promo-popup, global-music-player, scroll-to-top. Rendered behavior is unknown.",
+              "suggested_fix": "No change suggested from the empty shell alone. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            }
+          ]
+        },
+        {
+          "signal": "images",
+          "severity": "high",
+          "summary": "3 content image(s) have no width and height and no aspect-ratio style. CLS is unknown. The article header image carries class mobile-hidden. Whether the phone hides it is unknown without the theme stylesheet.",
+          "measured": {
+            "content_images": 5,
+            "missing_width_and_height": 3,
+            "shop_this_article_images": 1,
+            "shop_this_article_missing_width_and_height": 0,
+            "cls": "unknown",
+            "rendered_px": "unknown",
+            "images": [
+              {
+                "region": "article_body",
+                "alt": "AgeAura NMN plus TMG bottle in an open fabric travel organizer on a hotel desk",
+                "width_attr": "unknown",
+                "height_attr": "unknown",
+                "missing_width_and_height": true,
+                "aspect_ratio_in_style": false,
+                "class_mobile_hidden": false,
+                "rendered_px": "unknown",
+                "cls": "unknown"
+              },
+              {
+                "region": "article_body",
+                "alt": "Hand placing the labeled AgeAura NMN plus TMG bottle into an open carry-on organ",
+                "width_attr": "unknown",
+                "height_attr": "unknown",
+                "missing_width_and_height": true,
+                "aspect_ratio_in_style": false,
+                "class_mobile_hidden": false,
+                "rendered_px": "unknown",
+                "cls": "unknown"
+              },
+              {
+                "region": "article_body",
+                "alt": "Travel breakfast table with an analog watch, notebook, and a person's cropped ha",
+                "width_attr": "unknown",
+                "height_attr": "unknown",
+                "missing_width_and_height": true,
+                "aspect_ratio_in_style": false,
+                "class_mobile_hidden": false,
+                "rendered_px": "unknown",
+                "cls": "unknown"
+              },
+              {
+                "region": "article_header",
+                "alt": "NMN While Traveling With Food: 5 US Tips",
+                "width_attr": "1200",
+                "height_attr": "800",
+                "missing_width_and_height": false,
+                "aspect_ratio_in_style": false,
+                "class_mobile_hidden": false,
+                "rendered_px": "unknown",
+                "cls": "unknown"
+              },
+              {
+                "region": "article_header",
+                "alt": "NMN While Traveling With Food: 5 US Tips",
+                "width_attr": "1500",
+                "height_attr": "1000",
+                "missing_width_and_height": false,
+                "aspect_ratio_in_style": false,
+                "class_mobile_hidden": true,
+                "rendered_px": "unknown",
+                "cls": "unknown"
+              }
+            ]
+          },
+          "suggested_fix": "Add width and height attributes that match each file's pixel size. Suggestion only. This audit does not edit the article. No change suggested from the class name alone. Report only, needs Kevin GO.",
+          "scope": "mixed",
+          "needs_kevin_go": true,
+          "issues": [
+            {
+              "severity": "high",
+              "summary": "3 content image(s) have no width and height and no aspect-ratio style. CLS is unknown.",
+              "suggested_fix": "Add width and height attributes that match each file's pixel size. Suggestion only. This audit does not edit the article.",
+              "scope": "article",
+              "needs_kevin_go": false
+            },
+            {
+              "severity": "info",
+              "summary": "The article header image carries class mobile-hidden. Whether the phone hides it is unknown without the theme stylesheet.",
+              "suggested_fix": "No change suggested from the class name alone. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            }
+          ]
+        },
+        {
+          "signal": "cta_density",
+          "severity": "medium",
+          "summary": "6 CTA block(s) across 1306 article words, 4.59 per 1,000 words (inline product links 4, shop cards 1, newsletter forms 1). The same product URL is linked 4 times in the article body.",
+          "measured": {
+            "inline_product_links": 4,
+            "shop_this_article_cards": 1,
+            "newsletter_forms": 1,
+            "cta_blocks": 6,
+            "inline_product_hrefs": [
+              "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex",
+              "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex",
+              "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex",
+              "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex"
+            ],
+            "article_words": 1306,
+            "cta_per_1000_words": 4.59,
+            "threshold_note": "Heuristic count of product links, shop cards, and email forms per 1,000 article words. Not clutterScore. Not the Better Ads 30 percent height test, which needs a layout viewport."
+          },
+          "suggested_fix": "Keep one product mention in the article. The shop card and the email form are theme sections. Report only, needs Kevin GO. Suggestion only. This audit does not edit the article. Keep a single product link near the label mention. Suggestion only. This audit does not edit the article.",
+          "scope": "mixed",
+          "needs_kevin_go": true,
+          "issues": [
+            {
+              "severity": "medium",
+              "summary": "6 CTA block(s) across 1306 article words, 4.59 per 1,000 words (inline product links 4, shop cards 1, newsletter forms 1).",
+              "suggested_fix": "Keep one product mention in the article. The shop card and the email form are theme sections. Report only, needs Kevin GO. Suggestion only. This audit does not edit the article.",
+              "scope": "mixed",
+              "needs_kevin_go": true
+            },
+            {
+              "severity": "low",
+              "summary": "The same product URL is linked 4 times in the article body.",
+              "suggested_fix": "Keep a single product link near the label mention. Suggestion only. This audit does not edit the article.",
+              "scope": "article",
+              "needs_kevin_go": false
+            }
+          ]
+        },
+        {
+          "signal": "wide_overflow",
+          "severity": "medium",
+          "summary": "1 table(s) in the article have no overflow wrapper. Whether they overflow a phone viewport is unknown.",
+          "measured": {
+            "tables": 1,
+            "tables_without_overflow_wrapper": 1,
+            "wide_inline_px": [],
+            "rendered_overflow": "unknown"
+          },
+          "suggested_fix": "Wrap each table in a div with class article-table-wrapper and overflow-x:auto. Do not run scripts/patch_tables.py from this audit; that script writes article HTML. Suggestion only. This audit does not edit the article.",
+          "scope": "article",
+          "needs_kevin_go": false,
+          "issues": [
+            {
+              "severity": "medium",
+              "summary": "1 table(s) in the article have no overflow wrapper. Whether they overflow a phone viewport is unknown.",
+              "suggested_fix": "Wrap each table in a div with class article-table-wrapper and overflow-x:auto. Do not run scripts/patch_tables.py from this audit; that script writes article HTML. Suggestion only. This audit does not edit the article.",
+              "scope": "article",
+              "needs_kevin_go": false
+            }
+          ]
+        },
+        {
+          "signal": "tap_targets",
+          "severity": "medium",
+          "summary": "Declared box 40.0x40.0 px on .sta__close is under 48 px. Rendered size is unknown.",
+          "measured": {
+            "crowded_sibling_groups": 0,
+            "crowded_group_sizes": [],
+            "declared_boxes_under_48px": [
+              {
+                "selector": "#ShopThisArticle-template--25995994530107__shop-this-article .sta__close",
+                "declared_width_px": 40.0,
+                "declared_height_px": 40.0,
+                "rendered_px": "unknown"
+              }
+            ],
+            "rendered_gap_px": "unknown",
+            "rendered_target_px": "unknown"
+          },
+          "suggested_fix": "Raise the declared width and height of that control to at least 48px. Report only, needs Kevin GO.",
+          "scope": "theme",
+          "needs_kevin_go": true,
+          "issues": [
+            {
+              "severity": "medium",
+              "summary": "Declared box 40.0x40.0 px on .sta__close is under 48 px. Rendered size is unknown.",
+              "suggested_fix": "Raise the declared width and height of that control to at least 48px. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            }
+          ]
+        },
+        {
+          "signal": "font_line_length",
+          "severity": "medium",
+          "summary": "Declared font-size under 16px: .sta__trigger at 13.0, .sta__trigger-label at 13.0, .sta__count at 12.0. Relative font-size present (0.85em). Rendered px is unknown.",
+          "measured": {
+            "declared_px_under_16": [
+              {
+                "where": ".sta__trigger",
+                "font_size_px": 13.0,
+                "rendered_px": "unknown"
+              },
+              {
+                "where": ".sta__trigger-label",
+                "font_size_px": 13.0,
+                "rendered_px": "unknown"
+              },
+              {
+                "where": ".sta__count",
+                "font_size_px": 12.0,
+                "rendered_px": "unknown"
+              }
+            ],
+            "relative_font_sizes": [
+              {
+                "where": "aside.image-credits",
+                "font_size": "0.85em",
+                "rendered_px": "unknown"
+              }
+            ],
+            "rendered_line_length": "unknown"
+          },
+          "suggested_fix": "Use at least 16px for the shop-bar label. Report only, needs Kevin GO. No change suggested until the computed pixel size is known. Suggestion only. This audit does not edit the article.",
+          "scope": "mixed",
+          "needs_kevin_go": true,
+          "issues": [
+            {
+              "severity": "medium",
+              "summary": "Declared font-size under 16px: .sta__trigger at 13.0, .sta__trigger-label at 13.0, .sta__count at 12.0.",
+              "suggested_fix": "Use at least 16px for the shop-bar label. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            },
+            {
+              "severity": "info",
+              "summary": "Relative font-size present (0.85em). Rendered px is unknown.",
+              "suggested_fix": "No change suggested until the computed pixel size is known. Suggestion only. This audit does not edit the article.",
+              "scope": "article",
+              "needs_kevin_go": false
+            }
+          ]
+        },
+        {
+          "signal": "above_the_fold",
+          "severity": "medium",
+          "summary": "One ticker sits before the H1, repeated as 36 item nodes (3 unique message(s)). Rendered bar height is unknown. Above-the-fold element count is unknown.",
+          "measured": {
+            "rendered_above_the_fold_elements": "unknown",
+            "source_block_elements_before_h1": 149,
+            "source_block_elements_before_h1_excluding_drawers_desktop_nav_and_hidden": 53,
+            "sections_before_h1": [
+              "horizontal-ticker",
+              "header",
+              "cart-drawer",
+              "article"
+            ],
+            "interactive_elements_between_h1_and_answer": 0,
+            "ticker_item_nodes": 36,
+            "ticker_unique_messages": [
+              "\u21a9\ufe0f 90-Day Refund Policy \u2014 Eligibility Applies",
+              "\ud83d\ude9a Free Shipping on Orders Over $69",
+              "\ud83d\udd0e Product Details and Purchase Terms Online"
+            ]
+          },
+          "suggested_fix": "Keep a single line in the ticker instead of repeating the same messages in the HTML. Report only, needs Kevin GO.",
+          "scope": "theme",
+          "needs_kevin_go": true,
+          "issues": [
+            {
+              "severity": "medium",
+              "summary": "One ticker sits before the H1, repeated as 36 item nodes (3 unique message(s)). Rendered bar height is unknown. Above-the-fold element count is unknown.",
+              "suggested_fix": "Keep a single line in the ticker instead of repeating the same messages in the HTML. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "http_status": 200
+    },
+    {
+      "url": "https://wellnessnest.co/blogs/news/how-much-turkesterone-on-rest-days-in-the-us",
+      "handle": "how-much-turkesterone-on-rest-days-in-the-us",
+      "title": "How Much Turkesterone on Rest Days in the US?",
+      "published_at": "2026-10-20T18:14:11-07:00",
+      "tracker_ticket": "CA1017-4",
+      "in_tracker": true,
+      "article_words": 1261,
+      "highest_severity": "high",
+      "findings": [
+        {
+          "signal": "content_start",
+          "severity": "info",
+          "summary": "The first long paragraph is the start of the article body (184 markup bytes inside the article before that paragraph).",
+          "measured": {
+            "article_block_elements_before_answer": 0,
+            "answer_is_first_paragraph": true,
+            "article_markup_bytes_before_answer": 184,
+            "document_markup_bytes_before_answer": 70609,
+            "document_bytes_note": "Byte count includes theme chrome and scripts. It is not a viewport position."
+          },
+          "suggested_fix": "No change suggested.",
+          "scope": "article",
+          "needs_kevin_go": false,
+          "issues": [
+            {
+              "severity": "info",
+              "summary": "The first long paragraph is the start of the article body (184 markup bytes inside the article before that paragraph).",
+              "suggested_fix": "No change suggested.",
+              "scope": "article",
+              "needs_kevin_go": false
+            }
+          ]
+        },
+        {
+          "signal": "popups_sticky_interstitials",
+          "severity": "high",
+          "summary": "Initial HTML references unexpected host(s): shopify.jsdeliver.cloud, cartassure, 240.1.2.3. Shop-this-article CSS sets position:fixed and stretches it to both side edges along the bottom. Trigger aria-expanded is false. Whether JavaScript hides the control is unknown. Overlay-vendor script host(s) loaded: static.klaviyo.com. No vendor form was required to record the script. Whether a popup opens after JavaScript is unknown. position:sticky is declared for .section-header. A CRO app script is on the page. What it injects on this mobile GET is unknown. Section shell(s) with no control text in the initial HTML: promo-popup, global-music-player, scroll-to-top. Rendered behavior is unknown.",
+          "measured": {
+            "fixed_selectors": [
+              {
+                "selector": "#ShopThisArticle-template--25995994530107__shop-this-article .sta__trigger",
+                "full_width_bottom": true
+              },
+              {
+                "selector": "#ShopThisArticle-template--25995994530107__shop-this-article .sta__overlay",
+                "full_width_bottom": false
+              },
+              {
+                "selector": "#ShopThisArticle-template--25995994530107__shop-this-article .sta__modal",
+                "full_width_bottom": true
+              }
+            ],
+            "sticky_selectors": [
+              ".section-header"
+            ],
+            "overlay_script_hosts": [
+              "static.klaviyo.com"
+            ],
+            "unexpected_hosts": [
+              "shopify.jsdeliver.cloud",
+              "cartassure",
+              "240.1.2.3"
+            ],
+            "cro_scripts_present": 1,
+            "placeholder_sections": [
+              {
+                "id": "promo-popup",
+                "text_in_initial_html": "",
+                "rendered_behavior": "unknown"
+              },
+              {
+                "id": "global-music-player",
+                "text_in_initial_html": "",
+                "rendered_behavior": "unknown"
+              },
+              {
+                "id": "scroll-to-top",
+                "text_in_initial_html": "",
+                "rendered_behavior": "unknown"
+              }
+            ],
+            "shop_trigger_aria_expanded": "false",
+            "popup_after_javascript": "unknown",
+            "other_script_hosts": [
+              "js.shrinetheme.com",
+              "wellnessnest.co",
+              "shop.app",
+              "cdn.shopify.com",
+              "static.rechargecdn.com"
+            ]
+          },
+          "suggested_fix": "Remove the unexpected script and any header item that references it, after a theme backup. Report only, needs Kevin GO. Do not pin a shop bar over the article on mobile. Keep the product mention inline. Report only, needs Kevin GO. Replace a full-screen email popup with an inline form that does not cover the article. Report only, needs Kevin GO. A sticky header is theme chrome. Leave it unless it stacks with the ticker and the shop bar. Report only, needs Kevin GO. No change suggested until the injected layer is identified. Report only, needs Kevin GO. No change suggested from the empty shell alone. Report only, needs Kevin GO.",
+          "scope": "theme",
+          "needs_kevin_go": true,
+          "issues": [
+            {
+              "severity": "high",
+              "summary": "Initial HTML references unexpected host(s): shopify.jsdeliver.cloud, cartassure, 240.1.2.3.",
+              "suggested_fix": "Remove the unexpected script and any header item that references it, after a theme backup. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            },
+            {
+              "severity": "high",
+              "summary": "Shop-this-article CSS sets position:fixed and stretches it to both side edges along the bottom. Trigger aria-expanded is false. Whether JavaScript hides the control is unknown.",
+              "suggested_fix": "Do not pin a shop bar over the article on mobile. Keep the product mention inline. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            },
+            {
+              "severity": "medium",
+              "summary": "Overlay-vendor script host(s) loaded: static.klaviyo.com. No vendor form was required to record the script. Whether a popup opens after JavaScript is unknown.",
+              "suggested_fix": "Replace a full-screen email popup with an inline form that does not cover the article. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            },
+            {
+              "severity": "low",
+              "summary": "position:sticky is declared for .section-header.",
+              "suggested_fix": "A sticky header is theme chrome. Leave it unless it stacks with the ticker and the shop bar. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            },
+            {
+              "severity": "info",
+              "summary": "A CRO app script is on the page. What it injects on this mobile GET is unknown.",
+              "suggested_fix": "No change suggested until the injected layer is identified. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            },
+            {
+              "severity": "info",
+              "summary": "Section shell(s) with no control text in the initial HTML: promo-popup, global-music-player, scroll-to-top. Rendered behavior is unknown.",
+              "suggested_fix": "No change suggested from the empty shell alone. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            }
+          ]
+        },
+        {
+          "signal": "images",
+          "severity": "high",
+          "summary": "3 content image(s) have no width and height and no aspect-ratio style. CLS is unknown. The article header image carries class mobile-hidden. Whether the phone hides it is unknown without the theme stylesheet.",
+          "measured": {
+            "content_images": 5,
+            "missing_width_and_height": 3,
+            "shop_this_article_images": 1,
+            "shop_this_article_missing_width_and_height": 0,
+            "cls": "unknown",
+            "rendered_px": "unknown",
+            "images": [
+              {
+                "region": "article_body",
+                "alt": "Turkesterone jar on a gym bench beside an open duffel during a rest-day discussi",
+                "width_attr": "unknown",
+                "height_attr": "unknown",
+                "missing_width_and_height": true,
+                "aspect_ratio_in_style": false,
+                "class_mobile_hidden": false,
+                "rendered_px": "unknown",
+                "cls": "unknown"
+              },
+              {
+                "region": "article_body",
+                "alt": "Open training calendar and Turkesterone jar on a home-office desk during a recov",
+                "width_attr": "unknown",
+                "height_attr": "unknown",
+                "missing_width_and_height": true,
+                "aspect_ratio_in_style": false,
+                "class_mobile_hidden": false,
+                "rendered_px": "unknown",
+                "cls": "unknown"
+              },
+              {
+                "region": "article_body",
+                "alt": "Cropped torso beside a dinner plate and Turkesterone Advanced Formula jar in a g",
+                "width_attr": "unknown",
+                "height_attr": "unknown",
+                "missing_width_and_height": true,
+                "aspect_ratio_in_style": false,
+                "class_mobile_hidden": false,
+                "rendered_px": "unknown",
+                "cls": "unknown"
+              },
+              {
+                "region": "article_header",
+                "alt": "How Much Turkesterone on Rest Days in the US?",
+                "width_attr": "1200",
+                "height_attr": "800",
+                "missing_width_and_height": false,
+                "aspect_ratio_in_style": false,
+                "class_mobile_hidden": false,
+                "rendered_px": "unknown",
+                "cls": "unknown"
+              },
+              {
+                "region": "article_header",
+                "alt": "How Much Turkesterone on Rest Days in the US?",
+                "width_attr": "1500",
+                "height_attr": "1000",
+                "missing_width_and_height": false,
+                "aspect_ratio_in_style": false,
+                "class_mobile_hidden": true,
+                "rendered_px": "unknown",
+                "cls": "unknown"
+              }
+            ]
+          },
+          "suggested_fix": "Add width and height attributes that match each file's pixel size. Suggestion only. This audit does not edit the article. No change suggested from the class name alone. Report only, needs Kevin GO.",
+          "scope": "mixed",
+          "needs_kevin_go": true,
+          "issues": [
+            {
+              "severity": "high",
+              "summary": "3 content image(s) have no width and height and no aspect-ratio style. CLS is unknown.",
+              "suggested_fix": "Add width and height attributes that match each file's pixel size. Suggestion only. This audit does not edit the article.",
+              "scope": "article",
+              "needs_kevin_go": false
+            },
+            {
+              "severity": "info",
+              "summary": "The article header image carries class mobile-hidden. Whether the phone hides it is unknown without the theme stylesheet.",
+              "suggested_fix": "No change suggested from the class name alone. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            }
+          ]
+        },
+        {
+          "signal": "cta_density",
+          "severity": "medium",
+          "summary": "5 CTA block(s) across 1261 article words, 3.97 per 1,000 words (inline product links 3, shop cards 1, newsletter forms 1). The same product URL is linked 3 times in the article body.",
+          "measured": {
+            "inline_product_links": 3,
+            "shop_this_article_cards": 1,
+            "newsletter_forms": 1,
+            "cta_blocks": 5,
+            "inline_product_hrefs": [
+              "https://wellnessnest.co/products/turkesterone-advanced-formula",
+              "https://wellnessnest.co/products/turkesterone-advanced-formula",
+              "https://wellnessnest.co/products/turkesterone-advanced-formula"
+            ],
+            "article_words": 1261,
+            "cta_per_1000_words": 3.97,
+            "threshold_note": "Heuristic count of product links, shop cards, and email forms per 1,000 article words. Not clutterScore. Not the Better Ads 30 percent height test, which needs a layout viewport."
+          },
+          "suggested_fix": "Keep one product mention in the article. The shop card and the email form are theme sections. Report only, needs Kevin GO. Suggestion only. This audit does not edit the article. Keep a single product link near the label mention. Suggestion only. This audit does not edit the article.",
+          "scope": "mixed",
+          "needs_kevin_go": true,
+          "issues": [
+            {
+              "severity": "medium",
+              "summary": "5 CTA block(s) across 1261 article words, 3.97 per 1,000 words (inline product links 3, shop cards 1, newsletter forms 1).",
+              "suggested_fix": "Keep one product mention in the article. The shop card and the email form are theme sections. Report only, needs Kevin GO. Suggestion only. This audit does not edit the article.",
+              "scope": "mixed",
+              "needs_kevin_go": true
+            },
+            {
+              "severity": "low",
+              "summary": "The same product URL is linked 3 times in the article body.",
+              "suggested_fix": "Keep a single product link near the label mention. Suggestion only. This audit does not edit the article.",
+              "scope": "article",
+              "needs_kevin_go": false
+            }
+          ]
+        },
+        {
+          "signal": "wide_overflow",
+          "severity": "medium",
+          "summary": "1 table(s) in the article have no overflow wrapper. Whether they overflow a phone viewport is unknown.",
+          "measured": {
+            "tables": 1,
+            "tables_without_overflow_wrapper": 1,
+            "wide_inline_px": [],
+            "rendered_overflow": "unknown"
+          },
+          "suggested_fix": "Wrap each table in a div with class article-table-wrapper and overflow-x:auto. Do not run scripts/patch_tables.py from this audit; that script writes article HTML. Suggestion only. This audit does not edit the article.",
+          "scope": "article",
+          "needs_kevin_go": false,
+          "issues": [
+            {
+              "severity": "medium",
+              "summary": "1 table(s) in the article have no overflow wrapper. Whether they overflow a phone viewport is unknown.",
+              "suggested_fix": "Wrap each table in a div with class article-table-wrapper and overflow-x:auto. Do not run scripts/patch_tables.py from this audit; that script writes article HTML. Suggestion only. This audit does not edit the article.",
+              "scope": "article",
+              "needs_kevin_go": false
+            }
+          ]
+        },
+        {
+          "signal": "tap_targets",
+          "severity": "medium",
+          "summary": "Declared box 40.0x40.0 px on .sta__close is under 48 px. Rendered size is unknown.",
+          "measured": {
+            "crowded_sibling_groups": 0,
+            "crowded_group_sizes": [],
+            "declared_boxes_under_48px": [
+              {
+                "selector": "#ShopThisArticle-template--25995994530107__shop-this-article .sta__close",
+                "declared_width_px": 40.0,
+                "declared_height_px": 40.0,
+                "rendered_px": "unknown"
+              }
+            ],
+            "rendered_gap_px": "unknown",
+            "rendered_target_px": "unknown"
+          },
+          "suggested_fix": "Raise the declared width and height of that control to at least 48px. Report only, needs Kevin GO.",
+          "scope": "theme",
+          "needs_kevin_go": true,
+          "issues": [
+            {
+              "severity": "medium",
+              "summary": "Declared box 40.0x40.0 px on .sta__close is under 48 px. Rendered size is unknown.",
+              "suggested_fix": "Raise the declared width and height of that control to at least 48px. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            }
+          ]
+        },
+        {
+          "signal": "font_line_length",
+          "severity": "medium",
+          "summary": "Declared font-size under 16px: .sta__trigger at 13.0, .sta__trigger-label at 13.0, .sta__count at 12.0. Relative font-size present (0.85em). Rendered px is unknown.",
+          "measured": {
+            "declared_px_under_16": [
+              {
+                "where": ".sta__trigger",
+                "font_size_px": 13.0,
+                "rendered_px": "unknown"
+              },
+              {
+                "where": ".sta__trigger-label",
+                "font_size_px": 13.0,
+                "rendered_px": "unknown"
+              },
+              {
+                "where": ".sta__count",
+                "font_size_px": 12.0,
+                "rendered_px": "unknown"
+              }
+            ],
+            "relative_font_sizes": [
+              {
+                "where": "aside.image-credits",
+                "font_size": "0.85em",
+                "rendered_px": "unknown"
+              }
+            ],
+            "rendered_line_length": "unknown"
+          },
+          "suggested_fix": "Use at least 16px for the shop-bar label. Report only, needs Kevin GO. No change suggested until the computed pixel size is known. Suggestion only. This audit does not edit the article.",
+          "scope": "mixed",
+          "needs_kevin_go": true,
+          "issues": [
+            {
+              "severity": "medium",
+              "summary": "Declared font-size under 16px: .sta__trigger at 13.0, .sta__trigger-label at 13.0, .sta__count at 12.0.",
+              "suggested_fix": "Use at least 16px for the shop-bar label. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            },
+            {
+              "severity": "info",
+              "summary": "Relative font-size present (0.85em). Rendered px is unknown.",
+              "suggested_fix": "No change suggested until the computed pixel size is known. Suggestion only. This audit does not edit the article.",
+              "scope": "article",
+              "needs_kevin_go": false
+            }
+          ]
+        },
+        {
+          "signal": "above_the_fold",
+          "severity": "medium",
+          "summary": "One ticker sits before the H1, repeated as 36 item nodes (3 unique message(s)). Rendered bar height is unknown. Above-the-fold element count is unknown.",
+          "measured": {
+            "rendered_above_the_fold_elements": "unknown",
+            "source_block_elements_before_h1": 149,
+            "source_block_elements_before_h1_excluding_drawers_desktop_nav_and_hidden": 53,
+            "sections_before_h1": [
+              "horizontal-ticker",
+              "header",
+              "cart-drawer",
+              "article"
+            ],
+            "interactive_elements_between_h1_and_answer": 0,
+            "ticker_item_nodes": 36,
+            "ticker_unique_messages": [
+              "\u21a9\ufe0f 90-Day Refund Policy \u2014 Eligibility Applies",
+              "\ud83d\ude9a Free Shipping on Orders Over $69",
+              "\ud83d\udd0e Product Details and Purchase Terms Online"
+            ]
+          },
+          "suggested_fix": "Keep a single line in the ticker instead of repeating the same messages in the HTML. Report only, needs Kevin GO.",
+          "scope": "theme",
+          "needs_kevin_go": true,
+          "issues": [
+            {
+              "severity": "medium",
+              "summary": "One ticker sits before the H1, repeated as 36 item nodes (3 unique message(s)). Rendered bar height is unknown. Above-the-fold element count is unknown.",
+              "suggested_fix": "Keep a single line in the ticker instead of repeating the same messages in the HTML. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "http_status": 200
+    },
+    {
+      "url": "https://wellnessnest.co/blogs/news/creatine-gummies-while-traveling-how-much-us-2026",
+      "handle": "creatine-gummies-while-traveling-how-much-us-2026",
+      "title": "Creatine Gummies While Traveling: How Much? US 2026",
+      "published_at": "2026-10-20T02:18:35-07:00",
+      "tracker_ticket": "CA1017-3",
+      "in_tracker": true,
+      "article_words": 1473,
+      "highest_severity": "high",
+      "findings": [
+        {
+          "signal": "content_start",
+          "severity": "info",
+          "summary": "The first long paragraph is the start of the article body (184 markup bytes inside the article before that paragraph).",
+          "measured": {
+            "article_block_elements_before_answer": 0,
+            "answer_is_first_paragraph": true,
+            "article_markup_bytes_before_answer": 184,
+            "document_markup_bytes_before_answer": 70632,
+            "document_bytes_note": "Byte count includes theme chrome and scripts. It is not a viewport position."
+          },
+          "suggested_fix": "No change suggested.",
+          "scope": "article",
+          "needs_kevin_go": false,
+          "issues": [
+            {
+              "severity": "info",
+              "summary": "The first long paragraph is the start of the article body (184 markup bytes inside the article before that paragraph).",
+              "suggested_fix": "No change suggested.",
+              "scope": "article",
+              "needs_kevin_go": false
+            }
+          ]
+        },
+        {
+          "signal": "popups_sticky_interstitials",
+          "severity": "high",
+          "summary": "Initial HTML references unexpected host(s): shopify.jsdeliver.cloud, cartassure, 240.1.2.3. Shop-this-article CSS sets position:fixed and stretches it to both side edges along the bottom. Trigger aria-expanded is false. Whether JavaScript hides the control is unknown. Overlay-vendor script host(s) loaded: static.klaviyo.com. No vendor form was required to record the script. Whether a popup opens after JavaScript is unknown. position:sticky is declared for .section-header. A CRO app script is on the page. What it injects on this mobile GET is unknown. Section shell(s) with no control text in the initial HTML: promo-popup, global-music-player, scroll-to-top. Rendered behavior is unknown.",
+          "measured": {
+            "fixed_selectors": [
+              {
+                "selector": "#ShopThisArticle-template--25995994530107__shop-this-article .sta__trigger",
+                "full_width_bottom": true
+              },
+              {
+                "selector": "#ShopThisArticle-template--25995994530107__shop-this-article .sta__overlay",
+                "full_width_bottom": false
+              },
+              {
+                "selector": "#ShopThisArticle-template--25995994530107__shop-this-article .sta__modal",
+                "full_width_bottom": true
+              }
+            ],
+            "sticky_selectors": [
+              ".section-header"
+            ],
+            "overlay_script_hosts": [
+              "static.klaviyo.com"
+            ],
+            "unexpected_hosts": [
+              "shopify.jsdeliver.cloud",
+              "cartassure",
+              "240.1.2.3"
+            ],
+            "cro_scripts_present": 1,
+            "placeholder_sections": [
+              {
+                "id": "promo-popup",
+                "text_in_initial_html": "",
+                "rendered_behavior": "unknown"
+              },
+              {
+                "id": "global-music-player",
+                "text_in_initial_html": "",
+                "rendered_behavior": "unknown"
+              },
+              {
+                "id": "scroll-to-top",
+                "text_in_initial_html": "",
+                "rendered_behavior": "unknown"
+              }
+            ],
+            "shop_trigger_aria_expanded": "false",
+            "popup_after_javascript": "unknown",
+            "other_script_hosts": [
+              "js.shrinetheme.com",
+              "wellnessnest.co",
+              "shop.app",
+              "cdn.shopify.com",
+              "static.rechargecdn.com"
+            ]
+          },
+          "suggested_fix": "Remove the unexpected script and any header item that references it, after a theme backup. Report only, needs Kevin GO. Do not pin a shop bar over the article on mobile. Keep the product mention inline. Report only, needs Kevin GO. Replace a full-screen email popup with an inline form that does not cover the article. Report only, needs Kevin GO. A sticky header is theme chrome. Leave it unless it stacks with the ticker and the shop bar. Report only, needs Kevin GO. No change suggested until the injected layer is identified. Report only, needs Kevin GO. No change suggested from the empty shell alone. Report only, needs Kevin GO.",
+          "scope": "theme",
+          "needs_kevin_go": true,
+          "issues": [
+            {
+              "severity": "high",
+              "summary": "Initial HTML references unexpected host(s): shopify.jsdeliver.cloud, cartassure, 240.1.2.3.",
+              "suggested_fix": "Remove the unexpected script and any header item that references it, after a theme backup. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            },
+            {
+              "severity": "high",
+              "summary": "Shop-this-article CSS sets position:fixed and stretches it to both side edges along the bottom. Trigger aria-expanded is false. Whether JavaScript hides the control is unknown.",
+              "suggested_fix": "Do not pin a shop bar over the article on mobile. Keep the product mention inline. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            },
+            {
+              "severity": "medium",
+              "summary": "Overlay-vendor script host(s) loaded: static.klaviyo.com. No vendor form was required to record the script. Whether a popup opens after JavaScript is unknown.",
+              "suggested_fix": "Replace a full-screen email popup with an inline form that does not cover the article. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            },
+            {
+              "severity": "low",
+              "summary": "position:sticky is declared for .section-header.",
+              "suggested_fix": "A sticky header is theme chrome. Leave it unless it stacks with the ticker and the shop bar. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            },
+            {
+              "severity": "info",
+              "summary": "A CRO app script is on the page. What it injects on this mobile GET is unknown.",
+              "suggested_fix": "No change suggested until the injected layer is identified. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            },
+            {
+              "severity": "info",
+              "summary": "Section shell(s) with no control text in the initial HTML: promo-popup, global-music-player, scroll-to-top. Rendered behavior is unknown.",
+              "suggested_fix": "No change suggested from the empty shell alone. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            }
+          ]
+        },
+        {
+          "signal": "images",
+          "severity": "high",
+          "summary": "3 content image(s) have no width and height and no aspect-ratio style. CLS is unknown. The article header image carries class mobile-hidden. Whether the phone hides it is unknown without the theme stylesheet.",
+          "measured": {
+            "content_images": 5,
+            "missing_width_and_height": 3,
+            "shop_this_article_images": 1,
+            "shop_this_article_missing_width_and_height": 0,
+            "cls": "unknown",
+            "rendered_px": "unknown",
+            "images": [
+              {
+                "region": "article_body",
+                "alt": "Bright-green FusiForce creatine gummies pouch standing in a carry-on beside fold",
+                "width_attr": "unknown",
+                "height_attr": "unknown",
+                "missing_width_and_height": true,
+                "aspect_ratio_in_style": false,
+                "class_mobile_hidden": false,
+                "rendered_px": "unknown",
+                "cls": "unknown"
+              },
+              {
+                "region": "article_body",
+                "alt": "Bright-green FusiForce creatine gummies pouch standing in a shaded insulated tot",
+                "width_attr": "unknown",
+                "height_attr": "unknown",
+                "missing_width_and_height": true,
+                "aspect_ratio_in_style": false,
+                "class_mobile_hidden": false,
+                "rendered_px": "unknown",
+                "cls": "unknown"
+              },
+              {
+                "region": "article_body",
+                "alt": "Bright-green FusiForce creatine gummies pouch standing beside a breakfast bowl a",
+                "width_attr": "unknown",
+                "height_attr": "unknown",
+                "missing_width_and_height": true,
+                "aspect_ratio_in_style": false,
+                "class_mobile_hidden": false,
+                "rendered_px": "unknown",
+                "cls": "unknown"
+              },
+              {
+                "region": "article_header",
+                "alt": "Creatine Gummies While Traveling: How Much? US 2026",
+                "width_attr": "1200",
+                "height_attr": "800",
+                "missing_width_and_height": false,
+                "aspect_ratio_in_style": false,
+                "class_mobile_hidden": false,
+                "rendered_px": "unknown",
+                "cls": "unknown"
+              },
+              {
+                "region": "article_header",
+                "alt": "Creatine Gummies While Traveling: How Much? US 2026",
+                "width_attr": "1500",
+                "height_attr": "1000",
+                "missing_width_and_height": false,
+                "aspect_ratio_in_style": false,
+                "class_mobile_hidden": true,
+                "rendered_px": "unknown",
+                "cls": "unknown"
+              }
+            ]
+          },
+          "suggested_fix": "Add width and height attributes that match each file's pixel size. Suggestion only. This audit does not edit the article. No change suggested from the class name alone. Report only, needs Kevin GO.",
+          "scope": "mixed",
+          "needs_kevin_go": true,
+          "issues": [
+            {
+              "severity": "high",
+              "summary": "3 content image(s) have no width and height and no aspect-ratio style. CLS is unknown.",
+              "suggested_fix": "Add width and height attributes that match each file's pixel size. Suggestion only. This audit does not edit the article.",
+              "scope": "article",
+              "needs_kevin_go": false
+            },
+            {
+              "severity": "info",
+              "summary": "The article header image carries class mobile-hidden. Whether the phone hides it is unknown without the theme stylesheet.",
+              "suggested_fix": "No change suggested from the class name alone. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            }
+          ]
+        },
+        {
+          "signal": "cta_density",
+          "severity": "medium",
+          "summary": "5 CTA block(s) across 1473 article words, 3.39 per 1,000 words (inline product links 3, shop cards 1, newsletter forms 1). The same product URL is linked 3 times in the article body.",
+          "measured": {
+            "inline_product_links": 3,
+            "shop_this_article_cards": 1,
+            "newsletter_forms": 1,
+            "cta_blocks": 5,
+            "inline_product_hrefs": [
+              "https://wellnessnest.co/products/fusiforce-creatine-gummies",
+              "https://wellnessnest.co/products/fusiforce-creatine-gummies",
+              "https://wellnessnest.co/products/fusiforce-creatine-gummies"
+            ],
+            "article_words": 1473,
+            "cta_per_1000_words": 3.39,
+            "threshold_note": "Heuristic count of product links, shop cards, and email forms per 1,000 article words. Not clutterScore. Not the Better Ads 30 percent height test, which needs a layout viewport."
+          },
+          "suggested_fix": "Keep one product mention in the article. The shop card and the email form are theme sections. Report only, needs Kevin GO. Suggestion only. This audit does not edit the article. Keep a single product link near the label mention. Suggestion only. This audit does not edit the article.",
+          "scope": "mixed",
+          "needs_kevin_go": true,
+          "issues": [
+            {
+              "severity": "medium",
+              "summary": "5 CTA block(s) across 1473 article words, 3.39 per 1,000 words (inline product links 3, shop cards 1, newsletter forms 1).",
+              "suggested_fix": "Keep one product mention in the article. The shop card and the email form are theme sections. Report only, needs Kevin GO. Suggestion only. This audit does not edit the article.",
+              "scope": "mixed",
+              "needs_kevin_go": true
+            },
+            {
+              "severity": "low",
+              "summary": "The same product URL is linked 3 times in the article body.",
+              "suggested_fix": "Keep a single product link near the label mention. Suggestion only. This audit does not edit the article.",
+              "scope": "article",
+              "needs_kevin_go": false
+            }
+          ]
+        },
+        {
+          "signal": "wide_overflow",
+          "severity": "medium",
+          "summary": "1 table(s) in the article have no overflow wrapper. Whether they overflow a phone viewport is unknown.",
+          "measured": {
+            "tables": 1,
+            "tables_without_overflow_wrapper": 1,
+            "wide_inline_px": [],
+            "rendered_overflow": "unknown"
+          },
+          "suggested_fix": "Wrap each table in a div with class article-table-wrapper and overflow-x:auto. Do not run scripts/patch_tables.py from this audit; that script writes article HTML. Suggestion only. This audit does not edit the article.",
+          "scope": "article",
+          "needs_kevin_go": false,
+          "issues": [
+            {
+              "severity": "medium",
+              "summary": "1 table(s) in the article have no overflow wrapper. Whether they overflow a phone viewport is unknown.",
+              "suggested_fix": "Wrap each table in a div with class article-table-wrapper and overflow-x:auto. Do not run scripts/patch_tables.py from this audit; that script writes article HTML. Suggestion only. This audit does not edit the article.",
+              "scope": "article",
+              "needs_kevin_go": false
+            }
+          ]
+        },
+        {
+          "signal": "tap_targets",
+          "severity": "medium",
+          "summary": "Declared box 40.0x40.0 px on .sta__close is under 48 px. Rendered size is unknown.",
+          "measured": {
+            "crowded_sibling_groups": 0,
+            "crowded_group_sizes": [],
+            "declared_boxes_under_48px": [
+              {
+                "selector": "#ShopThisArticle-template--25995994530107__shop-this-article .sta__close",
+                "declared_width_px": 40.0,
+                "declared_height_px": 40.0,
+                "rendered_px": "unknown"
+              }
+            ],
+            "rendered_gap_px": "unknown",
+            "rendered_target_px": "unknown"
+          },
+          "suggested_fix": "Raise the declared width and height of that control to at least 48px. Report only, needs Kevin GO.",
+          "scope": "theme",
+          "needs_kevin_go": true,
+          "issues": [
+            {
+              "severity": "medium",
+              "summary": "Declared box 40.0x40.0 px on .sta__close is under 48 px. Rendered size is unknown.",
+              "suggested_fix": "Raise the declared width and height of that control to at least 48px. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            }
+          ]
+        },
+        {
+          "signal": "font_line_length",
+          "severity": "medium",
+          "summary": "Declared font-size under 16px: .sta__trigger at 13.0, .sta__trigger-label at 13.0, .sta__count at 12.0.",
+          "measured": {
+            "declared_px_under_16": [
+              {
+                "where": ".sta__trigger",
+                "font_size_px": 13.0,
+                "rendered_px": "unknown"
+              },
+              {
+                "where": ".sta__trigger-label",
+                "font_size_px": 13.0,
+                "rendered_px": "unknown"
+              },
+              {
+                "where": ".sta__count",
+                "font_size_px": 12.0,
+                "rendered_px": "unknown"
+              }
+            ],
+            "relative_font_sizes": [],
+            "rendered_line_length": "unknown"
+          },
+          "suggested_fix": "Use at least 16px for the shop-bar label. Report only, needs Kevin GO.",
+          "scope": "theme",
+          "needs_kevin_go": true,
+          "issues": [
+            {
+              "severity": "medium",
+              "summary": "Declared font-size under 16px: .sta__trigger at 13.0, .sta__trigger-label at 13.0, .sta__count at 12.0.",
+              "suggested_fix": "Use at least 16px for the shop-bar label. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            }
+          ]
+        },
+        {
+          "signal": "above_the_fold",
+          "severity": "medium",
+          "summary": "One ticker sits before the H1, repeated as 36 item nodes (3 unique message(s)). Rendered bar height is unknown. Above-the-fold element count is unknown.",
+          "measured": {
+            "rendered_above_the_fold_elements": "unknown",
+            "source_block_elements_before_h1": 149,
+            "source_block_elements_before_h1_excluding_drawers_desktop_nav_and_hidden": 53,
+            "sections_before_h1": [
+              "horizontal-ticker",
+              "header",
+              "cart-drawer",
+              "article"
+            ],
+            "interactive_elements_between_h1_and_answer": 0,
+            "ticker_item_nodes": 36,
+            "ticker_unique_messages": [
+              "\u21a9\ufe0f 90-Day Refund Policy \u2014 Eligibility Applies",
+              "\ud83d\ude9a Free Shipping on Orders Over $69",
+              "\ud83d\udd0e Product Details and Purchase Terms Online"
+            ]
+          },
+          "suggested_fix": "Keep a single line in the ticker instead of repeating the same messages in the HTML. Report only, needs Kevin GO.",
+          "scope": "theme",
+          "needs_kevin_go": true,
+          "issues": [
+            {
+              "severity": "medium",
+              "summary": "One ticker sits before the H1, repeated as 36 item nodes (3 unique message(s)). Rendered bar height is unknown. Above-the-fold element count is unknown.",
+              "suggested_fix": "Keep a single line in the ticker instead of repeating the same messages in the HTML. Report only, needs Kevin GO.",
+              "scope": "theme",
+              "needs_kevin_go": true
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "http_status": 200
+    }
+  ],
+  "repeated_theme": [
+    {
+      "signal": "popups_sticky_interstitials",
+      "severity": "high",
+      "posts": 5,
+      "summary": "Initial HTML references unexpected host(s): shopify.jsdeliver.cloud, cartassure, 240.1.2.3.",
+      "suggested_fix": "Remove the unexpected script and any header item that references it, after a theme backup. Report only, needs Kevin GO."
+    },
+    {
+      "signal": "popups_sticky_interstitials",
+      "severity": "high",
+      "posts": 5,
+      "summary": "Shop-this-article CSS sets position:fixed and stretches it to both side edges along the bottom. Trigger aria-expanded is false. Whether JavaScript hides the control is unknown.",
+      "suggested_fix": "Do not pin a shop bar over the article on mobile. Keep the product mention inline. Report only, needs Kevin GO."
+    },
+    {
+      "signal": "popups_sticky_interstitials",
+      "severity": "medium",
+      "posts": 5,
+      "summary": "Overlay-vendor script host(s) loaded: static.klaviyo.com. No vendor form was required to record the script. Whether a popup opens after JavaScript is unknown.",
+      "suggested_fix": "Replace a full-screen email popup with an inline form that does not cover the article. Report only, needs Kevin GO."
+    },
+    {
+      "signal": "tap_targets",
+      "severity": "medium",
+      "posts": 5,
+      "summary": "Declared box 40.0x40.0 px on .sta__close is under 48 px. Rendered size is unknown.",
+      "suggested_fix": "Raise the declared width and height of that control to at least 48px. Report only, needs Kevin GO."
+    },
+    {
+      "signal": "font_line_length",
+      "severity": "medium",
+      "posts": 5,
+      "summary": "Declared font-size under 16px: .sta__trigger at 13.0, .sta__trigger-label at 13.0, .sta__count at 12.0.",
+      "suggested_fix": "Use at least 16px for the shop-bar label. Report only, needs Kevin GO."
+    },
+    {
+      "signal": "above_the_fold",
+      "severity": "medium",
+      "posts": 5,
+      "summary": "One ticker sits before the H1, repeated as 36 item nodes (3 unique message(s)). Rendered bar height is unknown. Above-the-fold element count is unknown.",
+      "suggested_fix": "Keep a single line in the ticker instead of repeating the same messages in the HTML. Report only, needs Kevin GO."
+    }
+  ]
+}
