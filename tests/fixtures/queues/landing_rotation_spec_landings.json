@@ -1,0 +1,70 @@
+{
+  "note": "spec_landings projection of landing_drafts at origin/main 56a84387. The live drafts directory is not an input to the open-queue test.",
+  "source_revision": "56a84387e20b703937d2d3863dda257d9f170dae",
+  "landings": [
+    {
+      "created": "2026-10-08",
+      "handle": "ageaura-pure-nmn-tmg-nad-complex"
+    },
+    {
+      "created": "2026-10-08",
+      "handle": "fusiforce-creatine-gummies"
+    },
+    {
+      "created": "2026-10-08",
+      "handle": "premium-himalayan-shilajit-gummies"
+    },
+    {
+      "created": "2026-10-08",
+      "handle": "shilasource-himalayan-shilajit-resin"
+    },
+    {
+      "created": "2026-10-09",
+      "handle": "florafresh-vaginal-probiotics-gummies"
+    },
+    {
+      "created": "2026-10-12",
+      "handle": "pure-shilajit-gold-resin"
+    },
+    {
+      "created": "2026-10-15",
+      "handle": "fusiforce-creatine-gummies"
+    },
+    {
+      "created": "2026-10-16",
+      "handle": "turkesterone-advanced-formula"
+    },
+    {
+      "created": "2026-10-17",
+      "handle": "ageaura-pure-nmn-tmg-nad-complex"
+    },
+    {
+      "created": "2026-10-19",
+      "handle": "florafresh-vaginal-probiotics-gummies"
+    },
+    {
+      "created": "2026-10-20",
+      "handle": "pure-shilajit-gold-resin"
+    },
+    {
+      "created": "2026-10-22",
+      "handle": "premium-himalayan-shilajit-gummies"
+    },
+    {
+      "created": "2026-10-23",
+      "handle": "turkesterone-advanced-formula"
+    },
+    {
+      "created": "2026-10-24",
+      "handle": "shilasource-himalayan-shilajit-resin"
+    },
+    {
+      "created": "2026-10-25",
+      "handle": "ageaura-pure-nmn-tmg-nad-complex"
+    },
+    {
+      "created": "2026-10-26",
+      "handle": "shilasource-himalayan-shilajit-resin"
+    }
+  ]
+}
