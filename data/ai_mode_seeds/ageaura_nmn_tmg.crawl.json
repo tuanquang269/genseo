@@ -1,0 +1,3540 @@
+{
+  "fetched_at": "2026-10-20T11:17+07:00",
+  "gets": 47,
+  "max_gets": 200,
+  "incomplete": false,
+  "product_url": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex",
+  "urls_selected": 42,
+  "errors": [
+    {
+      "url": "https://wellnessnest.co/pages/ageaura-listicle",
+      "error": "HTTP 404",
+      "status": 404
+    }
+  ],
+  "pages": [
+    {
+      "url": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-p2",
+      "final_url": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-p2",
+      "status": 200,
+      "kind": "product",
+      "noindex": false,
+      "canonical": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-p2",
+      "og_title": "AgeAura Pure NMN + TMG — NAD⁺ Longevity Duo | Wellness Nest",
+      "h1": "AgeAura Pure NMN + TMG - Rejuvenation Duo",
+      "headings": [
+        {
+          "level": "h1",
+          "text": "AgeAura Pure NMN + TMG - Rejuvenation Duo"
+        },
+        {
+          "level": "h2",
+          "text": "Voices of Customers"
+        },
+        {
+          "level": "h2",
+          "text": "You're Not Slipping. You're Running Low"
+        },
+        {
+          "level": "h2",
+          "text": "Why The NMN Crowd Is Quietly Switching"
+        },
+        {
+          "level": "h2",
+          "text": "Your 90-Day Return"
+        },
+        {
+          "level": "h2",
+          "text": "The Dimmer Switch (NAD⁺)"
+        },
+        {
+          "level": "h2",
+          "text": "The Spark (NMN)"
+        },
+        {
+          "level": "h2",
+          "text": "The Ledger (TMG)"
+        },
+        {
+          "level": "h2",
+          "text": "Here's what sets AgeAura apart: turning NAD⁺ back up spends methyl groups. TMG pays them back, so the gain doesn't quietly drain the pathways behind your mood, focus, and DNA upkeep."
+        },
+        {
+          "level": "h2",
+          "text": "Real people. Real routines. Real consistency. Built for adults who want to take longevity seriously without turning it into a full-time job."
+        },
+        {
+          "level": "h2",
+          "text": "What You Can Expect"
+        },
+        {
+          "level": "h2",
+          "text": "90-Day Money-Back Guarantee"
+        }
+      ],
+      "coverage_allowed": false,
+      "product_links": [],
+      "flags": [
+        {
+          "kind": "percent",
+          "excerpt": "e opposite. Two compounds, each at a dose worth printing:🔋 Pure NMN (≥99%) — The spark. The direct NAD⁺ precursor sitting at the dead center of"
+        },
+        {
+          "kind": "other_sku",
+          "excerpt": "+ TMG duo the NMN-only crowd is switching to AgeAura Pure NMN + TMG - Rejuvenation Duo Our NMN + TMG formula delivers a precise synergy: NMN raises NAD⁺ to"
+        },
+        {
+          "kind": "other_sku",
+          "excerpt": "iagnose, treat, cure, or prevent any disease AgeAura Pure NMN + TMG - Rejuvenation Duo Voices of Customers You're Not Slipping. You're Running Low Why The N"
+        },
+        {
+          "kind": "denied_product_url",
+          "excerpt": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-p2"
+        }
+      ],
+      "indexable": false
+    },
+    {
+      "url": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex",
+      "final_url": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex",
+      "status": 200,
+      "kind": "product",
+      "noindex": false,
+      "canonical": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex",
+      "og_title": "AgeAura Pure NMN + TMG — NAD⁺ Longevity Duo | Wellness Nest",
+      "h1": "AgeAura Pure NMN + TMG NAD+ Complex",
+      "headings": [
+        {
+          "level": "h1",
+          "text": "AgeAura Pure NMN + TMG NAD+ Complex"
+        },
+        {
+          "level": "h2",
+          "text": "90-Day Guarantee"
+        },
+        {
+          "level": "h2",
+          "text": "The Science Behind It"
+        },
+        {
+          "level": "h2",
+          "text": "Shipping & Return"
+        },
+        {
+          "level": "h2",
+          "text": "Is It Safe?"
+        },
+        {
+          "level": "h2",
+          "text": "Ingredients"
+        },
+        {
+          "level": "h2",
+          "text": "Every Ingredient Carefully Chosen"
+        },
+        {
+          "level": "h2",
+          "text": "One Protocol. Three Jobs. Seven Actives."
+        },
+        {
+          "level": "h3",
+          "text": "genetics Cellular Energy"
+        },
+        {
+          "level": "h3",
+          "text": "cardiology Cellular Health"
+        },
+        {
+          "level": "h3",
+          "text": "neurology Brain Support"
+        },
+        {
+          "level": "h2",
+          "text": "What Real Customers Are Saying"
+        },
+        {
+          "level": "h2",
+          "text": "90 Day Money Back Guarantee"
+        },
+        {
+          "level": "h2",
+          "text": "Why two capsules, not one?"
+        },
+        {
+          "level": "h2",
+          "text": "When will I feel it?"
+        },
+        {
+          "level": "h2",
+          "text": "What’s the difference vs a $30 pure NMN?"
+        },
+        {
+          "level": "h2",
+          "text": "Is this a stimulant? Will it wreck my sleep?"
+        },
+        {
+          "level": "h2",
+          "text": "Who is this for?"
+        },
+        {
+          "level": "h2",
+          "text": "Who should talk to a doctor first?"
+        }
+      ],
+      "coverage_allowed": true,
+      "product_links": [
+        "ageaura-pure-nmn-tmg-nad-complex"
+      ],
+      "flags": [
+        {
+          "kind": "milligram",
+          "excerpt": "st to be safe. Ingredients Each daily serving (2 capsules) contains:– 500mg NMN (β-Nicotinamide Mononucleotide)Supports cellular energy productio"
+        },
+        {
+          "kind": "milligram",
+          "excerpt": "nd healthy mitochondrial function — the engine of the NAD protocol.*– 250mg TMG (Betaine Anhydrous / Trimethylglycine)Helps support methylation p"
+        },
+        {
+          "kind": "percent",
+          "excerpt": "95 Regular price $69.95 Sale priceUnit price/ per Summer Sale - Up To 67% OFF Sold out check_circle Ease joint & back stiffness — feel looser i"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "AgeAura Pure NMN + TMG NAD+ Complex Regular price $69.95 Regular price $69.95 Sale priceUnit price/ per Summer Sale - Up T"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "geAura Pure NMN + TMG NAD+ Complex Regular price $69.95 Regular price $69.95 Sale priceUnit price/ per Summer Sale - Up To 67% OFF Sold out ch"
+        },
+        {
+          "kind": "seven_actives",
+          "excerpt": "ttle for the cleanup piece of the protocol. One Protocol. Three Jobs. Seven Actives. AgeAura Pure NMN + TMG Complex refills the NAD+ gauge (NMN), pays th"
+        },
+        {
+          "kind": "seven_actives",
+          "excerpt": "gredients Every Ingredient Carefully Chosen One Protocol. Three Jobs. Seven Actives. genetics Cellular Energy cardiology Cellular Health neurology Brain"
+        },
+        {
+          "kind": "cofactor",
+          "excerpt": "bolism — balance built into the formula, not a second bottle.*– 150mg Quercetin (from Sophora japonica)A plant flavonoid used to support cellular def"
+        },
+        {
+          "kind": "cofactor",
+          "excerpt": "efense and antioxidant pathways in advanced longevity stacks.*– 100mg Trans-Resveratrol (from Polygonum cuspidatum)– 50mg ApigeninHelps support calm focus an"
+        }
+      ],
+      "indexable": true
+    },
+    {
+      "url": "https://wellnessnest.co/pages/ageaura-pure-protocol",
+      "final_url": "https://wellnessnest.co/pages/ageaura-pure-protocol",
+      "status": 200,
+      "kind": "landing",
+      "noindex": false,
+      "canonical": "https://wellnessnest.co/pages/ageaura-pure-protocol",
+      "og_title": "AgeAura Pure Protocol — The Complete Longevity System",
+      "h1": "The Complete AgeAura Longevity Protocol: 3 Clinical Compounds, 1 Daily Ritual",
+      "headings": [
+        {
+          "level": "h1",
+          "text": "The Complete AgeAura Longevity Protocol: 3 Clinical Compounds, 1 Daily Ritual"
+        },
+        {
+          "level": "summary",
+          "text": "Why a Protocol instead of one bottle?›"
+        },
+        {
+          "level": "summary",
+          "text": "How do I take it?›"
+        },
+        {
+          "level": "summary",
+          "text": "When will I see results?›"
+        },
+        {
+          "level": "summary",
+          "text": "Can I take all three together every day?›"
+        },
+        {
+          "level": "summary",
+          "text": "Results or full refund›"
+        },
+        {
+          "level": "h2",
+          "text": "A Complete Longevity System — Built Around Three Compounds"
+        },
+        {
+          "level": "h3",
+          "text": "Pure Longevity Peptides"
+        },
+        {
+          "level": "h3",
+          "text": "Pure NMN + TMG"
+        },
+        {
+          "level": "h3",
+          "text": "Pure Urolithin A"
+        },
+        {
+          "level": "h2",
+          "text": "The Hidden Cost of Modern Living"
+        },
+        {
+          "level": "h2",
+          "text": "AgeAura Pure Protocol: Simple Daily Nutrition"
+        },
+        {
+          "level": "h2",
+          "text": "Built Around Three Compounds — Not Eighty-Eight"
+        },
+        {
+          "level": "h3",
+          "text": "Manufactured To One Standard:"
+        },
+        {
+          "level": "h2",
+          "text": "Real Results From Real People"
+        },
+        {
+          "level": "h2",
+          "text": "AgeAura Pure Protocol vs. Building Your Own Stack"
+        },
+        {
+          "level": "h2",
+          "text": "What customers on the Protocol are saying"
+        },
+        {
+          "level": "summary",
+          "text": "What exactly is the AgeAura Pure Protocol?›"
+        },
+        {
+          "level": "summary",
+          "text": "How do I take the Protocol?›"
+        },
+        {
+          "level": "summary",
+          "text": "How long does one Protocol box last?›"
+        },
+        {
+          "level": "summary",
+          "text": "Is the Protocol safe to take with my medications?›"
+        },
+        {
+          "level": "summary",
+          "text": "Will I actually feel a difference?›"
+        },
+        {
+          "level": "summary",
+          "text": "Can I take Protocol with my existing supplements?›"
+        },
+        {
+          "level": "summary",
+          "text": "Is Protocol vegan / gluten-free / non-GMO?›"
+        },
+        {
+          "level": "summary",
+          "text": "Where is the Protocol made?›"
+        },
+        {
+          "level": "summary",
+          "text": "How fast does shipping take?›"
+        },
+        {
+          "level": "summary",
+          "text": "What if the Protocol doesn't work for me?›"
+        },
+        {
+          "level": "summary",
+          "text": "Can I cancel or return my order?›"
+        }
+      ],
+      "coverage_allowed": true,
+      "product_links": [],
+      "flags": [
+        {
+          "kind": "milligram",
+          "excerpt": "eAura's Pure Protocol combines our three clinically-dosed compounds — 5,000 mg Longevity Peptides, 200 mg NMN + 100 mg TMG, and 500 mg Urolithin A —"
+        },
+        {
+          "kind": "milligram",
+          "excerpt": "s our three clinically-dosed compounds — 5,000 mg Longevity Peptides, 200 mg NMN + 100 mg TMG, and 500 mg Urolithin A — into one daily ritual that"
+        },
+        {
+          "kind": "percent",
+          "excerpt": "ee · 3rd-party tested— LIMITED LAUNCH OFFER —One-timeSubscribe & Save 10%Combo 11 box of each · 3 items totalSave $200.00$499.97$699.97MOST POP"
+        },
+        {
+          "kind": "percent",
+          "excerpt": "on its own is the structural rebuilding — collagen production drops ~1% every year after 25. The Protocol's foundation layer rebuilds that pi"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "$1,499.91$999.94SAVE $499.97The Three-Layer Approach To Modern Longevity"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "$1,499.91$999.94SAVE $499.97The Three-Layer Approach To Modern Longevity Most lon"
+        },
+        {
+          "kind": "urolithin",
+          "excerpt": "ds — 5,000 mg Longevity Peptides, 200 mg NMN + 100 mg TMG, and 500 mg Urolithin A — into one daily ritual that covers structural, cellular and mitoch"
+        },
+        {
+          "kind": "urolithin",
+          "excerpt": "fee or matcha (no flavor). With it: one capsule each of NMN + TMG and Urolithin A. Three items, one ~30-second routine. With or without food.When wil"
+        },
+        {
+          "kind": "other_sku",
+          "excerpt": "ure Protocol combines our three clinically-dosed compounds — 5,000 mg Longevity Peptides, 200 mg NMN + 100 mg TMG, and 500 mg Urolithin A — into one daily rit"
+        },
+        {
+          "kind": "other_sku",
+          "excerpt": "nstead of three subscriptions.How do I take it?›Morning: one stick of Longevity Peptides dissolved in water, coffee or matcha (no flavor). With it: one capsul"
+        },
+        {
+          "kind": "clinical_proof",
+          "excerpt": "Manufactured To One Standard:US cGMP-registered facility. Every batch third-party tested for identity and potency. Vegan capsules, vegan stick powder. No glut"
+        },
+        {
+          "kind": "clinical_proof",
+          "excerpt": "ocol is manufactured in a US cGMP-registered facility. Every batch is third-party tested for identity and potency. We control every batch from manufacture to"
+        }
+      ],
+      "indexable": false
+    },
+    {
+      "url": "https://wellnessnest.co/pages/ageaura-av01-dr-hale-f6",
+      "final_url": "https://wellnessnest.co/pages/ageaura-av01-dr-hale-f6",
+      "status": 200,
+      "kind": "landing",
+      "noindex": false,
+      "canonical": "https://wellnessnest.co/pages/ageaura-av01-dr-hale-f6",
+      "og_title": "",
+      "h1": "",
+      "headings": [],
+      "coverage_allowed": true,
+      "product_links": [],
+      "flags": [],
+      "indexable": true
+    },
+    {
+      "url": "https://wellnessnest.co/pages/ageaura-protocol-2",
+      "final_url": "https://wellnessnest.co/pages/ageaura-protocol-2",
+      "status": 200,
+      "kind": "landing",
+      "noindex": false,
+      "canonical": "https://wellnessnest.co/pages/ageaura-protocol-2",
+      "og_title": "AgeAura Protocol 2",
+      "h1": "The Complete AgeAura Longevity Protocol: 3 Clinical Compounds, 1 Daily Ritual",
+      "headings": [
+        {
+          "level": "h1",
+          "text": "The Complete AgeAura Longevity Protocol: 3 Clinical Compounds, 1 Daily Ritual"
+        },
+        {
+          "level": "summary",
+          "text": "Why a Protocol instead of one bottle?›"
+        },
+        {
+          "level": "summary",
+          "text": "How do I take it?›"
+        },
+        {
+          "level": "summary",
+          "text": "When will I see results?›"
+        },
+        {
+          "level": "summary",
+          "text": "Can I take all three together every day?›"
+        },
+        {
+          "level": "summary",
+          "text": "Results or full refund›"
+        },
+        {
+          "level": "h2",
+          "text": "A Complete Longevity System — Built Around Three Compounds"
+        },
+        {
+          "level": "h3",
+          "text": "Pure Longevity Peptides"
+        },
+        {
+          "level": "h3",
+          "text": "Pure NMN + TMG"
+        },
+        {
+          "level": "h3",
+          "text": "Pure Urolithin A"
+        },
+        {
+          "level": "h2",
+          "text": "The Hidden Cost of Modern Living"
+        },
+        {
+          "level": "h2",
+          "text": "AgeAura Pure Protocol: Simple Daily Nutrition"
+        },
+        {
+          "level": "h2",
+          "text": "Built Around Three Compounds — Not Eighty-Eight"
+        },
+        {
+          "level": "h3",
+          "text": "Manufactured To One Standard:"
+        },
+        {
+          "level": "h2",
+          "text": "Real Results From Real People"
+        },
+        {
+          "level": "h2",
+          "text": "AgeAura Pure Protocol vs. Building Your Own Stack"
+        },
+        {
+          "level": "h2",
+          "text": "What customers on the Protocol are saying"
+        },
+        {
+          "level": "summary",
+          "text": "What exactly is the AgeAura Pure Protocol?›"
+        },
+        {
+          "level": "summary",
+          "text": "How do I take the Protocol?›"
+        },
+        {
+          "level": "summary",
+          "text": "How long does one Protocol box last?›"
+        },
+        {
+          "level": "summary",
+          "text": "Is the Protocol safe to take with my medications?›"
+        },
+        {
+          "level": "summary",
+          "text": "Will I actually feel a difference?›"
+        },
+        {
+          "level": "summary",
+          "text": "Can I take Protocol with my existing supplements?›"
+        },
+        {
+          "level": "summary",
+          "text": "Is Protocol vegan / gluten-free / non-GMO?›"
+        },
+        {
+          "level": "summary",
+          "text": "Where is the Protocol made?›"
+        },
+        {
+          "level": "summary",
+          "text": "How fast does shipping take?›"
+        },
+        {
+          "level": "summary",
+          "text": "What if the Protocol doesn't work for me?›"
+        },
+        {
+          "level": "summary",
+          "text": "Can I cancel or return my order?›"
+        }
+      ],
+      "coverage_allowed": true,
+      "product_links": [],
+      "flags": [
+        {
+          "kind": "milligram",
+          "excerpt": "eAura's Pure Protocol combines our three clinically-dosed compounds — 5,000 mg Longevity Peptides, 200 mg NMN + 100 mg TMG, and 500 mg Urolithin A —"
+        },
+        {
+          "kind": "milligram",
+          "excerpt": "s our three clinically-dosed compounds — 5,000 mg Longevity Peptides, 200 mg NMN + 100 mg TMG, and 500 mg Urolithin A — into one daily ritual that"
+        },
+        {
+          "kind": "percent",
+          "excerpt": "ee · 3rd-party tested— LIMITED LAUNCH OFFER —One-timeSubscribe & Save 10%Combo 11 box of each · 3 items totalSave $200.00$499.97$699.97MOST POP"
+        },
+        {
+          "kind": "percent",
+          "excerpt": "on its own is the structural rebuilding — collagen production drops ~1% every year after 25. The Protocol's foundation layer rebuilds that pi"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "$1,499.91$999.94SAVE $499.97The Three-Layer Approach To Modern Longevity"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "$1,499.91$999.94SAVE $499.97The Three-Layer Approach To Modern Longevity Most lon"
+        },
+        {
+          "kind": "urolithin",
+          "excerpt": "ds — 5,000 mg Longevity Peptides, 200 mg NMN + 100 mg TMG, and 500 mg Urolithin A — into one daily ritual that covers structural, cellular and mitoch"
+        },
+        {
+          "kind": "urolithin",
+          "excerpt": "fee or matcha (no flavor). With it: one capsule each of NMN + TMG and Urolithin A. Three items, one ~30-second routine. With or without food.When wil"
+        },
+        {
+          "kind": "other_sku",
+          "excerpt": "ure Protocol combines our three clinically-dosed compounds — 5,000 mg Longevity Peptides, 200 mg NMN + 100 mg TMG, and 500 mg Urolithin A — into one daily rit"
+        },
+        {
+          "kind": "other_sku",
+          "excerpt": "nstead of three subscriptions.How do I take it?›Morning: one stick of Longevity Peptides dissolved in water, coffee or matcha (no flavor). With it: one capsul"
+        },
+        {
+          "kind": "clinical_proof",
+          "excerpt": "Manufactured To One Standard:US cGMP-registered facility. Every batch third-party tested for identity and potency. Vegan capsules, vegan stick powder. No glut"
+        },
+        {
+          "kind": "clinical_proof",
+          "excerpt": "ocol is manufactured in a US cGMP-registered facility. Every batch is third-party tested for identity and potency. We control every batch from manufacture to"
+        }
+      ],
+      "indexable": false
+    },
+    {
+      "url": "https://wellnessnest.co/pages/ageaura-av01-dr-hale-f7",
+      "final_url": "https://wellnessnest.co/pages/ageaura-av01-dr-hale-f7",
+      "status": 200,
+      "kind": "landing",
+      "noindex": false,
+      "canonical": "https://wellnessnest.co/pages/ageaura-av01-dr-hale-f7",
+      "og_title": "",
+      "h1": "",
+      "headings": [],
+      "coverage_allowed": true,
+      "product_links": [],
+      "flags": [],
+      "indexable": true
+    },
+    {
+      "url": "https://wellnessnest.co/pages/ageaura-listicle",
+      "final_url": "https://wellnessnest.co/pages/ageaura-listicle",
+      "status": 404,
+      "kind": "landing",
+      "noindex": false,
+      "canonical": "",
+      "og_title": "",
+      "h1": "",
+      "headings": [],
+      "coverage_allowed": true,
+      "indexable": false,
+      "product_links": [],
+      "flags": []
+    },
+    {
+      "url": "https://wellnessnest.co/pages/ageaura-advertorial",
+      "final_url": "https://wellnessnest.co/pages/ageaura-advertorial",
+      "status": 200,
+      "kind": "landing",
+      "noindex": false,
+      "canonical": "https://wellnessnest.co/pages/ageaura-advertorial",
+      "og_title": "V4 [Template] AgeAura Advertorial",
+      "h1": "",
+      "headings": [],
+      "coverage_allowed": true,
+      "product_links": [],
+      "flags": [],
+      "indexable": true
+    },
+    {
+      "url": "https://wellnessnest.co/pages/ageaura-listicle-1",
+      "final_url": "https://wellnessnest.co/pages/ageaura-listicle-1",
+      "status": 200,
+      "kind": "landing",
+      "noindex": false,
+      "canonical": "https://wellnessnest.co/pages/ageaura-listicle-1",
+      "og_title": "AgeAura Listicle",
+      "h1": "The Complete AgeAura Longevity Protocol: 3 Clinical Compounds, 1 Daily Ritual",
+      "headings": [
+        {
+          "level": "h1",
+          "text": "The Complete AgeAura Longevity Protocol: 3 Clinical Compounds, 1 Daily Ritual"
+        },
+        {
+          "level": "summary",
+          "text": "Why a Protocol instead of one bottle?›"
+        },
+        {
+          "level": "summary",
+          "text": "How do I take it?›"
+        },
+        {
+          "level": "summary",
+          "text": "When will I see results?›"
+        },
+        {
+          "level": "summary",
+          "text": "Can I take all three together every day?›"
+        },
+        {
+          "level": "summary",
+          "text": "Results or full refund›"
+        },
+        {
+          "level": "h2",
+          "text": "4.9 / 5.0 — Trusted by 1M+ across the AgeAura family"
+        },
+        {
+          "level": "h2",
+          "text": "FAQs"
+        }
+      ],
+      "coverage_allowed": true,
+      "product_links": [],
+      "flags": [
+        {
+          "kind": "milligram",
+          "excerpt": "eAura's Pure Protocol combines our three clinically-dosed compounds — 5,000 mg Longevity Peptides, 200 mg NMN + 100 mg TMG, and 500 mg Urolithin A —"
+        },
+        {
+          "kind": "milligram",
+          "excerpt": "s our three clinically-dosed compounds — 5,000 mg Longevity Peptides, 200 mg NMN + 100 mg TMG, and 500 mg Urolithin A — into one daily ritual that"
+        },
+        {
+          "kind": "percent",
+          "excerpt": "ee · 3rd-party tested— LIMITED LAUNCH OFFER —One-timeSubscribe & Save 10%Combo 11 box of each · 3 items totalSave $200.00$499.97$699.97MOST POP"
+        },
+        {
+          "kind": "percent",
+          "excerpt": "5.0 — Trusted by 1M+ across the AgeAura familyIn an 800-user survey: 92% reported overall wellness improved within 60 days · 88% better energy"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "$1,499.91$999.94SAVE $499.97The Three-Layer Approach To Modern Longevity"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "$1,499.91$999.94SAVE $499.97The Three-Layer Approach To Modern Longevity Most lon"
+        },
+        {
+          "kind": "urolithin",
+          "excerpt": "ds — 5,000 mg Longevity Peptides, 200 mg NMN + 100 mg TMG, and 500 mg Urolithin A — into one daily ritual that covers structural, cellular and mitoch"
+        },
+        {
+          "kind": "urolithin",
+          "excerpt": "fee or matcha (no flavor). With it: one capsule each of NMN + TMG and Urolithin A. Three items, one ~30-second routine. With or without food.When wil"
+        },
+        {
+          "kind": "other_sku",
+          "excerpt": "ure Protocol combines our three clinically-dosed compounds — 5,000 mg Longevity Peptides, 200 mg NMN + 100 mg TMG, and 500 mg Urolithin A — into one daily rit"
+        },
+        {
+          "kind": "other_sku",
+          "excerpt": "nstead of three subscriptions.How do I take it?›Morning: one stick of Longevity Peptides dissolved in water, coffee or matcha (no flavor). With it: one capsul"
+        },
+        {
+          "kind": "clinical_proof",
+          "excerpt": "fied by an independent third-party lab. If a brand won't show you its COA, that tells you everything you need to know. We'll show you ours.Am I"
+        }
+      ],
+      "indexable": false
+    },
+    {
+      "url": "https://wellnessnest.co/pages/nmn-tmg-adv4",
+      "final_url": "https://wellnessnest.co/pages/nmn-tmg-adv4",
+      "status": 200,
+      "kind": "landing",
+      "noindex": false,
+      "canonical": "https://wellnessnest.co/pages/nmn-tmg-adv4",
+      "og_title": "AgeAura Pure NMN + TMG",
+      "h1": "",
+      "headings": [],
+      "coverage_allowed": true,
+      "product_links": [],
+      "flags": [],
+      "indexable": true
+    },
+    {
+      "url": "https://wellnessnest.co/pages/ageaura-nmn-tmg-listicle",
+      "final_url": "https://wellnessnest.co/pages/ageaura-nmn-tmg-listicle",
+      "status": 200,
+      "kind": "landing",
+      "noindex": false,
+      "canonical": "https://wellnessnest.co/pages/ageaura-nmn-tmg-listicle",
+      "og_title": "AgeAura NMN+TMG Listicle",
+      "h1": "",
+      "headings": [],
+      "coverage_allowed": true,
+      "product_links": [],
+      "flags": [],
+      "indexable": true
+    },
+    {
+      "url": "https://wellnessnest.co/pages/jamie-gempages-copy-kevin-ageaura-nmn-tmg-adv-1",
+      "final_url": "https://wellnessnest.co/pages/jamie-gempages-copy-kevin-ageaura-nmn-tmg-adv-1",
+      "status": 200,
+      "kind": "landing",
+      "noindex": false,
+      "canonical": "https://wellnessnest.co/pages/jamie-gempages-copy-kevin-ageaura-nmn-tmg-adv-1",
+      "og_title": "[Jamie GemPages Copy] [Kevin] AgeAura NMN TMG Adv 1",
+      "h1": "",
+      "headings": [],
+      "coverage_allowed": true,
+      "product_links": [],
+      "flags": [],
+      "indexable": true
+    },
+    {
+      "url": "https://wellnessnest.co/pages/kevin-ageaura-nmn-tmg-listicle-2",
+      "final_url": "https://wellnessnest.co/pages/kevin-ageaura-nmn-tmg-listicle-2",
+      "status": 200,
+      "kind": "landing",
+      "noindex": false,
+      "canonical": "https://wellnessnest.co/pages/kevin-ageaura-nmn-tmg-listicle-2",
+      "og_title": "AgeAura NMN+TMG Listicle 2",
+      "h1": "",
+      "headings": [],
+      "coverage_allowed": true,
+      "product_links": [],
+      "flags": [],
+      "indexable": true
+    },
+    {
+      "url": "https://wellnessnest.co/pages/nmntmg-lst3",
+      "final_url": "https://wellnessnest.co/pages/nmntmg-lst3",
+      "status": 200,
+      "kind": "landing",
+      "noindex": false,
+      "canonical": "https://wellnessnest.co/pages/nmntmg-lst3",
+      "og_title": "AgeAura NMN+TMG Listicle 3",
+      "h1": "",
+      "headings": [],
+      "coverage_allowed": true,
+      "product_links": [],
+      "flags": [],
+      "indexable": true
+    },
+    {
+      "url": "https://wellnessnest.co/pages/kevin-ageaura-nmn-tmg-adv-1",
+      "final_url": "https://wellnessnest.co/pages/kevin-ageaura-nmn-tmg-adv-1",
+      "status": 200,
+      "kind": "landing",
+      "noindex": false,
+      "canonical": "https://wellnessnest.co/pages/kevin-ageaura-nmn-tmg-adv-1",
+      "og_title": "AgeAura NMN TMG Adv 1",
+      "h1": "",
+      "headings": [],
+      "coverage_allowed": true,
+      "product_links": [],
+      "flags": [],
+      "indexable": true
+    },
+    {
+      "url": "https://wellnessnest.co/pages/nmn-after-40-research",
+      "final_url": "https://wellnessnest.co/pages/nmn-after-40-research",
+      "status": 200,
+      "kind": "landing",
+      "noindex": false,
+      "canonical": "https://wellnessnest.co/pages/nmn-after-40-research",
+      "og_title": "7 Things Research Shows About NMN After 40",
+      "h1": "7 Things Research Shows About NMN After 40",
+      "headings": [
+        {
+          "level": "h1",
+          "text": "7 Things Research Shows About NMN After 40"
+        },
+        {
+          "level": "h2",
+          "text": "NMN is a NAD+ building block"
+        },
+        {
+          "level": "h2",
+          "text": "NAD+ rose 38% in 60 days"
+        },
+        {
+          "level": "h2",
+          "text": "Faster walking in older adults"
+        },
+        {
+          "level": "h2",
+          "text": "The bigger picture is mixed"
+        },
+        {
+          "level": "h2",
+          "text": "Why TMG is paired with NMN"
+        },
+        {
+          "level": "h2",
+          "text": "No combined trial yet"
+        },
+        {
+          "level": "h2",
+          "text": "Trials tested daily use"
+        },
+        {
+          "level": "h2",
+          "text": "Convenience is part of consistency"
+        },
+        {
+          "level": "h2",
+          "text": "TrustScore 4.2 from 1,144 Trustpilot Reviews"
+        },
+        {
+          "level": "h2",
+          "text": "NMN + TMG in One Daily Serving"
+        }
+      ],
+      "coverage_allowed": true,
+      "product_links": [
+        "ageaura-pure-nmn-tmg-nad-complex"
+      ],
+      "flags": [
+        {
+          "kind": "milligram",
+          "excerpt": "15%with Subscribe & Save, delivered every 4 weeks. Or $69.95 one-time.500 mg NMN + 250 mg TMG in every daily servingPlus quercetin, trans-resverat"
+        },
+        {
+          "kind": "milligram",
+          "excerpt": "ribe & Save, delivered every 4 weeks. Or $69.95 one-time.500 mg NMN + 250 mg TMG in every daily servingPlus quercetin, trans-resveratrol, apigenin"
+        },
+        {
+          "kind": "percent",
+          "excerpt": "raise NAD+ in people? Several trials tested exactly that.02NAD+ rose 38% in 60 daysIn a placebo-controlled trial of 66 adults aged 40 to 65, t"
+        },
+        {
+          "kind": "percent",
+          "excerpt": "al of 66 adults aged 40 to 65, the NMN group's blood NAD+/NADH was up 11% at day 30 and 38% at day 60.Placebo rose 14.3% by day 60. Note what w"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "44 Trustpilot reviews90-daymoney-back guaranteeFree shippingon orders $70+Vegan capsulesNMN + TMG formula01NMN is a NAD+ building blockNMN (ni"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "+ TMG in One Daily Serving4.2 TrustScore · 1,144 reviews on Trustpilot$59.46$69.95Save 15%with Subscribe & Save, delivered every 4 weeks. Or $"
+        },
+        {
+          "kind": "cofactor",
+          "excerpt": "Or $69.95 one-time.500 mg NMN + 250 mg TMG in every daily servingPlus quercetin, trans-resveratrol, apigenin, folate and spermidine60 vegan capsules"
+        },
+        {
+          "kind": "cofactor",
+          "excerpt": "ne-time.500 mg NMN + 250 mg TMG in every daily servingPlus quercetin, trans-resveratrol, apigenin, folate and spermidine60 vegan capsules · 30 servings per b"
+        }
+      ],
+      "indexable": true
+    },
+    {
+      "url": "https://wellnessnest.co/blogs/news/nmn-and-tmg-together-why-the-pairing-matters-us-2026",
+      "final_url": "https://wellnessnest.co/blogs/news/nmn-and-tmg-together-why-the-pairing-matters-us-2026",
+      "status": 200,
+      "kind": "article",
+      "noindex": false,
+      "canonical": "https://wellnessnest.co/blogs/news/nmn-and-tmg-together-why-the-pairing-matters-us-2026",
+      "og_title": "NMN and TMG Together: Why the Pairing Matters (US 2026)",
+      "h1": "NMN and TMG Together: Why the Pairing Matters (US 2026)",
+      "headings": [
+        {
+          "level": "h1",
+          "text": "NMN and TMG Together: Why the Pairing Matters (US 2026)"
+        },
+        {
+          "level": "h2",
+          "text": "What NMN Actually Does: Four Human Trials"
+        },
+        {
+          "level": "h2",
+          "text": "The Methyl Cost: Does NMN Deplete Methyl Groups?"
+        },
+        {
+          "level": "h2",
+          "text": "What TMG Restores — and the Evidence Behind It"
+        },
+        {
+          "level": "h2",
+          "text": "NMN Alone vs NMN + TMG: What US Buyers Are Comparing"
+        },
+        {
+          "level": "h2",
+          "text": "The NMN-to-TMG Ratio: Where the Numbers Actually Come From"
+        },
+        {
+          "level": "h2",
+          "text": "Who Should Take TMG With NMN"
+        },
+        {
+          "level": "h2",
+          "text": "When to Take NMN and TMG"
+        },
+        {
+          "level": "h3",
+          "text": "Do I need to take TMG with NMN?"
+        },
+        {
+          "level": "h3",
+          "text": "How much TMG should I take with NMN?"
+        },
+        {
+          "level": "h3",
+          "text": "Can you take NMN and TMG at the same time?"
+        },
+        {
+          "level": "h3",
+          "text": "Does NMN deplete methyl groups?"
+        },
+        {
+          "level": "h3",
+          "text": "Should I take TMG if I use NR instead of NMN?"
+        },
+        {
+          "level": "h3",
+          "text": "Where can I buy NMN and TMG together in the US?"
+        },
+        {
+          "level": "h3",
+          "text": "AgeAura Pure NMN + TMG NAD+ Complex"
+        }
+      ],
+      "coverage_allowed": true,
+      "product_links": [
+        "ageaura-pure-nmn-tmg-nad-complex"
+      ],
+      "flags": [
+        {
+          "kind": "milligram",
+          "excerpt": "ersus placebo. And a 60-day dose-response trial testing 300, 600, and 900 mg per day found blood NAD rose with dose, six-minute walking distance i"
+        },
+        {
+          "kind": "milligram",
+          "excerpt": "lking distance improved versus placebo, and efficacy plateaued around 600 mg, with safety holding up to 900 mg daily.Two takeaways for an informed"
+        },
+        {
+          "kind": "percent",
+          "excerpt": "ed betaine at 1.5, 3, and 6 grams per day cut fasting homocysteine by 12%, 15%, and 20% respectively — meaningful effects even at the dietary e"
+        },
+        {
+          "kind": "percent",
+          "excerpt": "taine at 1.5, 3, and 6 grams per day cut fasting homocysteine by 12%, 15%, and 20% respectively — meaningful effects even at the dietary end of"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "hat NAD+ clearance taxes. A bottle holds a month of vegan capsules at $69.95 — one routine, both halves of the story covered, and no second bo"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "+ TMG NAD+ Complex AgeAura Pure NMN + TMG NAD+ Complex Regular price $69.95 Regular price $69.95 Sale priceUnit price/ per Subscribe to our e"
+        }
+      ],
+      "indexable": true
+    },
+    {
+      "url": "https://wellnessnest.co/blogs/news/nmn-tmg-benefits-what-human-trials-show",
+      "final_url": "https://wellnessnest.co/blogs/news/nmn-tmg-benefits-what-human-trials-show",
+      "status": 200,
+      "kind": "article",
+      "noindex": false,
+      "canonical": "https://wellnessnest.co/blogs/news/nmn-tmg-benefits-what-human-trials-show",
+      "og_title": "NMN + TMG Benefits: What Human Trials Show (US 2026)",
+      "h1": "NMN + TMG Benefits: What Human Trials Show (US 2026)",
+      "headings": [
+        {
+          "level": "h1",
+          "text": "NMN + TMG Benefits: What Human Trials Show (US 2026)"
+        },
+        {
+          "level": "h2",
+          "text": "Blood NAD+: The Most Consistent Result"
+        },
+        {
+          "level": "h2",
+          "text": "Walking and Physical Performance: Small, Mixed Signals"
+        },
+        {
+          "level": "h2",
+          "text": "Insulin Sensitivity: One Group, One Measure"
+        },
+        {
+          "level": "h2",
+          "text": "What TMG Adds, and Why 250 mg Is Not a Trial Dose"
+        },
+        {
+          "level": "h2",
+          "text": "What the Trials Did NOT Show"
+        },
+        {
+          "level": "h2",
+          "text": "NMN + TMG Benefits in the US: 2026 Evidence Table"
+        },
+        {
+          "level": "h2",
+          "text": "Who Might Reasonably Try It, and How to Judge It"
+        },
+        {
+          "level": "h3",
+          "text": "Has the NMN + TMG combination been tested in humans?"
+        },
+        {
+          "level": "h3",
+          "text": "Is NMN legal in dietary supplements in the US?"
+        },
+        {
+          "level": "h3",
+          "text": "Will 250 mg of TMG lower homocysteine?"
+        },
+        {
+          "level": "h3",
+          "text": "Was NMN well tolerated in trials?"
+        },
+        {
+          "level": "h3",
+          "text": "What does it cost?"
+        },
+        {
+          "level": "h3",
+          "text": "AgeAura Pure NMN + TMG NAD+ Complex"
+        }
+      ],
+      "coverage_allowed": true,
+      "product_links": [
+        "ageaura-pure-nmn-tmg-nad-complex"
+      ],
+      "flags": [
+        {
+          "kind": "milligram",
+          "excerpt": "d adults, blood NAD rose significantly in all NMN groups (300, 600 or 900 mg once daily) at day 30 and day 60. Levels were highest at 600 and 900"
+        },
+        {
+          "kind": "milligram",
+          "excerpt": "0 mg once daily) at day 30 and day 60. Levels were highest at 600 and 900 mg (Yi 2023).In healthy older men, 250 mg a day for 6 or 12 weeks signif"
+        },
+        {
+          "kind": "percent",
+          "excerpt": "lts, 1.5, 3 and 6 g a day for 6 weeks lowered fasting homocysteine by 12%, 15% and 20% versus placebo (Olthof 2003). A meta-analysis of 5 trial"
+        },
+        {
+          "kind": "percent",
+          "excerpt": "1.5, 3 and 6 g a day for 6 weeks lowered fasting homocysteine by 12%, 15% and 20% versus placebo (Olthof 2003). A meta-analysis of 5 trials usi"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "ng enough to show long-term safety.What does it cost?One bottle costs $69.95 as a one-time purchase. Subscribe & save options include 1 bottle"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "lasted long enough to show long-term safety.</p> <p>One bottle costs $69.95 as a one-time purchase. Subscribe &amp; save options include 1 bo"
+        },
+        {
+          "kind": "cofactor",
+          "excerpt": "G NAD+ Complex provides 500 mg NMN and 250 mg TMG. It also has 100 mg trans-resveratrol, 150 mg quercetin, 50 mg apigenin, 1 mg spermidine and 400 mcg DFE fo"
+        },
+        {
+          "kind": "cofactor",
+          "excerpt": "0 mg NMN and 250 mg TMG. It also has 100 mg trans-resveratrol, 150 mg quercetin, 50 mg apigenin, 1 mg spermidine and 400 mcg DFE folate as L-5-MTHF."
+        }
+      ],
+      "indexable": true
+    },
+    {
+      "url": "https://wellnessnest.co/blogs/news/when-to-take-nmn-morning-or-night-us-2026",
+      "final_url": "https://wellnessnest.co/blogs/news/when-to-take-nmn-morning-or-night-us-2026",
+      "status": 200,
+      "kind": "article",
+      "noindex": false,
+      "canonical": "https://wellnessnest.co/blogs/news/when-to-take-nmn-morning-or-night-us-2026",
+      "og_title": "When to Take NMN: Morning or Night? (US 2026)",
+      "h1": "When to Take NMN: Morning or Night? (US 2026)",
+      "headings": [
+        {
+          "level": "h1",
+          "text": "When to Take NMN: Morning or Night? (US 2026)"
+        },
+        {
+          "level": "h2",
+          "text": "The one trial that actually tested the timing"
+        },
+        {
+          "level": "h2",
+          "text": "The part of that trial nobody quotes"
+        },
+        {
+          "level": "h2",
+          "text": "Why the hour could plausibly matter"
+        },
+        {
+          "level": "h2",
+          "text": "Morning, afternoon, or bedtime: what each choice actually buys you"
+        },
+        {
+          "level": "h2",
+          "text": "Does NMN at night keep you awake?"
+        },
+        {
+          "level": "h2",
+          "text": "With food, on an empty stomach, or under the tongue?"
+        },
+        {
+          "level": "h2",
+          "text": "What daily NMN does to the numbers your doctor checks"
+        },
+        {
+          "level": "h2",
+          "text": "What NMN costs in the US, and what our own bottle leaves out"
+        },
+        {
+          "level": "h2",
+          "text": "A routine that matches what has actually been tested"
+        },
+        {
+          "level": "h3",
+          "text": "Is it better to take NMN in the morning or at night?"
+        },
+        {
+          "level": "h3",
+          "text": "What counts as \"afternoon\" in that study?"
+        },
+        {
+          "level": "h3",
+          "text": "Should I take NMN on an empty stomach?"
+        },
+        {
+          "level": "h3",
+          "text": "Does NMN keep you awake?"
+        },
+        {
+          "level": "h3",
+          "text": "How long before NMN does anything?"
+        },
+        {
+          "level": "h3",
+          "text": "Is NMN safe to take every day?"
+        },
+        {
+          "level": "h3",
+          "text": "Does splitting the dose between morning and afternoon work better?"
+        },
+        {
+          "level": "h3",
+          "text": "How much does NMN cost in the US?"
+        },
+        {
+          "level": "h3",
+          "text": "AgeAura Pure NMN + TMG NAD+ Complex"
+        }
+      ],
+      "coverage_allowed": true,
+      "product_links": [
+        "ageaura-pure-nmn-tmg-nad-complex"
+      ],
+      "flags": [
+        {
+          "kind": "milligram",
+          "excerpt": ", exactly one trial randomized the time of day: 108 older adults took 250 mg once daily for 12 weeks, either in the morning or in the afternoon. T"
+        },
+        {
+          "kind": "milligram",
+          "excerpt": "noon, placebo in the morning, placebo in the afternoon. Everyone took 250 mg once a day for 12 weeks, double-blind. Sleep quality was scored on th"
+        },
+        {
+          "kind": "percent",
+          "excerpt": "ting out that liver fat differed between the two groups at baseline — 6.3% in the NMN arm against 14.8% in the placebo arm — and the authors rep"
+        },
+        {
+          "kind": "percent",
+          "excerpt": "ered between the two groups at baseline — 6.3% in the NMN arm against 14.8% in the placebo arm — and the authors replied that muscle insulin sens"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "esveratrol, quercetin, apigenin, spermidine and L-methylfolate. It is $69.95 as a one-time purchase, with subscribe-and-save options on the pr"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "es NMN cost in the US?Most NMN sold in the US works out between about $2 and $5 a day. Wellness Nest lists AgeAura Pure NMN + TMG NAD+ Complex"
+        },
+        {
+          "kind": "cofactor",
+          "excerpt": "NMN paired with 250 mg of TMG (betaine) as a methyl donor, alongside trans-resveratrol, quercetin, apigenin, spermidine and L-methylfolate. It is $69.95 as"
+        },
+        {
+          "kind": "cofactor",
+          "excerpt": "0 mg of TMG (betaine) as a methyl donor, alongside trans-resveratrol, quercetin, apigenin, spermidine and L-methylfolate. It is $69.95 as a one-time"
+        }
+      ],
+      "indexable": true
+    },
+    {
+      "url": "https://wellnessnest.co/blogs/news/how-much-nmn-per-day-what-trials-used-us-2026",
+      "final_url": "https://wellnessnest.co/blogs/news/how-much-nmn-per-day-what-trials-used-us-2026",
+      "status": 200,
+      "kind": "article",
+      "noindex": false,
+      "canonical": "https://wellnessnest.co/blogs/news/how-much-nmn-per-day-what-trials-used-us-2026",
+      "og_title": "How Much NMN Per Day: What Trials Used (US 2026)",
+      "h1": "How Much NMN Per Day: What Trials Used (US 2026)",
+      "headings": [
+        {
+          "level": "h1",
+          "text": "How Much NMN Per Day: What Trials Used (US 2026)"
+        },
+        {
+          "level": "h2",
+          "text": "Every Human NMN Trial Sits Between 250 and 1,250 mg a Day"
+        },
+        {
+          "level": "h2",
+          "text": "250 mg a Day: The Dose Three Trials Chose"
+        },
+        {
+          "level": "h2",
+          "text": "300 to 900 mg: Where More Stopped Doing More"
+        },
+        {
+          "level": "h2",
+          "text": "1,250 mg a Day: A Safety Ceiling, Not a Target"
+        },
+        {
+          "level": "h2",
+          "text": "What the Labels in Front of You Actually Print"
+        },
+        {
+          "level": "h2",
+          "text": "How to Choose Your Own NMN Dose in the US"
+        },
+        {
+          "level": "h2",
+          "text": "Where to Buy NMN in the United States"
+        },
+        {
+          "level": "h3",
+          "text": "How much NMN should I take per day?"
+        },
+        {
+          "level": "h3",
+          "text": "Is 500 mg of NMN a day too much?"
+        },
+        {
+          "level": "h3",
+          "text": "How long does NMN take to work?"
+        },
+        {
+          "level": "h3",
+          "text": "Should I take NMN once a day or split the dose?"
+        },
+        {
+          "level": "h3",
+          "text": "Where can I buy NMN in the US?"
+        },
+        {
+          "level": "h3",
+          "text": "Do I need TMG with NMN?"
+        },
+        {
+          "level": "h3",
+          "text": "AgeAura Pure NMN + TMG NAD+ Complex"
+        }
+      ],
+      "coverage_allowed": true,
+      "product_links": [
+        "ageaura-pure-nmn-tmg-nad-complex"
+      ],
+      "flags": [
+        {
+          "kind": "milligram",
+          "excerpt": "ose shareCopy linkEvery published human trial of NMN has used between 250 mg and 1,250 mg a day, and the doses that measured an actual result sit"
+        },
+        {
+          "kind": "milligram",
+          "excerpt": "py linkEvery published human trial of NMN has used between 250 mg and 1,250 mg a day, and the doses that measured an actual result sit between 250 a"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "rth knowing before you check out.AgeAura Pure NMN + TMG NAD+ Complex ($69.95) prints its whole panel on the product page. Each daily serving i"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "ules and 30 servings, which matches: two capsules a day, thirty days, $2.33 a day. At 500 mg it lands between the 300 mg and 600 mg arms of th"
+        },
+        {
+          "kind": "cofactor",
+          "excerpt": "y serving is two capsules and contains 500 mg NMN, 250 mg TMG, 150 mg quercetin, 100 mg trans-resveratrol and 50 mg apigenin. The bottle front carrie"
+        },
+        {
+          "kind": "cofactor",
+          "excerpt": "apsules and contains 500 mg NMN, 250 mg TMG, 150 mg quercetin, 100 mg trans-resveratrol and 50 mg apigenin. The bottle front carries 60 capsules and 30 servi"
+        }
+      ],
+      "indexable": true
+    },
+    {
+      "url": "https://wellnessnest.co/blogs/news/nmn-tmg-dosage-how-much-per-day",
+      "final_url": "https://wellnessnest.co/blogs/news/nmn-tmg-dosage-how-much-per-day",
+      "status": 200,
+      "kind": "article",
+      "noindex": false,
+      "canonical": "https://wellnessnest.co/blogs/news/nmn-tmg-dosage-how-much-per-day",
+      "og_title": "NMN + TMG Dosage: How Many mg Per Day? (US 2026)",
+      "h1": "NMN + TMG Dosage: How Many mg Per Day? (US 2026)",
+      "headings": [
+        {
+          "level": "h1",
+          "text": "NMN + TMG Dosage: How Many mg Per Day? (US 2026)"
+        },
+        {
+          "level": "h2",
+          "text": "The NMN Dose Ladder in Human Trials"
+        },
+        {
+          "level": "h2",
+          "text": "Where a 500 mg NMN Label Dose Sits"
+        },
+        {
+          "level": "h2",
+          "text": "TMG Doses: Studies vs Diet vs a 250 mg Label"
+        },
+        {
+          "level": "h2",
+          "text": "Food Sources of Betaine"
+        },
+        {
+          "level": "h2",
+          "text": "How US Adults Can Take the Label Dose"
+        },
+        {
+          "level": "h2",
+          "text": "Consistency Over Escalation"
+        },
+        {
+          "level": "h3",
+          "text": "Is 500 mg of NMN a day too much?"
+        },
+        {
+          "level": "h3",
+          "text": "Does 250 mg of TMG lower homocysteine?"
+        },
+        {
+          "level": "h3",
+          "text": "Has the NMN + TMG combination been tested in people?"
+        },
+        {
+          "level": "h3",
+          "text": "Can I take extra capsules for a stronger effect?"
+        },
+        {
+          "level": "h3",
+          "text": "Is NMN legal in US supplements?"
+        },
+        {
+          "level": "h3",
+          "text": "AgeAura Pure NMN + TMG NAD+ Complex"
+        }
+      ],
+      "coverage_allowed": true,
+      "product_links": [
+        "ageaura-pure-nmn-tmg-nad-complex"
+      ],
+      "flags": [
+        {
+          "kind": "milligram",
+          "excerpt": "e best guide to NMN and TMG doses. Multi-week NMN studies used 250 to 1,250 mg per day. Betaine (TMG) studies used 1.5 to 6 g per day. A 500 mg NMN"
+        },
+        {
+          "kind": "milligram",
+          "excerpt": "to 1,250 mg per day. Betaine (TMG) studies used 1.5 to 6 g per day. A 500 mg NMN + 250 mg TMG label dose sits in the middle of the NMN range but f"
+        },
+        {
+          "kind": "percent",
+          "excerpt": "s, 1.5, 3 and 6 g per day for 6 weeks lowered fasting homocysteine by 12%, 15% and 20% compared with placebo (Olthof 2003). A meta-analysis of"
+        },
+        {
+          "kind": "percent",
+          "excerpt": "5, 3 and 6 g per day for 6 weeks lowered fasting homocysteine by 12%, 15% and 20% compared with placebo (Olthof 2003). A meta-analysis of 5 tri"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "r NMN or betaine supplement.AgeAura Pure NMN + TMG NAD+ Complex costs $69.95 one-time. Subscribe-and-save options are 15% off for 1 bottle eve"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "+ TMG NAD+ Complex AgeAura Pure NMN + TMG NAD+ Complex Regular price $69.95 Regular price $69.95 Sale priceUnit price/ per Subscribe to our e"
+        },
+        {
+          "kind": "cofactor",
+          "excerpt": "does not promise how you will feel.Each serving also contains 100 mg trans-resveratrol, 150 mg quercetin, 50 mg apigenin, 1 mg spermidine and 400 mcg DFE fo"
+        },
+        {
+          "kind": "cofactor",
+          "excerpt": "will feel.Each serving also contains 100 mg trans-resveratrol, 150 mg quercetin, 50 mg apigenin, 1 mg spermidine and 400 mcg DFE folate as L-5-MTHF."
+        }
+      ],
+      "indexable": true
+    },
+    {
+      "url": "https://wellnessnest.co/blogs/news/nmn-vs-nr-what-6-human-trials-say-us-2026",
+      "final_url": "https://wellnessnest.co/blogs/news/nmn-vs-nr-what-6-human-trials-say-us-2026",
+      "status": 200,
+      "kind": "article",
+      "noindex": false,
+      "canonical": "https://wellnessnest.co/blogs/news/nmn-vs-nr-what-6-human-trials-say-us-2026",
+      "og_title": "NMN vs NR: What 6 Human Trials Say (US 2026)",
+      "h1": "NMN vs NR: What 6 Human Trials Say (US 2026)",
+      "headings": [
+        {
+          "level": "h1",
+          "text": "NMN vs NR: What 6 Human Trials Say (US 2026)"
+        },
+        {
+          "level": "h2",
+          "text": "What NMN and NR Actually Are"
+        },
+        {
+          "level": "h2",
+          "text": "What the NR Trials Found"
+        },
+        {
+          "level": "h2",
+          "text": "What the NMN Trials Found"
+        },
+        {
+          "level": "h2",
+          "text": "NMN vs NR: The Six Trials Side by Side"
+        },
+        {
+          "level": "h2",
+          "text": "The Dose Gap Most NMN vs NR Comparisons Skip"
+        },
+        {
+          "level": "h2",
+          "text": "Why TMG Belongs in the Conversation"
+        },
+        {
+          "level": "h2",
+          "text": "Buying NMN or NR in the US: What to Check on the Label"
+        },
+        {
+          "level": "h3",
+          "text": "Is NMN or NR better for raising NAD+?"
+        },
+        {
+          "level": "h3",
+          "text": "Do NMN and NR have side effects?"
+        },
+        {
+          "level": "h3",
+          "text": "Can you take NMN and NR together?"
+        },
+        {
+          "level": "h3",
+          "text": "How long does NMN take to do anything?"
+        },
+        {
+          "level": "h3",
+          "text": "Where can I buy NMN in the US?"
+        },
+        {
+          "level": "h3",
+          "text": "Does NMN need TMG?"
+        },
+        {
+          "level": "h3",
+          "text": "AgeAura Pure NMN + TMG NAD+ Complex"
+        }
+      ],
+      "coverage_allowed": true,
+      "product_links": [
+        "ageaura-pure-nmn-tmg-nad-complex"
+      ],
+      "flags": [
+        {
+          "kind": "milligram",
+          "excerpt": "readers weigh NR. Forty obese, insulin-resistant men aged 40–70 took 1,000 mg of NR twice daily — 2,000 mg a day — for 12 weeks. Insulin sensitivit"
+        },
+        {
+          "kind": "milligram",
+          "excerpt": "e, insulin-resistant men aged 40–70 took 1,000 mg of NR twice daily — 2,000 mg a day — for 12 weeks. Insulin sensitivity, endogenous glucose product"
+        },
+        {
+          "kind": "percent",
+          "excerpt": "one-time purchase; the product page also offers subscribe-and-save at 15% off (1 bottle every 4 weeks) or 14% off (3 bottles every 12 weeks, or"
+        },
+        {
+          "kind": "percent",
+          "excerpt": "also offers subscribe-and-save at 15% off (1 bottle every 4 weeks) or 14% off (3 bottles every 12 weeks, or 6 every 24 weeks). Check the curren"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "nce.On price, NAD+ precursors in the US generally sit between roughly $30 and $200 a bottle depending on dose, capsule count and what else is"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "rice, NAD+ precursors in the US generally sit between roughly $30 and $200 a bottle depending on dose, capsule count and what else is in the f"
+        },
+        {
+          "kind": "cofactor",
+          "excerpt": "s 500 mg NMN and 250 mg TMG per two-capsule serving, alongside 150 mg quercetin, 100 mg trans-resveratrol, 50 mg apigenin and 1 mg spermidine, in a 6"
+        },
+        {
+          "kind": "cofactor",
+          "excerpt": "50 mg TMG per two-capsule serving, alongside 150 mg quercetin, 100 mg trans-resveratrol, 50 mg apigenin and 1 mg spermidine, in a 60-capsule bottle at 30 ser"
+        }
+      ],
+      "indexable": true
+    },
+    {
+      "url": "https://wellnessnest.co/blogs/news/nmn-side-effects-6-checks-before-you-start-us-2026",
+      "final_url": "https://wellnessnest.co/blogs/news/nmn-side-effects-6-checks-before-you-start-us-2026",
+      "status": 200,
+      "kind": "article",
+      "noindex": false,
+      "canonical": "https://wellnessnest.co/blogs/news/nmn-side-effects-6-checks-before-you-start-us-2026",
+      "og_title": "NMN Side Effects: 6 Checks Before You Start (US 2026)",
+      "h1": "NMN Side Effects: 6 Checks Before You Start (US 2026)",
+      "headings": [
+        {
+          "level": "h1",
+          "text": "NMN Side Effects: 6 Checks Before You Start (US 2026)"
+        },
+        {
+          "level": "h2",
+          "text": "What the human trials actually reported"
+        },
+        {
+          "level": "h2",
+          "text": "Check your stomach — and take it with food"
+        },
+        {
+          "level": "h2",
+          "text": "Check the timing before you blame the ingredient"
+        },
+        {
+          "level": "h2",
+          "text": "Check whether methyl support is on the label"
+        },
+        {
+          "level": "h2",
+          "text": "Check the TMG dose against your cholesterol"
+        },
+        {
+          "level": "h2",
+          "text": "Check the cofactor layer — that is where drug interactions live"
+        },
+        {
+          "level": "h2",
+          "text": "Check the allergen line — spermidine usually means wheat"
+        },
+        {
+          "level": "h2",
+          "text": "When to stop and call a clinician"
+        },
+        {
+          "level": "h2",
+          "text": "Where this leaves a US buyer"
+        },
+        {
+          "level": "h3",
+          "text": "What is the most common NMN side effect?"
+        },
+        {
+          "level": "h3",
+          "text": "Can NMN affect sleep?"
+        },
+        {
+          "level": "h3",
+          "text": "Is 500 mg of NMN a lot?"
+        },
+        {
+          "level": "h3",
+          "text": "Does NMN interact with medications?"
+        },
+        {
+          "level": "h3",
+          "text": "Is NMN or NR safer?"
+        },
+        {
+          "level": "h3",
+          "text": "Where can I buy NMN in the US, and what should I check on the label?"
+        },
+        {
+          "level": "h3",
+          "text": "AgeAura Pure NMN + TMG NAD+ Complex"
+        }
+      ],
+      "coverage_allowed": true,
+      "product_links": [
+        "ageaura-pure-nmn-tmg-nad-complex"
+      ],
+      "flags": [
+        {
+          "kind": "milligram",
+          "excerpt": "lose shareCopy linkHuman trials in the US and Japan have given NMN at 250 mg to 1,250 mg a day for up to 12 weeks, and none of them reported a sev"
+        },
+        {
+          "kind": "milligram",
+          "excerpt": "Copy linkHuman trials in the US and Japan have given NMN at 250 mg to 1,250 mg a day for up to 12 weeks, and none of them reported a severe adverse"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "ce context in the US market, AgeAura Pure NMN + TMG NAD+ Complex runs $69.95 for 60 capsules, and the label counts a daily serving as 2 capsul"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "he label counts a daily serving as 2 capsules — 30 servings, or about $2.33 a day. Each serving lists 500 mg NMN, 250 mg TMG, 150 mg quercetin"
+        },
+        {
+          "kind": "cofactor",
+          "excerpt": "products are no longer just NMN. They arrive as a stack: resveratrol, quercetin, apigenin, spermidine. The NAD⁺ ingredient is the calmest thing in th"
+        },
+        {
+          "kind": "cofactor",
+          "excerpt": "e no longer just NMN. They arrive as a stack: resveratrol, quercetin, apigenin, spermidine. The NAD⁺ ingredient is the calmest thing in the bottle;"
+        }
+      ],
+      "indexable": true
+    },
+    {
+      "url": "https://wellnessnest.co/blogs/news/nmn-tmg-side-effects-what-the-trials-report",
+      "final_url": "https://wellnessnest.co/blogs/news/nmn-tmg-side-effects-what-the-trials-report",
+      "status": 200,
+      "kind": "article",
+      "noindex": false,
+      "canonical": "https://wellnessnest.co/blogs/news/nmn-tmg-side-effects-what-the-trials-report",
+      "og_title": "NMN + TMG Side Effects: What the Trials Report (US 2026)",
+      "h1": "NMN + TMG Side Effects: What the Trials Report (US 2026)",
+      "headings": [
+        {
+          "level": "h1",
+          "text": "NMN + TMG Side Effects: What the Trials Report (US 2026)"
+        },
+        {
+          "level": "h2",
+          "text": "What NMN Safety Trials Report So Far"
+        },
+        {
+          "level": "h2",
+          "text": "What the Betaine (TMG) Research Shows"
+        },
+        {
+          "level": "h2",
+          "text": "The Other Ingredients and the Wheat Allergen"
+        },
+        {
+          "level": "h2",
+          "text": "Who Should Talk to a Doctor Before Starting in the US"
+        },
+        {
+          "level": "h2",
+          "text": "Practical Steps to Start Carefully"
+        },
+        {
+          "level": "h3",
+          "text": "Does NMN have side effects?"
+        },
+        {
+          "level": "h3",
+          "text": "Can TMG raise cholesterol?"
+        },
+        {
+          "level": "h3",
+          "text": "Is it safe to take NMN + TMG with prescription medications?"
+        },
+        {
+          "level": "h3",
+          "text": "Has NMN + TMG been tested together?"
+        },
+        {
+          "level": "h3",
+          "text": "Is NMN legal in the US?"
+        },
+        {
+          "level": "h3",
+          "text": "AgeAura Pure NMN + TMG NAD+ Complex"
+        }
+      ],
+      "coverage_allowed": true,
+      "product_links": [
+        "ageaura-pure-nmn-tmg-nad-complex"
+      ],
+      "flags": [
+        {
+          "kind": "milligram",
+          "excerpt": "n trials suggest NMN is well tolerated in the short term, from single 100 mg doses up to 1,250 mg a day, with no severe adverse events reported. T"
+        },
+        {
+          "kind": "milligram",
+          "excerpt": "N is well tolerated in the short term, from single 100 mg doses up to 1,250 mg a day, with no severe adverse events reported. The longest of these t"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "der yourself.Know the terms.AgeAura Pure NMN + TMG NAD+ Complex costs $69.95 one-time, with subscribe-and-save options on the product page. It"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "+ TMG NAD+ Complex AgeAura Pure NMN + TMG NAD+ Complex Regular price $69.95 Regular price $69.95 Sale priceUnit price/ per Subscribe to our e"
+        },
+        {
+          "kind": "cofactor",
+          "excerpt": "nicotinamide mononucleotide (NMN)250 mg betaine anhydrous (TMG)100 mg trans-resveratrol (Polygonum cuspidatum)150 mg quercetin (Sophora japonica)50 mg apigen"
+        },
+        {
+          "kind": "cofactor",
+          "excerpt": "anhydrous (TMG)100 mg trans-resveratrol (Polygonum cuspidatum)150 mg quercetin (Sophora japonica)50 mg apigenin1 mg spermidine (from wheat germ extr"
+        }
+      ],
+      "indexable": true
+    },
+    {
+      "url": "https://wellnessnest.co/blogs/news/nmn-for-women-what-the-all-female-trial-missed-us-2026",
+      "final_url": "https://wellnessnest.co/blogs/news/nmn-for-women-what-the-all-female-trial-missed-us-2026",
+      "status": 200,
+      "kind": "article",
+      "noindex": false,
+      "canonical": "https://wellnessnest.co/blogs/news/nmn-for-women-what-the-all-female-trial-missed-us-2026",
+      "og_title": "NMN for Women: What the All-Female Trial Missed (US 2026)",
+      "h1": "NMN for Women: What the All-Female Trial Missed (US 2026)",
+      "headings": [
+        {
+          "level": "h1",
+          "text": "NMN for Women: What the All-Female Trial Missed (US 2026)"
+        },
+        {
+          "level": "h2",
+          "text": "The Single Most-Cited NMN Trial Enrolled Women Only"
+        },
+        {
+          "level": "h2",
+          "text": "What It Measured Was Insulin Sensitivity, Not Energy"
+        },
+        {
+          "level": "h2",
+          "text": "The Same Trial Did Not Detect a Rise in NAD+"
+        },
+        {
+          "level": "h2",
+          "text": "The Safety Ladder Underneath It Starts With Ten Men"
+        },
+        {
+          "level": "h2",
+          "text": "Four Things Nobody Has Measured in Women"
+        },
+        {
+          "level": "h2",
+          "text": "The Dose the Trials Used, and What to Check on a US Label"
+        },
+        {
+          "level": "h2",
+          "text": "The Trials, by Who Was Actually in Them"
+        },
+        {
+          "level": "h2",
+          "text": "Where This Leaves a Woman Buying NMN in the US"
+        },
+        {
+          "level": "h3",
+          "text": "Does NMN work for women?"
+        },
+        {
+          "level": "h3",
+          "text": "Is NMN safe for women?"
+        },
+        {
+          "level": "h3",
+          "text": "Does NMN help with menopause symptoms?"
+        },
+        {
+          "level": "h3",
+          "text": "Can I take NMN while pregnant or breastfeeding?"
+        },
+        {
+          "level": "h3",
+          "text": "How much NMN should a woman take?"
+        },
+        {
+          "level": "h3",
+          "text": "Where can I buy NMN for women in the US?"
+        },
+        {
+          "level": "h3",
+          "text": "AgeAura Pure NMN + TMG NAD+ Complex"
+        }
+      ],
+      "coverage_allowed": true,
+      "product_links": [
+        "ageaura-pure-nmn-tmg-nad-complex"
+      ],
+      "flags": [
+        {
+          "kind": "milligram",
+          "excerpt": "e postmenopausal, overweight or obese, and had prediabetes. They took 250 mg of NMN daily for ten weeks.This is unusual enough to state plainly. I"
+        },
+        {
+          "kind": "milligram",
+          "excerpt": "in blood. A 12-week placebo-controlled trial in 30 volunteers taking 250 mg daily reported increased blood NAD+ with no abnormalities in physiolo"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "e across the United States, and the AgeAura NMN + TMG NAD+ Complex is $69.95 as a one-time purchase. Compare the milligrams and the servings p"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "ships the AgeAura NMN + TMG NAD+ Complex across the United States at $69.95 as a one-time purchase. Buy from a store that prints the serving"
+        }
+      ],
+      "indexable": true
+    },
+    {
+      "url": "https://wellnessnest.co/blogs/news/how-long-does-nmn-take-to-work-week-1-to-12-us-2026",
+      "final_url": "https://wellnessnest.co/blogs/news/how-long-does-nmn-take-to-work-week-1-to-12-us-2026",
+      "status": 200,
+      "kind": "article",
+      "noindex": false,
+      "canonical": "https://wellnessnest.co/blogs/news/how-long-does-nmn-take-to-work-week-1-to-12-us-2026",
+      "og_title": "How Long Does NMN Take to Work? Week 1 to 12 (US 2026)",
+      "h1": "How Long Does NMN Take to Work? Week 1 to 12 (US 2026)",
+      "headings": [
+        {
+          "level": "h1",
+          "text": "How Long Does NMN Take to Work? Week 1 to 12 (US 2026)"
+        },
+        {
+          "level": "h2",
+          "text": "Day 1: Absorption Is Fast, and That Is All It Is"
+        },
+        {
+          "level": "h2",
+          "text": "Weeks 1–4: The First Measured Change Arrives at Day 30"
+        },
+        {
+          "level": "h2",
+          "text": "Weeks 4–12: Where Every Functional Result Landed"
+        },
+        {
+          "level": "h2",
+          "text": "What Has No Timeline at All, Because Nobody Measured It"
+        },
+        {
+          "level": "h2",
+          "text": "Four Things That Move the Clock for a US Buyer"
+        },
+        {
+          "level": "h2",
+          "text": "The Published NMN Timeline, Trial by Trial"
+        },
+        {
+          "level": "h2",
+          "text": "What to Check Before the Clock Even Starts"
+        },
+        {
+          "level": "h3",
+          "text": "How long does NMN take to work?"
+        },
+        {
+          "level": "h3",
+          "text": "Will I feel anything in the first week?"
+        },
+        {
+          "level": "h3",
+          "text": "How long should I take NMN before deciding it does not work for me?"
+        },
+        {
+          "level": "h3",
+          "text": "Does NMN work faster at a higher dose?"
+        },
+        {
+          "level": "h3",
+          "text": "How long does NMN take to raise NAD+?"
+        },
+        {
+          "level": "h3",
+          "text": "Where can I buy NMN in the US, and how long does a bottle last?"
+        },
+        {
+          "level": "h3",
+          "text": "AgeAura Pure NMN + TMG NAD+ Complex"
+        }
+      ],
+      "coverage_allowed": true,
+      "product_links": [
+        "ageaura-pure-nmn-tmg-nad-complex"
+      ],
+      "flags": [
+        {
+          "kind": "milligram",
+          "excerpt": "uickly. The first human study of it gave single doses of 100, 250 and 500 mg on separate days and watched participants for five hours afterwards,"
+        },
+        {
+          "kind": "milligram",
+          "excerpt": "uote randomised 80 healthy middle-aged adults to placebo, 300, 600 or 900 mg of NMN daily for 60 days. Its first measurement point was day 30, and"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "line across the United States. The AgeAura NMN + TMG NAD+ Complex is $69.95 for 60 capsules at 30 servings. If you are comparing it against o"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "ships the AgeAura NMN + TMG NAD+ Complex across the United States at $69.95, with 60 capsules at 30 servings — a one-month supply and one mea"
+        }
+      ],
+      "indexable": true
+    },
+    {
+      "url": "https://wellnessnest.co/blogs/news/nmn-alone-vs-nmn-tmg-which-fits-your-goal",
+      "final_url": "https://wellnessnest.co/blogs/news/nmn-alone-vs-nmn-tmg-which-fits-your-goal",
+      "status": 200,
+      "kind": "article",
+      "noindex": false,
+      "canonical": "https://wellnessnest.co/blogs/news/nmn-alone-vs-nmn-tmg-which-fits-your-goal",
+      "og_title": "NMN Alone vs NMN + TMG: Which Fits Your Goal? (US 2026)",
+      "h1": "NMN Alone vs NMN + TMG: Which Fits Your Goal? (US 2026)",
+      "headings": [
+        {
+          "level": "h1",
+          "text": "NMN Alone vs NMN + TMG: Which Fits Your Goal? (US 2026)"
+        },
+        {
+          "level": "h2",
+          "text": "Why NMN Is Often Paired With TMG"
+        },
+        {
+          "level": "h2",
+          "text": "What the NMN Human Trials Actually Tested"
+        },
+        {
+          "level": "h2",
+          "text": "What Betaine (TMG) Does in Human Studies"
+        },
+        {
+          "level": "h2",
+          "text": "NMN Alone vs NMN + TMG: A Side-by-Side View"
+        },
+        {
+          "level": "h2",
+          "text": "How to Compare NMN Labels and Prices in the US"
+        },
+        {
+          "level": "h2",
+          "text": "Which Option May Fit Your Goal"
+        },
+        {
+          "level": "h3",
+          "text": "Do I need TMG if I take NMN?"
+        },
+        {
+          "level": "h3",
+          "text": "Did the NMN studies use TMG?"
+        },
+        {
+          "level": "h3",
+          "text": "Will 250 mg of TMG lower homocysteine?"
+        },
+        {
+          "level": "h3",
+          "text": "Is NMN legal in US dietary supplements?"
+        },
+        {
+          "level": "h3",
+          "text": "Can I get betaine from food?"
+        },
+        {
+          "level": "h3",
+          "text": "AgeAura Pure NMN + TMG NAD+ Complex"
+        }
+      ],
+      "coverage_allowed": true,
+      "product_links": [
+        "ageaura-pure-nmn-tmg-nad-complex"
+      ],
+      "flags": [
+        {
+          "kind": "milligram",
+          "excerpt": "one.Middle-aged adults: 80 healthy adults took placebo or 300, 600 or 900 mg NMN daily for 60 days. Blood NAD rose in all NMN groups and was highe"
+        },
+        {
+          "kind": "milligram",
+          "excerpt": "60 days. Blood NAD rose in all NMN groups and was highest at 600 and 900 mg. Six-minute walking distance improved compared with placebo. Insulin"
+        },
+        {
+          "kind": "percent",
+          "excerpt": "lts, 1.5, 3 and 6 g daily for 6 weeks lowered fasting homocysteine by 12%, 15% and 20% compared with placebo (Olthof 2003).A meta-analysis of 5"
+        },
+        {
+          "kind": "percent",
+          "excerpt": "1.5, 3 and 6 g daily for 6 weeks lowered fasting homocysteine by 12%, 15% and 20% compared with placebo (Olthof 2003).A meta-analysis of 5 tria"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "d terms. The one-time price of AgeAura Pure NMN + TMG NAD+ Complex is $69.95. Subscription options are 15% off every 4 weeks or 14% off every"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "+ TMG NAD+ Complex AgeAura Pure NMN + TMG NAD+ Complex Regular price $69.95 Regular price $69.95 Sale priceUnit price/ per Subscribe to our e"
+        },
+        {
+          "kind": "cofactor",
+          "excerpt": "unt discussed above.Other ingredients. Each serving also gives 100 mg trans-resveratrol, 150 mg quercetin, 50 mg apigenin, 1 mg spermidine and 400 mcg DFE fo"
+        },
+        {
+          "kind": "cofactor",
+          "excerpt": "ingredients. Each serving also gives 100 mg trans-resveratrol, 150 mg quercetin, 50 mg apigenin, 1 mg spermidine and 400 mcg DFE folate as L-methylfo"
+        }
+      ],
+      "indexable": true
+    },
+    {
+      "url": "https://wellnessnest.co/blogs/news/nmn-and-creatine-together-safe-daily-stack-us-2026",
+      "final_url": "https://wellnessnest.co/blogs/news/nmn-and-creatine-together-safe-daily-stack-us-2026",
+      "status": 200,
+      "kind": "article",
+      "noindex": false,
+      "canonical": "https://wellnessnest.co/blogs/news/nmn-and-creatine-together-safe-daily-stack-us-2026",
+      "og_title": "NMN and Creatine Together: Safe Daily Stack (US 2026)",
+      "h1": "NMN and Creatine Together: Safe Daily Stack (US 2026)",
+      "headings": [
+        {
+          "level": "h1",
+          "text": "NMN and Creatine Together: Safe Daily Stack (US 2026)"
+        },
+        {
+          "level": "h2",
+          "text": "What Creatine Actually Does, and How Long It Takes"
+        },
+        {
+          "level": "h2",
+          "text": "What NMN's Human Trials Actually Measured"
+        },
+        {
+          "level": "h2",
+          "text": "The Overlap Question Most US Buyers Are Really Asking"
+        },
+        {
+          "level": "h2",
+          "text": "The Real Risk Is Attribution, Not Interaction"
+        },
+        {
+          "level": "h2",
+          "text": "The Two-Week Stagger, in Practice"
+        },
+        {
+          "level": "h2",
+          "text": "NMN and Creatine, Side by Side"
+        },
+        {
+          "level": "h2",
+          "text": "What the Pair Costs in the US"
+        },
+        {
+          "level": "h2",
+          "text": "Two Numbers on Our Own Packs We Would Rather You Heard From Us"
+        },
+        {
+          "level": "h3",
+          "text": "Can you take NMN and creatine together?"
+        },
+        {
+          "level": "h3",
+          "text": "Should NMN and creatine be taken at the same time of day?"
+        },
+        {
+          "level": "h3",
+          "text": "Does NMN replace creatine for building strength?"
+        },
+        {
+          "level": "h3",
+          "text": "Will taking both make my kidney blood test look worse?"
+        },
+        {
+          "level": "h3",
+          "text": "How long before I know whether the stack is working?"
+        },
+        {
+          "level": "h3",
+          "text": "Where can I buy NMN and creatine together in the US?"
+        },
+        {
+          "level": "h3",
+          "text": "FusiForce - Creatine Monohydrate Gummies 5,000 mg"
+        },
+        {
+          "level": "h3",
+          "text": "AgeAura Pure NMN + TMG NAD+ Complex"
+        }
+      ],
+      "coverage_allowed": true,
+      "product_links": [
+        "fusiforce-creatine-gummies",
+        "ageaura-pure-nmn-tmg-nad-complex"
+      ],
+      "flags": [
+        {
+          "kind": "milligram",
+          "excerpt": "eing (Cooper et al., 2012).FusiForce Creatine Monohydrate Gummies put 5,000 mg of creatine monohydrate in a three-gummy serving. If you want the tim"
+        },
+        {
+          "kind": "milligram",
+          "excerpt": "prediabetes reported increased skeletal muscle insulin sensitivity at 250 mg a day (Yoshino et al., 2021). The dose-ranging trial that people quot"
+        },
+        {
+          "kind": "percent",
+          "excerpt": "p This Article FusiForce - Creatine Monohydrate Gummies 5,000 mg SAVE 38% FusiForce - Creatine Monohydrate Gummies 5,000 mg Regular price $69.9"
+        },
+        {
+          "kind": "percent",
+          "excerpt": "price $69.99 Regular price $69.99 Sale price $114.73 Unit price/ per 38% AgeAura Pure NMN + TMG NAD+ Complex AgeAura Pure NMN + TMG NAD+ Compl"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "omachTrials testing it alongside the other00Our SKUFusiForce gummies, $69.99AgeAura NAD+ Complex, $69.95OUR VERDICTTake both if you want both"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "side the other00Our SKUFusiForce gummies, $69.99AgeAura NAD+ Complex, $69.95OUR VERDICTTake both if you want both — the mechanisms do not coll"
+        }
+      ],
+      "indexable": true
+    },
+    {
+      "url": "https://wellnessnest.co/blogs/news/nmn-tmg-for-beginners-4-things-to-know",
+      "final_url": "https://wellnessnest.co/blogs/news/nmn-tmg-for-beginners-4-things-to-know",
+      "status": 200,
+      "kind": "article",
+      "noindex": false,
+      "canonical": "https://wellnessnest.co/blogs/news/nmn-tmg-for-beginners-4-things-to-know",
+      "og_title": "NMN + TMG for Beginners: 4 Things to Know (US 2026)",
+      "h1": "NMN + TMG for Beginners: 4 Things to Know (US 2026)",
+      "headings": [
+        {
+          "level": "h1",
+          "text": "NMN + TMG for Beginners: 4 Things to Know (US 2026)"
+        },
+        {
+          "level": "h2",
+          "text": "1. What NMN and TMG Are, and Why They Are Paired"
+        },
+        {
+          "level": "h2",
+          "text": "2. What the Human Research Measured, and What It Did Not"
+        },
+        {
+          "level": "h2",
+          "text": "3. The Label Dose vs the Doses in Studies"
+        },
+        {
+          "level": "h2",
+          "text": "4. How Long People Give It Before Judging"
+        },
+        {
+          "level": "h2",
+          "text": "NMN + TMG Cost and Where to Buy in the US"
+        },
+        {
+          "level": "h2",
+          "text": "Who Should Wait or Ask a Doctor First"
+        },
+        {
+          "level": "h3",
+          "text": "Is NMN legal to buy in the US?"
+        },
+        {
+          "level": "h3",
+          "text": "Do I need TMG if I take NMN?"
+        },
+        {
+          "level": "h3",
+          "text": "Will 250 mg of TMG lower my homocysteine?"
+        },
+        {
+          "level": "h3",
+          "text": "What time of day did trials give NMN?"
+        },
+        {
+          "level": "h3",
+          "text": "How soon should a beginner judge results?"
+        },
+        {
+          "level": "h3",
+          "text": "AgeAura Pure NMN + TMG NAD+ Complex"
+        }
+      ],
+      "coverage_allowed": true,
+      "product_links": [
+        "ageaura-pure-nmn-tmg-nad-complex"
+      ],
+      "flags": [
+        {
+          "kind": "milligram",
+          "excerpt": "etaine from food. Among the highest sources per 100 g are wheat bran (1,339 mg), wheat germ (1,241 mg), spinach (645 mg), pretzels (237 mg), shrimp"
+        },
+        {
+          "kind": "milligram",
+          "excerpt": "the highest sources per 100 g are wheat bran (1,339 mg), wheat germ (1,241 mg), spinach (645 mg), pretzels (237 mg), shrimp (218 mg) and wheat brea"
+        },
+        {
+          "kind": "percent",
+          "excerpt": "s, 1.5, 3 and 6 g per day for 6 weeks lowered fasting homocysteine by 12%, 15% and 20% vs placebo (Olthof 2003). At 4 g per day or more, a meta"
+        },
+        {
+          "kind": "percent",
+          "excerpt": "5, 3 and 6 g per day for 6 weeks lowered fasting homocysteine by 12%, 15% and 20% vs placebo (Olthof 2003). At 4 g per day or more, a meta-anal"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "017 (NPA).Wellness Nest sells AgeAura Pure NMN + TMG NAD+ Complex for $69.95 as a one-time purchase. Subscribe & save options on the product p"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "+ TMG NAD+ Complex AgeAura Pure NMN + TMG NAD+ Complex Regular price $69.95 Regular price $69.95 Sale priceUnit price/ per Subscribe to our e"
+        },
+        {
+          "kind": "cofactor",
+          "excerpt": "nicotinamide mononucleotide (NMN)250 mg betaine anhydrous (TMG)100 mg trans-resveratrol (Polygonum cuspidatum)150 mg quercetin (Sophora japonica)50 mg apigen"
+        },
+        {
+          "kind": "cofactor",
+          "excerpt": "anhydrous (TMG)100 mg trans-resveratrol (Polygonum cuspidatum)150 mg quercetin (Sophora japonica)50 mg apigenin1 mg spermidine (from wheat germ extr"
+        }
+      ],
+      "indexable": true
+    },
+    {
+      "url": "https://wellnessnest.co/blogs/news/ageaura-nmn-for-men-over-50-what-to-expect-us-2026",
+      "final_url": "https://wellnessnest.co/blogs/news/ageaura-nmn-for-men-over-50-what-to-expect-us-2026",
+      "status": 200,
+      "kind": "article",
+      "noindex": false,
+      "canonical": "https://wellnessnest.co/blogs/news/ageaura-nmn-for-men-over-50-what-to-expect-us-2026",
+      "og_title": "AgeAura NMN for Men Over 50: What to Expect (US 2026)",
+      "h1": "AgeAura NMN for Men Over 50: What to Expect (US 2026)",
+      "headings": [
+        {
+          "level": "h1",
+          "text": "AgeAura NMN for Men Over 50: What to Expect (US 2026)"
+        },
+        {
+          "level": "h2",
+          "text": "Why Men Over 50 in the US Look at NMN"
+        },
+        {
+          "level": "h2",
+          "text": "Weeks 1 to 4: The Quiet Stretch"
+        },
+        {
+          "level": "h2",
+          "text": "Weeks 5 to 8: Where the Walking Data Comes In"
+        },
+        {
+          "level": "h2",
+          "text": "Weeks 9 to 12: What the Trial in Older Men Found"
+        },
+        {
+          "level": "h2",
+          "text": "Why AgeAura Pairs NMN With TMG"
+        },
+        {
+          "level": "h2",
+          "text": "Who Should Talk to a Doctor First"
+        },
+        {
+          "level": "h2",
+          "text": "Where to Buy AgeAura NMN in the US"
+        },
+        {
+          "level": "h3",
+          "text": "Does NMN work for men over 50?"
+        },
+        {
+          "level": "h3",
+          "text": "How long should a man over 50 take NMN before judging it?"
+        },
+        {
+          "level": "h3",
+          "text": "Is 500 mg of NMN a day safe for men over 50?"
+        },
+        {
+          "level": "h3",
+          "text": "Will NMN raise testosterone?"
+        },
+        {
+          "level": "h3",
+          "text": "Where can I buy AgeAura NMN in the US?"
+        },
+        {
+          "level": "h3",
+          "text": "AgeAura Pure NMN + TMG NAD+ Complex"
+        }
+      ],
+      "coverage_allowed": true,
+      "product_links": [
+        "ageaura-pure-nmn-tmg-nad-complex"
+      ],
+      "flags": [
+        {
+          "kind": "milligram",
+          "excerpt": "sules with breakfast every morning. That is the full labeled serving: 500 mg of NMN and 250 mg of TMG. Morning dosing is the common choice, and we"
+        },
+        {
+          "kind": "milligram",
+          "excerpt": "st every morning. That is the full labeled serving: 500 mg of NMN and 250 mg of TMG. Morning dosing is the common choice, and we covered the reaso"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "search, and enough for him to decide whether a fourth bottle is worth $69.95. For a fuller week-by-week map, see how long NMN takes to work, w"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "est ships AgeAura NMN + TMG NAD+ Complex across the United States for $69.95. Each bottle holds 60 capsules, which is 30 servings of two capsu"
+        },
+        {
+          "kind": "cofactor",
+          "excerpt": "pairing matters.The AgeAura NAD+ Complex also adds a cofactor layer: apigenin (50 mg), resveratrol, quercetin and spermidine. That layer is where t"
+        },
+        {
+          "kind": "cofactor",
+          "excerpt": "D+ Complex also adds a cofactor layer: apigenin (50 mg), resveratrol, quercetin and spermidine. That layer is where the drug-interaction questions li"
+        }
+      ],
+      "indexable": true
+    },
+    {
+      "url": "https://wellnessnest.co/blogs/news/nmn-capsules-vs-powder-vs-sublingual-best-form-us-2026",
+      "final_url": "https://wellnessnest.co/blogs/news/nmn-capsules-vs-powder-vs-sublingual-best-form-us-2026",
+      "status": 200,
+      "kind": "article",
+      "noindex": false,
+      "canonical": "https://wellnessnest.co/blogs/news/nmn-capsules-vs-powder-vs-sublingual-best-form-us-2026",
+      "og_title": "NMN Capsules vs Powder vs Sublingual: Best Form (US 2026)",
+      "h1": "NMN Capsules vs Powder vs Sublingual: Best Form (US 2026)",
+      "headings": [
+        {
+          "level": "h1",
+          "text": "NMN Capsules vs Powder vs Sublingual: Best Form (US 2026)"
+        },
+        {
+          "level": "h2",
+          "text": "NMN Formats Compared: The US Buyer's Table"
+        },
+        {
+          "level": "h2",
+          "text": "NMN Capsules: The Format the Trials Used"
+        },
+        {
+          "level": "h2",
+          "text": "Sublingual NMN: What a Head-to-Head Human Study Found"
+        },
+        {
+          "level": "h2",
+          "text": "NMN Powder: Cheaper Per Gram, Harder to Dose and Store"
+        },
+        {
+          "level": "h2",
+          "text": "Which NMN Form Is Best for You in the US?"
+        },
+        {
+          "level": "h2",
+          "text": "What the AgeAura Product Pages Do and Don't Publish"
+        },
+        {
+          "level": "h3",
+          "text": "Is NMN better as capsules or powder?"
+        },
+        {
+          "level": "h3",
+          "text": "Is sublingual NMN absorbed better?"
+        },
+        {
+          "level": "h3",
+          "text": "What is the best form of NMN to take?"
+        },
+        {
+          "level": "h3",
+          "text": "Can I mix NMN powder into water and drink it later?"
+        },
+        {
+          "level": "h3",
+          "text": "Where can I buy NMN capsules in the US?"
+        },
+        {
+          "level": "h3",
+          "text": "AgeAura Pure NMN + TMG NAD+ Complex"
+        }
+      ],
+      "coverage_allowed": true,
+      "product_links": [
+        "ageaura-pure-nmn-tmg-nad-complex"
+      ],
+      "flags": [
+        {
+          "kind": "milligram",
+          "excerpt": "derSublingual (under the tongue)Used in the main human dose trialYes (150 mg capsules)NoNoHead-to-head human data vs oralReference formatNone foun"
+        },
+        {
+          "kind": "milligram",
+          "excerpt": "ndOne 14-person, single-dose studyBlood NAD⁺ vs swallowingRose at 300–900 mg/day over 60 daysNot tested as a formatNo significant difference at 60"
+        },
+        {
+          "kind": "percent",
+          "excerpt": "l., PubMed 38212023) measured NMN in water at room temperature: about 10% was gone after roughly 96 hours, and half after about 860 hours. The"
+        },
+        {
+          "kind": "percent",
+          "excerpt": "2023 lab study, NMN dissolved in water at room temperature lost about 10% in roughly four days. Mix it right before you drink it, and store the"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "hat its live product page states.AgeAura Pure NMN + TMG NAD+ Complex ($69.95). The page lists a full per-serving panel: each daily serving of"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "+ TMG NAD+ Complex AgeAura Pure NMN + TMG NAD+ Complex Regular price $69.95 Regular price $69.95 Sale priceUnit price/ per Subscribe to our e"
+        },
+        {
+          "kind": "cofactor",
+          "excerpt": "daily serving of 2 capsules contains 500 mg NMN and 250 mg TMG, plus quercetin, trans-resveratrol, apigenin and active folate. The page says vegan c"
+        },
+        {
+          "kind": "cofactor",
+          "excerpt": "ing of 2 capsules contains 500 mg NMN and 250 mg TMG, plus quercetin, trans-resveratrol, apigenin and active folate. The page says vegan capsules made in a U"
+        }
+      ],
+      "indexable": true
+    },
+    {
+      "url": "https://wellnessnest.co/blogs/news/nmn-and-resveratrol-what-the-evidence-shows-us-2026",
+      "final_url": "https://wellnessnest.co/blogs/news/nmn-and-resveratrol-what-the-evidence-shows-us-2026",
+      "status": 200,
+      "kind": "article",
+      "noindex": false,
+      "canonical": "https://wellnessnest.co/blogs/news/nmn-and-resveratrol-what-the-evidence-shows-us-2026",
+      "og_title": "NMN and Resveratrol: What the Evidence Shows (US 2026)",
+      "h1": "NMN and Resveratrol: What the Evidence Shows (US 2026)",
+      "headings": [
+        {
+          "level": "h1",
+          "text": "NMN and Resveratrol: What the Evidence Shows (US 2026)"
+        },
+        {
+          "level": "h2",
+          "text": "Why the Stack Is Popular in the US"
+        },
+        {
+          "level": "h2",
+          "text": "The Sirtuin Story Is Still Debated"
+        },
+        {
+          "level": "h2",
+          "text": "What Resveratrol Has Shown in People"
+        },
+        {
+          "level": "h2",
+          "text": "What NMN Has Shown in People"
+        },
+        {
+          "level": "h2",
+          "text": "Side-by-Side: The Human Studies Behind Each Ingredient"
+        },
+        {
+          "level": "h2",
+          "text": "Should You Take Resveratrol With Fat?"
+        },
+        {
+          "level": "h2",
+          "text": "Safety Checks Before You Combine Them"
+        },
+        {
+          "level": "h2",
+          "text": "Can You Get Resveratrol From Red Wine?"
+        },
+        {
+          "level": "h2",
+          "text": "Choosing an NMN and Resveratrol Supplement in the US"
+        },
+        {
+          "level": "h3",
+          "text": "Can you take NMN and resveratrol together?"
+        },
+        {
+          "level": "h3",
+          "text": "Is there a study on NMN plus resveratrol in humans?"
+        },
+        {
+          "level": "h3",
+          "text": "Does resveratrol need to be taken with fat?"
+        },
+        {
+          "level": "h3",
+          "text": "How much resveratrol is in a glass of red wine?"
+        },
+        {
+          "level": "h3",
+          "text": "Where can I buy NMN with resveratrol in the US?"
+        },
+        {
+          "level": "h3",
+          "text": "AgeAura Pure NMN + TMG NAD+ Complex"
+        }
+      ],
+      "coverage_allowed": true,
+      "product_links": [
+        "ageaura-pure-nmn-tmg-nad-complex"
+      ],
+      "flags": [
+        {
+          "kind": "milligram",
+          "excerpt": "Absorption is the first hurdle. In a 2004 study of 6 volunteers given 25 mg by mouth, Walle and colleagues found that at least 70% was absorbed,"
+        },
+        {
+          "kind": "milligram",
+          "excerpt": "point in different directions:Timmers 2011. 11 healthy obese men took 150 mg a day for 30 days in a randomized, double-blind crossover. Resveratro"
+        },
+        {
+          "kind": "percent",
+          "excerpt": "ol activated the enzyme SIRT1 in vitro and extended yeast lifespan by 70%. Sirtuins need NAD+ to work, and NMN is a building block of NAD+. So"
+        },
+        {
+          "kind": "percent",
+          "excerpt": "nteers given 25 mg by mouth, Walle and colleagues found that at least 70% was absorbed, but only traces of unchanged resveratrol (under 5 ng/ml"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "n, folate and spermidine from wheat germ, so it contains wheat. It is $69.95 on wellnessnest.co and is made in a USA cGMP partner facility. Yo"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "ura Pure NMN + TMG NAD+ Complex is sold online at wellnessnest.co for $69.95, with 100 mg trans-resveratrol per serving. More options are in t"
+        },
+        {
+          "kind": "cofactor",
+          "excerpt": "amounts. The Linus Pauling Institute puts red wine at about 0.3 mg of trans-resveratrol per 5-ounce glass. Most supplements use resveratrol from the plant Po"
+        },
+        {
+          "kind": "cofactor",
+          "excerpt": "read the Supplement Facts panel, not the front label. Check the form (trans-resveratrol) and the amount per serving.AgeAura Pure NMN + TMG NAD+ Complex lists"
+        }
+      ],
+      "indexable": true
+    },
+    {
+      "url": "https://wellnessnest.co/blogs/news/does-nmn-break-a-fast-6-rules-for-fasting-days-us-2026",
+      "final_url": "https://wellnessnest.co/blogs/news/does-nmn-break-a-fast-6-rules-for-fasting-days-us-2026",
+      "status": 200,
+      "kind": "article",
+      "noindex": false,
+      "canonical": "https://wellnessnest.co/blogs/news/does-nmn-break-a-fast-6-rules-for-fasting-days-us-2026",
+      "og_title": "Does NMN Break a Fast? 6 Rules for Fasting Days (US 2026)",
+      "h1": "Does NMN Break a Fast? 6 Rules for Fasting Days (US 2026)",
+      "headings": [
+        {
+          "level": "h1",
+          "text": "Does NMN Break a Fast? 6 Rules for Fasting Days (US 2026)"
+        },
+        {
+          "level": "h2",
+          "text": "Know That No Trial Has Tested NMN During a Fast"
+        },
+        {
+          "level": "h2",
+          "text": "Read the Label: A Capsule Is More Than NMN"
+        },
+        {
+          "level": "h2",
+          "text": "Take It When You Break the Fast"
+        },
+        {
+          "level": "h2",
+          "text": "What US Trials and Reviews Show About Timing and Blood Sugar"
+        },
+        {
+          "level": "h2",
+          "text": "Keep the Fasting Window to Calorie-Free Drinks"
+        },
+        {
+          "level": "h2",
+          "text": "Check With Your Doctor if You Fast on Medication"
+        },
+        {
+          "level": "h3",
+          "text": "Does NMN break a fast?"
+        },
+        {
+          "level": "h3",
+          "text": "Can I take NMN on an empty stomach?"
+        },
+        {
+          "level": "h3",
+          "text": "Does NMN spike insulin?"
+        },
+        {
+          "level": "h3",
+          "text": "Can I take NMN during intermittent fasting?"
+        },
+        {
+          "level": "h3",
+          "text": "Where can I buy NMN in the US?"
+        },
+        {
+          "level": "h3",
+          "text": "AgeAura Pure NMN + TMG NAD+ Complex"
+        }
+      ],
+      "coverage_allowed": true,
+      "product_links": [
+        "ageaura-pure-nmn-tmg-nad-complex"
+      ],
+      "flags": [
+        {
+          "kind": "milligram",
+          "excerpt": "ies tested:Irie 2020. 10 healthy men took single doses of 100, 250 or 500 mg. The doses were safe, and blood glucose dropped but stayed in the nor"
+        },
+        {
+          "kind": "milligram",
+          "excerpt": "the normal range.Yamaguchi 2024. 11 healthy middle-aged men took two 125 mg capsules once daily before breakfast for 8 weeks. It was well tolerat"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "th water at your first meal, every day at the same time.AgeAura costs $69.95 at Wellness Nest and is made in a USA cGMP partner facility. You"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "US?AgeAura Pure NMN + TMG NAD+ Complex is sold at wellnessnest.co for $69.95. More options are in the best sellers collection.About the Author"
+        },
+        {
+          "kind": "cofactor",
+          "excerpt": "mgTrans-resveratrol (Polygonum cuspidatum)100 mgApigenin50 mgFolate (L-5-MTHF)400 mcg DFESpermidine (wheat germ)1 mgCapsule shellVegetable cellulos"
+        },
+        {
+          "kind": "cofactor",
+          "excerpt": "panel lists no sugar and no calories. It does contain wheat, from the spermidine source. If your fast has strict rules, judge the whole capsule, not o"
+        }
+      ],
+      "indexable": true
+    },
+    {
+      "url": "https://wellnessnest.co/blogs/news/ageaura-nmn-tmg-ingredients-what-each-one-does-us",
+      "final_url": "https://wellnessnest.co/blogs/news/ageaura-nmn-tmg-ingredients-what-each-one-does-us",
+      "status": 200,
+      "kind": "article",
+      "noindex": false,
+      "canonical": "https://wellnessnest.co/blogs/news/ageaura-nmn-tmg-ingredients-what-each-one-does-us",
+      "og_title": "AgeAura NMN + TMG Ingredients: What Each One Does (US)",
+      "h1": "AgeAura NMN + TMG Ingredients: What Each One Does (US)",
+      "headings": [
+        {
+          "level": "h1",
+          "text": "AgeAura NMN + TMG Ingredients: What Each One Does (US)"
+        },
+        {
+          "level": "h2",
+          "text": "The AgeAura Label at a Glance (US Formula)"
+        },
+        {
+          "level": "h2",
+          "text": "NMN: 500 mg"
+        },
+        {
+          "level": "h2",
+          "text": "TMG (Betaine): 250 mg"
+        },
+        {
+          "level": "h2",
+          "text": "Folate as L-5-MTHF: 400 mcg DFE"
+        },
+        {
+          "level": "h2",
+          "text": "Trans-Resveratrol: 100 mg"
+        },
+        {
+          "level": "h2",
+          "text": "Quercetin: 150 mg"
+        },
+        {
+          "level": "h2",
+          "text": "Apigenin: 50 mg"
+        },
+        {
+          "level": "h2",
+          "text": "Spermidine: 1 mg (From Wheat Germ)"
+        },
+        {
+          "level": "h2",
+          "text": "What Is Not Proven About the Full Formula"
+        },
+        {
+          "level": "h2",
+          "text": "Is AgeAura Legit? Who Makes It"
+        },
+        {
+          "level": "h2",
+          "text": "Does AgeAura Contain Gluten or Wheat?"
+        },
+        {
+          "level": "h2",
+          "text": "How to Take It and Who Should Not"
+        },
+        {
+          "level": "h2",
+          "text": "Where to Buy AgeAura NMN + TMG in the US"
+        },
+        {
+          "level": "h3",
+          "text": "What are the ingredients in AgeAura NMN + TMG?"
+        },
+        {
+          "level": "h3",
+          "text": "Is AgeAura legit?"
+        },
+        {
+          "level": "h3",
+          "text": "How many AgeAura capsules a day?"
+        },
+        {
+          "level": "h3",
+          "text": "Who should not take AgeAura?"
+        },
+        {
+          "level": "h3",
+          "text": "AgeAura Pure NMN + TMG NAD+ Complex"
+        }
+      ],
+      "coverage_allowed": true,
+      "product_links": [
+        "ageaura-pure-nmn-tmg-nad-complex"
+      ],
+      "flags": [
+        {
+          "kind": "milligram",
+          "excerpt": "ra NMN + TMG ingredients are seven actives in a 2-capsule US serving: 500 mg NMN, 250 mg TMG, 150 mg quercetin, 100 mg trans-resveratrol, 50 mg ap"
+        },
+        {
+          "kind": "milligram",
+          "excerpt": "ingredients are seven actives in a 2-capsule US serving: 500 mg NMN, 250 mg TMG, 150 mg quercetin, 100 mg trans-resveratrol, 50 mg apigenin, 400"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "lness Nest at wellnessnest.co. AgeAura Pure NMN + TMG NAD+ Complex is $69.95, with free US shipping over $70 and a 90-day refund policy (eligi"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "ura Pure NMN + TMG NAD+ Complex is $69.95, with free US shipping over $70 and a 90-day refund policy (eligibility applies). You can also brows"
+        },
+        {
+          "kind": "seven_actives",
+          "excerpt": "e Share LinkClose shareCopy linkThe AgeAura NMN + TMG ingredients are seven actives in a 2-capsule US serving: 500 mg NMN, 250 mg TMG, 150 mg quercetin,"
+        },
+        {
+          "kind": "seven_actives",
+          "excerpt": "trials looked.✅ Read the Supplement Facts panel, not the front label: 7 actives, 2 capsules per serving.✅ Count folate from any multivitamin you alre"
+        },
+        {
+          "kind": "cofactor",
+          "excerpt": "ven actives in a 2-capsule US serving: 500 mg NMN, 250 mg TMG, 150 mg quercetin, 100 mg trans-resveratrol, 50 mg apigenin, 400 mcg DFE folate and 1 m"
+        },
+        {
+          "kind": "cofactor",
+          "excerpt": "-capsule US serving: 500 mg NMN, 250 mg TMG, 150 mg quercetin, 100 mg trans-resveratrol, 50 mg apigenin, 400 mcg DFE folate and 1 mg spermidine. Each one has"
+        }
+      ],
+      "indexable": true
+    },
+    {
+      "url": "https://wellnessnest.co/blogs/news/nmn-and-alcohol-can-you-drink-while-taking-nmn-us",
+      "final_url": "https://wellnessnest.co/blogs/news/nmn-and-alcohol-can-you-drink-while-taking-nmn-us",
+      "status": 200,
+      "kind": "article",
+      "noindex": false,
+      "canonical": "https://wellnessnest.co/blogs/news/nmn-and-alcohol-can-you-drink-while-taking-nmn-us",
+      "og_title": "NMN and Alcohol: Can You Drink While Taking NMN? (US)",
+      "h1": "NMN and Alcohol: Can You Drink While Taking NMN? (US)",
+      "headings": [
+        {
+          "level": "h1",
+          "text": "NMN and Alcohol: Can You Drink While Taking NMN? (US)"
+        },
+        {
+          "level": "h2",
+          "text": "How Alcohol Uses Up NAD+ (Alcohol NAD+ Depletion)"
+        },
+        {
+          "level": "h2",
+          "text": "What the NMN and Alcohol Evidence Shows"
+        },
+        {
+          "level": "h2",
+          "text": "Does NMN Help a Hangover? (NMN Hangover)"
+        },
+        {
+          "level": "h2",
+          "text": "What the Mouse Studies Found"
+        },
+        {
+          "level": "h2",
+          "text": "Taking NMN After Drinking"
+        },
+        {
+          "level": "h2",
+          "text": "How Much Alcohol Counts as a Lot in the US"
+        },
+        {
+          "level": "h2",
+          "text": "Who Should Not Mix NMN and Alcohol Without Advice"
+        },
+        {
+          "level": "h2",
+          "text": "Where to Buy AgeAura NMN + TMG in the US"
+        },
+        {
+          "level": "h3",
+          "text": "Can you drink alcohol while taking NMN?"
+        },
+        {
+          "level": "h3",
+          "text": "Does NMN prevent a hangover?"
+        },
+        {
+          "level": "h3",
+          "text": "Should I take NMN before or after drinking?"
+        },
+        {
+          "level": "h3",
+          "text": "Does alcohol deplete NAD+?"
+        },
+        {
+          "level": "h3",
+          "text": "Where can I buy AgeAura NMN + TMG in the US?"
+        },
+        {
+          "level": "h3",
+          "text": "AgeAura Pure NMN + TMG NAD+ Complex"
+        }
+      ],
+      "coverage_allowed": true,
+      "product_links": [
+        "ageaura-pure-nmn-tmg-nad-complex"
+      ],
+      "flags": [
+        {
+          "kind": "milligram",
+          "excerpt": "nd crossover trial on ClinicalTrials.gov gave 22 healthy young adults 1,000 mg NMN or a placebo before binge drinking. It is listed as completed, bu"
+        },
+        {
+          "kind": "milligram",
+          "excerpt": "o difference between carbs, fat and protein. Second, AgeAura contains 100 mg resveratrol per serving. The Linus Pauling Institute advises caution"
+        },
+        {
+          "kind": "percent",
+          "excerpt": "pure alcohol. Binge drinking means reaching a blood alcohol level of 0.08% or more. For most adults that is about 5 drinks for men or 4 for wome"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "lness Nest at wellnessnest.co. AgeAura Pure NMN + TMG NAD+ Complex is $69.95 for 60 capsules, with free US shipping over $70 and a 90-day refu"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "MG NAD+ Complex is $69.95 for 60 capsules, with free US shipping over $70 and a 90-day refund policy (eligibility applies). Each 2-capsule ser"
+        }
+      ],
+      "indexable": true
+    },
+    {
+      "url": "https://wellnessnest.co/blogs/news/nmn-and-exercise-before-or-after-a-workout-us-2026",
+      "final_url": "https://wellnessnest.co/blogs/news/nmn-and-exercise-before-or-after-a-workout-us-2026",
+      "status": 200,
+      "kind": "article",
+      "noindex": false,
+      "canonical": "https://wellnessnest.co/blogs/news/nmn-and-exercise-before-or-after-a-workout-us-2026",
+      "og_title": "NMN and Exercise: Before or After a Workout? (US 2026)",
+      "h1": "NMN and Exercise: Before or After a Workout? (US 2026)",
+      "headings": [
+        {
+          "level": "h1",
+          "text": "NMN and Exercise: Before or After a Workout? (US 2026)"
+        },
+        {
+          "level": "h2",
+          "text": "What the 2021 Runner Trial Found"
+        },
+        {
+          "level": "h2",
+          "text": "What Trials in Older Adults Show"
+        },
+        {
+          "level": "h2",
+          "text": "NMN and Exercise Evidence at a Glance"
+        },
+        {
+          "level": "h2",
+          "text": "Before or After a Workout? The Timing Gap in the US Evidence"
+        },
+        {
+          "level": "h2",
+          "text": "A Simple Routine for Training Days and Rest Days"
+        },
+        {
+          "level": "h2",
+          "text": "Where to Buy AgeAura NMN + TMG in the US"
+        },
+        {
+          "level": "h3",
+          "text": "Should I take NMN before or after a workout?"
+        },
+        {
+          "level": "h3",
+          "text": "Should I take NMN on rest days?"
+        },
+        {
+          "level": "h3",
+          "text": "Does NMN replace a pre-workout supplement?"
+        },
+        {
+          "level": "h3",
+          "text": "Can older adults who exercise take NMN?"
+        },
+        {
+          "level": "h3",
+          "text": "Where can I buy NMN + TMG in the US?"
+        },
+        {
+          "level": "h3",
+          "text": "AgeAura Pure NMN + TMG NAD+ Complex"
+        }
+      ],
+      "coverage_allowed": true,
+      "product_links": [
+        "ageaura-pure-nmn-tmg-nad-complex"
+      ],
+      "flags": [
+        {
+          "kind": "milligram",
+          "excerpt": "unners, 40 men and 8 women aged 27 to 50. Each group took 300, 600 or 1,200 mg of NMN a day, or a placebo, for 6 weeks.Everyone kept training. Sessi"
+        },
+        {
+          "kind": "milligram",
+          "excerpt": "ions lasted 40 to 60 minutes, 5 to 6 times a week. After 6 weeks, the 600 mg and 1,200 mg groups showed bigger gains than placebo in oxygen uptake"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "official US source for AgeAura Pure NMN + TMG NAD+ Complex. It costs $69.95 for a 60-capsule bottle, which is 30 servings at 2 capsules a day"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "ules a day. Each serving lists 500 mg NMN and 250 mg TMG. Orders over $70 ship free in the US, and the store lists a 90-day refund policy (eli"
+        }
+      ],
+      "indexable": true
+    },
+    {
+      "url": "https://wellnessnest.co/blogs/news/nmn-and-coffee-can-you-take-them-together-us-2026",
+      "final_url": "https://wellnessnest.co/blogs/news/nmn-and-coffee-can-you-take-them-together-us-2026",
+      "status": 200,
+      "kind": "article",
+      "noindex": false,
+      "canonical": "https://wellnessnest.co/blogs/news/nmn-and-coffee-can-you-take-them-together-us-2026",
+      "og_title": "NMN and Coffee: Can You Take Them Together? (US 2026)",
+      "h1": "NMN and Coffee: Can You Take Them Together? (US 2026)",
+      "headings": [
+        {
+          "level": "h1",
+          "text": "NMN and Coffee: Can You Take Them Together? (US 2026)"
+        },
+        {
+          "level": "h2",
+          "text": "Does Coffee Cancel NMN?"
+        },
+        {
+          "level": "h2",
+          "text": "What Human NMN Research Actually Tested"
+        },
+        {
+          "level": "h2",
+          "text": "Same Time as Coffee or Wait?"
+        },
+        {
+          "level": "h2",
+          "text": "Black Coffee, Milk, or Decaf?"
+        },
+        {
+          "level": "h2",
+          "text": "How Much Caffeine Is Too Much in the US?"
+        },
+        {
+          "level": "h2",
+          "text": "Does Caffeine Affect NAD+?"
+        },
+        {
+          "level": "h2",
+          "text": "What About Coffee With Milk?"
+        },
+        {
+          "level": "h2",
+          "text": "What If Coffee Makes You Jittery?"
+        },
+        {
+          "level": "h2",
+          "text": "Where to Buy AgeAura NMN + TMG in the US"
+        },
+        {
+          "level": "h3",
+          "text": "Can I take NMN with coffee?"
+        },
+        {
+          "level": "h3",
+          "text": "Should I take NMN before or after coffee?"
+        },
+        {
+          "level": "h3",
+          "text": "Is decaf better with NMN?"
+        },
+        {
+          "level": "h3",
+          "text": "Can I take NMN with coffee and milk?"
+        },
+        {
+          "level": "h3",
+          "text": "How much caffeine can I have with NMN in the US?"
+        },
+        {
+          "level": "h3",
+          "text": "Where can I buy NMN + TMG in the US?"
+        },
+        {
+          "level": "h3",
+          "text": "AgeAura Pure NMN + TMG NAD+ Complex"
+        }
+      ],
+      "coverage_allowed": true,
+      "product_links": [
+        "ageaura-pure-nmn-tmg-nad-complex"
+      ],
+      "flags": [
+        {
+          "kind": "milligram",
+          "excerpt": "aged 27–50. It lasted 6 weeks and compared placebo with 300, 600, or 1,200 mg of NMN daily. Participants trained 5–6 times each week. The 600 mg an"
+        },
+        {
+          "kind": "milligram",
+          "excerpt": "1,200 mg of NMN daily. Participants trained 5–6 times each week. The 600 mg and 1,200 mg groups improved some submaximal aerobic measures more th"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "king the serving with a first meal or black coffee. The product costs $69.95 on the live US product page. Those are label and store facts, not"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "Pure NMN + TMG NAD+ Complex. The live product page lists the price as $69.95. It says the daily serving is 2 capsules and lists 500 mg NMN, 25"
+        },
+        {
+          "kind": "cofactor",
+          "excerpt": "t page states that its formula contains wheat from wheat-germ-derived spermidine and is free from gluten, soy, dairy, fish, and shellfish. “Dairy-free"
+        },
+        {
+          "kind": "cofactor",
+          "excerpt": "daily serving is 2 capsules and lists 500 mg NMN, 250 mg TMG, 100 mg trans-resveratrol, 150 mg quercetin, 50 mg apigenin, 1 mg spermidine from wheat germ ex"
+        }
+      ],
+      "indexable": true
+    },
+    {
+      "url": "https://wellnessnest.co/blogs/news/where-to-buy-nmn-in-the-us-fda-status-explained-2026",
+      "final_url": "https://wellnessnest.co/blogs/news/where-to-buy-nmn-in-the-us-fda-status-explained-2026",
+      "status": 200,
+      "kind": "article",
+      "noindex": false,
+      "canonical": "https://wellnessnest.co/blogs/news/where-to-buy-nmn-in-the-us-fda-status-explained-2026",
+      "og_title": "Where to Buy NMN in the US: FDA Status Explained (2026)",
+      "h1": "Where to Buy NMN in the US: FDA Status Explained (2026)",
+      "headings": [
+        {
+          "level": "h1",
+          "text": "Where to Buy NMN in the US: FDA Status Explained (2026)"
+        },
+        {
+          "level": "h2",
+          "text": "Why NMN Disappeared From Some US Listings"
+        },
+        {
+          "level": "h2",
+          "text": "Is NMN Legal to Buy in the US Now?"
+        },
+        {
+          "level": "h2",
+          "text": "What to Check Before You Buy NMN in the US"
+        },
+        {
+          "level": "h2",
+          "text": "Where to Buy NMN in the US: Wellness Nest Listing"
+        },
+        {
+          "level": "h2",
+          "text": "NMN Marketplace Availability Is Not the Same as FDA Status"
+        },
+        {
+          "level": "h2",
+          "text": "How NMN Fits the Evidence"
+        },
+        {
+          "level": "h3",
+          "text": "Is NMN legal to buy in the US?"
+        },
+        {
+          "level": "h3",
+          "text": "Why did Amazon stop selling NMN?"
+        },
+        {
+          "level": "h3",
+          "text": "Is NMN still sold as a supplement?"
+        },
+        {
+          "level": "h3",
+          "text": "What should an NMN label show?"
+        },
+        {
+          "level": "h3",
+          "text": "Where can I buy NMN in the US?"
+        },
+        {
+          "level": "h3",
+          "text": "AgeAura Pure NMN + TMG NAD+ Complex"
+        }
+      ],
+      "coverage_allowed": true,
+      "product_links": [
+        "ageaura-pure-nmn-tmg-nad-complex"
+      ],
+      "flags": [
+        {
+          "kind": "milligram",
+          "excerpt": "roduct page states that each daily serving is two capsules containing 500 mg NMN and 250 mg TMG (trimethylglycine). The page also lists additional"
+        },
+        {
+          "kind": "milligram",
+          "excerpt": "tes that each daily serving is two capsules containing 500 mg NMN and 250 mg TMG (trimethylglycine). The page also lists additional ingredients, i"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "nt option, Wellness Nest lists AgeAura Pure NMN + TMG NAD+ Complex at $69.95.That answer needs context. “Legal to buy” does not mean “proven t"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "Wellness Nest currently lists AgeAura Pure NMN + TMG NAD+ Complex for $69.95. The live product page states that each daily serving is two caps"
+        },
+        {
+          "kind": "cofactor",
+          "excerpt": "methylglycine). The page also lists additional ingredients, including trans-resveratrol, quercetin, apigenin, folate and spermidine. Recheck the live page at"
+        },
+        {
+          "kind": "cofactor",
+          "excerpt": "page also lists additional ingredients, including trans-resveratrol, quercetin, apigenin, folate and spermidine. Recheck the live page at checkout b"
+        }
+      ],
+      "indexable": true
+    },
+    {
+      "url": "https://wellnessnest.co/blogs/news/nmn-for-seniors-what-2-trials-show-in-the-us-2026",
+      "final_url": "https://wellnessnest.co/blogs/news/nmn-for-seniors-what-2-trials-show-in-the-us-2026",
+      "status": 200,
+      "kind": "article",
+      "noindex": false,
+      "canonical": "https://wellnessnest.co/blogs/news/nmn-for-seniors-what-2-trials-show-in-the-us-2026",
+      "og_title": "NMN for Seniors: What 2 Trials Show in the US (2026)",
+      "h1": "NMN for Seniors: What 2 Trials Show in the US (2026)",
+      "headings": [
+        {
+          "level": "h1",
+          "text": "NMN for Seniors: What 2 Trials Show in the US (2026)"
+        },
+        {
+          "level": "h2",
+          "text": "What does the evidence say about NMN for seniors?"
+        },
+        {
+          "level": "h2",
+          "text": "Trial 1: What changed in healthy men aged 65 and older?"
+        },
+        {
+          "level": "h2",
+          "text": "Trial 2: Does morning or afternoon NMN work better?"
+        },
+        {
+          "level": "h2",
+          "text": "How do the two older-adult trials compare?"
+        },
+        {
+          "level": "h2",
+          "text": "Is NMN safe for seniors taking medications?"
+        },
+        {
+          "level": "h2",
+          "text": "What should buyers in the US check on AgeAura?"
+        },
+        {
+          "level": "h2",
+          "text": "How should an older adult think about timing and expectations?"
+        },
+        {
+          "level": "h3",
+          "text": "Has NMN been tested in people over 65?"
+        },
+        {
+          "level": "h3",
+          "text": "What dose did the older-adult trials use?"
+        },
+        {
+          "level": "h3",
+          "text": "Does NMN improve muscle strength in older adults?"
+        },
+        {
+          "level": "h3",
+          "text": "Is morning or afternoon better for older adults?"
+        },
+        {
+          "level": "h3",
+          "text": "Where can I buy AgeAura NMN + TMG in the US?"
+        },
+        {
+          "level": "h3",
+          "text": "Is NMN a proven anti-aging treatment for seniors?"
+        },
+        {
+          "level": "h3",
+          "text": "AgeAura Pure NMN + TMG NAD+ Complex"
+        }
+      ],
+      "coverage_allowed": true,
+      "product_links": [
+        "ageaura-pure-nmn-tmg-nad-complex"
+      ],
+      "flags": [
+        {
+          "kind": "milligram",
+          "excerpt": "healthy men aged at least 65 to NMN or placebo. The intervention was 250 mg NMN per day, with visits at baseline, six weeks and twelve weeks. Tho"
+        },
+        {
+          "kind": "milligram",
+          "excerpt": "ebo in the morning and placebo later in the day. The intervention was 250 mg NMN or placebo daily for twelve weeks. Three participants dropped out"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "lent to the research supplements.The live AgeAura product page listed $69.95 at the time of writing. For a budget around $60–$70, compare the"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "roduct page listed $69.95 at the time of writing. For a budget around $60–$70, compare the current bottle price with the information you can a"
+        }
+      ],
+      "indexable": true
+    },
+    {
+      "url": "https://wellnessnest.co/blogs/news/nmn-for-fertility-human-evidence-in-the-us-2026",
+      "final_url": "https://wellnessnest.co/blogs/news/nmn-for-fertility-human-evidence-in-the-us-2026",
+      "status": 200,
+      "kind": "article",
+      "noindex": false,
+      "canonical": "https://wellnessnest.co/blogs/news/nmn-for-fertility-human-evidence-in-the-us-2026",
+      "og_title": "NMN for Fertility: Human Evidence in the US (2026)",
+      "h1": "NMN for Fertility: Human Evidence in the US (2026)",
+      "headings": [
+        {
+          "level": "h1",
+          "text": "NMN for Fertility: Human Evidence in the US (2026)"
+        },
+        {
+          "level": "h2",
+          "text": "What human NMN fertility research actually exists?"
+        },
+        {
+          "level": "h2",
+          "text": "What did animal studies measure instead?"
+        },
+        {
+          "level": "h2",
+          "text": "How should you compare NMN and fertility claims?"
+        },
+        {
+          "level": "h2",
+          "text": "Does NMN improve sperm in men?"
+        },
+        {
+          "level": "h2",
+          "text": "Can you take NMN while trying to conceive in the US?"
+        },
+        {
+          "level": "h2",
+          "text": "Where does AgeAura fit—and what does $69.95 buy?"
+        },
+        {
+          "level": "h3",
+          "text": "Is there a proven NMN dose for fertility?"
+        },
+        {
+          "level": "h3",
+          "text": "Does NMN restore ovarian reserve?"
+        },
+        {
+          "level": "h3",
+          "text": "Does a study in human eggs mean women took NMN?"
+        },
+        {
+          "level": "h3",
+          "text": "Where can I buy AgeAura in the US?"
+        },
+        {
+          "level": "h3",
+          "text": "What if I already take NMN and might be pregnant?"
+        },
+        {
+          "level": "h3",
+          "text": "AgeAura Pure NMN + TMG NAD+ Complex"
+        }
+      ],
+      "coverage_allowed": true,
+      "product_links": [
+        "ageaura-pure-nmn-tmg-nad-complex"
+      ],
+      "flags": [
+        {
+          "kind": "dollar",
+          "excerpt": "a fertility-specific assessment.Where does AgeAura fit—and what does $69.95 buy?AgeAura Pure NMN + TMG NAD+ Complex is a general-wellness pro"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "rmula.The live AgeAura Pure NMN + TMG NAD+ Complex product page lists $69.95 at this check. Prices can change. The curated pack identifies NMN"
+        }
+      ],
+      "indexable": true
+    },
+    {
+      "url": "https://wellnessnest.co/blogs/news/how-to-take-nmn-a-capsule-routine-in-the-us",
+      "final_url": "https://wellnessnest.co/blogs/news/how-to-take-nmn-a-capsule-routine-in-the-us",
+      "status": 200,
+      "kind": "article",
+      "noindex": false,
+      "canonical": "https://wellnessnest.co/blogs/news/how-to-take-nmn-a-capsule-routine-in-the-us",
+      "og_title": "How to Take NMN: A Capsule Routine in the US",
+      "h1": "How to Take NMN: A Capsule Routine in the US",
+      "headings": [
+        {
+          "level": "h1",
+          "text": "How to Take NMN: A Capsule Routine in the US"
+        },
+        {
+          "level": "h2",
+          "text": "What do the NMN capsule directions actually say?"
+        },
+        {
+          "level": "h2",
+          "text": "Do you swallow NMN capsules or dissolve them?"
+        },
+        {
+          "level": "h2",
+          "text": "What if you miss a day of NMN?"
+        },
+        {
+          "level": "h2",
+          "text": "What should a US buyer check before starting?"
+        },
+        {
+          "level": "h3",
+          "text": "Can I open an NMN capsule and mix it with water?"
+        },
+        {
+          "level": "h3",
+          "text": "Is a capsule count the same as an NMN dose?"
+        },
+        {
+          "level": "h3",
+          "text": "Should I take extra tomorrow if I forgot today?"
+        },
+        {
+          "level": "h3",
+          "text": "Where can I buy AgeAura NMN capsules in the US?"
+        },
+        {
+          "level": "h3",
+          "text": "AgeAura Pure NMN + TMG NAD+ Complex"
+        }
+      ],
+      "coverage_allowed": true,
+      "product_links": [
+        "ageaura-pure-nmn-tmg-nad-complex"
+      ],
+      "flags": [
+        {
+          "kind": "dollar",
+          "excerpt": "the separate NMN side-effects checks.The checked product listing was $69.95. Confirm the current price and complete directions before orderin"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "+ TMG NAD+ Complex AgeAura Pure NMN + TMG NAD+ Complex Regular price $69.95 Regular price $69.95 Sale priceUnit price/ per Subscribe to our e"
+        }
+      ],
+      "indexable": true
+    },
+    {
+      "url": "https://wellnessnest.co/blogs/news/nmn-price-bottle-vs-serving-cost-in-the-us",
+      "final_url": "https://wellnessnest.co/blogs/news/nmn-price-bottle-vs-serving-cost-in-the-us",
+      "status": 200,
+      "kind": "article",
+      "noindex": false,
+      "canonical": "https://wellnessnest.co/blogs/news/nmn-price-bottle-vs-serving-cost-in-the-us",
+      "og_title": "NMN Price: Bottle vs Serving Cost in the US",
+      "h1": "NMN Price: Bottle vs Serving Cost in the US",
+      "headings": [
+        {
+          "level": "h1",
+          "text": "NMN Price: Bottle vs Serving Cost in the US"
+        },
+        {
+          "level": "h2",
+          "text": "How much does a bottle of NMN cost in the US?"
+        },
+        {
+          "level": "h2",
+          "text": "What does one labeled serving cost?"
+        },
+        {
+          "level": "h2",
+          "text": "Bottle price versus checkout total: which should you compare?"
+        },
+        {
+          "level": "h2",
+          "text": "Why can an NMN supplement price comparison be misleading?"
+        },
+        {
+          "level": "h2",
+          "text": "What should the label show before you pay?"
+        },
+        {
+          "level": "h2",
+          "text": "Is NMN expensive enough to justify skipping it?"
+        },
+        {
+          "level": "h3",
+          "text": "How much does NMN cost per bottle?"
+        },
+        {
+          "level": "h3",
+          "text": "Is the AgeAura serving price $1.17 or $2.33?"
+        },
+        {
+          "level": "h3",
+          "text": "Does 30 servings automatically mean a month's supply?"
+        },
+        {
+          "level": "h3",
+          "text": "Where can I check the NMN price in the US?"
+        },
+        {
+          "level": "h3",
+          "text": "Is a higher NMN price proof of better quality?"
+        },
+        {
+          "level": "h3",
+          "text": "AgeAura Pure NMN + TMG NAD+ Complex"
+        }
+      ],
+      "coverage_allowed": true,
+      "product_links": [
+        "ageaura-pure-nmn-tmg-nad-complex"
+      ],
+      "flags": [
+        {
+          "kind": "dollar",
+          "excerpt": "MN price checked for AgeAura Pure NMN + TMG NAD+ Complex in the US is $69.95 per bottle, or about $2.33 per labeled serving. That uses the pac"
+        },
+        {
+          "kind": "dollar",
+          "excerpt": "Pure NMN + TMG NAD+ Complex in the US is $69.95 per bottle, or about $2.33 per labeled serving. That uses the pack's 30-serving count, not it"
+        }
+      ],
+      "indexable": true
+    }
+  ]
+}
