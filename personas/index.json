@@ -1,29 +1,29 @@
 {
  "_doc": "Machine-readable rotation state for the persona bank. persona.json holds IMMUTABLE provenance; this file holds MUTABLE rotation history. Written only by scripts/persona_picker.py commit (atomic tmp+rename). Never hand-edit during a run.",
  "schema_version": 1,
- "seq": 145,
+ "seq": 146,
  "seeded_from": "PUBLISHED_ARTICLES_TRACKER.csv tickets 1-10 (free-text hero/gaze notes)",
  "recent_shots": [
-  "low-table-level",
   "over-shoulder",
   "wide-room",
   "high-angle-down",
   "mid-subject-fg-pack",
-  "low-table-level"
+  "low-table-level",
+  "over-shoulder"
  ],
  "recent_heroes": [
-  "NO-FACE",
   "m3039-hl-03",
   "m3039-as-03",
   "NO-FACE",
   "m2029-hl-02",
   "f4049-wh-13",
   "NO-FACE",
-  "m2029-mx-01"
+  "m2029-mx-01",
+  "f5059-wh-06"
  ],
  "no_face_cycle": {
   "period": 3,
-  "position": 1,
+  "position": 2,
   "_doc": "every 3rd hero is no-face: one adult + one pack for 200 rows running is the structural tell that rotating the pose cannot reach. Briefly 1 on 2026-08-10 as a safety default after ima2 was measured reproducing the reference person recognisably; restored to 3 the same day when Kevin reaffirmed the 200-face bank. The rights exposure that motivated 1 is real and unresolved \u2014 it is recorded in CLAUDE.md and accepted by Kevin, not fixed by this number."
  },
  "personas": {
@@ -1633,8 +1633,8 @@
    "status": "active",
    "ref": "/Users/kevinkreative/genseo/personas/f5059-wh-06/ref.jpg",
    "identity_key": "openimages:ddcf18fa4dbef1ad",
-   "used_count": 4,
-   "last_used_seq": 134,
+   "used_count": 5,
+   "last_used_seq": 146,
    "gaze_used": [
     "up-and-away",
     "off-into-room",
@@ -1644,7 +1644,7 @@
     "at-lens",
     "just-past-lens"
    ],
-   "last_gaze": "just-past-lens",
+   "last_gaze": "down-at-hands",
    "angles_used": [
     "3q-left+level",
     "3q-right+chin-down",
@@ -1653,7 +1653,9 @@
     "front+level",
     "3q-left+chin-down",
     "profile-left+level",
-    "3q-left+chin-up"
+    "3q-left+chin-up",
+    "3q-right+level",
+    "profile-left+chin-down"
    ],
    "angles_reserved": []
   },

@@ -2035,7 +2035,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** turkesterone + versus checked 2026-11-09 against 181 live articles (blog listing + sitemap + Atom + local caches) and all 153 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#RF1109-5 — nmn vs coq10** — `NMN vs CoQ10: Which Fits Your Goal? (US 2026)`
+- [DONE 2026-11-10 https://wellnessnest.co/blogs/news/nmn-vs-coq10-the-us-evidence-check] **#RF1109-5 — nmn vs coq10** — `NMN vs CoQ10: Which Fits Your Goal? (US 2026)`
   - **Primary keyword:** `nmn vs coq10` · **Secondary:** nmn or coq10, is nmn better than coq10
   - **Search intent:** adult over 40 comparing NMN with CoQ10 for energy
   - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-09 08:52 ICT)
