@@ -165,6 +165,9 @@ def read_package(path, profile, row, live_products=None, collections=None):
     problems = []   # every fact problem in one message, so the writer can fix them all in one round
     live_sources = {f"shopify://{profile.data['shop']}/products/{h}": product for h,product in (live_products or {}).items()}
     live_sources.update({f"shopify://{profile.data['shop']}/collections/{h}": c for h, c in (collections or {}).items()})
+    chrome = norm(html.unescape(re.sub(r'<[^>]*>', ' ', template)))
+    # A claim in the template chrome (topbar "Free US standard shipping over $70") is stripped from the body, not written: skip it (slot 3 2026-11-10 failed 5/5).
+    facts = [f for f in facts if not (f.get('claim') and norm(f['claim']) not in norm(plain) and norm(f['claim']) in chrome)] or facts
     for fact in facts:
         require(set(('claim','source','quote')) <= fact.keys(), 'Fact evidence is incomplete')
         if not (fact['claim'] and norm(fact['claim']) in norm(plain)):
