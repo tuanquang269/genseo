@@ -262,6 +262,8 @@ A locale prefix or any other query parameter warns and is left as written.
 An Article `mainEntityOfPage`, `url`, or `@id` that is not the article URL
 hard-fails. Theme JSON-LD is out of this gate (draft PR #65).
 
+In `--draft` mode the validator also runs `scripts/dup_cluster_gate.py` on the H1, an optional `<!-- primary_keyword: ... -->` comment (otherwise the H1), the H2s, and the filename slug. A near-duplicate warning names the existing URL and says `refresh existing` or `merge`. An exact primary-query match is printed as `FAIL` on that warning line and still leaves the draft PASS. `GENSEO_DUP_CLUSTER_BLOCK=1` is the opt-in that turns that exact-query line into a hard fail. The check reads the local article catalog only. Titles already listed in `state/cluster_map.json` or `docs/CLUSTER_MAP.md` fill in pages missing from `existing_articles.json`. Impression and position figures in the map are not read.
+
 **It also scores the PROSE (added 2026-07-30), and this part hard-fails too.** The structural
 checks above only prove an article has a table and a price; they never measured whether the
 writing was any good, which is exactly the gap the May 2026 core update exploited. The
