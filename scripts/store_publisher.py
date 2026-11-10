@@ -98,9 +98,14 @@ class Shopify:
     def hero_gid(self, src):
         """Files id (MediaImage) of the hero file named in `src`. Read-only GraphQL query; exactly one READY image must match."""
         name = journal_fields.file_name(src)
-        out = self.request('/admin/api/2026-04/graphql.json', {'query': FILES_QUERY, 'variables': {'q': 'filename:' + name}})
-        hits = [n for n in out['data']['files']['nodes']
-                if n.get('image') and journal_fields.file_name(n['image']['url']) == name and n.get('fileStatus') == 'READY']
+        # Shopify search finds no name with a "_<uuid>" dedupe suffix (cherish-keep-box_9f0e…png, 2026-11-10): search the base, match exact.
+        hits = []
+        for q in dict.fromkeys([name, re.sub(r'_[0-9a-f]{8}-[0-9a-f-]{27}(?=\.\w+$)', '*', name)]):
+            out = self.request('/admin/api/2026-04/graphql.json', {'query': FILES_QUERY, 'variables': {'q': 'filename:' + q}})
+            hits = [n for n in out['data']['files']['nodes']
+                    if n.get('image') and journal_fields.file_name(n['image']['url']) == name and n.get('fileStatus') == 'READY']
+            if hits:
+                break
         require(len(hits) == 1, f'Hero file {name} must exist once in Shopify Files (journal.hero needs its id)')
         return hits[0]['id']
 
