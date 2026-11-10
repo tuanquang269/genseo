@@ -3363,6 +3363,386 @@
         "can you take turkesterone and dhea together",
         "turkesterone vs dhea benefits"
       ]
+    },
+    {
+      "segment": "versus",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "id": "nmn-vs-berberine",
+      "product": "ageaura-pure-nmn-tmg-nad-complex",
+      "primary": "nmn vs berberine",
+      "title": "NMN vs Berberine: Which Fits Your Goal? (US {year})",
+      "secondary": [
+        "nmn or berberine",
+        "is nmn better than berberine"
+      ],
+      "intent": "adult comparing nmn with berberine for healthy aging",
+      "fanout": [
+        "can you take nmn and berberine together",
+        "nmn vs berberine benefits"
+      ]
+    },
+    {
+      "segment": "versus",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "id": "nmn-vs-quercetin",
+      "product": "ageaura-pure-nmn-tmg-nad-complex",
+      "primary": "nmn vs quercetin",
+      "title": "NMN vs Quercetin: Key Differences (US {year})",
+      "secondary": [
+        "nmn or quercetin",
+        "is nmn better than quercetin"
+      ],
+      "intent": "adult comparing nmn with quercetin for healthy aging",
+      "fanout": [
+        "can you take nmn and quercetin together",
+        "nmn vs quercetin benefits"
+      ]
+    },
+    {
+      "segment": "versus",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "id": "nmn-vs-pqq",
+      "product": "ageaura-pure-nmn-tmg-nad-complex",
+      "primary": "nmn vs pqq",
+      "title": "NMN vs PQQ: What Each Does (US {year})",
+      "secondary": [
+        "nmn or pqq",
+        "is nmn better than pqq"
+      ],
+      "intent": "adult comparing nmn with pqq for cell energy",
+      "fanout": [
+        "can you take nmn and pqq together",
+        "nmn vs pqq benefits"
+      ]
+    },
+    {
+      "segment": "versus",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "id": "nmn-vs-alpha-lipoic-acid",
+      "product": "ageaura-pure-nmn-tmg-nad-complex",
+      "primary": "nmn vs alpha lipoic acid",
+      "title": "NMN vs Alpha Lipoic Acid: Evidence Compared (US {year})",
+      "secondary": [
+        "nmn or alpha lipoic acid",
+        "is nmn better than alpha lipoic acid"
+      ],
+      "intent": "adult comparing nmn with alpha lipoic acid for healthy aging",
+      "fanout": [
+        "can you take nmn and alpha lipoic acid together",
+        "nmn vs alpha lipoic acid benefits"
+      ]
+    },
+    {
+      "segment": "versus",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "id": "nmn-vs-astaxanthin",
+      "product": "ageaura-pure-nmn-tmg-nad-complex",
+      "primary": "nmn vs astaxanthin",
+      "title": "NMN vs Astaxanthin: Which to Pick? (US {year})",
+      "secondary": [
+        "nmn or astaxanthin",
+        "is nmn better than astaxanthin"
+      ],
+      "intent": "adult comparing nmn with astaxanthin for healthy aging",
+      "fanout": [
+        "can you take nmn and astaxanthin together",
+        "nmn vs astaxanthin benefits"
+      ]
+    },
+    {
+      "segment": "versus",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "id": "nmn-vs-collagen",
+      "product": "ageaura-pure-nmn-tmg-nad-complex",
+      "primary": "nmn vs collagen",
+      "title": "NMN vs Collagen: Pros and Cons (US {year})",
+      "secondary": [
+        "nmn or collagen",
+        "is nmn better than collagen"
+      ],
+      "intent": "adult comparing nmn with collagen for skin and aging",
+      "fanout": [
+        "can you take nmn and collagen together",
+        "nmn vs collagen benefits"
+      ]
+    },
+    {
+      "segment": "versus",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "id": "shilajit-vs-zinc",
+      "product": "shilasource-himalayan-shilajit-resin",
+      "primary": "shilajit vs zinc",
+      "title": "Shilajit vs Zinc: Which Fits Your Goal? (US {year})",
+      "secondary": [
+        "shilajit or zinc",
+        "is shilajit better than zinc"
+      ],
+      "intent": "adult comparing shilajit with zinc for men's vitality",
+      "fanout": [
+        "can you take shilajit and zinc together",
+        "shilajit vs zinc benefits"
+      ]
+    },
+    {
+      "segment": "versus",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "id": "shilajit-vs-magnesium",
+      "product": "shilasource-himalayan-shilajit-resin",
+      "primary": "shilajit vs magnesium",
+      "title": "Shilajit vs Magnesium: Key Differences (US {year})",
+      "secondary": [
+        "shilajit or magnesium",
+        "is shilajit better than magnesium"
+      ],
+      "intent": "adult comparing shilajit with magnesium for energy and recovery",
+      "fanout": [
+        "can you take shilajit and magnesium together",
+        "shilajit vs magnesium benefits"
+      ]
+    },
+    {
+      "segment": "versus",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "id": "shilajit-vs-black-seed-oil",
+      "product": "shilasource-himalayan-shilajit-resin",
+      "primary": "shilajit vs black seed oil",
+      "title": "Shilajit vs Black Seed Oil: What Each Does (US {year})",
+      "secondary": [
+        "shilajit or black seed oil",
+        "is shilajit better than black seed oil"
+      ],
+      "intent": "adult comparing shilajit with black seed oil for daily wellness",
+      "fanout": [
+        "can you take shilajit and black seed oil together",
+        "shilajit vs black seed oil benefits"
+      ]
+    },
+    {
+      "segment": "versus",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "id": "shilajit-vs-fadogia",
+      "product": "shilasource-himalayan-shilajit-resin",
+      "primary": "shilajit vs fadogia",
+      "title": "Shilajit vs Fadogia: Evidence Compared (US {year})",
+      "secondary": [
+        "shilajit or fadogia",
+        "is shilajit better than fadogia"
+      ],
+      "intent": "adult comparing shilajit with fadogia for men's vitality",
+      "fanout": [
+        "can you take shilajit and fadogia together",
+        "shilajit vs fadogia benefits"
+      ]
+    },
+    {
+      "segment": "versus",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "id": "shilajit-vs-saffron",
+      "product": "shilasource-himalayan-shilajit-resin",
+      "primary": "shilajit vs saffron",
+      "title": "Shilajit vs Saffron: Which to Pick? (US {year})",
+      "secondary": [
+        "shilajit or saffron",
+        "is shilajit better than saffron"
+      ],
+      "intent": "adult comparing shilajit with saffron for mood and energy",
+      "fanout": [
+        "can you take shilajit and saffron together",
+        "shilajit vs saffron benefits"
+      ]
+    },
+    {
+      "segment": "versus",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "id": "turkesterone-vs-fadogia",
+      "product": "turkesterone-advanced-formula",
+      "primary": "turkesterone vs fadogia",
+      "title": "Turkesterone vs Fadogia: Pros and Cons (US {year})",
+      "secondary": [
+        "turkesterone or fadogia",
+        "is turkesterone better than fadogia"
+      ],
+      "intent": "adult comparing turkesterone with fadogia for muscle and strength",
+      "fanout": [
+        "can you take turkesterone and fadogia together",
+        "turkesterone vs fadogia benefits"
+      ]
+    },
+    {
+      "segment": "versus",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "id": "turkesterone-vs-boron",
+      "product": "turkesterone-advanced-formula",
+      "primary": "turkesterone vs boron",
+      "title": "Turkesterone vs Boron: Which Fits Your Goal? (US {year})",
+      "secondary": [
+        "turkesterone or boron",
+        "is turkesterone better than boron"
+      ],
+      "intent": "adult comparing turkesterone with boron for muscle and strength",
+      "fanout": [
+        "can you take turkesterone and boron together",
+        "turkesterone vs boron benefits"
+      ]
+    },
+    {
+      "segment": "versus",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "id": "turkesterone-vs-laxogenin",
+      "product": "turkesterone-advanced-formula",
+      "primary": "turkesterone vs laxogenin",
+      "title": "Turkesterone vs Laxogenin: Key Differences (US {year})",
+      "secondary": [
+        "turkesterone or laxogenin",
+        "is turkesterone better than laxogenin"
+      ],
+      "intent": "adult comparing turkesterone with laxogenin for muscle and strength",
+      "fanout": [
+        "can you take turkesterone and laxogenin together",
+        "turkesterone vs laxogenin benefits"
+      ]
+    },
+    {
+      "segment": "versus",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "id": "turkesterone-vs-maca",
+      "product": "turkesterone-advanced-formula",
+      "primary": "turkesterone vs maca",
+      "title": "Turkesterone vs Maca: What Each Does (US {year})",
+      "secondary": [
+        "turkesterone or maca",
+        "is turkesterone better than maca"
+      ],
+      "intent": "adult comparing turkesterone with maca for strength and energy",
+      "fanout": [
+        "can you take turkesterone and maca together",
+        "turkesterone vs maca benefits"
+      ]
+    },
+    {
+      "segment": "versus",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "id": "creatine-vs-bcaa",
+      "product": "fusiforce-creatine-gummies",
+      "primary": "creatine gummies vs bcaa",
+      "title": "Creatine Gummies vs BCAA (US {year})",
+      "secondary": [
+        "creatine gummies or bcaa",
+        "creatine vs bcaa"
+      ],
+      "intent": "adult comparing creatine with bcaa for training",
+      "fanout": [
+        "can you take creatine gummies and bcaa together",
+        "creatine vs bcaa benefits"
+      ]
+    },
+    {
+      "segment": "versus",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "id": "creatine-vs-electrolytes",
+      "product": "fusiforce-creatine-gummies",
+      "primary": "creatine gummies vs electrolytes",
+      "title": "Creatine Gummies vs Electrolytes (US {year})",
+      "secondary": [
+        "creatine gummies or electrolytes",
+        "creatine vs electrolytes"
+      ],
+      "intent": "adult comparing creatine with electrolytes for training",
+      "fanout": [
+        "can you take creatine gummies and electrolytes together",
+        "creatine vs electrolytes benefits"
+      ]
+    },
+    {
+      "segment": "versus",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "id": "creatine-vs-l-carnitine",
+      "product": "fusiforce-creatine-gummies",
+      "primary": "creatine gummies vs l carnitine",
+      "title": "Creatine Gummies vs L Carnitine (US {year})",
+      "secondary": [
+        "creatine gummies or l carnitine",
+        "creatine vs l carnitine"
+      ],
+      "intent": "adult comparing creatine with l carnitine for training",
+      "fanout": [
+        "can you take creatine gummies and l carnitine together",
+        "creatine vs l carnitine benefits"
+      ]
+    },
+    {
+      "segment": "versus",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "id": "creatine-vs-hmb",
+      "product": "fusiforce-creatine-gummies",
+      "primary": "creatine gummies vs hmb",
+      "title": "Creatine Gummies vs HMB (US {year})",
+      "secondary": [
+        "creatine gummies or hmb",
+        "creatine vs hmb"
+      ],
+      "intent": "adult comparing creatine with hmb for training",
+      "fanout": [
+        "can you take creatine gummies and hmb together",
+        "creatine vs hmb benefits"
+      ]
+    },
+    {
+      "segment": "versus",
+      "template": "COMPARISON",
+      "priority": 1,
+      "angle": "Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.",
+      "id": "creatine-vs-citrulline",
+      "product": "fusiforce-creatine-gummies",
+      "primary": "creatine gummies vs citrulline",
+      "title": "Creatine Gummies vs Citrulline (US {year})",
+      "secondary": [
+        "creatine gummies or citrulline",
+        "creatine vs citrulline"
+      ],
+      "intent": "adult comparing creatine with citrulline for training",
+      "fanout": [
+        "can you take creatine gummies and citrulline together",
+        "creatine vs citrulline benefits"
+      ]
     }
   ]
 }

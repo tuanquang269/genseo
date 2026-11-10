@@ -2200,3 +2200,157 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Evidence to fetch & confirm (claims log):** every number, study and dose from a source fetched at write time — cut what you cannot confirm
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** shilajit + versus checked 2026-11-10 against 187 live articles (blog listing + sitemap + Atom + local caches) and all 164 tickets in this file; STEP 0 re-checks at write time
+
+# BATCH 2026-11-10 (refill_tickets.py — ids #RF1110-1…#RF1110-11)
+
+Built by `scripts/refill_tickets.py` at 2026-11-10 15:38 ICT from `templates/article-topic-bank.json` + `board/ideas.csv`
+(search volume: No data — GSC/Ads not used). Every ticket passed, against the live store at build time:
+brand_rules + `lint_tickets.py` · hero product live and in stock · not a covered topic (header rule 6) ·
+not already queued · not live (187 published articles: blog listing + sitemap + Atom + local caches; one article per brand + segment) ·
+`topic_fitness.py` strict on primary and title · STEP 0 suggest.json.
+A `topic_fitness` REVIEW [covered-segment] verdict is allowed under Kevin's standing greenlight for mined queues (2026-08-13).
+A topic is a brief, not copy: source every claim or cut it.
+
+**Rules for this batch:** from the 2026-10-08 batch rules — fan-out answers, a "Where to buy <product> in the US"
+section (live price, the ticket's product link only), roster.json byline only (never an invented person or
+credential), the logged fact-check pass (`logs/claims/<slug>.md`; delete unconfirmed claims), the brand gate.
+Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py once. The hero is the picked face plus the real pack unless pick prints NO-FACE. One inline image uses that face. The other inline images have no recognizable face but still show a hand, forearm, or body cropped below the eyes. A no-face image is the fallback for one frame after a face refusal or two QC misses, not a batch-wide ban. The MacBook article plist sets `GENSEO_NO_FACE=0`, and that value does not switch the lane. Prices were read live at build time; re-check the PDP while writing.
+
+- [ ] **#RF1110-1 — turkesterone vs fadogia** — `Turkesterone vs Fadogia: Pros and Cons (US 2026)`
+  - **Primary keyword:** `turkesterone vs fadogia` · **Secondary:** turkesterone or fadogia, is turkesterone better than fadogia
+  - **Search intent:** adult comparing turkesterone with fadogia for muscle and strength
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-10 15:38 ICT)
+  - **Hero product:** `/products/turkesterone-advanced-formula` (Turkesterone Advanced Formula, $75, in stock 2026-11-10)
+  - **Turkesterone Advanced Formula pack label (source of truth):** wellness, nest, PREMIUM, TURKESTERONE, ADVANCED, FORMULA, AMPLIFY, MUSCLE, ENDURANCE, 60, Dietary Supplement, Capsules. No milligram amount and no Supplement Facts panel were read. Do not add one. The capsule badge is the separate lines in product_refs/turkesterone-advanced-formula.label.json. Do not state a milligram amount, a serving count, a different capsule count, or a day-supply.
+  - **Collection links (≥2, verify live):** `/collections/mens-essential-collection` (contains it), `/collections/shilajit-wellness-stack` (contains it)
+  - **Angle:** Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.
+  - **Fan-out answers to cover:** can you take turkesterone and fadogia together; turkesterone vs fadogia benefits
+  - **Evidence to fetch & confirm (claims log):** every number, study and dose from a source fetched at write time — cut what you cannot confirm
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** turkesterone + versus checked 2026-11-10 against 187 live articles (blog listing + sitemap + Atom + local caches) and all 167 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#RF1110-2 — nmn vs berberine** — `NMN vs Berberine: Which Fits Your Goal? (US 2026)`
+  - **Primary keyword:** `nmn vs berberine` · **Secondary:** nmn or berberine, is nmn better than berberine
+  - **Search intent:** adult comparing nmn with berberine for healthy aging
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-10 15:38 ICT)
+  - **Hero product:** `/products/ageaura-pure-nmn-tmg-nad-complex` (AgeAura Pure NMN + TMG NAD+ Complex, $79.99, in stock 2026-11-10)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` twice (browse link — AgeAura Pure NMN + TMG NAD+ Complex is not in it, never claim it is) · no other AgeAura product and no AgeAura collection link (brand_rules)
+  - **Angle:** Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.
+  - **Fan-out answers to cover:** can you take nmn and berberine together; nmn vs berberine benefits
+  - **Evidence to fetch & confirm (claims log):** every number, study and dose from a source fetched at write time — cut what you cannot confirm
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** nmn + versus checked 2026-11-10 against 187 live articles (blog listing + sitemap + Atom + local caches) and all 167 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#RF1110-3 — shilajit vs zinc** — `Shilajit vs Zinc: Which Fits Your Goal? (US 2026)`
+  - **Primary keyword:** `shilajit vs zinc` · **Secondary:** shilajit or zinc, is shilajit better than zinc
+  - **Search intent:** adult comparing shilajit with zinc for men's vitality
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-10 15:38 ICT)
+  - **Hero product:** `/products/shilasource-himalayan-shilajit-resin` (ShilaSource Himalayan Shilajit Resin, $69.99, in stock 2026-11-10)
+  - **ShilaSource Himalayan Shilajit Resin pack label (source of truth):** ShilaSource, Himalayan, Shilajit, Resin, 75, Dietary Supplement, Wellness, Nest, 70% Fulvic Acid*, Lab-Tested for Purity*, 1.06oz (30g), SERVINGS, Servings. No milligram amount and no Supplement Facts panel were read into that file. Do not add one. Do not state a serving count, volume, weight, fulvic percentage, mineral count, or day-supply other than the lines in product_refs/shilasource-himalayan-shilajit-resin.label.json.
+  - **Collection links (≥2, verify live):** `/collections/shilajit-wellness-stack` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.
+  - **Fan-out answers to cover:** can you take shilajit and zinc together; shilajit vs zinc benefits
+  - **Evidence to fetch & confirm (claims log):** every number, study and dose from a source fetched at write time — cut what you cannot confirm
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** shilajit + versus checked 2026-11-10 against 187 live articles (blog listing + sitemap + Atom + local caches) and all 167 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#RF1110-4 — turkesterone vs boron** — `Turkesterone vs Boron: Which Fits Your Goal? (US 2026)`
+  - **Primary keyword:** `turkesterone vs boron` · **Secondary:** turkesterone or boron, is turkesterone better than boron
+  - **Search intent:** adult comparing turkesterone with boron for muscle and strength
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-10 15:38 ICT)
+  - **Hero product:** `/products/turkesterone-advanced-formula` (Turkesterone Advanced Formula, $75, in stock 2026-11-10)
+  - **Turkesterone Advanced Formula pack label (source of truth):** wellness, nest, PREMIUM, TURKESTERONE, ADVANCED, FORMULA, AMPLIFY, MUSCLE, ENDURANCE, 60, Dietary Supplement, Capsules. No milligram amount and no Supplement Facts panel were read. Do not add one. The capsule badge is the separate lines in product_refs/turkesterone-advanced-formula.label.json. Do not state a milligram amount, a serving count, a different capsule count, or a day-supply.
+  - **Collection links (≥2, verify live):** `/collections/mens-essential-collection` (contains it), `/collections/shilajit-wellness-stack` (contains it)
+  - **Angle:** Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.
+  - **Fan-out answers to cover:** can you take turkesterone and boron together; turkesterone vs boron benefits
+  - **Evidence to fetch & confirm (claims log):** every number, study and dose from a source fetched at write time — cut what you cannot confirm
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** turkesterone + versus checked 2026-11-10 against 187 live articles (blog listing + sitemap + Atom + local caches) and all 167 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#RF1110-5 — nmn vs quercetin** — `NMN vs Quercetin: Key Differences (US 2026)`
+  - **Primary keyword:** `nmn vs quercetin` · **Secondary:** nmn or quercetin, is nmn better than quercetin
+  - **Search intent:** adult comparing nmn with quercetin for healthy aging
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-10 15:38 ICT)
+  - **Hero product:** `/products/ageaura-pure-nmn-tmg-nad-complex` (AgeAura Pure NMN + TMG NAD+ Complex, $79.99, in stock 2026-11-10)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` twice (browse link — AgeAura Pure NMN + TMG NAD+ Complex is not in it, never claim it is) · no other AgeAura product and no AgeAura collection link (brand_rules)
+  - **Angle:** Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.
+  - **Fan-out answers to cover:** can you take nmn and quercetin together; nmn vs quercetin benefits
+  - **Evidence to fetch & confirm (claims log):** every number, study and dose from a source fetched at write time — cut what you cannot confirm
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** nmn + versus checked 2026-11-10 against 187 live articles (blog listing + sitemap + Atom + local caches) and all 167 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#RF1110-6 — shilajit vs magnesium** — `Shilajit vs Magnesium: Key Differences (US 2026)`
+  - **Primary keyword:** `shilajit vs magnesium` · **Secondary:** shilajit or magnesium, is shilajit better than magnesium
+  - **Search intent:** adult comparing shilajit with magnesium for energy and recovery
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-10 15:38 ICT)
+  - **Hero product:** `/products/shilasource-himalayan-shilajit-resin` (ShilaSource Himalayan Shilajit Resin, $69.99, in stock 2026-11-10)
+  - **ShilaSource Himalayan Shilajit Resin pack label (source of truth):** ShilaSource, Himalayan, Shilajit, Resin, 75, Dietary Supplement, Wellness, Nest, 70% Fulvic Acid*, Lab-Tested for Purity*, 1.06oz (30g), SERVINGS, Servings. No milligram amount and no Supplement Facts panel were read into that file. Do not add one. Do not state a serving count, volume, weight, fulvic percentage, mineral count, or day-supply other than the lines in product_refs/shilasource-himalayan-shilajit-resin.label.json.
+  - **Collection links (≥2, verify live):** `/collections/shilajit-wellness-stack` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.
+  - **Fan-out answers to cover:** can you take shilajit and magnesium together; shilajit vs magnesium benefits
+  - **Evidence to fetch & confirm (claims log):** every number, study and dose from a source fetched at write time — cut what you cannot confirm
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** shilajit + versus checked 2026-11-10 against 187 live articles (blog listing + sitemap + Atom + local caches) and all 167 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#RF1110-7 — turkesterone vs maca** — `Turkesterone vs Maca: What Each Does (US 2026)`
+  - **Primary keyword:** `turkesterone vs maca` · **Secondary:** turkesterone or maca, is turkesterone better than maca
+  - **Search intent:** adult comparing turkesterone with maca for strength and energy
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-10 15:38 ICT)
+  - **Hero product:** `/products/turkesterone-advanced-formula` (Turkesterone Advanced Formula, $75, in stock 2026-11-10)
+  - **Turkesterone Advanced Formula pack label (source of truth):** wellness, nest, PREMIUM, TURKESTERONE, ADVANCED, FORMULA, AMPLIFY, MUSCLE, ENDURANCE, 60, Dietary Supplement, Capsules. No milligram amount and no Supplement Facts panel were read. Do not add one. The capsule badge is the separate lines in product_refs/turkesterone-advanced-formula.label.json. Do not state a milligram amount, a serving count, a different capsule count, or a day-supply.
+  - **Collection links (≥2, verify live):** `/collections/mens-essential-collection` (contains it), `/collections/shilajit-wellness-stack` (contains it)
+  - **Angle:** Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.
+  - **Fan-out answers to cover:** can you take turkesterone and maca together; turkesterone vs maca benefits
+  - **Evidence to fetch & confirm (claims log):** every number, study and dose from a source fetched at write time — cut what you cannot confirm
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** turkesterone + versus checked 2026-11-10 against 187 live articles (blog listing + sitemap + Atom + local caches) and all 167 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#RF1110-8 — nmn vs astaxanthin** — `NMN vs Astaxanthin: Which to Pick? (US 2026)`
+  - **Primary keyword:** `nmn vs astaxanthin` · **Secondary:** nmn or astaxanthin, is nmn better than astaxanthin
+  - **Search intent:** adult comparing nmn with astaxanthin for healthy aging
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-10 15:38 ICT)
+  - **Hero product:** `/products/ageaura-pure-nmn-tmg-nad-complex` (AgeAura Pure NMN + TMG NAD+ Complex, $79.99, in stock 2026-11-10)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` twice (browse link — AgeAura Pure NMN + TMG NAD+ Complex is not in it, never claim it is) · no other AgeAura product and no AgeAura collection link (brand_rules)
+  - **Angle:** Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.
+  - **Fan-out answers to cover:** can you take nmn and astaxanthin together; nmn vs astaxanthin benefits
+  - **Evidence to fetch & confirm (claims log):** every number, study and dose from a source fetched at write time — cut what you cannot confirm
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** nmn + versus checked 2026-11-10 against 187 live articles (blog listing + sitemap + Atom + local caches) and all 167 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#RF1110-9 — shilajit vs black seed oil** — `Shilajit vs Black Seed Oil: What Each Does (US 2026)`
+  - **Primary keyword:** `shilajit vs black seed oil` · **Secondary:** shilajit or black seed oil, is shilajit better than black seed oil
+  - **Search intent:** adult comparing shilajit with black seed oil for daily wellness
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-10 15:38 ICT)
+  - **Hero product:** `/products/shilasource-himalayan-shilajit-resin` (ShilaSource Himalayan Shilajit Resin, $69.99, in stock 2026-11-10)
+  - **ShilaSource Himalayan Shilajit Resin pack label (source of truth):** ShilaSource, Himalayan, Shilajit, Resin, 75, Dietary Supplement, Wellness, Nest, 70% Fulvic Acid*, Lab-Tested for Purity*, 1.06oz (30g), SERVINGS, Servings. No milligram amount and no Supplement Facts panel were read into that file. Do not add one. Do not state a serving count, volume, weight, fulvic percentage, mineral count, or day-supply other than the lines in product_refs/shilasource-himalayan-shilajit-resin.label.json.
+  - **Collection links (≥2, verify live):** `/collections/shilajit-wellness-stack` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.
+  - **Fan-out answers to cover:** can you take shilajit and black seed oil together; shilajit vs black seed oil benefits
+  - **Evidence to fetch & confirm (claims log):** every number, study and dose from a source fetched at write time — cut what you cannot confirm
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** shilajit + versus checked 2026-11-10 against 187 live articles (blog listing + sitemap + Atom + local caches) and all 167 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#RF1110-10 — nmn vs collagen** — `NMN vs Collagen: Pros and Cons (US 2026)`
+  - **Primary keyword:** `nmn vs collagen` · **Secondary:** nmn or collagen, is nmn better than collagen
+  - **Search intent:** adult comparing nmn with collagen for skin and aging
+  - **Template:** COMPARISON · **Gate:** topic_fitness PASS [brand_intent] · STEP 0: suggest.json 0 article matches (2026-11-10 15:38 ICT)
+  - **Hero product:** `/products/ageaura-pure-nmn-tmg-nad-complex` (AgeAura Pure NMN + TMG NAD+ Complex, $79.99, in stock 2026-11-10)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` twice (browse link — AgeAura Pure NMN + TMG NAD+ Complex is not in it, never claim it is) · no other AgeAura product and no AgeAura collection link (brand_rules)
+  - **Angle:** Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.
+  - **Fan-out answers to cover:** can you take nmn and collagen together; nmn vs collagen benefits
+  - **Evidence to fetch & confirm (claims log):** every number, study and dose from a source fetched at write time — cut what you cannot confirm
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** nmn + versus checked 2026-11-10 against 187 live articles (blog listing + sitemap + Atom + local caches) and all 167 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#RF1110-11 — shilajit vs saffron** — `Shilajit vs Saffron: Which to Pick? (US 2026)`
+  - **Primary keyword:** `shilajit vs saffron` · **Secondary:** shilajit or saffron, is shilajit better than saffron
+  - **Search intent:** adult comparing shilajit with saffron for mood and energy
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-10 15:38 ICT)
+  - **Hero product:** `/products/shilasource-himalayan-shilajit-resin` (ShilaSource Himalayan Shilajit Resin, $69.99, in stock 2026-11-10)
+  - **ShilaSource Himalayan Shilajit Resin pack label (source of truth):** ShilaSource, Himalayan, Shilajit, Resin, 75, Dietary Supplement, Wellness, Nest, 70% Fulvic Acid*, Lab-Tested for Purity*, 1.06oz (30g), SERVINGS, Servings. No milligram amount and no Supplement Facts panel were read into that file. Do not add one. Do not state a serving count, volume, weight, fulvic percentage, mineral count, or day-supply other than the lines in product_refs/shilasource-himalayan-shilajit-resin.label.json.
+  - **Collection links (≥2, verify live):** `/collections/shilajit-wellness-stack` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.
+  - **Fan-out answers to cover:** can you take shilajit and saffron together; shilajit vs saffron benefits
+  - **Evidence to fetch & confirm (claims log):** every number, study and dose from a source fetched at write time — cut what you cannot confirm
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** shilajit + versus checked 2026-11-10 against 187 live articles (blog listing + sitemap + Atom + local caches) and all 167 tickets in this file; STEP 0 re-checks at write time
