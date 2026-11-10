@@ -328,6 +328,7 @@ class PlistTests(unittest.TestCase):
     def test_only_the_catchup_agent_runs_at_load(self):
         deploy = os.path.join(ROOT, "deploy")
         seen = False
+        seen_worker = False
         for name in os.listdir(deploy):
             if not name.endswith(".plist"):
                 continue
@@ -345,6 +346,22 @@ class PlistTests(unittest.TestCase):
                 blob = " ".join(argv)
                 self.assertNotIn("--live", blob)
                 self.assertNotIn("launchctl", blob)
+            elif name == "com.pati.cursor-agent-worker.plist":
+                # Cursor worker from the Mini failover bootstrap. The installer
+                # writes this plist and does not call launchctl; the load line
+                # is `launchctl bootstrap`, which starts it because RunAtLoad
+                # is true. KeepAlive holds the daemon. No calendar, no content job.
+                seen_worker = True
+                self.assertIs(data.get("RunAtLoad"), True, name)
+                self.assertIs(data.get("KeepAlive"), True, name)
+                self.assertNotIn("StartCalendarInterval", data)
+                self.assertEqual(data.get("Label"), "com.pati.cursor-agent-worker")
+                argv = data.get("ProgramArguments")
+                self.assertEqual(argv[1:4], ["worker", "start", "--name"])
+                blob = " ".join(argv)
+                self.assertNotIn("--live", blob)
+                self.assertNotIn("launchctl", blob)
             else:
                 self.assertIs(data.get("RunAtLoad"), False, name)
         self.assertTrue(seen)
+        self.assertTrue(seen_worker)
