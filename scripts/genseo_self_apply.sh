@@ -45,6 +45,12 @@
 #   GENSEO_HOST_MODEL             hw.model, instead of sysctl
 #   GENSEO_SELF_APPLY_POLL_SEC    helper wait interval (default 2)
 #   GENSEO_SELF_APPLY_SETTLE_SEC  pause after the job exits (default 1)
+#   GENSEO_SELF_APPLY_PS          process listing instead of ps. A non-zero
+#                                 exit is fail-closed and does not fall
+#                                 through to the host list. When the hook is
+#                                 unset, test mode keeps only commands that
+#                                 contain this checkout. Production (the flag
+#                                 unset) still reads the whole process list.
 # GENSEO_SELF_APPLY_DISABLE=1 logs and returns without copying.
 # GENSEO_SYNC_DRY_RUN=1 logs and returns without copying.
 #
@@ -340,13 +346,68 @@ genseo_self_apply_cmd_is_lane() {
   return 1
 }
 
-# 0 when a live process for this lane is visible. 2 when ps cannot be read.
+# 0 when a checkout path is specific enough to filter a process list.
+# A root or a tmp directory would match the whole machine, so test mode
+# treats that as unreadable instead of scanning every process.
+genseo_self_apply_scope_usable() {
+  local scope=$1 n=0
+  scope=${scope%/}
+  case "$scope" in
+    ""|"/"|"/tmp"|"/private"|"/private/tmp"|"/var"|"/var/tmp"|"/Users"|"/private/var")
+      return 1
+      ;;
+  esac
+  case "$scope" in
+    /*/*) ;;
+    *) return 1 ;;
+  esac
+  n=${#scope}
+  [ "$n" -ge 16 ] || return 1
+  return 0
+}
+
+# 0 when a live process for this lane is visible. 2 when the list cannot be read.
+# Production reads the host process list and fail-closes when ps cannot be read.
+# GENSEO_SELF_APPLY_TEST=1 uses GENSEO_SELF_APPLY_PS when that hook is set.
+# A hook that is missing or exits non-zero does not fall through to host ps.
+# With the hook unset, test mode keeps commands that contain this checkout,
+# so a writer in another directory is not this lane's job. An unusable
+# checkout path in test mode is unreadable (fail closed).
 genseo_self_apply_job_running() {
-  local lane=$1 tmp="" pid="" cmd="" saw=1
+  local lane=$1 repo=${2:-} tmp="" pid="" cmd="" saw=1 raw="" phys="" use_a="" use_b=""
   tmp=$(mktemp "${TMPDIR:-/tmp}/genseo-self-apply-ps.XXXXXX") || return 2
   if [ "${GENSEO_SELF_APPLY_TEST:-0}" = 1 ] && [ -n "${GENSEO_SELF_APPLY_PS:-}" ]; then
     if [ -x "$GENSEO_SELF_APPLY_PS" ] && "$GENSEO_SELF_APPLY_PS" >"$tmp" 2>/dev/null; then
       saw=0
+    fi
+  elif [ "${GENSEO_SELF_APPLY_TEST:-0}" = 1 ]; then
+    repo=${repo%/}
+    phys=""
+    if [ -d "$repo" ]; then
+      phys=$(cd "$repo" && pwd -P) || phys=""
+      phys=${phys%/}
+    fi
+    use_a=""
+    use_b=""
+    if genseo_self_apply_scope_usable "$repo"; then
+      use_a=$repo
+    fi
+    if [ -n "$phys" ] && [ "$phys" != "$repo" ] && genseo_self_apply_scope_usable "$phys"; then
+      use_b=$phys
+    fi
+    if [ -n "$use_a" ] || [ -n "$use_b" ]; then
+      raw=$(mktemp "${TMPDIR:-/tmp}/genseo-self-apply-ps.XXXXXX") || {
+        rm -f "$tmp"
+        return 2
+      }
+      if ps -axww -o pid=,args= >"$raw" 2>/dev/null || ps -eo pid=,args= >"$raw" 2>/dev/null; then
+        if awk -v a="$use_a" -v b="$use_b" '
+          (a != "" && index($0, a)) || (b != "" && b != a && index($0, b))
+        ' "$raw" >"$tmp"; then
+          saw=0
+        fi
+      fi
+      rm -f "$raw"
     fi
   elif ps -axww -o pid=,args= >"$tmp" 2>/dev/null; then
     saw=0
@@ -407,7 +468,7 @@ genseo_self_apply_lane_busy() {
       return 0
     fi
   fi
-  genseo_self_apply_job_running "$lane"
+  genseo_self_apply_job_running "$lane" "$repo"
   job_rc=$?
   if [ "$job_rc" = 0 ]; then
     genseo_self_apply_busy_reason="a job is running"
