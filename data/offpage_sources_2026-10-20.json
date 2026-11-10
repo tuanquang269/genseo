@@ -1,0 +1,1982 @@
+{
+  "collected_on": "2026-10-20",
+  "method": "Public web search on 2026-10-20, then one polite GET per URL when --fetch is used. No answer engine was queried.",
+  "ai_citation_note": "No ChatGPT, Perplexity, or Google AI Overview session was run. ai_citation_observed is false on every source. A web search rank is not an AI citation.",
+  "sources": [
+    {
+      "id": "aa-vsd-best",
+      "cluster": "ageaura",
+      "url": "https://verifiedsupplementdata.com/nmn/best-overall/",
+      "title": "Best NMN Supplement (2026): Testing, Dose and Cost Compared",
+      "page_type": "listicle",
+      "seed_queries": [
+        "best NMN supplement",
+        "best NMN supplement 2026"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_date": "October 12, 2026",
+      "search_us_mentioned": false,
+      "search_brands": [
+        "Transparent Labs",
+        "Neurogan",
+        "Renue By Science",
+        "Toniiq",
+        "Codeage"
+      ],
+      "http_status": 200,
+      "final_url": "https://verifiedsupplementdata.com/nmn/best-overall/",
+      "fetch_note": "",
+      "competitor_brands": [
+        "Transparent Labs",
+        "Neurogan",
+        "Renue By Science",
+        "Toniiq",
+        "Codeage",
+        "ProHealth",
+        "Genex Formulas",
+        "Double Wood",
+        "Cata-Kor",
+        "BulkSupplements"
+      ],
+      "us_marks": [],
+      "us_mentioned": false,
+      "date_shown": "October 12, 2026",
+      "opening_excerpt": "Best NMN Supplement (2026): Testing, Dose and Cost Compared Verified Supplement Data Supplements Research About Best overall Tested NMN vs NR What it does Home › NMN › Best NMN The 4 Best NMN Supplements of 2026 By Erin Rose · Updated October 12, 2026 · How we score If you take NMN, our pick is Transparent Labs NMN 600 mg: 600 mg a capsule for $1.00 at list ",
+      "body_chars": 12858,
+      "body_sha256": "43e5480a5df5434d",
+      "mention_basis": "fetched_body",
+      "is_gap": true,
+      "gap_score": 67,
+      "domain": "verifiedsupplementdata.com",
+      "outreach": {
+        "action": "draft_only",
+        "contact_url": "https://verifiedsupplementdata.com/about/",
+        "offer": "Draft only, do not email or submit a form. Offer one sample of AgeAura Pure NMN + TMG NAD+ Complex (https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex). Quote only lines in product_refs/ageaura-pure-nmn-tmg-nad-complex.label.json. Do not add a milligram amount. A roster byline may be quoted only after Kevin names the person. Do not lead with a lab test or a COA. Link a report only if Kevin already published it as HTML.",
+        "product_url": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex"
+      },
+      "editor_contact_url": "https://verifiedsupplementdata.com/about/"
+    },
+    {
+      "id": "aa-vsd-cost",
+      "cluster": "ageaura",
+      "url": "https://verifiedsupplementdata.com/supplements/nmn/",
+      "title": "Best NMN Supplements 2026: Cost per Effective Dose",
+      "page_type": "roundup",
+      "seed_queries": [
+        "best NMN supplement 2026",
+        "best NMN capsules"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_date": "October 12, 2026",
+      "search_us_mentioned": false,
+      "search_brands": [
+        "Renue By Science",
+        "Neurogan",
+        "Toniiq",
+        "Nutricost",
+        "Transparent Labs",
+        "ProHealth",
+        "Codeage",
+        "Elysium"
+      ],
+      "http_status": 200,
+      "final_url": "https://verifiedsupplementdata.com/supplements/nmn/",
+      "fetch_note": "",
+      "competitor_brands": [
+        "Transparent Labs",
+        "Renue By Science",
+        "Neurogan",
+        "Toniiq",
+        "Nutricost",
+        "ProHealth",
+        "Codeage",
+        "Elysium"
+      ],
+      "us_marks": [],
+      "us_mentioned": false,
+      "date_shown": "October 12, 2026",
+      "opening_excerpt": "Best NMN Supplements 2026: Cost per Effective Dose Verified Supplement Data Supplements Research About Home › NMN › NMN cost Best NMN Supplements 2026: Cost per Effective Dose By Erin Rose · Updated October 12, 2026 · How we score 500 mg of NMN costs $0.27 to $4.00 across the 11 we price, at each brand’s list price. Powder costs least. Our pick, Transparent ",
+      "body_chars": 6544,
+      "body_sha256": "902966eb02aa6f6f",
+      "mention_basis": "fetched_body",
+      "is_gap": true,
+      "gap_score": 63,
+      "domain": "verifiedsupplementdata.com",
+      "outreach": {
+        "action": "draft_only",
+        "contact_url": "https://verifiedsupplementdata.com/about/",
+        "offer": "Draft only, do not email or submit a form. Offer one sample of AgeAura Pure NMN + TMG NAD+ Complex (https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex). Quote only lines in product_refs/ageaura-pure-nmn-tmg-nad-complex.label.json. Do not add a milligram amount. A roster byline may be quoted only after Kevin names the person. Do not lead with a lab test or a COA. Link a report only if Kevin already published it as HTML.",
+        "product_url": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex"
+      },
+      "editor_contact_url": "https://verifiedsupplementdata.com/about/"
+    },
+    {
+      "id": "aa-vsd-tested",
+      "cluster": "ageaura",
+      "url": "https://verifiedsupplementdata.com/nmn/third-party-tested/",
+      "title": "Third-Party Tested NMN 2026: Which Brands Are Certified",
+      "page_type": "directory",
+      "seed_queries": [
+        "best NMN supplement third party tested"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_us_mentioned": false,
+      "search_brands": [
+        "Transparent Labs",
+        "Codeage",
+        "Elysium",
+        "Cata-Kor"
+      ],
+      "http_status": 200,
+      "final_url": "https://verifiedsupplementdata.com/nmn/third-party-tested/",
+      "fetch_note": "",
+      "competitor_brands": [
+        "Transparent Labs",
+        "Codeage",
+        "Cata-Kor",
+        "Elysium",
+        "Renue By Science",
+        "Neurogan",
+        "Toniiq"
+      ],
+      "us_marks": [],
+      "us_mentioned": false,
+      "date_shown": "October 12, 2026",
+      "opening_excerpt": "Third-Party Tested NMN 2026: Which Brands Are Certified Verified Supplement Data Supplements Research About Home › NMN › Third-party tested Third-Party Tested NMN 2026: Which Brands Are Certified 5 NMN products we link are on a public testing list: Transparent Labs NMN (Informed Choice), Codeage Liposomal NMN Platinum, Codeage Liposomal NMN with TMG and Cata",
+      "body_chars": 9637,
+      "body_sha256": "0216ec950845fa1b",
+      "mention_basis": "fetched_body",
+      "is_gap": true,
+      "gap_score": 59,
+      "domain": "verifiedsupplementdata.com",
+      "outreach": {
+        "action": "draft_only",
+        "contact_url": "https://verifiedsupplementdata.com/about/",
+        "offer": "Draft only, do not email or submit a form. Offer one sample of AgeAura Pure NMN + TMG NAD+ Complex (https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex). Quote only lines in product_refs/ageaura-pure-nmn-tmg-nad-complex.label.json. Do not add a milligram amount. A roster byline may be quoted only after Kevin names the person. Do not lead with a lab test or a COA. Link a report only if Kevin already published it as HTML.",
+        "product_url": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex"
+      },
+      "editor_contact_url": "https://verifiedsupplementdata.com/about/"
+    },
+    {
+      "id": "aa-healthline",
+      "cluster": "ageaura",
+      "url": "https://www.healthline.com/health/best-nmn-supplements",
+      "title": "Best NMN Supplements: 2026 Buyer's Guide",
+      "page_type": "listicle",
+      "seed_queries": [
+        "best NMN supplement",
+        "best NMN supplement 2026"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_date": "April 29, 2026",
+      "search_us_mentioned": false,
+      "search_brands": [
+        "California Gold Nutrition",
+        "Double Wood",
+        "Nutricost"
+      ],
+      "http_status": 200,
+      "final_url": "https://www.healthline.com/health/best-nmn-supplements",
+      "fetch_note": "",
+      "competitor_brands": [
+        "California Gold Nutrition",
+        "Double Wood",
+        "Nutricost"
+      ],
+      "us_marks": [],
+      "us_mentioned": false,
+      "date_shown": "April 29, 2026",
+      "opening_excerpt": "Best NMN Supplements: 2026 Buyer's Guide Skip to main content Subscribe Health Conditions Health Conditions Alzheimer's Disease Breast Cancer Cancer Care Chronic Kidney Disease Chronic Obstructive Pulmonary Disease (COPD) Colon Cancer Digestive Health Eczema Eye Health Heart Health Menopause Mental Health Migraine Multiple Sclerosis (MS) Parkinson's Disease ",
+      "body_chars": 736761,
+      "body_sha256": "0b06a0b5510ebe5b",
+      "mention_basis": "fetched_body",
+      "is_gap": true,
+      "gap_score": 61,
+      "domain": "healthline.com",
+      "outreach": {
+        "action": "draft_only",
+        "contact_url": "https://www.healthline.com/about/contact-us",
+        "offer": "Draft only, do not email or submit a form. Offer one sample of AgeAura Pure NMN + TMG NAD+ Complex (https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex). Quote only lines in product_refs/ageaura-pure-nmn-tmg-nad-complex.label.json. Do not add a milligram amount. A roster byline may be quoted only after Kevin names the person. Do not lead with a lab test or a COA. Link a report only if Kevin already published it as HTML.",
+        "product_url": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex"
+      },
+      "editor_contact_url": "https://www.healthline.com/about/contact-us",
+      "date_source": "html_meta",
+      "read_note": "Thorne is named in an author aside about other brands, not as an NMN pick, so it is not in the brand list."
+    },
+    {
+      "id": "aa-fortune",
+      "cluster": "ageaura",
+      "url": "https://fortune.com/article/best-nmn-supplements/",
+      "title": "The 8 Best NMN Supplements of 2026: Expert Approved | Fortune",
+      "page_type": "listicle",
+      "seed_queries": [
+        "best NMN supplement 2026",
+        "best NMN for longevity"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_date": "October 16, 2026",
+      "search_us_mentioned": false,
+      "search_brands": [
+        "PartiQlar",
+        "Wonderfeel",
+        "Omre",
+        "Transparent Labs",
+        "Welzo",
+        "GenuinePurity",
+        "Hello100",
+        "Nutricost"
+      ],
+      "http_status": 200,
+      "final_url": "https://fortune.com/article/best-nmn-supplements/",
+      "fetch_note": "",
+      "competitor_brands": [
+        "PartiQlar",
+        "Wonderfeel",
+        "Omre",
+        "Transparent Labs",
+        "For Youth",
+        "Welzo",
+        "GenuinePurity",
+        "Hello100",
+        "Nutricost",
+        "Double Wood"
+      ],
+      "us_marks": [],
+      "us_mentioned": false,
+      "date_shown": "October 16, 2026",
+      "opening_excerpt": "The 8 Best NMN Supplements of 2026: Expert Approved | Fortune Search Subscribe Home Latest Fortune 500 Finance Tech Leadership Lifestyle Rankings Multimedia We have independently evaluated the products and services below. We may earn affiliate revenue from links in the content. Learn More. Trending now 1 Europe sent its gold to the U.S. for safekeeping durin",
+      "body_chars": 40395,
+      "body_sha256": "805d165a86df2568",
+      "mention_basis": "fetched_body",
+      "is_gap": true,
+      "gap_score": 67,
+      "domain": "fortune.com",
+      "outreach": {
+        "action": "draft_only",
+        "contact_url": "https://fortune.com/2021/04/15/how-to-pitch-fortune-get-a-story-picked-up-business-magazine-freelance-work-pitching-advice/",
+        "offer": "Draft only, do not email or submit a form. Offer one sample of AgeAura Pure NMN + TMG NAD+ Complex (https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex). Quote only lines in product_refs/ageaura-pure-nmn-tmg-nad-complex.label.json. Do not add a milligram amount. A roster byline may be quoted only after Kevin names the person. Do not lead with a lab test or a COA. Link a report only if Kevin already published it as HTML.",
+        "product_url": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex"
+      },
+      "editor_contact_url": "https://fortune.com/2021/04/15/how-to-pitch-fortune-get-a-story-picked-up-business-magazine-freelance-work-pitching-advice/",
+      "date_source": "html_meta"
+    },
+    {
+      "id": "aa-forbes-nmn",
+      "cluster": "ageaura",
+      "url": "https://www.forbes.com/health/wellness/best-nmn-supplements/",
+      "title": "7 Best NMN Supplements Of 2026 – Forbes Health",
+      "page_type": "listicle",
+      "seed_queries": [
+        "best NMN supplement 2026",
+        "top NMN brands compared"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_us_mentioned": false,
+      "search_brands": [
+        "BulkSupplements",
+        "Natural Factors",
+        "Genex Formulas",
+        "Upnourish",
+        "Nutricost",
+        "ProHealth",
+        "Innerbody Labs"
+      ],
+      "http_status": 403,
+      "fetch_note": "HTTP 403 ",
+      "competitor_brands": [
+        "BulkSupplements",
+        "Natural Factors",
+        "Genex Formulas",
+        "Upnourish",
+        "Nutricost",
+        "ProHealth",
+        "Innerbody Labs"
+      ],
+      "us_marks": [],
+      "us_mentioned": false,
+      "date_shown": "",
+      "mention_basis": "search_snippet",
+      "is_gap": true,
+      "gap_score": 34,
+      "domain": "forbes.com",
+      "outreach": {
+        "action": "draft_only",
+        "contact_url": "",
+        "offer": "Draft only, do not email or submit a form. Offer one sample of AgeAura Pure NMN + TMG NAD+ Complex (https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex). Quote only lines in product_refs/ageaura-pure-nmn-tmg-nad-complex.label.json. Do not add a milligram amount. A roster byline may be quoted only after Kevin names the person. Do not lead with a lab test or a COA. Link a report only if Kevin already published it as HTML.",
+        "product_url": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex"
+      }
+    },
+    {
+      "id": "aa-forbes-nad",
+      "cluster": "ageaura",
+      "url": "https://www.forbes.com/health/wellness/best-nad-supplements/",
+      "title": "10 Best NAD Supplements Of 2026 – Forbes Health",
+      "page_type": "listicle",
+      "seed_queries": [
+        "best NAD+ supplement 2026",
+        "best NAD booster supplement"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_us_mentioned": false,
+      "search_brands": [
+        "Tru Niagen"
+      ],
+      "http_status": 403,
+      "fetch_note": "HTTP 403 ",
+      "competitor_brands": [
+        "Tru Niagen"
+      ],
+      "us_marks": [],
+      "us_mentioned": false,
+      "date_shown": "",
+      "mention_basis": "search_snippet",
+      "is_gap": true,
+      "gap_score": 29,
+      "domain": "forbes.com",
+      "outreach": {
+        "action": "draft_only",
+        "contact_url": "",
+        "offer": "Draft only, do not email or submit a form. Offer one sample of AgeAura Pure NMN + TMG NAD+ Complex (https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex). Quote only lines in product_refs/ageaura-pure-nmn-tmg-nad-complex.label.json. Do not add a milligram amount. A roster byline may be quoted only after Kevin names the person. Do not lead with a lab test or a COA. Link a report only if Kevin already published it as HTML.",
+        "product_url": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex"
+      }
+    },
+    {
+      "id": "aa-verywell",
+      "cluster": "ageaura",
+      "url": "https://www.verywellhealth.com/best-nad-supplements-8713201",
+      "title": "The 5 Best NAD+ Supplements for Optimal Aging, According to Dietitians",
+      "page_type": "listicle",
+      "seed_queries": [
+        "best NAD+ supplement 2026",
+        "best NAD booster supplement"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_us_mentioned": false,
+      "search_brands": [
+        "Tru Niagen",
+        "Life Extension",
+        "Thorne"
+      ],
+      "http_status": 403,
+      "fetch_note": "HTTP 403 ",
+      "competitor_brands": [
+        "Tru Niagen",
+        "Life Extension",
+        "Thorne"
+      ],
+      "us_marks": [],
+      "us_mentioned": false,
+      "date_shown": "",
+      "mention_basis": "search_snippet",
+      "is_gap": true,
+      "gap_score": 31,
+      "domain": "verywellhealth.com",
+      "outreach": {
+        "action": "draft_only",
+        "contact_url": "",
+        "offer": "Draft only, do not email or submit a form. Offer one sample of AgeAura Pure NMN + TMG NAD+ Complex (https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex). Quote only lines in product_refs/ageaura-pure-nmn-tmg-nad-complex.label.json. Do not add a milligram amount. A roster byline may be quoted only after Kevin names the person. Do not lead with a lab test or a COA. Link a report only if Kevin already published it as HTML.",
+        "product_url": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex"
+      }
+    },
+    {
+      "id": "aa-longevity",
+      "cluster": "ageaura",
+      "url": "https://www.longevitybenchmark.com/supplements/nmn-vs-nr/",
+      "title": "NMN vs NR (2026): Which NAD+ Precursor Has Better Evidence?",
+      "page_type": "comparison",
+      "seed_queries": [
+        "NMN vs NR",
+        "NAD+ precursor comparison NMN NR"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_us_mentioned": false,
+      "search_brands": [],
+      "http_status": 200,
+      "final_url": "https://www.longevitybenchmark.com/supplements/nmn-vs-nr/",
+      "fetch_note": "",
+      "competitor_brands": [
+        "Tru Niagen",
+        "Elysium"
+      ],
+      "us_marks": [],
+      "us_mentioned": false,
+      "date_shown": "",
+      "opening_excerpt": "NMN vs NR (2026): Which NAD+ Precursor Has Better Evidence? --> --> Skip to content Longevity Benchmark Platforms News Testing Biomarkers Biological Age CGM Gut Health Health Men's Health Women's Health Nutrition Supplements Nutrient Density Reversal Tracking Wearables Sleep For You All audiences Beginners Busy professionals Men over 40 Retirement Free Asses",
+      "body_chars": 18128,
+      "body_sha256": "a205c0339e77eaab",
+      "mention_basis": "fetched_body",
+      "is_gap": true,
+      "gap_score": 52,
+      "domain": "longevitybenchmark.com",
+      "outreach": {
+        "action": "draft_only",
+        "contact_url": "https://www.longevitybenchmark.com/about",
+        "offer": "Draft only, do not email or submit a form. Offer one sample of AgeAura Pure NMN + TMG NAD+ Complex (https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex). Quote only lines in product_refs/ageaura-pure-nmn-tmg-nad-complex.label.json. Do not add a milligram amount. A roster byline may be quoted only after Kevin names the person. Do not lead with a lab test or a COA. Link a report only if Kevin already published it as HTML.",
+        "product_url": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex"
+      },
+      "editor_contact_url": "https://www.longevitybenchmark.com/about"
+    },
+    {
+      "id": "aa-bettervitals",
+      "cluster": "ageaura",
+      "url": "https://www.bettervitals.com/learn/tru-niagen-vs-wonderfeel-youngr",
+      "title": "Wonderfeel Youngr NMN vs Tru Niagen (2026): Which NAD+ Booster Wins?",
+      "page_type": "comparison",
+      "seed_queries": [
+        "Wonderfeel vs Tru Niagen",
+        "NMN vs NR"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_us_mentioned": false,
+      "search_brands": [
+        "Tru Niagen",
+        "Wonderfeel"
+      ],
+      "http_status": 200,
+      "final_url": "https://www.bettervitals.com/learn/tru-niagen-vs-wonderfeel-youngr",
+      "fetch_note": "",
+      "competitor_brands": [
+        "Wonderfeel",
+        "Tru Niagen",
+        "NOVOS"
+      ],
+      "us_marks": [],
+      "us_mentioned": false,
+      "date_shown": "Jul 10, 2026",
+      "opening_excerpt": "Wonderfeel Youngr NMN vs Tru Niagen (2026): Which NAD+ Booster Wins? (not deferred) because AdSense uses this tag for site verification crawls and Auto Ads placement; it is async so it does not block rendering. Propagates to every prerendered page via dist/index.html being the template in prerender-articles.mjs. --> BetterVitals Products Reviews Learn Quizze",
+      "body_chars": 14714,
+      "body_sha256": "34134c9845d9f07c",
+      "mention_basis": "fetched_body",
+      "is_gap": true,
+      "gap_score": 59,
+      "domain": "bettervitals.com",
+      "outreach": {
+        "action": "draft_only",
+        "contact_url": "https://www.bettervitals.com/contact",
+        "offer": "Draft only, do not email or submit a form. Offer one sample of AgeAura Pure NMN + TMG NAD+ Complex (https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex). Quote only lines in product_refs/ageaura-pure-nmn-tmg-nad-complex.label.json. Do not add a milligram amount. A roster byline may be quoted only after Kevin names the person. Do not lead with a lab test or a COA. Link a report only if Kevin already published it as HTML.",
+        "product_url": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex"
+      },
+      "editor_contact_url": "https://www.bettervitals.com/contact"
+    },
+    {
+      "id": "aa-useful-tmg",
+      "cluster": "ageaura",
+      "url": "https://usefulvitamins.com/best-tmg-supplements/",
+      "title": "Best TMG (Trimethylglycine) Supplements: The NMN and Creatine Partner",
+      "page_type": "listicle",
+      "seed_queries": [
+        "best NMN with TMG",
+        "NMN and TMG together"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_us_mentioned": false,
+      "search_brands": [],
+      "http_status": 200,
+      "final_url": "https://usefulvitamins.com/best-tmg-supplements/",
+      "fetch_note": "",
+      "competitor_brands": [
+        "Double Wood",
+        "Nutricost"
+      ],
+      "us_marks": [],
+      "us_mentioned": false,
+      "date_shown": "May 29, 2026",
+      "opening_excerpt": "Best TMG (Trimethylglycine) Supplements: The NMN and Creatine Partner Skip to content Supplements Best for a Condition Peptides Magnesium Fish oil Collagen Superfoods Vitamins Minerals & Electrolytes Interactions Reviews Brands Tools About About Us How We Review Supplements Our Authors Write for Us Contacts Privacy Policy Terms of Use Disclaimer Supplements ",
+      "body_chars": 16711,
+      "body_sha256": "fea77cf170dbb645",
+      "mention_basis": "fetched_body",
+      "is_gap": true,
+      "gap_score": 59,
+      "domain": "usefulvitamins.com",
+      "outreach": {
+        "action": "draft_only",
+        "contact_url": "https://usefulvitamins.com/contacts/",
+        "offer": "Draft only, do not email or submit a form. Offer one sample of AgeAura Pure NMN + TMG NAD+ Complex (https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex). Quote only lines in product_refs/ageaura-pure-nmn-tmg-nad-complex.label.json. Do not add a milligram amount. A roster byline may be quoted only after Kevin names the person. Do not lead with a lab test or a COA. Link a report only if Kevin already published it as HTML.",
+        "product_url": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex"
+      },
+      "editor_contact_url": "https://usefulvitamins.com/contacts/"
+    },
+    {
+      "id": "aa-biohack-tmg",
+      "cluster": "ageaura",
+      "url": "https://biohackblueprint.org/blogs/tmg/tmg-and-nmn",
+      "title": "TMG and NMN: Do You Need Both, and What Ratio?— Biohack Blueprint",
+      "page_type": "explainer",
+      "seed_queries": [
+        "NMN and TMG together",
+        "NMN TMG stack review",
+        "best NMN with TMG"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_us_mentioned": false,
+      "search_brands": [],
+      "http_status": 200,
+      "final_url": "https://biohackblueprint.org/blogs/tmg/tmg-and-nmn",
+      "fetch_note": "",
+      "competitor_brands": [
+        "DoNotAge"
+      ],
+      "us_marks": [],
+      "us_mentioned": false,
+      "date_shown": "",
+      "opening_excerpt": "TMG and NMN: Do You Need Both, and What Ratio?— Biohack Blueprint Skip to content DoNotAge Reviews Pure NMN Pure Fisetin Ca-AKG Hydrolysed Collagen Peptides SIRT6 Activator Nitralis Creatine Monohydrate DoNotAge Performance Pure Quercetin Pure TMG Blogs Ca-AKG Creatine Monohydrate Fisetin Hydrolysed Collagen Peptides NAC Nitric Oxide NMN Quercetin SIRT6 Acti",
+      "body_chars": 18419,
+      "body_sha256": "224417973eb98161",
+      "mention_basis": "fetched_body",
+      "is_gap": false,
+      "gap_score": 0,
+      "domain": "biohackblueprint.org",
+      "outreach": {
+        "action": "not_a_gap",
+        "contact_url": "",
+        "offer": "No confirmed competitor roundup to pitch.",
+        "product_url": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex"
+      }
+    },
+    {
+      "id": "aa-factually",
+      "cluster": "ageaura",
+      "url": "https://factually.co/fact-checks/health-fitness/nmn-supplements-third-party-batch-test-results-1f16c6",
+      "title": "Which NMN Supplements Publish Third-Party Batch Test Results",
+      "page_type": "roundup",
+      "seed_queries": [
+        "best NMN supplement third party tested",
+        "pure NMN supplement brand"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_us_mentioned": false,
+      "search_brands": [
+        "GenuinePurity",
+        "NOVOS",
+        "DoNotAge",
+        "PartiQlar",
+        "Jinfiniti",
+        "Welzo"
+      ],
+      "http_status": null,
+      "fetch_note": "robots status 0; page still requested; HTTP 0 The read operation timed out",
+      "competitor_brands": [
+        "GenuinePurity",
+        "NOVOS",
+        "DoNotAge",
+        "PartiQlar",
+        "Jinfiniti",
+        "Welzo"
+      ],
+      "us_marks": [],
+      "us_mentioned": false,
+      "date_shown": "",
+      "mention_basis": "search_snippet",
+      "is_gap": true,
+      "gap_score": 32,
+      "domain": "factually.co",
+      "outreach": {
+        "action": "draft_only",
+        "contact_url": "",
+        "offer": "Draft only, do not email or submit a form. Offer one sample of AgeAura Pure NMN + TMG NAD+ Complex (https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex). Quote only lines in product_refs/ageaura-pure-nmn-tmg-nad-complex.label.json. Do not add a milligram amount. A roster byline may be quoted only after Kevin names the person. Do not lead with a lab test or a COA. Link a report only if Kevin already published it as HTML.",
+        "product_url": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex"
+      }
+    },
+    {
+      "id": "aa-reddit-pick",
+      "cluster": "ageaura",
+      "url": "https://www.reddit.com/r/NMN/comments/1r0ywaj/how_do_you_pick_a_good_nmn_supplement_you_can/",
+      "title": "How do you pick a good NMN supplement you can trust?",
+      "page_type": "reddit",
+      "seed_queries": [
+        "best NMN supplement reddit",
+        "pure NMN supplement brand"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_us_mentioned": false,
+      "search_brands": [
+        "Solensis",
+        "Manapura",
+        "ProHealth",
+        "Renue By Science",
+        "PartiQlar"
+      ],
+      "http_status": null,
+      "fetch_note": "robots disallow",
+      "competitor_brands": [
+        "Solensis",
+        "Manapura",
+        "ProHealth",
+        "Renue By Science",
+        "PartiQlar"
+      ],
+      "us_marks": [],
+      "us_mentioned": false,
+      "date_shown": "",
+      "mention_basis": "search_snippet",
+      "is_gap": true,
+      "gap_score": 19,
+      "domain": "reddit.com",
+      "outreach": {
+        "action": "do_not_pitch",
+        "contact_url": "",
+        "offer": "Community thread. Do not pitch. A roster writer may answer the question only if Kevin asks for that reply.",
+        "product_url": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex"
+      }
+    },
+    {
+      "id": "aa-reddit-suggest",
+      "cluster": "ageaura",
+      "url": "https://www.reddit.com/r/NMN/comments/1uf3pxb/nmn_product_suggestion_please/",
+      "title": "NMN product suggestion please?",
+      "page_type": "reddit",
+      "seed_queries": [
+        "best NMN supplement reddit",
+        "best NMN powder"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_us_mentioned": false,
+      "search_brands": [
+        "Renue By Science",
+        "ProHealth",
+        "Oakrus"
+      ],
+      "http_status": null,
+      "fetch_note": "robots disallow",
+      "competitor_brands": [
+        "Renue By Science",
+        "ProHealth",
+        "Oakrus"
+      ],
+      "us_marks": [],
+      "us_mentioned": false,
+      "date_shown": "",
+      "mention_basis": "search_snippet",
+      "is_gap": true,
+      "gap_score": 16,
+      "domain": "reddit.com",
+      "outreach": {
+        "action": "do_not_pitch",
+        "contact_url": "",
+        "offer": "Community thread. Do not pitch. A roster writer may answer the question only if Kevin asks for that reply.",
+        "product_url": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex"
+      }
+    },
+    {
+      "id": "aa-reddit-start",
+      "cluster": "ageaura",
+      "url": "https://www.reddit.com/r/NMN/comments/1q7m38v/i_want_to_start_using_nmn_and_nad_where_do_i_start/",
+      "title": "I want to start using NMN and NAD+ where do I start?",
+      "page_type": "reddit",
+      "seed_queries": [
+        "best NMN supplement reddit",
+        "NMN and TMG together"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_us_mentioned": false,
+      "search_brands": [
+        "Renue By Science",
+        "ProHealth",
+        "PartiQlar",
+        "Manapura",
+        "Codeage"
+      ],
+      "http_status": null,
+      "fetch_note": "robots disallow",
+      "competitor_brands": [
+        "Renue By Science",
+        "ProHealth",
+        "PartiQlar",
+        "Manapura",
+        "Codeage"
+      ],
+      "us_marks": [],
+      "us_mentioned": false,
+      "date_shown": "",
+      "mention_basis": "search_snippet",
+      "is_gap": true,
+      "gap_score": 19,
+      "domain": "reddit.com",
+      "outreach": {
+        "action": "do_not_pitch",
+        "contact_url": "",
+        "offer": "Community thread. Do not pitch. A roster writer may answer the question only if Kevin asks for that reply.",
+        "product_url": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex"
+      }
+    },
+    {
+      "id": "aa-reddit-coa",
+      "cluster": "ageaura",
+      "url": "https://www.reddit.com/r/Supplements/comments/1shve4s/do_you_guys_actually_check_the_coa_before_buying/",
+      "title": "Do you guys actually check the COA before buying NMN or just trust the label?",
+      "page_type": "reddit",
+      "seed_queries": [
+        "best NMN supplement reddit",
+        "best NMN supplement third party tested"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_us_mentioned": false,
+      "search_brands": [
+        "Solensis"
+      ],
+      "http_status": null,
+      "fetch_note": "robots disallow",
+      "competitor_brands": [
+        "Solensis"
+      ],
+      "us_marks": [],
+      "us_mentioned": false,
+      "date_shown": "",
+      "mention_basis": "search_snippet",
+      "is_gap": true,
+      "gap_score": 14,
+      "domain": "reddit.com",
+      "outreach": {
+        "action": "do_not_pitch",
+        "contact_url": "",
+        "offer": "Community thread. Do not pitch. A roster writer may answer the question only if Kevin asks for that reply.",
+        "product_url": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex"
+      }
+    },
+    {
+      "id": "aa-omre-best",
+      "cluster": "ageaura",
+      "url": "https://omre.co/blogs/news/best-nad-supplements",
+      "title": "Best NAD Supplements of 2026: Top 6 NMN & NR Picks, Reviewed & Ranked",
+      "page_type": "brand_roundup",
+      "seed_queries": [
+        "best NAD+ supplement 2026",
+        "best NMN for longevity"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_date": "Jun 4, 2026",
+      "search_us_mentioned": false,
+      "search_brands": [
+        "Omre",
+        "Tru Niagen",
+        "PartiQlar",
+        "Innerbody Labs",
+        "Wonderfeel",
+        "Elysium"
+      ],
+      "http_status": 200,
+      "final_url": "https://omre.co/blogs/news/best-nad-supplements",
+      "fetch_note": "",
+      "competitor_brands": [
+        "Omre",
+        "Tru Niagen",
+        "PartiQlar",
+        "Innerbody Labs",
+        "Wonderfeel",
+        "Elysium"
+      ],
+      "us_marks": [],
+      "us_mentioned": false,
+      "date_shown": "",
+      "opening_excerpt": "Best NAD Supplements of 2026: Top 6 NMN & NR Picks, Reviewed & Ranked Skip to main content { if (!utils.getCookie(`${Shopify.theme.id}--hide-announcement`)) { $el.classList.add('h-[--announcement-bar-height]'); $el.classList.remove('!h-0'); $nextTick(() => { $el.classList.add('transition-all','duration-300'); }); } else { document.body.style.setProperty('--a",
+      "body_chars": 64810,
+      "body_sha256": "70e154ad3273ed1c",
+      "mention_basis": "fetched_body",
+      "is_gap": true,
+      "gap_score": 22,
+      "domain": "omre.co",
+      "outreach": {
+        "action": "do_not_pitch",
+        "contact_url": "",
+        "offer": "Competitor-owned roundup. The Search Engine Land SOP marks vendor pages do-not-pitch, because the page will not add a rival as the pick.",
+        "product_url": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex"
+      }
+    },
+    {
+      "id": "aa-omre-vs",
+      "cluster": "ageaura",
+      "url": "https://omre.co/blogs/news/tru-niagen-vs-omre",
+      "title": "Tru Niagen vs Omre: Which NAD+ Supplement Works Better?",
+      "page_type": "brand_roundup",
+      "seed_queries": [
+        "Wonderfeel vs Tru Niagen",
+        "NMN vs NR"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_us_mentioned": false,
+      "search_brands": [
+        "Tru Niagen",
+        "Omre"
+      ],
+      "http_status": 200,
+      "final_url": "https://omre.co/blogs/news/tru-niagen-vs-omre",
+      "fetch_note": "",
+      "competitor_brands": [
+        "Tru Niagen",
+        "Omre"
+      ],
+      "us_marks": [],
+      "us_mentioned": false,
+      "date_shown": "",
+      "opening_excerpt": "Tru Niagen vs Omre: Which NAD+ Supplement Works Better? Skip to main content { if (!utils.getCookie(`${Shopify.theme.id}--hide-announcement`)) { $el.classList.add('h-[--announcement-bar-height]'); $el.classList.remove('!h-0'); $nextTick(() => { $el.classList.add('transition-all','duration-300'); }); } else { document.body.style.setProperty('--announcement-ba",
+      "body_chars": 18537,
+      "body_sha256": "2a694689c454179f",
+      "mention_basis": "fetched_body",
+      "is_gap": true,
+      "gap_score": 14,
+      "domain": "omre.co",
+      "outreach": {
+        "action": "do_not_pitch",
+        "contact_url": "",
+        "offer": "Competitor-owned roundup. The Search Engine Land SOP marks vendor pages do-not-pitch, because the page will not add a rival as the pick.",
+        "product_url": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex"
+      }
+    },
+    {
+      "id": "aa-truniagen",
+      "cluster": "ageaura",
+      "url": "https://www.truniagen.com/blogs/tru-niagen-labs/nr-vs-nmn-head-to-head-study",
+      "title": "NR vs. NMN: What a New Head-to-Head Study Actually Found | Tru Niagen",
+      "page_type": "brand_roundup",
+      "seed_queries": [
+        "NMN vs NR",
+        "NAD+ precursor comparison NMN NR"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_us_mentioned": false,
+      "search_brands": [
+        "Tru Niagen",
+        "ProHealth"
+      ],
+      "http_status": 200,
+      "final_url": "https://www.truniagen.com/blogs/tru-niagen-labs/nr-vs-nmn-head-to-head-study",
+      "fetch_note": "",
+      "competitor_brands": [
+        "Tru Niagen",
+        "ProHealth"
+      ],
+      "us_marks": [],
+      "us_mentioned": false,
+      "date_shown": "",
+      "opening_excerpt": "NR vs. NMN: What a New Head-to-Head Study Actually Found | Tru Niagen NAD+ skincare powered by Niagen® . Learn More. NAD+ skincare powered by Niagen ®. Learn More. Don't get old. Age Better® . Learn More Subscribe and save 20% off on all orders + free shipping. NAD+ skincare powered by Niagen® . Learn More. NAD+ skincare powered by Niagen ®. Learn More. Don'",
+      "body_chars": 17942,
+      "body_sha256": "fe09c91ca9211b23",
+      "mention_basis": "fetched_body",
+      "is_gap": true,
+      "gap_score": 14,
+      "domain": "truniagen.com",
+      "outreach": {
+        "action": "do_not_pitch",
+        "contact_url": "",
+        "offer": "Competitor-owned roundup. The Search Engine Land SOP marks vendor pages do-not-pitch, because the page will not add a rival as the pick.",
+        "product_url": "https://wellnessnest.co/products/ageaura-pure-nmn-tmg-nad-complex"
+      }
+    },
+    {
+      "id": "ss-tbs-rank",
+      "cluster": "shilasource",
+      "url": "https://www.the-best-supplement.com/ranking/best-shilajit-resin",
+      "title": "Best Shilajit Resin and Brands: 4 Picks, Lab Reports (2026)",
+      "page_type": "listicle",
+      "seed_queries": [
+        "best shilajit resin",
+        "best shilajit 2026"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_us_mentioned": false,
+      "search_brands": [
+        "Natural Shilajit",
+        "Mountaindrop",
+        "Chuga",
+        "Pure Himalayan Shilajit"
+      ],
+      "http_status": 200,
+      "final_url": "https://www.the-best-supplement.com/ranking/best-shilajit-resin",
+      "fetch_note": "",
+      "competitor_brands": [
+        "Natural Shilajit",
+        "Mountaindrop",
+        "Chuga",
+        "Pure Himalayan Shilajit"
+      ],
+      "us_marks": [],
+      "us_mentioned": false,
+      "date_shown": "September 4, 2026",
+      "opening_excerpt": "Best Shilajit Resin and Brands: 4 Picks, Lab Reports (2026) Integrations > Google Analytics, ne pas dupliquer ici --> ⭐️ 140+ brands tested - Learn more Brand reviews Clear Search Results All brand tested 🧡 By goal ⚡ Energy and vitality 🧠 Focus and memory 😴 Sleep and relaxation 😇 Stress and mood 🍽️ Digestion All goals Rankings 🥇 Popular rankings Best mushroo",
+      "body_chars": 29504,
+      "body_sha256": "ca7e5590694f49ae",
+      "mention_basis": "fetched_body",
+      "is_gap": true,
+      "gap_score": 63,
+      "domain": "the-best-supplement.com",
+      "outreach": {
+        "action": "draft_only",
+        "contact_url": "",
+        "offer": "Draft only, do not email or submit a form. Offer one sample of ShilaSource Himalayan Shilajit Resin (https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin). Quote only lines in product_refs/shilasource-himalayan-shilajit-resin.label.json. Do not add a milligram amount, a mineral count, or a joined serving count. Other shilajit jars and the gummy format are separate products and are not this outreach SKU. A roster byline may be quoted only after Kevin names the person. Do not lead with a lab test or a COA.",
+        "product_url": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin"
+      },
+      "date_source": "html_meta"
+    },
+    {
+      "id": "ss-tbs-review",
+      "cluster": "shilasource",
+      "url": "https://www.the-best-supplement.com/review/wellness-nest-shilajit",
+      "title": "Wellness Nest Review 2026: Prices, Lab Reports, Code LMC",
+      "page_type": "brand_review",
+      "seed_queries": [
+        "pure Himalayan shilajit brand",
+        "legitimate shilajit brands"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_us_mentioned": true,
+      "search_us_marks": [
+        "Wellness Nest",
+        "ShilaSource"
+      ],
+      "search_brands": [],
+      "http_status": 200,
+      "final_url": "https://www.the-best-supplement.com/review/wellness-nest-shilajit",
+      "fetch_note": "",
+      "competitor_brands": [],
+      "us_marks": [
+        "ShilaSource",
+        "Wellness Nest"
+      ],
+      "us_mentioned": true,
+      "date_shown": "",
+      "opening_excerpt": "Wellness Nest Review 2026: Prices, Lab Reports, Code LMC Integrations > Google Analytics, ne pas dupliquer ici --> ⭐️ 140+ brands tested - Learn more Brand reviews Clear Search Results All brand tested 🧡 By goal ⚡ Energy and vitality 🧠 Focus and memory 😴 Sleep and relaxation 😇 Stress and mood 🍽️ Digestion All goals Rankings 🥇 Popular rankings Best mushroom c",
+      "body_chars": 25512,
+      "body_sha256": "0377919eae503a3c",
+      "mention_basis": "fetched_body",
+      "is_gap": false,
+      "gap_score": 0,
+      "domain": "the-best-supplement.com",
+      "outreach": {
+        "action": "already_named",
+        "contact_url": "",
+        "offer": "The page already names us. Do not pitch it as a gap. Do not repeat numbers from that page.",
+        "product_url": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin"
+      }
+    },
+    {
+      "id": "ss-db-resin",
+      "cluster": "shilasource",
+      "url": "https://shilajitdb.com/best/best-resin",
+      "title": "Best Shilajit Resin (2026) — Top Picks Ranked & Compared",
+      "page_type": "listicle",
+      "seed_queries": [
+        "best shilajit resin",
+        "best Himalayan shilajit resin"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_us_mentioned": false,
+      "search_brands": [
+        "Life Cykel",
+        "Pürblack",
+        "Pure Himalayan Shilajit",
+        "Puralis"
+      ],
+      "http_status": 200,
+      "final_url": "https://shilajitdb.com/best/best-resin",
+      "fetch_note": "",
+      "competitor_brands": [
+        "Pürblack",
+        "Lotus Blooming",
+        "Pure Himalayan Shilajit",
+        "Essencraft"
+      ],
+      "us_marks": [],
+      "us_mentioned": false,
+      "date_shown": "",
+      "opening_excerpt": "Best Shilajit Resin (2026) — Top Picks Ranked & Compared Shilajit DB Learn Updates Methodology About Loading… Shilajit DB A neutral, evidence-based database of shilajit products graded on testing, transparency, and safety. Database Public COA Named lab tested Ultra Premium Shilajit in the UK Recent updates Learn What is shilajit? How to read a COA Heavy meta",
+      "body_chars": 5316,
+      "body_sha256": "7bdc0ff19f39f3dc",
+      "mention_basis": "fetched_body",
+      "is_gap": true,
+      "gap_score": 58,
+      "domain": "shilajitdb.com",
+      "outreach": {
+        "action": "draft_only",
+        "contact_url": "https://shilajitdb.com/about",
+        "offer": "Draft only, do not email or submit a form. Offer one sample of ShilaSource Himalayan Shilajit Resin (https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin). Quote only lines in product_refs/shilasource-himalayan-shilajit-resin.label.json. Do not add a milligram amount, a mineral count, or a joined serving count. Other shilajit jars and the gummy format are separate products and are not this outreach SKU. A roster byline may be quoted only after Kevin names the person. Do not lead with a lab test or a COA.",
+        "product_url": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin"
+      },
+      "editor_contact_url": "https://shilajitdb.com/about",
+      "read_note": "Ranked names were read from the static HTML. The shell also includes a loading line."
+    },
+    {
+      "id": "ss-db-gummies",
+      "cluster": "shilasource",
+      "url": "https://shilajitdb.com/best/best-gummies",
+      "title": "Best Shilajit Gummies (2026) — Top Picks Ranked & Compared",
+      "page_type": "listicle",
+      "seed_queries": [
+        "best shilajit gummies",
+        "best shilajit gummies 2026"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_us_mentioned": false,
+      "search_brands": [
+        "Xara",
+        "Sunmed",
+        "Life Cykel",
+        "Root Labs",
+        "Novomins"
+      ],
+      "http_status": 200,
+      "final_url": "https://shilajitdb.com/best/best-gummies",
+      "fetch_note": "",
+      "competitor_brands": [
+        "Xara",
+        "Sunmed",
+        "Life Cykel",
+        "Root Labs",
+        "Novomins"
+      ],
+      "us_marks": [],
+      "us_mentioned": false,
+      "date_shown": "",
+      "opening_excerpt": "Best Shilajit Gummies (2026) — Top Picks Ranked & Compared Shilajit DB Learn Updates Methodology About Loading… Shilajit DB A neutral, evidence-based database of shilajit products graded on testing, transparency, and safety. Database Public COA Named lab tested Ultra Premium Shilajit in the UK Recent updates Learn What is shilajit? How to read a COA Heavy me",
+      "body_chars": 4920,
+      "body_sha256": "87763f9647bfb801",
+      "mention_basis": "fetched_body",
+      "is_gap": true,
+      "gap_score": 60,
+      "domain": "shilajitdb.com",
+      "outreach": {
+        "action": "draft_only",
+        "contact_url": "https://shilajitdb.com/about",
+        "offer": "Draft only, do not email or submit a form. Offer one sample of ShilaSource Himalayan Shilajit Resin (https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin). Quote only lines in product_refs/shilasource-himalayan-shilajit-resin.label.json. Do not add a milligram amount, a mineral count, or a joined serving count. Other shilajit jars and the gummy format are separate products and are not this outreach SKU. A roster byline may be quoted only after Kevin names the person. Do not lead with a lab test or a COA. This URL is a gummy roundup. Do not offer the resin as a gummy, and do not pitch another jar under the resin name.",
+        "product_url": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin"
+      },
+      "editor_contact_url": "https://shilajitdb.com/about",
+      "read_note": "Ranked names were read from the static HTML. The shell also includes a loading line."
+    },
+    {
+      "id": "ss-db-tested",
+      "cluster": "shilasource",
+      "url": "https://shilajitdb.com/best/best-third-party-tested",
+      "title": "Best Third-Party Tested Shilajit (2026) — Named Lab & COA",
+      "page_type": "directory",
+      "seed_queries": [
+        "best third party tested shilajit",
+        "legitimate shilajit brands"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_us_mentioned": false,
+      "search_brands": [],
+      "http_status": 200,
+      "final_url": "https://shilajitdb.com/best/best-third-party-tested",
+      "fetch_note": "",
+      "competitor_brands": [
+        "Pürblack",
+        "Lotus Blooming",
+        "Pure Himalayan Shilajit",
+        "Essencraft",
+        "Xara",
+        "Sunmed",
+        "Novomins"
+      ],
+      "us_marks": [],
+      "us_mentioned": false,
+      "date_shown": "",
+      "opening_excerpt": "Best Third-Party Tested Shilajit (2026) — Named Lab & COA Shilajit DB Learn Updates Methodology About Loading… Shilajit DB A neutral, evidence-based database of shilajit products graded on testing, transparency, and safety. Database Public COA Named lab tested Ultra Premium Shilajit in the UK Recent updates Learn What is shilajit? How to read a COA Heavy met",
+      "body_chars": 7663,
+      "body_sha256": "bf8767eb9589e758",
+      "mention_basis": "fetched_body",
+      "is_gap": true,
+      "gap_score": 54,
+      "domain": "shilajitdb.com",
+      "outreach": {
+        "action": "draft_only",
+        "contact_url": "https://shilajitdb.com/about",
+        "offer": "Draft only, do not email or submit a form. Offer one sample of ShilaSource Himalayan Shilajit Resin (https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin). Quote only lines in product_refs/shilasource-himalayan-shilajit-resin.label.json. Do not add a milligram amount, a mineral count, or a joined serving count. Other shilajit jars and the gummy format are separate products and are not this outreach SKU. A roster byline may be quoted only after Kevin names the person. Do not lead with a lab test or a COA.",
+        "product_url": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin"
+      },
+      "editor_contact_url": "https://shilajitdb.com/about",
+      "read_note": "Ranked names were read from the static HTML. The shell also includes a loading line."
+    },
+    {
+      "id": "ss-db-compare",
+      "cluster": "shilasource",
+      "url": "https://shilajitdb.com/shilajit-comparison",
+      "title": "Shilajit Comparison: 240+ Products Ranked Side-by-Side (2026) | ShilajitDB",
+      "page_type": "directory",
+      "seed_queries": [
+        "shilajit brands compared",
+        "best shilajit supplement 2026"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_us_mentioned": false,
+      "search_brands": [
+        "Lotus Blooming",
+        "Pürblack",
+        "Life Cykel",
+        "Essencraft"
+      ],
+      "http_status": 200,
+      "final_url": "https://shilajitdb.com/shilajit-comparison",
+      "fetch_note": "",
+      "competitor_brands": [
+        "Lotus Blooming",
+        "Pürblack",
+        "Life Cykel",
+        "Essencraft",
+        "Puralis",
+        "Pure Himalayan Shilajit"
+      ],
+      "us_marks": [],
+      "us_mentioned": false,
+      "date_shown": "",
+      "opening_excerpt": "Shilajit Comparison: 240+ Products Ranked Side-by-Side (2026) | ShilajitDB Shilajit DB Learn Updates Methodology About Loading… Shilajit DB A neutral, evidence-based database of shilajit products graded on testing, transparency, and safety. Database Public COA Named lab tested Ultra Premium Shilajit in the UK Recent updates Learn What is shilajit? How to rea",
+      "body_chars": 16138,
+      "body_sha256": "68825c12e0c3328d",
+      "mention_basis": "fetched_body",
+      "is_gap": true,
+      "gap_score": 54,
+      "domain": "shilajitdb.com",
+      "outreach": {
+        "action": "draft_only",
+        "contact_url": "https://shilajitdb.com/about",
+        "offer": "Draft only, do not email or submit a form. Offer one sample of ShilaSource Himalayan Shilajit Resin (https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin). Quote only lines in product_refs/shilasource-himalayan-shilajit-resin.label.json. Do not add a milligram amount, a mineral count, or a joined serving count. Other shilajit jars and the gummy format are separate products and are not this outreach SKU. A roster byline may be quoted only after Kevin names the person. Do not lead with a lab test or a COA.",
+        "product_url": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin"
+      },
+      "editor_contact_url": "https://shilajitdb.com/about",
+      "read_note": "Ranked names were read from the static HTML. The shell also includes a loading line."
+    },
+    {
+      "id": "ss-db-updates",
+      "cluster": "shilasource",
+      "url": "https://shilajitdb.com/updates",
+      "title": "Recent updates — Shilajit Transparency Database | ShilajitDB",
+      "page_type": "directory",
+      "seed_queries": [
+        "shilajit brands compared",
+        "legitimate shilajit brands"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_us_mentioned": false,
+      "search_brands": [
+        "Pürblack",
+        "Double Wood",
+        "Root Labs",
+        "Life Cykel",
+        "Sunmed",
+        "Pure Himalayan Shilajit",
+        "Lotus Blooming",
+        "Mountaindrop"
+      ],
+      "http_status": 200,
+      "final_url": "https://shilajitdb.com/updates",
+      "fetch_note": "",
+      "competitor_brands": [
+        "Lotus Blooming",
+        "Pürblack",
+        "Root Labs",
+        "Novomins",
+        "VitaUp",
+        "Essencraft",
+        "Pure Himalayan Shilajit",
+        "Life Cykel",
+        "Xara",
+        "Sunmed",
+        "Puralis",
+        "Chuga"
+      ],
+      "us_marks": [],
+      "us_mentioned": false,
+      "date_shown": "Oct 9, 2026",
+      "opening_excerpt": "Recent updates — Shilajit Transparency Database | ShilajitDB Shilajit DB Learn Updates Methodology About Loading… Shilajit DB A neutral, evidence-based database of shilajit products graded on testing, transparency, and safety. Database Public COA Named lab tested Ultra Premium Shilajit in the UK Recent updates Learn What is shilajit? How to read a COA Heavy ",
+      "body_chars": 4905,
+      "body_sha256": "27d4aad957eebd06",
+      "mention_basis": "fetched_body",
+      "is_gap": true,
+      "gap_score": 59,
+      "domain": "shilajitdb.com",
+      "outreach": {
+        "action": "draft_only",
+        "contact_url": "https://shilajitdb.com/about",
+        "offer": "Draft only, do not email or submit a form. Offer one sample of ShilaSource Himalayan Shilajit Resin (https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin). Quote only lines in product_refs/shilasource-himalayan-shilajit-resin.label.json. Do not add a milligram amount, a mineral count, or a joined serving count. Other shilajit jars and the gummy format are separate products and are not this outreach SKU. A roster byline may be quoted only after Kevin names the person. Do not lead with a lab test or a COA.",
+        "product_url": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin"
+      },
+      "editor_contact_url": "https://shilajitdb.com/about",
+      "read_note": "Ranked names were read from the static HTML. The shell also includes a loading line. Himalayan Natural Shilajit Gummies is a different product line, so it is not counted as the Natural Shilajit brand."
+    },
+    {
+      "id": "ss-innerbody",
+      "cluster": "shilasource",
+      "url": "https://www.innerbody.com/best-shilajit-supplement",
+      "title": "Best Shilajit Supplement | Our top 5 picks from testing [2026]",
+      "page_type": "listicle",
+      "seed_queries": [
+        "best shilajit supplement",
+        "best shilajit for men"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_date": "Nov 18th, 2025",
+      "search_us_mentioned": false,
+      "search_brands": [
+        "Nootropics Depot",
+        "PrimaVie",
+        "Pure Himalayan Shilajit",
+        "Pürblack",
+        "Nugenix"
+      ],
+      "http_status": 200,
+      "final_url": "https://www.innerbody.com/best-shilajit-supplement",
+      "fetch_note": "",
+      "competitor_brands": [
+        "Nootropics Depot",
+        "Pure Himalayan Shilajit",
+        "Pürblack",
+        "Nugenix",
+        "PrimaVie"
+      ],
+      "us_marks": [],
+      "us_mentioned": false,
+      "date_shown": "November 18, 2025",
+      "opening_excerpt": "Best Shilajit Supplement | Our top 5 picks from testing [2026] Skip to main content Fitness & Diet For Your Workout Muscle-building stacks Creatine gummies and chews L-Citrulline supplements Best testosterone booster Nitric oxide supplements Amino acid supplements Weight Loss Henry Meds Maximus Tribe DoFasting Wegovy vs. Mounjaro View all > Hair & Skin Hair ",
+      "body_chars": 57108,
+      "body_sha256": "5d2d85b67191b189",
+      "mention_basis": "fetched_body",
+      "is_gap": true,
+      "gap_score": 62,
+      "domain": "innerbody.com",
+      "outreach": {
+        "action": "draft_only",
+        "contact_url": "",
+        "offer": "Draft only, do not email or submit a form. Offer one sample of ShilaSource Himalayan Shilajit Resin (https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin). Quote only lines in product_refs/shilasource-himalayan-shilajit-resin.label.json. Do not add a milligram amount, a mineral count, or a joined serving count. Other shilajit jars and the gummy format are separate products and are not this outreach SKU. A roster byline may be quoted only after Kevin names the person. Do not lead with a lab test or a COA.",
+        "product_url": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin"
+      },
+      "date_source": "html_meta",
+      "read_note": "A lowercase natural shilajit phrase in the article is the substance, not the Natural Shilajit brand, so it is not in the brand list."
+    },
+    {
+      "id": "ss-scored",
+      "cluster": "shilasource",
+      "url": "https://www.supplementscored.com/supplements/shilajit/",
+      "title": "Shilajit: Benefits, Dosage & Top Picks | Supplement Scored",
+      "page_type": "roundup",
+      "seed_queries": [
+        "best shilajit supplement",
+        "best shilajit supplement 2026"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_date": "Apr 2026",
+      "search_us_mentioned": false,
+      "search_brands": [
+        "PrimaVie",
+        "Pure Himalayan Shilajit"
+      ],
+      "http_status": 200,
+      "final_url": "https://www.supplementscored.com/supplements/shilajit/",
+      "fetch_note": "",
+      "competitor_brands": [
+        "PrimaVie",
+        "Pure Himalayan Shilajit",
+        "Nootropics Depot"
+      ],
+      "us_marks": [],
+      "us_mentioned": false,
+      "date_shown": "Apr 2026",
+      "opening_excerpt": "Shilajit: Benefits, Dosage & Top Picks | Supplement Scored Impact-Site-Verification: 0741abe6-d57c-4370-9afa-40a68694f5a6 Supplements Find My Supplement Compare Guides Browse How We Score Disclosure: We earn commissions on purchases made through our links. This never influences our scores. Editorial policy Home Men's Health Shilajit Men's Health · Mixed Evid",
+      "body_chars": 28262,
+      "body_sha256": "9206e18c51159357",
+      "mention_basis": "fetched_body",
+      "is_gap": true,
+      "gap_score": 57,
+      "domain": "supplementscored.com",
+      "outreach": {
+        "action": "draft_only",
+        "contact_url": "https://www.supplementscored.com/about",
+        "offer": "Draft only, do not email or submit a form. Offer one sample of ShilaSource Himalayan Shilajit Resin (https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin). Quote only lines in product_refs/shilasource-himalayan-shilajit-resin.label.json. Do not add a milligram amount, a mineral count, or a joined serving count. Other shilajit jars and the gummy format are separate products and are not this outreach SKU. A roster byline may be quoted only after Kevin names the person. Do not lead with a lab test or a COA.",
+        "product_url": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin"
+      },
+      "editor_contact_url": "https://www.supplementscored.com/about"
+    },
+    {
+      "id": "ss-wowmd",
+      "cluster": "shilasource",
+      "url": "https://www.wowmd.com/blogs/wellness/best-shilajit-supplements",
+      "title": "5 Best Shilajit Supplements of 2026 | WOWMD",
+      "page_type": "brand_roundup",
+      "seed_queries": [
+        "best shilajit supplement 2026",
+        "best shilajit gummies"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_date": "September 15, 2026",
+      "search_us_mentioned": false,
+      "search_brands": [
+        "WOWMD",
+        "VitaUp",
+        "Nootropics Depot",
+        "PrimaVie",
+        "Black Lotus",
+        "Double Wood"
+      ],
+      "http_status": 200,
+      "final_url": "https://www.wowmd.com/blogs/wellness/best-shilajit-supplements",
+      "fetch_note": "",
+      "competitor_brands": [
+        "WOWMD",
+        "PrimaVie",
+        "VitaUp",
+        "Nootropics Depot",
+        "Black Lotus",
+        "Double Wood"
+      ],
+      "us_marks": [],
+      "us_mentioned": false,
+      "date_shown": "",
+      "opening_excerpt": "5 Best Shilajit Supplements of 2026 | WOWMD Skip to content FREE U.S. SHIPPING ON ORDERS OVER $60* SAVE WITH ELIGIBLE SUBSCRIPTIONS* 60-DAY MONEY-BACK GUARANTEE ON ELIGIBLE FIRST-TIME SINGLE-BOTTLE ONE-TIME PURCHASES — TERMS APPLY * FREE U.S. SHIPPING ON ORDERS OVER $60* SAVE WITH ELIGIBLE SUBSCRIPTIONS* 60-DAY MONEY-BACK GUARANTEE ON ELIGIBLE FIRST-TIME SIN",
+      "body_chars": 27872,
+      "body_sha256": "75b9d36174baa6c7",
+      "mention_basis": "fetched_body",
+      "is_gap": true,
+      "gap_score": 22,
+      "domain": "wowmd.com",
+      "outreach": {
+        "action": "do_not_pitch",
+        "contact_url": "",
+        "offer": "Competitor-owned roundup. The Search Engine Land SOP marks vendor pages do-not-pitch, because the page will not add a rival as the pick.",
+        "product_url": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin"
+      }
+    },
+    {
+      "id": "ss-yourhealthier",
+      "cluster": "shilasource",
+      "url": "https://yourhealthier.com/blogs/blog/best-shilajit-gummies-2026",
+      "title": "Best Shilajit Gummies 2026: Ranked by Fulvic Acid & COA",
+      "page_type": "brand_roundup",
+      "seed_queries": [
+        "best shilajit gummies 2026",
+        "best shilajit gummies"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_us_mentioned": false,
+      "search_brands": [
+        "Black Lotus",
+        "Root Labs",
+        "YourHealthier"
+      ],
+      "http_status": 200,
+      "final_url": "https://yourhealthier.com/blogs/blog/best-shilajit-gummies-2026",
+      "fetch_note": "",
+      "competitor_brands": [
+        "YourHealthier",
+        "Black Lotus",
+        "Root Labs",
+        "PrimaVie",
+        "Lotus Blooming"
+      ],
+      "us_marks": [],
+      "us_mentioned": false,
+      "date_shown": "September 20, 2026",
+      "opening_excerpt": "Best Shilajit Gummies 2026: Ranked by Fulvic Acid & COA directive above + the @graph JSON-LD below. Per-bot / \"ClaudeBot\" / \"Google-Extended\" tags are NOT a real directive (those crawlers read robots.txt, not page meta), and content=\"index\" is the default anyway — so they were no-ops and have been removed. Reviewer identity lives in Organization.member + Med",
+      "body_chars": 42831,
+      "body_sha256": "be86186ed583ad40",
+      "mention_basis": "fetched_body",
+      "is_gap": true,
+      "gap_score": 25,
+      "domain": "yourhealthier.com",
+      "outreach": {
+        "action": "do_not_pitch",
+        "contact_url": "",
+        "offer": "Competitor-owned roundup. The Search Engine Land SOP marks vendor pages do-not-pitch, because the page will not add a rival as the pick.",
+        "product_url": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin"
+      }
+    },
+    {
+      "id": "ss-consumerlab",
+      "cluster": "shilasource",
+      "url": "https://www.consumerlab.com/reviews/shilajit/shilajit-supplements/",
+      "title": "Best Shilajit Supplements Review & Top Picks - ConsumerLab.com",
+      "page_type": "roundup",
+      "seed_queries": [
+        "best shilajit supplement",
+        "best shilajit supplement 2026"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_date": "May 07, 2026",
+      "search_us_mentioned": false,
+      "search_brands": [],
+      "http_status": 200,
+      "final_url": "https://www.consumerlab.com/reviews/shilajit/shilajit-supplements/",
+      "fetch_note": "",
+      "competitor_brands": [
+        "Pürblack",
+        "Lotus Blooming",
+        "Nootropics Depot",
+        "PrimaVie",
+        "Organifi",
+        "Pure Himalayan Shilajit"
+      ],
+      "us_marks": [],
+      "us_mentioned": false,
+      "date_shown": "May 7, 2026",
+      "opening_excerpt": "Best Shilajit Supplements Review & Top Picks - ConsumerLab.com ConsumerLab.com uses JavaScript to provide the best possible experience for our content, but your browser has it disabled. Learn how to enable it here . Sign In Join Now Product Reviews Brands Health Topics Warnings Answers News Join Now & Get Full Access Sign In Join Now In The News Testimonials",
+      "body_chars": 12008,
+      "body_sha256": "7c40bd1def6c1059",
+      "mention_basis": "fetched_body",
+      "is_gap": true,
+      "gap_score": 63,
+      "domain": "consumerlab.com",
+      "outreach": {
+        "action": "draft_only",
+        "contact_url": "https://www.consumerlab.com/support/contact/",
+        "offer": "Draft only, do not email or submit a form. Offer one sample of ShilaSource Himalayan Shilajit Resin (https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin). Quote only lines in product_refs/shilasource-himalayan-shilajit-resin.label.json. Do not add a milligram amount, a mineral count, or a joined serving count. Other shilajit jars and the gummy format are separate products and are not this outreach SKU. A roster byline may be quoted only after Kevin names the person. Do not lead with a lab test or a COA.",
+        "product_url": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin"
+      },
+      "editor_contact_url": "https://www.consumerlab.com/support/contact/",
+      "date_source": "html_meta",
+      "read_note": "The product names are in the static image labels. The fetched copy says the full review needs JavaScript. This row is not a reading of a paid write-up."
+    },
+    {
+      "id": "ss-journal",
+      "cluster": "shilasource",
+      "url": "https://shilajitjournal.com/wellness-nest-shilajit-review/",
+      "title": "Wellness Nest shilajit: an evidence-based brand assessment – Shilajit Journal",
+      "page_type": "brand_review",
+      "seed_queries": [
+        "legitimate shilajit brands",
+        "pure Himalayan shilajit brand"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_us_mentioned": true,
+      "search_us_marks": [
+        "Wellness Nest",
+        "ShilaSource"
+      ],
+      "search_brands": [],
+      "http_status": 200,
+      "final_url": "https://shilajitjournal.com/wellness-nest-shilajit-review/",
+      "fetch_note": "",
+      "competitor_brands": [],
+      "us_marks": [
+        "ShilaSource",
+        "Wellness Nest"
+      ],
+      "us_mentioned": true,
+      "date_shown": "8 July 2026",
+      "opening_excerpt": "Wellness Nest shilajit: an evidence-based brand assessment – Shilajit Journal Skip to content Shilajit Journal Benefits How to Take Buying Guide Reviews Science FAQ About Wellness Nest shilajit: an evidence-based brand assessment Shilajit Journal Editorial Team July 8, 2026 By Shilajit Journal Editorial Team Last updated 8 July 2026 8 min read Wellness Nest ",
+      "body_chars": 10426,
+      "body_sha256": "8fc9348e8fed8e00",
+      "mention_basis": "fetched_body",
+      "is_gap": false,
+      "gap_score": 0,
+      "domain": "shilajitjournal.com",
+      "outreach": {
+        "action": "already_named",
+        "contact_url": "",
+        "offer": "The page already names us. Do not pitch it as a gap. Do not repeat numbers from that page.",
+        "product_url": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin"
+      }
+    },
+    {
+      "id": "ss-nutrotonic",
+      "cluster": "shilasource",
+      "url": "https://nutrotonic.com/blogs/news/is-wellness-nest-shilajit-legit-effectiveness-actual-customer-reviews",
+      "title": "Wellness Nest Shilajit Reviews | Legit or Not?",
+      "page_type": "brand_review",
+      "seed_queries": [
+        "legitimate shilajit brands"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_us_mentioned": true,
+      "search_us_marks": [
+        "Wellness Nest"
+      ],
+      "search_brands": [],
+      "http_status": 200,
+      "final_url": "https://nutrotonic.com/blogs/news/is-wellness-nest-shilajit-legit-effectiveness-actual-customer-reviews",
+      "fetch_note": "",
+      "competitor_brands": [
+        "Pure Himalayan Shilajit"
+      ],
+      "us_marks": [
+        "Wellness Nest"
+      ],
+      "us_mentioned": true,
+      "date_shown": "June 18, 2025",
+      "opening_excerpt": "Wellness Nest Shilajit Reviews | Legit or Not? auto \"> auto \"> Skip to content Menu Cart 0 Search Home Catalog News Contact Our Story Manage Subscription Accounts Start here Authentic Himalayan Shilajit Gummies Trial Pack PREMIUM GUMMIES - The NutroTonic Authentic Himalayan Shilajit Gummies is an easy and hassle-free ... $14.99 Shop by form Authentic Himalay",
+      "body_chars": 19196,
+      "body_sha256": "ae3027b9a65a66f9",
+      "mention_basis": "fetched_body",
+      "is_gap": false,
+      "gap_score": 0,
+      "domain": "nutrotonic.com",
+      "outreach": {
+        "action": "already_named",
+        "contact_url": "",
+        "offer": "The page already names us. Do not pitch it as a gap. Do not repeat numbers from that page.",
+        "product_url": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin"
+      }
+    },
+    {
+      "id": "ss-truescore",
+      "cluster": "shilasource",
+      "url": "https://truescorehub.com/blog/wellness-nest-shilasource-review-2026-is-this-the-purest-himalayan-shilajit-you-can-buy",
+      "title": "Wellness Nest ShilaSource Review 2026: Is This the Purest Himalayan Shilajit You Can Buy?",
+      "page_type": "affiliate_review",
+      "seed_queries": [
+        "pure Himalayan shilajit brand",
+        "best shilajit 2026"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_us_mentioned": true,
+      "search_us_marks": [
+        "Wellness Nest",
+        "ShilaSource"
+      ],
+      "search_brands": [
+        "Pürblack",
+        "Mountaindrop",
+        "Moon Juice"
+      ],
+      "http_status": 200,
+      "final_url": "https://truescorehub.com/blog/wellness-nest-shilasource-review-2026-is-this-the-purest-himalayan-shilajit-you-can-buy",
+      "fetch_note": "",
+      "competitor_brands": [
+        "Pürblack",
+        "Mountaindrop",
+        "Moon Juice"
+      ],
+      "us_marks": [
+        "ShilaSource",
+        "Wellness Nest"
+      ],
+      "us_mentioned": true,
+      "date_shown": "",
+      "opening_excerpt": "Wellness Nest ShilaSource Review 2026: Is This the Purest Himalayan Shilajit You Can Buy? --> Blog Store Review Wellness Nest ShilaSource Review 2026: Is This the Purest Himalayan Shilajit You Can Buy? Wellness Nest ShilaSource Review 2026: Is This the Purest Himalayan Shilajit You Can Buy? Truescorehub 6 months ago Advertiser Disclosure: TrueScoreHub is rea",
+      "body_chars": 15358,
+      "body_sha256": "7d6c3f5783b91fe5",
+      "mention_basis": "fetched_body",
+      "is_gap": false,
+      "gap_score": 0,
+      "domain": "truescorehub.com",
+      "outreach": {
+        "action": "already_named",
+        "contact_url": "",
+        "offer": "The page already names us. Do not pitch it as a gap. Do not repeat numbers from that page.",
+        "product_url": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin"
+      }
+    },
+    {
+      "id": "ss-vitadote",
+      "cluster": "shilasource",
+      "url": "https://www.vitadote.com/blog/shilajit-experiences-reviews-expect/",
+      "title": "Shilajit Reviews 2026: Real Results + What to Expect",
+      "page_type": "brand_roundup",
+      "seed_queries": [
+        "best shilajit 2026",
+        "best authentic shilajit"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_us_mentioned": false,
+      "search_brands": [
+        "Vitadote"
+      ],
+      "http_status": 200,
+      "final_url": "https://www.vitadote.com/blog/shilajit-experiences-reviews-expect/",
+      "fetch_note": "",
+      "competitor_brands": [
+        "Vitadote"
+      ],
+      "us_marks": [],
+      "us_mentioned": false,
+      "date_shown": "15 March 2026",
+      "opening_excerpt": "Shilajit Reviews 2026: Real Results + What to Expect Home About Us Blog Contact Us Become a reseller English Shilajit Reviews & Experiences: Real User Results in 2026 (Honest Timeline) Home › Blog › Shilajit Reviews & Experiences: Real User Results in 2026 (Honest Timeline) By Lisa de Vries | Published : 15 March 2026 | Updated : 9 June 2026 | 7 min read Con",
+      "body_chars": 13478,
+      "body_sha256": "6c4b8ee23e3cda83",
+      "mention_basis": "fetched_body",
+      "is_gap": true,
+      "gap_score": 17,
+      "domain": "vitadote.com",
+      "outreach": {
+        "action": "do_not_pitch",
+        "contact_url": "",
+        "offer": "Competitor-owned roundup. The Search Engine Land SOP marks vendor pages do-not-pitch, because the page will not add a rival as the pick.",
+        "product_url": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin"
+      }
+    },
+    {
+      "id": "ss-reddit-brands",
+      "cluster": "shilasource",
+      "url": "https://www.reddit.com/r/SHILAJIT/comments/1dt4hgq/best_shilajit_brands/",
+      "title": "Best shilajit brands?",
+      "page_type": "reddit",
+      "seed_queries": [
+        "best shilajit resin reddit",
+        "shilajit resin brands reddit"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_us_mentioned": false,
+      "search_brands": [
+        "Pürblack",
+        "Chuga",
+        "Natural Shilajit",
+        "Organifi",
+        "Pure Himalayan Shilajit"
+      ],
+      "http_status": null,
+      "fetch_note": "robots disallow",
+      "competitor_brands": [
+        "Pürblack",
+        "Chuga",
+        "Natural Shilajit",
+        "Organifi",
+        "Pure Himalayan Shilajit"
+      ],
+      "us_marks": [],
+      "us_mentioned": false,
+      "date_shown": "",
+      "mention_basis": "search_snippet",
+      "is_gap": true,
+      "gap_score": 19,
+      "domain": "reddit.com",
+      "outreach": {
+        "action": "do_not_pitch",
+        "contact_url": "",
+        "offer": "Community thread. Do not pitch. A roster writer may answer the question only if Kevin asks for that reply.",
+        "product_url": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin"
+      }
+    },
+    {
+      "id": "ss-reddit-quality",
+      "cluster": "shilasource",
+      "url": "https://www.reddit.com/r/Supplements/comments/1bfxn5g/best_qaulity_shilajit_supplement_brand/",
+      "title": "Best quality Shilajit Supplement Brand?",
+      "page_type": "reddit",
+      "seed_queries": [
+        "best shilajit supplement",
+        "legitimate shilajit brands"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_us_mentioned": false,
+      "search_brands": [
+        "Pürblack",
+        "Lotus Blooming",
+        "PrimaVie",
+        "Nootropics Depot",
+        "Pure Himalayan Shilajit"
+      ],
+      "http_status": null,
+      "fetch_note": "robots disallow",
+      "competitor_brands": [
+        "Pürblack",
+        "Lotus Blooming",
+        "PrimaVie",
+        "Nootropics Depot",
+        "Pure Himalayan Shilajit"
+      ],
+      "us_marks": [],
+      "us_mentioned": false,
+      "date_shown": "",
+      "mention_basis": "search_snippet",
+      "is_gap": true,
+      "gap_score": 19,
+      "domain": "reddit.com",
+      "outreach": {
+        "action": "do_not_pitch",
+        "contact_url": "",
+        "offer": "Community thread. Do not pitch. A roster writer may answer the question only if Kevin asks for that reply.",
+        "product_url": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin"
+      }
+    },
+    {
+      "id": "ss-reddit-resin",
+      "cluster": "shilasource",
+      "url": "https://www.reddit.com/r/Supplements/comments/1k3ikfk/which_shilajit_resin_brand_do_you_guys_recommend/",
+      "title": "Which shilajit resin brand do you guys recommend?",
+      "page_type": "reddit",
+      "seed_queries": [
+        "best shilajit resin reddit",
+        "pure shilajit resin brands"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_us_mentioned": false,
+      "search_brands": [
+        "Lotus Blooming",
+        "Sulaiman Aftabi"
+      ],
+      "http_status": null,
+      "fetch_note": "robots disallow",
+      "competitor_brands": [
+        "Lotus Blooming",
+        "Sulaiman Aftabi"
+      ],
+      "us_marks": [],
+      "us_mentioned": false,
+      "date_shown": "",
+      "mention_basis": "search_snippet",
+      "is_gap": true,
+      "gap_score": 15,
+      "domain": "reddit.com",
+      "outreach": {
+        "action": "do_not_pitch",
+        "contact_url": "",
+        "offer": "Community thread. Do not pitch. A roster writer may answer the question only if Kevin asks for that reply.",
+        "product_url": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin"
+      }
+    },
+    {
+      "id": "ss-reddit-ayurveda",
+      "cluster": "shilasource",
+      "url": "https://www.reddit.com/r/Ayurveda/comments/1kv9ocl/finding_real_shilajit/",
+      "title": "Finding real shilajit",
+      "page_type": "reddit",
+      "seed_queries": [
+        "best authentic shilajit",
+        "pure Himalayan shilajit brand"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_us_mentioned": false,
+      "search_brands": [
+        "Pürblack",
+        "Lotus Blooming"
+      ],
+      "http_status": null,
+      "fetch_note": "robots disallow",
+      "competitor_brands": [
+        "Pürblack",
+        "Lotus Blooming"
+      ],
+      "us_marks": [],
+      "us_mentioned": false,
+      "date_shown": "",
+      "mention_basis": "search_snippet",
+      "is_gap": true,
+      "gap_score": 15,
+      "domain": "reddit.com",
+      "outreach": {
+        "action": "do_not_pitch",
+        "contact_url": "",
+        "offer": "Community thread. Do not pitch. A roster writer may answer the question only if Kevin asks for that reply.",
+        "product_url": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin"
+      }
+    },
+    {
+      "id": "ss-menshealth",
+      "cluster": "shilasource",
+      "url": "https://www.menshealth.com/nutrition/a61742884/shilajit-benefits/",
+      "title": "Shilajit Is Called 'Nature’s Viagra.' Dietitians Explain if It Works",
+      "page_type": "explainer",
+      "seed_queries": [
+        "best shilajit for men",
+        "best shilajit supplement"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_us_mentioned": false,
+      "search_brands": [],
+      "http_status": 200,
+      "final_url": "https://www.menshealth.com/nutrition/a61742884/shilajit-benefits/",
+      "fetch_note": "",
+      "competitor_brands": [],
+      "us_marks": [],
+      "us_mentioned": false,
+      "date_shown": "Aug 05, 2024",
+      "opening_excerpt": "Shilajit Is Called 'Nature’s Viagra.' Dietitians Explain if It Works Search About Men's Health Newsletter Subscribe My Bookmarks MVP Exclusives Shop Health Conditions Hub Fitness Workouts Weight Loss Entertainment Sex and Relationships Life Technology and Gear Style Nutrition Grooming Men's Health Awards Video Follow Health Other Editions Privacy Notice Term",
+      "body_chars": 8335,
+      "body_sha256": "4dcad648cb08edbd",
+      "mention_basis": "fetched_body",
+      "is_gap": false,
+      "gap_score": 0,
+      "domain": "menshealth.com",
+      "outreach": {
+        "action": "not_a_gap",
+        "contact_url": "",
+        "offer": "No confirmed competitor roundup to pitch.",
+        "product_url": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin"
+      }
+    },
+    {
+      "id": "ss-forbes-benefits",
+      "cluster": "shilasource",
+      "url": "https://www.forbes.com/health/supplements/shilajit-benefits/",
+      "title": "Shilajit: Health Benefits, Uses And Dosage",
+      "page_type": "explainer",
+      "seed_queries": [
+        "best shilajit supplement",
+        "best shilajit for men"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_us_mentioned": false,
+      "search_brands": [],
+      "http_status": 403,
+      "fetch_note": "HTTP 403 ",
+      "competitor_brands": [],
+      "us_marks": [],
+      "us_mentioned": false,
+      "date_shown": "",
+      "mention_basis": "search_snippet",
+      "is_gap": false,
+      "gap_score": 0,
+      "domain": "forbes.com",
+      "outreach": {
+        "action": "not_a_gap",
+        "contact_url": "",
+        "offer": "No confirmed competitor roundup to pitch.",
+        "product_url": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin"
+      }
+    },
+    {
+      "id": "ss-golden",
+      "cluster": "shilasource",
+      "url": "https://www.goldenshilajitofficial.com/blogs/news/shilajit-resin-vs-gummies",
+      "title": "Shilajit Resin vs Gummies: Are Gummies as Effective? (2026) – Golden Shilajit Official",
+      "page_type": "explainer",
+      "seed_queries": [
+        "shilajit resin vs gummies",
+        "best shilajit gummies"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_us_mentioned": false,
+      "search_brands": [],
+      "http_status": 200,
+      "final_url": "https://www.goldenshilajitofficial.com/blogs/news/shilajit-resin-vs-gummies",
+      "fetch_note": "",
+      "competitor_brands": [],
+      "us_marks": [],
+      "us_mentioned": false,
+      "date_shown": "",
+      "opening_excerpt": "Shilajit Resin vs Gummies: Are Gummies as Effective? (2026) – Golden Shilajit Official Skip to content Independent lab testing — Eurofins & Bureau Veritas Home Shop Shop Shilajit Resin 50g Shilajit Resin 100g Liquid Drops 30ml View All Products Lab Report Learn Learn What is Shilajit? Blog FAQs Shilajit Calculator About About About Us Accreditations Sustaina",
+      "body_chars": 22571,
+      "body_sha256": "9326df6d762b97a3",
+      "mention_basis": "fetched_body",
+      "is_gap": false,
+      "gap_score": 0,
+      "domain": "goldenshilajitofficial.com",
+      "outreach": {
+        "action": "not_a_gap",
+        "contact_url": "",
+        "offer": "No confirmed competitor roundup to pitch.",
+        "product_url": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin"
+      }
+    },
+    {
+      "id": "ss-trustpilot",
+      "cluster": "shilasource",
+      "url": "https://www.trustpilot.com/review/wellnessnest.co",
+      "title": "Wellness Nest Reviews",
+      "page_type": "review_directory",
+      "seed_queries": [
+        "legitimate shilajit brands"
+      ],
+      "how_found": "web search rank",
+      "evidence": "web search rank",
+      "ai_citation_observed": false,
+      "search_date": "Feb 11, 2026",
+      "search_us_mentioned": true,
+      "search_us_marks": [
+        "Wellness Nest"
+      ],
+      "search_brands": [],
+      "http_status": null,
+      "fetch_note": "robots disallow",
+      "competitor_brands": [],
+      "us_marks": [
+        "Wellness Nest"
+      ],
+      "us_mentioned": true,
+      "date_shown": "Feb 11, 2026",
+      "mention_basis": "search_snippet",
+      "is_gap": false,
+      "gap_score": 0,
+      "domain": "trustpilot.com",
+      "outreach": {
+        "action": "already_named",
+        "contact_url": "",
+        "offer": "The page already names us. Do not pitch it as a gap. Do not repeat numbers from that page.",
+        "product_url": "https://wellnessnest.co/products/shilasource-himalayan-shilajit-resin"
+      }
+    }
+  ],
+  "fetch_log": {
+    "budget": 200,
+    "gets": 79,
+    "http_200": 65,
+    "http_429": 0,
+    "http_404": 4,
+    "robots_disallow": 9,
+    "other_status": 10,
+    "notes": "The counters above are the completed fetch only. An earlier pass the same day requested this URL set and stopped when a contact page timed out, so those reads are not in the table. Nine later reads checked brand context and date meta on pages that run had already opened. Each pass stayed inside the 200 GET budget."
+  },
+  "fetched_at": "2026-10-20T15:11:41+0700"
+}
