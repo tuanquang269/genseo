@@ -45,15 +45,27 @@ The Shopify 429 check to land is branch `t69-97-on-122` at `af350ba`, after #122
 
 Step 20 has no pull request. Its parents are #122 `6def68d` and #97 `d088ccb3`. The diff against #122 is `scripts/validate_article.py` and `tests/test_draft_link_429.py`. HTTP 429 that is still there after retries is `WARN/UNVERIFIED` and exits 3. Exit 0 remains the only publishable result.
 
+## Step 21 — `t70-123-on-chain` is on origin
+
+Noted 2026-11-10 21:07 ICT. This note does not merge, close, retarget, or publish. #121 was not touched. No pull request was opened for `t72-123-runatload`.
+
+`origin/t70-123-on-chain` is `7c15da6ed38139945662305470a41c20ba38b67f`. Parents are `b649e64` (the 19-step chain through #122) and #123 `0105335`. `tests/test_ima2_retry.py` on that commit is blob `e01843a2c4750449aec411f29bdfededfde48c82`, the same blob as #118. The 1-second readiness wait stayed. #123's 8-second spawn-time blob `df73f883` did not.
+
+`test_only_the_catchup_agent_runs_at_load` fails on `7c15da6`. The assertion is `True is not False : com.pati.cursor-agent-worker.plist`. #64 requires every `deploy/*.plist` except `com.pati.genseo-catchup.plist` to set `RunAtLoad` false, so a calendar content job cannot start at login. #123's `deploy/com.pati.cursor-agent-worker.plist` sets `RunAtLoad` and `KeepAlive` true. That installer writes the plist and does not call launchctl. The documented start is `launchctl bootstrap`, which starts the worker because `RunAtLoad` is true, and `tests/test_mac_mini_failover_bootstrap.sh` rejects a rendered worker whose `RunAtLoad` is not true. The other six deploy plists stay `RunAtLoad` false. The failure is the catch-up test's blanket else, written before the worker existed. The worker already starts at load under #123.
+
+`origin/t72-123-runatload` is `01819f4f129ef17efbf0fa512d52eccdc56939ec`, one commit on `7c15da6`. The worker plist bytes are unchanged (`92c72f67`). The test allowlists that plist, requires `KeepAlive` true, no calendar, and `worker start --name`, and still requires `RunAtLoad` false on every other non-catch-up plist.
+
+Same VM, `/usr/bin/python3`, Pillow 13.0.0: 723 tests. `7c15da6` is 6 failures / 28 errors. `01819f4` is 5 failures / 28 errors. The only name that moved is `test_only_the_catchup_agent_runs_at_load`. Shell files on `01819f4`: 15 pass / 0 fail. On `7c15da6` those shell files pass once Pillow imports; `test_boot_catchup.sh` had exited at `python_bin.sh` before that install, then 42 checks / 0 failed. No rate-limit or usage warning in those logs.
+
 ## Decisions waiting on Kevin
 
-This pass did not choose these.
+This pass did not choose these. Items 1 and 2 are still waiting. Item 3 is settled on `7c15da6`.
 
 1. **GO to land wave 1: #126 → #125 → #127 / #128.** All four are merge-clean onto main and onto this chain. #127 and #128 may swap; the step-4 tree stays `6145f1b8e7584c073a65c61837ccfc8d5462799e`. Steps 5–18 stay in the order above and were not given a new GO by this pass.
 2. **Close #77. Do not merge it.** The dup-cluster gate in #122 is the same bytes. Merging #77 onto the 18-step chain conflicts in `scripts/validate_article.py`. Branch `t69-77-on-122` (`d46da63`) merges #77 onto #122 and the result tree equals #122's tree `058cdd445e5d8a21c254a3f917f7023c9d77efa0`, so #77 adds nothing once #122 is present.
-3. **#123 ima2 timeout behavior, for the pending restack.** Branch `t70-123-on-chain` is not on origin (`git ls-remote --heads origin t70-123-on-chain` was empty at 16:48 ICT). #123 `01053354` is clean onto #120 and clean with #124 in both orders. On the full chain it conflicts in two files:
+3. **#123 ima2 timeout is resolved: keep #118's 1-second readiness wait.** `t70-123-on-chain` `7c15da6` is on origin and carries blob `e01843a2`. At 16:48 ICT that branch was not on origin (`git ls-remote --heads origin t70-123-on-chain` was empty). The conflict that choice settled: #123 `01053354` is clean onto #120 and clean with #124 in both orders. On the full chain it conflicts in two files:
    - `.cursor/rules/genseo-operating-rules.mdc`, against #64. The only conflict hunk is the last line of the read-only bash block: #64 adds `bash tests/test_boot_catchup.sh`, #123 adds `bash tests/test_mac_mini_failover_bootstrap.sh`. Both lines can be kept.
-   - `tests/test_ima2_retry.py`, against #118, both orders. This is the behavior choice. #118 (blob `e01843a2c4750449aec411f29bdfededfde48c82`, and the blob the chain still has after #122) execs `/usr/bin/perl` directly and starts the 1-second timeout only after the grandchild pidfile is ready. #123 (blob `df73f883d81a2280a012b3c92b2e8a8ed697634f`) keeps a spawn-time timeout and raises it from 1 second to 8. The sleeper still sleeps 30 seconds, so 8 seconds must still expire and the process tree must be killed. Neither diff changes a production timeout. The chain currently keeps #118, because #122's copy of this file is main's blob `4a2fe042b99c2d9c15faf186941a673b6427243c`.
+   - `tests/test_ima2_retry.py`, against #118, both orders. This was the behavior choice, and it is settled. #118 (blob `e01843a2c4750449aec411f29bdfededfde48c82`, and the blob the chain still has after #122) execs `/usr/bin/perl` directly and starts the 1-second timeout only after the grandchild pidfile is ready. #123 (blob `df73f883d81a2280a012b3c92b2e8a8ed697634f`) keeps a spawn-time timeout and raises it from 1 second to 8. The sleeper still sleeps 30 seconds, so 8 seconds must still expire and the process tree must be killed. Neither diff changes a production timeout. The chain keeps #118, because #122's copy of this file is main's blob `4a2fe042b99c2d9c15faf186941a673b6427243c`. `7c15da6` kept that #118 blob. The RunAtLoad follow-up is step 21.
 
 ## Claims checked
 
@@ -73,7 +85,7 @@ This pass did not choose these.
 
 **#97 replay.** `af350ba372ef840696eb82ac02d15cab2786512b` on `t69-97-on-122` is a merge of #97 `d088ccb3ed275fc0d61a0847a208bc2d6b32f286` onto #122 `6def68d`. Clean against #122 (tree `6645a037b8d81c0da990cfb3b2352261b95b88e8`) and clean on the chain after #122 (tree `0a2bbcd42e2810648d4ab79d98d3d2f9934538db`). #97's own tip is clean against main (solo tree `40d0a155f831`) and conflicts with the chain, and with the chain plus #122, on `scripts/validate_article.py`.
 
-**#123.** Tip `0105335432d816237cbe8bf808e7dabccaba3dc7` on `t30-38-on-120`. #120 `2302f4b` is an ancestor. GitHub is MERGEABLE / CLEAN against that base. Solo tree vs main and vs #120 is `6c4afc97cd896ef1a36cea7f9d9a2036a52e2632`, the same tree the 16:49 board recorded. The #124 port-file conflict from that board is gone. The full-chain conflict is the two files in decision 3. `cloud/123-on-118` at `1f4a256` (2026-11-04) is an older merge and current #118 is not its ancestor. It is not `t70-123-on-chain`.
+**#123.** Tip `0105335432d816237cbe8bf808e7dabccaba3dc7` on `t30-38-on-120`. #120 `2302f4b` is an ancestor. GitHub is MERGEABLE / CLEAN against that base. Solo tree vs main and vs #120 is `6c4afc97cd896ef1a36cea7f9d9a2036a52e2632`, the same tree the 16:49 board recorded. The #124 port-file conflict from that board is gone. The full-chain conflict is the two files in decision 3. `cloud/123-on-118` at `1f4a256` (2026-11-04) is an older merge and current #118 is not its ancestor. It is not `t70-123-on-chain`. That restack is on origin now; step 21.
 
 **#121.** Left out of the order. Tip still `a694616c809266de494ee7ea34cc17543065d66a`. Solo vs main is clean (`5c2bfdc12923`). Not touched.
 
@@ -81,7 +93,7 @@ This pass did not choose these.
 
 - **#77.** Close recommendation above. Clean vs main today, and the wrong patch once #119 is in the tree.
 - **#97's original tip.** The 429 check that lands is `t69-97-on-122`.
-- **#123.** Pending `t70-123-on-chain`, after the ima2 choice.
+- **#123.** Restack `t70-123-on-chain` `7c15da6` is on origin. The ima2 timeout is settled (keep #118's 1s wait). RunAtLoad follow-up is `t72-123-runatload` `01819f4`. Not merged by this pass. See step 21.
 - **#131 and #132.** Same landed trees as #127 and #128. Merging them after step 4 changes nothing.
 - **#121.** Wording hold. Not touched.
 - **#129 and #130.** Board files. Not code lands. #130 is still `3e85c58774366f0876b386d531140aff17ec84e1`.
@@ -171,7 +183,8 @@ git rev-parse origin/main   # bf3ad1b7cd9723c310f3f6dae3f16ee2e9e18ba8
 git merge-tree --write-tree --name-only origin/main cc6e639aabede85bde64dfbb4a3785354e5b2122
 git merge-tree --write-tree --name-only e557298e96d8115dbd408aff21e12efa379b704a 6def68d7206af24342452617509e61814b958a2c
 git merge-tree --write-tree --name-only 6def68d7206af24342452617509e61814b958a2c af350ba372ef840696eb82ac02d15cab2786512b
-git ls-remote --heads origin t70-123-on-chain   # empty while the restack is pending
+git ls-remote --heads origin t70-123-on-chain   # 7c15da6ed38139945662305470a41c20ba38b67f
+git ls-remote --heads origin t72-123-runatload   # 01819f4f129ef17efbf0fa512d52eccdc56939ec
 ```
 
 Exit 0 and one tree line means clean. The 18 tips in order: `d2f07e8` #126, `8875f68` #125, `cc6e639` #127, `bc90171` #128, `6813af4` #58, `63482af` #64, `b8baa22` #69, `544b0ab` #70, `c2c03bd` #72, `396cd02` #75, `bfd51a0` #78, `9f9d4de` #84, `22b66f9` #86, `b6256f2` #118, `2302f4b` #120, `a068ae3` #124, `e557298` #119, `60aee10` #116. Step 18 tree: `96fe2f97ba60e11035a246d9a0f72528eb1b24bb`. Then `6def68d` #122, tree `fb7af14d61644e3f23c66dcf96bfa679cd3884bc`. Then `af350ba`, tree `0a2bbcd42e2810648d4ab79d98d3d2f9934538db`.
