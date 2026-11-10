@@ -19,30 +19,55 @@ def require(ok, message):
         raise StoreGuardError(message)
 
 
+def resolve_store_path(value):
+    """Relative inputs belong to this checkout. Absolute paths and ~ stay where they are written."""
+    raw = Path(str(value)).expanduser()
+    if not raw.is_absolute():
+        raw = ROOT / raw
+    return raw.resolve()
+
+
+def absolutize_inputs(data):
+    """Copy a profile with checkout-relative inputs rewritten to absolute paths.
+
+    Credential fields are left as written. ~/.genseo and the vault .env are
+    compared as home paths, not as files inside this checkout.
+    """
+    out = dict(data)
+    for key in ('context', 'templates', 'gates'):
+        if key in out:
+            out[key] = [str(resolve_store_path(p)) for p in out[key]]
+    for key in ('calendar', 'registry', 'legacy_runner'):
+        if isinstance(out.get(key), str):
+            out[key] = str(resolve_store_path(out[key]))
+    return out
+
+
+def _listed_inputs(data):
+    paths = {resolve_store_path(p) for key in ('context', 'templates', 'gates') for p in data[key]}
+    paths.add(resolve_store_path(data['calendar']))
+    if 'registry' in data:
+        paths.add(resolve_store_path(data['registry']))
+    return paths
+
+
 class Profile:
     def __init__(self, store):
         require(store in ('wellnessnest', 'cherish', 'southedc'), 'Unknown store')
         self.store = store
         self.path = ROOT / 'stores' / store / 'profile.json'
-        self.data = json.loads(self.path.read_text())
+        self.data = absolutize_inputs(json.loads(self.path.read_text()))
         require(self.data['id'] == store, 'Profile identity mismatch')
         expected = {'wellnessnest': ('wellnessnest.co', 'wellnessnest1.myshopify.com'),
                     'cherish': ('thecherishcompany.com', 'uxfaue-s1.myshopify.com'),
                     'southedc': ('southedc.store', 'wellness-nest-de.myshopify.com')}[store]
         require((self.data['domain'], self.data['shop']) == expected, 'Store domain mismatch')
         self.others = [s for s in ('wellnessnest', 'cherish', 'southedc') if s != store]
-        self.others_data = [json.loads((ROOT / 'stores' / s / 'profile.json').read_text()) for s in self.others]
-        self.allowed = {Path(p).expanduser().resolve() for key in ('context', 'templates', 'gates')
-                        for p in self.data[key]}
-        self.allowed.add(Path(self.data['calendar']).resolve())
-        if 'registry' in self.data:
-            self.allowed.add(Path(self.data['registry']).resolve())
+        self.others_data = [absolutize_inputs(json.loads((ROOT / 'stores' / s / 'profile.json').read_text())) for s in self.others]
+        self.allowed = _listed_inputs(self.data)
         foreign = set()
         for od in self.others_data:
-            foreign |= {Path(p).expanduser().resolve() for key in ('context', 'templates', 'gates') for p in od[key]}
-            foreign.add(Path(od['calendar']).resolve())
-            if 'registry' in od:
-                foreign.add(Path(od['registry']).resolve())
+            foreign |= _listed_inputs(od)
         require(not self.allowed.intersection(foreign), 'Cross-store context in profile')
         # Profile edits cannot grant access to the vault root, another store, or a secret file.
         home = Path.home()
@@ -78,7 +103,7 @@ class Profile:
             require(Path(c['path']).expanduser().resolve() == Path.home()/'.genseo/shopify_token.json', 'Wrong credential path')
 
     def read_context(self, path):
-        p = Path(path).expanduser().resolve()
+        p = resolve_store_path(path)
         require(p in self.allowed, 'Context is outside the selected store allowlist')
         return p.read_text()
 
