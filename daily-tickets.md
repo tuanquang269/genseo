@@ -2111,7 +2111,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** probiotic + versus checked 2026-11-10 against 182 live articles (blog listing + sitemap + Atom + local caches) and all 159 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#MB1110-3 — nmn vs niacin** — `NMN vs Niacin: Which Fits Your Goal? (US 2026)`
+- [DONE 2026-11-11 https://wellnessnest.co/blogs/news/nmn-vs-niacin-the-us-goal-check] **#MB1110-3 — nmn vs niacin** — `NMN vs Niacin: Which Fits Your Goal? (US 2026)`
   - **Primary keyword:** `nmn vs niacin` · **Secondary:** nmn or niacin, is nmn better than niacin
   - **Search intent:** adult comparing NMN with plain niacin
   - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-10 07:30 ICT)
