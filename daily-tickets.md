@@ -2097,7 +2097,8 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** turkesterone + versus checked 2026-11-10 against 182 live articles (blog listing + sitemap + Atom + local caches) and all 159 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#MB1110-2 — vaginal probiotic vs oral probiotic** — `Vaginal Probiotic vs Oral: Which Fits? (US 2026)`
+- [SKIPPED-DUPLICATE 2026-11-11 https://wellnessnest.co/blogs/news/vaginal-probiotic-vs-oral-probiotic-the-us-choice] **#MB1110-2 — vaginal probiotic vs oral probiotic** — `Vaginal Probiotic vs Oral: Which Fits? (US 2026)`
+  - Verified 2026-11-11: existing article 635069989179, published_at 2026-11-10T17:39:59-08:00, frontend HTTP 200. Schema verification FAILED: Article schema author is not a named Person. No existing live post modified; no duplicate published.
   - **Primary keyword:** `vaginal probiotic vs oral probiotic` · **Secondary:** vaginal probiotic or oral probiotic, is vaginal probiotic better than oral probiotic
   - **Search intent:** woman comparing vaginal-strain probiotics with general gut probiotics
   - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-10 07:30 ICT)
