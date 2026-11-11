@@ -83,7 +83,7 @@ Use these phrases naturally where appropriate:
 
 ---
 
-## 6. Official-source GEO rules (2026-10-08, gap-fill 2026-10-09)
+## 6. Official-source GEO rules (2026-10-08, gap-fill 2026-10-09; AIPREF 13a + 18a added 2026-11-12 from staged 2026-10-31/2026-11-06 digests)
 
 Source of truth: the official docs tracked daily by `scripts/geo_sources_watch.py`. Notes live in the vault at `~/PATI/LLM-Wiki/90-sources/geo-official/` (google / openai / anthropic / xai baselines + daily digests). **If anything in §1–§5 conflicts with this section, §6 wins.** Each rule cites its source. Lines marked *Inference* are our reading, not the vendor's words.
 
@@ -103,6 +103,7 @@ Rules 1–19 were absorbed on 2026-10-08. **Rules 20–39, and the dated bullets
 11. **Eligibility needs Search Console.** The site must be included in "Search generative AI features" in Search Console. Measure with the Search Console Generative AI performance report (not third-party "AI rank" tools). — https://developers.google.com/search/docs/fundamentals/ai-optimization-guide, https://developers.google.com/search/blog/2026/06/gen-ai-performance-reports
 12. **Products:** Merchant Center feeds help products show in AI responses, because crawling may miss products. — https://developers.google.com/search/docs/specialty/ecommerce/share-your-product-data-with-google
 13. **Inauthentic mentions don't work.** Don't plant fake forum or review mentions. — https://developers.google.com/search/docs/fundamentals/ai-optimization-guide
+13a. **Shared AI training control (AIPREF), announced 2026-10-30.** Google plans to support an IETF shared robots.txt policy token for AI training preferences across providers in **early 2027** (`user-agent: __usage_ai-training` on Google's common-crawlers note). Opting out via that token without an explicit Google-Extended allow is planned to act like disallowing Google-Extended. Google-Extended and other company-specific controls continue to work. **Do not change robots.txt from GenSeo**; propose any change to Kevin only after the 2027 syntax is final. Keep Google-Extended allowed for Gemini Apps grounding. — https://developers.google.com/search/blog/2026/10/ai-training-control, https://developers.google.com/crawling/docs/crawlers-fetchers/google-common-crawlers
 
 ### 6.2 ChatGPT (OpenAI)
 14. **OAI-SearchBot must stay allowed** for ChatGPT search visibility. GPTBot (training) and ChatGPT-User (user-initiated) are separate switches. Robots changes take about 24h. — https://developers.openai.com/api/docs/bots
@@ -112,6 +113,7 @@ Rules 1–19 were absorbed on 2026-10-08. **Rules 20–39, and the dated bullets
 
 ### 6.3 Claude (Anthropic)
 18. ClaudeBot = training, Claude-SearchBot = search result quality, Claude-User = user-initiated fetches. Blocking Claude-SearchBot can reduce visibility and accuracy in Claude's search answers. Keep Claude-SearchBot and Claude-User allowed. — https://privacy.claude.com/en/articles/8896518-does-anthropic-crawl-data-from-the-web-and-how-can-site-owners-block-the-crawler
+18a. **AIPREF "no AI training" (as of 2026-10-30).** Anthropic began recognizing an IETF aipref machine-readable preference signal that site owners can use to say content may not be used for AI training (rollout over time, globally; reading may evolve with the draft). A robots.txt rule that **names ClaudeBot** takes priority over the general signal for that path; if ClaudeBot is unnamed, the general signal applies. This is a training control, separate from Claude-SearchBot / Claude-User visibility. **Do not change robots.txt from GenSeo**; propose any ClaudeBot / AIPREF change to Kevin. — https://privacy.claude.com/en/articles/8896518-does-anthropic-crawl-data-from-the-web-and-how-can-site-owners-block-the-crawler
 
 ### 6.4 Grok (xAI)
 19. Grok's web search returns citations to the pages it used, and its agent can browse pages; X Search is a separate tool over X posts. *Inference:* real, useful posts from the Wellness Nest X account that link to articles add a second path into Grok answers. xAI documents no crawler user agent, so there's nothing to allow or block in robots.txt specifically for Grok. — https://docs.x.ai/developers/tools/web-search, https://docs.x.ai/developers/tools/x-search, https://docs.x.ai/developers/tools/citations
