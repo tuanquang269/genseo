@@ -2123,7 +2123,8 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** nmn + versus checked 2026-11-10 against 182 live articles (blog listing + sitemap + Atom + local caches) and all 159 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#MB1110-4 — turkesterone vs dhea** — `Turkesterone vs DHEA: Key Differences (US 2026)`
+- [DONE 2026-11-11 https://wellnessnest.co/blogs/news/turkesterone-vs-dhea-the-us-differences] **#MB1110-4 — turkesterone vs dhea** — `Turkesterone vs DHEA: Key Differences (US 2026)`
+  - LIVE article 635070218555; draft gate PASS, 4 images QC/CDN PASS, frontend HTTP 200, published_at confirmed. Verification BLOCKER: verify_published.py still fails stored-body named Person after repair_schema.py; rendered theme Article has named Person and FAQPage. Publication recorded to prevent duplicates; run not fully verified. template:COMPARISON; 20 source-confirmed claims.
   - **Primary keyword:** `turkesterone vs dhea` · **Secondary:** turkesterone or dhea, is turkesterone better than dhea
   - **Search intent:** adult comparing turkesterone with DHEA
   - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-10 07:30 ICT)
