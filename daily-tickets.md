@@ -2137,7 +2137,8 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** turkesterone + versus checked 2026-11-10 against 182 live articles (blog listing + sitemap + Atom + local caches) and all 159 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#MB1110-5 — nmn vs glutathione** — `NMN vs Glutathione: What Each Does (US 2026)`
+- [DONE 2026-11-11 https://wellnessnest.co/blogs/news/nmn-vs-glutathione-the-us-evidence-check] **#MB1110-5 — nmn vs glutathione** — `NMN vs Glutathione: What Each Does (US 2026)`
+  - LIVE id 635070284091. Draft PASS; CDN and rendered images 4/4; browser-UA HTTP200; published_at confirmed. Verification blocker: verify_published.py still fails stored-body named Person check after repair_schema.py; rendered Article has named Person and FAQPage. No theme edits. template:COMPARISON; claims:20; persona:NO-FACE seq153 committed.
   - **Primary keyword:** `nmn vs glutathione` · **Secondary:** nmn or glutathione, is nmn better than glutathione
   - **Search intent:** adult comparing NMN with glutathione for healthy aging
   - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-10 07:30 ICT)
