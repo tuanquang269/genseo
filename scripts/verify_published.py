@@ -22,8 +22,15 @@ def main():
     if a.get("title","").strip() in ("","Generated Article"): fails.append("title is empty/'Generated Article'")
     if "FAQPage" not in b: fails.append("no FAQPage schema in live body (publish path skipped schema → use shopify_publisher.py)")
     if "application/ld+json" not in b: fails.append("no JSON-LD schema at all (wrong publish path)")
-    if '"@type": "Person"' not in b and '"@type":"Person"' not in b:
-        fails.append("Article schema author is not a named Person")
+    # The theme (main-article.liquid) renders the Article author Person; body_html carries none since 2026-10. Check the live page too.
+    person = lambda s: re.search(r'"@type"\s*:\s*"Person"', s) is not None
+    if not person(b):
+        try:
+            live = urllib.request.urlopen(urllib.request.Request(f"https://wellnessnest.co/blogs/news/{a.get('handle')}", headers={"User-Agent": "Mozilla/5.0"}), timeout=30).read().decode("utf-8", "ignore")
+        except Exception as e:
+            live = ""; print(f"  live page fetch failed: {e}")
+        if not person(live):
+            fails.append("Article schema author is not a named Person (body and rendered page)")
     if "<table" not in b: fails.append("no comparison <table> in live body")
     if not a.get("author") or a["author"].strip()=="Your Brand Research Team":
         fails.append(f"author field is generic ('{a.get('author')}')")
