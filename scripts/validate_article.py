@@ -7,8 +7,11 @@ by mistake. The publisher skill calls this FIRST; non-zero exit = do not publish
 Usage: python3 validate_article.py <article.html|article.md>
 Exit 0 = PASS (publish allowed). Exit 1 = FAIL (prints what's missing).
 Also verifies that every linked product/collection/author URL returns 200.
+The first linked product is the primary product. Its exact Shopify Catalog title
+must appear in the visible article text so agents can join the article to the PDP.
 """
 import sys, os, re, glob, json, subprocess, tempfile, urllib.request, urllib.error
+import html as htmlmod
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import genseo_roster
@@ -191,6 +194,56 @@ def qrg_scores(plain_text):
 
 UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/126.0 Safari/537.36")
+
+
+def _catalog_product_title(handle):
+    """Read product truth through Admin API, not the rate-limited storefront."""
+    from genseo_config import SHOP, TOKEN, API
+    query = "query($q: String!) { products(first: 2, query: $q) { nodes { handle title } } }"
+    request = urllib.request.Request(
+        f"https://{SHOP}/admin/api/{API}/graphql.json",
+        data=json.dumps({"query": query, "variables": {"q": "handle:" + handle}}).encode(),
+        headers={"X-Shopify-Access-Token": TOKEN, "Content-Type": "application/json"})
+    with urllib.request.urlopen(request, timeout=20) as response:
+        result = json.load(response)
+    if result.get("errors"):
+        raise ValueError("Catalog query failed")
+    products = (result.get("data") or {}).get("products") or {}
+    for product in products.get("nodes", []):
+        title = product.get("title")
+        if product.get("handle") == handle and isinstance(title, str) and title.strip():
+            return title.strip()
+    raise ValueError("Catalog product not found")
+
+
+def _agentic_product_fails(html, catalog_title):
+    plain = re.sub(r"(?is)<(script|style)[^>]*>.*?</\1>", " ", html or "")
+    plain = re.sub(r"(?s)<!--.*?-->", " ", plain)
+    plain = re.sub(r"(?s)<[^>]+>", " ", plain)
+    plain = re.sub(r"\s+", " ", htmlmod.unescape(plain)).strip()
+    title = re.sub(r"\s+", " ", catalog_title).strip()
+    if title in plain:
+        return []
+    return [f"agentic product name — show the primary product's exact Catalog title "
+            f"{title!r} in visible article text and link its PDP"]
+
+
+def _agentic_catalog_issues(html):
+    # Ignore comments and scripts: a URL there is not an article product link.
+    linked = re.sub(r"(?is)<(script|style)[^>]*>.*?</\1>|<!--.*?-->", " ", html or "")
+    match = re.search(
+        r"""<a\b[^>]*\shref\s*=\s*["'](?:https://wellnessnest\.co)?/products/([a-z0-9-]+)(?:[?#/][^"']*)?["']""",
+        linked, re.I)
+    if not match:
+        return ["agentic product link — add a primary Wellness Nest PDP link"]
+    handle = match.group(1)
+    try:
+        title = _catalog_product_title(handle)
+    except (OSError, ValueError, TypeError) as error:
+        return [f"agentic product name — could not verify the Catalog title for "
+                f"/products/{handle} ({type(error).__name__})"]
+    return _agentic_product_fails(html, title)
+
 
 def http_ok(url):
     # Shopify throttles bursts of bare no-UA requests, which made this report live URLs as
@@ -432,6 +485,7 @@ def main():
     cite_fails, cite_warns = geo_citability.assess(html, require_meta=draft_mode)
     fails.extend(cite_fails)
     warns.extend(cite_warns)
+    fails.extend(_agentic_catalog_issues(html))
     dead_cites, soft_cites = geo_citability.citation_issues(
         [(u, *geo_citability.fetch_status(u)) for u in geo_citability.external_urls(html)])
     fails.extend(dead_cites)
