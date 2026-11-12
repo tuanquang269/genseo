@@ -2357,3 +2357,141 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Evidence to fetch & confirm (claims log):** every number, study and dose from a source fetched at write time — cut what you cannot confirm
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** shilajit + versus checked 2026-11-10 against 187 live articles (blog listing + sitemap + Atom + local caches) and all 167 tickets in this file; STEP 0 re-checks at write time
+
+# BATCH 2026-11-12 (refill_tickets.py — ids #MB1112-1…#MB1112-10)
+
+Built by `scripts/refill_tickets.py` at 2026-11-12 16:11 ICT from `templates/article-topic-bank.json` + `board/ideas.csv`
+(search volume: No data — GSC/Ads not used). Every ticket passed, against the live store at build time:
+brand_rules + `lint_tickets.py` · hero product live and in stock · not a covered topic (header rule 6) ·
+not already queued · not live (197 published articles: blog listing + sitemap + Atom + local caches; one article per brand + segment) ·
+`topic_fitness.py` strict on primary and title · STEP 0 suggest.json.
+A `topic_fitness` REVIEW [covered-segment] verdict is allowed under Kevin's standing greenlight for mined queues (2026-08-13).
+A topic is a brief, not copy: source every claim or cut it.
+
+**Rules for this batch:** from the 2026-10-08 batch rules — fan-out answers, a "Where to buy <product> in the US"
+section (live price, the ticket's product link only), roster.json byline only (never an invented person or
+credential), the logged fact-check pass (`logs/claims/<slug>.md`; delete unconfirmed claims), the brand gate.
+Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py once. The hero is the picked face plus the real pack unless pick prints NO-FACE. One inline image uses that face. The other inline images have no recognizable face but still show a hand, forearm, or body cropped below the eyes. A no-face image is the fallback for one frame after a face refusal or two QC misses, not a batch-wide ban. The MacBook article plist sets `GENSEO_NO_FACE=0`, and that value does not switch the lane. Prices were read live at build time; re-check the PDP while writing.
+
+- [ ] **#MB1112-1 — vaginal probiotics vs boric acid** — `Vaginal Probiotics vs Boric Acid: Which and When (US 2026)`
+  - **Primary keyword:** `vaginal probiotics vs boric acid` · **Secondary:** boric acid vs probiotics, probiotics or boric acid for bv, boric acid vs probiotics for odor
+  - **Search intent:** woman with recurring BV or odor choosing between boric acid and a probiotic
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-12 16:11 ICT)
+  - **Hero product:** `/products/florafresh-vaginal-probiotics-gummies` (FloraFresh Vaginal Probiotics Gummies, $40.99, in stock 2026-11-12)
+  - **FloraFresh formula (Supplement Facts label, the source of truth):** per 2 gummies, Bacillus coagulans SNZ-1969 (spore-based) 1 billion CFU, Vitamin C 30 mg and pineapple fruit powder 100 mg (with bromelain); sweetened with maltitol and isomalt, so not sugar-free; label badges Allergen Free, Vegan, Halal, Gluten Free. Cite the Supplement Facts label, never the live PDP description or an older FloraFresh article (both repeat a wrong formula); a PDP/label mismatch is a gate failure.
+  - **Collection links (≥2, verify live):** `/collections/womens-essentials-collection` (contains it), `/collections/best-seller` (contains it)
+  - **Angle:** Explain that boric acid is a vaginal suppository used short-term and probiotics are oral daily support; what studies show; when to see a clinician. No treatment claims for FloraFresh.
+  - **Fan-out answers to cover:** is boric acid better than probiotics; can you use boric acid and probiotics together; which is safer long term; when to see a doctor
+  - **Evidence to fetch & confirm (claims log):** Fetched human trials (PubMed/DOI) for BOTH sides at write time; our product panel and price only from the live PDP; no claim the source does not state.
+  - **Link, don't restate:** `/blogs/news/probiotics-for-bv-do-they-actually-work-us-2026`, `/blogs/news/yeast-infection-vs-bv-how-to-tell-them-apart-us-2026`
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** probiotic + versus checked 2026-11-12 against 197 live articles (blog listing + sitemap + Atom + local caches) and all 178 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1112-2 — creatine gummies vs capsules** — `Creatine Gummies vs Capsules: Which Wins? (US 2026)`
+  - **Primary keyword:** `creatine gummies vs capsules` · **Secondary:** creatine gummies or capsules, is creatine gummies better than capsules
+  - **Search intent:** adult choosing creatine gummies or capsules
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-12 16:11 ICT)
+  - **Hero product:** `/products/fusiforce-creatine-gummies` (FusiForce Creatine Gummies, $79.99, in stock 2026-11-12)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.
+  - **Fan-out answers to cover:** can you take creatine gummies and capsules together; creatine gummies vs capsules benefits
+  - **Evidence to fetch & confirm (claims log):** every number, study and dose from a source fetched at write time — cut what you cannot confirm
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** creatine + versus checked 2026-11-12 against 197 live articles (blog listing + sitemap + Atom + local caches) and all 178 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1112-3 — turkesterone vs laxogenin** — `Turkesterone vs Laxogenin: Key Differences (US 2026)`
+  - **Primary keyword:** `turkesterone vs laxogenin` · **Secondary:** turkesterone or laxogenin, is turkesterone better than laxogenin
+  - **Search intent:** adult comparing turkesterone with laxogenin for muscle and strength
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-12 16:11 ICT)
+  - **Hero product:** `/products/turkesterone-advanced-formula` (Turkesterone Advanced Formula, $75, in stock 2026-11-12)
+  - **Turkesterone Advanced Formula pack label (source of truth):** wellness, nest, PREMIUM, TURKESTERONE, ADVANCED, FORMULA, AMPLIFY, MUSCLE, ENDURANCE, 60, Dietary Supplement, Capsules. No milligram amount and no Supplement Facts panel were read. Do not add one. The capsule badge is the separate lines in product_refs/turkesterone-advanced-formula.label.json. Do not state a milligram amount, a serving count, a different capsule count, or a day-supply.
+  - **Collection links (≥2, verify live):** `/collections/mens-essential-collection` (contains it), `/collections/shilajit-wellness-stack` (contains it)
+  - **Angle:** Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.
+  - **Fan-out answers to cover:** can you take turkesterone and laxogenin together; turkesterone vs laxogenin benefits
+  - **Evidence to fetch & confirm (claims log):** every number, study and dose from a source fetched at write time — cut what you cannot confirm
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** turkesterone + versus checked 2026-11-12 against 197 live articles (blog listing + sitemap + Atom + local caches) and all 178 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1112-4 — nmn vs pqq** — `NMN vs PQQ: What Each Does (US 2026)`
+  - **Primary keyword:** `nmn vs pqq` · **Secondary:** nmn or pqq, is nmn better than pqq
+  - **Search intent:** adult comparing nmn with pqq for cell energy
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-12 16:11 ICT)
+  - **Hero product:** `/products/ageaura-pure-nmn-tmg-nad-complex` (AgeAura Pure NMN + TMG NAD+ Complex, $79.99, in stock 2026-11-12)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` twice (browse link — AgeAura Pure NMN + TMG NAD+ Complex is not in it, never claim it is) · no other AgeAura product and no AgeAura collection link (brand_rules)
+  - **Angle:** Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.
+  - **Fan-out answers to cover:** can you take nmn and pqq together; nmn vs pqq benefits
+  - **Evidence to fetch & confirm (claims log):** every number, study and dose from a source fetched at write time — cut what you cannot confirm
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** nmn + versus checked 2026-11-12 against 197 live articles (blog listing + sitemap + Atom + local caches) and all 178 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1112-5 — creatine gummies vs bcaa** — `Creatine Gummies vs BCAA (US 2026)`
+  - **Primary keyword:** `creatine gummies vs bcaa` · **Secondary:** creatine gummies or bcaa, creatine vs bcaa
+  - **Search intent:** adult comparing creatine with bcaa for training
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-12 16:11 ICT)
+  - **Hero product:** `/products/fusiforce-creatine-gummies` (FusiForce Creatine Gummies, $79.99, in stock 2026-11-12)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.
+  - **Fan-out answers to cover:** can you take creatine gummies and bcaa together; creatine vs bcaa benefits
+  - **Evidence to fetch & confirm (claims log):** every number, study and dose from a source fetched at write time — cut what you cannot confirm
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** creatine + versus checked 2026-11-12 against 197 live articles (blog listing + sitemap + Atom + local caches) and all 178 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1112-6 — nmn vs alpha lipoic acid** — `NMN vs Alpha Lipoic Acid: Evidence Compared (US 2026)`
+  - **Primary keyword:** `nmn vs alpha lipoic acid` · **Secondary:** nmn or alpha lipoic acid, is nmn better than alpha lipoic acid
+  - **Search intent:** adult comparing nmn with alpha lipoic acid for healthy aging
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-12 16:11 ICT)
+  - **Hero product:** `/products/ageaura-pure-nmn-tmg-nad-complex` (AgeAura Pure NMN + TMG NAD+ Complex, $79.99, in stock 2026-11-12)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` twice (browse link — AgeAura Pure NMN + TMG NAD+ Complex is not in it, never claim it is) · no other AgeAura product and no AgeAura collection link (brand_rules)
+  - **Angle:** Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.
+  - **Fan-out answers to cover:** can you take nmn and alpha lipoic acid together; nmn vs alpha lipoic acid benefits
+  - **Evidence to fetch & confirm (claims log):** every number, study and dose from a source fetched at write time — cut what you cannot confirm
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** nmn + versus checked 2026-11-12 against 197 live articles (blog listing + sitemap + Atom + local caches) and all 178 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1112-7 — creatine gummies vs electrolytes** — `Creatine Gummies vs Electrolytes (US 2026)`
+  - **Primary keyword:** `creatine gummies vs electrolytes` · **Secondary:** creatine gummies or electrolytes, creatine vs electrolytes
+  - **Search intent:** adult comparing creatine with electrolytes for training
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-12 16:11 ICT)
+  - **Hero product:** `/products/fusiforce-creatine-gummies` (FusiForce Creatine Gummies, $79.99, in stock 2026-11-12)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.
+  - **Fan-out answers to cover:** can you take creatine gummies and electrolytes together; creatine vs electrolytes benefits
+  - **Evidence to fetch & confirm (claims log):** every number, study and dose from a source fetched at write time — cut what you cannot confirm
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** creatine + versus checked 2026-11-12 against 197 live articles (blog listing + sitemap + Atom + local caches) and all 178 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1112-8 — creatine gummies vs l carnitine** — `Creatine Gummies vs L Carnitine (US 2026)`
+  - **Primary keyword:** `creatine gummies vs l carnitine` · **Secondary:** creatine gummies or l carnitine, creatine vs l carnitine
+  - **Search intent:** adult comparing creatine with l carnitine for training
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-12 16:11 ICT)
+  - **Hero product:** `/products/fusiforce-creatine-gummies` (FusiForce Creatine Gummies, $79.99, in stock 2026-11-12)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.
+  - **Fan-out answers to cover:** can you take creatine gummies and l carnitine together; creatine vs l carnitine benefits
+  - **Evidence to fetch & confirm (claims log):** every number, study and dose from a source fetched at write time — cut what you cannot confirm
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** creatine + versus checked 2026-11-12 against 197 live articles (blog listing + sitemap + Atom + local caches) and all 178 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1112-9 — creatine gummies vs hmb** — `Creatine Gummies vs HMB (US 2026)`
+  - **Primary keyword:** `creatine gummies vs hmb` · **Secondary:** creatine gummies or hmb, creatine vs hmb
+  - **Search intent:** adult comparing creatine with hmb for training
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-12 16:11 ICT)
+  - **Hero product:** `/products/fusiforce-creatine-gummies` (FusiForce Creatine Gummies, $79.99, in stock 2026-11-12)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.
+  - **Fan-out answers to cover:** can you take creatine gummies and hmb together; creatine vs hmb benefits
+  - **Evidence to fetch & confirm (claims log):** every number, study and dose from a source fetched at write time — cut what you cannot confirm
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** creatine + versus checked 2026-11-12 against 197 live articles (blog listing + sitemap + Atom + local caches) and all 178 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1112-10 — creatine gummies vs citrulline** — `Creatine Gummies vs Citrulline (US 2026)`
+  - **Primary keyword:** `creatine gummies vs citrulline` · **Secondary:** creatine gummies or citrulline, creatine vs citrulline
+  - **Search intent:** adult comparing creatine with citrulline for training
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-12 16:11 ICT)
+  - **Hero product:** `/products/fusiforce-creatine-gummies` (FusiForce Creatine Gummies, $79.99, in stock 2026-11-12)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** Compare what each is, what human studies measured, and typical use. Who each suits and whether they pair. No disease claims.
+  - **Fan-out answers to cover:** can you take creatine gummies and citrulline together; creatine vs citrulline benefits
+  - **Evidence to fetch & confirm (claims log):** every number, study and dose from a source fetched at write time — cut what you cannot confirm
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** creatine + versus checked 2026-11-12 against 197 live articles (blog listing + sitemap + Atom + local caches) and all 178 tickets in this file; STEP 0 re-checks at write time

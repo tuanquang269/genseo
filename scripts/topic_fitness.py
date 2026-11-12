@@ -136,13 +136,17 @@ def _norm(s):
 # "vs" pages clash only when their comparison objects overlap.
 _VS_STOP = {'which','better','is','works','work','should','you','take','actually','what','say','the','a',
             'for','us','2026','best','facts','human','trials','6','5','4','3','format','strain','fits',
-            'your','goal','worth','it','how','to','tell','them','apart','normal','stop','compared','labels'}
+            'your','goal','worth','it','how','to','tell','them','apart','normal','stop','compared','labels',
+            # title filler + the FusiForce form word (2026-11-12: 'What Each Does' / 'Key Differences' / 'Creatine Gummies vs X' made every vs topic clash)
+            'each','does','key','difference','differences','evidence','check','year','gummies'}
 def vs_objects(text, brand_terms=()):
     t = (text or '').lower().replace('-', ' ')
     if not re.search(r'\b(vs|versus|or|compared)\b', t):
         return set()
     words = set(re.findall(r'[a-z]+', t)) - _VS_STOP - {'vs', 'versus', 'or', 'vaginal', 'supplements', 'supplement'}
-    return {w for w in words if not any(w in (b, b + 's') for b in brand_terms)}
+    # a brand word, also inside a multi-word or _norm()-joined brand ('creatine gummies' / 'creatinegummies'), is not an object
+    brand = [b.replace(' ', '') for b in brand_terms]
+    return {w for w in words if not any(w in (b, b + 's') or (len(w) > 3 and w.rstrip('s') in b) for b in brand)}
 
 def vs_clash(a, b, brand_terms=()):
     oa, ob = vs_objects(a, brand_terms), vs_objects(b, brand_terms)
@@ -304,6 +308,10 @@ def self_check():
     assert not vs_clash('shilajit vs ashwagandha', 'Shilajit Resin vs Gummies: Which Works Better?', ('shilajit',))
     assert vs_clash('shilajit resin vs capsules', 'Shilajit Resin vs Gummies', ('shilajit',))
     assert vs_clash('nmn vs nr', 'NMN vs NR: What 6 Human Trials Say', ('nmn',))
+    assert not vs_clash('NMN vs PQQ: What Each Does', 'NMN vs Glutathione: What Each Does', ('nmn',))
+    assert not vs_clash('Creatine Gummies vs HMB', 'creatine gummies vs powder', ('creatine',))
+    assert not vs_clash('creatine gummies vs hmb', 'Creatine Gummies vs Powder', ('creatine gummies',))
+    assert not vs_clash('creatine gummies vs hmb', 'Creatine Gummies vs Powder', ('creatinegummies',))
     arts = _load(f"{ROOT}/existing_articles.json", [])
     # (topic, sg_imp, articles, want). PASS cases use [] to test the winner-shape logic in isolation
     # (with the real catalog they'd correctly be 'covered' — we already have Atlas/Myprotein pages).
