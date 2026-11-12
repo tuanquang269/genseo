@@ -251,7 +251,7 @@ def from_document(doc_html, style, keyword=None):
     fields = {
         'style': style, 'crumb': crumb, 'kicker': text(art.select_one('p.kicker')), 'dek': text(art.select_one('p.dek')),
         'updated_on': dt.datetime.strptime(meta[1].replace('Updated ', ''), '%b %d, %Y').date().isoformat(),
-        'read_minutes': int(meta[2].split()[0]), 'meta_note': meta[3],
+        'read_minutes': int(meta[2].split()[0]), 'meta_note': 'Facts checked against our product pages' if 'competitor' in meta[3].lower() else meta[3],  # Kevin 11-12: never publish competitor-copy notes
         'hero_caption': text(art.select_one('figure.hero figcaption')),
         'toc': toc_items(toc_node, soup.select_one('aside.rail details.toc'), text),
         'pick': pick, 'band': band, 'faq': faq, 'schema_extra': extra[0] if extra else None}
