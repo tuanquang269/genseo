@@ -2191,7 +2191,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** shilajit + versus checked 2026-11-10 against 187 live articles (blog listing + sitemap + Atom + local caches) and all 164 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#MB1110-8 — shilajit vs lions mane** — `Shilajit vs Lions Mane for Focus (US 2026)`
+- [DONE 2026-11-12 https://wellnessnest.co/blogs/news/shilajit-vs-lions-mane-the-us-focus-evidence] **#MB1110-8 — shilajit vs lions mane** — `Shilajit vs Lions Mane for Focus (US 2026)`
   - **Primary keyword:** `shilajit vs lions mane` · **Secondary:** shilajit or lions mane, is shilajit better than lions mane
   - **Search intent:** adult comparing shilajit with lions mane for focus
   - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-10 14:47 ICT)
