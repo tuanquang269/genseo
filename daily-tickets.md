@@ -2295,7 +2295,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** shilajit + versus checked 2026-11-10 against 187 live articles (blog listing + sitemap + Atom + local caches) and all 167 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#RF1110-7 — turkesterone vs maca** — `Turkesterone vs Maca: What Each Does (US 2026)`
+- [DONE 2026-11-13 https://wellnessnest.co/blogs/news/turkesterone-vs-maca-the-us-evidence] **#RF1110-7 — turkesterone vs maca** — `Turkesterone vs Maca: What Each Does (US 2026)`
   - **Primary keyword:** `turkesterone vs maca` · **Secondary:** turkesterone or maca, is turkesterone better than maca
   - **Search intent:** adult comparing turkesterone with maca for strength and energy
   - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-10 15:38 ICT)
