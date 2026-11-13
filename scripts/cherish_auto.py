@@ -57,6 +57,10 @@ def set_attrs(tag, attrs):
 
 def shell_owned(page):
     """The truth page as the shell prints it: hero and card image boxes, band guarantee line, sticky bar (from journal.pick)."""
+    # Match journal_fields' publisher-owned note; leave competitor prose untouched.
+    page = re.sub(r'<p class="meta">.*?</p>', lambda m: re.sub(
+        r'(<span>)[^<]*competitor[^<]*(</span>)', r'\1Facts checked against our product pages\2',
+        m.group(0), flags=re.I), page, flags=re.S)
     hero = {k: SHELL_IMG[k] for k in ('width', 'height')}
     page = re.sub(r'(<figure class="hero">\s*)(<img\b[^>]*>)', lambda m: m.group(1) + set_attrs(m.group(2), hero), page, count=1)
     def card(m, widths):   # the shell prints the image URL list per card type: pick 300/600/1200 (src 600), mini 200/400/800 (src 400)
