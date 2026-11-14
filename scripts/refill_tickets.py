@@ -9,7 +9,7 @@ queue ran empty and the daily runner stopped at 1/5).
   python3 scripts/refill_tickets.py --self-test             # offline fixtures: no network, writes nothing
 
 The daily low-water call is --if-below, --count, and --prefix only. That path stays
-ticket-only: public storefront reads, then append daily-tickets.md and board/ideas.csv.
+ticket-only: store reads (Admin fallback on HTTP 429), then append daily-tickets.md and board/ideas.csv.
 Do not add a paid Ads or LLM miner behind those flags. A short bank is exit 3; the
 wrapper writes state/queue-low-water.marker and does not spend money.
 
@@ -421,8 +421,52 @@ def merge_titles(listing, sources, meta):
     return titles
 
 
+def read_store_admin():
+    """Read the same inventory through Admin when the public store throttles."""
+    from fetch_all_articles import paginate
+    now = dt.datetime.now(dt.timezone.utc)
+
+    def published(item):
+        stamp = item.get("published_at")
+        return bool(stamp) and dt.datetime.fromisoformat(stamp.replace("Z", "+00:00")) <= now
+
+    prods = {}
+    for p in paginate("products.json?limit=250&status=active"):
+        if p.get("status") != "active" or not published(p):
+            continue
+        variants = p.get("variants") or []
+        prods[p["handle"]] = {
+            "title": p["title"], "price": variants[0]["price"] if variants else "0",
+            "available": any(not v.get("inventory_management") or
+                             v.get("inventory_policy") == "continue" or
+                             v.get("inventory_quantity", 0) > 0 for v in variants)}
+    colls = {}
+    for kind in ("custom", "smart"):
+        for c in paginate(f"{kind}_collections.json?limit=250"):
+            if published(c):
+                colls[c["handle"]] = [p["handle"] for p in paginate(
+                    f"products.json?limit=250&collection_id={c['id']}") if p["handle"] in prods]
+    blogs = [b for b in paginate("blogs.json?limit=250") if b["handle"] == BLOG]
+    if len(blogs) != 1:
+        raise Refuse("Admin blog identity mismatch")
+    titles = [(a["handle"], a["title"]) for a in paginate(
+        f"blogs/{blogs[0]['id']}/articles.json?limit=250&published_status=published") if published(a)]
+    if not prods or len(titles) < 10:
+        raise Refuse("Admin store inventory incomplete - refusing dedup blind")
+    return prods, colls, sorted(titles)
+
+
 def read_store():
-    """(products, collections -> member handles, [(handle, title)] of every published article)."""
+    try:
+        return read_store_public()
+    except urllib.error.HTTPError as error:
+        if error.code != 429:
+            raise
+        print("  ! storefront throttled (429) - reading live Admin inventory", flush=True)
+        return read_store_admin()
+
+
+def read_store_public():
     prods = {}
     for p in json.loads(fetch(f"{SITE}/products.json?limit=250"))["products"]:
         vs = p.get("variants") or [{}]
