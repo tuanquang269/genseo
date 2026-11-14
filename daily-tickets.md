@@ -2333,7 +2333,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** shilajit + versus checked 2026-11-10 against 187 live articles (blog listing + sitemap + Atom + local caches) and all 167 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#RF1110-10 — nmn vs collagen** — `NMN vs Collagen: Pros and Cons (US 2026)`
+- [DONE 2026-11-14 https://wellnessnest.co/blogs/news/nmn-vs-collagen-the-us-evidence-check] **#RF1110-10 — nmn vs collagen** — `NMN vs Collagen: Pros and Cons (US 2026)`
   - **Primary keyword:** `nmn vs collagen` · **Secondary:** nmn or collagen, is nmn better than collagen
   - **Search intent:** adult comparing nmn with collagen for skin and aging
   - **Template:** COMPARISON · **Gate:** topic_fitness PASS [brand_intent] · STEP 0: suggest.json 0 article matches (2026-11-10 15:38 ICT)
