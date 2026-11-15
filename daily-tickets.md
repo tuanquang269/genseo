@@ -2387,7 +2387,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** probiotic + versus checked 2026-11-12 against 197 live articles (blog listing + sitemap + Atom + local caches) and all 178 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#MB1112-2 — creatine gummies vs capsules** — `Creatine Gummies vs Capsules: Which Wins? (US 2026)`
+- [DONE 2026-11-15 https://wellnessnest.co/blogs/news/creatine-gummies-vs-capsules-the-us-verdict] **#MB1112-2 — creatine gummies vs capsules** — `Creatine Gummies vs Capsules: Which Wins? (US 2026)`
   - **Primary keyword:** `creatine gummies vs capsules` · **Secondary:** creatine gummies or capsules, is creatine gummies better than capsules
   - **Search intent:** adult choosing creatine gummies or capsules
   - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-12 16:11 ICT)
