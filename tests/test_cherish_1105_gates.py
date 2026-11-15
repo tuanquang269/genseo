@@ -38,6 +38,25 @@ class T(unittest.TestCase):
         src = inspect.getsource(rs.finalize_page)
         self.assertIn("re.search(r'<p class=\"meta\">.*?</p>', template", src)
 
+    def finalized_page(self, second_cta=False):
+        import datetime, json
+        questions = ''.join('<details><summary><h3>Question?</h3></summary><div>Answer.</div></details>' for _ in range(3))
+        template = '<figure class="hero"><img sizes="100vw" width="1100" height="1400"></figure><p class="meta"><span>Author</span><span>Updated Nov 15, 2026</span><span>8 min read</span><span>Facts checked</span></p><section class="band"><p><a class="btn" href="/products/example">See it</a></p></section>'
+        graph = {'@graph': [{'@type': 'BlogPosting'}, {'@type': 'BreadcrumbList', 'itemListElement': [{'name': 'Home'}, {'name': 'Short writer title'}]}]}
+        page = '<article>' + template.replace('>See it</a>', '>See it</a>' + ('<a class="btn" href="/collections/all">Shop all</a>' if second_cta else '')) + '<div class="faq">' + questions + '</div></article><script type="application/ld+json">' + json.dumps(graph) + '</script>'
+        return rs.finalize_page(page, template, {'primary_keyword': 'example'}, {'title': 'Full article title', 'meta_description': 'Description'}, {'src': 'https://cdn.shopify.com/example.webp?v=1', 'alt': 'Example'}, datetime.date(2026, 11, 15))
+
+    def test_breadcrumb_uses_publisher_title(self):
+        import json
+        page = self.finalized_page()
+        graph = json.loads(rs.soup(page).select_one('script').string)['@graph']
+        self.assertEqual(graph[1]['itemListElement'][-1]['name'], 'Full article title')
+        self.assertEqual(graph[1]['itemListElement'][0]['name'], 'Home')
+
+    def test_cta_band_rejects_extra_button(self):
+        with self.assertRaisesRegex(rs.StoreGuardError, 'exactly one CTA'):
+            self.finalized_page(second_cta=True)
+
     def test_writer_runs_unattended(self):
         self.assertIn('Never ask a question', rs.WRITER_RULES)
 

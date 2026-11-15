@@ -486,6 +486,7 @@ def finalize_page(page, template, row, package, hero, day):
         else:   # style 2/3: the mini row lives in the body before the FAQ, never in the band
             minis_row = re.search(r'<div class="row3"[^>]*>(?:\s*<div class="mini".*?</div>)*\s*</div>\s*', b, re.S)
             b = b.replace(minis_row.group(0), '') if minis_row else b
+            require(len(soup(b).select('a.btn')) == 1, 'End band must have exactly one CTA, matching the approved template')
         page = page[:band.start()] + b + page[band.end():]
         if minis_row and 'class="row3"' not in page and '<h2 id="faq"' in page:
             page = page.replace('<h2 id="faq"', minis_row.group(0) + '<h2 id="faq"', 1)
@@ -510,6 +511,9 @@ def finalize_page(page, template, row, package, hero, day):
         graph = json.loads(match.group(2))
     except json.JSONDecodeError as error:
         raise StoreGuardError(f'The application/ld+json block is not valid JSON: {error}')
+    for node in graph['@graph']:
+        if node.get('@type') == 'BreadcrumbList' and node.get('itemListElement'):
+            node['itemListElement'][-1]['name'] = package['title']
     post = next(n for n in graph['@graph'] if n.get('@type') == 'BlogPosting')
     # FAQPage = the visible FAQ, word for word (validate_schema and the shell's journal.faq both read it this way)
     faq = [{'@type': 'Question', 'name': d.select_one('summary h3').get_text(' ', strip=True),
