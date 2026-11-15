@@ -2399,7 +2399,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** creatine + versus checked 2026-11-12 against 197 live articles (blog listing + sitemap + Atom + local caches) and all 178 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#MB1112-3 — turkesterone vs laxogenin** — `Turkesterone vs Laxogenin: Key Differences (US 2026)`
+- [DONE 2026-11-15 https://wellnessnest.co/blogs/news/turkesterone-vs-laxogenin-the-us-verdict] **#MB1112-3 — turkesterone vs laxogenin** — `Turkesterone vs Laxogenin: Key Differences (US 2026)`
   - **Primary keyword:** `turkesterone vs laxogenin` · **Secondary:** turkesterone or laxogenin, is turkesterone better than laxogenin
   - **Search intent:** adult comparing turkesterone with laxogenin for muscle and strength
   - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-12 16:11 ICT)
