@@ -2448,7 +2448,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** nmn + versus checked 2026-11-12 against 197 live articles (blog listing + sitemap + Atom + local caches) and all 178 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#MB1112-7 — creatine gummies vs electrolytes** — `Creatine Gummies vs Electrolytes (US 2026)`
+- [DONE 2026-11-16 https://wellnessnest.co/blogs/news/creatine-gummies-vs-electrolytes-the-us-verdict] **#MB1112-7 — creatine gummies vs electrolytes** — `Creatine Gummies vs Electrolytes (US 2026)`
   - **Primary keyword:** `creatine gummies vs electrolytes` · **Secondary:** creatine gummies or electrolytes, creatine vs electrolytes
   - **Search intent:** adult comparing creatine with electrolytes for training
   - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-12 16:11 ICT)
