@@ -71,7 +71,7 @@ def shell_owned(page):
     page = re.sub(r'(<div class="pick"[^>]*>\s*)(<img\b[^>]*>)', lambda m: card(m, (300, 600, 1200)), page)
     # band minis only: style 3 also uses .mini inside the article, which the shell prints as written
     page = re.sub(r'<section class="band".*?</section>', lambda b: re.sub(r'(<div class="mini"[^>]*>\s*)(<img\b[^>]*>)', lambda m: card(m, (200, 400, 800)), b.group(0)), page, flags=re.S)
-    page = re.sub(r'(<section class="band"[^>]*>.*?<p class="small">)[^<]*(</p>)', lambda m: m.group(1) + SHIP_LINE + m.group(2), page, count=1, flags=re.S)
+    page = re.sub(r'(<section class="band"[^>]*>.*?<p class="small">).*?(</p>)', lambda m: m.group(1) + SHIP_LINE + m.group(2), page, count=1, flags=re.S)
     # shell prints two things a writer page can lack (slots 3 and 5, 2026-11-06 gate fails): the band guarantee line and the rail TOC
     band = re.search(r'<section class="band"[^>]*>.*?</section>', page, re.S)
     if band and 'class="small"' not in band.group(0):

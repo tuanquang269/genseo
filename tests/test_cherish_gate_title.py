@@ -20,3 +20,12 @@ assert '<span>Competitor context stays in the body</span>' in out
 assert c.shell_owned(out) == out
 assert c.shell_owned('<p class="meta"><span>Product facts checked today</span></p>') == '<p class="meta"><span>Product facts checked today</span></p>'
 print('gate meta note OK')
+
+# The live shell owns the entire note, including writer-provided links.
+page = '<p class="small">Keep outside prose</p><section class="band"><p class="small">100-Night Guarantee <a href="/collections/all">Old shipping terms</a></p></section>'
+out = c.shell_owned(page)
+assert '<p class="small">' + c.SHIP_LINE + '</p></section>' in out
+assert 'Old shipping terms' not in out
+assert '<p class="small">Keep outside prose</p>' in out
+assert c.shell_owned(out) == out
+print('gate nested band note OK')
