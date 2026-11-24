@@ -318,7 +318,7 @@ def duplicate_guard(package, row, existing):
         require(norm(row['primary_keyword']) != norm(article.get('title','')), 'Keyword already covered')
 
 
-ROUTER = 'https://ai.patigroup.com/v1/messages'  # Fixed OAuth router host. Never a local router, the Railway app, or a per-token AI API.
+ROUTER = 'https://ai.patigroup.si/v1/messages'  # Fixed OAuth router host. Never a local router, the Railway app, or a per-token AI API.
 
 
 class RouterRetry(Exception):

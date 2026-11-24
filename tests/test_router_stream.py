@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent/'scripts'))
-from run_store import read_stream, RouterRetry
+from run_store import read_stream, RouterRetry, ROUTER
 
 
 def sse(*events):
@@ -15,6 +15,10 @@ def sse(*events):
 
 
 class RouterStreamTests(unittest.TestCase):
+    def test_canonical_router_avoids_post_redirect(self):
+        # urllib changes a 301 POST to GET and drops the writer payload.
+        self.assertEqual(ROUTER, 'https://ai.patigroup.si/v1/messages')
+
     def test_text_and_stop_reason(self):
         lines = sse('{"type":"message_start","message":{}}', '{"type":"ping"}',
                     '{"type":"content_block_delta","index":0,"delta":{"type":"thinking_delta","thinking":"x"}}',
