@@ -2495,3 +2495,130 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Evidence to fetch & confirm (claims log):** every number, study and dose from a source fetched at write time — cut what you cannot confirm
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** creatine + versus checked 2026-11-12 against 197 live articles (blog listing + sitemap + Atom + local caches) and all 178 tickets in this file; STEP 0 re-checks at write time
+
+# BATCH 2026-11-25 (refill_tickets.py — ids #MB1125-1…#MB1125-10)
+
+Built by `scripts/refill_tickets.py` at 2026-11-25 15:45 ICT from `templates/article-topic-bank.json` + `board/ideas.csv`
+(search volume: No data — GSC/Ads not used). Every ticket passed, against the live store at build time:
+brand_rules + `lint_tickets.py` · hero product live and in stock · not a covered topic (header rule 6) ·
+not already queued · not live (216 published articles: blog listing + sitemap + Atom + local caches; one article per brand + segment) ·
+`topic_fitness.py` strict on primary and title · STEP 0 suggest.json.
+A `topic_fitness` REVIEW [covered-segment] verdict is allowed under Kevin's standing greenlight for mined queues (2026-08-13).
+A topic is a brief, not copy: source every claim or cut it.
+
+**Rules for this batch:** from the 2026-10-08 batch rules — fan-out answers, a "Where to buy <product> in the US"
+section (live price, the ticket's product link only), roster.json byline only (never an invented person or
+credential), the logged fact-check pass (`logs/claims/<slug>.md`; delete unconfirmed claims), the brand gate.
+Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py once. The hero is the picked face plus the real pack unless pick prints NO-FACE. One inline image uses that face. The other inline images have no recognizable face but still show a hand, forearm, or body cropped below the eyes. A no-face image is the fallback for one frame after a face refusal or two QC misses, not a batch-wide ban. The MacBook article plist sets `GENSEO_NO_FACE=0`, and that value does not switch the lane. Prices were read live at build time; re-check the PDP while writing.
+
+- [ ] **#MB1125-1 — turkesterone vs shilajit** — `Turkesterone vs Shilajit: Human Evidence (US 2026)`
+  - **Primary keyword:** `turkesterone vs shilajit` · **Secondary:** turkesterone vs shilajit comparison, turkesterone vs shilajit evidence
+  - **Search intent:** US buyer comparing alternatives with different evidence and uses
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-25 15:45 ICT)
+  - **Hero product:** `/products/turkesterone-advanced-formula` (Turkesterone Advanced Formula, $75, in stock 2026-11-25)
+  - **Turkesterone Advanced Formula pack label (source of truth):** wellness, nest, PREMIUM, TURKESTERONE, ADVANCED, FORMULA, AMPLIFY, MUSCLE, ENDURANCE, 60, Dietary Supplement, Capsules. No milligram amount and no Supplement Facts panel were read. Do not add one. The capsule badge is the separate lines in product_refs/turkesterone-advanced-formula.label.json. Do not state a milligram amount, a serving count, a different capsule count, or a day-supply.
+  - **Collection links (≥2, verify live):** `/collections/mens-essential-collection` (contains it), `/collections/shilajit-wellness-stack` (contains it)
+  - **Angle:** Compare ecdysteroid and purified shilajit human evidence. Do not equate the store multi-ingredient product with isolated trial extracts. Demand evidence: exact query appeared in Google autocomplete (hl=en, gl=us) on 2026-11-25: https://suggestqueries.google.com/complete/search?client=firefox&hl=en&gl=us&q=turkesterone%20vs. Autocomplete is a qualitative signal, not search volume. Fetch and cite primary studies; do not invent comparative efficacy. Read the linked general guide instead of repeating it.
+  - **Evidence to fetch & confirm (claims log):** every number, study and dose from a source fetched at write time — cut what you cannot confirm
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** turkesterone + versus checked 2026-11-25 against 216 live articles (blog listing + sitemap + Atom + local caches) and all 188 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1125-2 — creatine gummies vs liquid** — `Creatine Gummies vs Liquid: Stability Matters (US 2026)`
+  - **Primary keyword:** `creatine gummies vs liquid` · **Secondary:** creatine gummies vs liquid comparison, creatine gummies vs liquid evidence
+  - **Search intent:** US buyer comparing alternatives with different evidence and uses
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-25 15:45 ICT)
+  - **Hero product:** `/products/fusiforce-creatine-gummies` (FusiForce Creatine Gummies, $79.99, in stock 2026-11-25)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` (contains it), `/collections/mens-essential-collection` (contains it)
+  - **Angle:** Compare chewable gummies with premixed liquid creatine: stability, storage, assay evidence and dose-label checks. Link existing powder/capsule comparisons; do not repeat them. Demand evidence: exact query appeared in Google autocomplete (hl=en, gl=us) on 2026-11-25: https://suggestqueries.google.com/complete/search?client=firefox&hl=en&gl=us&q=creatine%20gummies%20vs%20l. Autocomplete is a qualitative signal, not search volume. Fetch and cite primary studies; do not invent comparative efficacy. Read the linked general guide instead of repeating it.
+  - **Evidence to fetch & confirm (claims log):** every number, study and dose from a source fetched at write time — cut what you cannot confirm
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** creatine + versus checked 2026-11-25 against 216 live articles (blog listing + sitemap + Atom + local caches) and all 188 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1125-3 — nmn vs nac** — `NMN vs NAC (US 2026)`
+  - **Primary keyword:** `nmn vs nac` · **Secondary:** nmn vs nac comparison, nmn vs nac evidence
+  - **Search intent:** US buyer comparing alternatives with different evidence and uses
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-25 15:45 ICT)
+  - **Hero product:** `/products/ageaura-pure-nmn-tmg-nad-complex` (AgeAura Pure NMN + TMG NAD+ Complex, $79.99, in stock 2026-11-25)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` twice (browse link — AgeAura Pure NMN + TMG NAD+ Complex is not in it, never claim it is) · no other AgeAura product and no AgeAura collection link (brand_rules)
+  - **Angle:** Separate NAD precursor biology from glutathione precursor biology; compare human endpoints, not antioxidant marketing. Demand evidence: exact query appeared in Google autocomplete (hl=en, gl=us) on 2026-11-25: https://suggestqueries.google.com/complete/search?client=firefox&hl=en&gl=us&q=nmn%20vs. Autocomplete is a qualitative signal, not search volume. Fetch and cite primary studies; do not invent comparative efficacy. Read the linked general guide instead of repeating it.
+  - **Evidence to fetch & confirm (claims log):** every number, study and dose from a source fetched at write time — cut what you cannot confirm
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** nmn + versus checked 2026-11-25 against 216 live articles (blog listing + sitemap + Atom + local caches) and all 188 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1125-4 — turkesterone vs testosterone** — `Turkesterone vs Testosterone: Not Equivalent (US 2026)`
+  - **Primary keyword:** `turkesterone vs testosterone` · **Secondary:** turkesterone vs testosterone comparison, turkesterone vs testosterone evidence
+  - **Search intent:** US buyer comparing alternatives with different evidence and uses
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-25 15:45 ICT)
+  - **Hero product:** `/products/turkesterone-advanced-formula` (Turkesterone Advanced Formula, $75, in stock 2026-11-25)
+  - **Turkesterone Advanced Formula pack label (source of truth):** wellness, nest, PREMIUM, TURKESTERONE, ADVANCED, FORMULA, AMPLIFY, MUSCLE, ENDURANCE, 60, Dietary Supplement, Capsules. No milligram amount and no Supplement Facts panel were read. Do not add one. The capsule badge is the separate lines in product_refs/turkesterone-advanced-formula.label.json. Do not state a milligram amount, a serving count, a different capsule count, or a day-supply.
+  - **Collection links (≥2, verify live):** `/collections/mens-essential-collection` (contains it), `/collections/shilajit-wellness-stack` (contains it)
+  - **Angle:** Separate a supplement from prescription testosterone therapy; no hormone replacement equivalence, medication changes or anabolic promises. Demand evidence: exact query appeared in Google autocomplete (hl=en, gl=us) on 2026-11-25: https://suggestqueries.google.com/complete/search?client=firefox&hl=en&gl=us&q=turkesterone%20vs. Autocomplete is a qualitative signal, not search volume. Fetch and cite primary studies; do not invent comparative efficacy. Read the linked general guide instead of repeating it.
+  - **Evidence to fetch & confirm (claims log):** every number, study and dose from a source fetched at write time — cut what you cannot confirm
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** turkesterone + versus checked 2026-11-25 against 216 live articles (blog listing + sitemap + Atom + local caches) and all 188 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1125-5 — nmn vs b12** — `NMN vs B12 (US 2026)`
+  - **Primary keyword:** `nmn vs b12` · **Secondary:** nmn vs b12 comparison, nmn vs b12 evidence
+  - **Search intent:** US buyer comparing alternatives with different evidence and uses
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-25 15:45 ICT)
+  - **Hero product:** `/products/ageaura-pure-nmn-tmg-nad-complex` (AgeAura Pure NMN + TMG NAD+ Complex, $79.99, in stock 2026-11-25)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` twice (browse link — AgeAura Pure NMN + TMG NAD+ Complex is not in it, never claim it is) · no other AgeAura product and no AgeAura collection link (brand_rules)
+  - **Angle:** Separate B12 deficiency treatment from NAD precursor supplementation; do not imply NMN replaces B12 or testing. Demand evidence: exact query appeared in Google autocomplete (hl=en, gl=us) on 2026-11-25: https://suggestqueries.google.com/complete/search?client=firefox&hl=en&gl=us&q=nmn%20vs%20b. Autocomplete is a qualitative signal, not search volume. Fetch and cite primary studies; do not invent comparative efficacy. Read the linked general guide instead of repeating it.
+  - **Evidence to fetch & confirm (claims log):** every number, study and dose from a source fetched at write time — cut what you cannot confirm
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** nmn + versus checked 2026-11-25 against 216 live articles (blog listing + sitemap + Atom + local caches) and all 188 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1125-6 — nmn vs akg** — `NMN vs AKG: Human Evidence (US 2026)`
+  - **Primary keyword:** `nmn vs akg` · **Secondary:** nmn vs akg comparison, nmn vs akg evidence
+  - **Search intent:** US buyer comparing alternatives with different evidence and uses
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-25 15:45 ICT)
+  - **Hero product:** `/products/ageaura-pure-nmn-tmg-nad-complex` (AgeAura Pure NMN + TMG NAD+ Complex, $79.99, in stock 2026-11-25)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` twice (browse link — AgeAura Pure NMN + TMG NAD+ Complex is not in it, never claim it is) · no other AgeAura product and no AgeAura collection link (brand_rules)
+  - **Angle:** Separate NAD salvage from alpha-ketoglutarate metabolism. Distinguish animal aging studies from human outcomes. Demand evidence: exact query appeared in Google autocomplete (hl=en, gl=us) on 2026-11-25: https://suggestqueries.google.com/complete/search?client=firefox&hl=en&gl=us&q=nmn%20vs%20a. Autocomplete is a qualitative signal, not search volume. Fetch and cite primary studies; do not invent comparative efficacy. Read the linked general guide instead of repeating it.
+  - **Evidence to fetch & confirm (claims log):** every number, study and dose from a source fetched at write time — cut what you cannot confirm
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** nmn + versus checked 2026-11-25 against 216 live articles (blog listing + sitemap + Atom + local caches) and all 188 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1125-7 — nmn vs fatty 15** — `NMN vs Fatty15: Human Evidence (US 2026)`
+  - **Primary keyword:** `nmn vs fatty 15` · **Secondary:** nmn vs fatty 15 comparison, nmn vs fatty 15 evidence
+  - **Search intent:** US buyer comparing alternatives with different evidence and uses
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-25 15:45 ICT)
+  - **Hero product:** `/products/ageaura-pure-nmn-tmg-nad-complex` (AgeAura Pure NMN + TMG NAD+ Complex, $79.99, in stock 2026-11-25)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` twice (browse link — AgeAura Pure NMN + TMG NAD+ Complex is not in it, never claim it is) · no other AgeAura product and no AgeAura collection link (brand_rules)
+  - **Angle:** Compare NMN and pentadecanoic acid (C15:0), not brand slogans; report human evidence limits and study funding. Demand evidence: exact query appeared in Google autocomplete (hl=en, gl=us) on 2026-11-25: https://suggestqueries.google.com/complete/search?client=firefox&hl=en&gl=us&q=nmn%20vs%20f. Autocomplete is a qualitative signal, not search volume. Fetch and cite primary studies; do not invent comparative efficacy. Read the linked general guide instead of repeating it.
+  - **Evidence to fetch & confirm (claims log):** every number, study and dose from a source fetched at write time — cut what you cannot confirm
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** nmn + versus checked 2026-11-25 against 216 live articles (blog listing + sitemap + Atom + local caches) and all 188 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1125-8 — nmn vs msm** — `NMN vs MSM: Human Evidence (US 2026)`
+  - **Primary keyword:** `nmn vs msm` · **Secondary:** nmn vs msm comparison, nmn vs msm evidence
+  - **Search intent:** US buyer comparing alternatives with different evidence and uses
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-25 15:45 ICT)
+  - **Hero product:** `/products/ageaura-pure-nmn-tmg-nad-complex` (AgeAura Pure NMN + TMG NAD+ Complex, $79.99, in stock 2026-11-25)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` twice (browse link — AgeAura Pure NMN + TMG NAD+ Complex is not in it, never claim it is) · no other AgeAura product and no AgeAura collection link (brand_rules)
+  - **Angle:** Separate methylsulfonylmethane joint-study outcomes from NMN NAD studies; do not infer a direct head-to-head result. Demand evidence: exact query appeared in Google autocomplete (hl=en, gl=us) on 2026-11-25: https://suggestqueries.google.com/complete/search?client=firefox&hl=en&gl=us&q=nmn%20vs%20m. Autocomplete is a qualitative signal, not search volume. Fetch and cite primary studies; do not invent comparative efficacy. Read the linked general guide instead of repeating it.
+  - **Evidence to fetch & confirm (claims log):** every number, study and dose from a source fetched at write time — cut what you cannot confirm
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** nmn + versus checked 2026-11-25 against 216 live articles (blog listing + sitemap + Atom + local caches) and all 188 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1125-9 — nmn vs l theanine** — `NMN vs L-Theanine: Human Evidence (US 2026)`
+  - **Primary keyword:** `nmn vs l theanine` · **Secondary:** nmn vs l theanine comparison, nmn vs l theanine evidence
+  - **Search intent:** US buyer comparing alternatives with different evidence and uses
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-25 15:45 ICT)
+  - **Hero product:** `/products/ageaura-pure-nmn-tmg-nad-complex` (AgeAura Pure NMN + TMG NAD+ Complex, $79.99, in stock 2026-11-25)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` twice (browse link — AgeAura Pure NMN + TMG NAD+ Complex is not in it, never claim it is) · no other AgeAura product and no AgeAura collection link (brand_rules)
+  - **Angle:** Contrast NMN and L-theanine by studied outcomes, time frames and evidence gaps; no invented sleep or cognition advantage. Demand evidence: exact query appeared in Google autocomplete (hl=en, gl=us) on 2026-11-25: https://suggestqueries.google.com/complete/search?client=firefox&hl=en&gl=us&q=nmn%20vs%20l. Autocomplete is a qualitative signal, not search volume. Fetch and cite primary studies; do not invent comparative efficacy. Read the linked general guide instead of repeating it.
+  - **Evidence to fetch & confirm (claims log):** every number, study and dose from a source fetched at write time — cut what you cannot confirm
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** nmn + versus checked 2026-11-25 against 216 live articles (blog listing + sitemap + Atom + local caches) and all 188 tickets in this file; STEP 0 re-checks at write time
+
+- [ ] **#MB1125-10 — nmn vs lions mane** — `NMN vs Lion's Mane: Human Evidence (US 2026)`
+  - **Primary keyword:** `nmn vs lions mane` · **Secondary:** nmn vs lions mane comparison, nmn vs lions mane evidence
+  - **Search intent:** US buyer comparing alternatives with different evidence and uses
+  - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-25 15:45 ICT)
+  - **Hero product:** `/products/ageaura-pure-nmn-tmg-nad-complex` (AgeAura Pure NMN + TMG NAD+ Complex, $79.99, in stock 2026-11-25)
+  - **Collection links (≥2, verify live):** `/collections/best-seller` twice (browse link — AgeAura Pure NMN + TMG NAD+ Complex is not in it, never claim it is) · no other AgeAura product and no AgeAura collection link (brand_rules)
+  - **Angle:** Contrast NMN and Hericium erinaceus by human study endpoints, formulations and limitations; no dementia claims. Demand evidence: exact query appeared in Google autocomplete (hl=en, gl=us) on 2026-11-25: https://suggestqueries.google.com/complete/search?client=firefox&hl=en&gl=us&q=nmn%20vs%20l. Autocomplete is a qualitative signal, not search volume. Fetch and cite primary studies; do not invent comparative efficacy. Read the linked general guide instead of repeating it.
+  - **Evidence to fetch & confirm (claims log):** every number, study and dose from a source fetched at write time — cut what you cannot confirm
+  - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
+  - **Dedup note:** nmn + versus checked 2026-11-25 against 216 live articles (blog listing + sitemap + Atom + local caches) and all 188 tickets in this file; STEP 0 re-checks at write time
