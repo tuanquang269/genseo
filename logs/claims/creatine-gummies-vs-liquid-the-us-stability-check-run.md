@@ -19,3 +19,12 @@ Publish: NOT ATTEMPTED. No article ID, ADMIN link, FRONTEND link, published_at, 
 Ticket remains open; tracker unchanged because no article published. No other ticket processed. Current ticket MB1125-2; following ticket MB1125-3.
 
 Resume requires resolving validator HTTP403 access without weakening the gate, rerunning dedup/topic checks and persona assignment, obtaining validator PASS, executing published-today and immediate dedup guards, then publisher --live and both post-publish gates. Existing generated images are not authorization to reuse released angles.
+
+## Resume attempt — 2026-11-26
+
+- Topic fitness rerun: PASS [brand_intent].
+- Unmodified validator rerun: exit 1, DO NOT PUBLISH. Required product, both collections, related article and author URL checks failed. QRG unavailable; no scores invented.
+- Live exact-keyword suggest.json request with browser User-Agent returned a connection-verification HTML challenge, not article JSON. Duplicate status cannot be established for this attempt.
+- Subsequent browser-UA status checks varied: product and both collections HTTP 429; related article and author HTTP 200. These later responses do not override the failed validator or establish a successful duplicate check.
+- No new persona pick, generated media, publisher call, live article, tracker row or ticket closure. Existing reservation remains released. Existing 14-claim research log was not reverified in this attempt.
+- Run blocked by storefront access checks, not file-count scope. Only MB1125-2 processed; it remains the next open ticket. Gate code and live content unchanged.
