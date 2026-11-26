@@ -1,5 +1,7 @@
 # Claims checked — MB1125-2
 
+Resume confirmation 2026-11-26: PMID 15513279 abstract fetched via Europe PMC curl; PMID 15142023 via Europe PMC WebFetch; PMC3080578 via PMC WebFetch. All study and stability claims below reconfirmed. Current FusiForce catalog title, active status, $79.99 variant prices and positive inventory confirmed using authenticated Shopify Admin products read because public product JSON returned a challenge. Packaging visually compared with curated reference. Unmodified final draft validator confirmed required internal URLs. No independent finished-product assay or direct gummy-versus-liquid trial claimed.
+
 Checked 2026-11-26. Automated source review; not a claim of human clinical review. PubMed records fetched as complete abstracts from Europe PMC; review full text fetched through Europe PMC XML. No direct gummy-versus-liquid trial or FusiForce batch certificate was verified. No efficacy, dose, purity or laboratory-certification claim is made for FusiForce. Images are generated illustrations, not testing documentation.
 
 Claim | Source URL | fetched+confirmed Y/N

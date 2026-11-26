@@ -1,4 +1,17 @@
-# MB1125-2 — blocked before publish, 2026-11-26
+# MB1125-2 — published live, 2026-11-26
+
+## Successful resume
+
+- Article 635229864251; https://wellnessnest.co/blogs/news/creatine-gummies-vs-liquid-the-us-stability-check
+- template:COMPARISON; 1,880 words; 14 claims reconfirmed; catalog price $79.99 verified via authenticated product read.
+- STEP 0 exact keyword: zero matches immediately before publish; STEP 0.5 PASS; daily count 1; final unchanged validator PASS. QRG unavailable, no invented score.
+- Fresh picker seq 183: f4049-wh-08; hero off-into-room, through-doorway, 3q-right+chin-up; inline at-lens, 3q-left+chin-down. Both replacement images QC PASS and visually inspected against curated pack. Existing mixing/storage no-face UGC images retained. Four total images. ima2 $0 subscription (standing approval).
+- Warning verbatim: 1 persona(s) have spent all 15 face angles and are done as heroes: f5059-wh-06 (1 left)
+- Publisher --live succeeded; Gate 1 CDN 4/4 PASS; verify_published PASS schema/author/table; published_at 2026-11-25T17:08:07-08:00; frontend browser-UA HTTP 200; rendered-image checks 4/4 PASS with image bytes confirmed. Shopify responsive hero URL differs from Admin source; matched asset identifier rather than exact URL. Product widget section and fusiforce-creatine-gummies handle present: Gate 2 PASS.
+- Persona seq 183 committed after live publish. Ticket DONE, tracker appended. Next ticket MB1125-3; no other ticket processed.
+- IndexNow skipped: no key configured. Refresh review 2027-02-24.
+
+## Historical blocked attempts
 
 Title: Creatine Gummies vs Liquid: The US Stability Check
 Primary keyword: creatine gummies vs liquid
