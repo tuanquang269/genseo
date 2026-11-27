@@ -2601,7 +2601,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** nmn + versus checked 2026-11-25 against 216 live articles (blog listing + sitemap + Atom + local caches) and all 188 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#MB1125-9 — nmn vs l theanine** — `NMN vs L-Theanine: Human Evidence (US 2026)`
+- [DONE 2026-11-27 https://wellnessnest.co/blogs/news/nmn-vs-l-theanine-the-us-evidence-check] **#MB1125-9 — nmn vs l theanine** — `NMN vs L-Theanine: Human Evidence (US 2026)`
   - **Primary keyword:** `nmn vs l theanine` · **Secondary:** nmn vs l theanine comparison, nmn vs l theanine evidence
   - **Search intent:** US buyer comparing alternatives with different evidence and uses
   - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-25 15:45 ICT)
