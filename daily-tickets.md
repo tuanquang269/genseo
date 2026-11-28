@@ -2650,7 +2650,7 @@ Blog 104008483131, publish `--live`. Images: people lane. Run persona_picker.py 
   - **Author:** roster.json byline — exact name + bio resolved at write time; never invent a person, reviewer or credential
   - **Dedup note:** turkesterone + versus checked 2026-11-26 against 221 live articles (blog listing + sitemap + Atom + local caches) and all 198 tickets in this file; STEP 0 re-checks at write time
 
-- [ ] **#MB1126-2 — creatine gummies vs chews** — `Creatine Gummies vs Chews (US 2026)`
+- [DONE 2026-11-28 https://wellnessnest.co/blogs/news/creatine-gummies-vs-chews-the-us-verdict] **#MB1126-2 — creatine gummies vs chews** — `Creatine Gummies vs Chews (US 2026)`
   - **Primary keyword:** `creatine gummies vs chews` · **Secondary:** creatine gummies vs chews comparison, creatine gummies vs chews evidence
   - **Search intent:** US buyer comparing alternatives with different evidence and uses
   - **Template:** COMPARISON · **Gate:** topic_fitness REVIEW [covered-segment] → allowed under Kevin's standing greenlight for mined queues (2026-08-13) · STEP 0: suggest.json 0 article matches (2026-11-26 15:37 ICT)
